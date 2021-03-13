@@ -40,6 +40,9 @@ Thumbs.db
 *.exe
 *.war
 
+webapp/target
+.git
+
 # Large media files
 *.mp4
 *.tiff
@@ -48,3 +51,7 @@ Thumbs.db
 *.mov
 *.wmv
 
+
+paw2021a.iml
+
+webapp/webapp.iml
