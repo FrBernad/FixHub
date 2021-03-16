@@ -51,7 +51,6 @@ webapp/target
 *.mov
 *.wmv
 
+*.iml
 
-paw2021a.iml
 
-webapp/webapp.iml
