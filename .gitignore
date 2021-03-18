@@ -22,9 +22,15 @@ dist/
 # Maven
 target/
 dist/
-
+log/
+ 
+# Mac
+.DS_Store
+ 
 # JetBrains IDE
 .idea/
+*.iml
+*.iws
 
 # Unit test reports
 TEST*.xml
@@ -51,6 +57,5 @@ webapp/target
 *.mov
 *.wmv
 
-*.iml
 
 
