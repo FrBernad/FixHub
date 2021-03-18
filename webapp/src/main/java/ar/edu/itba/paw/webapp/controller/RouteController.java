@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class HelloWorldController {
+public class RouteController {
 
     @Autowired
     private UserService userService;
 
     @RequestMapping("/")
-    public ModelAndView helloWorld() {
-        final ModelAndView mav = new ModelAndView("hello/index");
+    public ModelAndView landingPage() {
+        final ModelAndView mav = new ModelAndView("views/landingPage");
         mav.addObject("greeting", userService.list().get(0).getName());
         return mav;
     }
