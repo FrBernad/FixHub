@@ -5,3 +5,11 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+p {
+    margin: 0;
+}
+
+.headerP{
+    font-size: large;
+}
