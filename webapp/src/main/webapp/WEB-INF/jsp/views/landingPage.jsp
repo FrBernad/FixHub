@@ -114,11 +114,7 @@
     <div class="container d-flex align-items-center h-100">
         <div class="row align-items-center">
             <div class="col-12">
-<<<<<<< Updated upstream
-                <h1 class="py-3 stepSectionTitle">Como funciona</h1>
-=======
                 <h1 class="py-3 stepSectionTitle">Servicios más populares</h1>
->>>>>>> Stashed changes
             </div>
             <div class="col-4 d-flex justify-content-center align-items-center">
                 <div class="row">
