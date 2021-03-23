@@ -13,10 +13,15 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     public User findById(String id) {
-        return this.userDao.get(id);
+        return null;
     }
 
     public List<User> list() {
-        return this.userDao.list();
+        return null;
+    }
+
+    @Override
+    public User createUser(String name, String password) {
+        return userDao.createUser(name, password);
     }
 }

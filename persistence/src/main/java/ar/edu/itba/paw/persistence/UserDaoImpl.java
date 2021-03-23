@@ -2,42 +2,51 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfaces.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.sql.DataSource;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private Map<String, User> users = new ConcurrentHashMap<>();
+    @Autowired
+    private DataSource ds;
 
-    public UserDaoImpl() {
-        User user = new User();
-        user.setId("1");
-        user.setName("Leo");
-        user.setPassword("1234");
-        users.put("1", user);
-        User user2 = new User();
-        user2.setId("2");
-        user2.setName("Alvaro");
-        user2.setPassword("12345");
-        users.put("2", user2);
-        User user3 = new User();
-        user3.setId("3");
+    private JdbcTemplate jdbcTemplate;
+    private SimpleJdbcInsert simpleJdbcInsert;
+
+    @Autowired
+    public UserDaoImpl(final DataSource ds) {
+        jdbcTemplate = new JdbcTemplate(ds);
+        simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USERS").usingGeneratedKeyColumns("id");
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
+                "USERS(" +
+                "id SERIAL," +
+                "name TEXT," +
+                "password TEXT," +
+                "PRIMARY KEY(id))");
     }
 
-    public User get(String id) {
-        return users.get(id);
+    public Optional<User> get(String id) {
+        return null;
     }
 
     public List<User> list() {
-        return new ArrayList<>(this.users.values());
+        return null;
+}
+
+    @Override
+    public User createUser(String name, String password) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("name",name);
+        map.put("password",password);
+        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+        return new User(id,name,password);
     }
 
-    public User save(User user) {
-        return this.users.put(user.getId(), user);
-    }
 }

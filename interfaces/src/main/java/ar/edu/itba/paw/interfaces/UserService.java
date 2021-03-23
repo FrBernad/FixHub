@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface UserService {
     User findById(String id);
+
     List<User> list();
+
+    User createUser(String name, String password);
 }

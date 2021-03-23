@@ -29,10 +29,12 @@ public class JobDaoImpl implements JobDao {
                     rs.getLong("id"),
                     rs.getLong("providerId"));
 
+    @Autowired
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("id");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS JOBS(" +
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
+                "JOBS(" +
                 "id SERIAL," +
                 "description TEXT," +
                 "averageRating INT," +
@@ -44,7 +46,8 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Job createJob(String description, int averageRating, int serviceType, User provider) {
-        return simpleJdbcInsert.executeAndReturnKey(Map.of());
+//        return simpleJdbcInsert.executeAndReturnKey(Map.of());
+        return null;
     }
 
     @Override
