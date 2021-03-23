@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-    // Mock of a db. Just for show :)
 
     private Map<String, User> users = new ConcurrentHashMap<>();
 
@@ -35,7 +34,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     public List<User> list() {
-        return new ArrayList<User>(this.users.values());
+        return new ArrayList<>(this.users.values());
     }
 
     public User save(User user) {
