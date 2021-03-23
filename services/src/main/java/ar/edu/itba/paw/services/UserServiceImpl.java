@@ -4,11 +4,10 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@org.springframework.stereotype.Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
