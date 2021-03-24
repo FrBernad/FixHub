@@ -5,7 +5,7 @@
     <title>Descubre</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
 
     <script src="https://kit.fontawesome.com/a4ef34ae89.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -45,14 +45,23 @@
                 </div>
         </div>
     </div>
+
     <div class="container w-75 h-75 align-self-center servicesContainer">
-        <div class="row">
-            <div class="col-12">
+        <div class="row px-3">
+            <div class="col-12 py-3">
                 <h4>Mostrando resultados de: "..."</h4>
             </div>
+            <div class="col-12 d-flex align-self-center">
+
+                <%@ include file="../components/serviceCard.jsp" %>
+
+            </div>
+
         </div>
     </div>
+
 </div>
+
 <%@ include file="../components/footer.jsp" %>
 </body>
 </html>
