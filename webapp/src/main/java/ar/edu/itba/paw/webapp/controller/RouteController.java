@@ -35,7 +35,9 @@ public class RouteController {
     @RequestMapping("/discover")
     public ModelAndView discover() {
         final ModelAndView mav = new ModelAndView("views/discover");
+
         return mav;
+
     }
 
     @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
