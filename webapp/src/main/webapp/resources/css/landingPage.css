@@ -118,7 +118,7 @@ p {
     border-color: #003B6D;
 }
 
-}
+.jobPrice {
     font-weight: 400;
     font-size: 16px;
     padding: 12px 20px;
@@ -128,7 +128,7 @@ p {
     z-index: 10;
     bottom: 20px;
     position: absolute;
-.jobPrice {
+}
 
 .servicesContainer {
     background-color: #FAFAFA;
