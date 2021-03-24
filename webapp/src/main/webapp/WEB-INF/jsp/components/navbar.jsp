@@ -3,7 +3,7 @@
     <div class="container">
         <a href="#" class="navbar-brand mr-4">
             <img src='<c:url value="/resources/images/navbrand.png"/>' alt="FixHub brand logo"
-                 height="56px" width="160px">
+                 height="56px" width="160px" type="image/png">
         </a>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item mx-1">

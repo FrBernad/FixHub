@@ -112,11 +112,17 @@
 </div>
 <div class="container-fluid h-75" style=" background-color: rgb(245,245,242)">
     <div class="container d-flex align-items-center h-100">
-        <div class="row align-items-center">
+        <div class="row align-items-center h-100">
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle">Servicios más populares</h1>
             </div>
-            <%@ include file="../components/popularCards.jsp" %>
+            <div class="col-12">
+                <div class="v-row">
+                    <c:forEach var="job" items="${jobs}">
+                        <%@ include file="../components/popularCard.jsp" %>
+                    </c:forEach>
+                </div>
+            </div>
         </div>
     </div>
 </div>

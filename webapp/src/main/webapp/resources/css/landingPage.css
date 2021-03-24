@@ -86,6 +86,8 @@ p {
 
 .popularCard {
     transition: box-shadow .3s;
+    height:380px;
+    width: 330px;
 }
 
 .popularCard:hover {
