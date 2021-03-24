@@ -3,10 +3,10 @@ package ar.edu.itba.paw.models;
 public class Job {
     private String description;
     private int averageRating, serviceType;
-    private long id;
+    private Number id;
     private User providerId;
 
-    public Job(String description, int averageRating, int serviceType, long id, User providerId) {
+    public Job(String description, int averageRating, int serviceType, Number id, User providerId) {
         this.description = description;
         this.averageRating = averageRating;
         this.serviceType = serviceType;
@@ -26,7 +26,7 @@ public class Job {
         return serviceType;
     }
 
-    public long getId() {
+    public Number getId() {
         return id;
     }
 
