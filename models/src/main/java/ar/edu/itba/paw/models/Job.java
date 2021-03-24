@@ -54,4 +54,14 @@ public class Job {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Job{" +
+                "description='" + description + '\'' +
+                ", averageRating=" + averageRating +
+                ", serviceType=" + serviceType +
+                ", id=" + id +
+                ", providerId=" + providerId +
+                '}';
+    }
 }
