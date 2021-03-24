@@ -10,7 +10,7 @@
                 <a href="#" class="nav-link navbarText">Inicio</a>
             </li>
             <li class="nav-item mx-1">
-                <a href="#" class="nav-link navbarText">Descubre</a>
+                <a href="<c:url value='/discover'/>" class="nav-link navbarText">Descubre</a>
             </li>
         </ul>
     </div>
