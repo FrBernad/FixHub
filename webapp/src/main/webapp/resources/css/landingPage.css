@@ -10,21 +10,12 @@ p {
     margin: 0;
 }
 
-.navbarText {
-    font-weight: normal;
-    font-size: 18px;
-}
 
 .photoText {
     font-size: 48px;
     font-weight: bold;
     color: white;
     text-shadow: 2px 2px 6px black;
-}
-
-.footer {
-    margin: 0;
-    font-size: 16px;
 }
 
 .inputBtn {
@@ -44,7 +35,7 @@ p {
     border-radius: 8px 8px 8px 8px !important;
     border: none;
     padding: 8px 16px;
-    font-size: 12px;
+    ont-size: 12px;
     background-color: rgba(246, 246, 245, 0.9);
 }
 
