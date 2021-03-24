@@ -78,3 +78,25 @@ p {
     font-size: 24px;
     font-weight: bold;
 }
+
+.category {
+    padding: 10px !important;
+    background-color: #BDBDBD !important;
+}
+
+.popularCard {
+    transition: box-shadow .3s;
+}
+
+.popularCard:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+.popularCardImg {
+    z-index: 0;
+}
+
+.popularCard > a {
+    background-color: #003B6D;
+    border-color: #003B6D;
+}
