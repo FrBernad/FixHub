@@ -68,7 +68,8 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<Job> getJobById(long id) {
-        return jdbcTemplate.query("SELECT * FROM JOBS WHERE id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
+        return jdbcTemplate.query("SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id " +
+                "WHERE j.id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
     }
 
 }

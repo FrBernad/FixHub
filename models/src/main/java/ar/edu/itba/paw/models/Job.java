@@ -4,14 +4,14 @@ public class Job {
     private String description;
     private int averageRating, serviceType;
     private Number id;
-    private User providerId;
+    private User provider;
 
-    public Job(String description, int averageRating, int serviceType, Number id, User providerId) {
+    public Job(String description, int averageRating, int serviceType, Number id, User provider) {
         this.description = description;
         this.averageRating = averageRating;
         this.serviceType = serviceType;
         this.id = id;
-        this.providerId = providerId;
+        this.provider = provider;
     }
 
     public String getDescription() {
@@ -31,11 +31,11 @@ public class Job {
     }
 
     public User getProviderId() {
-        return providerId;
+        return provider;
     }
 
-    public void setProviderId(User providerId) {
-        this.providerId = providerId;
+    public void setProviderId(User provider) {
+        this.provider = provider;
     }
 
     public void setDescription(String description) {
@@ -61,7 +61,7 @@ public class Job {
                 ", averageRating=" + averageRating +
                 ", serviceType=" + serviceType +
                 ", id=" + id +
-                ", providerId=" + providerId +
+                ", provider=" + provider +
                 '}';
     }
 }

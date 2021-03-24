@@ -18,9 +18,9 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="outerContainer h-100">
-    <div class="row align-items-center justify-content-center">
-        <div class="col-4">
-            <div class="input-group" style="padding-top: 1.5em">
+    <div class="row align-items-center justify-content-around">
+        <div class="col-6 d-flex align-items-center">
+            <div class="input-group">
                 <input placeholder="Buscar plomería, jardinería, y más..."
                        class="inputRadius form-control p-4">
                 <div class="input-group-prepend">
@@ -28,21 +28,18 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row align-content-center" style="margin-top: 1.5em;">
-        <div class="col-4 d-flex align-items-center justify-content-center offset-6">
-                <p style="margin-right: 1em;">Ordenar por:</p>
-                <div class="dropdown">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown button
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+        <div class="col-6 d-flex align-items-center justify-content-center">
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Ordenar por:
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
                 </div>
+            </div>
         </div>
     </div>
 
