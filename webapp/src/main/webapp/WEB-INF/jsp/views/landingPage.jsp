@@ -110,7 +110,7 @@
         </div>
     </div>
 </div>
-<div class="container-fluid h-75" style=" background-color: rgb(245,245,242)">
+<div class="container-fluid h-75" style="background-color: rgb(245,245,242);">
     <div class="container d-flex align-items-center h-100">
         <div class="row align-items-center h-100">
             <div class="col-12">
