@@ -15,7 +15,7 @@ p {
     font-size: 18px;
 }
 
-.photoText{
+.photoText {
     font-size: 48px;
     font-weight: bold;
     color: white;
@@ -58,7 +58,7 @@ p {
     border-radius: 8px 0 0 8px !important;
 }
 
-.inputRadius::placeholder{
+.inputRadius::placeholder {
     color: black !important;
 }
 
@@ -86,17 +86,33 @@ p {
 }
 
 .popularCard {
+    border-radius: 8px;
     transition: box-shadow .3s;
-    height:380px;
+    height: 380px;
     width: 330px;
 }
 
+.jobPrice {
+    position: absolute;
+    z-index: 10;
+    bottom: 20px;
+    left: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
 .popularCard:hover {
-    box-shadow: 0 0 11px rgba(33,33,33,.2);
+    box-shadow: 0 0 11px rgba(33, 33, 33, .2);
 }
 
 .popularCardImg {
     z-index: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .popularCard > a {
