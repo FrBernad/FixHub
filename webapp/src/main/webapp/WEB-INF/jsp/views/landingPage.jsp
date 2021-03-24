@@ -1,11 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Fixhub</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href='<c:url value="/resources/images/favicon.ico"/>'/>
 
     <script src="https://kit.fontawesome.com/a4ef34ae89.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -21,7 +23,7 @@
 <div class="container-fluid h-75">
     <div class="row align-items-center justify-content-center h-100 bgImg">
         <div class="col-12 w-100">
-            <div class="container w-100">
+            <div class="container-lg w-100">
                 <div class="row w-100">
                     <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
                         <h2 class="text-left photoText">Your home for<br>everything home</h2>
@@ -46,7 +48,7 @@
     </div>
 </div>
 <div class="container-fluid h-75" style=" background-color: rgb(255,255,255)">
-    <div class="container d-flex align-items-center h-100">
+    <div class="container-lg d-flex align-items-center h-100">
         <div class="row align-items-center">
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle">Como funciona</h1>
@@ -110,13 +112,11 @@
         </div>
     </div>
 </div>
-<div class="container-fluid h-75" style="background-color: rgb(245,245,242);">
-    <div class="container d-flex align-items-center h-100">
-        <div class="row align-items-center h-100">
+<div class="container-fluid h-75" style=" background-color: rgb(245,245,242)">
+    <div class="container-lg d-flex align-items-center h-100 w-100">
+        <div class="row align-items-center h-100 w-100">
             <div class="col-12">
-                <h1 class="py-3 stepSectionTitle">Servicios más populares</h1>
-            </div>
-            <div class="col-12">
+                <h1 class="py-3 stepSectionTitle mb-4">Servicios más populares</h1>
                 <div class="v-row">
                     <c:forEach var="job" items="${jobs}">
                         <%@ include file="../components/popularCard.jsp" %>
