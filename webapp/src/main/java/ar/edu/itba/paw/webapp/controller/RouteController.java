@@ -26,6 +26,12 @@ public class RouteController {
         return mav;
     }
 
+    @RequestMapping("/discover")
+    public ModelAndView discover() {
+        final ModelAndView mav = new ModelAndView("views/discover");
+        return mav;
+    }
+
     @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
     public ModelAndView createUser(@RequestParam("name") final String name,@RequestParam("password") final String password) {
         User user = userService.createUser(name,password);

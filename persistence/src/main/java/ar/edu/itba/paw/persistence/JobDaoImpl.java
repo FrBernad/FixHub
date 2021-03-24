@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.JobDao;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.User;
-import com.sun.javafx.collections.MappingChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -48,8 +48,13 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Job createJob(String description, int averageRating, int serviceType, User provider) {
-//        return simpleJdbcInsert.executeAndReturnKey(Map.of());
-        return null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("providerId",provider.getId());
+        map.put("serviceType",serviceType);
+        map.put("averageRating",averageRating);
+        map.put("description",description);
+        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+        return new Job(description,averageRating,serviceType,id,provider);
     }
 
     @Override
