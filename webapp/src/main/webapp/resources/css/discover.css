@@ -29,3 +29,15 @@
     max-height: 280px !important;
     width: auto !important;
 }
+
+.inputBtn {
+    border-radius: 0 8px 8px 0 !important;
+    background-color: #6699CC;
+    color: white;
+}
+
+.inputBtn:hover {
+    background-color: #003B6D;
+    transition: 150ms linear;
+    color: white;
+}
