@@ -29,7 +29,6 @@ public class RouteController {
     @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
     public ModelAndView createUser(@RequestParam("name") final String name,@RequestParam("password") final String password) {
         User user = userService.createUser(name,password);
-        System.out.println(user);
         final ModelAndView mav = new ModelAndView("views/landingPage");
         return mav;
     }
