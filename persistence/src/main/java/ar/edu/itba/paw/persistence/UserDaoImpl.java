@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,11 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
+    private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) ->
+            new User(rs.getLong("id"),
+                    rs.getString("name"),
+                    rs.getString("password"));
+
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -32,21 +38,22 @@ public class UserDaoImpl implements UserDao {
                 "PRIMARY KEY(id))");
     }
 
-    public Optional<User> get(String id) {
-        return null;
+    public Optional<User> get(long id) {
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE ID = ?", new Object[]{id},
+                USER_ROW_MAPPER).stream().findFirst();
     }
 
     public List<User> list() {
-        return null;
-}
+        return jdbcTemplate.query("SELECT * FROM USERS", USER_ROW_MAPPER);
+    }
 
     @Override
     public User createUser(String name, String password) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("name",name);
-        map.put("password",password);
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        map.put("password", password);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new User(id,name,password);
+        return new User(id, name, password);
     }
 
 }

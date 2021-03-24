@@ -27,7 +27,9 @@ public class JobDaoImpl implements JobDao {
                     rs.getInt("averageRating"),
                     rs.getInt("serviceType"),
                     rs.getLong("id"),
-                    rs.getLong("providerId"));
+                    new User(rs.getLong("providerId"),
+                            rs.getString("name"),
+                            rs.getString("password")));
 
     @Autowired
     public JobDaoImpl(final DataSource ds) {
@@ -52,7 +54,9 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Collection<Job> getJobs() {
-        return jdbcTemplate.query("SELECT * FROM JOBS", JOB_ROW_MAPPER);
+        return jdbcTemplate.query(
+                "SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id",
+                JOB_ROW_MAPPER);
     }
 
     @Override
