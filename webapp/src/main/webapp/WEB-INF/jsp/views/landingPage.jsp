@@ -47,18 +47,11 @@
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
                         <i class="fas iconColor fa-search fa-2x"></i>
                     </div>
-                    <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepHeader">1. Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit.
-                            Aspernatur aut autem, consectetur
-                            delectus dolor explicabo fugiat</p>
+                    <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+                        <p class="text-start stepHeader">1. Buscá lo que necesites</p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepBody">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Aspernatur
-                            aut
-                            autem, consectetur
-                            delectus dolor explicabo fugiat</p>
+                        <p class="text-start stepBody">Desde plomería hasta renovaciones totales, nosotros nos encargamos de conectarte con los mejores profesionales.</p>
                     </div>
                 </div>
             </div>
@@ -67,16 +60,11 @@
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
                         <i class="fas iconColor fa-star fa-2x"></i>
                     </div>
-                    <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepHeader">2. Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit.
-                            Aspernatur aut autem, consectetur
-                            delectus dolor explicabo fugiat</p>
+                    <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+                        <p class="text-start stepHeader">2. Explorá las diferentes opciones</p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur aut
-                            autem, consectetur
-                            delectus dolor explicabo fugiat</p>
+                        <p class="text-start">La calidad del trabajo es nuestra garantía, para ello, contamos con un sistema de calificaciones que valora el buen servicio.</p>
                     </div>
                 </div>
             </div>
@@ -85,16 +73,11 @@
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
                         <i class="fas iconColor fa-handshake fa-2x"></i>
                     </div>
-                    <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepHeader">3. Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit.
-                            Aspernatur aut autem, consectetur
-                            delectus dolor explicabo fugiat</p>
+                    <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+                        <p class="text-start stepHeader">3. Contactate con quien más te guste</p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur aut
-                            autem, consectetur
-                            delectus dolor explicabo fugiat</p>
+                        <p class="text-start">Completá el formulario e intercambia los detalles con nuestros expertos. Fixhub te asegura que quedes satisfecho con el resultado.</p>
                     </div>
                 </div>
             </div>
