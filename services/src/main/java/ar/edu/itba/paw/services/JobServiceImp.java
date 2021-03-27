@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.JobDao;
 import ar.edu.itba.paw.interfaces.JobService;
-import ar.edu.itba.paw.interfaces.UserDao;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class JobServiceImp implements JobService {
     }
 
     @Override
-    public Job createJob(String description, int averageRating, int serviceType, long id, User provider) {
-        return jobDao.createJob(description, averageRating, serviceType, provider);
+    public Job createJob(String jobProvided, String jobType, String description, User user) {
+        return jobDao.createJob(jobProvided,jobType,description,user);
     }
 }

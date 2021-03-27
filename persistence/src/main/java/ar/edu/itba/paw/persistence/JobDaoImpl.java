@@ -26,12 +26,18 @@ public class JobDaoImpl implements JobDao {
 
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("description"),
+                    rs.getString("jobProvided"),
                     rs.getInt("averageRating"),
-                    rs.getInt("serviceType"),
+                    rs.getInt("jobType"),
                     rs.getLong("id"),
                     new User(rs.getLong("providerId"),
+                            rs.getString("password"),
                             rs.getString("name"),
-                            rs.getString("password")));
+                            rs.getString("surname"),
+                            rs.getString("email"),
+                            rs.getString("phoneNumber"),
+                            rs.getString("state"),
+                            rs.getString("city")));
 
     @Autowired
     public JobDaoImpl(final DataSource ds) {
@@ -43,6 +49,7 @@ public class JobDaoImpl implements JobDao {
                 "description TEXT," +
                 "averageRating INT," +
                 "jobType INT," +
+                "jobProvided TEXT,"+
                 "providerId BIGINT," +
                 "FOREIGN KEY(providerId) REFERENCES USERS(id)," +
                 "PRIMARY KEY(id))");
@@ -55,14 +62,18 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Job createJob(String description, int averageRating, int serviceType, User provider) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("providerId", provider.getId());
-        map.put("serviceType", serviceType);
-        map.put("averageRating", averageRating);
-        map.put("description", description);
+
+    public Job createJob(String jobProvided, String jobType, String description, User provider){
+        Map<String,Object> map = new HashMap<>();
+        final int averageRating = 0;
+        map.put("providerId",provider.getId());
+        map.put("jobType",jobType);
+        map.put("averageRating",averageRating);
+        map.put("description",description);
+        map.put("jobProvided",jobProvided);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new Job(description, averageRating, serviceType, id, provider);
+        int jobAux =1;
+        return new Job(description,jobProvided,averageRating,jobAux,id,provider);
     }
 
     @Override

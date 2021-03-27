@@ -11,5 +11,5 @@ public interface JobService {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String description, int averageRating, int serviceType, long id, User provider);
+    Job createJob(String jobProvided, String jobType, String description, User provider);
 }

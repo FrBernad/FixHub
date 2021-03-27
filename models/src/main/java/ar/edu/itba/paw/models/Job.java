@@ -3,71 +3,77 @@ package ar.edu.itba.paw.models;
 import java.util.Base64;
 
 public class Job {
-    private String description;
-    private int averageRating, serviceType;
+    private String description,jobProvided;
+    private int averageRating, jobType;
     private Number id;
     private User provider;
 
-    public Job(String description, int averageRating, int serviceType, Number id, User provider) {
+    public Job(String description,String jobProvided, int averageRating, int jobType, Number id, User provider) {
         this.description = description;
+        this.jobProvided = jobProvided;
         this.averageRating = averageRating;
-        this.serviceType = serviceType;
+        this.jobType = jobType;
         this.id = id;
         this.provider = provider;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getAverageRating() {
-        return averageRating;
-    }
-
-    public int getServiceType() {
-        return serviceType;
-    }
-
-    public Number getId() {
-        return id;
-    }
-
-    public User getProvider() {
-        return provider;
-    }
-
-    public void setId(Number id) {
-        this.id = id;
-    }
-
-    public void setProvider(User provider) {
-        this.provider = provider;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setAverageRating(int averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public void setServiceType(int serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Job{" +
                 "description='" + description + '\'' +
+                ", jobProvided='" + jobProvided + '\'' +
                 ", averageRating=" + averageRating +
-                ", serviceType=" + serviceType +
+                ", jobType=" + jobType +
                 ", id=" + id +
                 ", provider=" + provider +
-                '}' + "\n";
+                '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getJobProvided() {
+        return jobProvided;
+    }
+
+    public void setJobProvided(String jobProvided) {
+        this.jobProvided = jobProvided;
+    }
+
+    public int getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(int averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public int getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(int jobType) {
+        this.jobType = jobType;
+    }
+
+    public Number getId() {
+        return id;
+    }
+
+    public void setId(Number id) {
+        this.id = id;
+    }
+
+    public User getProvider() {
+        return provider;
+    }
+
+    public void setProvider(User provider) {
+        this.provider = provider;
     }
 }
