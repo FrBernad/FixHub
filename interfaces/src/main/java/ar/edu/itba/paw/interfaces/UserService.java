@@ -9,5 +9,8 @@ public interface UserService {
 
     List<User> list();
 
-    User createUser(String name, String password);
+//    User createUser(String name, String password);
+
+    User createUser(String password,String name, String surname,  String email, String phoneNumber,String state, String city);
+
 }

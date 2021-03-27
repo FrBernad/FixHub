@@ -10,5 +10,7 @@ public interface UserDao {
 
     List<User> list();
 
-    User createUser(String name, String password);
+
+    User createUser(String password,String name, String surname,  String email, String phoneNumber,String state,  String city);
+//    User createUser(String name, String password);
 }

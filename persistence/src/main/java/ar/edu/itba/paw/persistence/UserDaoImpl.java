@@ -23,8 +23,13 @@ public class UserDaoImpl implements UserDao {
 
     private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) ->
             new User(rs.getLong("id"),
+                    rs.getString("password"),
                     rs.getString("name"),
-                    rs.getString("password"));
+                    rs.getString("surname"),
+                    rs.getString("email"),
+                    rs.getString("phoneNumber"),
+                    rs.getString("state"),
+                    rs.getString("city"));
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {
@@ -33,8 +38,13 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
                 "USERS(" +
                 "id SERIAL," +
-                "name TEXT," +
                 "password TEXT," +
+                "name TEXT," +
+                "surname TEXT, "+
+                "email TEXT,"+
+                "phoneNumber TEXT,"+
+                "state TEXT,"+
+                "city TEXT,"+
                 "PRIMARY KEY(id))");
     }
 
@@ -48,12 +58,27 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User createUser(String password,String name, String surname,  String email, String phoneNumber,String state,  String city){
+        Map<String,Object> map = new HashMap<>();
+        map.put("password",password);
+        map.put("name",name);
+        map.put("surname",surname);
+        map.put("email",email);
+        map.put("phoneNumber",phoneNumber);
+        map.put("state",state);
+        map.put("city",city);
+        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+        return new User(id,password,name,surname,email,phoneNumber,state,city);
+    }
+
+    /*@Override
+
     public User createUser(String name, String password) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
         map.put("password", password);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
         return new User(id, name, password);
-    }
+    }*/
 
 }
