@@ -47,37 +47,12 @@ public class RouteController {
         final ModelAndView mav;
         Optional<Job> job = jobService.getJobById(jobId);
         if (job.isPresent()) {
-            mav = new ModelAndView("views/service");
+            mav = new ModelAndView("views/job");
             System.out.println(job);
             mav.addObject("job", job.get());
         } else {
             mav = new ModelAndView("views/pageNotFound");
         }
-        return mav;
-    }
-
-    //    @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
-//    public ModelAndView createUser(@RequestParam("name") final String name, @RequestParam("password") final String password) {
-//        User user = userService.createUser(name, password);
-//        final ModelAndView mav = new ModelAndView("views/landingPage");
-//        return mav;
-//    }
-    @RequestMapping("/service")
-    public ModelAndView services() {
-        final ModelAndView mav = new ModelAndView("job");
-        return mav;
-    }
-
-
-    @RequestMapping(path = {"/discover"}, method = RequestMethod.POST)
-    public ModelAndView contactProvider(@RequestParam("name") final String name, @RequestParam("surname") final String surname) {
-        final ModelAndView mav = new ModelAndView("views/discover");
-        return mav;
-    }
-
-    @RequestMapping(path = "/createService")
-    public ModelAndView createService() {
-        final ModelAndView mav = new ModelAndView("views/createService");
         return mav;
     }
 
