@@ -29,13 +29,15 @@ public class RouteController {
         final ModelAndView mav = new ModelAndView("views/landingPage");
         Collection<Job> jobs = jobService.getJobs();
         mav.addObject("jobs", jobs);
-        System.out.println(jobs);
         return mav;
     }
 
     @RequestMapping("/discover")
     public ModelAndView discover() {
         final ModelAndView mav = new ModelAndView("views/discover");
+        Collection<Job> jobs = jobService.getJobs();
+        mav.addObject("jobs", jobs);
+        System.out.println(jobs);
         return mav;
 
     }

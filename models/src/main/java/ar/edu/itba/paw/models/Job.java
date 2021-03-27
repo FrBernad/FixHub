@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Base64;
+
 public class Job {
     private String description;
     private int averageRating, serviceType;
@@ -30,11 +32,15 @@ public class Job {
         return id;
     }
 
-    public User getProviderId() {
+    public User getProvider() {
         return provider;
     }
 
-    public void setProviderId(User provider) {
+    public void setId(Number id) {
+        this.id = id;
+    }
+
+    public void setProvider(User provider) {
         this.provider = provider;
     }
 
@@ -62,6 +68,6 @@ public class Job {
                 ", serviceType=" + serviceType +
                 ", id=" + id +
                 ", provider=" + provider +
-                '}';
+                '}' + "\n";
     }
 }

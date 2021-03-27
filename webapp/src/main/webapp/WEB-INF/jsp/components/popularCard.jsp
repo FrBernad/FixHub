@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="col-12 col-md-3 p-0 d-flex m-1 align-items-center justify-content-center">
+<div class="col-12 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
     <div class="card popularCard" style="position: relative">
         <div style="padding: 1.25rem">
             <div class="row">

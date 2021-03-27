@@ -3,29 +3,43 @@
     background-color: rgb(245, 245, 242);
 }
 
-.servicesContainer {
+.jobsContainer {
     background-color: #FAFAFA;
     padding: 3em;
 }
 
-.serviceCard {
-    max-height: 280px;
-    width: 100%;
+.jobCard {
     border-radius: 8px;
     background: #fff;
     transition: box-shadow .3s, transform .3s;
-    padding: 14px 80px 18px 36px;
     cursor: pointer;
+    height: 380px;
+    width: 330px;
 }
 
-.serviceCard:hover {
+.resultHeader {
+}
+
+.resultHeader p {
+    font-size: 16px;
+    font-weight: normal;
+    border-bottom: solid 2px rgba(0, 0, 0, .2);
+}
+
+.resultHeader p span {
+    color: rgb(196, 85, 0);
+}
+
+.jobCard:hover {
     box-shadow: 0 0 11px rgba(33, 33, 33, .2);
     transform: scale(1.02);
 }
 
-.serviceImg {
-    max-height: 280px !important;
-    width: auto !important;
+.jobCardImg {
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .inputBtn {

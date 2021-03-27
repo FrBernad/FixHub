@@ -47,13 +47,19 @@
         </div>
     </div>
 
-    <div class="container-lg align-self-center servicesContainer">
-        <div class="row px-3">
-            <div class="col-12 py-3">
-                <h4>Mostrando resultados de: "..."</h4>
+    <div class="container-lg">
+        <div class="row jobsContainer">
+            <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
+                <p class="mb-0">Mostrando resultados de: <span>"..."</span></p>
             </div>
-            <div class="col-12 d-flex align-items-center justify-content-center">
-                <%@ include file="../components/jobCard.jsp" %>
+            <div class="col-12 p-0">
+                <div class="container-fluid">
+                    <div class="row align-items-top justify-content-between">
+                        <c:forEach var="job" items="${jobs}">
+                            <%@ include file="../components/jobCard.jsp" %>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
 
         </div>

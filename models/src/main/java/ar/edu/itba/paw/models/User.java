@@ -33,4 +33,12 @@ public class User {
     public void setId(Number id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
