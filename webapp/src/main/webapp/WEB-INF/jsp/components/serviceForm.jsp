@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form  action="<c:url value="/discover"/>" class="serviceForm" method="POST">
+<form action="<c:url value="/discover"/>" class="serviceForm" method="POST">
     <div class="form-group">
         <label for="name">Nombre</label>
         <input type="text" name="name" id="name" class="form-control">
@@ -31,16 +31,26 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col">
-            <label for="serviceProvided">Servicio que va a proveer</label>
-            <input type="text" name="serviceProvided" id="serviceProvided" class="form-control">
-        </div>
-
-
-    </div>
-
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <label for="serviceProvided">Servicio que va a proveer</label>
+        <input type="text" name="serviceProvided" id="serviceProvided" class="form-control">
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="serviceType">Tipo de servicio</label>
+                <select id="serviceType" class="form-control">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea class="form-control" name="description" id="description"></textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Crear Servicio</button>
     </div>
 </form>

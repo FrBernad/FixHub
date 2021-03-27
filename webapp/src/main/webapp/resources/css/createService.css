@@ -1,0 +1,9 @@
+.serviceForm {
+    width: 500px;
+    margin: auto;
+}
+
+#description {
+    resize: none;
+    height: 150px;
+}
