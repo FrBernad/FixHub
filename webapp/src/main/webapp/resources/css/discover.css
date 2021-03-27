@@ -39,3 +39,13 @@
     transition: 150ms linear;
     color: white;
 }
+
+.contactForm {
+    width: 500px;
+    margin: auto;
+}
+
+#mensaje {
+    resize: none;
+    height: 150px;
+}
