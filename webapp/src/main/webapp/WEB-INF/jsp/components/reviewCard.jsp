@@ -16,8 +16,10 @@
                 <p style="color: #6699CC">21/3/21</p>
             </div>
         </div>
-        <div class="row ml-4">
-            <p >Un capo raul me arreglo las bujias del Corsita, 10/10 muy amable</p>
+        <div class="row">
+            <div class="col">
+                <div class="card-text">Un capo raul me arreglo las bujias del Corsita, 10/10 muy amable</div>
+            </div>
         </div>
 
     </div>
