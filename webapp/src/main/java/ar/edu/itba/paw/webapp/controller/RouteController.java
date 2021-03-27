@@ -72,4 +72,10 @@ public class RouteController {
         return mav;
     }
 
+    @RequestMapping(path="/createService")
+    public ModelAndView createService(){
+        final ModelAndView mav = new ModelAndView("views/createService");
+        return mav;
+    }
+
 }
