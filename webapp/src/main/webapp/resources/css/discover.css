@@ -1,0 +1,79 @@
+.outerContainer {
+    width: 100%;
+    background-color: rgb(245, 245, 242);
+}
+
+.jobsContainer {
+    background-color: #FAFAFA;
+    padding: 3em;
+}
+
+.jobCard {
+    border-radius: 8px;
+    background: #fff;
+    transition: box-shadow .3s, transform .3s;
+    cursor: pointer;
+    height: 380px;
+    width: 330px;
+}
+
+.jobCardName {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.inputRadius::placeholder {
+    color: black !important;
+}
+
+.inputRadius {
+    color: black !important;
+    border-radius: 8px 0 0 8px !important;
+}
+
+.resultHeader {
+}
+
+.resultHeader p {
+    font-size: 16px;
+    font-weight: normal;
+    border-bottom: solid 2px rgba(0, 0, 0, .2);
+}
+
+.resultHeader p span {
+    color: rgb(196, 85, 0);
+}
+
+.jobCard:hover {
+    box-shadow: 0 0 11px rgba(33, 33, 33, .2);
+    transform: scale(1.02);
+}
+
+.jobCardImg {
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.inputBtn {
+    border-radius: 0 8px 8px 0 !important;
+    background-color: #6699CC;
+    color: white;
+}
+
+.inputBtn:hover {
+    background-color: #003B6D;
+    transition: 150ms linear;
+    color: white;
+}
+
+.contactForm {
+    width: 500px;
+    margin: auto;
+}
+
+#message {
+    resize: none;
+    height: 150px;
+}

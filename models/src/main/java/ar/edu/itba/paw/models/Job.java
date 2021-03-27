@@ -1,17 +1,19 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Base64;
+
 public class Job {
     private String description;
     private int averageRating, serviceType;
     private Number id;
-    private User providerId;
+    private User provider;
 
-    public Job(String description, int averageRating, int serviceType, Number id, User providerId) {
+    public Job(String description, int averageRating, int serviceType, Number id, User provider) {
         this.description = description;
         this.averageRating = averageRating;
         this.serviceType = serviceType;
         this.id = id;
-        this.providerId = providerId;
+        this.provider = provider;
     }
 
     public String getDescription() {
@@ -30,12 +32,16 @@ public class Job {
         return id;
     }
 
-    public User getProviderId() {
-        return providerId;
+    public User getProvider() {
+        return provider;
     }
 
-    public void setProviderId(User providerId) {
-        this.providerId = providerId;
+    public void setId(Number id) {
+        this.id = id;
+    }
+
+    public void setProvider(User provider) {
+        this.provider = provider;
     }
 
     public void setDescription(String description) {
@@ -54,4 +60,14 @@ public class Job {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Job{" +
+                "description='" + description + '\'' +
+                ", averageRating=" + averageRating +
+                ", serviceType=" + serviceType +
+                ", id=" + id +
+                ", provider=" + provider +
+                '}' + "\n";
+    }
 }

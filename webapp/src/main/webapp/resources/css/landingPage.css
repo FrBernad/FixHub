@@ -10,21 +10,12 @@ p {
     margin: 0;
 }
 
-.navbarText {
-    font-weight: normal;
-    font-size: 18px;
-}
 
-.photoText{
+.photoText {
     font-size: 48px;
     font-weight: bold;
     color: white;
     text-shadow: 2px 2px 6px black;
-}
-
-.footer {
-    margin: 0;
-    font-size: 16px;
 }
 
 .inputBtn {
@@ -43,7 +34,7 @@ p {
     border-radius: 8px 8px 8px 8px !important;
     border: none;
     padding: 8px 16px;
-    font-size: 12px;
+    ont-size: 12px;
     background-color: rgba(246, 246, 245, 0.9);
 }
 
@@ -54,15 +45,12 @@ p {
 }
 
 .inputRadius {
+    color: black !important;
     border-radius: 8px 0 0 8px !important;
 }
 
-.inputRadius::placeholder{
+.inputRadius::placeholder {
     color: black !important;
-}
-
-.iconColor {
-    color: #003B6D;
 }
 
 .stepHeader {
@@ -84,19 +72,4 @@ p {
     background-color: #BDBDBD !important;
 }
 
-.popularCard {
-    transition: box-shadow .3s;
-}
 
-.popularCard:hover {
-    box-shadow: 0 0 11px rgba(33,33,33,.2);
-}
-
-.popularCardImg {
-    z-index: 0;
-}
-
-.popularCard > a {
-    background-color: #003B6D;
-    border-color: #003B6D;
-}

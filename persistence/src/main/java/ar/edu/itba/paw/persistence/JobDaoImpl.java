@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.Collection;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class JobDaoImpl implements JobDao {
 
     @Autowired
@@ -66,7 +68,8 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<Job> getJobById(long id) {
-        return jdbcTemplate.query("SELECT * FROM JOBS WHERE id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
+        return jdbcTemplate.query("SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id " +
+                "WHERE j.id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
     }
 
 }
