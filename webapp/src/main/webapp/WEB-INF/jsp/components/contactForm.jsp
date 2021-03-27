@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form action="" class="contactForm">
+<form  action="<c:url value="/discover"/>" class="contactForm" method="POST">
     <div class="form-group">
-        <label for="firstName">Nombre</label>
-        <input type="text" name="firstName" id="firstName" class="form-control">
+        <label for="name">Nombre</label>
+        <input type="text" name="name" id="name" class="form-control">
     </div>
     <div class="form-group">
-        <label for="surName">Apellido</label>
-        <input type="text" name="surName" id="surName" class="form-control">
+        <label for="surname">Apellido</label>
+        <input type="text" name="surname" id="surname" class="form-control">
     </div>
     <div class="form-group">
         <label for="phoneNumber">Teléfono de contacto</label>
@@ -15,42 +15,42 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label for="provincia">Provincia</label>
-                <input type="text" name="provincia" id="provincia" class="form-control">
+                <label for="state">Provincia</label>
+                <input type="text" name="state" id="state" class="form-control">
             </div>
         </div>
         <div class="col">
             <div class="form-group">
-                <label for="localidad">Localidad</label>
-                <input type="text" name="localidad" id="localidad" class="form-control">
+                <label for="city">Localidad</label>
+                <input type="text" name="city" id="city" class="form-control">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label for="calle">Calle</label>
-                <input type="text" name="calle" id="calle" class="form-control">
+                <label for="street">Calle</label>
+                <input type="text" name="street" id="street" class="form-control">
             </div>
         </div>
         <div class="col">
             <div class="form-group">
-                <label for="numero">Número</label>
-                <input type="number" name="numero" id="numero" class="form-control">
+                <label for="addressNumber">Número</label>
+                <input type="number" name="addressNumber" id="addressNumber" class="form-control">
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col-6">
-                <label for="piso">Piso / Departamento</label>
-                <input type="number" name="piso" id="piso" class="form-control">
+                <label for="floor">Piso / Departamento</label>
+                <input type="number" name="floor" id="floor" class="form-control">
             </div>
         </div>
     </div>
     <div class="form-group">
-        <label for="mensaje">Mensaje</label>
-        <textarea class="form-control" id="mensaje"></textarea>
+        <label for="message">Mensaje</label>
+        <textarea class="form-control" name="message" id="message"></textarea>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Enviar</button>

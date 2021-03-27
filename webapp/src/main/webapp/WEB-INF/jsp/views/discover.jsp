@@ -64,6 +64,7 @@
 
         </div>
     </div>
+    <%@ include file="../components/contactForm.jsp" %>
 
 </div>
 

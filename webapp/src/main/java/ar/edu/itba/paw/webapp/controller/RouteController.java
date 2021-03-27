@@ -6,11 +6,13 @@ import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import sun.misc.Request;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -62,4 +64,12 @@ public class RouteController {
         final ModelAndView mav = new ModelAndView("views/landingPage");
         return mav;
     }
+
+
+    @RequestMapping(path={"/discover"}, method= RequestMethod.POST)
+    public ModelAndView contactProvider(@RequestParam("name") final String name, @RequestParam("surname") final String surname){
+        final ModelAndView mav = new ModelAndView("views/discover");
+        return mav;
+    }
+
 }
