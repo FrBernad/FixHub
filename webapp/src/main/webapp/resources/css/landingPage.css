@@ -30,7 +30,6 @@ p {
     color: white;
 }
 
-
 .suggestionBtn {
     border-radius: 8px 8px 8px 8px !important;
     border: none;
@@ -46,6 +45,7 @@ p {
 }
 
 .inputRadius {
+    color: black !important;
     border-radius: 8px 0 0 8px !important;
 }
 
@@ -72,47 +72,4 @@ p {
     background-color: #BDBDBD !important;
 }
 
-.popularCard {
-    border-radius: 8px;
-    transition: box-shadow .3s, transform .3s;
-    height: 380px;
-    width: 330px;
-    overflow: hidden;
-}
 
-.popularCard:hover {
-    box-shadow: 0 0 11px rgba(33, 33, 33, .2);
-    transform: scale(1.02);
-}
-
-.popularCard div img {
-    transition: transform .5s ease;
-}
-
-.popularCard:hover div img {
-    transform: scale(1.02);
-}
-
-.popularCardImg {
-    z-index: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-.popularCard > a {
-    background-color: #003B6D;
-    border-color: #003B6D;
-}
-
-.jobPrice {
-    font-weight: 400;
-    font-size: 16px;
-    padding: 12px 20px;
-    background-color: #fff;
-    border-radius: 20px;
-    left: 20px;
-    z-index: 10;
-    bottom: 20px;
-    position: absolute;
-}

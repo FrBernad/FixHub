@@ -1,10 +1,11 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Fixhub</title>
     <%@ include file="../components/headers.jsp" %>
     <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
 </head>
 
 <body>
@@ -15,7 +16,7 @@
             <div class="container-lg w-100">
                 <div class="row w-100">
                     <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
-                        <h2 class="text-left photoText">Your home for<br>everything home</h2>
+                        <h2 class="text-left photoText">Todos los servicios<br>en un solo lugar</h2>
                     </div>
                     <div class="col-8 col-md-7 w-50 d-flex justify-content-center align-items-center">
                         <div class="input-group">
@@ -51,7 +52,7 @@
                         <p class="text-start stepHeader">1. Buscá lo que necesites</p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepBody">Desde plomería hasta renovaciones totales, nosotros nos encargamos de conectarte con los mejores profesionales.</p>
+                        <p class="text-start stepBody">Desde servicios siemples hasta renovaciones totales, nosotros nos encargamos de conectarte con los mejores profesionales.</p>
                     </div>
                 </div>
             </div>
@@ -91,14 +92,13 @@
                 <h1 class="py-3 stepSectionTitle mb-4">Servicios más populares</h1>
                 <div class="row justify-content-between align-items-center m-0">
                     <c:forEach var="job" items="${jobs}">
-                        <%@ include file="../components/popularCard.jsp" %>
+                        <%@ include file="../components/popularJobCard.jsp" %>
                     </c:forEach>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<%@ include file="../components/footer.jsp" %>
+<%@ include file="../components/footer.jsp"%>
 </body>
-
 </html>

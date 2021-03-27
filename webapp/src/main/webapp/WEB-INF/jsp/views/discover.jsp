@@ -5,6 +5,7 @@
     <title>Descubre</title>
     <%@ include file="../components/headers.jsp" %>
     <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
@@ -64,8 +65,6 @@
 
         </div>
     </div>
-    <%@ include file="../components/contactForm.jsp" %>
-
 </div>
 
 <%@ include file="../components/footer.jsp" %>
