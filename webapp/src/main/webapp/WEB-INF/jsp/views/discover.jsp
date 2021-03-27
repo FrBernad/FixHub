@@ -24,7 +24,7 @@
                 <div class="dropdown mr-4">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="filterDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ordenar por:
+                        Filtrar por:
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
                         <a class="dropdown-item" href="#">Action</a>

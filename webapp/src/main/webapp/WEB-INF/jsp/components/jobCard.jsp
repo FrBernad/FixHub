@@ -8,10 +8,20 @@
                     alt="User Profile Img">
         </div>
         <div style="padding: 1.25rem">
-            <div class="row justify-content-center">
-                <div class="col-md-12">
+            <div class="row">
+                <div class="col-12 col-md-7">
                     <h5 class="card-title"><c:out value="${job.description}"/></h5>
+                </div>
+                <div class="col-12 col-md-5">
+                    <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                    <span style="font-style: normal; font-weight: 600"><c:out value="${job.averageRating}"/></span>
+                    <span style="font-style: normal; font-weight: 400"> (<c:out value="${job.averageRating})"/></span>
+                </div>
+                <div class="col-12">
                     <p class="card-text"><c:out value="${job.provider.name}"/></p>
+                </div>
+                <div class="col-12">
+<%--                    <p class="card-text"><c:out value="${job.price}"/></p>--%>
                 </div>
             </div>
         </div>

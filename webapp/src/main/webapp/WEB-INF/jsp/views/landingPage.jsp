@@ -36,13 +36,13 @@
         </div>
     </div>
 </div>
-<div class="container-fluid h-75" style=" background-color: rgb(255,255,255)">
-    <div class="container-lg d-flex align-items-center h-100">
-        <div class="row align-items-center">
+<div class="container-fluid" style="background-color: rgb(255,255,255)">
+    <div class="container-lg d-flex align-items-center py-5">
+        <div class="row align-items-start">
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle">Como funciona</h1>
             </div>
-            <div class="col-4 d-flex justify-content-center align-items-center">
+            <div class="col-4 d-flex justify-content-center align-items-start">
                 <div class="row">
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
                         <i class="fas iconColor fa-search fa-2x"></i>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 d-flex justify-content-center align-items-center">
+            <div class="col-4 d-flex justify-content-center align-items-start">
                 <div class="row">
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
                         <i class="fas iconColor fa-star fa-2x"></i>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 d-flex justify-content-center align-items-center">
+            <div class="col-4 d-flex justify-content-center align-items-start">
                 <div class="row">
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
                         <i class="fas iconColor fa-handshake fa-2x"></i>

@@ -8,9 +8,10 @@
                         <c:out value="${job.description}"/>
                     </h5>
                 </div>
-                <div class="col-5 rating">
-                    <i class="fas iconColor fa-star fa-1x"></i>
-                    <span><c:out value="${job.averageRating}"/></span>
+                <div class="col-5">
+                    <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                    <span style="font-style: normal; font-weight: 600"><c:out value="${job.averageRating}"/></span>
+                    <span style="font-style: normal; font-weight: 400"> (<c:out value="${job.averageRating})"/></span>
                 </div>
             </div>
             <span class="badge badge-pill badge-secondary category">Plomeria</span>
