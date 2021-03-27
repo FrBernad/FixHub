@@ -58,6 +58,11 @@ public class RouteController {
         return mav;
     }
 
+    @RequestMapping("/service")
+    public ModelAndView sevices() {
+        final ModelAndView mav = new ModelAndView("views/service");
+        return mav;
+    }
     @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
     public ModelAndView createUser(@RequestParam("name") final String name, @RequestParam("password") final String password) {
         User user = userService.createUser(name, password);

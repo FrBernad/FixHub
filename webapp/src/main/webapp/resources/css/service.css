@@ -1,0 +1,12 @@
+.title{
+    font-size: 48px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 2px 2px 6px black;
+}
+
+.reviewCard{
+    background-color: #003B6D;
+    border-color: #003B6D;
+
+}
