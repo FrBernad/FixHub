@@ -12,7 +12,7 @@
 <div class="container-fluid" style="background-color: rgb(245,245,242);">
     <div class="row">
         <div class="col d-flex justify-content-center align-items-center">
-            <h1 class="title mt-3">Reparacion de Bujias Raul</h1>
+            <h1 class="title mt-3">${job.jobProvided}</h1>
         </div>
     </div>
     <div class="row mt-3">
@@ -24,18 +24,14 @@
             <div class="card border-secondary w-100 h-100">
                 <div class="card-header">Contacto / Descripción</div>
                 <div class="card-body text-secondary">
-                    <h5 class="card-title">Juan Roman<br></h5>
-                    <p class="card-text">Email: <br><br>
-                        Teléfono de contacto: <br><br>
-                        Provincia: <br><br>
-                        Localidad: <br><br>
+                    <h5 class="card-title">${job.provider.name} ${job.provider.surname}<br></h5>
+                    <p class="card-text">Email: ${job.provider.email} <br><br>
+                        Teléfono de contacto: ${job.provider.phoneNumber} <br><br>
+                        Provincia: ${job.provider.state} <br><br>
+                        Localidad: ${job.provider.city} <br><br>
                     </p>
                     <hr>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor purus in
-                        gravida blandit.
-                        Phasellus porttitor lectus bibendum dignissim imperdiet.
-                        Nulla libero magna, efficitur nec sapien quis, vulputate dapibus mauris.
-                    </p>
+                    <p class="card-text">${job.description}</p>
                 </div>
                 <div class="row">
                     <div class="col d-flex justify-content-end align-items-center mb-2 mx-4">

@@ -56,17 +56,43 @@ public class RouteController {
         return mav;
     }
 
-    @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
-    public ModelAndView createUser(@RequestParam("name") final String name, @RequestParam("password") final String password) {
-        User user = userService.createUser(name, password);
-        final ModelAndView mav = new ModelAndView("views/landingPage");
+    //    @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
+//    public ModelAndView createUser(@RequestParam("name") final String name, @RequestParam("password") final String password) {
+//        User user = userService.createUser(name, password);
+//        final ModelAndView mav = new ModelAndView("views/landingPage");
+//        return mav;
+//    }
+    @RequestMapping("/service")
+    public ModelAndView services() {
+        final ModelAndView mav = new ModelAndView("job");
         return mav;
     }
 
-    @RequestMapping(path="/createService")
-    public ModelAndView createService(){
+
+    @RequestMapping(path = {"/discover"}, method = RequestMethod.POST)
+    public ModelAndView contactProvider(@RequestParam("name") final String name, @RequestParam("surname") final String surname) {
+        final ModelAndView mav = new ModelAndView("views/discover");
+        return mav;
+    }
+
+    @RequestMapping(path = "/createService")
+    public ModelAndView createService() {
         final ModelAndView mav = new ModelAndView("views/createService");
         return mav;
+    }
+
+    @RequestMapping(path = "/createService", method = RequestMethod.POST)
+    public ModelAndView createService(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
+                                      @RequestParam("name") final String name, @RequestParam("surname") final String surname,
+                                      @RequestParam("city") final String city, @RequestParam("state") final String state,
+                                      @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
+
+        User provider = userService.createUser("password", name, surname, email, phoneNumber, state, city); //Cuando haya usuarios esta línea se borra. No debe crearse un usuario cada vez que se crea un post de servicio
+
+        Job job = jobService.createJob(jobProvided, jobType, description, provider);
+        final ModelAndView mav = new ModelAndView("redirect:/jobs/"+job.getId());
+        return mav;
+
     }
 
 }
