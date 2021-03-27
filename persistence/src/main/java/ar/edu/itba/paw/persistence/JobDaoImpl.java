@@ -42,21 +42,27 @@ public class JobDaoImpl implements JobDao {
                 "id SERIAL," +
                 "description TEXT," +
                 "averageRating INT," +
-                "serviceType INT," +
+                "jobType INT," +
                 "providerId BIGINT," +
                 "FOREIGN KEY(providerId) REFERENCES USERS(id)," +
+                "PRIMARY KEY(id))");
+
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
+                "JOB_TYPE(" +
+                "id SERIAL," +
+                "name TEXT," +
                 "PRIMARY KEY(id))");
     }
 
     @Override
     public Job createJob(String description, int averageRating, int serviceType, User provider) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("providerId",provider.getId());
-        map.put("serviceType",serviceType);
-        map.put("averageRating",averageRating);
-        map.put("description",description);
+        Map<String, Object> map = new HashMap<>();
+        map.put("providerId", provider.getId());
+        map.put("serviceType", serviceType);
+        map.put("averageRating", averageRating);
+        map.put("description", description);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new Job(description,averageRating,serviceType,id,provider);
+        return new Job(description, averageRating, serviceType, id, provider);
     }
 
     @Override

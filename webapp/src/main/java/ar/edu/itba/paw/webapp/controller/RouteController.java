@@ -47,7 +47,7 @@ public class RouteController {
         final ModelAndView mav;
         Optional<Job> job = jobService.getJobById(jobId);
         if (job.isPresent()) {
-            mav = new ModelAndView("views/job");
+            mav = new ModelAndView("views/service");
             System.out.println(job);
             mav.addObject("job", job.get());
         } else {
@@ -56,22 +56,10 @@ public class RouteController {
         return mav;
     }
 
-    @RequestMapping("/service")
-    public ModelAndView sevices() {
-        final ModelAndView mav = new ModelAndView("job");
-        return mav;
-    }
     @RequestMapping(path = {"/create"}, method = RequestMethod.POST)
     public ModelAndView createUser(@RequestParam("name") final String name, @RequestParam("password") final String password) {
         User user = userService.createUser(name, password);
         final ModelAndView mav = new ModelAndView("views/landingPage");
-        return mav;
-    }
-
-
-    @RequestMapping(path={"/discover"}, method= RequestMethod.POST)
-    public ModelAndView contactProvider(@RequestParam("name") final String name, @RequestParam("surname") final String surname){
-        final ModelAndView mav = new ModelAndView("views/discover");
         return mav;
     }
 

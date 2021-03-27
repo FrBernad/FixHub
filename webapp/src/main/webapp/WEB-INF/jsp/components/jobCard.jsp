@@ -27,6 +27,6 @@
                 </div>
             </div>
         </div>
-        <%--        <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>--%>
+        <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
     </div>
 </div>

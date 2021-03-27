@@ -12,10 +12,6 @@
             <li class="nav-item mx-1">
                 <a href="<c:url value='/discover'/>" class="nav-link navbarText">Descubre</a>
             </li>
-            <li class="nav-item mx-1">
-                <a href="<c:url value='/createService'/>" class="nav-link navbarText">Service</a>
-            </li>
-
         </ul>
     </div>
 </nav>
