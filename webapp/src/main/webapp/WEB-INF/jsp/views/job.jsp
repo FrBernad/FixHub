@@ -35,7 +35,9 @@
                 </div>
                 <div class="row">
                     <div class="col d-flex justify-content-end align-items-center mb-2 mx-4">
-                        <button class="btn btn-primary">Contactar</button>
+                        <a href="<c:url value='/contact'/>">
+                            <button class="btn btn-primary">Contactar</button>
+                        </a>
                     </div>
                 </div>
             </div>

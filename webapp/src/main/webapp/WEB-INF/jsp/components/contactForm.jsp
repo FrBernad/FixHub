@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form  action="<c:url value="/discover"/>" class="contactForm" method="POST">
+<form  action="<c:url value="/discover"/>" class="contactForm" method="POST" style="width: 500px; margin: auto;">
     <div class="form-group">
         <label for="name">Nombre</label>
         <input type="text" name="name" id="name" class="form-control">
@@ -50,7 +50,7 @@
     </div>
     <div class="form-group">
         <label for="message">Mensaje</label>
-        <textarea class="form-control" name="message" id="message"></textarea>
+        <textarea class="form-control" name="message" id="message" style="resize: none; height: 150px;"></textarea>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Enviar</button>

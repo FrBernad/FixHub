@@ -75,4 +75,9 @@ public class RouteController {
         return new ModelAndView("views/join");
     }
 
+    @RequestMapping("/contact")
+    public ModelAndView contact() {
+        return new ModelAndView("views/contact");
+    }
+
 }
