@@ -56,7 +56,7 @@ public class RouteController {
         return mav;
     }
 
-    @RequestMapping(path = "/createService", method = RequestMethod.POST)
+    @RequestMapping(path = "/join", method = RequestMethod.POST)
     public ModelAndView createService(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
                                       @RequestParam("name") final String name, @RequestParam("surname") final String surname,
                                       @RequestParam("city") final String city, @RequestParam("state") final String state,
@@ -65,9 +65,14 @@ public class RouteController {
         User provider = userService.createUser("password", name, surname, email, phoneNumber, state, city); //Cuando haya usuarios esta línea se borra. No debe crearse un usuario cada vez que se crea un post de servicio
 
         Job job = jobService.createJob(jobProvided, jobType, description, provider);
-        final ModelAndView mav = new ModelAndView("redirect:/jobs/"+job.getId());
+        final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
 
+    }
+
+    @RequestMapping("/join")
+    public ModelAndView join() {
+        return new ModelAndView("views/join");
     }
 
 }

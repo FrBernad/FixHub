@@ -4,7 +4,7 @@
 <head>
     <title>Fixhub</title>
     <%@ include file="../components/headers.jsp" %>
-    <link href='<c:url value="/resources/css/createService.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
 
 <body>

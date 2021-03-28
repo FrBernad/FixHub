@@ -115,8 +115,8 @@
                                 trabajar<br>con nosotros. Provee<br>tus servicios hoy.</h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
-                            <a href="<c:url value='/createService'/>">
-                                <button class="learnMoreBtn">Ver más</button>
+                            <a href="<c:url value='/join'/>">
+                                <button class="learnMoreBtn">Únete</button>
                             </a>
                         </div>
                     </div>

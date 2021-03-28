@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form action="<c:url value="/createService"/>" class="serviceForm" method="POST">
+<form action="<c:url value="/join"/>" class="serviceForm" method="POST">
     <div class="form-group">
         <label for="name">Nombre</label>
         <input type="text" name="name" id="name" class="form-control">
