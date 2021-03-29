@@ -28,7 +28,7 @@ public class JobCategoriesDaoImpl implements JobCategoriesDao{
         jdbcTemplate = new JdbcTemplate(ds);
         simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBSCATEGORIES").usingGeneratedKeyColumns("id");
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
-                "JOBSCATEGORIES(" +
+                "JOBCATEGORIES(" +
                 "id SERIAL," +
                 "name TEXT UNIQUE,"+
                 "PRIMARY KEY(id))");

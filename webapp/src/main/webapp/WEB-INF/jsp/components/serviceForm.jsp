@@ -9,7 +9,9 @@
             <div class="form-group">
                 <label class="label" for="jobType">Tipo de servicio</label>
                 <select id="jobType" name="jobType" class="form-control">
-                    <option selected value="1">1</option>
+                    <c:forEach var="category" items="${categories}">
+                        <option selected value="${category.id}">${category.name}</option>
+                    </c:forEach>
                 </select>
             </div>
         </div>

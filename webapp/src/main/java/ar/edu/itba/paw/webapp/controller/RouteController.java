@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.JobService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Job;
+import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,8 +64,11 @@ public class RouteController {
 
     @RequestMapping(path = "/join/newService")
     public ModelAndView createServicePost() {
-        return new ModelAndView("views/newService");
-
+        ModelAndView mav = new ModelAndView("views/newService");
+        Collection<JobCategories> categories = jobService.getJobsCategories();
+        System.out.println(categories);
+        mav.addObject("categories",categories);
+        return mav;
     }
 
     @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
@@ -72,6 +76,7 @@ public class RouteController {
                                           @RequestParam("name") final String name, @RequestParam("surname") final String surname,
                                           @RequestParam("city") final String city, @RequestParam("state") final String state,
                                           @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
+
 
         User provider;
         try{
