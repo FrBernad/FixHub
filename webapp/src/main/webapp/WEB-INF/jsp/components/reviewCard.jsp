@@ -7,18 +7,18 @@
                 <div class="container-fluid">
                     <div class="row align-items-center">
                         <div class="col align-items-lg-start align-items-center">
-                            <h5 class="card-title">Chico Serna</h5>
+                            <h5 class="card-title">${review.rating}</h5>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col d-flex justify-content-end ">
-                <p style="color: #6699CC">21/3/21</p>
+                <p style="color: #6699CC">${review.creationDate}</p>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <div class="card-text">Un capo raul me arreglo las bujias del Corsita, 10/10 muy amable</div>
+                <div class="card-text">${review.description}</div>
             </div>
         </div>
 

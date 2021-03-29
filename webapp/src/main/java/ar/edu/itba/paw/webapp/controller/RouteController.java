@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.JobService;
+import ar.edu.itba.paw.interfaces.ReviewService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategories;
+import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -22,6 +26,9 @@ public class RouteController {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
@@ -47,8 +54,9 @@ public class RouteController {
         Optional<Job> job = jobService.getJobById(jobId);
         if (job.isPresent()) {
             mav = new ModelAndView("views/job");
-            System.out.println(job);
             mav.addObject("job", job.get());
+            Collection<Review> reviews = reviewService.getReviewsByJobId(jobId);
+            mav.addObject("reviews", reviews);
         } else {
             mav = new ModelAndView("views/pageNotFound");
         }
@@ -136,5 +144,13 @@ public class RouteController {
     @RequestMapping("/contact")
     public ModelAndView contact() {
         return new ModelAndView("views/contact");
+    }
+
+    @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
+    public ModelAndView createReview(@PathVariable("jobId") final long jobId, @RequestParam("description") final String description, @RequestParam("rating") final int rating) {
+        //TODO: Service hace lo del time
+        Review review = reviewService.createReview(description, jobId, rating, Timestamp.valueOf(LocalDateTime.now()));
+        final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
+        return mav;
     }
 }
