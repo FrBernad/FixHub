@@ -11,5 +11,5 @@ public interface JobDao {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, String jobType, String description, User user);
+    Job createJob(String jobProvided, long jobType, String description, User user);
 }

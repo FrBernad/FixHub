@@ -12,7 +12,7 @@ public interface JobService {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, String jobType, String description, User provider);
+    Job createJob(String jobProvided, long jobType, String description, User provider);
 
     Collection<JobCategories> getJobsCategories();
 }

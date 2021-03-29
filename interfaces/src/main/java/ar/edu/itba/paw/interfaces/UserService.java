@@ -6,14 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> findById(long id);
+    Optional<User> getUserById(long id);
 
-    Optional<User> findByEmail(String email);
-
-    List<User> list();
-
-//    User createUser(String name, String password);
+    Optional<User> getUserByEmail(String email);
 
     User createUser(String password,String name, String surname,  String email, String phoneNumber,String state, String city);
-
 }

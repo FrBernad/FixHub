@@ -13,27 +13,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    public Optional<User> findById(long id) {
-        return userDao.getById(id);
+    public Optional<User> getUserById(long id) {
+        return userDao.getUserById(id);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userDao.getByEmail(email);
-    }
-
-    public List<User> list() {
-        return null;
+    public Optional<User> getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
     }
 
     @Override
-    public User createUser(String password,String name, String surname,  String email, String phoneNumber,String state,  String city){
-        return userDao.createUser(password,name,surname,email,phoneNumber,state,city);
+    public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) {
+        return userDao.createUser(password, name, surname, email, phoneNumber, state, city);
     }
-
-
-//    @Override
-//    public User createUser(String name, String password) {
-//        return userDao.createUser(name, password);
-//    }
 }

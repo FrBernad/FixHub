@@ -26,7 +26,7 @@
                             <%@ include file="../components/serviceForm.jsp" %>
                         </div>
                         <div class="col-12 d-flex align-items-center justify-content-center">
-                            <button class="w-100 continueBtn my-2">Crear</button>
+                            <button form="serviceForm" class="w-100 continueBtn my-2">Crear</button>
                         </div>
                     </div>
                 </div>

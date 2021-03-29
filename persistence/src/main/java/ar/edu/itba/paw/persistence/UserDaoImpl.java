@@ -40,51 +40,38 @@ public class UserDaoImpl implements UserDao {
                 "id SERIAL," +
                 "password TEXT," +
                 "name TEXT," +
-                "surname TEXT, "+
-                "email TEXT UNIQUE,"+
-                "phoneNumber TEXT,"+
-                "state TEXT,"+
-                "city TEXT,"+
+                "surname TEXT, " +
+                "email TEXT UNIQUE," +
+                "phoneNumber TEXT," +
+                "state TEXT," +
+                "city TEXT," +
                 "PRIMARY KEY(id))");
     }
 
-    public Optional<User> getById(long id) {
+    @Override
+    public Optional<User> getUserById(long id) {
         return jdbcTemplate.query("SELECT * FROM USERS WHERE ID = ?", new Object[]{id},
                 USER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
-    public Optional<User> getByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM USERS WHERE EMAIL= ?",new Object[]{email},USER_ROW_MAPPER).stream().findFirst();
+    public Optional<User> getUserByEmail(String email) {
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE EMAIL = ?", new Object[]{email}, USER_ROW_MAPPER).stream().findFirst();
     }
 
-
-    public List<User> list() {
-        return jdbcTemplate.query("SELECT * FROM USERS", USER_ROW_MAPPER);
-    }
 
     @Override
-    public User createUser(String password,String name, String surname,  String email, String phoneNumber,String state,  String city){
-        Map<String,Object> map = new HashMap<>();
-        map.put("password",password);
-        map.put("name",name);
-        map.put("surname",surname);
-        map.put("email",email);
-        map.put("phoneNumber",phoneNumber);
-        map.put("state",state);
-        map.put("city",city);
-        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new User(id,password,name,surname,email,phoneNumber,state,city);
-    }
-
-    /*@Override
-
-    public User createUser(String name, String password) {
+    public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) {
         Map<String, Object> map = new HashMap<>();
-        map.put("name", name);
         map.put("password", password);
+        map.put("name", name);
+        map.put("surname", surname);
+        map.put("email", email);
+        map.put("phoneNumber", phoneNumber);
+        map.put("state", state);
+        map.put("city", city);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new User(id, name, password);
-    }*/
+        return new User(id, password, name, surname, email, phoneNumber, state, city);
+    }
 
 }

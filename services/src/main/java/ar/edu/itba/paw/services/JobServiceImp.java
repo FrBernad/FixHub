@@ -31,7 +31,7 @@ public class JobServiceImp implements JobService {
     }
 
     @Override
-    public Job createJob(String jobProvided, String jobType, String description, User user) {
+    public Job createJob(String jobProvided, long jobType, String description, User user) {
         return jobDao.createJob(jobProvided,jobType,description,user);
     }
 

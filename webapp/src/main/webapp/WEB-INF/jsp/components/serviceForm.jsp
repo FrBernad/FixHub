@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form action="<c:url value="/join"/>" class="serviceForm" method="POST">
+<form action="<c:url value="/join/newService"/>" id="serviceForm" class="serviceForm" method="POST">
     <div class="form-group">
         <label class="label" for="jobProvided">Servicio que va a proveer</label>
         <input type="text" name="jobProvided" id="jobProvided" class="form-control">
@@ -19,5 +19,6 @@
     <div class="form-group">
         <label class="label" for="description">Descripción</label>
         <textarea class="form-control" name="description" id="description"></textarea>
+        <input type="hidden" value="${user.id}" name="userId">
     </div>
 </form>

@@ -7,11 +7,9 @@ import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -63,20 +61,51 @@ public class RouteController {
     }
 
     @RequestMapping(path = "/join", method = RequestMethod.POST)
-    public ModelAndView joinEmailPost(@RequestParam("jobProvided") final String email) {
-        final ModelAndView mav = new ModelAndView("/join/newService/");
-        mav.addObject("email", email);
+    public ModelAndView joinEmailPost(RedirectAttributes ra, @RequestParam("email") final String email) {
+        final ModelAndView mav = new ModelAndView("redirect:/join/newService");
+        ra.addFlashAttribute("email", email);
         return mav;
     }
 
     @RequestMapping(path = "/join/newService")
-    public ModelAndView createServicePost() {
-        ModelAndView mav = new ModelAndView("views/newService");
-        Collection<JobCategories> categories = jobService.getJobsCategories();
-        mav.addObject("categories", categories);
+    public ModelAndView newService(@ModelAttribute("email") final String email) {
+
+        ModelAndView mav;
+
+        if (email == null) {
+            mav = new ModelAndView("redirect:/join");
+        } else {
+            Optional<User> user = userService.getUserByEmail(email);
+            if (!user.isPresent()) {
+                mav = new ModelAndView("redirect:/join");
+            } else {
+                mav = new ModelAndView("views/newService");
+                mav.addObject("user", user.get());
+                Collection<JobCategories> categories = jobService.getJobsCategories();
+                mav.addObject("categories", categories);
+            }
+        }
+
         return mav;
     }
 
+
+    @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
+    public ModelAndView newServicePost(@RequestParam("jobProvided") final String jobProvided,
+                                          @RequestParam("jobType") final long jobType,
+                                          @RequestParam("description") final String description,
+                                          @RequestParam("userId") final long userId) {
+
+        Optional<User> user = userService.getUserById(userId);
+        ModelAndView mav;
+        if (user.isPresent()) {
+            Job job = jobService.createJob(jobProvided, jobType, description, user.get());
+            mav = new ModelAndView("redirect:/jobs/" + job.getId());
+        } else {
+            mav = new ModelAndView("redirect:/jobs/");
+        }
+        return mav;
+    }
 
     @RequestMapping(path = "/join/register", method = RequestMethod.POST)
     public ModelAndView registerEmailPost(@RequestParam("name") final String name,
@@ -103,18 +132,6 @@ public class RouteController {
         return mav;
     }
 
-
-//    @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
-//    public ModelAndView createServicePost(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
-//                                          @RequestParam("name") final String name, @RequestParam("surname") final String surname,
-//                                          @RequestParam("city") final String city, @RequestParam("state") final String state,
-//                                          @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
-//
-//        Job job = jobService.createJob(jobProvided,jobType,description,provider);
-//
-//        final ModelAndView mav = new ModelAndView("redirect:/jobs/"+job.getId());
-//        return mav;
-//    }
 
     @RequestMapping("/contact")
     public ModelAndView contact() {

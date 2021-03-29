@@ -25,18 +25,18 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12">
-                                    <form>
+                                    <form id="mailForm" action="<c:url value='/join'/>" method="POST">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control input" id="email"
+                                            <input type="email" class="form-control input" name="email" id="email"
                                                    aria-describedby="email input">
                                         </div>
                                     </form>
                                 </div>
                                 <div class="col-12 d-flex align-items-center justify-content-center">
-                                    <a class="w-100" href="<c:url value='/join/newService'/>">
-                                        <button class="w-100 continueBtn my-2">Continuar</button>
-                                    </a>
+                                    <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
+                                        Continuar
+                                    </button>
                                 </div>
                             </div>
                         </div>
