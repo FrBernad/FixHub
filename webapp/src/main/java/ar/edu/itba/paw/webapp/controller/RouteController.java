@@ -56,11 +56,22 @@ public class RouteController {
         return mav;
     }
 
-    @RequestMapping(path = "/join", method = RequestMethod.POST)
-    public ModelAndView createService(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
-                                      @RequestParam("name") final String name, @RequestParam("surname") final String surname,
-                                      @RequestParam("city") final String city, @RequestParam("state") final String state,
-                                      @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
+    @RequestMapping("/join")
+    public ModelAndView join() {
+        return new ModelAndView("views/join");
+    }
+
+    @RequestMapping(path = "/join/newService")
+    public ModelAndView createServicePost() {
+        return new ModelAndView("views/newService");
+
+    }
+
+    @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
+    public ModelAndView createServicePost(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
+                                          @RequestParam("name") final String name, @RequestParam("surname") final String surname,
+                                          @RequestParam("city") final String city, @RequestParam("state") final String state,
+                                          @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
 
         User provider = userService.createUser("password", name, surname, email, phoneNumber, state, city); //Cuando haya usuarios esta línea se borra. No debe crearse un usuario cada vez que se crea un post de servicio
 
@@ -70,10 +81,19 @@ public class RouteController {
 
     }
 
-    @RequestMapping("/join")
-    public ModelAndView join() {
-        return new ModelAndView("views/join");
+    @RequestMapping(path = "/join/register")
+    public ModelAndView registerEmail() {
+        final ModelAndView mav = new ModelAndView("views/registerEmail");
+        return mav;
     }
+//
+//    @RequestMapping(path = "/join/register", method = RequestMethod.POST)
+//    public ModelAndView registerEmailPost() {
+//
+//        final ModelAndView mav = new ModelAndView("redirect:/join");
+//        return mav;
+//    }
+
 
     @RequestMapping("/contact")
     public ModelAndView contact() {

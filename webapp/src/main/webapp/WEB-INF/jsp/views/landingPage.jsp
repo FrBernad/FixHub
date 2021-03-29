@@ -94,9 +94,23 @@
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle mb-4">Servicios más populares</h1>
                 <div class="row justify-content-between align-items-center m-0">
-                    <c:forEach var="job" items="${jobs}">
-                        <%@ include file="../components/popularJobCard.jsp" %>
-                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${jobs.size()>0}">
+                            <c:forEach var="job" items="${jobs}">
+                                <%@ include file="../components/popularJobCard.jsp" %>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="col-12 d-flex align-items-center justify-content-center">
+                                <div class="container mt-2 d-flex align-items-center justify-content-center"
+                                     style="height: 300px; width: auto; background-color: white">
+                                    <p class="m-0 text-center p-4" style="font-size: 16px">Todavía no hay trabajos
+                                        disponibles,<br>intenta mas
+                                        adelante.</p>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>

@@ -56,9 +56,22 @@
             <div class="col-12 p-0">
                 <div class="container-fluid">
                     <div class="row align-items-top justify-content-between">
-                        <c:forEach var="job" items="${jobs}">
-                            <%@ include file="../components/jobCard.jsp" %>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${jobs.size()>0}">
+                                <c:forEach var="job" items="${jobs}">
+                                    <%@ include file="../components/popularJobCard.jsp" %>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-12 d-flex align-items-center justify-content-center">
+                                    <div class="container mt-2 d-flex align-items-center justify-content-center"
+                                         style="height: 300px; width: auto; background-color: white">
+                                        <p class="m-0 text-center p-4" style="font-size: 16px">No se encontraron
+                                            trabajos,<br>intenta denuevo.</p>
+                                    </div>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
