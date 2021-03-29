@@ -62,6 +62,13 @@ public class RouteController {
         return new ModelAndView("views/join");
     }
 
+    @RequestMapping(path = "/join", method = RequestMethod.POST)
+    public ModelAndView joinEmailPost(@RequestParam("jobProvided") final String email) {
+        final ModelAndView mav = new ModelAndView("/join/newService/");
+        mav.addObject("email", email);
+        return mav;
+    }
+
     @RequestMapping(path = "/join/newService")
     public ModelAndView createServicePost() {
         ModelAndView mav = new ModelAndView("views/newService");
@@ -77,24 +84,31 @@ public class RouteController {
                                           @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
 
 
+    @RequestMapping(path = "/join/register", method = RequestMethod.POST)
+    public ModelAndView registerEmailPost(@RequestParam("name") final String name,
+                                          @RequestParam("surname") final String surname,
+                                          @RequestParam("email") final String email,
+                                          @RequestParam("phoneNumber") final String phoneNumber,
+                                          @RequestParam("state") final String state,
+                                          @RequestParam("city") final String city) {
         User provider;
-        try{
-            provider = userService.createUser("password", name, surname, email, phoneNumber, state, city); //Cuando haya usuarios esta línea se borra. No debe crearse un usuario cada vez que se crea un post de servicio
-        }catch (org.springframework.dao.DuplicateKeyException e){
-            provider = userService.findByEmail(email).get();
+        try {
+            provider = userService.createUser("password", name, surname, email, phoneNumber, state, city);
+        } catch (org.springframework.dao.DuplicateKeyException e) {
+            System.out.println("user already exists");
         }
 
-        Job job = jobService.createJob(jobProvided, jobType, description, provider);
-        final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
-        return mav;
-
-    }
-
-    @RequestMapping(path = "/join/register")
-    public ModelAndView registerEmail() {
-        final ModelAndView mav = new ModelAndView("views/registerEmail");
+        final ModelAndView mav = new ModelAndView("redirect:/join");
         return mav;
     }
+
+//
+//    @RequestMapping(path = "/join/register", method = RequestMethod.POST)
+//    public ModelAndView registerEmailPost() {
+//
+//        final ModelAndView mav = new ModelAndView("redirect:/join");
+//        return mav;
+//    }
 
     @RequestMapping("/contact")
     public ModelAndView contact() {

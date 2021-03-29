@@ -23,7 +23,7 @@
                 <div class="container-lg">
                     <div class="row">
                         <div class="col-12 d-flex align-items-center justify-content-center">
-                            <form action="<c:url value="/join"/>" class="serviceForm" method="POST">
+                            <form action="<c:url value="/join/register"/>" id="registerForm" class="serviceForm" method="POST">
                                 <div class="form-group">
                                     <label class="label" for="name">Nombre</label>
                                     <input type="text" name="name" id="name" class="form-control">
@@ -58,7 +58,7 @@
                             </form>
                         </div>
                         <div class="col-12 d-flex align-items-center justify-content-center">
-                            <button class="w-100 continueBtn my-2">Continuar</button>
+                            <button type="submit" form="registerForm" class="w-100 continueBtn my-2 ">Registar</button>
                         </div>
                     </div>
                 </div>
