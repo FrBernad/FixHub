@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form action="<c:url value="/join"/>" class="serviceForm" method="POST">
     <div class="form-group">
-        <label class="label" for="jobProvided">Servicio que va a proveaer</label>
+        <label class="label" for="jobProvided">Servicio que va a proveer</label>
         <input type="text" name="jobProvided" id="jobProvided" class="form-control">
     </div>
     <div class="row">
