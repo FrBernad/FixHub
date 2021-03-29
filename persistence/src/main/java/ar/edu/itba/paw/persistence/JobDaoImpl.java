@@ -54,11 +54,6 @@ public class JobDaoImpl implements JobDao {
                 "FOREIGN KEY(providerId) REFERENCES USERS(id)," +
                 "PRIMARY KEY(id))");
 
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
-                "JOB_TYPE(" +
-                "id SERIAL," +
-                "name TEXT," +
-                "PRIMARY KEY(id))");
     }
 
     @Override
@@ -72,7 +67,7 @@ public class JobDaoImpl implements JobDao {
         map.put("description",description);
         map.put("jobProvided",jobProvided);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        int jobAux =1;
+        int jobAux =1; /*Esta linea hay que cambiarla*/
         return new Job(description,jobProvided,averageRating,jobAux,id,provider);
     }
 
