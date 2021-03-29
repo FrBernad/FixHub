@@ -51,34 +51,38 @@
             </div>
         </div>
         <div class="row mt-2">
-            <div class="col d-flex justify-content-start align-items-center offset-2">
-                <c:choose>
-                    <c:when test="${reviews.size()>0}">
-                        <c:forEach var="review" items="${reviews}">
-                            <%@ include file="../components/reviewCard.jsp" %>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="col-12 d-flex align-items-center justify-content-center">
-                            <div class="container mt-2 d-flex align-items-center justify-content-center"
-                                 style="height: 300px; width: auto; background-color: white">
-                                <p class="m-0 text-center p-4" style="font-size: 16px">No se encontraron
-                                    reviews,<br>intenta denuevo.</p>
-                            </div>
+            <div class="col-4 d-flex align-items-center offset-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <c:choose>
+                                <c:when test="${reviews.size()>0}">
+                                    <c:forEach var="review" items="${reviews}">
+                                        <%@ include file="../components/reviewCard.jsp" %>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="col-12 d-flex align-items-center justify-content-center">
+                                        <div class="container mt-2 d-flex align-items-center justify-content-center"
+                                             style="height: 300px; width: auto; background-color: white">
+                                            <p class="m-0 text-center p-4" style="font-size: 16px">No se encontraron
+                                                reviews,<br>intenta denuevo.</p>
+                                        </div>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
-                    </c:otherwise>
-                </c:choose>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="container-fluid p-3 mt-3">
+    <hr style="width: 70%;">
         <div class="row">
-            <div class="col-4 d-flex justify-content-start align-items-center offset-2">
+            <div class="col justify-content-center align-items-center  mb-3 mt-3">
                 <%@ include file="../components/reviewForm.jsp"%>
             </div>
         </div>
-    </div>
 
 </div>
 

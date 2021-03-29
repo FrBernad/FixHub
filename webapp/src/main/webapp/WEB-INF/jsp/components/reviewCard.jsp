@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="card reviewCard">
+<div class="card w-100 reviewCard mt-3">
     <div class="card-body container-fluid justify-items-center align-items-center">
         <div class="row align-items-start">
             <div class="col">
                 <div class="container-fluid">
                     <div class="row align-items-center">
-                        <div class="col align-items-lg-start align-items-center">
+                        <div class="col align-items-start align-items-center">
                             <h5 class="card-title">${review.rating}</h5>
                         </div>
                     </div>

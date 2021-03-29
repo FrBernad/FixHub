@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form action="<c:url value="/jobs/${job.id}"/>" class="contactForm" method="POST" style="width: 500px; margin: auto;">
+<form action="<c:url value="/jobs/${job.id}"/>" class="reviewForm p-3" method="POST" style="width: 500px; margin: auto; background-color: #FAFAFA;">
     <div class="form-group">
         <label for="description">¿Qué le pareció el trabajo?</label>
         <input type="text" name="description" id="description" class="form-control">
