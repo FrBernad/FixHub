@@ -6,14 +6,20 @@ import ar.edu.itba.paw.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    public User findById(String id) {
-        return null;
+    public Optional<User> findById(long id) {
+        return userDao.getById(id);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userDao.getByEmail(email);
     }
 
     public List<User> list() {

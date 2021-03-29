@@ -73,7 +73,12 @@ public class RouteController {
                                           @RequestParam("city") final String city, @RequestParam("state") final String state,
                                           @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
 
-        User provider = userService.createUser("password", name, surname, email, phoneNumber, state, city); //Cuando haya usuarios esta línea se borra. No debe crearse un usuario cada vez que se crea un post de servicio
+        User provider;
+        try{
+            provider = userService.createUser("password", name, surname, email, phoneNumber, state, city); //Cuando haya usuarios esta línea se borra. No debe crearse un usuario cada vez que se crea un post de servicio
+        }catch (org.springframework.dao.DuplicateKeyException e){
+            provider = userService.findByEmail(email).get();
+        }
 
         Job job = jobService.createJob(jobProvided, jobType, description, provider);
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());

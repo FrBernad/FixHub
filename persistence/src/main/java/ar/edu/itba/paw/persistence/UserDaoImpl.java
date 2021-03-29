@@ -41,17 +41,23 @@ public class UserDaoImpl implements UserDao {
                 "password TEXT," +
                 "name TEXT," +
                 "surname TEXT, "+
-                "email TEXT,"+
+                "email TEXT UNIQUE,"+
                 "phoneNumber TEXT,"+
                 "state TEXT,"+
                 "city TEXT,"+
                 "PRIMARY KEY(id))");
     }
 
-    public Optional<User> get(long id) {
+    public Optional<User> getById(long id) {
         return jdbcTemplate.query("SELECT * FROM USERS WHERE ID = ?", new Object[]{id},
                 USER_ROW_MAPPER).stream().findFirst();
     }
+
+    @Override
+    public Optional<User> getByEmail(String email) {
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE EMAIL= ?",new Object[]{email},USER_ROW_MAPPER).stream().findFirst();
+    }
+
 
     public List<User> list() {
         return jdbcTemplate.query("SELECT * FROM USERS", USER_ROW_MAPPER);
