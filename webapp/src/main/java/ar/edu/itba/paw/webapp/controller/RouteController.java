@@ -73,15 +73,9 @@ public class RouteController {
     public ModelAndView createServicePost() {
         ModelAndView mav = new ModelAndView("views/newService");
         Collection<JobCategories> categories = jobService.getJobsCategories();
-        mav.addObject("categories",categories);
+        mav.addObject("categories", categories);
         return mav;
     }
-
-    @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
-    public ModelAndView createServicePost(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
-                                          @RequestParam("name") final String name, @RequestParam("surname") final String surname,
-                                          @RequestParam("city") final String city, @RequestParam("state") final String state,
-                                          @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
 
 
     @RequestMapping(path = "/join/register", method = RequestMethod.POST)
@@ -102,11 +96,23 @@ public class RouteController {
         return mav;
     }
 
+    @RequestMapping(path = "/join/register")
+    public ModelAndView registerEmail() {
+
+        final ModelAndView mav = new ModelAndView("views/register");
+        return mav;
+    }
+
+
+//    @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
+//    public ModelAndView createServicePost(@RequestParam("jobProvided") final String jobProvided, @RequestParam("jobType") final String jobType, @RequestParam("description") final String description,
+//                                          @RequestParam("name") final String name, @RequestParam("surname") final String surname,
+//                                          @RequestParam("city") final String city, @RequestParam("state") final String state,
+//                                          @RequestParam("phoneNumber") final String phoneNumber, @RequestParam("email") final String email) {
 //
-//    @RequestMapping(path = "/join/register", method = RequestMethod.POST)
-//    public ModelAndView registerEmailPost() {
+//        Job job = jobService.createJob(jobProvided,jobType,description,provider);
 //
-//        final ModelAndView mav = new ModelAndView("redirect:/join");
+//        final ModelAndView mav = new ModelAndView("redirect:/jobs/"+job.getId());
 //        return mav;
 //    }
 
@@ -114,5 +120,4 @@ public class RouteController {
     public ModelAndView contact() {
         return new ModelAndView("views/contact");
     }
-
 }
