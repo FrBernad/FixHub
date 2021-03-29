@@ -66,7 +66,6 @@ public class RouteController {
     public ModelAndView createServicePost() {
         ModelAndView mav = new ModelAndView("views/newService");
         Collection<JobCategories> categories = jobService.getJobsCategories();
-        System.out.println(categories);
         mav.addObject("categories",categories);
         return mav;
     }
@@ -96,14 +95,6 @@ public class RouteController {
         final ModelAndView mav = new ModelAndView("views/registerEmail");
         return mav;
     }
-//
-//    @RequestMapping(path = "/join/register", method = RequestMethod.POST)
-//    public ModelAndView registerEmailPost() {
-//
-//        final ModelAndView mav = new ModelAndView("redirect:/join");
-//        return mav;
-//    }
-
 
     @RequestMapping("/contact")
     public ModelAndView contact() {
