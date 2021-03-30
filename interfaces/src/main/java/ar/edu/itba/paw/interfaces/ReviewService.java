@@ -9,5 +9,5 @@ public interface ReviewService {
 
     Collection<Review> getReviewsByJobId(long jobId);
 
-    Review createReview(String description, long jobId, int rating, Timestamp creationDate);
+    Review createReview(String description, long jobId, int rating);
 }
