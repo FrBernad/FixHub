@@ -1,16 +1,16 @@
 package ar.edu.itba.paw.models;
 
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class Review {
     private Number id;
     private String description;
     private Number jobId;
     private int rating;
-    private Timestamp creationDate;
+    private LocalDate creationDate;
 
-    public Review(Number id, String description, Number jobId, int rating, Timestamp creationDate) {
+    public Review(Number id, String description, Number jobId, int rating, LocalDate creationDate) {
         this.id = id;
         this.description = description;
         this.jobId = jobId;
@@ -50,11 +50,11 @@ public class Review {
         this.rating = rating;
     }
 
-    public Timestamp getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 

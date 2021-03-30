@@ -28,7 +28,7 @@ public class ReviewDaoImpl implements ReviewDao {
                     rs.getString("description"),
                     rs.getLong("jobId"),
                     rs.getInt("rating"),
-                    rs.getTimestamp("creationDate"));
+                    rs.getTimestamp("creationDate").toLocalDateTime().toLocalDate());
 
     @Autowired
     public ReviewDaoImpl(final DataSource ds) {
@@ -60,6 +60,6 @@ public class ReviewDaoImpl implements ReviewDao {
         map.put("rating",rating);
         map.put("creationDate",creationDate);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new Review(id, description, jobId, rating, creationDate);
+        return new Review(id, description, jobId, rating, creationDate.toLocalDateTime().toLocalDate());
     }
 }
