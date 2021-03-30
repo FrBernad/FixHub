@@ -7,7 +7,9 @@ import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.form.EmailForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
+import ar.edu.itba.paw.webapp.form.ServiceForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -77,19 +79,24 @@ public class RouteController {
     }
 
     @RequestMapping("/join")
-    public ModelAndView join() {
+    public ModelAndView join(@ModelAttribute("emailForm") final EmailForm form) {
         return new ModelAndView("views/join");
     }
 
     @RequestMapping(path = "/join", method = RequestMethod.POST)
-    public ModelAndView joinEmailPost(RedirectAttributes ra, @RequestParam("email") final String email) {
+    public ModelAndView joinEmailPost(RedirectAttributes ra, @Valid @ModelAttribute("emailForm") final EmailForm form,final BindingResult errors) {
+
+        if(errors.hasErrors()){
+            return join(form);
+        }
+
         final ModelAndView mav = new ModelAndView("redirect:/join/newService");
-        ra.addFlashAttribute("email", email);
+        ra.addFlashAttribute("email", form.getEmail());
         return mav;
     }
 
     @RequestMapping(path = "/join/newService")
-    public ModelAndView newService(@ModelAttribute("email") final String email) {
+    public ModelAndView newService(@ModelAttribute("email") final String email,@ModelAttribute("serviceForm") final ServiceForm form) {
 
         ModelAndView mav;
 
@@ -112,20 +119,22 @@ public class RouteController {
 
 
     @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
-    public ModelAndView newServicePost(@RequestParam("jobProvided") final String jobProvided,
-                                       @RequestParam("jobType") final long jobType,
-                                       @RequestParam("description") final String description,
+    public ModelAndView newServicePost(@Valid @ModelAttribute("serviceForm") final ServiceForm form, final BindingResult errors,
                                        @RequestParam("userId") final long userId) {
 
         Optional<User> user = userService.getUserById(userId);
-        ModelAndView mav;
-        if (user.isPresent()) {
-            Job job = jobService.createJob(jobProvided, jobType, description, user.get());
-            mav = new ModelAndView("redirect:/jobs/" + job.getId());
-        } else {
-            mav = new ModelAndView("redirect:/jobs/");
+
+        if (!user.isPresent()) {
+            return new ModelAndView("redirect:/jobs/");
         }
-        return mav;
+
+        if(errors.hasErrors()){
+            System.out.println("por aca");
+            return newService(user.get().getEmail(),form);
+        }
+
+        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategoryId(), form.getDescription(), user.get());
+        return  new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
     @RequestMapping(path = "/join/register")

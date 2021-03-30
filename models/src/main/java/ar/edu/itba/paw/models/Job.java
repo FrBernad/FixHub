@@ -4,11 +4,12 @@ import java.util.Base64;
 
 public class Job {
     private String description,jobProvided;
-    private int averageRating, jobType;
+    private int averageRating;
+    private Number jobType;
     private Number id;
     private User provider;
 
-    public Job(String description,String jobProvided, int averageRating, int jobType, Number id, User provider) {
+    public Job(String description,String jobProvided, int averageRating, Number jobType, Number id, User provider) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -53,11 +54,11 @@ public class Job {
         this.averageRating = averageRating;
     }
 
-    public int getJobType() {
+    public Number getJobType() {
         return jobType;
     }
 
-    public void setJobType(int jobType) {
+    public void setJobType(Number jobType) {
         this.jobType = jobType;
     }
 

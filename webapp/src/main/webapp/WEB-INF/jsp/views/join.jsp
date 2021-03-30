@@ -50,7 +50,6 @@
             </div>
         </div>
     </div>
-    <%--    <%@ include file="../components/serviceForm.jsp" %>--%>
 </div>
 
 <%@ include file="../components/footer.jsp" %>

@@ -1,11 +1,16 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.models.JobCategories;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class ServiceForm {
 
-    private String jobProvided,description;
-    private JobCategories jobCategory;
+    @NotBlank
+    private String jobProvided;
+
+    @NotBlank
+    private String description;
+
+    private int jobCategoryId;
 
     public String getJobProvided() {
         return jobProvided;
@@ -23,11 +28,11 @@ public class ServiceForm {
         this.description = description;
     }
 
-    public JobCategories getJobCategory() {
-        return jobCategory;
+    public int getJobCategoryId() {
+        return jobCategoryId;
     }
 
-    public void setJobCategory(JobCategories jobCategory) {
-        this.jobCategory = jobCategory;
+    public void setJobCategoryId(int jobCategoryId) {
+        this.jobCategoryId = jobCategoryId;
     }
 }
