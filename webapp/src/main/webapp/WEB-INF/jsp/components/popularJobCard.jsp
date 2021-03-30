@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-7">
                     <h5 class="card-title jobCardName">
-                        <c:out value="${job.description}"/>
+                        <c:out value="${job.jobProvided}"/>
                     </h5>
                 </div>
                 <div class="col-5">
@@ -22,7 +22,7 @@
         </div>
         <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
         <div class="jobPrice">
-            <p class="text-left">A partir de $3500</p>
+            <p class="text-left mb-0">A partir de $3500</p>
         </div>
     </div>
 </div>

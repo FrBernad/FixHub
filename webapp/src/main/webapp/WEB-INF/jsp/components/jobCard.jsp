@@ -10,7 +10,7 @@
         <div style="padding: 1.25rem">
             <div class="row">
                 <div class="col-12 col-md-7 d-flex align-items-center">
-                    <h5 class="card-title m-0 jobCardName"><c:out value="${job.description}"/></h5>
+                    <h5 class="card-title m-0 jobCardName"><c:out value="${job.jobProvided}"/></h5>
                 </div>
                 <div class="col-12 col-md-5 d-flex align-items-center">
                     <div>
@@ -21,9 +21,6 @@
                 </div>
                 <div class="col-12 my-1">
                     <p class="card-text m-0"><c:out value="${job.provider.name}"/></p>
-                </div>
-                <div class="col-12">
-                    <%--                    <p class="card-text"><c:out value="${job.price}"/></p>--%>
                 </div>
             </div>
         </div>

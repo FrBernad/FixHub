@@ -59,7 +59,7 @@
                         <c:choose>
                             <c:when test="${jobs.size()>0}">
                                 <c:forEach var="job" items="${jobs}">
-                                    <%@ include file="../components/popularJobCard.jsp" %>
+                                    <%@ include file="../components/jobCard.jsp" %>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
