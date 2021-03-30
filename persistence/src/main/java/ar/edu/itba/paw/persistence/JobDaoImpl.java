@@ -97,6 +97,18 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
+    public Collection<Job> getJobsOrderByCategory(long categoryId) {
+        //TODO: Query
+        return null;
+    }
+
+    @Override
+    public Collection<Job> getJobsOrderByRating() {
+        //TODO: Query
+        return null;
+    }
+
+    @Override
     public Optional<Job> getJobById(long id) {
         return jdbcTemplate.query("SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id " +
                 "WHERE j.id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();

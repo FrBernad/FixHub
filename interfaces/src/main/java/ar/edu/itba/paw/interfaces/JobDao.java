@@ -17,5 +17,8 @@ public interface JobDao {
 
     Collection<Job> getJobsByCategory(long jobCategory);
 
+    Collection<Job> getJobsOrderByCategory(long categoryId);
+
+    Collection<Job> getJobsOrderByRating();
 
 }

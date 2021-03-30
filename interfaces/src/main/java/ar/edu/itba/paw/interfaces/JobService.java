@@ -20,5 +20,9 @@ public interface JobService {
     Collection<Job> getJobsBySearchPhrase(String phrase);
 
     Collection<Job> getJobsByCategory(long categoryId);
+
+    Collection<Job> getJobsOrderByCategory(long categoryId);
+
+    Collection<Job> getJobsOrderByRating();
 }
 
