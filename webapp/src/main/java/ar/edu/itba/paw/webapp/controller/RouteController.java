@@ -149,7 +149,7 @@ public class RouteController {
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView createReview(@PathVariable("jobId") final long jobId, @RequestParam("description") final String description, @RequestParam("rating") final int rating) {
         //TODO: Service hace lo del time
-        Review review = reviewService.createReview(description, jobId, rating, Timestamp.valueOf(LocalDateTime.now()));
+        Review review = reviewService.createReview(description, jobId, rating);
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
         return mav;
     }
