@@ -18,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -39,7 +37,10 @@ public class RouteController {
     public ModelAndView landingPage() {
         final ModelAndView mav = new ModelAndView("views/landingPage");
         Collection<Job> jobs = jobService.getJobs();
+        //TODO: Ver si está bien esto
+        Collection<JobCategories> categories = jobService.getJobsCategories();
         mav.addObject("jobs", jobs);
+        mav.addObject("categories", categories);
         return mav;
     }
 
