@@ -19,13 +19,15 @@
                         <h2 class="text-left photoText">Todos los servicios<br>en un solo lugar</h2>
                     </div>
                     <div class="col-8 col-md-7 w-50 d-flex justify-content-center align-items-center">
+                        <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
                         <div class="input-group">
                             <input placeholder="¿Qué servicio necesitas hoy?"
-                                   class="inputRadius form-control p-4">
+                                   class="inputRadius form-control p-4" name="searchPhrase">
                             <div class="input-group-prepend">
-                                <button class="btn btn-lg inputBtn">Buscar</button>
+                                <button class="btn btn-lg inputBtn" type="submit">Buscar</button>
                             </div>
                         </div>
+                        </form>
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
                         <button class="btn-sm mr-2 suggestionBtn">Plomeria</button>
