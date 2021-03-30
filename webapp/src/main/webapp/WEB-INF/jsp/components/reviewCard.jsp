@@ -4,26 +4,12 @@
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-12 d-flex justify-content-start align-items-center">
-                <c:choose>
-                    <c:when test="${review.rating == 0}">
-                        <c:forEach begin="1" end="5">
-                            <i class="far iconsColor fa-star fa-1x mr-2"></i>
-                        </c:forEach>
-                    </c:when>
-                    <c:when test="${review.rating>0 && review.rating<5}">
-                        <c:forEach begin="1" end="${review.rating}">
-                            <i class="fas iconsColor fa-star fa-1x mr-2"></i>
-                        </c:forEach>
-                        <c:forEach begin="${review.rating}" end="4">
-                            <i class="far iconsColor fa-star fa-1x mr-2"></i>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach begin="1" end="5">
-                            <i class="fas iconsColor fa-star fa-1x mr-2"></i>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                <c:forEach begin="1" end="${job.averageRating}">
+                    <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                </c:forEach>
+                <c:forEach begin="${job.averageRating}" end="4">
+                    <i class="far iconsColor fa-star fa-1x mr-2"></i>
+                </c:forEach>
             </div>
             <div class="col-12">
                 <p class="text-left reviewBody my-2">${review.description}</p>
