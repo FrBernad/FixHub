@@ -4,10 +4,10 @@
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-12 d-flex justify-content-start align-items-center">
-                <c:forEach begin="1" end="${job.averageRating}">
+                <c:forEach begin="1" end="${review.rating}">
                     <i class="fas iconsColor fa-star fa-1x mr-2"></i>
                 </c:forEach>
-                <c:forEach begin="${job.averageRating}" end="4">
+                <c:forEach begin="${review.rating}" end="4">
                     <i class="far iconsColor fa-star fa-1x mr-2"></i>
                 </c:forEach>
             </div>
