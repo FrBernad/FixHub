@@ -7,12 +7,17 @@ import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -123,30 +128,30 @@ public class RouteController {
         return mav;
     }
 
+    @RequestMapping(path = "/join/register")
+    public ModelAndView registerEmail(@ModelAttribute("registerForm") final RegisterForm form){
+        final ModelAndView mav = new ModelAndView("views/register");
+        return mav;
+    }
+
     @RequestMapping(path = "/join/register", method = RequestMethod.POST)
-    public ModelAndView registerEmailPost(@RequestParam("name") final String name,
-                                          @RequestParam("surname") final String surname,
-                                          @RequestParam("email") final String email,
-                                          @RequestParam("phoneNumber") final String phoneNumber,
-                                          @RequestParam("state") final String state,
-                                          @RequestParam("city") final String city) {
+    public ModelAndView registerEmailPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors){
+        if(errors.hasErrors())
+            return registerEmail(form);
+
         User provider;
         try {
-            provider = userService.createUser("password", name, surname, email, phoneNumber, state, city);
+            provider = userService.createUser("password", form.getName(), form.getSurname(), form.getEmail(), form.getPhoneNumber(),
+                    form.getState(), form.getCity());
         } catch (org.springframework.dao.DuplicateKeyException e) {
-            System.out.println("user already exists");
+            System.out.println("user already exists"); //habria que agregar el error de que el usuario ya existe
         }
 
         final ModelAndView mav = new ModelAndView("redirect:/join");
         return mav;
     }
 
-    @RequestMapping(path = "/join/register")
-    public ModelAndView registerEmail() {
 
-        final ModelAndView mav = new ModelAndView("views/register");
-        return mav;
-    }
 
 
     @RequestMapping("/contact")
