@@ -21,4 +21,8 @@
         <textarea class="form-control" name="description" id="description"></textarea>
         <input type="hidden" value="${user.id}" name="userId">
     </div>
+
+    <div class="col-12 d-flex align-items-center justify-content-center">
+        <button form="serviceForm" class="w-100 continueBtn my-2">Crear</button>
+    </div>
 </form>
