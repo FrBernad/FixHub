@@ -1,24 +1,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="card w-100 reviewCard mt-3">
-    <div class="card-body container-fluid justify-items-center align-items-center">
-        <div class="row align-items-start">
-            <div class="col">
-                <div class="container-fluid">
-                    <div class="row align-items-center">
-                        <div class="col align-items-start align-items-center">
-                            <h5 class="card-title">${review.rating}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col d-flex justify-content-end ">
-                <p style="color: #6699CC">${review.creationDate}</p>
-            </div>
-        </div>
+<div class="col-12 mt-3">
+    <div class="container-fluid p-0">
         <div class="row">
-            <div class="col">
-                <div class="card-text">${review.description}</div>
+            <div class="col-12 d-flex justify-content-start align-items-center">
+                <c:choose>
+                    <c:when test="${review.rating == 0}">
+                        <c:forEach begin="1" end="5">
+                            <i class="far iconsColor fa-star fa-1x mr-2"></i>
+                        </c:forEach>
+                    </c:when>
+                    <c:when test="${review.rating>0 && review.rating<5}">
+                        <c:forEach begin="1" end="${review.rating}">
+                            <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                        </c:forEach>
+                        <c:forEach begin="${review.rating}" end="4">
+                            <i class="far iconsColor fa-star fa-1x mr-2"></i>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach begin="1" end="5">
+                            <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <div class="col-12">
+                <p class="text-left reviewBody my-2">${review.description}</p>
             </div>
         </div>
 

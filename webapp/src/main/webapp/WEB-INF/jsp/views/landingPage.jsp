@@ -93,7 +93,7 @@
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle mb-4">Servicios más populares</h1>
-                <div class="row justify-content-between align-items-center m-0">
+                <div class="row ${jobs.size()>=3 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
                     <c:choose>
                         <c:when test="${jobs.size()>0}">
                             <c:forEach var="job" items="${jobs}">

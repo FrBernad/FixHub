@@ -44,13 +44,25 @@ public class RouteController {
     }
 
     @RequestMapping("/discover")
-    public ModelAndView discover() {
+    public ModelAndView discover(@RequestParam(value = "filterBy",defaultValue = "0") final long filterBy, @RequestParam(value = "orderBy",defaultValue = "1") final long orderBy) {
         final ModelAndView mav = new ModelAndView("views/discover");
         Collection<Job> jobs = jobService.getJobs();
         mav.addObject("jobs", jobs);
+        mav.addObject("order", orderBy);
+        mav.addObject("filter", filterBy);
         System.out.println(jobs);
         return mav;
     }
+
+    //     @RequestMapping("/discover/filter")
+//    public ModelAndView discoverFilter(@RequestParam(value = "filterBy",defaultValue = "0") final long filterBy) {
+//        final ModelAndView mav = new ModelAndView("views/discover");
+//        Collection<Job> jobs = jobService.getJobs();
+//        mav.addObject("jobs", jobs);
+//        mav.addObject("filter", filterBy);
+//        System.out.println(jobs);
+//        return mav;
+//    }
 
     @RequestMapping("/discover/search")
     public ModelAndView discoverSearch(@RequestParam("searchPhrase") final String phrase) {

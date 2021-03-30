@@ -1,0 +1,36 @@
+.sectionTitle {
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 400;
+    color: black;
+}
+
+.jobTitle {
+    font-size: 22px;
+    line-height: 1;
+    font-weight: bold;
+    color: black;
+}
+
+.reviewTitle {
+    color: rgba(0, 0, 0, .8);
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 600;
+}
+
+.iconsColor {
+    color: #003B6D;
+}
+
+.reviewBody {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.contactInfo {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+}
