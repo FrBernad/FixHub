@@ -49,7 +49,7 @@ public class JobDaoImpl implements JobDao {
                 "description TEXT," +
                 "averageRating INT," +
                 "jobType INT," +
-                "jobProvided TEXT,"+
+                "jobProvided TEXT," +
                 "providerId BIGINT," +
                 "FOREIGN KEY(providerId) REFERENCES USERS(id)," +
                 "PRIMARY KEY(id))");
@@ -58,23 +58,42 @@ public class JobDaoImpl implements JobDao {
 
     @Override
 
-    public Job createJob(String jobProvided, long jobType, String description, User provider){
-        Map<String,Object> map = new HashMap<>();
+    public Job createJob(String jobProvided, long jobType, String description, User provider) {
+        Map<String, Object> map = new HashMap<>();
         final int averageRating = 0;
-        map.put("providerId",provider.getId());
-        map.put("jobType",jobType);
-        map.put("averageRating",averageRating);
-        map.put("description",description);
-        map.put("jobProvided",jobProvided);
+        map.put("providerId", provider.getId());
+        map.put("jobType", jobType);
+        map.put("averageRating", averageRating);
+        map.put("description", description);
+        map.put("jobProvided", jobProvided);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        int jobAux =1; /*Esta linea hay que cambiarla*/
-        return new Job(description,jobProvided,averageRating,jobAux,id,provider);
+        int jobAux = 1; /*TODO: Esta linea hay que cambiarla*/
+        return new Job(description, jobProvided, averageRating, jobAux, id, provider);
     }
 
     @Override
     public Collection<Job> getJobs() {
         return jdbcTemplate.query(
                 "SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id",
+                JOB_ROW_MAPPER);
+    }
+
+    @Override
+    public Collection<Job> getJobsBySearchPhrase(String phrase) {
+        return jdbcTemplate.query(
+                "SELECT * FROM ( SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id ) " +
+                        "AS aux JOIN jobcategories c ON aux.jobtype = c.id " +
+                        "WHERE to_tsvector('spanish',aux.description) @@ plainto_tsquery(?) " +
+                        "OR to_tsvector('spanish',aux.jobprovided) @@ plainto_tsquery(?) " +
+                        "OR to_tsvector('spanish',c.name) @@ plainto_tsquery(?)", new Object[]{phrase, phrase, phrase},
+                JOB_ROW_MAPPER);
+    }
+
+    @Override
+    public Collection<Job> getJobsByCategory(long jobCategory) {
+        return jdbcTemplate.query(
+                "SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id WHERE jobtype = ?"
+                , new Object[]{jobCategory},
                 JOB_ROW_MAPPER);
     }
 

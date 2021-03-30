@@ -39,4 +39,14 @@ public class JobServiceImp implements JobService {
     public Collection<JobCategories> getJobsCategories(){
         return jobCategoriesDao.getJobs();
     }
+
+    @Override
+    public Collection<Job> getJobsBySearchPhrase(String phrase) {
+        return jobDao.getJobsBySearchPhrase(phrase);
+    }
+
+    @Override
+    public Collection<Job> getJobsByCategory(long categoryId) {
+        return jobDao.getJobsByCategory(categoryId);
+    }
 }

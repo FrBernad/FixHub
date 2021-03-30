@@ -13,13 +13,15 @@
     <div class="container-lg">
         <div class="row pb-4 align-items-center justify-content-between">
             <div class="col-8 p-0 d-flex align-items-center justify-content-start">
-                <div class="input-group">
-                    <input placeholder="Buscar plomería, jardinería, y más..."
-                           class="inputRadius form-control p-4">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-lg inputBtn">Buscar</button>
+                <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
+                    <div class="input-group">
+                        <input placeholder="Buscar plomería, jardinería, y más..."
+                               class="inputRadius form-control p-4" name="searchPhrase">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-lg inputBtn" type="submit">Buscar</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="col-4 d-flex p-0 align-items-center justify-content-end">
                 <div class="dropdown mr-4">
@@ -48,11 +50,14 @@
         </div>
     </div>
 
+
     <div class="container-lg">
         <div class="row jobsContainer">
-            <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
-                <p class="mb-0">Mostrando resultados de: <span>"..."</span></p>
-            </div>
+            <c:if test="${searchPhrase!=null}">
+                <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
+                    <p class="mb-0">Mostrando resultados de: <span>"<c:out value='${searchPhrase}'/>"</span></p>
+                </div>
+            </c:if>
             <div class="col-12 p-0">
                 <div class="container-fluid">
                     <div class="row align-items-top justify-content-between">

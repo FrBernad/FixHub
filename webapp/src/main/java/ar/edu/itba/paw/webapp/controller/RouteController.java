@@ -43,7 +43,17 @@ public class RouteController {
         mav.addObject("jobs", jobs);
         System.out.println(jobs);
         return mav;
+    }
 
+    @RequestMapping("/discover/search")
+    public ModelAndView discoverSearch(@RequestParam("searchPhrase") final String phrase) {
+        final ModelAndView mav = new ModelAndView("views/discover");
+        Collection<Job> jobs = jobService.getJobsBySearchPhrase(phrase);
+        mav.addObject("jobs", jobs);
+        mav.addObject("searchPhrase",phrase);
+        System.out.println(jobs);
+        System.out.println(phrase);
+        return mav;
     }
 
     @RequestMapping("/jobs/{jobId}")
@@ -98,9 +108,9 @@ public class RouteController {
 
     @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
     public ModelAndView newServicePost(@RequestParam("jobProvided") final String jobProvided,
-                                          @RequestParam("jobType") final long jobType,
-                                          @RequestParam("description") final String description,
-                                          @RequestParam("userId") final long userId) {
+                                       @RequestParam("jobType") final long jobType,
+                                       @RequestParam("description") final String description,
+                                       @RequestParam("userId") final long userId) {
 
         Optional<User> user = userService.getUserById(userId);
         ModelAndView mav;

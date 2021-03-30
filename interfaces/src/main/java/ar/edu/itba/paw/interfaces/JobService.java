@@ -14,6 +14,11 @@ public interface JobService {
 
     Job createJob(String jobProvided, long jobType, String description, User provider);
 
+//   TODO: crear categories service
     Collection<JobCategories> getJobsCategories();
+
+    Collection<Job> getJobsBySearchPhrase(String phrase);
+
+    Collection<Job> getJobsByCategory(long categoryId);
 }
 
