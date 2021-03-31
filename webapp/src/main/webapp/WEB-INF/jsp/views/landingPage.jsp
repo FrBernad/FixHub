@@ -30,12 +30,24 @@
                         </form>
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
-                        <button class="btn-sm mr-2 suggestionBtn">Plomería</button>
-                        <button class="btn-sm mx-2 suggestionBtn">Electricista</button>
-                        <button class="btn-sm ml-2 suggestionBtn">Mecánico</button>
-                        <button class="btn-sm ml-2 suggestionBtn">Jardinero</button>
-                        <button class="btn-sm ml-2 suggestionBtn">Gasista</button>
-                        <button class="btn-sm ml-2 suggestionBtn">Carpintero</button>
+                        <a href="<c:url value='/discover/search?searchPhrase=plomeria'/>">
+                            <button class="btn-sm mr-2 suggestionBtn">Plomería</button>
+                        </a>
+                        <a href="<c:url value='/discover/search?searchPhrase=electricista'/>">
+                            <button class="btn-sm mx-2 suggestionBtn">Electricista</button>
+                        </a>
+                        <a href="<c:url value='/discover/search?searchPhrase=mecanico'/>">
+                            <button class="btn-sm ml-2 suggestionBtn">Mecánico</button>
+                        </a>
+                        <a href="<c:url value='/discover/search?searchPhrase=jardinero'/>">
+                            <button class="btn-sm ml-2 suggestionBtn">Jardinero</button>
+                        </a>
+                        <a href="<c:url value='/discover/search?searchPhrase=gasista'/>">
+                            <button class="btn-sm ml-2 suggestionBtn">Gasista</button>
+                        </a>
+                        <a href="<c:url value='/discover/search?searchPhrase=carpintero'/>">
+                            <button class="btn-sm ml-2 suggestionBtn">Carpintero</button>
+                        </a>
                     </div>
                 </div>
             </div>
