@@ -49,7 +49,6 @@ public class RouteController {
         mav.addObject("jobs", jobs);
         mav.addObject("order", orderBy);
         mav.addObject("filter", filterBy);
-        System.out.println(jobs);
         return mav;
     }
 
@@ -69,8 +68,7 @@ public class RouteController {
         Collection<Job> jobs = jobService.getJobsBySearchPhrase(phrase);
         mav.addObject("jobs", jobs);
         mav.addObject("searchPhrase",phrase);
-        System.out.println(jobs);
-        System.out.println(phrase);
+
         return mav;
     }
 
@@ -130,7 +128,6 @@ public class RouteController {
         }
 
         if(errors.hasErrors()){
-            System.out.println("por aca");
             return newService(user.get().getEmail(),form);
         }
 
@@ -163,7 +160,6 @@ public class RouteController {
 
     @RequestMapping("/contact")
     public ModelAndView contact(@ModelAttribute("contactForm") final ContactForm form) {
-
         return new ModelAndView("views/contact");
     }
 
