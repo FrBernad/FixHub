@@ -107,6 +107,11 @@ public class RouteController {
         ra.addFlashAttribute("email", form.getEmail());
         return mav;
     }
+      @RequestMapping("/user")
+    public ModelAndView user() {
+        final ModelAndView mav = new ModelAndView("views/user");
+        return mav;
+    }
 
     @RequestMapping(path = "/join/newService")
     public ModelAndView newService(@ModelAttribute("email") final String email,@ModelAttribute("serviceForm") final ServiceForm form) {
