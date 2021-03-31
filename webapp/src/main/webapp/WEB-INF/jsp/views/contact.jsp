@@ -4,6 +4,7 @@
 <head>
     <title>Contact</title>
     <%@ include file="../components/headers.jsp" %>
+    <link href='<c:url value="/resources/css/contactForm.css"/>' rel="stylesheet">
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
