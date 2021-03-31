@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <head>
     <title>Fixhub</title>
@@ -25,18 +27,20 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12">
-                                    <form id="mailForm" action="<c:url value='/join'/>" method="POST">
+                                    <c:url value="/join" var="postPath"/>
+                                    <form:form modelAttribute="emailForm" id="mailForm" action="${postPath}" method="POST">
                                         <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="email" class="form-control input" name="email" id="email"
-                                                   aria-describedby="email input">
+                                            <form:label path="email">Email</form:label>
+                                            <form:input type="email" class="form-control input" path="email" id="email"
+                                                   aria-describedby="email input"/>
+                                            <form:errors path="email" cssClass="formError" element="p"/>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="col-12 d-flex align-items-center justify-content-center">
-                                    <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
-                                        Continuar
-                                    </button>
+                                        <div class="col-12 d-flex align-items-center justify-content-center">
+                                            <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
+                                                Continuar
+                                            </button>
+                                        </div>
+                                    </form:form>
                                 </div>
                             </div>
                         </div>

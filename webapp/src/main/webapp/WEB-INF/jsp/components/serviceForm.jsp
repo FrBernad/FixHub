@@ -26,8 +26,8 @@
         <form:textarea class="form-control" path="description" id="description"/>
         <form:errors path="description" cssClass="formError" element="p"/>
 
-        <input type="hidden" value="${user.id}" name="userId">
     </div>
+    <input type="hidden" value="${user.id}" name="userId">
 
     <div class="col-12 d-flex align-items-center justify-content-center">
         <button type="submit" form="serviceForm" class="w-100 continueBtn my-2">Crear</button>
