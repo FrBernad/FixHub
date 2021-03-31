@@ -60,7 +60,7 @@
             </c:if>
             <div class="col-12 p-0">
                 <div class="container-fluid">
-                    <div class="row align-items-top ${jobs.size()>=3 ? 'justify-content-between': 'justify-content-start'}">
+                    <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
                         <c:choose>
                             <c:when test="${jobs.size()>0}">
                                 <c:forEach var="job" items="${jobs}">

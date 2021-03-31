@@ -7,9 +7,7 @@ import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.form.EmailForm;
-import ar.edu.itba.paw.webapp.form.RegisterForm;
-import ar.edu.itba.paw.webapp.form.ServiceForm;
+import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -73,21 +71,6 @@ public class RouteController {
         mav.addObject("searchPhrase",phrase);
         System.out.println(jobs);
         System.out.println(phrase);
-        return mav;
-    }
-
-    @RequestMapping("/jobs/{jobId}")
-    public ModelAndView job(@PathVariable("jobId") final long jobId) {
-        final ModelAndView mav;
-        Optional<Job> job = jobService.getJobById(jobId);
-        if (job.isPresent()) {
-            mav = new ModelAndView("views/job");
-            mav.addObject("job", job.get());
-            Collection<Review> reviews = reviewService.getReviewsByJobId(jobId);
-            mav.addObject("reviews", reviews);
-        } else {
-            mav = new ModelAndView("views/pageNotFound");
-        }
         return mav;
     }
 
@@ -178,18 +161,46 @@ public class RouteController {
         return mav;
     }
 
-
-
-
     @RequestMapping("/contact")
-    public ModelAndView contact() {
+    public ModelAndView contact(@ModelAttribute("contactForm") final ContactForm form) {
+
         return new ModelAndView("views/contact");
     }
 
+    @RequestMapping(value = "/contact",method = RequestMethod.POST)
+    public ModelAndView contact(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors){
+        if(errors.hasErrors()){
+            return contact(form);
+        }
+        final ModelAndView mav = new ModelAndView("redirect:/");
+        return mav;
+
+    }
+
+    @RequestMapping("/jobs/{jobId}")
+    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final long jobId) {
+        final ModelAndView mav;
+        Optional<Job> job = jobService.getJobById(jobId);
+        if (job.isPresent()) {
+            mav = new ModelAndView("views/job");
+            mav.addObject("job", job.get());
+            Collection<Review> reviews = reviewService.getReviewsByJobId(jobId);
+            mav.addObject("reviews", reviews);
+        } else {
+            mav = new ModelAndView("views/pageNotFound");
+        }
+        return mav;
+    }
+
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
-    public ModelAndView createReview(@PathVariable("jobId") final long jobId, @RequestParam("description") final String description, @RequestParam("rating") final int rating) {
+    public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("reviewForm") final ReviewForm form,
+                                     final BindingResult errors) {
         //TODO: Service hace lo del time
-        Review review = reviewService.createReview(description, jobId, rating);
+        if(errors.hasErrors()){
+            return job(form,jobId);
+        }
+
+        Review review = reviewService.createReview(form.getDescription(), jobId, form.getRating());
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
         return mav;
     }

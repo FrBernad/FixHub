@@ -10,14 +10,13 @@
 
 <div class="container-fluid d-flex align-items-center justify-content-center"
      style="background-color: rgb(245,245,242)">
-    <div class="container-lg w-50 p-5 my-5" style="background-color: white; max-width: 32em">
+    <div class="container-lg w-50 p-5 my-5" style="background-color: white; max-width: 75em">
         <div class="row w-100 m-0 align-items-center justify-content-center">
             <div class="col">
-                <h1 class="text-center title">Contactá al proveedor<br></h1>
-                <p class="subtitle text-center mb-4"><span class="font-weight-bold">Ingresá tus datos</span> y comencemos a
+                <h1 class="text-center title">Contactá al proveedor</h1>
+                <p class="subtitle text-center mb-4"><span class="font-weight-bold">¡Ingresá tus datos</span> y
+                    comencemos a
                     <br>trabajar!</p>
-            </div>
-            <div class="col">
                 <div class="container-lg">
                     <div class="row">
                         <div class="col-12 d-flex align-items-center justify-content-center">

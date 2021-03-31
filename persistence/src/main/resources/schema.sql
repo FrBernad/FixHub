@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS users(
+    userid   INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    username varchar(100)
+);

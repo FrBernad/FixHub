@@ -84,7 +84,8 @@ public class JobDaoImpl implements JobDao {
                         "AS aux JOIN jobcategories c ON aux.jobtype = c.id " +
                         "WHERE to_tsvector('spanish',aux.description) @@ plainto_tsquery(?) " +
                         "OR to_tsvector('spanish',aux.jobprovided) @@ plainto_tsquery(?) " +
-                        "OR to_tsvector('spanish',c.name) @@ plainto_tsquery(?)", new Object[]{phrase, phrase, phrase},
+                        "OR to_tsvector('spanish',aux.name) @@ plainto_tsquery(?)" +
+                        "OR to_tsvector('spanish',c.name) @@ plainto_tsquery(?)", new Object[]{phrase, phrase, phrase, phrase},
                 JOB_ROW_MAPPER);
     }
 

@@ -20,19 +20,27 @@
                     </div>
                     <div class="col-8 col-md-7 w-50 d-flex justify-content-center align-items-center">
                         <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
-                        <div class="input-group">
-                            <input placeholder="¿Qué servicio necesitas hoy?"
-                                   class="inputRadius form-control p-4" name="searchPhrase">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-lg inputBtn" type="submit">Buscar</button>
+                            <div class="input-group">
+                                <input placeholder="¿Qué servicio necesitas hoy?"
+                                       class="inputRadius form-control p-4" name="searchPhrase">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-lg inputBtn" type="submit">Buscar</button>
+                                </div>
                             </div>
-                        </div>
                         </form>
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
-                        <button class="btn-sm mr-2 suggestionBtn">Plomeria</button>
-                        <button class="btn-sm mx-2 suggestionBtn">Electricista</button>
-                        <button class="btn-sm ml-2 suggestionBtn">Mecanico</button>
+                        <c:forEach var="category" items="${categories}" begin="0" end="4">
+                            <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
+                                  style="width: 100%">
+                                <div class="input-group">
+                                    <input type="hidden" name="searchPhrase" value="${category.name}">
+                                    <div class="input-group-prepend" style="width: 80%">
+                                        <button class="btn-sm suggestionBtn" style="width: 100%">${category.name}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
@@ -94,8 +102,8 @@
     <div class="container-lg py-5 d-flex align-items-center w-100">
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
-                <h1 class="py-3 stepSectionTitle mb-4">Servicios más populares</h1>
-                <div class="row ${jobs.size()>=3 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
+                <h1 class="py-3 stepSectionTitle mb-0">Servicios más populares</h1>
+                <div class="row ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
                     <c:choose>
                         <c:when test="${jobs.size()>0}">
                             <c:forEach var="job" items="${jobs}">
