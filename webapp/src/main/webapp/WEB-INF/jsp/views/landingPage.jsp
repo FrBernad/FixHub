@@ -30,9 +30,12 @@
                         </form>
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
-                        <button class="btn-sm mr-2 suggestionBtn">Plomeria</button>
+                        <button class="btn-sm mr-2 suggestionBtn">Plomería</button>
                         <button class="btn-sm mx-2 suggestionBtn">Electricista</button>
-                        <button class="btn-sm ml-2 suggestionBtn">Mecanico</button>
+                        <button class="btn-sm ml-2 suggestionBtn">Mecánico</button>
+                        <button class="btn-sm ml-2 suggestionBtn">Jardinero</button>
+                        <button class="btn-sm ml-2 suggestionBtn">Gasista</button>
+                        <button class="btn-sm ml-2 suggestionBtn">Carpintero</button>
                     </div>
                 </div>
             </div>
