@@ -158,7 +158,18 @@ public class RouteController {
 
     @RequestMapping("/contact")
     public ModelAndView contact(@ModelAttribute("contactForm") final ContactForm form) {
+
         return new ModelAndView("views/contact");
+    }
+
+    @RequestMapping(value = "/contact",method = RequestMethod.POST)
+    public ModelAndView contact(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors){
+        if(errors.hasErrors()){
+            return contact(form);
+        }
+        final ModelAndView mav = new ModelAndView("redirect:/");
+        return mav;
+
     }
 
     @RequestMapping("/jobs/{jobId}")
