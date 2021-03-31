@@ -17,14 +17,15 @@
         <div class="row w-100 m-0 align-items-center justify-content-center">
             <div class="col-12">
                 <h1 class="text-center title">Crea un servicio</h1>
-                <p class="subtitle text-center mb-4"><span class="font-weight-bold">Ingresa los datos</span> y comienza a
+                <p class="subtitle text-center mb-4"><span class="font-weight-bold">Ingresa los datos</span> y comienza
+                    a
                     <br>brinda tu nuevo servicio.</p>
             </div>
             <div class="col-12">
                 <div class="container-lg">
                     <div class="row">
                         <div class="col-12 d-flex align-items-center justify-content-center">
-                           <%@include file="../components/serviceForm.jsp"%>
+                            <%@include file="../components/serviceForm.jsp" %>
                         </div>
                     </div>
                 </div>
