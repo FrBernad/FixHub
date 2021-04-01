@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Optional;
 
+@Controller
 public class JobController {
 
     @Autowired

@@ -34,3 +34,17 @@
     font-weight: 400;
     line-height: 1.25;
 }
+
+.top-left {
+    line-height: 1;
+    color: black;
+    position: absolute;
+    top: 1em;
+    left: 3em;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 12px 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    z-index: 10;
+}

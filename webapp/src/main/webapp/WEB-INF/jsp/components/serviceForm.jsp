@@ -5,7 +5,7 @@
 <form:form modelAttribute="serviceForm" action="${postPath}" id="serviceForm" class="serviceForm" method="POST">
     <div class="form-group">
         <form:label class="label" path="jobProvided">Servicio que va a proveer</form:label>
-        <form:input type="text" path="jobProvided" id="jobProvided" class="form-control"/>
+        <form:input type="text" path="jobProvided" id="jobProvided" class="form-control" cssErrorClass="form-control is-invalid"/>
         <form:errors path="jobProvided" cssClass="formError" element="p"/>
     </div>
     <div class="row">
@@ -20,10 +20,17 @@
                 <form:errors path="jobCategoryId" cssClass="formError" element="p"/>
             </div>
         </div>
+        <div class="col-6">
+            <div class="form-group">
+                <form:label class="label" path="price">Precio (ARS)</form:label>
+                <form:input type="number" path="price" id="price" class="form-control" cssErrorClass="form-control is-invalid"/>
+                <form:errors path="jobCategoryId" cssClass="formError" element="p"/>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <form:label class="label" path="description">Descripción</form:label>
-        <form:textarea class="form-control" path="description" id="description"/>
+        <form:textarea class="form-control" path="description" id="description" cssErrorClass="form-control is-invalid"/>
         <form:errors path="description" cssClass="formError" element="p"/>
 
     </div>

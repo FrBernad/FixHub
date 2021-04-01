@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.User;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ public interface JobDao {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, Number jobType, String description, User user);
+    Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User user);
 
     Collection<Job> getJobsBySearchPhrase(String phrase);
 

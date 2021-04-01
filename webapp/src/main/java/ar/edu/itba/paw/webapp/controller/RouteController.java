@@ -81,8 +81,8 @@ public class RouteController {
             return newService(user.get().getEmail(), form);
         }
 
-        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategoryId(), form.getDescription(), user.get());
-        return new ModelAndView("redirect:/jobs/" + job.getId());
+        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategoryId(), form.getDescription(), form.getPrice(),user.get());
+        return  new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
 }
