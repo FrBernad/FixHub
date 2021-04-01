@@ -63,8 +63,14 @@ public class JobController {
 
 
     @RequestMapping("/jobs/{jobId}/contact")
-    public ModelAndView contact() {
-        return new ModelAndView("views/contact");
+    public ModelAndView contact(@PathVariable("jobId") final long jobId, @ModelAttribute("contactForm") final ContactForm form) {
+        Optional<Job> job = jobService.getJobById(jobId);
+        final ModelAndView mav;
+        if (!job.isPresent()) {
+            return new ModelAndView("views/pageNotFound");
+        }
+        mav = new ModelAndView("views/contact");
+        return mav;
     }
 
 
