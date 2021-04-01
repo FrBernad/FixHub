@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -34,10 +35,10 @@
                             <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">
-                                    <input type="hidden" name="searchPhrase" value="${category.name}">
+                                    <input type="hidden" name="searchPhrase" value="${category}">
                                     <div class="input-group-prepend" style="width: 80%">
                                         <button class="btn-sm suggestionBtn"
-                                                style="width: 100%">${category.name}</button>
+                                                style="width: 100%"><spring:message code="home.categories.${category}"/></button>
                                     </div>
                                 </div>
                             </form>

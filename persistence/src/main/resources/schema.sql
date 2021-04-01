@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS JOBS
     id            SERIAL,
     description   TEXT,
     averageRating INT,
-    jobType       INT,
+    category      TEXT,
     jobProvided   TEXT,
     providerId    BIGINT,
     price         DECIMAL,
@@ -35,26 +35,4 @@ CREATE TABLE IF NOT EXISTS REVIEWS
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS JOBCATEGORIES
-(
-    id   SERIAL,
-    name TEXT UNIQUE,
-    PRIMARY KEY (id)
-);
-
-/*
-
-INSERT INTO jobcategories(name) VALUES ('Mecánico');
-INSERT INTO jobcategories(name) VALUES ('Electricista');
-INSERT INTO jobcategories(name) VALUES ('Plomero');
-INSERT INTO jobcategories(name) VALUES ('Jardinero');
-INSERT INTO jobcategories(name) VALUES ('Gasista');
-INSERT INTO jobcategories(name) VALUES ('Carpintero');
-INSERT INTO jobcategories(name) VALUES ('Pintor');
-INSERT INTO jobcategories(name) VALUES ('Herrero');
-INSERT INTO jobcategories(name) VALUES ('Techista');
-
-
-
-*/
 

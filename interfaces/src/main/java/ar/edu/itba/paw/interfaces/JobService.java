@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategories;
+import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
 
 import java.math.BigDecimal;
@@ -13,12 +13,11 @@ public interface JobService {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User provider);
-
-//   TODO: crear categories service
-    Collection<JobCategories> getJobsCategories();
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider);
 
     Collection<Job> getJobsBySearchPhrase(String phrase);
+
+    Collection<JobCategory> getJobsCategories();
 
     Collection<Job> getJobsByCategory(long categoryId);
 

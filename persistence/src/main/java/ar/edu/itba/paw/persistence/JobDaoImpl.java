@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.JobDao;
 import ar.edu.itba.paw.models.Job;
+import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,10 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class JobDaoImpl implements JobDao {
@@ -24,12 +22,13 @@ public class JobDaoImpl implements JobDao {
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
+    private Collection<JobCategory> categories = Arrays.asList(JobCategory.values().clone());
 
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("description"),
                     rs.getString("jobProvided"),
                     rs.getInt("averageRating"),
-                    rs.getInt("jobType"),
+                    JobCategory.valueOf(rs.getString("category")),
                     rs.getLong("id"),
                     rs.getBigDecimal("price"),
                     new User(rs.getLong("providerId"),
@@ -48,17 +47,18 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User provider) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider) {
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0;
         map.put("providerId", provider.getId());
-        map.put("jobType", jobType);
+        map.put("category", category);
         map.put("averageRating", averageRating);
         map.put("description", description);
         map.put("jobProvided", jobProvided);
         map.put("price", price);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new Job(description, jobProvided, averageRating, jobType, id, price, provider);
+
+        return new Job(description, jobProvided, averageRating, category, id, price, provider);
     }
 
     @Override
@@ -105,5 +105,10 @@ public class JobDaoImpl implements JobDao {
         return jdbcTemplate.query("SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id " +
                 "WHERE j.id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
     }
+
+    public Collection<JobCategory> getJobsCategories(){
+        return categories;
+    }
+
 
 }
