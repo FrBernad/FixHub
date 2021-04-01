@@ -15,6 +15,5 @@
                 <p class="text-left reviewBody my-2">${review.description}</p>
             </div>
         </div>
-
     </div>
 </div>
