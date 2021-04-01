@@ -67,13 +67,14 @@ public class JobController {
             return new ModelAndView("views/pageNotFound");
         }
         mav = new ModelAndView("views/contact");
-        mav.addObject("providerEmail", job.get().getProvider().getEmail());
+        mav.addObject("job", job.get());
         return mav;
     }
 
 
     @RequestMapping(value = "/jobs/{jobId}/contact", method = RequestMethod.POST)
-    public ModelAndView jobContactEmail(@Valid @ModelAttribute("contactForm") final ContactForm form,
+    public ModelAndView jobContactEmail(@PathVariable("jobId") final long jobId,
+                                        @Valid @ModelAttribute("contactForm") final ContactForm form,
                                         @RequestParam(value = "providerEmail") final String providerEmail,
                                         final BindingResult errors, final Locale locale) throws MessagingException {
 
@@ -84,7 +85,7 @@ public class JobController {
                 form.getMessage(),
                 providerEmail, locale);
 
-        ModelAndView mav = new ModelAndView("redirect:/discover");
+        ModelAndView mav = new ModelAndView("redirect:/jobs/"+jobId);
         return mav;
     }
 
