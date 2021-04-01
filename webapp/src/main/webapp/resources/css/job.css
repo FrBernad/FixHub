@@ -48,3 +48,29 @@
     border-radius: 20px;
     z-index: 10;
 }
+
+
+.jobPrice {
+    font-weight: 400;
+    font-size: 14px;
+    padding: 10px 18px;
+    background-color: #fff;
+    border-radius: 20px;
+    z-index: 10;
+    right: 15px;
+    bottom: 15px;
+    position: absolute;
+}
+
+
+.jobCategory {
+    font-weight: bold;
+    background-color: #BDBDBD !important;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 20px;
+    z-index: 10;
+    left: 15px;
+    top: 15px;
+    position: absolute;
+}
