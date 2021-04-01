@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class JobDaoImpl implements JobDao {
                     rs.getInt("averageRating"),
                     rs.getInt("jobType"),
                     rs.getLong("id"),
+                    rs.getBigDecimal("price"),
                     new User(rs.getLong("providerId"),
                             rs.getString("password"),
                             rs.getString("name"),
@@ -51,14 +53,14 @@ public class JobDaoImpl implements JobDao {
                 "jobType INT," +
                 "jobProvided TEXT," +
                 "providerId BIGINT," +
+                "price DECIMAL," +
                 "FOREIGN KEY(providerId) REFERENCES USERS(id)," +
                 "PRIMARY KEY(id))");
 
     }
 
     @Override
-
-    public Job createJob(String jobProvided, Number jobType, String description, User provider) {
+    public Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User provider) {
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0;
         map.put("providerId", provider.getId());
@@ -66,8 +68,9 @@ public class JobDaoImpl implements JobDao {
         map.put("averageRating", averageRating);
         map.put("description", description);
         map.put("jobProvided", jobProvided);
+        map.put("price", price);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new Job(description, jobProvided, averageRating, (Integer) jobType, id, provider);
+        return new Job(description, jobProvided, averageRating, jobType, id, price, provider);
     }
 
     @Override

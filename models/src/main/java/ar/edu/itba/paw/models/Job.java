@@ -1,20 +1,24 @@
 package ar.edu.itba.paw.models;
 
 
+import java.math.BigDecimal;
+
 public class Job {
     private String description,jobProvided;
     private int averageRating;
     private Number jobType;
     private Number id;
     private User provider;
+    private BigDecimal price;
 
-    public Job(String description,String jobProvided, int averageRating, Number jobType, Number id, User provider) {
+    public Job(String description,String jobProvided, int averageRating, Number jobType, Number id, BigDecimal price, User provider) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
         this.jobType = jobType;
         this.id = id;
         this.provider = provider;
+        this.price = price;
     }
 
     @Override
@@ -26,7 +30,16 @@ public class Job {
                 ", jobType=" + jobType +
                 ", id=" + id +
                 ", provider=" + provider +
+                ", price=" + price +
                 '}';
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getDescription() {

@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -31,8 +32,8 @@ public class JobServiceImp implements JobService {
     }
 
     @Override
-    public Job createJob(String jobProvided, Number jobType, String description, User user) {
-        return jobDao.createJob(jobProvided,jobType,description,user);
+    public Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User user) {
+        return jobDao.createJob(jobProvided,jobType,description, price, user);
     }
 
     @Override

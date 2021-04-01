@@ -14,6 +14,7 @@
                     <span class="jobCardAvgRatingCount"> (<c:out value="${job.averageRating})"/></span>
                 </div>
             </div>
+            <%--                TODO: cambiar esto para que sea con el join--%>
             <span class="badge badge-pill badge-secondary category">${categories[job.jobType - 1].name}</span>
         </div>
         <div class="jobCardImgContainer">
@@ -22,7 +23,7 @@
         </div>
         <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
         <div class="jobPrice">
-            <p class="text-left mb-0">A partir de $3500</p>
+            <p class="text-left mb-0">A partir de $${job.price}</p>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategories;
 import ar.edu.itba.paw.models.User;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -12,7 +13,7 @@ public interface JobService {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, Number jobType, String description, User provider);
+    Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User provider);
 
 //   TODO: crear categories service
     Collection<JobCategories> getJobsCategories();
