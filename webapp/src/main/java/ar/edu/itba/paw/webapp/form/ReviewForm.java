@@ -1,18 +1,20 @@
 package ar.edu.itba.paw.webapp.form;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 public class ReviewForm {
 
-    @NotBlank
+    @NotEmpty
     private String description;
 
+    @NotEmpty
     @Min(1)
     @Max(5)
-    private int rating;
+    private Integer rating;
 
     public String getDescription() {
         return description;

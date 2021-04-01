@@ -1,22 +1,30 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
 public class ServiceForm {
 
-    @NotBlank
+    @NotEmpty
+    @Size(max = 30)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String jobProvided;
 
-    @NotBlank
+    @NotEmpty
+    @Size(max = 300)
     private String description;
 
     //TODO: Validar que esté vacío. NotBlank no funciona con números.
     @Range(min=1, max=999999)
     private BigDecimal price;
 
+    @NotEmpty
     private int jobCategoryId;
 
     public String getJobProvided() {

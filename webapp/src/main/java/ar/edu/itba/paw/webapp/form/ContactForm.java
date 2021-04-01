@@ -1,33 +1,50 @@
 package ar.edu.itba.paw.webapp.form;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class ContactForm {
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 1, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String name;
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String surname;
 
-    @NotBlank
+    @NotEmpty
+    @Pattern(regexp = "[0-9]+")
     private String phoneNumber;
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String state;
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String city;
 
-    @NotBlank
+    @NotEmpty
+    @Size(max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String street;
 
-    @NotBlank
+
+    @NotEmpty
+    @Pattern(regexp = "[0-9]+")
     private String addressNumber;
 
+    @Pattern(regexp = "[0-9]+")
     private String floor;
 
-    @NotBlank
+    @NotEmpty
     private String message;
 
     public String getName() {

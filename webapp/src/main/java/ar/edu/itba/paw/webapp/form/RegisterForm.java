@@ -1,28 +1,39 @@
 package ar.edu.itba.paw.webapp.form;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class RegisterForm{
 
-
-    @NotBlank
+    @NotEmpty
+    @Size(max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String name;
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String surname;
 
-    @NotBlank
+    @NotEmpty
+    @Pattern(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
-    @NotBlank
+    @NotEmpty
+    @Pattern(regexp = "[0-9]+")
     private String phoneNumber;
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String state;
 
-    @NotBlank
+    @NotEmpty
+    @Size(min = 2, max = 50)
+    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
     private String city;
 
     public String getName() {
