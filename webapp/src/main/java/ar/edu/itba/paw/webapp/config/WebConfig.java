@@ -31,20 +31,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private Resource schemaSql;
 
     @Bean
-    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
-        final DataSourceInitializer dsi = new DataSourceInitializer();
-        dsi.setDataSource(ds);
-        dsi.setDatabasePopulator(databasePopulator());
-        return dsi;
-    }
-
-    private DatabasePopulator databasePopulator() {
-        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScript(schemaSql);
-        return dbp;
-    }
-
-    @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:i18n/messages");
@@ -80,8 +66,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2021a-06");
 //        ds.setUsername("paw-2021a-06");
 //        ds.setPassword("QroE40tsz");
-
         return ds;
+    }
+
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
+        final DataSourceInitializer dsi = new DataSourceInitializer();
+        dsi.setDataSource(ds);
+        dsi.setDatabasePopulator(databasePopulator());
+        return dsi;
+    }
+
+    private DatabasePopulator databasePopulator() {
+        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
+        dbp.addScript(schemaSql);
+        return dbp;
     }
 
 }

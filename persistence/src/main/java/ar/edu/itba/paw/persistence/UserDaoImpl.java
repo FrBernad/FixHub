@@ -35,17 +35,6 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USERS").usingGeneratedKeyColumns("id");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
-                "USERS(" +
-                "id SERIAL," +
-                "password TEXT," +
-                "name TEXT," +
-                "surname TEXT, " +
-                "email TEXT UNIQUE," +
-                "phoneNumber TEXT," +
-                "state TEXT," +
-                "city TEXT," +
-                "PRIMARY KEY(id))");
     }
 
     @Override

@@ -45,18 +45,6 @@ public class JobDaoImpl implements JobDao {
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("id");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
-                "JOBS(" +
-                "id SERIAL," +
-                "description TEXT," +
-                "averageRating INT," +
-                "jobType INT," +
-                "jobProvided TEXT," +
-                "providerId BIGINT," +
-                "price DECIMAL," +
-                "FOREIGN KEY(providerId) REFERENCES USERS(id)," +
-                "PRIMARY KEY(id))");
-
     }
 
     @Override

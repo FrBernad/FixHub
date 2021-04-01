@@ -34,15 +34,6 @@ public class ReviewDaoImpl implements ReviewDao {
     public ReviewDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("REVIEWS").usingGeneratedKeyColumns("id");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " +
-                "REVIEWS(" +
-                "id SERIAL," +
-                "description TEXT," +
-                "jobId BIGINT," +
-                "rating INT," +
-                "creationDate TIMESTAMP," +
-                "FOREIGN KEY(jobId) REFERENCES JOBS(id)," +
-                "PRIMARY KEY(id))");
     }
 
     @Override
