@@ -14,6 +14,7 @@
                     <span class="jobCardAvgRatingCount"> (<c:out value="${job.averageRating})"/></span>
                 </div>
             </div>
+            <%--                TODO: cambiar esto para que sea con el join--%>
             <span class="badge badge-pill badge-secondary category">${categories[job.jobType - 1].name}</span>
         </div>
         <div class="jobCardImgContainer">

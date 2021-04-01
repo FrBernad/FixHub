@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<c:url value="/contact" var="postPath"/>
+<c:url value="/job/contact" var="postPath"/>
 <form:form modelAttribute="contactForm" action="${postPath}" class="contactForm" method="POST">
     <div class="row">
         <div class="col">

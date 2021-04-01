@@ -35,7 +35,7 @@ public class RouteController {
     public ModelAndView landingPage() {
         final ModelAndView mav = new ModelAndView("views/landingPage");
         Collection<Job> jobs = jobService.getJobs();
-        //TODO: Ver si está bien esto
+        //TODO: Cambiar esto por el join de las categories
         Collection<JobCategories> categories = jobService.getJobsCategories();
         mav.addObject("jobs", jobs);
         mav.addObject("categories", categories);
@@ -64,7 +64,9 @@ public class RouteController {
 
     @RequestMapping("/discover/search")
     public ModelAndView discoverSearch(@RequestParam("searchPhrase") final String phrase) {
+        System.out.println(phrase);
         final ModelAndView mav = new ModelAndView("views/discover");
+        System.out.println(phrase);
         Collection<Job> jobs = jobService.getJobsBySearchPhrase(phrase);
         mav.addObject("jobs", jobs);
         mav.addObject("searchPhrase",phrase);
@@ -153,20 +155,11 @@ public class RouteController {
         return mav;
     }
 
-    @RequestMapping("/contact")
+    @RequestMapping("/jobs/contact")
     public ModelAndView contact(@ModelAttribute("contactForm") final ContactForm form) {
         return new ModelAndView("views/contact");
     }
 
-    @RequestMapping(value = "/contact",method = RequestMethod.POST)
-    public ModelAndView contact(@Valid @ModelAttribute("contactForm") final ContactForm form, final BindingResult errors){
-        if(errors.hasErrors()){
-            return contact(form);
-        }
-        final ModelAndView mav = new ModelAndView("redirect:/");
-        return mav;
-
-    }
 
     @RequestMapping("/jobs/{jobId}")
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final long jobId) {

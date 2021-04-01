@@ -24,13 +24,13 @@
                         <div class="col-7">
                             <div class="container-fluid p-0">
                                 <row>
-                                    <div class="col-12">
+                                    <div class="col-12 pl-0">
                                         <h1 class="jobTitle mt-3">${job.jobProvided}</h1>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 pl-0">
                                         <h1 class="contactInfo ">${job.provider.name} ${job.provider.surname}</h1>
                                     </div>
-                                    <div class="col-12 mt-2">
+                                    <div class="col-12 pl-0 mt-2">
                                         <c:forEach begin="1" end="${job.averageRating}">
                                             <i class="fas iconsColor fa-star fa-1x mr-2"></i>
                                         </c:forEach>

@@ -57,7 +57,6 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-
     public Job createJob(String jobProvided, Number jobType, String description, User provider) {
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0;
@@ -67,7 +66,7 @@ public class JobDaoImpl implements JobDao {
         map.put("description", description);
         map.put("jobProvided", jobProvided);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
-        return new Job(description, jobProvided, averageRating, (Integer) jobType, id, provider);
+        return new Job(description, jobProvided, averageRating, jobType, id, provider);
     }
 
     @Override
