@@ -85,4 +85,9 @@ public class RouteController {
         return  new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
+    @RequestMapping("/pageNotFound")
+    public ModelAndView pageNotFound() {
+        return new ModelAndView("views/pageNotFound");
+    }
+
 }
