@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.JobCategoriesDao;
 import ar.edu.itba.paw.interfaces.JobDao;
 import ar.edu.itba.paw.interfaces.JobService;
 import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategories;
+import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,9 +17,6 @@ public class JobServiceImp implements JobService {
     @Autowired
     private JobDao jobDao;
 
-    @Autowired
-    private JobCategoriesDao jobCategoriesDao;
-
     @Override
     public Collection<Job> getJobs() {
         return jobDao.getJobs();
@@ -32,13 +28,12 @@ public class JobServiceImp implements JobService {
     }
 
     @Override
-    public Job createJob(String jobProvided, Number jobType, String description, BigDecimal price, User user) {
-        return jobDao.createJob(jobProvided,jobType,description, price, user);
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user) {
+        return jobDao.createJob(jobProvided,category,description, price, user);
     }
-
     @Override
-    public Collection<JobCategories> getJobsCategories(){
-        return jobCategoriesDao.getJobs();
+    public Collection<JobCategory> getJobsCategories(){
+        return jobDao.getJobsCategories();
     }
 
     @Override
