@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="col-5 d-flex justify-content-start align-items-center">
-                            <a href="<c:url value='/contact'/>">
+                            <a href="<c:url value='/jobs/${job.id}/contact'/>">
                                 <button class="btn btn-primary">Contactar</button>
                             </a>
                         </div>

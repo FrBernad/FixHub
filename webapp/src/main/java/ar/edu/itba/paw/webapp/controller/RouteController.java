@@ -43,7 +43,7 @@ public class RouteController {
     }
 
     @RequestMapping("/discover")
-    public ModelAndView discover(@RequestParam(value = "filterBy",defaultValue = "0") final long filterBy, @RequestParam(value = "orderBy",defaultValue = "1") final long orderBy) {
+    public ModelAndView discover(@RequestParam(value = "filterBy", defaultValue = "0") final long filterBy, @RequestParam(value = "orderBy", defaultValue = "1") final long orderBy) {
         final ModelAndView mav = new ModelAndView("views/discover");
         Collection<Job> jobs = jobService.getJobs();
         mav.addObject("jobs", jobs);
@@ -69,7 +69,7 @@ public class RouteController {
         System.out.println(phrase);
         Collection<Job> jobs = jobService.getJobsBySearchPhrase(phrase);
         mav.addObject("jobs", jobs);
-        mav.addObject("searchPhrase",phrase);
+        mav.addObject("searchPhrase", phrase);
 
         return mav;
     }
@@ -80,9 +80,9 @@ public class RouteController {
     }
 
     @RequestMapping(path = "/join", method = RequestMethod.POST)
-    public ModelAndView joinEmailPost(RedirectAttributes ra, @Valid @ModelAttribute("emailForm") final EmailForm form,final BindingResult errors) {
+    public ModelAndView joinEmailPost(RedirectAttributes ra, @Valid @ModelAttribute("emailForm") final EmailForm form, final BindingResult errors) {
 
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             return join(form);
         }
 
@@ -92,7 +92,7 @@ public class RouteController {
     }
 
     @RequestMapping(path = "/join/newService")
-    public ModelAndView newService(@ModelAttribute("email") final String email,@ModelAttribute("serviceForm") final ServiceForm form) {
+    public ModelAndView newService(@ModelAttribute("email") final String email, @ModelAttribute("serviceForm") final ServiceForm form) {
 
         ModelAndView mav;
 
@@ -124,23 +124,23 @@ public class RouteController {
             return new ModelAndView("redirect:/jobs/");
         }
 
-        if(errors.hasErrors()){
-            return newService(user.get().getEmail(),form);
+        if (errors.hasErrors()) {
+            return newService(user.get().getEmail(), form);
         }
 
         Job job = jobService.createJob(form.getJobProvided(), form.getJobCategoryId(), form.getDescription(), user.get());
-        return  new ModelAndView("redirect:/jobs/" + job.getId());
+        return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
     @RequestMapping(path = "/join/register")
-    public ModelAndView registerEmail(@ModelAttribute("registerForm") final RegisterForm form){
+    public ModelAndView registerEmail(@ModelAttribute("registerForm") final RegisterForm form) {
         final ModelAndView mav = new ModelAndView("views/register");
         return mav;
     }
 
     @RequestMapping(path = "/join/register", method = RequestMethod.POST)
-    public ModelAndView registerEmailPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors){
-        if(errors.hasErrors())
+    public ModelAndView registerEmailPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors) {
+        if (errors.hasErrors())
             return registerEmail(form);
 
         User provider;
@@ -155,8 +155,9 @@ public class RouteController {
         return mav;
     }
 
-    @RequestMapping("/jobs/contact")
-    public ModelAndView contact(@ModelAttribute("contactForm") final ContactForm form) {
+    @RequestMapping("/jobs/{jobId}/contact")
+    public ModelAndView contact(@ModelAttribute("contactForm") final ContactForm form,
+                                @PathVariable("jobId") final long jobId) {
         return new ModelAndView("views/contact");
     }
 
@@ -178,10 +179,10 @@ public class RouteController {
 
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("reviewForm") final ReviewForm form,
-                                     final BindingResult errors) {
+                                      final BindingResult errors) {
         //TODO: Service hace lo del time
-        if(errors.hasErrors()){
-            return job(form,jobId);
+        if (errors.hasErrors()) {
+            return job(form, jobId);
         }
 
         Review review = reviewService.createReview(form.getDescription(), jobId, form.getRating());
