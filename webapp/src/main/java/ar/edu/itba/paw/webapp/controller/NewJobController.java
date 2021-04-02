@@ -41,7 +41,6 @@ public class NewJobController {
     public ModelAndView registerEmailPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors) {
         if (errors.hasErrors())
             return registerEmail(form);
-
         try {
             User provider = userService.createUser("password", form.getName(), form.getSurname(), form.getEmail(), form.getPhoneNumber(),
                     form.getState(), form.getCity());

@@ -36,7 +36,6 @@ public class ContactForm {
     @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$")
     private String street;
 
-
     @NotEmpty
     @Pattern(regexp = "[0-9]+")
     private String addressNumber;

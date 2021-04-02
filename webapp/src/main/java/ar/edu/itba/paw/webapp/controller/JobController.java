@@ -57,14 +57,15 @@ public class JobController {
         if (errors.hasErrors()) {
             return job(form, jobId);
         }
-        Review review = reviewService.createReview(form.getDescription(), jobId, form.getRating());
+        Review review = reviewService.createReview(form.getDescription(), jobId, Integer.parseInt(form.getRating()));
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
         return mav;
     }
 
 
     @RequestMapping("/jobs/{jobId}/contact")
-    public ModelAndView contact(@PathVariable("jobId") final long jobId, @ModelAttribute("contactForm") final ContactForm form) {
+    public ModelAndView contact(@PathVariable("jobId") final long jobId,
+                                @ModelAttribute("contactForm") final ContactForm form) {
         Optional<Job> job = jobService.getJobById(jobId);
         final ModelAndView mav;
         if (!job.isPresent()) {
@@ -77,10 +78,14 @@ public class JobController {
 
 
     @RequestMapping(value = "/jobs/{jobId}/contact", method = RequestMethod.POST)
-    public ModelAndView jobContactEmail(@PathVariable("jobId") final long jobId,
+    public ModelAndView contactPost(@PathVariable("jobId") final long jobId,
                                         @Valid @ModelAttribute("contactForm") final ContactForm form,
                                         @RequestParam(value = "providerEmail") final String providerEmail,
                                         final BindingResult errors, final Locale locale) throws MessagingException {
+
+        if(errors.hasErrors()){
+            return contact(jobId,form);
+        }
 
         emailService.sendSimpleMail(form.getName(),
                 form.getSurname(),

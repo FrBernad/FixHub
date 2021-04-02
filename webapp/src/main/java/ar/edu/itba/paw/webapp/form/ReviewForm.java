@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 public class ReviewForm {
 
@@ -12,9 +13,8 @@ public class ReviewForm {
     private String description;
 
     @NotEmpty
-    @Min(1)
-    @Max(5)
-    private int rating;
+    @Pattern(regexp = "[1-5]")
+    private String rating;
 
     public String getDescription() {
         return description;
@@ -24,11 +24,11 @@ public class ReviewForm {
         this.description = description;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
