@@ -67,10 +67,10 @@ public class JobController {
     public ModelAndView contact(@PathVariable("jobId") final long jobId,
                                 @ModelAttribute("contactForm") final ContactForm form) {
         Optional<Job> job = jobService.getJobById(jobId);
-        final ModelAndView mav;
         if (!job.isPresent()) {
             return new ModelAndView("views/pageNotFound");
         }
+        final ModelAndView mav;
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job.get());
         return mav;
@@ -79,12 +79,12 @@ public class JobController {
 
     @RequestMapping(value = "/jobs/{jobId}/contact", method = RequestMethod.POST)
     public ModelAndView contactPost(@PathVariable("jobId") final long jobId,
-                                        @Valid @ModelAttribute("contactForm") final ContactForm form,
-                                        @RequestParam(value = "providerEmail") final String providerEmail,
-                                        final BindingResult errors, final Locale locale) throws MessagingException {
+                                    @Valid @ModelAttribute("contactForm") final ContactForm form,
+                                    final BindingResult errors, @RequestParam(value = "providerEmail") final String providerEmail,
+                                    final Locale locale) throws MessagingException {
 
-        if(errors.hasErrors()){
-            return contact(jobId,form);
+        if (errors.hasErrors()) {
+            return contact(jobId, form);
         }
 
         emailService.sendSimpleMail(form.getName(),
@@ -94,7 +94,7 @@ public class JobController {
                 form.getMessage(),
                 providerEmail, locale);
 
-        ModelAndView mav = new ModelAndView("redirect:/jobs/"+jobId);
+        ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
         return mav;
     }
 

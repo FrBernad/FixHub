@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:url value="/jobs/${job.id}/contact" var="postPath"/>
-<form:form modelAttribute="contactForm" action="${postPath}" class="contactForm" method="POST">
+<form:form modelAttribute="contactForm" id="contactForm" action="${postPath}" class="contactForm" method="POST">
     <div class="row">
         <div class="col">
             <div class="form-group">
@@ -56,8 +56,7 @@
         <div class="col">
             <div class="form-group">
                 <form:label path="addressNumber">Número</form:label>
-                <form:input type="number" path="addressNumber" id="addressNumber" class="form-control"
-                            cssErrorClass="form-control is-invalid"/>
+                <form:input type="number" path="addressNumber" id="addressNumber" class="form-control" cssErrorClass="form-control is-invalid"/>
                 <form:errors path="addressNumber" cssClass="formError" element="p"/>
 
             </div>
@@ -80,7 +79,7 @@
     <div class="row">
         <div class="col d-flex align-items-center justify-content-end">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit"  form="contactForm" class="btn btn-primary">Enviar</button>
             </div>
         </div>
     </div>
