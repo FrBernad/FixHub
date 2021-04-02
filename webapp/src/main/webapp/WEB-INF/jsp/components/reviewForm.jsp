@@ -13,12 +13,12 @@
                             <div class="form-group">
                                 <form:label path="description">¿Qué te pareció el trabajo?</form:label>
                                 <form:textarea type="text" path="description" id="description"
-                                               class="form-control"/>
+                                               class="form-control"  cssErrorClass="form-control is-invalid"/>
                                 <form:errors path="description" cssClass="formError" element="p"/>
                             </div>
                             <div class="form-group">
                                 <form:label path="rating">Calificación</form:label>
-                                <form:select id="rating" path="rating" class="form-control">
+                                <form:select id="rating" path="rating" class="form-control"  cssErrorClass="form-control is-invalid">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
