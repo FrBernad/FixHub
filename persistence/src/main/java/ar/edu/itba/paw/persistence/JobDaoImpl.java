@@ -59,7 +59,7 @@ public class JobDaoImpl implements JobDao {
         map.put("price", price);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
 
-        return new Job(description, jobProvided, averageRating, category, id, price, provider);
+        return new Job(description, jobProvided, averageRating,totalRatings, category, id, price, provider);
     }
 
     @Override
