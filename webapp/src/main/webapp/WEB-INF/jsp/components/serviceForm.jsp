@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <c:url value="/join/newService" var="postPath"/>
 <form:form modelAttribute="serviceForm" action="${postPath}" id="serviceForm" class="serviceForm" method="POST">
@@ -11,20 +12,20 @@
     <div class="row">
         <div class="col-6">
             <div class="form-group">
-                <form:label class="label" path="jobCategoryId">Tipo de servicio</form:label>
-                <form:select id="jobCategoryId" path="jobCategoryId" class="form-control">
+                <form:label class="label" path="jobCategory">Tipo de servicio</form:label>
+                <form:select id="jobCategory" path="jobCategory" class="form-control">
                     <c:forEach var="category" items="${categories}">
-                        <option selected value="${category.id}">${category.name}</option>
+                        <option selected value="${category}"><spring:message code="home.categories.${category}"/></option>
                     </c:forEach>
                 </form:select>
-                <form:errors path="jobCategoryId" cssClass="formError" element="p"/>
+                <form:errors path="jobCategory" cssClass="formError" element="p"/>
             </div>
         </div>
         <div class="col-6">
             <div class="form-group">
                 <form:label class="label" path="price">Precio (ARS)</form:label>
                 <form:input type="number" path="price" id="price" class="form-control" cssErrorClass="form-control is-invalid"/>
-                <form:errors path="jobCategoryId" cssClass="formError" element="p"/>
+                <form:errors path="price" cssClass="formError" element="p"/>
             </div>
         </div>
     </div>

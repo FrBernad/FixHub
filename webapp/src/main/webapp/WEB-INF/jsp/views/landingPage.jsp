@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -34,9 +35,10 @@
                             <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">
-                                    <input type="hidden" name="searchPhrase" value="${category.name}">
+                                    <input type="hidden" name="searchPhrase" value="${category}">
                                     <div class="input-group-prepend" style="width: 80%">
-                                        <button class="btn-sm suggestionBtn" style="width: 100%">${category.name}</button>
+                                        <button class="btn-sm suggestionBtn"
+                                                style="width: 100%"><spring:message code="home.categories.${category}"/></button>
                                     </div>
                                 </div>
                             </form>
@@ -103,24 +105,28 @@
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle mb-0">Servicios más populares</h1>
-                <div class="row ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
-                    <c:choose>
-                        <c:when test="${jobs.size()>0}">
-                            <c:forEach var="job" items="${jobs}">
-                                <%@ include file="../components/popularJobCard.jsp" %>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="col-12 d-flex align-items-center justify-content-center">
-                                <div class="container mt-2 d-flex align-items-center justify-content-center"
-                                     style="height: 300px; width: auto; background-color: white">
-                                    <p class="m-0 text-center p-4" style="font-size: 16px">Todavía no hay trabajos
-                                        disponibles,<br>intenta mas
-                                        adelante.</p>
+            </div>
+            <div class="col-12 p-0">
+                <div class="container-fluid p-0">
+                    <div class="row ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
+                        <c:choose>
+                            <c:when test="${jobs.size()>0}">
+                                <c:forEach var="job" items="${jobs}">
+                                    <%@ include file="../components/popularJobCard.jsp" %>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-12 d-flex align-items-center justify-content-center">
+                                    <div class="container mt-2 d-flex align-items-center justify-content-center"
+                                         style="height: 300px; width: auto; background-color: white">
+                                        <p class="m-0 text-center p-4" style="font-size: 16px">Todavía no hay trabajos
+                                            disponibles,<br>intenta mas
+                                            adelante.</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
         </div>

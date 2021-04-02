@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.models.JobCategory;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -21,11 +22,11 @@ public class ServiceForm {
     private String description;
 
     //TODO: Validar que esté vacío. NotBlank no funciona con números.
-    @Range(min=1, max=999999)
+    @Range(min = 1, max = 999999)
     private BigDecimal price;
 
     @NotEmpty
-    private int jobCategoryId;
+    private JobCategory jobCategory;
 
     public String getJobProvided() {
         return jobProvided;
@@ -43,13 +44,9 @@ public class ServiceForm {
         this.description = description;
     }
 
-    public int getJobCategoryId() {
-        return jobCategoryId;
-    }
+    public JobCategory getJobCategory() {return jobCategory;}
 
-    public void setJobCategoryId(int jobCategoryId) {
-        this.jobCategoryId = jobCategoryId;
-    }
+    public void setJobCategory(JobCategory jobCategory) {this.jobCategory = jobCategory;}
 
     public BigDecimal getPrice() {
         return price;

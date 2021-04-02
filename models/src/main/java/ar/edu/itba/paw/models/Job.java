@@ -6,16 +6,16 @@ import java.math.BigDecimal;
 public class Job {
     private String description,jobProvided;
     private int averageRating;
-    private Number jobType;
+    private JobCategory category;
     private Number id;
     private User provider;
     private BigDecimal price;
 
-    public Job(String description,String jobProvided, int averageRating, Number jobType, Number id, BigDecimal price, User provider) {
+    public Job(String description,String jobProvided, int averageRating, JobCategory category, Number id, BigDecimal price, User provider) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
-        this.jobType = jobType;
+        this.category = category;
         this.id = id;
         this.provider = provider;
         this.price = price;
@@ -27,7 +27,7 @@ public class Job {
                 "description='" + description + '\'' +
                 ", jobProvided='" + jobProvided + '\'' +
                 ", averageRating=" + averageRating +
-                ", jobType=" + jobType +
+                ", category=" + category +
                 ", id=" + id +
                 ", provider=" + provider +
                 ", price=" + price +
@@ -66,13 +66,10 @@ public class Job {
         this.averageRating = averageRating;
     }
 
-    public Number getJobType() {
-        return jobType;
-    }
 
-    public void setJobType(Number jobType) {
-        this.jobType = jobType;
-    }
+    public JobCategory getCategory() { return category;}
+
+    public void setCategory(JobCategory category) {this.category = category;}
 
     public Number getId() {
         return id;

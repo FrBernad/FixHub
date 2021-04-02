@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<c:url value="/job/${job.id}/contact" var="postPath"/>
+<c:url value="/jobs/${job.id}/contact" var="postPath"/>
 <form:form modelAttribute="contactForm" action="${postPath}" class="contactForm" method="POST">
     <div class="row">
         <div class="col">
@@ -27,7 +27,7 @@
                     cssErrorClass="form-control is-invalid"/>
         <form:errors path="phoneNumber" cssClass="formError" element="p"/>
     </div>
-    <input type="hidden" value="${providerEmail}" name="providerEmail">
+    <input type="hidden" value="${job.provider.email}" name="providerEmail">
     <div class="row">
         <div class="col">
             <div class="form-group">

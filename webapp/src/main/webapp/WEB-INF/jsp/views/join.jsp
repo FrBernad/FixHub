@@ -28,19 +28,20 @@
                             <div class="row">
                                 <div class="col-12">
                                     <c:url value="/join" var="postPath"/>
-                                    <form:form modelAttribute="emailForm" id="mailForm" action="${postPath}" method="POST">
+                                    <form:form modelAttribute="emailForm" id="mailForm" action="${postPath}"
+                                               method="POST">
                                         <div class="form-group">
                                             <form:label path="email">Email</form:label>
                                             <form:input type="email" class="form-control input" path="email" id="email"
-                                                   aria-describedby="email input"/>
+                                                        aria-describedby="email input"/>
                                             <form:errors path="email" cssClass="formError" element="p"/>
                                         </div>
-                                        <div class="col-12 d-flex align-items-center justify-content-center">
-                                            <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
-                                                Continuar
-                                            </button>
-                                        </div>
                                     </form:form>
+                                </div>
+                                <div class="col-12 d-flex align-items-center justify-content-center">
+                                    <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
+                                        Continuar
+                                    </button>
                                 </div>
                             </div>
                         </div>

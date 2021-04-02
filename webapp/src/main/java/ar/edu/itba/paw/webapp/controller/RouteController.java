@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.JobService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategories;
+import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class RouteController {
             } else {
                 mav = new ModelAndView("views/newService");
                 mav.addObject("user", user.get());
-                Collection<JobCategories> categories = jobService.getJobsCategories();
+                Collection<JobCategory> categories = jobService.getJobsCategories();
                 mav.addObject("categories", categories);
             }
         }
@@ -86,8 +86,13 @@ public class RouteController {
             return newService(user.get().getEmail(), form);
         }
 
-        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategoryId(), form.getDescription(), form.getPrice(),user.get());
+        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(),user.get());
         return  new ModelAndView("redirect:/jobs/" + job.getId());
+    }
+
+    @RequestMapping("/pageNotFound")
+    public ModelAndView pageNotFound() {
+        return new ModelAndView("views/pageNotFound");
     }
 
 }
