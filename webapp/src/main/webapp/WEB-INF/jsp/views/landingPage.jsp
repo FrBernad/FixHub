@@ -32,10 +32,10 @@
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
                         <c:forEach var="category" items="${categories}" begin="0" end="4">
-                            <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
+                            <form action="<c:url value="/discover/searchCategory"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">
-                                    <input type="hidden" name="searchPhrase" value="${category}">
+                                    <input type="hidden" name="category" value="${category}">
                                     <div class="input-group-prepend" style="width: 80%">
                                         <button class="btn-sm suggestionBtn"
                                                 style="width: 100%"><spring:message code="home.categories.${category}"/></button>

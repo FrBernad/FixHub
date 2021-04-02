@@ -48,4 +48,12 @@ public class DiscoverController {
 
         return mav;
     }
+
+    @RequestMapping("/discover/searchCategory")
+    public ModelAndView discoverSearchCategory(@RequestParam("category") final String phrase) {
+        final ModelAndView mav = new ModelAndView("views/discover");
+        Collection<Job> jobs = jobService.getJobsBySearchCategory(phrase);
+        mav.addObject("jobs", jobs);
+        return mav;
+    }
 }

@@ -56,4 +56,9 @@ public class JobServiceImp implements JobService {
         return jobDao.getJobsOrderByRating();
     }
 
+    @Override
+    public Collection<Job> getJobsBySearchCategory(String category) {
+        return jobDao.getJobsBySearchCategory(category);
+    }
+
 }

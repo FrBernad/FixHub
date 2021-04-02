@@ -20,7 +20,6 @@ public class LandingPageController {
     public ModelAndView landingPage() {
         final ModelAndView mav = new ModelAndView("views/landingPage");
         Collection<Job> jobs = jobService.getJobs();
-        //TODO: Cambiar esto por el join de las categories
         Collection<JobCategory> categories = jobService.getJobsCategories();
         mav.addObject("jobs", jobs);
         mav.addObject("categories", categories);

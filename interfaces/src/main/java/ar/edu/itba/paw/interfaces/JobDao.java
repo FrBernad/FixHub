@@ -26,4 +26,7 @@ public interface JobDao {
 
     Collection<JobCategory> getJobsCategories();
 
+    Collection<Job> getJobsBySearchCategory(String category);
+
+
 }

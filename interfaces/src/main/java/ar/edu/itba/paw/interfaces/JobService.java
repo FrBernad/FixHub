@@ -24,5 +24,7 @@ public interface JobService {
     Collection<Job> getJobsOrderByCategory(long categoryId);
 
     Collection<Job> getJobsOrderByRating();
+
+    Collection<Job> getJobsBySearchCategory(String category);
 }
 

@@ -73,7 +73,7 @@ public class JobDaoImpl implements JobDao {
     }
 
 
-    //TODO: CAMBIAR A LIKE
+    //TODO: CAMBIAR A LIKE SI TESTING NO FUNCA
     @Override
     public Collection<Job> getJobsBySearchPhrase(String phrase) {
         return jdbcTemplate.query(
@@ -119,6 +119,18 @@ public class JobDaoImpl implements JobDao {
 
     public Collection<JobCategory> getJobsCategories() {
         return categories;
+    }
+
+    @Override
+    public Collection<Job> getJobsBySearchCategory(String category) {
+        return jdbcTemplate.query(
+                "select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id " +
+                        "WHERE j.category = ?)" +
+                        "as aux(jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating " +
+                        "from (select id as jobidd from jobs) j " +
+                        "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
+                        "r on aux.jobid = r.jobidd)", new Object[]{category},
+                JOB_ROW_MAPPER);
     }
 
 

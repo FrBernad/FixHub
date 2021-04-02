@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
     <div class="card jobCard">
@@ -9,7 +10,9 @@
             <div class="jobPrice">
                 <p class="text-left mb-0">A partir de $${job.price}</p>
             </div>
-            <span class="badge badge-pill badge-secondary category jobCategory">category</span>
+            <span class="badge badge-pill badge-secondary category jobCategory">
+                  <spring:message code="home.categories.${job.category}"/>
+            </span>
         </div>
         <div style="padding: 1.25rem">
             <div class="row">
