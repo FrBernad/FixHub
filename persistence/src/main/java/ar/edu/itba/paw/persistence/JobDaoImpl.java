@@ -59,7 +59,7 @@ public class JobDaoImpl implements JobDao {
         map.put("price", price);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
 
-        return new Job(description, jobProvided, averageRating,totalRatings, category, id, price, provider);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id, price, provider);
     }
 
     @Override
@@ -77,12 +77,14 @@ public class JobDaoImpl implements JobDao {
     @Override
     public Collection<Job> getJobsBySearchPhrase(String phrase) {
         return jdbcTemplate.query(
-                "SELECT * FROM ( SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id ) " +
-                        "AS aux JOIN jobcategories c ON aux.jobtype = c.id " +
-                        "WHERE to_tsvector('spanish',aux.description) @@ plainto_tsquery('spanish',?) " +
-                        "OR to_tsvector('spanish',aux.jobprovided) @@ plainto_tsquery('spanish',?) " +
-                        "OR to_tsvector('spanish',aux.name) @@ plainto_tsquery('spanish',?)" +
-                        "OR to_tsvector('spanish',c.name) @@ plainto_tsquery('spanish',?)", new Object[]{phrase, phrase, phrase, phrase},
+                "select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id " +
+                        "WHERE to_tsvector('spanish',j.description) @@ plainto_tsquery('spanish',?) " +
+                        "OR to_tsvector('spanish',j.jobprovided) @@ plainto_tsquery('spanish',?) " +
+                        "OR to_tsvector('spanish',u.name) @@ plainto_tsquery('spanish',?))" +
+                        "as aux(jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating " +
+                        "from (select id as jobidd from jobs) j " +
+                        "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
+                        "r on aux.jobid = r.jobidd)", new Object[]{phrase, phrase, phrase},
                 JOB_ROW_MAPPER);
     }
 
@@ -115,7 +117,7 @@ public class JobDaoImpl implements JobDao {
                 "r on aux.jobid = r.jobidd)", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
     }
 
-    public Collection<JobCategory> getJobsCategories(){
+    public Collection<JobCategory> getJobsCategories() {
         return categories;
     }
 
