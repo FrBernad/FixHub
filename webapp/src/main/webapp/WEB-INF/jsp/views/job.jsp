@@ -25,7 +25,7 @@
                         <span class="badge badge-pill badge-secondary jobCategory">
                             <spring:message code="home.categories.${job.category}"/></span>
                         <div class="jobPrice">
-                            <p class="text-left mb-0">A partir de $${job.price}</p>
+                            <p class="text-left mb-0">A partir de $<c:out value="${job.price}"/></p>
                         </div>
                     </div>
                 </div>
@@ -37,10 +37,10 @@
                             <div class="container-fluid p-0">
                                 <row>
                                     <div class="col-12 pl-0">
-                                        <h1 class="jobTitle mt-3">${job.jobProvided}</h1>
+                                        <h1 class="jobTitle mt-3"><c:out value="${job.jobProvided}"/></h1>
                                     </div>
                                     <div class="col-12 pl-0">
-                                        <h1 class="contactInfo">${job.provider.name} ${job.provider.surname}</h1>
+                                        <h1 class="contactInfo"><c:out value="${job.provider.name}"/> <c:out value="${job.provider.surname}"/></h1>
                                     </div>
                                     <div class="col-12 pl-0 mt-2">
                                         <c:forEach begin="1" end="${job.averageRating}">
@@ -73,27 +73,27 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <p class="text-left contactInfo">
-                                                        <span class="font-weight-bold">Nombre:</span> ${job.provider.name} ${job.provider.surname}
+                                                        <span class="font-weight-bold">Nombre:</span> <c:out value="${job.provider.name}"/> <c:out value="${job.provider.surname}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Email:</span> ${job.provider.email}
+                                                        <span class="font-weight-bold">Email:</span> <c:out value="${job.provider.email}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Teléfono de contacto:</span> ${job.provider.phoneNumber}
+                                                        <span class="font-weight-bold">Teléfono de contacto:</span> <c:out value="${job.provider.phoneNumber}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Provincia:</span> ${job.provider.state}
+                                                        <span class="font-weight-bold">Provincia:</span> <c:out value="${job.provider.state}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Localidad:</span> ${job.provider.city}
+                                                        <span class="font-weight-bold">Localidad:</span> <c:out value="${job.provider.city}"/>
                                                     </p>
                                                 </div>
                                             </div>
@@ -118,7 +118,7 @@
                 </div>
                 <div class="col-12">
                     <p class="text-left contactInfo">
-                        ${job.description}
+                        <c:out value="${job.description}"/>
                     </p>
                 </div>
             </div>
@@ -129,7 +129,7 @@
         <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-12 d-flex justify-content-start align-items-center">
-                    <h2 class="sectionTitle">Opiniones sobre ${job.jobProvided}</h2>
+                    <h2 class="sectionTitle">Opiniones sobre <c:out value="${job.jobProvided}"/></h2>
                 </div>
                 <div class="col-12 d-flex justify-content-start align-items-center">
                     <a href="#" type="button" data-toggle="modal" data-target="#newReview">

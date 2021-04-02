@@ -23,7 +23,7 @@
         </div>
         <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
         <div class="jobPrice">
-            <p class="text-left mb-0">A partir de $${job.price}</p>
+            <p class="text-left mb-0">A partir de $<c:out value="${job.price}"/></p>
         </div>
     </div>
 </div>
