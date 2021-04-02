@@ -10,12 +10,16 @@ public class Job {
     private Number id;
     private User provider;
     private BigDecimal price;
+    private long totalRatings;
 
+    public Job(String description,String jobProvided, int averageRating, long totalRatings, Number jobType, Number id, BigDecimal price, User provider) {
     public Job(String description,String jobProvided, int averageRating, JobCategory category, Number id, BigDecimal price, User provider) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
         this.category = category;
+        this.totalRatings = totalRatings;
+        this.jobType = jobType;
         this.id = id;
         this.provider = provider;
         this.price = price;
@@ -31,6 +35,7 @@ public class Job {
                 ", id=" + id +
                 ", provider=" + provider +
                 ", price=" + price +
+                ", totalRatings=" + totalRatings +
                 '}';
     }
 
@@ -60,6 +65,14 @@ public class Job {
 
     public int getAverageRating() {
         return averageRating;
+    }
+
+    public long getTotalRatings() {
+        return totalRatings;
+    }
+
+    public void setTotalRatings(long totalRatings) {
+        this.totalRatings = totalRatings;
     }
 
     public void setAverageRating(int averageRating) {

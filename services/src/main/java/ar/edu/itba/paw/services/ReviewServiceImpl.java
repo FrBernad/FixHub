@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.JobDao;
+import ar.edu.itba.paw.interfaces.JobService;
 import ar.edu.itba.paw.interfaces.ReviewDao;
 import ar.edu.itba.paw.interfaces.ReviewService;
 import ar.edu.itba.paw.models.Review;
@@ -24,4 +26,6 @@ public class ReviewServiceImpl implements ReviewService {
     public Review createReview(String description, long jobId, int rating) {
         return reviewDao.createReview(description, jobId, rating, Timestamp.valueOf(LocalDateTime.now()));
     }
+
+
 }

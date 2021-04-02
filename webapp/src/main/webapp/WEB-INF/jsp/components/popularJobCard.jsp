@@ -11,7 +11,7 @@
                 <div class="col-5">
                     <i class="fas iconsColor fa-star fa-1x mr-2"></i>
                     <span class="jobCardAvgRating"><c:out value="${job.averageRating}"/></span>
-                    <span class="jobCardAvgRatingCount"> (<c:out value="${job.averageRating})"/></span>
+                    <span class="jobCardAvgRatingCount"> (<c:out value="${job.totalRatings})"/></span>
                 </div>
             </div>
             <%--                TODO: cambiar esto para que sea con el join--%>

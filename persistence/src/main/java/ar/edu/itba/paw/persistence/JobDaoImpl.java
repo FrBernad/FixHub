@@ -27,9 +27,10 @@ public class JobDaoImpl implements JobDao {
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("description"),
                     rs.getString("jobProvided"),
-                    rs.getInt("averageRating"),
+                    rs.getInt("avgRating"),
+                    rs.getInt("totalRatings"),
                     JobCategory.valueOf(rs.getString("category")),
-                    rs.getLong("id"),
+                    rs.getLong("jobId"),
                     rs.getBigDecimal("price"),
                     new User(rs.getLong("providerId"),
                             rs.getString("password"),
@@ -49,7 +50,7 @@ public class JobDaoImpl implements JobDao {
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider) {
         Map<String, Object> map = new HashMap<>();
-        final int averageRating = 0;
+        final int averageRating = 0, totalRatings = 0;
         map.put("providerId", provider.getId());
         map.put("category", category);
         map.put("averageRating", averageRating);
@@ -64,10 +65,15 @@ public class JobDaoImpl implements JobDao {
     @Override
     public Collection<Job> getJobs() {
         return jdbcTemplate.query(
-                "SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id",
-                JOB_ROW_MAPPER);
+                "select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id) " +
+                        "as aux (jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating   " +
+                        "from (select id as jobidd from jobs) j " +
+                        "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
+                        "r on aux.jobid = r.jobidd)", JOB_ROW_MAPPER);
     }
 
+
+    //TODO: CAMBIAR A LIKE
     @Override
     public Collection<Job> getJobsBySearchPhrase(String phrase) {
         return jdbcTemplate.query(
@@ -102,8 +108,11 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<Job> getJobById(long id) {
-        return jdbcTemplate.query("SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id " +
-                "WHERE j.id = ?", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
+        return jdbcTemplate.query("select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id WHERE j.id = ?) " +
+                "as aux (jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating   " +
+                "from (select id as jobidd from jobs) j " +
+                "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
+                "r on aux.jobid = r.jobidd)", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
     }
 
     public Collection<JobCategory> getJobsCategories(){

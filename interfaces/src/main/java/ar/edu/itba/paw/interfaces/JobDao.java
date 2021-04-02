@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface JobDao {
+
     Collection<Job> getJobs();
 
     Optional<Job> getJobById(long id);

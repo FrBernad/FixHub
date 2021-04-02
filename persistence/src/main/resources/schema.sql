@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS JOBS
 (
     id            SERIAL,
     description   TEXT,
-    averageRating INT,
     category      TEXT,
     jobProvided   TEXT,
     providerId    BIGINT,

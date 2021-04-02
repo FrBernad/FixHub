@@ -41,15 +41,19 @@ public class JobController {
         }
         final ModelAndView mav = new ModelAndView("views/job");
         mav.addObject("job", job.get());
+        System.out.println(jobId);
+        System.out.println(job.get());
         Collection<Review> reviews = reviewService.getReviewsByJobId(jobId);
         mav.addObject("reviews", reviews);
         return mav;
     }
 
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
-    public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("reviewForm") final ReviewForm form,
+    public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
+                                      @Valid @ModelAttribute("reviewForm") final ReviewForm form,
                                       final BindingResult errors) {
         //TODO: Service hace lo del time
+
         if (errors.hasErrors()) {
             return job(form, jobId);
         }

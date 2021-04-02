@@ -10,4 +10,6 @@ public interface ReviewDao {
     Collection<Review> getReviewsByJobId(long jobId);
 
     Review createReview(String description, long jobId, int rating, Timestamp creationDate);
+
+    int getReviewsCountByJobId(long jobId);
 }
