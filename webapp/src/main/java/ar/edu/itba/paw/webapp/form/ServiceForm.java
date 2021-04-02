@@ -14,7 +14,7 @@ public class ServiceForm {
 
     @NotEmpty
     @Size(max = 30)
-    @Pattern(regexp = "/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
+    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]+$")
     private String jobProvided;
 
     @NotEmpty
@@ -25,7 +25,7 @@ public class ServiceForm {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
-    @NotEmpty
+
     private JobCategory jobCategory;
 
     public String getJobProvided() {

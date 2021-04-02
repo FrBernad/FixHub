@@ -14,7 +14,7 @@ public class ReviewForm {
     @NotEmpty
     @Min(1)
     @Max(5)
-    private Integer rating;
+    private int rating;
 
     public String getDescription() {
         return description;
