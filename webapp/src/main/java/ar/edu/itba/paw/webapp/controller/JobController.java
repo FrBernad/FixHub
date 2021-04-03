@@ -52,7 +52,10 @@ public class JobController {
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
                                       @Valid @ModelAttribute("reviewForm") final ReviewForm form,
                                       final BindingResult errors) {
-        //TODO: Service hace lo del time
+
+        if(!jobService.getJobById(jobId).isPresent()) {
+            return new ModelAndView("views/pageNotFound");
+        }
 
         if (errors.hasErrors()) {
             return job(form, jobId);
@@ -82,6 +85,10 @@ public class JobController {
                                     @Valid @ModelAttribute("contactForm") final ContactForm form,
                                     final BindingResult errors, @RequestParam(value = "providerEmail") final String providerEmail,
                                     final Locale locale) throws MessagingException {
+
+        if(!jobService.getJobById(jobId).isPresent()) {
+            return new ModelAndView("views/pageNotFound");
+        }
 
         if (errors.hasErrors()) {
             return contact(jobId, form);
