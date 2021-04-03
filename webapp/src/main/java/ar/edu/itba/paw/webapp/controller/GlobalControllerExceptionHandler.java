@@ -2,11 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.ReviewException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -21,6 +23,14 @@ public class GlobalControllerExceptionHandler {
         return mav;
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ModelAndView userNotFoundException() {
+        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        return mav;
+    }
+
+
     /*TODO: VER COMO HACER ESTO*/
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ReviewException.class)
@@ -28,5 +38,24 @@ public class GlobalControllerExceptionHandler {
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
         return mav;
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value=Exception.class)
+    public ModelAndView NotFoundException(){
+        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        return mav;
+    }
+
+    /*By default when the DispatcherServlet can't find a handler for a request it sends a 404 response. However if its property "throwExceptionIfNoHandlerFound" is set to true this exception is raised and may be handled with a configured HandlerExceptionResolver.
+    * https://stackoverflow.com/questions/13356549/handle-error-404-with-spring-controller/46704230
+    * */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView resourceNotFoundException(){
+        ModelAndView mv = new ModelAndView(NOT_FOUND_VIEW);
+        return mv;
+    }
+
+
 
 }

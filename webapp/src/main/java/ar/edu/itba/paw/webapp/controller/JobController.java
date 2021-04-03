@@ -54,7 +54,7 @@ public class JobController {
         if (errors.hasErrors())
             return job(form, jobId);
 
-
+        //Lanza excepcion este método. Debería verificar que el usuario exista?
         final Review review = reviewService.createReview(form.getDescription(), jobId, Integer.parseInt(form.getRating()));
 
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
@@ -65,13 +65,12 @@ public class JobController {
     @RequestMapping("/jobs/{jobId}/contact")
     public ModelAndView contact(@PathVariable("jobId") final long jobId,
                                 @ModelAttribute("contactForm") final ContactForm form) {
-        Optional<Job> job = jobService.getJobById(jobId);
-        if (!job.isPresent()) {
-            return new ModelAndView("views/pageNotFound");
-        }
+
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+
         final ModelAndView mav;
         mav = new ModelAndView("views/contact");
-        mav.addObject("job", job.get());
+        mav.addObject("job", job);
         return mav;
     }
 
@@ -82,13 +81,16 @@ public class JobController {
                                     final BindingResult errors, @RequestParam(value = "providerEmail") final String providerEmail,
                                     final Locale locale) throws MessagingException {
 
-        if (!jobService.getJobById(jobId).isPresent()) {
-            return new ModelAndView("views/pageNotFound");
-        }
 
         if (errors.hasErrors()) {
             return contact(jobId, form);
         }
+
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+//        if (!jobService.getJobById(jobId).isPresent()) {
+//            return new ModelAndView("views/pageNotFound");
+//        }
+
 
         emailService.sendSimpleMail(form.getName(),
                 form.getSurname(),

@@ -68,6 +68,7 @@ public class NewJobController {
             return join(form);
         }
 
+        //TODO: ESTA BIEN ESTO?
         Optional<User> user = userService.getUserByEmail(form.getEmail());
         if (!user.isPresent()) {
             errors.rejectValue("email", "validation.user.emailNotRegistered");
@@ -83,6 +84,8 @@ public class NewJobController {
     public ModelAndView newService(@ModelAttribute("user") final User user, @ModelAttribute("serviceForm") final ServiceForm form) {
 
         ModelAndView mav;
+
+        //TODO: ESTA BIEN ESTO?
 
         if (user.getEmail() == null) {
             mav = new ModelAndView("redirect:/join");
@@ -114,11 +117,6 @@ public class NewJobController {
 
         Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), user.get());
         return new ModelAndView("redirect:/jobs/" + job.getId());
-    }
-
-    @RequestMapping("/pageNotFound")
-    public ModelAndView pageNotFound() {
-        return new ModelAndView("views/pageNotFound");
     }
 
 
