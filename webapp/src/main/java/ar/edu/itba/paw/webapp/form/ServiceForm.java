@@ -2,9 +2,9 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.models.JobCategory;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -21,7 +21,7 @@ public class ServiceForm {
     @Size(max = 300)
     private String description;
 
-    //TODO: Validar que esté vacío. NotBlank no funciona con números.
+    @NotNull
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 

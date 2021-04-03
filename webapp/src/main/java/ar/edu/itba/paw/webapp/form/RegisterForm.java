@@ -19,7 +19,7 @@ public class RegisterForm{
     private String surname;
 
     @NotEmpty
-    @Pattern(regexp = "([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$)*")
+    @Pattern(regexp = "^([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+)*$")
     private String email;
 
     @NotEmpty
