@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.interfaces;
+package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;

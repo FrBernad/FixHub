@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.JobService;
+import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import org.springframework.beans.factory.annotation.Autowired;

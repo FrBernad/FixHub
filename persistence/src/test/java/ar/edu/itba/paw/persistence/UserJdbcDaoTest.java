@@ -1,6 +1,6 @@
 //package ar.edu.itba.paw.persistence;
 //
-//import ar.edu.itba.paw.interfaces.UserDao;
+//import ar.edu.itba.paw.interfaces.persistance.UserDao;
 //import ar.edu.itba.paw.models.User;
 //import org.junit.Before;
 //import org.junit.Test;

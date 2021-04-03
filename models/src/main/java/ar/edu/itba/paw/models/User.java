@@ -4,6 +4,7 @@ public class User {
     private String name, password,surname,city,state,phoneNumber,email;
     private Number id;
 
+
     public User(Number id,String password,String name,String surname, String email,String phoneNumber,String state, String city) {
         this.id = id;
         this.password = password;

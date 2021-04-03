@@ -1,18 +1,14 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.interfaces.ReviewDao;
+import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;

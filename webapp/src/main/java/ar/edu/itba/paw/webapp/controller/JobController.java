@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.EmailService;
-import ar.edu.itba.paw.interfaces.JobService;
-import ar.edu.itba.paw.interfaces.ReviewService;
-import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.interfaces.services.JobService;
+import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.webapp.form.ContactForm;
