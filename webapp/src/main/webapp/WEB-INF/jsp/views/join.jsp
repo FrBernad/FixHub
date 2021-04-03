@@ -32,7 +32,7 @@
                                                method="POST">
                                         <div class="form-group">
                                             <form:label path="email">Email</form:label>
-                                            <form:input type="email" class="form-control input" path="email" id="email"
+                                            <form:input type="text" class="form-control input" path="email" id="email"
                                                         aria-describedby="email input"/>
                                             <form:errors path="email" cssClass="formError" element="p"/>
                                         </div>

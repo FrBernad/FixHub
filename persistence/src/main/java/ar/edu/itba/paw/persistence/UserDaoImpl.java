@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.interfaces.UserDao;
+import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -50,7 +50,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) {
+    public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException {
         Map<String, Object> map = new HashMap<>();
         map.put("password", password);
         map.put("name", name);
@@ -59,7 +59,15 @@ public class UserDaoImpl implements UserDao {
         map.put("phoneNumber", phoneNumber);
         map.put("state", state);
         map.put("city", city);
-        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+
+        final Number id;
+
+        try{
+            id = simpleJdbcInsert.executeAndReturnKey(map);
+        }catch(org.springframework.dao.DuplicateKeyException e){
+            throw new DuplicateUserException();
+        }
+
         return new User(id, password, name, surname, email, phoneNumber, state, city);
     }
 

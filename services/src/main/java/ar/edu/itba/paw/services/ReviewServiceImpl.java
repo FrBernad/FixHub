@@ -1,9 +1,7 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.JobDao;
-import ar.edu.itba.paw.interfaces.JobService;
-import ar.edu.itba.paw.interfaces.ReviewDao;
-import ar.edu.itba.paw.interfaces.ReviewService;
+import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
+import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 

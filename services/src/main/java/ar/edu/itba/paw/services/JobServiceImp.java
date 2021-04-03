@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.JobDao;
-import ar.edu.itba.paw.interfaces.JobService;
+import ar.edu.itba.paw.interfaces.persistance.JobDao;
+import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;

@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 public class EmailForm {
 
     @NotEmpty
-    @Pattern(regexp = "([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$)*")
+    @Pattern(regexp = "^([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+)*$")
     private String email;
 
     public String getEmail() {

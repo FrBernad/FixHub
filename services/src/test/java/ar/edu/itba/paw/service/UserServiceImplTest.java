@@ -1,6 +1,6 @@
 //package ar.edu.itba.paw.service;
 //
-//import ar.edu.itba.paw.interfaces.UserDao;
+//import ar.edu.itba.paw.interfaces.persistance.UserDao;
 //import ar.edu.itba.paw.models.User;
 //import ar.edu.itba.paw.services.UserServiceImpl;
 //import org.junit.Assert;
