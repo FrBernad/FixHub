@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.interfaces.exceptions.ReviewException;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -50,7 +52,12 @@ public class ReviewDaoImpl implements ReviewDao {
         map.put("jobId", jobId);
         map.put("rating", rating);
         map.put("creationDate", creationDate);
-        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+        final Number id;
+        try{
+             id = simpleJdbcInsert.executeAndReturnKey(map);
+        }catch(DataIntegrityViolationException e){
+            throw new ReviewException();
+        }
         return new Review(id, description, jobId, rating, creationDate.toLocalDateTime().toLocalDate());
     }
 

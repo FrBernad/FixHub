@@ -84,7 +84,7 @@ public class NewJobController {
 
         ModelAndView mav;
 
-        if (user == null) {
+        if (user.getEmail() == null) {
             mav = new ModelAndView("redirect:/join");
         } else {
             mav = new ModelAndView("views/newService");

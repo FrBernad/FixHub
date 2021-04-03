@@ -39,13 +39,10 @@ public class DiscoverController {
 
     @RequestMapping("/discover/search")
     public ModelAndView discoverSearch(@RequestParam("searchPhrase") final String phrase) {
-        System.out.println(phrase);
         final ModelAndView mav = new ModelAndView("views/discover");
-        System.out.println(phrase);
         Collection<Job> jobs = jobService.getJobsBySearchPhrase(phrase);
         mav.addObject("jobs", jobs);
         mav.addObject("searchPhrase", phrase);
-
         return mav;
     }
 

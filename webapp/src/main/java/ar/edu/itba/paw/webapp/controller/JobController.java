@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.ReviewException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
+import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.JobNotFoundReviewException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +37,10 @@ public class JobController {
 
     @RequestMapping("/jobs/{jobId}")
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final long jobId) {
-        Optional<Job> job = jobService.getJobById(jobId);
-        if (!job.isPresent()) {
-            return new ModelAndView("views/pageNotFound");
-        }
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("views/job");
-        mav.addObject("job", job.get());
-        System.out.println(jobId);
-        System.out.println(job.get());
+        mav.addObject("job", job);
         Collection<Review> reviews = reviewService.getReviewsByJobId(jobId);
         mav.addObject("reviews", reviews);
         return mav;
@@ -52,14 +51,12 @@ public class JobController {
                                       @Valid @ModelAttribute("reviewForm") final ReviewForm form,
                                       final BindingResult errors) {
 
-        if(!jobService.getJobById(jobId).isPresent()) {
-            return new ModelAndView("views/pageNotFound");
-        }
-
-        if (errors.hasErrors()) {
+        if (errors.hasErrors())
             return job(form, jobId);
-        }
-        Review review = reviewService.createReview(form.getDescription(), jobId, Integer.parseInt(form.getRating()));
+
+
+        final Review review = reviewService.createReview(form.getDescription(), jobId, Integer.parseInt(form.getRating()));
+
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
         return mav;
     }
@@ -85,7 +82,7 @@ public class JobController {
                                     final BindingResult errors, @RequestParam(value = "providerEmail") final String providerEmail,
                                     final Locale locale) throws MessagingException {
 
-        if(!jobService.getJobById(jobId).isPresent()) {
+        if (!jobService.getJobById(jobId).isPresent()) {
             return new ModelAndView("views/pageNotFound");
         }
 
