@@ -89,15 +89,15 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobsByCategory(long jobCategory) {
+    public Collection<Job> getJobsByCategory(JobCategory category) {
         return jdbcTemplate.query(
                 "SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id WHERE jobtype = ?"
-                , new Object[]{jobCategory},
+                , new Object[]{category},
                 JOB_ROW_MAPPER);
     }
 
     @Override
-    public Collection<Job> getJobsOrderByCategory(long categoryId) {
+    public Collection<Job> getJobsOrderByCategory(JobCategory category) {
         //TODO: Query
         return null;
     }

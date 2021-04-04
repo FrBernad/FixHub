@@ -18,9 +18,9 @@ public interface JobDao {
 
     Collection<Job> getJobsBySearchPhrase(String phrase);
 
-    Collection<Job> getJobsByCategory(long jobCategory);
+    Collection<Job> getJobsByCategory(JobCategory category);
 
-    Collection<Job> getJobsOrderByCategory(long categoryId);
+    Collection<Job> getJobsOrderByCategory(JobCategory category);
 
     Collection<Job> getJobsOrderByRating();
 

@@ -42,13 +42,13 @@ public class JobServiceImp implements JobService {
     }
 
     @Override
-    public Collection<Job> getJobsByCategory(long categoryId) {
-        return jobDao.getJobsByCategory(categoryId);
+    public Collection<Job> getJobsByCategory(JobCategory category) {
+        return jobDao.getJobsByCategory(category);
     }
 
     @Override
-    public Collection<Job> getJobsOrderByCategory(long categoryId) {
-        return jobDao.getJobsOrderByCategory(categoryId);
+    public Collection<Job> getJobsOrderByCategory(JobCategory category) {
+        return jobDao.getJobsOrderByCategory(category);
     }
 
     @Override

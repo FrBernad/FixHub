@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.interfaces.exceptions.ReviewException;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
+import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -39,32 +38,27 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public Collection<Review> getReviewsByJobId(long jobId) {
+    public Collection<Review> getReviewsByJobId(Job job) {
         return jdbcTemplate.query(
-                "SELECT * FROM REVIEWS r WHERE r.jobId = ?", new Object[]{jobId}, REVIEW_ROW_MAPPER
+                "SELECT * FROM REVIEWS r WHERE r.jobId = ?", new Object[]{job.getId()}, REVIEW_ROW_MAPPER
         );
     }
 
     @Override
-    public Review createReview(String description, long jobId, int rating, Timestamp creationDate) {
+    public Review createReview(String description, Job job, int rating, Timestamp creationDate) {
         Map<String, Object> map = new HashMap<>();
         map.put("description", description);
-        map.put("jobId", jobId);
+        map.put("jobId", job.getId());
         map.put("rating", rating);
         map.put("creationDate", creationDate);
-        final Number id;
-        try{
-             id = simpleJdbcInsert.executeAndReturnKey(map);
-        }catch(DataIntegrityViolationException e){
-            throw new ReviewException();
-        }
-        return new Review(id, description, jobId, rating, creationDate.toLocalDateTime().toLocalDate());
+        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+        return new Review(id, description, job.getId(), rating, creationDate.toLocalDateTime().toLocalDate());
     }
 
     @Override
-    public int getReviewsCountByJobId(long jobId) {
+    public int getReviewsCountByJobId(Job job) {
         return jdbcTemplate.query(
-                "SELECT count(*) as total FROM REVIEWS r WHERE r.jobId = ?", new Object[]{jobId},
+                "SELECT count(*) as total FROM REVIEWS r WHERE r.jobId = ?", new Object[]{job.getId()},
                 rs -> {
                     return rs.getInt("total");
                 }

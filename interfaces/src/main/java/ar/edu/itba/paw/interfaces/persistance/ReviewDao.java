@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
+import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
 
 import java.sql.Timestamp;
@@ -7,9 +8,9 @@ import java.util.Collection;
 
 public interface ReviewDao {
 
-    Collection<Review> getReviewsByJobId(long jobId);
+    Collection<Review> getReviewsByJobId(Job job);
 
-    Review createReview(String description, long jobId, int rating, Timestamp creationDate);
+    Review createReview(String description, Job job, int rating, Timestamp creationDate);
 
-    int getReviewsCountByJobId(long jobId);
+    int getReviewsCountByJobId(Job job);
 }

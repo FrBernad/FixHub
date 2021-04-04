@@ -19,9 +19,9 @@ public interface JobService {
 
     Collection<JobCategory> getJobsCategories();
 
-    Collection<Job> getJobsByCategory(long categoryId);
+    Collection<Job> getJobsByCategory(JobCategory category);
 
-    Collection<Job> getJobsOrderByCategory(long categoryId);
+    Collection<Job> getJobsOrderByCategory(JobCategory category);
 
     Collection<Job> getJobsOrderByRating();
 

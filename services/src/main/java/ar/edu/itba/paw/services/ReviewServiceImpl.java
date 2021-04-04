@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
+import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,13 +17,13 @@ public class ReviewServiceImpl implements ReviewService {
     private ReviewDao reviewDao;
 
     @Override
-    public Collection<Review> getReviewsByJobId(long jobId) {
-        return reviewDao.getReviewsByJobId(jobId);
+    public Collection<Review> getReviewsByJobId(Job job) {
+        return reviewDao.getReviewsByJobId(job);
     }
 
     @Override
-    public Review createReview(String description, long jobId, int rating) {
-        return reviewDao.createReview(description, jobId, rating, Timestamp.valueOf(LocalDateTime.now()));
+    public Review createReview(String description, Job job, int rating) {
+        return reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()));
     }
 
 
