@@ -29,7 +29,7 @@ public class DiscoverController {
     @RequestMapping("/discover")
     public ModelAndView discover(@ModelAttribute("searchForm") final SearchForm form) {
         final ModelAndView mav = new ModelAndView("views/discover");
-        Collection<Job> jobs = searchService.getJobs(null, null, null);
+        Collection<Job> jobs = searchService.getJobsByCategory(null, null, null);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         mav.addObject("filters", categories);
@@ -43,7 +43,7 @@ public class DiscoverController {
         final ModelAndView mav = new ModelAndView("views/discover");
         final String query = form.getQuery(), order = form.getOrder(), filter = form.getFilter();
 
-        Collection<Job> jobs = searchService.getJobs(query, order, filter);
+        Collection<Job> jobs = searchService.getJobsByCategory(query, order, filter);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         Collection<OrderOptions> orderOptions = Arrays.asList(OrderOptions.values().clone());
 

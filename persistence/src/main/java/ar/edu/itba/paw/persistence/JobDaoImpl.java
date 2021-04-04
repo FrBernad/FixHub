@@ -25,6 +25,9 @@ public class JobDaoImpl implements JobDao {
     private SimpleJdbcInsert simpleJdbcInsert;
     private Collection<JobCategory> categories = Arrays.asList(JobCategory.values().clone());
 
+    private final String EMPTY = " ";
+
+
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("description"),
                     rs.getString("jobProvided"),
@@ -64,26 +67,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobs(String searchQuery, OrderOptions orderOptions, JobCategory category) {
-        return createAndExecuteQuery(searchQuery, orderOptions, category);
-    }
-
-    @Override
-    public Optional<Job> getJobById(long id) {
-        return jdbcTemplate.query("select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id WHERE j.id = ?) " +
-                "as aux (jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating   " +
-                "from (select id as jobidd from jobs) j " +
-                "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
-                "r on aux.jobid = r.jobidd)", new Object[]{id}, JOB_ROW_MAPPER).stream().findFirst();
-    }
-
-    public Collection<JobCategory> getJobsCategories() {
-        return categories;
-    }
-
-
-    private Collection<Job> createAndExecuteQuery(String searchBy, OrderOptions orderOptions, JobCategory category) {
-        final String EMPTY = " ";
+    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOptions, JobCategory category) {
 
         List<Object> variables = new LinkedList<>();
 
@@ -95,7 +79,7 @@ public class JobDaoImpl implements JobDao {
 
         String searchQuery = EMPTY;
         if (searchBy != null) {
-            final String searchByLike = String.format("%%%s%%",searchBy);
+            final String searchByLike = String.format("%%%s%%", searchBy);
             variables.add(searchByLike);
             variables.add(searchByLike);
             variables.add(searchByLike);
@@ -103,6 +87,26 @@ public class JobDaoImpl implements JobDao {
         }
 
         String orderQuery = getOrderQuery(orderOptions);
+
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, variables);
+    }
+
+    @Override
+    public Optional<Job> getJobById(long id) {
+        List<Object> variables = new LinkedList<>();
+        variables.add(id);
+
+        String filterQuery = " WHERE j.id = ? ";
+
+        return createAndExecuteQuery(EMPTY, EMPTY,filterQuery,variables).stream().findFirst();
+
+    }
+
+    public Collection<JobCategory> getJobsCategories() {
+        return categories;
+    }
+
+    private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, List<Object> variables) {
 
         return jdbcTemplate.query(
                 "select * from (" +

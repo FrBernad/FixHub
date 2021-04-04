@@ -35,7 +35,7 @@
                             <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">
-                                    <input type="hidden" name="category" value="${category}">
+                                    <input type="hidden" name="filter" value="${category}">
                                     <div class="input-group-prepend" style="width: 80%">
                                         <button class="btn-sm suggestionBtn"
                                                 style="width: 100%"><spring:message code="home.categories.${category}"/></button>

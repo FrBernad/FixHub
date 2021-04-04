@@ -21,7 +21,7 @@
             <form:input path="query" type="hidden" id="searchInput"/>
         </form:form>
         <div class="row pb-4 align-items-center justify-content-between">
-            <div class="col-8 p-0 d-flex align-items-center justify-content-start">
+            <div class="col-7 p-0 d-flex align-items-center justify-content-start">
                 <div class="input-group">
                     <input placeholder="Buscar plomería, jardinería, y más..."
                            id="searchBar"
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 d-flex p-0 align-items-center justify-content-end">
+            <div class="col-5 d-flex p-0 align-items-center justify-content-end">
                 <div class="dropdown mr-4">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="filterDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -22,7 +22,7 @@ public class SearchServiceImpl implements SearchService {
     private final OrderOptions defaultOrder = OrderOptions.valueOf("MOST_POPULAR");
 
     @Override
-    public Collection<Job> getJobs(String searchQuery, String orderBy, String filterBy) {
+    public Collection<Job> getJobsByCategory(String searchQuery, String orderBy, String filterBy) {
         OrderOptions orderOption;
         if (!OrderOptions.contains(orderBy)) {
             orderOption = defaultOrder;
@@ -41,9 +41,7 @@ public class SearchServiceImpl implements SearchService {
             searchQuery = null;
         }
 
-        System.out.println("query: "+searchQuery);
-
-        return jobDao.getJobs(searchQuery, orderOption, categoryFilter);
+        return jobDao.getJobsByCategory(searchQuery, orderOption, categoryFilter);
     }
 
     @Override

@@ -17,14 +17,16 @@ public class JobServiceImp implements JobService {
     private JobDao jobDao;
 
     @Override
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user) {
+        return jobDao.createJob(jobProvided,category,description, price, user);
+    }
+
+
+    @Override
     public Optional<Job> getJobById(long id) {
         return jobDao.getJobById(id);
     }
 
-    @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user) {
-        return jobDao.createJob(jobProvided,category,description, price, user);
-    }
     @Override
     public Collection<JobCategory> getJobsCategories(){
         return jobDao.getJobsCategories();

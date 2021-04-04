@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface JobDao {
 
-    Collection<Job> getJobs(String searchQuery, OrderOptions orderOptions,JobCategory category);
+    Collection<Job> getJobsByCategory(String searchQuery, OrderOptions orderOptions,JobCategory category);
 
     Optional<Job> getJobById(long id);
 
