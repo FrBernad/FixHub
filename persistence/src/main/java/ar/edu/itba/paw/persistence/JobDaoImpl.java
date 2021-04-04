@@ -65,7 +65,6 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Collection<Job> getJobs(String searchQuery, OrderOptions orderOptions, JobCategory category) {
-
         return createAndExecuteQuery(searchQuery, orderOptions, category);
     }
 
@@ -96,10 +95,11 @@ public class JobDaoImpl implements JobDao {
 
         String searchQuery = EMPTY;
         if (searchBy != null) {
-            variables.add(searchBy);
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE description LIKE ? OR jobprovided LIKE ? OR name LIKE ? ";
+            final String searchByLike = String.format("%%%s%%",searchBy);
+            variables.add(searchByLike);
+            variables.add(searchByLike);
+            variables.add(searchByLike);
+            searchQuery = " WHERE description LIKE ? OR jobprovided LIKE ? OR name LIKE ?";
         }
 
         String orderQuery = getOrderQuery(orderOptions);

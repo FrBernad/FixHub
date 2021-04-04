@@ -37,6 +37,12 @@ public class SearchServiceImpl implements SearchService {
             categoryFilter = JobCategory.valueOf(filterBy);
         }
 
+        if (searchQuery!=null && searchQuery.equals("")) {
+            searchQuery = null;
+        }
+
+        System.out.println("query: "+searchQuery);
+
         return jobDao.getJobs(searchQuery, orderOption, categoryFilter);
     }
 

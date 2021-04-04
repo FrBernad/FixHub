@@ -8,61 +8,64 @@
     <%@ include file="../components/headers.jsp" %>
     <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
-</head>
+
+    <script src='<c:url value="/resources/js/discoverySearch.js"/>'></script>
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="outerContainer py-4">
     <div class="container-lg">
+        <c:url value="/discover/search" var="postPath"/>
+        <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET" id="searchForm">
+            <form:input path="order" type="hidden" id="orderInput"/>
+            <form:input path="filter" type="hidden" id="filterInput"/>
+            <form:input path="query" type="hidden" id="searchInput"/>
+        </form:form>
         <div class="row pb-4 align-items-center justify-content-between">
             <div class="col-8 p-0 d-flex align-items-center justify-content-start">
-                <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
-                    <div class="input-group">
-                        <input placeholder="Buscar plomería, jardinería, y más..."
-                               class="inputRadius form-control p-4" name="searchPhrase">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-lg inputBtn" type="submit">Buscar</button>
-                        </div>
+                <div class="input-group">
+                    <input placeholder="Buscar plomería, jardinería, y más..."
+                           id="searchBar"
+                           class="inputRadius form-control p-4"/>
+                    <div class="input-group-prepend">
+                        <button onclick="setSearchValueAndSubmit()" class="btn btn-lg inputBtn">Buscar</button>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="col-4 d-flex p-0 align-items-center justify-content-end">
                 <div class="dropdown mr-4">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="filterDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Filtrar por: <c:out value="${filter}"/>
+                        Filtrar por:
+                        <c:if test="${filter!=null && !filter.isEmpty()}">
+                            <spring:message code="home.categories.${filter}"/>
+                        </c:if>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
                         <c:forEach var="filter" items="${filters}">
-                            <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
-                                  style="width: 100%">
-                                <div class="input-group">
-                                    <input type="hidden" name="filter" value="${filter}">
-                                    <button type="submit" class="dropdown-item">
-                                        <spring:message code="home.categories.${filter}"/>
-                                    </button>
-                                </div>
-                            </form>
+                            <div class="input-group">
+                                <button onclick="setFilterValueAndSubmit('${filter}')" class="dropdown-item">
+                                    <spring:message code="home.categories.${filter}"/>
+                                </button>
+                            </div>
                         </c:forEach>
                     </div>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="orderDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ordenar por: <c:out value="${order}"/>
+                        Ordenar por:
+                        <c:if test="${order!=null && !order.isEmpty()}">
+                            <spring:message code="discover.orderOption.${order}"/>
+                        </c:if>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="orderDropdown">
-                        <form action="<c:url value='/discover/search/'/>" method="GET"
-                                   class="mb-0"
-                                   style="width: 100%">
-                            <c:forEach var="order" items="${orderOptions}">
-                                <div class="input-group">
-                                    <input type="hidden" name="order" value="${order}">
-                                    <button type="submit" class="dropdown-item">
-                                        <spring:message code="discover.orderOption.${order}"/>
-                                    </button>
-                                </div>
-                            </c:forEach>
-                        </form>
+                        <c:forEach var="order" items="${orderOptions}">
+                            <div class="input-group">
+                                <button onclick="setOrderValueAndSubmit('${order}')" class="dropdown-item">
+                                    <spring:message code="discover.orderOption.${order}"/>
+                                </button>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
@@ -72,7 +75,7 @@
 
     <div class="container-lg">
         <div class="row jobsContainer">
-            <c:if test="${searchPhrase!=null}">
+            <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
                 <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
                     <p class="mb-0">Mostrando resultados de: <span>"<c:out value='${searchPhrase}'/>"</span></p>
                 </div>
