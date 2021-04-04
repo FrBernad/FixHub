@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.JobService;
+import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ public class LandingPageController {
     @Autowired
     private JobService jobService;
 
+    @Autowired
+    private SearchService searchService;
+
     @RequestMapping("/")
     public ModelAndView landingPage() {
         final ModelAndView mav = new ModelAndView("views/landingPage");
-        Collection<Job> jobs = jobService.getJobs();
+        Collection<Job> jobs = searchService.getJobs(null,null,null);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         mav.addObject("jobs", jobs);
         mav.addObject("categories", categories);

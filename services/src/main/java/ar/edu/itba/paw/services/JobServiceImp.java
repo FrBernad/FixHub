@@ -13,14 +13,8 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class JobServiceImp implements JobService {
-
     @Autowired
     private JobDao jobDao;
-
-    @Override
-    public Collection<Job> getJobs() {
-        return jobDao.getJobs();
-    }
 
     @Override
     public Optional<Job> getJobById(long id) {
@@ -34,31 +28,6 @@ public class JobServiceImp implements JobService {
     @Override
     public Collection<JobCategory> getJobsCategories(){
         return jobDao.getJobsCategories();
-    }
-
-    @Override
-    public Collection<Job> getJobsBySearchPhrase(String phrase) {
-        return jobDao.getJobsBySearchPhrase(phrase);
-    }
-
-    @Override
-    public Collection<Job> getJobsByCategory(JobCategory category) {
-        return jobDao.getJobsByCategory(category);
-    }
-
-    @Override
-    public Collection<Job> getJobsOrderByCategory(JobCategory category) {
-        return jobDao.getJobsOrderByCategory(category);
-    }
-
-    @Override
-    public Collection<Job> getJobsOrderByRating() {
-        return jobDao.getJobsOrderByRating();
-    }
-
-    @Override
-    public Collection<Job> getJobsBySearchCategory(String category) {
-        return jobDao.getJobsBySearchCategory(category);
     }
 
 }

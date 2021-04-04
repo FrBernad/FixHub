@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Descubre</title>
@@ -30,9 +32,17 @@
                         Filtrar por: <c:out value="${filter}"/>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <c:forEach var="filter" items="${filters}">
+                            <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
+                                  style="width: 100%">
+                                <div class="input-group">
+                                    <input type="hidden" name="filter" value="${filter}">
+                                    <button type="submit" class="dropdown-item">
+                                        <spring:message code="home.categories.${filter}"/>
+                                    </button>
+                                </div>
+                            </form>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -41,9 +51,18 @@
                         Ordenar por: <c:out value="${order}"/>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="orderDropdown">
-                        <a class="dropdown-item" href="#">Categoría</a>
-                        <a class="dropdown-item" href="#">Popularidad</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <form action="<c:url value='/discover/search/'/>" method="GET"
+                                   class="mb-0"
+                                   style="width: 100%">
+                            <c:forEach var="order" items="${orderOptions}">
+                                <div class="input-group">
+                                    <input type="hidden" name="order" value="${order}">
+                                    <button type="submit" class="dropdown-item">
+                                        <spring:message code="discover.orderOption.${order}"/>
+                                    </button>
+                                </div>
+                            </c:forEach>
+                        </form>
                     </div>
                 </div>
             </div>

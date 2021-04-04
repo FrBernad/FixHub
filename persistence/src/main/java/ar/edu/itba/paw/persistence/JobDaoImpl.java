@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
+import ar.edu.itba.paw.models.OrderOptions;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -63,49 +64,9 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobs() {
-        return jdbcTemplate.query(
-                "select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id) " +
-                        "as aux (jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating   " +
-                        "from (select id as jobidd from jobs) j " +
-                        "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
-                        "r on aux.jobid = r.jobidd)", JOB_ROW_MAPPER);
-    }
+    public Collection<Job> getJobs(String searchQuery, OrderOptions orderOptions, JobCategory category) {
 
-
-    //TODO: CAMBIAR A LIKE SI TESTING NO FUNCA
-    @Override
-    public Collection<Job> getJobsBySearchPhrase(String phrase) {
-        return jdbcTemplate.query(
-                "select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id " +
-                        "WHERE to_tsvector('spanish',j.description) @@ plainto_tsquery('spanish',?) " +
-                        "OR to_tsvector('spanish',j.jobprovided) @@ plainto_tsquery('spanish',?) " +
-                        "OR to_tsvector('spanish',u.name) @@ plainto_tsquery('spanish',?))" +
-                        "as aux(jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating " +
-                        "from (select id as jobidd from jobs) j " +
-                        "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
-                        "r on aux.jobid = r.jobidd)", new Object[]{phrase, phrase, phrase},
-                JOB_ROW_MAPPER);
-    }
-
-    @Override
-    public Collection<Job> getJobsByCategory(JobCategory category) {
-        return jdbcTemplate.query(
-                "SELECT * FROM JOBS j JOIN USERS u ON j.providerId = u.id WHERE jobtype = ?"
-                , new Object[]{category},
-                JOB_ROW_MAPPER);
-    }
-
-    @Override
-    public Collection<Job> getJobsOrderByCategory(JobCategory category) {
-        //TODO: Query
-        return null;
-    }
-
-    @Override
-    public Collection<Job> getJobsOrderByRating() {
-        //TODO: Query
-        return null;
+        return createAndExecuteQuery(searchQuery, orderOptions, category);
     }
 
     @Override
@@ -121,17 +82,55 @@ public class JobDaoImpl implements JobDao {
         return categories;
     }
 
-    @Override
-    public Collection<Job> getJobsBySearchCategory(String category) {
+
+    private Collection<Job> createAndExecuteQuery(String searchBy, OrderOptions orderOptions, JobCategory category) {
+        final String EMPTY = " ";
+
+        List<Object> variables = new LinkedList<>();
+
+        String filterQuery = EMPTY;
+        if (category != null) {
+            variables.add(category.name());
+            filterQuery = " WHERE j.category = ? ";
+        }
+
+        String searchQuery = EMPTY;
+        if (searchBy != null) {
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE description LIKE ? OR jobprovided LIKE ? OR name LIKE ? ";
+        }
+
+        String orderQuery = getOrderQuery(orderOptions);
+
         return jdbcTemplate.query(
-                "select * from ((select * from JOBS j JOIN USERS u ON j.providerId = u.id " +
-                        "WHERE j.category = ?)" +
-                        "as aux(jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating " +
+                "select * from (" +
+                        "(select * from JOBS j JOIN USERS u ON j.providerId = u.id " + filterQuery +
+                        ") as aux(jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating " +
                         "from (select id as jobidd from jobs) j " +
                         "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
-                        "r on aux.jobid = r.jobidd)", new Object[]{category},
+                        "r on aux.jobid = r.jobidd) " + searchQuery + orderQuery, variables.toArray(),
                 JOB_ROW_MAPPER);
     }
 
+    private String getOrderQuery(OrderOptions orderOption) {
+        String orderQuery = " ORDER BY ";
+        switch (orderOption) {
+            case MOST_POPULAR:
+                return orderQuery + "avgRating desc";
+
+            case LESS_POPULAR:
+                return orderQuery + "avgRating asc";
+
+            case HIGHER_PRICE:
+                return orderQuery + "price desc";
+
+            case LOWER_PICE:
+                return orderQuery + "price asc";
+
+        }
+        return null; //never reaches
+    }
 
 }

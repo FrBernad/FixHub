@@ -9,22 +9,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface JobService {
-    Collection<Job> getJobs();
-
     Optional<Job> getJobById(long id);
 
     Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider);
 
-    Collection<Job> getJobsBySearchPhrase(String phrase);
-
     Collection<JobCategory> getJobsCategories();
-
-    Collection<Job> getJobsByCategory(JobCategory category);
-
-    Collection<Job> getJobsOrderByCategory(JobCategory category);
-
-    Collection<Job> getJobsOrderByRating();
-
-    Collection<Job> getJobsBySearchCategory(String category);
 }
 

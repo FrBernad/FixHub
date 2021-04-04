@@ -78,7 +78,8 @@ public class JobController {
     @RequestMapping(value = "/jobs/{jobId}/contact", method = RequestMethod.POST)
     public ModelAndView contactPost(@PathVariable("jobId") final long jobId,
                                     @Valid @ModelAttribute("contactForm") final ContactForm form,
-                                    final BindingResult errors, @RequestParam(value = "providerEmail") final String providerEmail,
+                                    final BindingResult errors,
+                                    @RequestParam(value = "providerEmail") final String providerEmail,
                                     final Locale locale) throws MessagingException {
 
 
@@ -86,11 +87,14 @@ public class JobController {
             return contact(jobId, form);
         }
 
+        String address = String.format("%s, %s, %s %s, %s",form.getState(),form.getCity(),
+                form.getStreet(),form.getAddressNumber(),form.getFloor());
+
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
         emailService.sendSimpleMail(form.getName(),
                 form.getSurname(),
-                form.getAddressNumber(),
+                address,
                 form.getPhoneNumber(),
                 form.getMessage(),
                 providerEmail, locale);
