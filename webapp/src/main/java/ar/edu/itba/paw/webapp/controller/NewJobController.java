@@ -69,7 +69,7 @@ public class NewJobController {
         }
 
         //TODO: ESTA BIEN ESTO?
-        Optional<User> user = userService.getUserByEmail(form.getEmail());
+        final Optional<User> user = userService.getUserByEmail(form.getEmail());
         if (!user.isPresent()) {
             errors.rejectValue("email", "validation.user.emailNotRegistered");
             return join(form);
@@ -83,9 +83,9 @@ public class NewJobController {
     @RequestMapping(path = "/join/newService")
     public ModelAndView newService(@ModelAttribute("user") final User user, @ModelAttribute("serviceForm") final ServiceForm form) {
 
-        ModelAndView mav;
+        final ModelAndView mav;
 
-        //TODO: ESTA BIEN ESTO?
+        //TODO: CAMBIAR EL FLUJO CUANDO TENGAMOS AUTENTICACION
 
         if (user.getEmail() == null) {
             mav = new ModelAndView("redirect:/join");

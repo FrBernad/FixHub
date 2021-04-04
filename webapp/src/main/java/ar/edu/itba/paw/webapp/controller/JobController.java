@@ -7,7 +7,6 @@ import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.JobNotFoundReviewException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ public class JobController {
 
         final ModelAndView mav = new ModelAndView("views/job");
         mav.addObject("job", job);
-        Collection<Review> reviews = reviewService.getReviewsByJobId(jobId);
+        Collection<Review> reviews = reviewService.getReviewsByJobId(job);
         mav.addObject("reviews", reviews);
         return mav;
     }
@@ -54,10 +53,11 @@ public class JobController {
         if (errors.hasErrors())
             return job(form, jobId);
 
-        //Lanza excepcion este método. Debería verificar que el usuario exista?
-        final Review review = reviewService.createReview(form.getDescription(), jobId, Integer.parseInt(form.getRating()));
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        //Se que el job existe porque ya pedí el job en la base de datos
+        final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
 
-        final ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
+        final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
     }
 
@@ -87,10 +87,6 @@ public class JobController {
         }
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-//        if (!jobService.getJobById(jobId).isPresent()) {
-//            return new ModelAndView("views/pageNotFound");
-//        }
-
 
         emailService.sendSimpleMail(form.getName(),
                 form.getSurname(),

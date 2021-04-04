@@ -14,6 +14,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 public class GlobalControllerExceptionHandler {
 
     public static final String NOT_FOUND_VIEW = "views/pageNotFound";
+    public static final String ERROR_VIEW = "views/serverError";
+
 
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -31,31 +33,23 @@ public class GlobalControllerExceptionHandler {
     }
 
 
-    /*TODO: VER COMO HACER ESTO*/
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = ReviewException.class)
-    public ModelAndView jobNotFoundReviewException() {
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
-        return mav;
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value=Exception.class)
-    public ModelAndView NotFoundException(){
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
-        return mav;
-    }
-
     /*By default when the DispatcherServlet can't find a handler for a request it sends a 404 response. However if its property "throwExceptionIfNoHandlerFound" is set to true this exception is raised and may be handled with a configured HandlerExceptionResolver.
     * https://stackoverflow.com/questions/13356549/handle-error-404-with-spring-controller/46704230
     * */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public ModelAndView resourceNotFoundException(){
-        ModelAndView mv = new ModelAndView(NOT_FOUND_VIEW);
-        return mv;
+        ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        return mav;
     }
 
+    /*Server error */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ModelAndView serverException(){
+        ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        return mav;
+    }
 
 
 }
