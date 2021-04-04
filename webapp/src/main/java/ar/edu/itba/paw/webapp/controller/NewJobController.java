@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.EmailForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.ServiceForm;
@@ -105,17 +106,13 @@ public class NewJobController {
     public ModelAndView newServicePost(@Valid @ModelAttribute("serviceForm") final ServiceForm form, final BindingResult errors,
                                        @RequestParam("userId") final long userId) {
 
-        Optional<User> user = userService.getUserById(userId);
-
-        if (!user.isPresent()) {
-            return new ModelAndView("redirect:/jobs/");
-        }
+        User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         if (errors.hasErrors()) {
-            return newService(user.get(), form);
+            return newService(user, form);
         }
 
-        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), user.get());
+        Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), user);
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 

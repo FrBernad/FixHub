@@ -95,7 +95,7 @@ public class JobController {
                 form.getMessage(),
                 providerEmail, locale);
 
-        ModelAndView mav = new ModelAndView("redirect:/jobs/" + jobId);
+        ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
     }
 
