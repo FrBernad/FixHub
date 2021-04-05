@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class JobForm {
 
     @NotEmpty
-    @Size(max = 30)
+    @Size(max = 50)
     @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
     private String jobProvided;
 
