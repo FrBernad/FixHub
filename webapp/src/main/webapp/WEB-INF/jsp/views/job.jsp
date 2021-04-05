@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>Job Name</title>
+    <title><c:out value="${job.jobProvided}"/></title>
     <%@ include file="../components/headers.jsp" %>
     <link href='<c:url value="/resources/css/job.css"/>' rel="stylesheet">
 
@@ -25,7 +25,7 @@
                         <span class="badge badge-pill badge-secondary jobCategory">
                             <spring:message code="home.categories.${job.category}"/></span>
                         <div class="jobPrice">
-                            <p class="text-left mb-0">A partir de $<c:out value="${job.price}"/></p>
+                            <p class="text-left mb-0"><spring:message code="job.priceText"/><c:out value="${job.price}"/></p>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-5 d-flex justify-content-start align-items-center">
                             <a href="<c:url value='/jobs/${job.id}/contact'/>">
-                                <button class="btn btn-primary">Contactar</button>
+                                <button class="btn btn-primary"><spring:message code="job.contact"/></button>
                             </a>
                         </div>
 
@@ -64,7 +64,7 @@
                             <div class="container-fluid p-0">
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-start align-items-center">
-                                        <h2 class="sectionTitle mb-3">Informacion del proveedor</h2>
+                                        <h2 class="sectionTitle mb-3"><spring:message code="job.information.title"/></h2>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -73,27 +73,27 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <p class="text-left contactInfo">
-                                                        <span class="font-weight-bold">Nombre:</span> <c:out value="${job.provider.name}"/> <c:out value="${job.provider.surname}"/>
+                                                        <span class="font-weight-bold"><spring:message code="job.information.name&surname"/></span> <c:out value="${job.provider.name}"/> <c:out value="${job.provider.surname}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Email:</span> <c:out value="${job.provider.email}"/>
+                                                        <span class="font-weight-bold"><spring:message code="job.information.email"/></span> <c:out value="${job.provider.email}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Teléfono de contacto:</span> <c:out value="${job.provider.phoneNumber}"/>
+                                                        <span class="font-weight-bold"><spring:message code="job.information.phone"/></span> <c:out value="${job.provider.phoneNumber}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Provincia:</span> <c:out value="${job.provider.state}"/>
+                                                        <span class="font-weight-bold"><spring:message code="job.information.state"/></span> <c:out value="${job.provider.state}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
-                                                        <span class="font-weight-bold">Localidad:</span> <c:out value="${job.provider.city}"/>
+                                                        <span class="font-weight-bold"><spring:message code="job.information.city"/></span> <c:out value="${job.provider.city}"/>
                                                     </p>
                                                 </div>
                                             </div>
@@ -114,7 +114,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="sectionTitle">Descripción</h1>
+                    <h1 class="sectionTitle"><spring:message code="job.description.title"/></h1>
                 </div>
                 <div class="col-12">
                     <p class="text-left contactInfo">
@@ -129,11 +129,11 @@
         <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-12 d-flex justify-content-start align-items-center">
-                    <h2 class="sectionTitle">Opiniones sobre <c:out value="${job.jobProvided}"/></h2>
+                    <h2 class="sectionTitle"><spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/></h2>
                 </div>
                 <div class="col-12 d-flex justify-content-start align-items-center">
                     <a href="#" type="button" data-toggle="modal" data-target="#newReview">
-                        Danos tu opinion.
+                        <spring:message code="job.review.hyperlink"/>
                     </a>
                     <%@ include file="../components/reviewForm.jsp" %>
                 </div>
@@ -152,7 +152,7 @@
                                     <div class="col-12 d-flex align-items-center justify-content-center">
                                         <div class="container mt-2 d-flex align-items-center justify-content-center">
                                             <p class="m-0 text-center p-4" style="font-size: 16px">
-                                                Aún no hay reviews.
+                                                <spring:message code="job.review.noReviews"/>
                                             </p>
                                         </div>
                                     </div>

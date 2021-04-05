@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="col-12 mt-3">
     <div class="container-fluid p-0">
         <div class="row">

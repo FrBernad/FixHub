@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Fixhub</title>
     <%@ include file="../components/headers.jsp" %>
+    <title><spring:message code="join.serviceTitle"/></title>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
 
@@ -17,9 +17,9 @@
     <div class="container-lg h-75 w-50 p-5" style="background-color: white; max-width: 32em">
         <div class="row w-100 m-0 align-items-center justify-content-center">
             <div class="col-12">
-                <h1 class="text-center title">Ofrece tu servicio</h1>
-                <p class="subtitle text-center mb-4"><span class="font-weight-bold">Trabaja con fixhub</span>, nuevos
-                    clientes ofrecen<br>nuevos servicios dia a dia.</p>
+                <h1 class="text-center title"><spring:message code="join.serviceTitle"/></h1>
+                <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message code="join.description.boldText"/></span>
+                <spring:message code="join.description.normalText"/></p>
             </div>
             <div class="col-12">
                 <div class="container-lg">
@@ -31,7 +31,7 @@
                                     <form:form modelAttribute="emailForm" id="mailForm" action="${postPath}"
                                                method="POST">
                                         <div class="form-group">
-                                            <form:label path="email">Email</form:label>
+                                            <form:label path="email"><spring:message code="join.EmailText"/></form:label>
                                             <form:input type="text" class="form-control input" path="email" id="email"
                                                         aria-describedby="email input"/>
                                             <form:errors path="email" cssClass="formError" element="p"/>
@@ -40,14 +40,14 @@
                                 </div>
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
-                                        Continuar
+                                        <spring:message code="join.buttonText"/>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <p class="my-4 text-center" style="font-size: 14px">No tienes un email asociado?
-                                <a href="<c:url value='/join/register'/>">Únete</a>
+                            <p class="my-4 text-center" style="font-size: 14px"><spring:message code="join.noAccountText"/>
+                                <a href="<c:url value='/join/register'/>"><spring:message code="join.hyperlinkText"/> </a>
                             </p>
                         </div>
                     </div>

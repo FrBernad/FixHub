@@ -1,10 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Fixhub</title>
     <%@ include file="../components/headers.jsp" %>
+    <title><spring:message code="newService.Title"/></title>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
 
@@ -16,10 +17,9 @@
     <div class="container-lg w-50 p-5 my-5" style="background-color: white; max-width: 32em">
         <div class="row w-100 m-0 align-items-center justify-content-center">
             <div class="col-12">
-                <h1 class="text-center title">Crea un servicio</h1>
-                <p class="subtitle text-center mb-4"><span class="font-weight-bold">Ingresa los datos</span> y comienza
-                    a
-                    <br>brinda tu nuevo servicio.</p>
+                <h1 class="text-center title"><spring:message code="newService.Title"/></h1>
+                <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message code="newService.description.boldText"/></span>
+                <spring:message code="newService.description.normalText"/> </p>
             </div>
             <div class="col-12">
                 <div class="container-lg">

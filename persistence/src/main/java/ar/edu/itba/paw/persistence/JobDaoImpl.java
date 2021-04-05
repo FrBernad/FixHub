@@ -130,7 +130,7 @@ public class JobDaoImpl implements JobDao {
             case HIGHER_PRICE:
                 return orderQuery + "price desc";
 
-            case LOWER_PICE:
+            case LOWER_PRICE:
                 return orderQuery + "price asc";
 
         }

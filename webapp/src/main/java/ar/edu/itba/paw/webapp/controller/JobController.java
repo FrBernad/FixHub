@@ -47,7 +47,7 @@ public class JobController {
 
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
-                                      @Valid @ModelAttribute("reviewForm") final ReviewForm form,
+                                      @Valid @ModelAttribute("reviewfForm") final ReviewForm form,
                                       final BindingResult errors) {
 
         if (errors.hasErrors())

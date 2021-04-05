@@ -4,8 +4,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Descubre</title>
     <%@ include file="../components/headers.jsp" %>
+    <title><spring:message code="discover.title"/></title>
     <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
 
@@ -23,11 +23,11 @@
         <div class="row pb-4 align-items-center justify-content-between">
             <div class="col-7 p-0 d-flex align-items-center justify-content-start">
                 <div class="input-group">
-                    <input placeholder="Buscar plomería, jardinería, y más..."
+                    <input placeholder="<spring:message code="discover.barPlaceholder"/>"
                            id="searchBar"
                            class="inputRadius form-control p-4"/>
                     <div class="input-group-prepend">
-                        <button onclick="setSearchValueAndSubmit()" class="btn btn-lg inputBtn">Buscar</button>
+                        <button onclick="setSearchValueAndSubmit()" class="btn btn-lg inputBtn"><spring:message code="discover.search"/></button>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <div class="dropdown mr-4">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="filterDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Filtrar por:
+                        <spring:message code="discover.filterBy"/>
                         <c:if test="${filter!=null && !filter.isEmpty()}">
                             <spring:message code="home.categories.${filter}"/>
                         </c:if>
@@ -53,7 +53,7 @@
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="orderDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ordenar por:
+                        <spring:message code="discover.orderBy"/>
                         <c:if test="${order!=null && !order.isEmpty()}">
                             <spring:message code="discover.orderOption.${order}"/>
                         </c:if>
@@ -77,7 +77,7 @@
         <div class="row jobsContainer">
             <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
                 <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
-                    <p class="mb-0">Mostrando resultados de: <span>"<c:out value='${searchPhrase}'/>"</span></p>
+                    <p class="mb-0"><spring:message code="discover.showingResults"/><span>"<c:out value='${searchPhrase}'/>"</span></p>
                 </div>
             </c:if>
             <div class="col-12 p-0">
@@ -93,8 +93,7 @@
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-2 d-flex align-items-center justify-content-center"
                                          style="height: 300px; width: auto; background-color: white">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px">No se encontraron
-                                            trabajos,<br>intenta denuevo.</p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message code="discover.jobsNotFound"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>

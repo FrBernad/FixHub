@@ -1,9 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+
 <html>
 <head>
-    <title>Fixhub</title>
+    <title><spring:message code="productName"/></title>
     <%@ include file="../components/headers.jsp" %>
     <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
@@ -17,21 +18,21 @@
             <div class="container-lg w-100">
                 <div class="row w-100">
                     <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
-                        <h2 class="text-left photoText">Todos los servicios<br>en un solo lugar</h2>
+                        <h2 class="text-left photoText"><spring:message code="landingPage.title"/></h2>
                     </div>
                     <div class="col-8 col-md-7 w-50 d-flex justify-content-center align-items-center">
                         <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
                             <div class="input-group">
-                                <input placeholder="¿Qué servicio necesitas hoy?"
+                                <input placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>"
                                        class="inputRadius form-control p-4" name="searchPhrase">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-lg inputBtn" type="submit">Buscar</button>
+                                    <button class="btn btn-lg inputBtn" type="submit"><spring:message code="landingPage.searchButtonText"/></button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
-                        <c:forEach var="category" items="${categories}" begin="0" end="4">
+                        <c:forEach var="category" items="${categories}" begin="0" end="5">
                             <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">
@@ -53,7 +54,7 @@
     <div class="container-lg d-flex align-items-center py-5">
         <div class="row align-items-start">
             <div class="col-12">
-                <h1 class="py-3 stepSectionTitle">Como funciona</h1>
+                <h1 class="py-3 stepSectionTitle"><spring:message code="landingPage.howItWorks.title"/></h1>
             </div>
             <div class="col-4 d-flex justify-content-center align-items-start">
                 <div class="row">
@@ -61,11 +62,10 @@
                         <i class="fas iconsColor fa-search fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader">1. Buscá lo que necesites</p>
+                        <p class="text-start stepHeader"><spring:message code="landingPage.howItWorks.firstSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepBody">Desde servicios siemples hasta renovaciones totales, nosotros nos
-                            encargamos de conectarte con los mejores profesionales.</p>
+                        <p class="text-start stepBody"><spring:message code="landingPage.howItWorks.firstSection.text"/></p>
                     </div>
                 </div>
             </div>
@@ -75,11 +75,10 @@
                         <i class="fas iconsColor fa-star fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader">2. Explorá las diferentes opciones</p>
+                        <p class="text-start stepHeader"><spring:message code="landingPage.howItWorks.secondSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start">La calidad del trabajo es nuestra garantía, para ello, contamos con un
-                            sistema de calificaciones que valora el buen servicio.</p>
+                        <p class="text-start"><spring:message code="landingPage.howItWorks.secondSection.text"/></p>
                     </div>
                 </div>
             </div>
@@ -89,11 +88,10 @@
                         <i class="fas iconsColor fa-handshake fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader">3. Contactate con quien más te guste</p>
+                        <p class="text-start stepHeader"><spring:message code="landingPage.howItWorks.thirdSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start">Completá el formulario e intercambia los detalles con nuestros expertos.
-                            Fixhub te asegura que quedes satisfecho con el resultado.</p>
+                        <p class="text-start"><spring:message code="landingPage.howItWorks.thirdSection.text"/></p>
                     </div>
                 </div>
             </div>
@@ -104,7 +102,7 @@
     <div class="container-lg py-5 d-flex align-items-center w-100">
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
-                <h1 class="py-3 stepSectionTitle mb-0">Servicios más populares</h1>
+                <h1 class="py-3 stepSectionTitle mb-0"><spring:message code="landingPage.mostPopularServices.title"/></h1>
             </div>
             <div class="col-12 p-0">
                 <div class="container-fluid p-0">
@@ -119,9 +117,7 @@
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-2 d-flex align-items-center justify-content-center"
                                          style="height: 300px; width: auto; background-color: white">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px">Todavía no hay trabajos
-                                            disponibles,<br>intenta mas
-                                            adelante.</p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message code="landingPage.mostPopularServices.noPopularJobsText"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -140,13 +136,11 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 mb-4 d-flex justify-content-start align-items-center">
-                            <h2 class="p-0 text-left" style="color: white; font-weight: bold; font-size: 40px">
-                                Empieza a
-                                trabajar<br>con nosotros. Provee<br>tus servicios hoy.</h2>
+                            <h2 class="p-0 text-left" style="color: white; font-weight: bold; font-size: 40px"><spring:message code="landingPage.joinUs.descriptionTitle"/> </h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
                             <a href="<c:url value='/join'/>">
-                                <button class="learnMoreBtn">Únete</button>
+                                <button class="learnMoreBtn"><spring:message code="landingPage.joinUs.buttonText"/></button>
                             </a>
                         </div>
                     </div>
