@@ -60,7 +60,7 @@
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="orderDropdown"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            data-toggle="dropdown">
                         <spring:message code="discover.orderBy"/>
                         <c:if test="${order!=null && !order.isEmpty()}">
                             <spring:message code="discover.orderOption.${order}"/>
@@ -102,8 +102,7 @@
                         <c:otherwise>
                             <div class="row align-items-center justify-content-center h-100">
                                 <div class="col-12 d-flex align-items-center justify-content-center">
-                                    <div class="container mt-2 d-flex align-items-center justify-content-center"
-                                         style="height: 300px; width: auto; background-color: white; border-radius: 8px">
+                                    <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
                                         <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message
                                                 code="discover.jobsNotFound"/></p>
                                     </div>

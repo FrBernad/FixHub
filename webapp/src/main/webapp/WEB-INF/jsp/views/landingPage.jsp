@@ -104,7 +104,7 @@
         </div>
     </div>
 </div>
-<div class="container-fluid py-5" style="background-color: rgb(245,245,242)">
+<div class="container-fluid py-5" style="background-color: var(--tertiary-color);">
     <div class="container-lg py-5 d-flex align-items-center w-100">
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
@@ -121,11 +121,9 @@
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                <div class="col-12 d-flex mt-3 align-items-center justify-content-center">
-                                    <div class="container mt-5 d-flex align-items-center justify-content-center"
-                                         style="height: 300px; width: auto; background-color: white">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message
-                                                code="landingPage.mostPopularServices.noPopularJobsText"/></p>
+                                <div class="col-12 d-flex align-items-center justify-content-center">
+                                    <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
+                                        <p class="m-0 text-center p-4" style="font-size: 16px;"><spring:message code="landingPage.mostPopularServices.noPopularJobsText"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -137,15 +135,14 @@
     </div>
 </div>
 
-<div class="container-fluid py-5" style="background-color:rgb(0,51,89)">
+<div class="container-fluid py-5" style="background-color: var(--primary-color);">
     <div class="container-lg px-0 d-flex align-items-center py-5">
         <div class="row align-items-center justify-content-between w-100">
             <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 mb-4 d-flex justify-content-start align-items-center">
-                            <h2 class="p-0 text-left" style="color: white; font-weight: bold; font-size: 40px">
-                                <spring:message code="landingPage.joinUs.descriptionTitle"/></h2>
+                            <h2 class="p-0 text-left joinUsTitle"><spring:message code="landingPage.joinUs.descriptionTitle"/> </h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
                             <a href="<c:url value='/join'/>">
