@@ -9,10 +9,12 @@
             </a>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mx-1">
-                    <a href="<c:url value='/'/>" class="nav-link navbarText">Inicio</a>
+                    <a href="<c:url value='/'/>" class="nav-link navbarText">
+                        <spring:message code="navBar.home"/></a>
                 </li>
                 <li class="nav-item mx-1">
-                    <a href="<c:url value='/discover'/>" class="nav-link navbarText">Descubre</a>
+                    <a href="<c:url value='/discover'/>" class="nav-link navbarText">
+                        <spring:message code="navBar.discover"/></a>
                 </li>
             </ul>
         </div>
