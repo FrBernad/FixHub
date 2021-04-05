@@ -87,8 +87,8 @@ public class JobController {
             return contact(jobId, form);
         }
 
-        String address = String.format("%s, %s, %s %s, %s",form.getState(),form.getCity(),
-                form.getStreet(),form.getAddressNumber(),form.getFloor());
+        String address = String.format("%s, %s, %s %s, %s %s",form.getState(),form.getCity(),
+                form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
