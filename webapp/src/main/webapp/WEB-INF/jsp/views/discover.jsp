@@ -27,7 +27,8 @@
                            id="searchBar"
                            class="inputRadius form-control p-4"/>
                     <div class="input-group-prepend">
-                        <button onclick="setSearchValueAndSubmit()" class="btn btn-lg inputBtn"><spring:message code="discover.search"/></button>
+                        <button onclick="setSearchValueAndSubmit()" class="btn btn-lg inputBtn"><spring:message
+                                code="discover.search"/></button>
                     </div>
                 </div>
             </div>
@@ -39,8 +40,14 @@
                         <c:if test="${filter!=null && !filter.isEmpty()}">
                             <spring:message code="home.categories.${filter}"/>
                         </c:if>
+                         <c:if test="${filter!=null && filter.isEmpty()}">
+                            -
+                        </c:if>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                        <div class="input-group">
+                            <button onclick="setFilterValueAndSubmit('')" class="dropdown-item">- </button>
+                        </div>
                         <c:forEach var="filter" items="${filters}">
                             <div class="input-group">
                                 <button onclick="setFilterValueAndSubmit('${filter}')" class="dropdown-item">
@@ -48,6 +55,7 @@
                                 </button>
                             </div>
                         </c:forEach>
+
                     </div>
                 </div>
                 <div class="dropdown">
@@ -77,7 +85,8 @@
         <div class="row jobsContainer ">
             <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
                 <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
-                    <p class="mb-0"><spring:message code="discover.showingResults"/><span>"<c:out value='${searchPhrase}'/>"</span></p>
+                    <p class="mb-0"><spring:message code="discover.showingResults"/><span> "<c:out
+                            value='${searchPhrase}'/>"</span></p>
                 </div>
             </c:if>
             <div class="col-12 p-0">
@@ -93,7 +102,8 @@
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-2 d-flex align-items-center justify-content-center"
                                          style="height: 300px; width: auto; background-color: white">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message code="discover.jobsNotFound"/></p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message
+                                                code="discover.jobsNotFound"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>

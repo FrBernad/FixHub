@@ -32,7 +32,7 @@
                         </form>
                     </div>
                     <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
-                        <c:forEach var="category" items="${categories}" begin="0" end="5">
+                        <c:forEach var="category" items="${categories}" begin="0" end="4">
                             <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">

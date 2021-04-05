@@ -1,0 +1,20 @@
+.formError {
+    color: #ff0000;
+}
+
+.contactForm {
+    width: 500px;
+    margin: auto;
+}
+
+.contactBtn {
+    font-size: 0.8em;
+    background-color: #003359;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-weight: bold;
+}
+

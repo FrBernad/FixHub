@@ -5,7 +5,7 @@
 <head>
     <title><spring:message code="contact.contactTitle"/></title>
     <%@ include file="../components/headers.jsp" %>
-    <link href='<c:url value="/resources/css/contactForm.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/contact.css"/>' rel="stylesheet">
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>

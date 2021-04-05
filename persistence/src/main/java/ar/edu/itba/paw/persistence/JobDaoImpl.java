@@ -110,10 +110,10 @@ public class JobDaoImpl implements JobDao {
         return jdbcTemplate.query(
                 "select * from (" +
                         "(select * from JOBS j JOIN USERS u ON j.provider_id = u.id " + filterQuery +
-                        ") as aux(jobid) LEFT OUTER JOIN (select job_idd, count(job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
+                        ") as aux(job_id) LEFT OUTER JOIN (select job_idd, count(job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
                         "from (select id as job_idd from jobs) j " +
                         "LEFT OUTER JOIN reviews r on j.job_idd = r.job_id group by job_idd) " +
-                        "r on aux.jobid = r.job_idd) " + searchQuery + orderQuery, variables.toArray(),
+                        "r on aux.job_id = r.job_idd) " + searchQuery + orderQuery, variables.toArray(),
                 JOB_ROW_MAPPER);
     }
 

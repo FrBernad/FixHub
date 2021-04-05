@@ -57,7 +57,8 @@
         <div class="col">
             <div class="form-group">
                 <form:label path="addressNumber"><spring:message code="contactForm.addressNumber"/></form:label>
-                <form:input type="number" path="addressNumber" id="addressNumber" class="form-control" cssErrorClass="form-control is-invalid"/>
+                <form:input type="number" path="addressNumber" id="addressNumber" class="form-control"
+                            cssErrorClass="form-control is-invalid"/>
                 <form:errors path="addressNumber" cssClass="formError" element="p"/>
 
             </div>
@@ -77,11 +78,10 @@
                        cssErrorClass="form-control is-invalid"/>
         <form:errors path="message" cssClass="formError" element="p"/>
     </div>
-    <div class="row">
-        <div class="col d-flex align-items-center justify-content-end">
-            <div class="form-group">
-                <button type="submit"  form="contactForm" class="btn btn-primary"><spring:message code="contactForm.submit"/></button>
-            </div>
+    <div class="row align-items-center justify-content-center">
+        <div class="col-6 d-flex align-items-center justify-content-center">
+            <button type="submit" form="contactForm" class="contactBtn w-75"><spring:message
+                    code="contactForm.submit"/></button>
         </div>
     </div>
 

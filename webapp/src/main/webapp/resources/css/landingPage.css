@@ -20,14 +20,13 @@ p {
 
 .inputBtn {
     border-radius: 0 8px 8px 0 !important;
-    background-color: #6699CC;
+    background-color: rgba(0,59,109,1);
     color: white;
 }
 
 .inputBtn:hover {
-    background-color: #003B6D;
     transition: 150ms linear;
-    color: white;
+    color: rgba(255,255,255,.9);
 }
 
 .suggestionBtn {
@@ -40,7 +39,7 @@ p {
 }
 
 .suggestionBtn:hover {
-    background-color: rgba(102, 153, 204, 0.9);
+    background-color: rgba(0,59,109,0.9);
     color: white;
     transition: 150ms linear;
 }

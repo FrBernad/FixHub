@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-5 d-flex justify-content-start align-items-center">
                             <a href="<c:url value='/jobs/${job.id}/contact'/>">
-                                <button class="btn btn-primary"><spring:message code="job.contact"/></button>
+                                <button class="contactBtn"><spring:message code="job.contact"/></button>
                             </a>
                         </div>
 
