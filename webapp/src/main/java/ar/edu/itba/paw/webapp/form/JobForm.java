@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
-public class ServiceForm {
+public class JobForm {
 
     @NotEmpty
     @Size(max = 30)

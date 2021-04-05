@@ -18,7 +18,6 @@ public class Job {
         this.averageRating = averageRating;
         this.category = category;
         this.totalRatings = totalRatings;
-        this.category = category;
         this.id = id;
         this.provider = provider;
         this.price = price;

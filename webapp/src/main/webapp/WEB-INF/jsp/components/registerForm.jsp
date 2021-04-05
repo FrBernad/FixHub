@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:url value="/join/register" var="postPath"/>
-<form:form modelAttribute="registerForm" action="${postPath}" id="registerForm" class="serviceForm" method="POST">
+<form:form modelAttribute="registerForm" action="${postPath}" id="registerForm" class="jobForm" method="POST">
     <div class="form-group">
         <form:label class="label" path="name"><spring:message code="registerForm.userNameTitle"/></form:label>
         <form:input type="text" path="name" id="name" cssErrorClass="form-control is-invalid" class="form-control"/>

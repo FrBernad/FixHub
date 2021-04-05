@@ -109,7 +109,7 @@
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
                 <h1 class="py-3 stepSectionTitle mb-0"><spring:message
-                        code="landingPage.mostPopularServices.title"/></h1>
+                        code="landingPage.mostPopularJobs.title"/></h1>
             </div>
             <div class="col-12 p-0">
                 <div class="container-fluid p-0">
@@ -123,7 +123,7 @@
                             <c:otherwise>
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px;"><spring:message code="landingPage.mostPopularServices.noPopularJobsText"/></p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px;"><spring:message code="landingPage.mostPopularJobs.noPopularJobsText"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>
