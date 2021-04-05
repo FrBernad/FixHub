@@ -33,7 +33,7 @@ p {
     border-radius: 8px 8px 8px 8px !important;
     border: none;
     padding: 8px 16px;
-    width: 150px;
+    width: 120px;
     font-size: 12px;
     background-color: var(--tertiary-color);
 }

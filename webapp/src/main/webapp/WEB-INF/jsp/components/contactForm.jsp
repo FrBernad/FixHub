@@ -89,7 +89,7 @@
     </div>
     <div class="row align-items-center justify-content-center">
         <div class="col-6 d-flex align-items-center justify-content-center">
-            <button type="submit" form="contactForm" class="contactBtn w-75"><spring:message
+            <button type="button" id="contactFormButton" class="contactBtn w-75"><spring:message
                     code="contactForm.submit"/></button>
         </div>
     </div>

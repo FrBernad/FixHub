@@ -14,7 +14,7 @@
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
-        <div class="container-lg h-75 w-50 p-5 contentContainer">
+        <div class="container-lg h-75 p-5 smallContentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
                     <h1 class="text-center title"><spring:message code="join.jobTitle"/></h1>
@@ -64,6 +64,7 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
+
 <%@ include file="../components/bottomScripts.jsp" %>
 
 </body>

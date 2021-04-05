@@ -13,7 +13,7 @@
 <div class="container-fluid outerContainer">
     <%@ include file="../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
-        <div class="container-lg w-50 p-5 contentContainer">
+        <div class="container-lg w-50 p-5 smallContentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
                     <h1 class="text-center title"><spring:message code="register.title"/></h1>
@@ -36,7 +36,10 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
+
 <%@ include file="../components/bottomScripts.jsp" %>
+
+<script src='<c:url value="/resources/js/register.js"/>'></script>
 
 </body>
 

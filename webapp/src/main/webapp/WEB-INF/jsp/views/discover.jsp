@@ -9,7 +9,7 @@
     <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
 
-    <script src='<c:url value="/resources/js/discoverySearch.js"/>'></script>
+    <script src='<c:url value="/resources/js/discover.js"/>'></script>
 <body>
 <div class="outerContainer">
     <%@ include file="../components/navbar.jsp" %>
@@ -34,7 +34,7 @@
             </div>
             <div class="col-5 d-flex p-0 align-items-center justify-content-end">
                 <div class="dropdown mr-4">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="filterDropdown"
+                    <button class="dropdown-custom dropdown-toggle" type="button" id="filterDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <spring:message code="discover.filterBy"/>
                         <c:if test="${filter!=null && !filter.isEmpty()}">
@@ -58,9 +58,9 @@
 
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="orderDropdown"
-                            data-toggle="dropdown">
+                <div class="dropdown ">
+                    <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <spring:message code="discover.orderBy"/>
                         <c:if test="${order!=null && !order.isEmpty()}">
                             <spring:message code="discover.orderOption.${order}"/>
@@ -118,7 +118,9 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
+
 <%@ include file="../components/bottomScripts.jsp" %>
+<script src='<c:url value="/resources/js/contact.js"/>'></script>
 
 </body>
 </html>

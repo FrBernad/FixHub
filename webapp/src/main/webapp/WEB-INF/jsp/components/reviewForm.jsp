@@ -31,7 +31,7 @@
                         </form:form>
                     </div>
                     <div class="col-12 d-flex justify-content-start align-items-center">
-                        <button type="submit" form="reviewForm" class="contactBtn mr-4"><spring:message code="reviewForm.submitButtonText"/></button>
+                        <button id="reviewFormButton" class="contactBtn mr-4"><spring:message code="reviewForm.submitButtonText"/></button>
                         <button type="button" class="closeBtn" data-dismiss="modal"><spring:message code="reviewForm.cancelButtonText"/></button>
                     </div>
                 </div>

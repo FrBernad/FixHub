@@ -38,6 +38,6 @@
     <input type="hidden" value="${user.id}" name="userId">
 
     <div class="col-12 d-flex align-items-center justify-content-center">
-        <button type="submit" form="jobForm" class="w-100 continueBtn my-2"><spring:message code="jobForm.buttonText"/></button>
+        <button type="button" id="serviceFormButton" class="w-100 continueBtn my-2"><spring:message code="jobForm.buttonText"/></button>
     </div>
 </form:form>

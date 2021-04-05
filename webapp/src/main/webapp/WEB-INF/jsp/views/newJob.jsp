@@ -14,7 +14,7 @@
 <div class="container-fluid p-0 outerContainer">
     <%@ include file="../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
-        <div class="container-lg w-50 p-5 contentContainer">
+        <div class="container-lg w-50 p-5 smallContentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
                     <h1 class="text-center title"><spring:message code="newJob.Title"/></h1>
@@ -26,7 +26,7 @@
                     <div class="container-lg">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center justify-content-center">
-                                <%@include file="../components/jobForm.jsp" %>
+                                <%@include file="../components/newJobForm.jsp" %>
                             </div>
                         </div>
                     </div>
@@ -37,6 +37,8 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
+
+<script src='<c:url value="/resources/js/newJob.js"/>'></script>
 <%@ include file="../components/bottomScripts.jsp" %>
 
 </body>

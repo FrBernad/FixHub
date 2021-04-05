@@ -11,41 +11,41 @@
 </head>
 
 <body>
-<div class="container-fluid p-0 h-100 bgImg">
+<div class="container-fluid p-0 h-100 bgImg d-flex flex-column">
     <%@ include file="../components/navbar.jsp" %>
-    <div class="row align-items-center justify-content-center h-100">
-        <div class="col-12 w-100">
-            <div class="container-lg w-100">
-                <div class="row w-100">
-                    <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
-                        <h2 class="text-left photoText"><spring:message code="landingPage.title"/></h2>
-                    </div>
-                    <div class="col-8 col-md-8 w-50 d-flex justify-content-center align-items-center">
-                        <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
-                            <div class="input-group">
-                                <input placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>"
-                                       class="inputRadius form-control p-4" name="searchPhrase">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-lg inputBtn" type="submit"><spring:message
-                                            code="landingPage.searchButtonText"/></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-7 mt-3 w-50 d-flex justify-content-start align-items-center">
-                        <c:forEach var="category" items="${categories}" begin="0" end="4">
-                            <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
+    <div class="container-lg flex-grow-1">
+        <div class="row w-100 h-100 align-items-center justify-content-center">
+            <div class="col-12 px-0">
+                <div class="container-lg">
+                    <div class="row w-100">
+                        <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
+                            <h2 class="text-left photoText"><spring:message code="landingPage.title"/></h2>
+                        </div>
+                        <div class="col-8 col-md-9 w-50 d-flex justify-content-center align-items-center">
+                            <form id="searchForm" action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group">
-                                    <input type="hidden" name="filter" value="${category}">
-                                    <div class="input-group-prepend" style="width: 80%">
-                                        <button class="btn-sm suggestionBtn">
-                                            <spring:message code="home.categories.${category}"/>
-                                        </button>
+                                    <input id="searchFormInput" placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>"
+                                           class="inputRadius form-control p-4" name="searchPhrase">
+                                    <div class="input-group-prepend mr-0">
+                                        <button id="searchFormButton" class="btn btn-lg inputBtn" type="button"><spring:message
+                                                code="landingPage.searchButtonText"/></button>
                                     </div>
                                 </div>
                             </form>
-                        </c:forEach>
+                        </div>
+                        <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center">
+                            <c:forEach var="category" items="${categories}" begin="0" end="4">
+                                <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0">
+                                    <input type="hidden" name="filter" value="${category}">
+                                    <div class="input-group-prepend">
+                                        <button  class="btn-sm suggestionBtn mr-4">
+                                            <spring:message code="home.categories.${category}"/>
+                                        </button>
+                                    </div>
+                                </form>
+                            </c:forEach>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     <div class="row ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
                         <c:choose>
                             <c:when test="${jobs.size()>0}">
-                                <c:forEach var="job" items="${jobs}">
+                                <c:forEach begin="0" end="2" var="job" items="${jobs}">
                                     <%@ include file="../components/popularJobCard.jsp" %>
                                 </c:forEach>
                             </c:when>
@@ -161,7 +161,10 @@
     </div>
 </div>
 
+<script src='<c:url value="/resources/js/landingPage.js"/>'></script>
+
 <%@ include file="../components/footer.jsp" %>
+
 <%@ include file="../components/bottomScripts.jsp" %>
 
 </body>

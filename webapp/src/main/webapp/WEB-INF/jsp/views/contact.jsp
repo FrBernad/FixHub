@@ -8,20 +8,21 @@
     <link href='<c:url value="/resources/css/contact.css"/>' rel="stylesheet">
 </head>
 <body>
-<%@ include file="../components/navbarOld.jsp" %>
-
-<div class="container-fluid d-flex align-items-center justify-content-center"
-     style="background-color: rgb(245,245,242)">
-    <div class="container-lg w-50 p-5 my-5" style="background-color: white; max-width: 75em">
-        <div class="row w-100 m-0 align-items-center justify-content-center">
-            <div class="col">
-                <h1 class="text-center title"><spring:message code="contact.contactTitle"/> ${provider.name}</h1>
-                <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message code="contact.description.boldText"/></span>
-                    <spring:message code="contact.description.normalText"/></p>
-                <div class="container-lg">
-                    <div class="row">
-                        <div class="col-12 d-flex align-items-center justify-content-center">
-                            <%@ include file="../components/contactForm.jsp" %>
+<div class="container-fluid px-0 outerContainer">
+    <%@ include file="../components/navbar.jsp" %>
+    <div class="container-fluid py-4 px-0">
+        <div class="container-lg p-5 w-50 bigContentContainer">
+            <div class="row w-100 m-0 align-items-center justify-content-center">
+                <div class="col">
+                    <h1 class="text-center title"><spring:message code="contact.contactTitle"/></h1>
+                    <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message
+                            code="contact.description.boldText"/></span>
+                        <spring:message code="contact.description.normalText"/></p>
+                    <div class="container-lg">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center justify-content-center">
+                                <%@ include file="../components/contactForm.jsp" %>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -29,7 +30,11 @@
         </div>
     </div>
 </div>
+
+
 <%@ include file="../components/footer.jsp" %>
+
+<script src='<c:url value="/resources/js/contact.js"/>'></script>
 <%@ include file="../components/bottomScripts.jsp" %>
 
 </body>

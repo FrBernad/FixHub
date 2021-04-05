@@ -23,7 +23,7 @@ public class LandingPageController {
     @RequestMapping("/")
     public ModelAndView landingPage() {
         final ModelAndView mav = new ModelAndView("views/landingPage");
-        Collection<Job> jobs = searchService.getJobsByCategory(null,null,null);
+        Collection<Job> jobs = searchService.getJobsByCategory(null,"MOST_POPULAR",null);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         mav.addObject("jobs", jobs);
         mav.addObject("categories", categories);
