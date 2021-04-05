@@ -56,7 +56,6 @@ public class JobDaoImpl implements JobDao {
         final int averageRating = 0, totalRatings = 0;
         map.put("provider_id", provider.getId());
         map.put("category", category);
-        map.put("average_rating", averageRating);
         map.put("description", description);
         map.put("job_provided", jobProvided);
         map.put("price", price);
