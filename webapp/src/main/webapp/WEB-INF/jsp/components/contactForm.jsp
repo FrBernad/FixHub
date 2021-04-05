@@ -24,7 +24,7 @@
     </div>
     <div class="form-group">
         <form:label path="phoneNumber"><spring:message code="contactForm.phoneNumber"/></form:label>
-        <form:input type="number" path="phoneNumber" id="phoneNumber" class="form-control"
+        <form:input type="text" path="phoneNumber" id="phoneNumber" class="form-control"
                     cssErrorClass="form-control is-invalid"/>
         <form:errors path="phoneNumber" cssClass="formError" element="p"/>
     </div>
@@ -54,7 +54,7 @@
         <form:errors path="street" cssClass="formError" element="p"/>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-4">
             <div class="form-group">
                 <form:label path="addressNumber"><spring:message code="contactForm.addressNumber"/></form:label>
                 <form:input type="number" path="addressNumber" id="addressNumber" class="form-control"
@@ -63,12 +63,21 @@
 
             </div>
         </div>
-        <div class="col">
+        <div class="col-4">
             <div class="form-group">
                 <form:label path="floor"><spring:message code="contactForm.floor"/></form:label>
                 <form:input type="number" path="floor" id="floor" class="form-control"
                             cssErrorClass="form-control is-invalid"/>
                 <form:errors path="floor" cssClass="formError" element="p"/>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="form-group">
+                <form:label path="departmentNumber"><spring:message code="contactForm.departmentNumber"/></form:label>
+                <form:input type="text" path="departmentNumber" id="departmentNumber" class="form-control"
+                            cssErrorClass="form-control is-invalid"/>
+                <form:errors path="departmentNumber" cssClass="formError" element="p"/>
             </div>
         </div>
     </div>

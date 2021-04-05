@@ -81,6 +81,7 @@ public class NewJobController {
         return mav;
     }
 
+    /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
     @RequestMapping(path = "/join/newService")
     public ModelAndView newService(@ModelAttribute("user") final User user, @ModelAttribute("serviceForm") final ServiceForm form) {
 
