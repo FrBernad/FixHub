@@ -11,7 +11,7 @@
 
     <script src='<c:url value="/resources/js/discover.js"/>'></script>
 <body>
-<div class="outerContainer">
+<div class="outerContainer pb-4">
     <%@ include file="../components/navbar.jsp" %>
     <div class="container-lg">
         <c:url value="/discover/search" var="postPath"/>
@@ -81,7 +81,7 @@
     </div>
 
 
-    <div class="container-lg ">
+    <div class="container-lg">
         <div class="row jobsContainer">
             <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
                 <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">

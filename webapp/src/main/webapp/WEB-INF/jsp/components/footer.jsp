@@ -5,8 +5,10 @@
     <div class="container h-100">
         <div class="row h-100">
             <div class="col d-flex justify-content-center align-items-center">
-                <p class="text-center footer"><spring:message code="footer.description"/><spring:message
-                        code="productName"/></p>
+                <p class="text-center footer">
+                    <spring:message code="footer.description"/>
+                    <spring:message code="productName"/>
+                </p>
             </div>
         </div>
     </div>
