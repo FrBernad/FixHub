@@ -115,8 +115,8 @@
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                <div class="col-12 d-flex align-items-center justify-content-center">
-                                    <div class="container mt-2 d-flex align-items-center justify-content-center"
+                                <div class="col-12 d-flex mt-3 align-items-center justify-content-center">
+                                    <div class="container mt-5 d-flex align-items-center justify-content-center"
                                          style="height: 300px; width: auto; background-color: white">
                                         <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message code="landingPage.mostPopularServices.noPopularJobsText"/></p>
                                     </div>
