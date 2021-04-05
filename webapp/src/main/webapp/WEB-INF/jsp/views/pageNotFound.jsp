@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
     <title><spring:message code="pageNotFound.title"/></title>
 </head>
 <body>
@@ -13,6 +13,6 @@
         <h1 style="color: #003B6D;"><spring:message code="pageNotFound.description"/> </h1>
     </div>
 </div>
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
     <title><spring:message code="join.jobTitle"/></title>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
@@ -65,7 +65,7 @@
 
 <%@ include file="../components/footer.jsp" %>
 
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 </body>
 

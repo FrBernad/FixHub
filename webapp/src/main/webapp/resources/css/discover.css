@@ -67,8 +67,9 @@
 .dropdown-custom {
     border-radius: 8px !important;
     font-size: 14px;
-    background-color: rgba(0, 59, 109, 1);
-    color: white;
+    font-weight: bold;
+    background-color: white;
+    color: rgba(0, 59, 109, 1);
     border: none;
     padding: 8px 16px;
 }

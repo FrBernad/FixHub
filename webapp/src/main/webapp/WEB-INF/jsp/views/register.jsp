@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
     <title><spring:message code="register.title"/></title>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
@@ -25,7 +25,7 @@
                     <div class="container-lg">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center justify-content-center">
-                                <%@ include file="../components/registerForm.jsp" %>
+                                <%@ include file="../components/forms/registerForm.jsp" %>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
 
 <%@ include file="../components/footer.jsp" %>
 
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 <script src='<c:url value="/resources/js/register.js"/>'></script>
 

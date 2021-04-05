@@ -4,7 +4,7 @@
 <html>
 <head>
     <title><spring:message code="serverError.title"/></title>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
 </head>
 <body>
 <div class="container-fluid" style="position: relative;">
@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 </body>
 </html>

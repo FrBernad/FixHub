@@ -5,7 +5,7 @@
 <html>
 <head>
     <title><spring:message code="productName"/></title>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@animxyz/core@0.4.0/dist/animxyz.min.css">
@@ -178,7 +178,7 @@
 <%@ include file="../components/footer.jsp" %>
 
 <script src='<c:url value="/resources/js/landingPage.js"/>'></script>
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 </body>
 </html>

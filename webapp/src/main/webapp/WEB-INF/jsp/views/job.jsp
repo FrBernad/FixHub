@@ -5,7 +5,7 @@
 <html>
 <head>
     <title><c:out value="${job.jobProvided}"/></title>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/job.css"/>' rel="stylesheet">
 
 </head>
@@ -151,7 +151,7 @@
                         <a href="#" type="button" data-toggle="modal" data-target="#newReview">
                             <spring:message code="job.review.hyperlink"/>
                         </a>
-                        <%@ include file="../components/reviewForm.jsp" %>
+                        <%@ include file="../components/forms/reviewForm.jsp" %>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -187,7 +187,7 @@
 <%@ include file="../components/footer.jsp" %>
 
 <script src='<c:url value="/resources/js/job.js"/>'></script>
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 </body>
 </html>

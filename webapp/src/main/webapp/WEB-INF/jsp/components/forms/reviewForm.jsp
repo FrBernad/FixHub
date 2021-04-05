@@ -13,7 +13,7 @@
                                    class="reviewForm px-0" method="POST">
                             <div class="form-group">
                                 <form:label path="description"><spring:message code="reviewForm.descriptionTitle"/></form:label>
-                                <form:textarea type="text" path="description"
+                                <form:textarea type="text" path="description" id="reviewFormTextArea"
                                                class="form-control"  cssErrorClass="form-control is-invalid" cssStyle="resize: none;"/>
                                 <form:errors path="description" cssClass="formError" element="p"/>
                             </div>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-12 d-flex justify-content-start align-items-center">
                         <button id="reviewFormButton" class="contactBtn mr-4"><spring:message code="reviewForm.submitButtonText"/></button>
-                        <button type="button" class="closeBtn" data-dismiss="modal"><spring:message code="reviewForm.cancelButtonText"/></button>
+                        <button type="button" id="reviewFormCloseButton" class="closeBtn" data-dismiss="modal"><spring:message code="reviewForm.cancelButtonText"/></button>
                     </div>
                 </div>
             </div>

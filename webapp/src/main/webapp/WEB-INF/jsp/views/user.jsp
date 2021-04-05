@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>User</title>
-    <%@ include file="../components/headers.jsp" %>
+    <%@ include file="../components/includes/headers.jsp" %>
 </head>
 <body>
 <%@ include file="../components/navbarOld.jsp" %>
@@ -50,7 +50,7 @@
 </div>
 </div>
 
-<%@ include file="../components/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 <%@ include file="../components/footer.jsp" %>
 
