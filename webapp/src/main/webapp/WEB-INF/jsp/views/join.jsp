@@ -13,7 +13,7 @@
 
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../components/navbar.jsp" %>
-    <div class="container-fluid py-2 px-0">
+    <div class="container-fluid py-4 px-0">
         <div class="container-lg h-75 w-50 p-5 contentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
