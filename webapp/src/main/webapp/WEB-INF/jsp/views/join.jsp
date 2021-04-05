@@ -5,7 +5,7 @@
 <html>
 <head>
     <%@ include file="../components/headers.jsp" %>
-    <title><spring:message code="join.serviceTitle"/></title>
+    <title><spring:message code="join.jobTitle"/></title>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
 
@@ -17,7 +17,7 @@
         <div class="container-lg h-75 w-50 p-5 contentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
-                    <h1 class="text-center title"><spring:message code="join.serviceTitle"/></h1>
+                    <h1 class="text-center title"><spring:message code="join.jobTitle"/></h1>
                     <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message
                             code="join.description.boldText"/></span>
                         <spring:message code="join.description.normalText"/></p>

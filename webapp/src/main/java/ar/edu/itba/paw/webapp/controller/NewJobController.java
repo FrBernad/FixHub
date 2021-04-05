@@ -9,7 +9,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.EmailForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
-import ar.edu.itba.paw.webapp.form.ServiceForm;
+import ar.edu.itba.paw.webapp.form.JobForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -76,13 +76,14 @@ public class NewJobController {
             return join(form);
         }
 
-        final ModelAndView mav = new ModelAndView("redirect:/join/newService");
+        final ModelAndView mav = new ModelAndView("redirect:/join/newJob");
         ra.addFlashAttribute("user", user);
         return mav;
     }
 
-    @RequestMapping(path = "/join/newService")
-    public ModelAndView newService(@ModelAttribute("user") final User user, @ModelAttribute("serviceForm") final ServiceForm form) {
+    /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
+    @RequestMapping(path = "/join/newJob")
+    public ModelAndView newJob(@ModelAttribute("user") final User user, @ModelAttribute("jobForm") final JobForm form) {
 
         final ModelAndView mav;
 
@@ -91,7 +92,7 @@ public class NewJobController {
         if (user.getEmail() == null) {
             mav = new ModelAndView("redirect:/join");
         } else {
-            mav = new ModelAndView("views/newService");
+            mav = new ModelAndView("/views/newJob");
             mav.addObject("user", user);
             Collection<JobCategory> categories = jobService.getJobsCategories();
             mav.addObject("categories", categories);
@@ -102,14 +103,14 @@ public class NewJobController {
     }
 
 
-    @RequestMapping(path = "/join/newService", method = RequestMethod.POST)
-    public ModelAndView newServicePost(@Valid @ModelAttribute("serviceForm") final ServiceForm form, final BindingResult errors,
+    @RequestMapping(path = "/join/newJob", method = RequestMethod.POST)
+    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors,
                                        @RequestParam("userId") final long userId) {
 
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         if (errors.hasErrors()) {
-            return newService(user, form);
+            return newJob(user, form);
         }
 
         Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), user);

@@ -43,6 +43,10 @@ public class ContactForm {
     @Pattern(regexp = "[0-9]*")
     private String floor;
 
+    @Pattern(regexp = "[A-Za-z0-9]*")
+    private String departmentNumber;
+
+
     @NotEmpty
     private String message;
 
@@ -116,5 +120,13 @@ public class ContactForm {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getDepartmentNumber() {
+        return departmentNumber;
+    }
+
+    public void setDepartmentNumber(String departmentNumber) {
+        this.departmentNumber = departmentNumber;
     }
 }
