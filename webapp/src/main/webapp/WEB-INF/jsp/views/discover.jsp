@@ -120,7 +120,7 @@
 <%@ include file="../components/footer.jsp" %>
 
 <%@ include file="../components/bottomScripts.jsp" %>
-<script src='<c:url value="/resources/js/contact.js"/>'></script>
+<script src='<c:url value="/resources/js/discover.js"/>'></script>
 
 </body>
 </html>

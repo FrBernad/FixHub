@@ -1,12 +1,12 @@
-let serviceForm = document.getElementById("serviceForm")
+let jobForm = document.getElementById("jobForm")
 let processing = false;
-let serviceFormButton = document.getElementById("serviceFormButton");
-serviceFormButton.addEventListener("click", () => {
+let jobFormButton = document.getElementById("jobFormButton");
+jobFormButton.addEventListener("click", () => {
     if(processing){
         return;
     }
     processing=true;
-    serviceFormButton.disabled = true;
-    serviceForm.submit();
+    jobFormButton.disabled = true;
+    jobForm.submit();
     processing=false;
 })
