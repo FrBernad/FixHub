@@ -15,7 +15,7 @@
     <div class="container-lg w-50 p-5 my-5" style="background-color: white; max-width: 75em">
         <div class="row w-100 m-0 align-items-center justify-content-center">
             <div class="col">
-                <h1 class="text-center title"><spring:message code="contact.contactTitle"/></h1>
+                <h1 class="text-center title"><spring:message code="contact.contactTitle"/> ${provider.name}</h1>
                 <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message code="contact.description.boldText"/></span>
                     <spring:message code="contact.description.normalText"/></p>
                 <div class="container-lg">

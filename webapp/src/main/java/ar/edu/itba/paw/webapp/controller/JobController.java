@@ -4,8 +4,10 @@ import ar.edu.itba.paw.interfaces.exceptions.ReviewException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.Review;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -67,10 +69,12 @@ public class JobController {
                                 @ModelAttribute("contactForm") final ContactForm form) {
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        final User provider = job.getProvider();
 
         final ModelAndView mav;
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job);
+        mav.addObject("provider",provider);
         return mav;
     }
 

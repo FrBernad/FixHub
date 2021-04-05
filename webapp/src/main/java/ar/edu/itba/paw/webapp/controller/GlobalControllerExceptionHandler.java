@@ -18,7 +18,6 @@ public class GlobalControllerExceptionHandler {
     public static final String ERROR_VIEW = "views/serverError";
 
 
-
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = JobNotFoundException.class)
     public ModelAndView jobNotFoundException() {
