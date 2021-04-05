@@ -8,9 +8,12 @@
     <%@ include file="../components/headers.jsp" %>
     <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@animxyz/core@0.4.0/dist/animxyz.min.css">
 </head>
 
 <body>
+
+<%--SEARCH SECTION--%>
 <div class="container-fluid p-0 h-100 bgImg d-flex flex-column">
     <%@ include file="../components/navbar.jsp" %>
     <div class="container-lg flex-grow-1">
@@ -19,27 +22,31 @@
                 <div class="container-lg">
                     <div class="row w-100">
                         <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
-                            <h2 class="text-left photoText"><spring:message code="landingPage.title"/></h2>
+                            <h2 class="text-left photoText xyz-in" xyz="fade duration-5 left-5"><spring:message
+                                    code="landingPage.title"/></h2>
                         </div>
                         <div class="col-8 col-md-9 w-50 d-flex justify-content-center align-items-center">
                             <form id="searchForm" action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
-                                <div class="input-group">
-                                    <input id="searchFormInput" placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>"
-                                           class="inputRadius form-control p-4" name="searchPhrase">
+                                <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
+                                    <input class="inputRadius form-control p-4 "
+                                           id="searchFormInput" name="searchPhrase"
+                                           placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>">
                                     <div class="input-group-prepend mr-0">
-                                        <button id="searchFormButton" class="btn btn-lg inputBtn" type="button"><spring:message
-                                                code="landingPage.searchButtonText"/></button>
+                                        <button id="searchFormButton" class="btn btn-lg inputBtn" type="button">
+                                            <spring:message
+                                                    code="landingPage.searchButtonText"/></button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center">
+                        <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center" xyz="fade small left-5 stagger delay-10">
                             <c:forEach var="category" items="${categories}" begin="0" end="4">
-                                <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0">
+                                <form action="<c:url value="/discover/search"/>" method="GET"
+                                      class="mb-0 xyz-in">
                                     <input type="hidden" name="filter" value="${category}">
                                     <div class="input-group-prepend">
-                                        <button  class="btn-sm suggestionBtn mr-4">
+                                        <button class="btn-sm suggestionBtn mr-4">
                                             <spring:message code="home.categories.${category}"/>
                                         </button>
                                     </div>
@@ -52,6 +59,8 @@
         </div>
     </div>
 </div>
+
+<%--HOW IT WORKS SECTION--%>
 <div class="container-fluid py-5" style="background-color: rgb(255,255,255)">
     <div class="container-lg d-flex align-items-center py-5">
         <div class="row align-items-start">
@@ -104,6 +113,8 @@
         </div>
     </div>
 </div>
+
+<%--POPULAR JOBS SECTION--%>
 <div class="container-fluid py-5" style="background-color: var(--tertiary-color);">
     <div class="container-lg py-5 d-flex align-items-center w-100">
         <div class="row align-items-center justify-content-center w-100">
@@ -123,7 +134,8 @@
                             <c:otherwise>
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px;"><spring:message code="landingPage.mostPopularJobs.noPopularJobsText"/></p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px;"><spring:message
+                                                code="landingPage.mostPopularJobs.noPopularJobsText"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -135,6 +147,7 @@
     </div>
 </div>
 
+<%--JOIN SECTION--%>
 <div class="container-fluid py-5" style="background-color: var(--primary-color);">
     <div class="container-lg px-0 d-flex align-items-center py-5">
         <div class="row align-items-center justify-content-between w-100">
@@ -142,7 +155,8 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 mb-4 d-flex justify-content-start align-items-center">
-                            <h2 class="p-0 text-left joinUsTitle"><spring:message code="landingPage.joinUs.descriptionTitle"/> </h2>
+                            <h2 class="p-0 text-left joinUsTitle"><spring:message
+                                    code="landingPage.joinUs.descriptionTitle"/></h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
                             <a href="<c:url value='/join'/>">
@@ -161,10 +175,9 @@
     </div>
 </div>
 
-<script src='<c:url value="/resources/js/landingPage.js"/>'></script>
-
 <%@ include file="../components/footer.jsp" %>
 
+<script src='<c:url value="/resources/js/landingPage.js"/>'></script>
 <%@ include file="../components/bottomScripts.jsp" %>
 
 </body>
