@@ -50,7 +50,7 @@
 </div>
 </div>
 
-
+<%@ include file="../components/bottomScripts.jsp" %>
 <%@ include file="../components/footer.jsp" %>
 </body>
 </html>

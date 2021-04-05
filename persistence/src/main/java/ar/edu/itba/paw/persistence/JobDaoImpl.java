@@ -27,21 +27,20 @@ public class JobDaoImpl implements JobDao {
 
     private final String EMPTY = " ";
 
-
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
             new Job(rs.getString("description"),
-                    rs.getString("jobProvided"),
-                    rs.getInt("avgRating"),
-                    rs.getInt("totalRatings"),
+                    rs.getString("job_provided"),
+                    rs.getInt("avg_rating"),
+                    rs.getInt("total_ratings"),
                     JobCategory.valueOf(rs.getString("category")),
-                    rs.getLong("jobId"),
+                    rs.getLong("job_id"),
                     rs.getBigDecimal("price"),
-                    new User(rs.getLong("providerId"),
+                    new User(rs.getLong("provider_id"),
                             rs.getString("password"),
                             rs.getString("name"),
                             rs.getString("surname"),
                             rs.getString("email"),
-                            rs.getString("phoneNumber"),
+                            rs.getString("phone_number"),
                             rs.getString("state"),
                             rs.getString("city")));
 
@@ -55,11 +54,11 @@ public class JobDaoImpl implements JobDao {
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider) {
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
-        map.put("providerId", provider.getId());
+        map.put("provider_id", provider.getId());
         map.put("category", category);
-        map.put("averageRating", averageRating);
+        map.put("average_rating", averageRating);
         map.put("description", description);
-        map.put("jobProvided", jobProvided);
+        map.put("job_provided", jobProvided);
         map.put("price", price);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
 
@@ -83,7 +82,7 @@ public class JobDaoImpl implements JobDao {
             variables.add(searchByLike);
             variables.add(searchByLike);
             variables.add(searchByLike);
-            searchQuery = " WHERE description LIKE ? OR jobprovided LIKE ? OR name LIKE ?";
+            searchQuery = " WHERE description LIKE ? OR job_provided LIKE ? OR name LIKE ?";
         }
 
         String orderQuery = getOrderQuery(orderOptions);
@@ -110,11 +109,11 @@ public class JobDaoImpl implements JobDao {
 
         return jdbcTemplate.query(
                 "select * from (" +
-                        "(select * from JOBS j JOIN USERS u ON j.providerId = u.id " + filterQuery +
-                        ") as aux(jobid) LEFT OUTER JOIN (select jobidd, count(jobid) as totalRatings,coalesce(avg(rating), 0) as avgrating " +
-                        "from (select id as jobidd from jobs) j " +
-                        "LEFT OUTER JOIN reviews r on j.jobidd = r.jobid group by jobidd) " +
-                        "r on aux.jobid = r.jobidd) " + searchQuery + orderQuery, variables.toArray(),
+                        "(select * from JOBS j JOIN USERS u ON j.provider_id = u.id " + filterQuery +
+                        ") as aux(jobid) LEFT OUTER JOIN (select job_idd, count(job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
+                        "from (select id as job_idd from jobs) j " +
+                        "LEFT OUTER JOIN reviews r on j.job_idd = r.job_id group by job_idd) " +
+                        "r on aux.jobid = r.job_idd) " + searchQuery + orderQuery, variables.toArray(),
                 JOB_ROW_MAPPER);
     }
 
@@ -122,10 +121,10 @@ public class JobDaoImpl implements JobDao {
         String orderQuery = " ORDER BY ";
         switch (orderOption) {
             case MOST_POPULAR:
-                return orderQuery + "avgRating desc";
+                return orderQuery + "avg_rating desc";
 
             case LESS_POPULAR:
-                return orderQuery + "avgRating asc";
+                return orderQuery + "avg_rating asc";
 
             case HIGHER_PRICE:
                 return orderQuery + "price desc";

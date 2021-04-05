@@ -11,8 +11,8 @@
 </head>
 
 <body>
-<%@ include file="../components/navbar.jsp" %>
-<div class="container-fluid h-75">
+<%@ include file="../components/navbarLanding.jsp" %>
+<div class="container-fluid h-100">
     <div class="row align-items-center justify-content-center h-100 bgImg">
         <div class="col-12 w-100">
             <div class="container-lg w-100">
@@ -20,7 +20,7 @@
                     <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
                         <h2 class="text-left photoText"><spring:message code="landingPage.title"/></h2>
                     </div>
-                    <div class="col-8 col-md-7 w-50 d-flex justify-content-center align-items-center">
+                    <div class="col-8 col-md-8 w-50 d-flex justify-content-center align-items-center">
                         <form action="<c:url value="/discover/search"/>" method="GET" class="mb-0" style="width: 100%">
                             <div class="input-group">
                                 <input placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>"
@@ -38,8 +38,9 @@
                                 <div class="input-group">
                                     <input type="hidden" name="filter" value="${category}">
                                     <div class="input-group-prepend" style="width: 80%">
-                                        <button class="btn-sm suggestionBtn"
-                                                style="width: 100%"><spring:message code="home.categories.${category}"/></button>
+                                        <button class="btn-sm suggestionBtn">
+                                            <spring:message code="home.categories.${category}"/>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -152,7 +153,10 @@
             </div>
         </div>
     </div>
+    <script src='<c:url value="/resources/js/global.js"/>'></script>
 </div>
 <%@ include file="../components/footer.jsp" %>
+<%@ include file="../components/bottomScripts.jsp" %>
+
 </body>
 </html>

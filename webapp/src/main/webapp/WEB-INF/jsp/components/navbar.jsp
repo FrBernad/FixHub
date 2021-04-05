@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<nav class="navbar navbar-expand navbar-light" style="background-color: white">
+<nav class="navbar navbar-expand navbarDefault">
     <div class="container-lg">
         <a href="<c:url value='/'/>" class="navbar-brand mr-4">
             <img src='<c:url value="/resources/images/navbrand.png"/>' alt=<spring:message code="productName"/>

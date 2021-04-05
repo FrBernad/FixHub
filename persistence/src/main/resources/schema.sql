@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS USERS
     name        TEXT,
     surname     TEXT,
     email       TEXT UNIQUE,
-    phoneNumber TEXT,
+    phone_number TEXT,
     state       TEXT,
     city        TEXT,
     PRIMARY KEY (id)
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS JOBS
     id            SERIAL,
     description   TEXT,
     category      TEXT,
-    jobProvided   TEXT,
-    providerId    BIGINT,
+    job_provided   TEXT,
+    provider_id    BIGINT,
     price         DECIMAL,
-    FOREIGN KEY (providerId) REFERENCES USERS (id),
+    FOREIGN KEY (provider_id) REFERENCES USERS (id),
     PRIMARY KEY (id)
 );
 
@@ -27,10 +27,10 @@ CREATE TABLE IF NOT EXISTS REVIEWS
 (
     id           SERIAL,
     description  TEXT,
-    jobId        BIGINT,
+    job_id        BIGINT,
     rating       INT,
-    creationDate TIMESTAMP,
-    FOREIGN KEY (jobId) REFERENCES JOBS (id),
+    creation_date TIMESTAMP,
+    FOREIGN KEY (job_id) REFERENCES JOBS (id),
     PRIMARY KEY (id)
 );
 

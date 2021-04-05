@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.util.List;
+
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 

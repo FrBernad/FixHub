@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
                     rs.getString("name"),
                     rs.getString("surname"),
                     rs.getString("email"),
-                    rs.getString("phoneNumber"),
+                    rs.getString("phone_number"),
                     rs.getString("state"),
                     rs.getString("city"));
 
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
         map.put("name", name);
         map.put("surname", surname);
         map.put("email", email);
-        map.put("phoneNumber", phoneNumber);
+        map.put("phone_number", phoneNumber);
         map.put("state", state);
         map.put("city", city);
 

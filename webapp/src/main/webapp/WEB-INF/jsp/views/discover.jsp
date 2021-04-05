@@ -12,7 +12,7 @@
     <script src='<c:url value="/resources/js/discoverySearch.js"/>'></script>
 <body>
 <%@ include file="../components/navbar.jsp" %>
-<div class="outerContainer py-4">
+<div class="outerContainer py-4 ${jobs.size()==0 ? 'h-75' : ''}">
     <div class="container-lg">
         <c:url value="/discover/search" var="postPath"/>
         <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET" id="searchForm">
@@ -73,8 +73,8 @@
     </div>
 
 
-    <div class="container-lg">
-        <div class="row jobsContainer">
+    <div class="container-lg ">
+        <div class="row jobsContainer ">
             <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
                 <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
                     <p class="mb-0"><spring:message code="discover.showingResults"/><span>"<c:out value='${searchPhrase}'/>"</span></p>
@@ -107,5 +107,7 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
+<%@ include file="../components/bottomScripts.jsp" %>
+
 </body>
 </html>

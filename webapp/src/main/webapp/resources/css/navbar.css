@@ -2,3 +2,54 @@
     font-weight: normal;
     font-size: 18px;
 }
+
+.navbarTop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    background-color: transparent;
+}
+
+
+.navbarTop li:hover a {
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: 90ms linear;
+}
+
+.navbarTop li a {
+    color: white !important;
+}
+
+.navbarScrolled {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    background-color: white;
+}
+
+.navbarScrolled li:hover a {
+    color: rgba(0, 0, 0, 0.7) !important;
+    transition: 90ms linear;
+}
+
+.navbarScrolled li a {
+    color: black !important;
+}
+
+.navbarDefault {
+    background-color: white;
+}
+
+.navbarDefault li:hover a {
+    color: rgba(0, 0, 0, 0.7) !important;
+    transition: 90ms linear;
+}
+
+.navbarDefault li a {
+    color: black !important;
+}
+

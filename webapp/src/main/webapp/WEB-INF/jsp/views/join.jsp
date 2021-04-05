@@ -58,6 +58,8 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
+<%@ include file="../components/bottomScripts.jsp" %>
+
 </body>
 
 </html>

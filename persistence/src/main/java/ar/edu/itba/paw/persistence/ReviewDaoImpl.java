@@ -27,9 +27,9 @@ public class ReviewDaoImpl implements ReviewDao {
     private static final RowMapper<Review> REVIEW_ROW_MAPPER = (rs, rowNum) ->
             new Review(rs.getLong("id"),
                     rs.getString("description"),
-                    rs.getLong("jobId"),
+                    rs.getLong("job_id"),
                     rs.getInt("rating"),
-                    rs.getTimestamp("creationDate").toLocalDateTime().toLocalDate());
+                    rs.getTimestamp("creation_date").toLocalDateTime().toLocalDate());
 
     @Autowired
     public ReviewDaoImpl(final DataSource ds) {
@@ -40,7 +40,7 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public Collection<Review> getReviewsByJobId(Job job) {
         return jdbcTemplate.query(
-                "SELECT * FROM REVIEWS r WHERE r.jobId = ?", new Object[]{job.getId()}, REVIEW_ROW_MAPPER
+                "SELECT * FROM REVIEWS r WHERE r.job_id = ?", new Object[]{job.getId()}, REVIEW_ROW_MAPPER
         );
     }
 
@@ -48,9 +48,9 @@ public class ReviewDaoImpl implements ReviewDao {
     public Review createReview(String description, Job job, int rating, Timestamp creationDate) {
         Map<String, Object> map = new HashMap<>();
         map.put("description", description);
-        map.put("jobId", job.getId());
+        map.put("job_id", job.getId());
         map.put("rating", rating);
-        map.put("creationDate", creationDate);
+        map.put("creation_date", creationDate);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
         return new Review(id, description, job.getId(), rating, creationDate.toLocalDateTime().toLocalDate());
     }
@@ -58,7 +58,7 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public int getReviewsCountByJobId(Job job) {
         return jdbcTemplate.query(
-                "SELECT count(*) as total FROM REVIEWS r WHERE r.jobId = ?", new Object[]{job.getId()},
+                "SELECT count(*) as total FROM REVIEWS r WHERE r.job_id = ?", new Object[]{job.getId()},
                 rs -> {
                     return rs.getInt("total");
                 }

@@ -13,5 +13,6 @@
         <h1 style="color: #003B6D;"><spring:message code="pageNotFound.description"/> </h1>
     </div>
 </div>
+<%@ include file="../components/bottomScripts.jsp" %>
 </body>
 </html>
