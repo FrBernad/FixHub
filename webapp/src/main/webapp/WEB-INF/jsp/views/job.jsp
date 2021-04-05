@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<%@ include file="../components/navbar.jsp" %>
+<%@ include file="../components/navbarOld.jsp" %>
 <div class="container-fluid py-5" style="background-color: rgb(245,245,242);">
     <div class="container-lg p-4" style="background-color: white;">
         <div class="row mt-3">

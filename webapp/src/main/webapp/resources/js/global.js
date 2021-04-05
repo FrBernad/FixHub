@@ -1,4 +1,4 @@
-let navbar = document.getElementById("navbarLanding");
+let navbar = document.getElementById("navbar");
 let height = navbar.offsetHeight;
 document.addEventListener("scroll", e => {
         let scrolled = document.scrollingElement.scrollTop;

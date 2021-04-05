@@ -7,7 +7,7 @@
     <%@ include file="../components/headers.jsp" %>
 </head>
 <body>
-<%@ include file="../components/navbar.jsp" %>
+<%@ include file="../components/navbarOld.jsp" %>
 <div class="container-fluid my-5 py-2" style="background-color:#FAFAFA">
     <div class="row my-5">
         <div class="col-4">

@@ -11,8 +11,8 @@
 
     <script src='<c:url value="/resources/js/discoverySearch.js"/>'></script>
 <body>
-<%@ include file="../components/navbar.jsp" %>
-<div class="outerContainer py-4 ${jobs.size()==0 ? 'h-75' : ''}">
+<div class="outerContainer">
+    <%@ include file="../components/navbar.jsp" %>
     <div class="container-lg">
         <c:url value="/discover/search" var="postPath"/>
         <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET" id="searchForm">
@@ -40,13 +40,13 @@
                         <c:if test="${filter!=null && !filter.isEmpty()}">
                             <spring:message code="home.categories.${filter}"/>
                         </c:if>
-                         <c:if test="${filter!=null && filter.isEmpty()}">
+                        <c:if test="${filter!=null && filter.isEmpty()}">
                             -
                         </c:if>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
                         <div class="input-group">
-                            <button onclick="setFilterValueAndSubmit('')" class="dropdown-item">- </button>
+                            <button onclick="setFilterValueAndSubmit('')" class="dropdown-item">-</button>
                         </div>
                         <c:forEach var="filter" items="${filters}">
                             <div class="input-group">
@@ -82,7 +82,7 @@
 
 
     <div class="container-lg ">
-        <div class="row jobsContainer ">
+        <div class="row jobsContainer">
             <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
                 <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
                     <p class="mb-0"><spring:message code="discover.showingResults"/><span> "<c:out
@@ -91,24 +91,26 @@
             </c:if>
             <div class="col-12 p-0">
                 <div class="container-fluid">
-                    <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
-                        <c:choose>
-                            <c:when test="${jobs.size()>0}">
+                    <c:choose>
+                        <c:when test="${jobs.size()>0}">
+                            <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                 <c:forEach var="job" items="${jobs}">
                                     <%@ include file="../components/jobCard.jsp" %>
                                 </c:forEach>
-                            </c:when>
-                            <c:otherwise>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="row align-items-center justify-content-center h-100">
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-2 d-flex align-items-center justify-content-center"
-                                         style="height: 300px; width: auto; background-color: white">
+                                         style="height: 300px; width: auto; background-color: white; border-radius: 8px">
                                         <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message
                                                 code="discover.jobsNotFound"/></p>
                                     </div>
                                 </div>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 

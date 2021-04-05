@@ -8,7 +8,7 @@
     <link href='<c:url value="/resources/css/contact.css"/>' rel="stylesheet">
 </head>
 <body>
-<%@ include file="../components/navbar.jsp" %>
+<%@ include file="../components/navbarOld.jsp" %>
 
 <div class="container-fluid d-flex align-items-center justify-content-center"
      style="background-color: rgb(245,245,242)">

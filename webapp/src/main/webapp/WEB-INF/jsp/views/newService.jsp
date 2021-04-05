@@ -10,22 +10,24 @@
 </head>
 
 <body>
-<%@ include file="../components/navbar.jsp" %>
 
-<div class="container-fluid d-flex align-items-center justify-content-center"
-     style="background-color: rgb(245,245,242)">
-    <div class="container-lg w-50 p-5 my-5" style="background-color: white; max-width: 32em">
-        <div class="row w-100 m-0 align-items-center justify-content-center">
-            <div class="col-12">
-                <h1 class="text-center title"><spring:message code="newService.Title"/></h1>
-                <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message code="newService.description.boldText"/></span>
-                <spring:message code="newService.description.normalText"/> </p>
-            </div>
-            <div class="col-12">
-                <div class="container-lg">
-                    <div class="row">
-                        <div class="col-12 d-flex align-items-center justify-content-center">
-                            <%@include file="../components/serviceForm.jsp" %>
+<div class="container-fluid p-0 outerContainer">
+    <%@ include file="../components/navbar.jsp" %>
+    <div class="container-fluid py-4 px-0">
+        <div class="container-lg w-50 p-5 contentContainer">
+            <div class="row w-100 m-0 align-items-center justify-content-center">
+                <div class="col-12">
+                    <h1 class="text-center title"><spring:message code="newService.Title"/></h1>
+                    <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message
+                            code="newService.description.boldText"/></span>
+                        <spring:message code="newService.description.normalText"/></p>
+                </div>
+                <div class="col-12">
+                    <div class="container-lg">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center justify-content-center">
+                                <%@include file="../components/serviceForm.jsp" %>
+                            </div>
                         </div>
                     </div>
                 </div>

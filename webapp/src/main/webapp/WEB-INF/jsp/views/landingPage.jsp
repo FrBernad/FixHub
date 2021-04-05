@@ -11,9 +11,9 @@
 </head>
 
 <body>
-<%@ include file="../components/navbarLanding.jsp" %>
-<div class="container-fluid h-100">
-    <div class="row align-items-center justify-content-center h-100 bgImg">
+<div class="container-fluid p-0 h-100 bgImg">
+    <%@ include file="../components/navbar.jsp" %>
+    <div class="row align-items-center justify-content-center h-100">
         <div class="col-12 w-100">
             <div class="container-lg w-100">
                 <div class="row w-100">
@@ -26,7 +26,8 @@
                                 <input placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>"
                                        class="inputRadius form-control p-4" name="searchPhrase">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-lg inputBtn" type="submit"><spring:message code="landingPage.searchButtonText"/></button>
+                                    <button class="btn btn-lg inputBtn" type="submit"><spring:message
+                                            code="landingPage.searchButtonText"/></button>
                                 </div>
                             </div>
                         </form>
@@ -63,10 +64,12 @@
                         <i class="fas iconsColor fa-search fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader"><spring:message code="landingPage.howItWorks.firstSection.title"/></p>
+                        <p class="text-start stepHeader"><spring:message
+                                code="landingPage.howItWorks.firstSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepBody"><spring:message code="landingPage.howItWorks.firstSection.text"/></p>
+                        <p class="text-start stepBody"><spring:message
+                                code="landingPage.howItWorks.firstSection.text"/></p>
                     </div>
                 </div>
             </div>
@@ -76,7 +79,8 @@
                         <i class="fas iconsColor fa-star fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader"><spring:message code="landingPage.howItWorks.secondSection.title"/></p>
+                        <p class="text-start stepHeader"><spring:message
+                                code="landingPage.howItWorks.secondSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
                         <p class="text-start"><spring:message code="landingPage.howItWorks.secondSection.text"/></p>
@@ -89,7 +93,8 @@
                         <i class="fas iconsColor fa-handshake fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader"><spring:message code="landingPage.howItWorks.thirdSection.title"/></p>
+                        <p class="text-start stepHeader"><spring:message
+                                code="landingPage.howItWorks.thirdSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
                         <p class="text-start"><spring:message code="landingPage.howItWorks.thirdSection.text"/></p>
@@ -103,7 +108,8 @@
     <div class="container-lg py-5 d-flex align-items-center w-100">
         <div class="row align-items-center justify-content-center w-100">
             <div class="col-12">
-                <h1 class="py-3 stepSectionTitle mb-0"><spring:message code="landingPage.mostPopularServices.title"/></h1>
+                <h1 class="py-3 stepSectionTitle mb-0"><spring:message
+                        code="landingPage.mostPopularServices.title"/></h1>
             </div>
             <div class="col-12 p-0">
                 <div class="container-fluid p-0">
@@ -118,7 +124,8 @@
                                 <div class="col-12 d-flex mt-3 align-items-center justify-content-center">
                                     <div class="container mt-5 d-flex align-items-center justify-content-center"
                                          style="height: 300px; width: auto; background-color: white">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message code="landingPage.mostPopularServices.noPopularJobsText"/></p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message
+                                                code="landingPage.mostPopularServices.noPopularJobsText"/></p>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -137,11 +144,13 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 mb-4 d-flex justify-content-start align-items-center">
-                            <h2 class="p-0 text-left" style="color: white; font-weight: bold; font-size: 40px"><spring:message code="landingPage.joinUs.descriptionTitle"/> </h2>
+                            <h2 class="p-0 text-left" style="color: white; font-weight: bold; font-size: 40px">
+                                <spring:message code="landingPage.joinUs.descriptionTitle"/></h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
                             <a href="<c:url value='/join'/>">
-                                <button class="learnMoreBtn"><spring:message code="landingPage.joinUs.buttonText"/></button>
+                                <button class="learnMoreBtn"><spring:message
+                                        code="landingPage.joinUs.buttonText"/></button>
                             </a>
                         </div>
                     </div>
@@ -153,8 +162,8 @@
             </div>
         </div>
     </div>
-    <script src='<c:url value="/resources/js/global.js"/>'></script>
 </div>
+
 <%@ include file="../components/footer.jsp" %>
 <%@ include file="../components/bottomScripts.jsp" %>
 

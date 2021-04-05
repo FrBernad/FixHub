@@ -15,7 +15,6 @@
                     <span class="jobCardAvgRatingCount"> (<c:out value="${job.totalRatings})"/></span>
                 </div>
             </div>
-            <%--                TODO: cambiar esto para que sea con el join--%>
             <span class="badge badge-pill badge-secondary category"><spring:message code="home.categories.${job.category}"/></span>
         </div>
         <div class="jobCardImgContainer">
