@@ -52,6 +52,7 @@
                                             <c:forEach begin="${job.averageRating}" end="4">
                                                 <i class="far iconsColor fa-star fa-1x mr-2"></i>
                                             </c:forEach>
+                                            <span style="font-style: normal; font-weight: 400;">(<c:out value="${job.totalRatings})"/></span>
                                         </div>
                                     </row>
                                 </div>
