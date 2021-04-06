@@ -5,8 +5,10 @@ import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.SearchResult;
+import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +24,7 @@ public class LandingPageController {
     private SearchService searchService;
 
     @RequestMapping("/")
-    public ModelAndView landingPage() {
+    public ModelAndView landingPage(@ModelAttribute("searchForm") final SearchForm form) {
         final ModelAndView mav = new ModelAndView("views/landingPage");
         SearchResult results = searchService.getJobsByCategory(null,"MOST_POPULAR",null);
         Collection<JobCategory> categories = jobService.getJobsCategories();

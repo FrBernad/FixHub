@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
@@ -25,23 +26,27 @@
                             <h2 class="text-left photoText xyz-in" xyz="fade duration-5 left-5">
                                 <spring:message code="landingPage.titleP1"/>
                                 <br>
-                                 <spring:message code="landingPage.titleP2"/>
+                                <spring:message code="landingPage.titleP2"/>
                             </h2>
                         </div>
                         <div class="col-8 col-md-9 w-50 d-flex justify-content-center align-items-center">
-                            <form id="searchForm" action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
-                                  style="width: 100%">
-                                <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
-                                    <input class="inputRadius form-control p-4"
-                                           id="searchFormInput" name="searchPhrase"
-                                           placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>">
-                                    <div class="input-group-prepend mr-0">
-                                        <button id="searchFormButton" class="btn btn-lg inputBtn" type="button">
-                                            <spring:message
-                                                    code="landingPage.searchButtonText"/></button>
-                                    </div>
+                            <c:url value="/discover/search" var="postPath"/>
+                            <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
+                                       id="searchForm">
+                                <form:input path="order" type="hidden" id="orderInput"/>
+                                <form:input path="filter" type="hidden" id="filterInput"/>
+                                <form:input path="query" type="hidden" id="searchInput"/>
+                            </form:form>
+                            <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
+                                <input class="inputRadius form-control p-4"
+                                       id="searchFormInput"
+                                       placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>">
+                                <div class="input-group-prepend mr-0">
+                                    <button id="searchFormButton" class="btn btn-lg inputBtn" type="button">
+                                        <spring:message code="landingPage.searchButtonText"/>
+                                    </button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center"
                              xyz="fade small left-5 stagger delay-10">
@@ -180,8 +185,8 @@
     </div>
 </div>
 
-<%@ include file="../components/footer.jsp"%>
-<%@ include file="../components/includes/bottomScripts.jsp"%>
+<%@ include file="../components/footer.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp" %>
 <script src='<c:url value="/resources/js/landingPage.js"/>'></script>
 
 </body>
