@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.OrderOptions;
+import ar.edu.itba.paw.models.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,26 +23,32 @@ public class SearchServiceImpl implements SearchService {
     private final OrderOptions defaultOrder = OrderOptions.valueOf("MOST_POPULAR");
 
     @Override
-    public Collection<Job> getJobsByCategory(String searchQuery, String orderBy, String filterBy) {
-        OrderOptions orderOption;
+    public SearchResult getJobsByCategory(String searchBy, String orderBy, String filterBy) {
+        OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
-            orderOption = defaultOrder;
+            queryOrderOption = defaultOrder;
+            orderBy = defaultOrder.name();
         } else {
-            orderOption = valueOf(orderBy);
+            queryOrderOption = valueOf(orderBy);
         }
 
-        JobCategory categoryFilter;
+        JobCategory queryCategoryFilter;
         if (!JobCategory.contains(filterBy)) {
-            categoryFilter = null;
+            queryCategoryFilter = null;
+            filterBy = "";
         } else {
-            categoryFilter = JobCategory.valueOf(filterBy);
+            queryCategoryFilter = JobCategory.valueOf(filterBy);
         }
 
-        if (searchQuery!=null && searchQuery.equals("")) {
-            searchQuery = null;
+        String querySearchBy;
+        if (searchBy!=null && searchBy.equals("")) {
+            querySearchBy = null;
+            searchBy = "";
+        }else{
+            querySearchBy = searchBy;
         }
 
-        return jobDao.getJobsByCategory(searchQuery, orderOption, categoryFilter);
+        return new SearchResult(orderBy,filterBy,searchBy,jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter));
     }
 
     @Override

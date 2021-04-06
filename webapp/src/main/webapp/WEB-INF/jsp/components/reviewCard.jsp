@@ -12,7 +12,9 @@
                 </c:forEach>
             </div>
             <div class="col-12">
-                <p class="text-left reviewBody my-2"><c:out value="${review.description}"/></p>
+                <div class="container-fluid p-0">
+                    <p class="text-left reviewBody my-2"><c:out value="${review.description}"/></p>
+                </div>
             </div>
         </div>
     </div>

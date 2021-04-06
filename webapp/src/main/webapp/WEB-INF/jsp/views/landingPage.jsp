@@ -22,14 +22,17 @@
                 <div class="container-lg">
                     <div class="row w-100">
                         <div class="col-10 col-md-8 w-50 d-flex justify-content-start align-items-center">
-                            <h2 class="text-left photoText xyz-in" xyz="fade duration-5 left-5"><spring:message
-                                    code="landingPage.title"/></h2>
+                            <h2 class="text-left photoText xyz-in" xyz="fade duration-5 left-5">
+                                <spring:message code="landingPage.titleP1"/>
+                                <br>
+                                 <spring:message code="landingPage.titleP2"/>
+                            </h2>
                         </div>
                         <div class="col-8 col-md-9 w-50 d-flex justify-content-center align-items-center">
                             <form id="searchForm" action="<c:url value="/discover/search"/>" method="GET" class="mb-0"
                                   style="width: 100%">
                                 <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
-                                    <input class="inputRadius form-control p-4 "
+                                    <input class="inputRadius form-control p-4"
                                            id="searchFormInput" name="searchPhrase"
                                            placeholder="<spring:message code="landingPage.searchbarPlaceholder"/>">
                                     <div class="input-group-prepend mr-0">
@@ -40,7 +43,8 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center" xyz="fade small left-5 stagger delay-10">
+                        <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center"
+                             xyz="fade small left-5 stagger delay-10">
                             <c:forEach var="category" items="${categories}" begin="0" end="4">
                                 <form action="<c:url value="/discover/search"/>" method="GET"
                                       class="mb-0 xyz-in">
@@ -134,8 +138,9 @@
                             <c:otherwise>
                                 <div class="col-12 d-flex align-items-center justify-content-center">
                                     <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px;"><spring:message
-                                                code="landingPage.mostPopularJobs.noPopularJobsText"/></p>
+                                        <p class="m-0 text-center p-4" style="font-size: 16px;">
+                                            <spring:message code="landingPage.mostPopularJobs.noPopularJobsText"/>
+                                        </p>
                                     </div>
                                 </div>
                             </c:otherwise>
@@ -175,10 +180,9 @@
     </div>
 </div>
 
-<%@ include file="../components/footer.jsp" %>
-
+<%@ include file="../components/footer.jsp"%>
+<%@ include file="../components/includes/bottomScripts.jsp"%>
 <script src='<c:url value="/resources/js/landingPage.js"/>'></script>
-<%@ include file="../components/includes/bottomScripts.jsp" %>
 
 </body>
 </html>

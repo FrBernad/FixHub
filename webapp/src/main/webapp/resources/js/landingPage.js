@@ -1,7 +1,11 @@
 let searchForm = document.getElementById("searchForm");
 let searchFormInput = document.getElementById("searchFormInput");
+
+searchFormInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter")
+        searchFormInput.submit();
+});
+
 document.getElementById("searchFormButton").addEventListener("click", () => {
-    if (searchFormInput.value != null && searchFormInput.value !== "") {
-        searchForm.submit()
-    }
-})
+    searchForm.submit()
+});

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
+import ar.edu.itba.paw.models.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,9 @@ public class LandingPageController {
     @RequestMapping("/")
     public ModelAndView landingPage() {
         final ModelAndView mav = new ModelAndView("views/landingPage");
-        Collection<Job> jobs = searchService.getJobsByCategory(null,"MOST_POPULAR",null);
+        SearchResult results = searchService.getJobsByCategory(null,"MOST_POPULAR",null);
         Collection<JobCategory> categories = jobService.getJobsCategories();
-        mav.addObject("jobs", jobs);
+        mav.addObject("jobs", results.getJobs());
         mav.addObject("categories", categories);
         return mav;
     }

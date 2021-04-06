@@ -27,8 +27,9 @@
                            id="searchBar"
                            class="inputRadius form-control p-4"/>
                     <div class="input-group-prepend">
-                        <button onclick="setSearchValueAndSubmit()" class="btn btn-lg inputBtn"><spring:message
-                                code="discover.search"/></button>
+                        <button id="searchButton" class="btn btn-lg inputBtn">
+                            <spring:message code="discover.search"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -46,11 +47,11 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
                         <div class="input-group">
-                            <button onclick="setFilterValueAndSubmit('')" class="dropdown-item">-</button>
+                            <button id="emptyFilterButton" data-filter="" class="dropdown-item">-</button>
                         </div>
                         <c:forEach var="filter" items="${filters}">
                             <div class="input-group">
-                                <button onclick="setFilterValueAndSubmit('${filter}')" class="dropdown-item">
+                                <button data-filter="${filter}" class="dropdown-item filterButton">
                                     <spring:message code="home.categories.${filter}"/>
                                 </button>
                             </div>
@@ -69,7 +70,7 @@
                     <div class="dropdown-menu" aria-labelledby="orderDropdown">
                         <c:forEach var="order" items="${orderOptions}">
                             <div class="input-group">
-                                <button onclick="setOrderValueAndSubmit('${order}')" class="dropdown-item">
+                                <button data-order="${order}" class="dropdown-item orderButton">
                                     <spring:message code="discover.orderOption.${order}"/>
                                 </button>
                             </div>
@@ -81,38 +82,42 @@
     </div>
 
 
-    <div class="container-lg">
-        <div class="row jobsContainer">
-            <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
-                <div class="col-12 p-0 mb-5 resultHeader d-flex align-items-center">
-                    <p class="mb-0"><spring:message code="discover.showingResults"/><span> "<c:out
-                            value='${searchPhrase}'/>"</span></p>
-                </div>
-            </c:if>
-            <div class="col-12 p-0">
-                <div class="container-fluid">
-                    <c:choose>
-                        <c:when test="${jobs.size()>0}">
-                            <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
-                                <c:forEach var="job" items="${jobs}">
-                                    <%@ include file="../components/jobCard.jsp" %>
-                                </c:forEach>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="row align-items-center justify-content-center h-100">
-                                <div class="col-12 d-flex align-items-center justify-content-center">
-                                    <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px"><spring:message
-                                                code="discover.jobsNotFound"/></p>
+    <div class="container-lg px-0">
+        <div class="container-fluid p-0 jobsContainer">
+            <div class="row" style="padding: 3em;">
+                <c:if test="${searchPhrase!=null && !searchPhrase.isEmpty()}">
+                    <div class="col-12 mb-5 resultHeader p-0 d-flex align-items-start">
+                        <p class="mb-0"><spring:message code="discover.showingResults"/>
+                            <span>"<c:out value='${searchPhrase}'/>"</span>
+                        </p>
+                    </div>
+                </c:if>
+                <div class="col-12 p-0">
+                    <div class="container-fluid">
+                        <c:choose>
+                            <c:when test="${jobs.size()>0}">
+                                <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
+                                    <c:forEach var="job" items="${jobs}">
+                                        <%@ include file="../components/jobCard.jsp" %>
+                                    </c:forEach>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="row align-items-center justify-content-center h-100">
+                                    <div class="col-12 d-flex align-items-center justify-content-center">
+                                        <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
+                                            <p class="m-0 text-center p-4" style="font-size: 16px">
+                                                <spring:message code="discover.jobsNotFound"/>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 </div>
