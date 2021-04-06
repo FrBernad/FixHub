@@ -30,7 +30,7 @@
             <div class="form-group">
                 <form:label class="label" path="state"><spring:message code="registerForm.userStateTitle"/></form:label>
                 <form:input type="text" path="state" cssErrorClass="form-control is-invalid" id="state" class="form-control"/>
-                <form:errors path="phoneNumber" cssClass="formError" element="p"/>
+                <form:errors path="state" cssClass="formError" element="p"/>
 
             </div>
         </div>
