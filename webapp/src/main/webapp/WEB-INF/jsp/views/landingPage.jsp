@@ -82,11 +82,11 @@
                         <i class="fas iconsColor fa-search fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader"><spring:message
+                        <p class="text-start stepHeader" ><spring:message
                                 code="landingPage.howItWorks.firstSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center align-items-center">
-                        <p class="text-start stepBody"><spring:message
+                        <p class="text-start stepBody howItWorksText"><spring:message
                                 code="landingPage.howItWorks.firstSection.text"/></p>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                                 code="landingPage.howItWorks.secondSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start"><spring:message code="landingPage.howItWorks.secondSection.text"/></p>
+                        <p class="text-start howItWorksText"><spring:message code="landingPage.howItWorks.secondSection.text"/></p>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                                 code="landingPage.howItWorks.thirdSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start"><spring:message code="landingPage.howItWorks.thirdSection.text"/></p>
+                        <p class="text-start howItWorksText"><spring:message code="landingPage.howItWorks.thirdSection.text"/></p>
                     </div>
                 </div>
             </div>
