@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
-import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.OrderOptions;
 import ar.edu.itba.paw.models.SearchResult;
