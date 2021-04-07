@@ -52,7 +52,8 @@
                                             <c:forEach begin="${job.averageRating}" end="4">
                                                 <i class="far iconsColor fa-star fa-1x mr-2"></i>
                                             </c:forEach>
-                                            <span style="font-style: normal; font-weight: 400;">(<c:out value="${job.totalRatings})"/></span>
+                                            <span style="font-style: normal; font-weight: 400;">(<c:out
+                                                    value="${job.totalRatings})"/></span>
                                         </div>
                                     </row>
                                 </div>
@@ -145,8 +146,9 @@
             <div class="container-fluid mt-3">
                 <div class="row">
                     <div class="col-12 d-flex justify-content-start align-items-center">
-                        <h2 class="sectionTitle"><spring:message code="job.review.title"/><c:out
-                                value="${job.jobProvided}"/></h2>
+                        <h2 class="sectionTitle"><spring:message code="job.review.title"/>
+                            <c:out value="${job.jobProvided}"/>
+                        </h2>
                     </div>
                     <div class="col-12 d-flex justify-content-start align-items-center">
                         <a href="#" type="button" data-toggle="modal" data-target="#newReview">

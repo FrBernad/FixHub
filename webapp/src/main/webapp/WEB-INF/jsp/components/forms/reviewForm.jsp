@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="modal fade" id="newReview" tabindex="-1" aria-labelledby="newReviewLabel" aria-hidden="true">
+<div class="modal fade" id="newReview" data-show="true" data-error="${error}" tabindex="-1" aria-labelledby="newReviewLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="container-lg p-4" style="background-color: #FAFAFA;">

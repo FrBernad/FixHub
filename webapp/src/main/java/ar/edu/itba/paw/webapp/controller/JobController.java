@@ -34,11 +34,11 @@ public class JobController {
 
 
     @RequestMapping("/jobs/{jobId}")
-    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final long jobId) {
+    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final long jobId, final Integer error) {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-
         final ModelAndView mav = new ModelAndView("views/job");
         mav.addObject("job", job);
+        mav.addObject("error", error);
         Collection<Review> reviews = reviewService.getReviewsByJobId(job);
         mav.addObject("reviews", reviews);
         return mav;
@@ -46,11 +46,11 @@ public class JobController {
 
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
-                                      @Valid @ModelAttribute("reviewfForm") final ReviewForm form,
+                                      @Valid @ModelAttribute("reviewForm") final ReviewForm form,
                                       final BindingResult errors) {
 
         if (errors.hasErrors())
-            return job(form, jobId);
+            return job(form, jobId, 1);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos

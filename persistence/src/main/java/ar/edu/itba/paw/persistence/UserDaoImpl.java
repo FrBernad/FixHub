@@ -22,14 +22,14 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert simpleJdbcInsert;
 
     private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) ->
-            new User(rs.getLong("id"),
-                    rs.getString("password"),
-                    rs.getString("name"),
-                    rs.getString("surname"),
-                    rs.getString("email"),
-                    rs.getString("phone_number"),
-                    rs.getString("state"),
-                    rs.getString("city"));
+                                                               new User(rs.getLong("id"),
+                                                                   rs.getString("password"),
+                                                                   rs.getString("name"),
+                                                                   rs.getString("surname"),
+                                                                   rs.getString("email"),
+                                                                   rs.getString("phone_number"),
+                                                                   rs.getString("state"),
+                                                                   rs.getString("city"));
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {
@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> getUserById(long id) {
         return jdbcTemplate.query("SELECT * FROM USERS WHERE ID = ?", new Object[]{id},
-                USER_ROW_MAPPER).stream().findFirst();
+            USER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
@@ -62,9 +62,9 @@ public class UserDaoImpl implements UserDao {
 
         final Number id;
 
-        try{
+        try {
             id = simpleJdbcInsert.executeAndReturnKey(map);
-        }catch(org.springframework.dao.DuplicateKeyException e){
+        } catch (org.springframework.dao.DuplicateKeyException e) {
             throw new DuplicateUserException();
         }
 
