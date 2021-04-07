@@ -8,9 +8,23 @@
 </head>
 <body>
 <div class="container-fluid" style="position: relative;">
-    <img src="<c:url value="/resources/images/pageNotFound.png"/>"  alt="" style="object-fit: cover;">
-    <div class="top-left mt-1" style="position: absolute; top: 1em; left: 3em;">
-        <h1 style="color: #003B6D;"><spring:message code="pageNotFound.description"/> </h1>
+    <div class="row h-25">
+        <div class="col d-flex justify-content-center align-items-center">
+            <h1 style="color: #003B6D;"><spring:message code="pageNotFound.description"/></h1>
+        </div>
+    </div>
+    <div class="row h-50">
+        <div class="col d-flex justify-content-center align-items-center">
+            <img src="<c:url value="/resources/images/pageNotFound.png"/>" alt=""
+                 style="object-fit: cover; width: 1000px; height: 500px;">
+        </div>
+    </div>
+    <div class="row h-25">
+        <div class="col d-flex justify-content-center align-items-center">
+            <a href="<c:url value='/'/>" style="font-size: 30px;">
+                <spring:message code="navBar.home"/>
+            </a>
+        </div>
     </div>
 </div>
 <%@ include file="../components/includes/bottomScripts.jsp" %>
