@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS JOBS
 CREATE TABLE IF NOT EXISTS REVIEWS
 (
     id            SERIAL,
-    description   TEXT      NOT NULL,
+    description   VARCHAR(300) NOT NULL,
     job_id        BIGINT    NOT NULL,
     rating        INT       NOT NULL,
     creation_date TIMESTAMP NOT NULL,
