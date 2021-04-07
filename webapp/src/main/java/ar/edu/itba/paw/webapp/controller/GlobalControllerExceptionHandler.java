@@ -5,6 +5,7 @@ import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,15 +21,18 @@ public class GlobalControllerExceptionHandler {
 
     public static final String NOT_FOUND_VIEW = "views/pageNotFound";
     public static final String ERROR_VIEW = "views/serverError";
+
     @Autowired
     private MessageSource messageSource;
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = JobNotFoundException.class)
-    public ModelAndView jobNotFoundException(Locale locale) {
-        String error = messageSource.getMessage("Exceptions.NotFound.Job", null, locale);
+    public ModelAndView jobNotFoundException() {
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.NotFound.Job", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        System.out.println(code);
         mav.addObject("errors",error);
         mav.addObject("code",code);
 
@@ -37,9 +41,9 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UserNotFoundException.class)
-    public ModelAndView userNotFoundException(Locale locale) {
-
-        String error = messageSource.getMessage("Exceptions.NotFound.User", null, locale);
+    public ModelAndView userNotFoundException() {
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.NotFound.User", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
         mav.addObject("errors",error);
@@ -54,8 +58,9 @@ public class GlobalControllerExceptionHandler {
     * */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ModelAndView resourceNotFoundException(Locale locale){
-        String error = messageSource.getMessage("Exceptions.NotFound", null, locale);
+    public ModelAndView resourceNotFoundException(){
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.NotFound", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
         mav.addObject("errors",error);
@@ -65,8 +70,9 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(TypeMismatchException.class)
-    public ModelAndView badRequestException(Locale locale){
-        String error = messageSource.getMessage("Exceptions.BadRequest", null, locale);
+    public ModelAndView badRequestException(){
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.BadRequest", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
         mav.addObject("errors",error);
@@ -77,8 +83,9 @@ public class GlobalControllerExceptionHandler {
     /*Server error */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ModelAndView serverException(Locale locale){
-        String error = messageSource.getMessage("Exceptions.ServerError", null, locale);
+    public ModelAndView serverException(){
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.ServerError", null, locale);
         String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
         final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors",error);
