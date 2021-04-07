@@ -34,7 +34,7 @@ public class JobController {
 
 
     @RequestMapping("/jobs/{jobId}")
-    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final long jobId, final Integer error) {
+    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId) {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/job");
         mav.addObject("job", job);

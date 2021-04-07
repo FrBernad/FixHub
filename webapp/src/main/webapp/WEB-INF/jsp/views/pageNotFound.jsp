@@ -11,6 +11,9 @@
     <div class="row h-25">
         <div class="col d-flex justify-content-center align-items-center">
             <h1 style="color: #003B6D;"><spring:message code="pageNotFound.description"/></h1>
+            <c:if test="${errors != null}">
+                <h2><c:out value="${errors}"></c:out></h2>
+            </c:if>
         </div>
     </div>
     <div class="row h-50">
