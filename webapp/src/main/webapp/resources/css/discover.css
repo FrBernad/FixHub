@@ -69,3 +69,7 @@
     border: none;
     padding: 8px 16px;
 }
+
+.resultQuery {
+    font-size: 12px;
+}

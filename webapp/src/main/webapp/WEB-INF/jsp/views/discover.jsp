@@ -39,12 +39,14 @@
                     <button class="dropdown-custom dropdown-toggle" type="button" id="filterDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <spring:message code="discover.filterBy"/>
+                        <span class="resultQuery">
                         <c:if test="${filter!=null && !filter.isEmpty()}">
                             <spring:message code="home.categories.${filter}"/>
                         </c:if>
                         <c:if test="${filter!=null && filter.isEmpty()}">
                             -
                         </c:if>
+                        </span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdown">
                         <div class="input-group">
@@ -63,10 +65,13 @@
                 <div class="dropdown ">
                     <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
                         <spring:message code="discover.orderBy"/>
+                        <span class="resultQuery">
                         <c:if test="${order!=null && !order.isEmpty()}">
                             <spring:message code="discover.orderOption.${order}"/>
                         </c:if>
+                        </span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="orderDropdown">
                         <c:forEach var="order" items="${orderOptions}">
