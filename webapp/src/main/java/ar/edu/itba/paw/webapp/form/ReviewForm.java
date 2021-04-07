@@ -2,10 +2,12 @@ package ar.edu.itba.paw.webapp.form;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class ReviewForm {
 
     @NotEmpty
+    @Size(min=4,max=300)
     private String description;
 
     @NotEmpty
