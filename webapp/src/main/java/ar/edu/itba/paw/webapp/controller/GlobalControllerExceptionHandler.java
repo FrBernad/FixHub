@@ -2,13 +2,10 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,18 +25,25 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = JobNotFoundException.class)
-    public ModelAndView jobNotFoundException() {
-        Locale locale = LocaleContextHolder.getLocale();
-        String error = messageSource.getMessage("errors.NotFound.job", null, locale);
+    public ModelAndView jobNotFoundException(Locale locale) {
+        String error = messageSource.getMessage("Exceptions.NotFound.Job", null, locale);
+        String code = HttpStatus.NOT_FOUND.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
         mav.addObject("errors",error);
+        mav.addObject("code",code);
+
         return mav;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UserNotFoundException.class)
-    public ModelAndView userNotFoundException() {
+    public ModelAndView userNotFoundException(Locale locale) {
+
+        String error = messageSource.getMessage("Exceptions.NotFound.User", null, locale);
+        String code = HttpStatus.NOT_FOUND.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        mav.addObject("errors",error);
+        mav.addObject("code",code);
         return mav;
     }
 
@@ -50,23 +54,35 @@ public class GlobalControllerExceptionHandler {
     * */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ModelAndView resourceNotFoundException(){
-        ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+    public ModelAndView resourceNotFoundException(Locale locale){
+        String error = messageSource.getMessage("Exceptions.NotFound", null, locale);
+        String code = HttpStatus.NOT_FOUND.toString();
+        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        mav.addObject("errors",error);
+        mav.addObject("code",code);
         return mav;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(TypeMismatchException.class)
-    public ModelAndView badRequestException(){
-        ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+    public ModelAndView badRequestException(Locale locale){
+        String error = messageSource.getMessage("Exceptions.BadRequest", null, locale);
+        String code = HttpStatus.BAD_REQUEST.toString();
+        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        mav.addObject("errors",error);
+        mav.addObject("code",code);
         return mav;
     }
 
     /*Server error */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ModelAndView serverException(){
-        ModelAndView mav = new ModelAndView(ERROR_VIEW);
+    public ModelAndView serverException(Locale locale){
+        String error = messageSource.getMessage("Exceptions.ServerError", null, locale);
+        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors",error);
+        mav.addObject("code",code);
         return mav;
     }
 
