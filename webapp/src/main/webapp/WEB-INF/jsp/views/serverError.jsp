@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title><spring:message code="serverError.title"/></title>
+    <title><spring:message code="productName"/> | <spring:message code="serverError.title"/></title>
     <%@ include file="../components/includes/headers.jsp" %>
 </head>
 <body>

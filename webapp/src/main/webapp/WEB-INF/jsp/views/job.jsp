@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title><c:out value="${job.jobProvided}"/></title>
+    <title><spring:message code="productName"/> | <c:out value="${job.jobProvided}"/></title>
     <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/job.css"/>' rel="stylesheet">
 

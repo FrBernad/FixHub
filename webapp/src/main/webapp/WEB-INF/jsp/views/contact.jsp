@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title><spring:message code="contact.contactTitle"/></title>
+    <title><spring:message code="productName"/> | <spring:message code="contact.title"/></title>
     <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/contact.css"/>' rel="stylesheet">
 </head>

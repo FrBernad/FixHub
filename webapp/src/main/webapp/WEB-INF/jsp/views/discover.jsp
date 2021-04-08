@@ -5,8 +5,9 @@
 
 <html>
 <head>
+    <title><spring:message code="productName"/> | <spring:message code="discover.title"/></title>
+
     <%@ include file="../components/includes/headers.jsp" %>
-    <title><spring:message code="discover.title"/></title>
     <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
 

@@ -4,8 +4,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
+    <title><spring:message code="productName"/> | <spring:message code="join.jobTitle"/></title>
+
     <%@ include file="../components/includes/headers.jsp" %>
-    <title><spring:message code="join.jobTitle"/></title>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
 
