@@ -3,7 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title><spring:message code="pageNotFound.title"/></title>
+    <title><spring:message code="productName"/> |  <spring:message code="pageNotFound.title"/></title>
+
     <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/pageNotFound.css"/>' rel="stylesheet">
 </head>

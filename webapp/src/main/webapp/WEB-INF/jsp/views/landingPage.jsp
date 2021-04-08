@@ -6,6 +6,7 @@
 <html>
 <head>
     <title><spring:message code="productName"/></title>
+
     <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/landingPage.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
