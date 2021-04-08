@@ -2,6 +2,6 @@
     background-image: linear-gradient(261deg, #003b6d 0%, #021b30f2 90%);
 }
 
-p, h1, h2, h3, a {
+p, h1, h2, h3,a {
     color: white !important;
 }

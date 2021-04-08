@@ -6,7 +6,7 @@ import ar.edu.itba.paw.models.SearchResult;
 import java.util.Collection;
 
 public interface SearchService {
-    SearchResult getJobsByCategory(String searchQuery, String orderBy, String filterBy);
+        SearchResult getJobsByCategory(String searchQuery, String orderBy, String filterBy);
 
-    Collection<OrderOptions> getOrderOptions();
+        Collection<OrderOptions> getOrderOptions();
 }

@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @Rollback //Se vuelven atras las transacciones luego de cada test para que la base de datos vuelva a su estado original
-@Sql(scripts = "classpath:user-test.sql")
-//sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
+@Sql(scripts="classpath:user-test.sql") //sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class UserJdbcDaoTest {
@@ -48,16 +47,16 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testCreate() throws DuplicateUserException {
-        final User user = userDao.createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY);
+        final User user = userDao.createUser(PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY);
 
         Assert.assertNotNull(user);
         Assert.assertEquals(PASSWORD, user.getPassword());
         Assert.assertEquals(NAME, user.getName());
-        Assert.assertEquals(SURNAME, user.getSurname());
-        Assert.assertEquals(EMAIL, user.getEmail());
-        Assert.assertEquals(PHONENUMBER, user.getPhoneNumber());
-        Assert.assertEquals(CITY, user.getCity());
-        Assert.assertEquals(STATE, user.getState());
+        Assert.assertEquals(SURNAME,user.getSurname());
+        Assert.assertEquals(EMAIL,user.getEmail());
+        Assert.assertEquals(PHONENUMBER,user.getPhoneNumber());
+        Assert.assertEquals(CITY,user.getCity());
+        Assert.assertEquals(STATE,user.getState());
 
         assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }

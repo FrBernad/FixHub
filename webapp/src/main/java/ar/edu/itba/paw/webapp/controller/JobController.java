@@ -34,7 +34,7 @@ public class JobController {
 
 
     @RequestMapping("/jobs/{jobId}")
-    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId, final Integer error) {
+    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId,final Integer error) {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/job");
         mav.addObject("job", job);
@@ -71,7 +71,7 @@ public class JobController {
         final ModelAndView mav;
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job);
-        mav.addObject("provider", provider);
+        mav.addObject("provider",provider);
         return mav;
     }
 
@@ -88,17 +88,17 @@ public class JobController {
             return contact(jobId, form);
         }
 
-        String address = String.format("%s, %s, %s %s, %s %s", form.getState(), form.getCity(),
-            form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
+        String address = String.format("%s, %s, %s %s, %s %s",form.getState(),form.getCity(),
+                form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
         emailService.sendSimpleMail(form.getName(),
-            form.getSurname(),
-            address,
-            form.getPhoneNumber(),
-            form.getMessage(),
-            providerEmail, locale);
+                form.getSurname(),
+                address,
+                form.getPhoneNumber(),
+                form.getMessage(),
+                providerEmail, locale);
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;

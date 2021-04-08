@@ -14,7 +14,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import javax.sql.DataSource;
 
 
-@ComponentScan({"ar.edu.itba.paw.persistence",})
+@ComponentScan({ "ar.edu.itba.paw.persistence", })
 @Configuration
 public class TestConfig {
 
