@@ -1,13 +1,14 @@
 package ar.edu.itba.paw.models;
 
 public class User {
-    private String name, password,surname,city,state,phoneNumber,email;
+    private String name, password, surname, city, state, phoneNumber, email;
     private Number id;
 
     /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
     public User() {
 
     }
+
     public User(Number id, String password, String name, String surname, String email, String phoneNumber, String state, String city) {
         this.id = id;
         this.password = password;
@@ -86,14 +87,14 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", surname='" + surname + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", id=" + id +
-                '}';
+            "name='" + name + '\'' +
+            ", password='" + password + '\'' +
+            ", surname='" + surname + '\'' +
+            ", city='" + city + '\'' +
+            ", state='" + state + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", email='" + email + '\'' +
+            ", id=" + id +
+            '}';
     }
 }

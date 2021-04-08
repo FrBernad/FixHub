@@ -46,7 +46,7 @@ public class NewJobController {
 
         try {
             final User provider = userService.createUser("password", form.getName(), form.getSurname(), form.getEmail(), form.getPhoneNumber(),
-                    form.getState(), form.getCity());
+                form.getState(), form.getCity());
         } catch (DuplicateUserException e) {
             errors.rejectValue("email", "validation.user.DuplicateEmail");
             return registerEmail(form);
@@ -105,7 +105,7 @@ public class NewJobController {
 
     @RequestMapping(path = "/join/newJob", method = RequestMethod.POST)
     public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors,
-                                       @RequestParam("userId") final long userId) {
+                                   @RequestParam("userId") final long userId) {
 
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 

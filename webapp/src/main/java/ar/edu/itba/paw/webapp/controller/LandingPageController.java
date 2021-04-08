@@ -25,7 +25,7 @@ public class LandingPageController {
     @RequestMapping("/")
     public ModelAndView landingPage(@ModelAttribute("searchForm") final SearchForm form) {
         final ModelAndView mav = new ModelAndView("views/landingPage");
-        SearchResult results = searchService.getJobsByCategory(null,"MOST_POPULAR",null);
+        SearchResult results = searchService.getJobsByCategory(null, "MOST_POPULAR", null);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         mav.addObject("jobs", results.getJobs());
         mav.addObject("categories", categories);

@@ -22,14 +22,14 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert simpleJdbcInsert;
 
     private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) ->
-                                                               new User(rs.getLong("id"),
-                                                                   rs.getString("password"),
-                                                                   rs.getString("name"),
-                                                                   rs.getString("surname"),
-                                                                   rs.getString("email"),
-                                                                   rs.getString("phone_number"),
-                                                                   rs.getString("state"),
-                                                                   rs.getString("city"));
+        new User(rs.getLong("id"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("surname"),
+            rs.getString("email"),
+            rs.getString("phone_number"),
+            rs.getString("state"),
+            rs.getString("city"));
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {

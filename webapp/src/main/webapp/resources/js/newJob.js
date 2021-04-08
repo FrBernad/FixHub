@@ -2,11 +2,11 @@ let jobForm = document.getElementById("jobForm")
 let processing = false;
 let jobFormButton = document.getElementById("jobFormButton");
 jobFormButton.addEventListener("click", () => {
-    if(processing){
+    if (processing) {
         return;
     }
-    processing=true;
+    processing = true;
     jobFormButton.disabled = true;
     jobForm.submit();
-    processing=false;
+    processing = false;
 })

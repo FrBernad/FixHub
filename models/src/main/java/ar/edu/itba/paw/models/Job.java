@@ -4,7 +4,7 @@ package ar.edu.itba.paw.models;
 import java.math.BigDecimal;
 
 public class Job {
-    private String description,jobProvided;
+    private String description, jobProvided;
     private int averageRating;
     private JobCategory category;
     private Number id;
@@ -12,7 +12,7 @@ public class Job {
     private BigDecimal price;
     private long totalRatings;
 
-    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, Number id, BigDecimal price, User provider) {
+    public Job(String description, String jobProvided, int averageRating, long totalRatings, JobCategory category, Number id, BigDecimal price, User provider) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -26,15 +26,15 @@ public class Job {
     @Override
     public String toString() {
         return "Job{" +
-                "description='" + description + '\'' +
-                ", jobProvided='" + jobProvided + '\'' +
-                ", averageRating=" + averageRating +
-                ", category=" + category +
-                ", id=" + id +
-                ", provider=" + provider +
-                ", price=" + price +
-                ", totalRatings=" + totalRatings +
-                '}';
+            "description='" + description + '\'' +
+            ", jobProvided='" + jobProvided + '\'' +
+            ", averageRating=" + averageRating +
+            ", category=" + category +
+            ", id=" + id +
+            ", provider=" + provider +
+            ", price=" + price +
+            ", totalRatings=" + totalRatings +
+            '}';
     }
 
     public BigDecimal getPrice() {
@@ -78,9 +78,13 @@ public class Job {
     }
 
 
-    public JobCategory getCategory() { return category;}
+    public JobCategory getCategory() {
+        return category;
+    }
 
-    public void setCategory(JobCategory category) {this.category = category;}
+    public void setCategory(JobCategory category) {
+        this.category = category;
+    }
 
     public Number getId() {
         return id;
