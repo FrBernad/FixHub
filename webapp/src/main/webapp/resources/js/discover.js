@@ -23,7 +23,11 @@ window.addEventListener("load", () => {
     searchButton.addEventListener("click", () => {
         const query = formSearchBar.value;
         formSearchInput.setAttribute("value", query);
-        searchForm.submit();
+        if(formSearchInput.value.length > 50) {
+            document.getElementById("searchInvalidLength").style.display = "";
+        } else {
+            searchForm.submit();
+        }
     })
 
     for (const filterButton of filterButtons) {
