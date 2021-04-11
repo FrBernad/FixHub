@@ -1,11 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
+import ar.edu.itba.paw.models.UserRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -19,35 +18,62 @@ public class UserDaoImpl implements UserDao {
     private DataSource ds;
 
     private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private SimpleJdbcInsert userSimpleJdbcInsert;
+    private SimpleJdbcInsert roleSimpleJdbcInsert;
 
-    private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) ->
-                                                               new User(rs.getLong("id"),
-                                                                   rs.getString("password"),
-                                                                   rs.getString("name"),
-                                                                   rs.getString("surname"),
-                                                                   rs.getString("email"),
-                                                                   rs.getString("phone_number"),
-                                                                   rs.getString("state"),
-                                                                   rs.getString("city"));
+//    private static final ResultSetExtractor<Collection<>> USER_ROW_MAPPER = rs -> {
+//        Map<Long, User> userMap = new HashMap<>();
+//
+//        long userId;
+//        while (rs.next()) {
+//
+//            userId = rs.getLong("id");
+//
+//            if (!userMap.containsKey(userId)) {
+//                userMap.put(userId, new User(userId,
+//                    rs.getString("password"),
+//                    rs.getString("name"),
+//                    rs.getString("surname"),
+//                    rs.getString("email"),
+//                    rs.getString("phone_number"),
+//                    rs.getString("state"),
+//                    rs.getString("city"),
+//                    new ArrayList<>()));
+//            }
+//
+//            userMap.get(userId).addRole(UserRoles.valueOf(rs.getString("role")));
+//        }
+//
+//        return userMap.values();
+//    };
+
+    private Collection<UserRoles> userRoles = Arrays.asList(UserRoles.values().clone());
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USERS").usingGeneratedKeyColumns("id");
+        userSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USERS").usingGeneratedKeyColumns("id");
+        roleSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("ROLES").usingGeneratedKeyColumns("id");
     }
 
     @Override
     public Optional<User> getUserById(long id) {
-        return jdbcTemplate.query("SELECT * FROM USERS WHERE ID = ?", new Object[]{id},
-            USER_ROW_MAPPER).stream().findFirst();
+
+        return jdbcTemplate.
+            query("SELECT * FROM USERS u JOIN ROLES r WHERE u.ID = ?", new Object[]{id}, USER_ROW_MAPPER)
+            .stream()
+            .findFirst();
     }
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM USERS WHERE EMAIL = ?", new Object[]{email}, USER_ROW_MAPPER).stream().findFirst();
+        return jdbcTemplate.query("SELECT * FROM USERS WHERE EMAIL = ?", new Object[]{email}).stream().findFirst();
     }
 
+    @Override
+    public Collection<UserRoles> getUserRoles() {
+        return userRoles;
+    }
 
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException {
@@ -63,7 +89,7 @@ public class UserDaoImpl implements UserDao {
         final Number id;
 
         try {
-            id = simpleJdbcInsert.executeAndReturnKey(map);
+            id = userSimpleJdbcInsert.executeAndReturnKey(map);
         } catch (org.springframework.dao.DuplicateKeyException e) {
             throw new DuplicateUserException();
         }

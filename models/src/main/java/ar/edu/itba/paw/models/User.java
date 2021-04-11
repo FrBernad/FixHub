@@ -1,14 +1,18 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Collection;
+
 public class User {
     private String name, password,surname,city,state,phoneNumber,email;
     private Number id;
+    private Collection<UserRoles> roles;
 
     /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
     public User() {
 
     }
-    public User(Number id, String password, String name, String surname, String email, String phoneNumber, String state, String city) {
+
+    public User(Number id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<UserRoles> roles) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -17,6 +21,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.state = state;
         this.city = city;
+        this.roles = roles;
     }
 
     public String getName() {
@@ -83,17 +88,15 @@ public class User {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", surname='" + surname + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", id=" + id +
-                '}';
+    public Collection<UserRoles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<UserRoles> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(UserRoles role){
+        roles.add(role);
     }
 }

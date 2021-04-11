@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class JobServiceImp implements JobService {
+
     @Autowired
     private JobDao jobDao;
 
@@ -20,7 +21,6 @@ public class JobServiceImp implements JobService {
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user) {
         return jobDao.createJob(jobProvided,category,description, price, user);
     }
-
 
     @Override
     public Optional<Job> getJobById(long id) {

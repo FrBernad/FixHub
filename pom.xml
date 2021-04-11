@@ -39,7 +39,6 @@
         <module>models</module>
     </modules>
 
-
     <dependencyManagement>
         <dependencies>
             <dependency>

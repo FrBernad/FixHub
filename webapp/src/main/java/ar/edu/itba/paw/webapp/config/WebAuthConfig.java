@@ -1,11 +1,12 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.webapp.auth.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -24,6 +27,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailService userDetailService;
 
+    @Value("classpath:auth_key.pem")
+    private Resource authKey;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
@@ -31,27 +37,28 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        BufferedReader rememberMeKey = new BufferedReader(new InputStreamReader(authKey.getInputStream()));
         http.sessionManagement()
             .invalidSessionUrl("/login")
             .and().authorizeRequests()
-            .antMatchers("/login").anonymous()
-            .antMatchers("/admin/**").hasRole("ADMIN")
-            .antMatchers("/**").authenticated()
+                .antMatchers("/login").anonymous()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/**").authenticated()
             .and().formLogin()
-            .usernameParameter("j_username")
-            .passwordParameter("j_password")
-            .defaultSuccessUrl("/", false)
-            .loginPage("/login")
+                .usernameParameter("j_username")
+                .passwordParameter("j_password")
+                .defaultSuccessUrl("/", false)
+                .loginPage("/login")
             .and().rememberMe()
             .rememberMeParameter("j_rememberme")
-            .userDetailsService(userDetailService)
-            .key("mysupersecretketthatnobodyknowsabout") // no hacer esto, crear una aleatoria segura suficientemente grande y colocarla bajo src / main / resources
-            .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+                .userDetailsService(userDetailService)
+                .key(rememberMeKey.readLine())
+                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
             .and().logout()
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/login")
-            .and().exceptionHandling()
-            .accessDeniedPage("/403")
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .and().exceptionHandling()
+                .accessDeniedPage("/403")
             .and().csrf().disable();
     }
 

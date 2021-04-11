@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -12,6 +13,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Optional<User> getUserById(long id) {
         return userDao.getUserById(id);
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException {
-        return userDao.createUser(password, name, surname, email, phoneNumber, state, city);
+        return userDao.createUser(passwordEncoder.encode(password), name, surname, email, phoneNumber, state, city);
     }
+
 }
