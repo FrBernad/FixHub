@@ -2,9 +2,11 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -21,33 +23,33 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert userSimpleJdbcInsert;
     private SimpleJdbcInsert roleSimpleJdbcInsert;
 
-//    private static final ResultSetExtractor<Collection<>> USER_ROW_MAPPER = rs -> {
-//        Map<Long, User> userMap = new HashMap<>();
-//
-//        long userId;
-//        while (rs.next()) {
-//
-//            userId = rs.getLong("id");
-//
-//            if (!userMap.containsKey(userId)) {
-//                userMap.put(userId, new User(userId,
-//                    rs.getString("password"),
-//                    rs.getString("name"),
-//                    rs.getString("surname"),
-//                    rs.getString("email"),
-//                    rs.getString("phone_number"),
-//                    rs.getString("state"),
-//                    rs.getString("city"),
-//                    new ArrayList<>()));
-//            }
-//
-//            userMap.get(userId).addRole(UserRoles.valueOf(rs.getString("role")));
-//        }
-//
-//        return userMap.values();
-//    };
+    private static final ResultSetExtractor<Collection<User>> USER_ROW_MAPPER = rs -> {
+        Map<Long, User> userMap = new HashMap<>();
 
-    private Collection<UserRoles> userRoles = Arrays.asList(UserRoles.values().clone());
+        long userId;
+        while (rs.next()) {
+
+            userId = rs.getLong("id");
+
+            if (!userMap.containsKey(userId)) {
+                userMap.put(userId, new User(userId,
+                    rs.getString("password"),
+                    rs.getString("name"),
+                    rs.getString("surname"),
+                    rs.getString("email"),
+                    rs.getString("phone_number"),
+                    rs.getString("state"),
+                    rs.getString("city"),
+                    new ArrayList<>()));
+            }
+
+            userMap.get(userId).addRole(UserRoles.valueOf(rs.getString("role")));
+        }
+
+        return userMap.values();
+    };
+
+    private final Collection<UserRoles> userRoles = Arrays.asList(UserRoles.values().clone());
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {
@@ -60,14 +62,16 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> getUserById(long id) {
 
         return jdbcTemplate.
-            query("SELECT * FROM USERS u JOIN ROLES r WHERE u.ID = ?", new Object[]{id}, USER_ROW_MAPPER)
+            query("SELECT * FROM USERS u JOIN ROLES r on u.id=r.user_id WHERE u.id = ?", new Object[]{id}, USER_ROW_MAPPER)
             .stream()
             .findFirst();
     }
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM USERS WHERE EMAIL = ?", new Object[]{email}).stream().findFirst();
+        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM USERS WHERE EMAIL = ?) as AUX JOIN roles r on AUX.id = r.user_id", new Object[]{email}, USER_ROW_MAPPER)
+            .stream()
+            .findFirst();
     }
 
     @Override
@@ -94,7 +98,10 @@ public class UserDaoImpl implements UserDao {
             throw new DuplicateUserException();
         }
 
-        return new User(id, password, name, surname, email, phoneNumber, state, city);
+        Collection<UserRoles> roles = new ArrayList<>();
+        roles.add(UserRoles.ROLE_USER);
+
+        return new User(id, password, name, surname, email, phoneNumber, state, city, roles);
     }
 
 }

@@ -27,7 +27,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailService userDetailService;
 
-    @Value("classpath:auth_key.pem")
+    @Value("classpath:auth/auth_key.pem")
     private Resource authKey;
 
     @Override

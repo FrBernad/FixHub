@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
@@ -36,7 +38,7 @@ public class UserServiceImplTest {
         // 1. Setup!
         Mockito.when(mockDao.createUser(Mockito.eq(PASSWORD), Mockito.eq(NAME), Mockito.eq(SURNAME),
                 Mockito.eq(EMAIL), Mockito.eq(PHONENUMBER), Mockito.eq(STATE), Mockito.eq(CITY))).
-                thenReturn(new User(1, PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY));
+                thenReturn(new User(1, PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY, new ArrayList<>()));
         // 2. "ejercito" la class under test
         User maybeUser = userService.createUser(PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY);
         // 3. Asserts!

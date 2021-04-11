@@ -11,16 +11,14 @@ CREATE TABLE IF NOT EXISTS USERS
     PRIMARY KEY (id)
 );
 
--- PORQUE VARCHAR
--- CREATE TABLE IF NOT EXISTS ROLES
--- (
---     id            SERIAL,
---     role          TEXT      NOT NULL,
---     user_id       BIGINT    NOT NULL,
---     FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
---     PRIMARY KEY (id)
--- );
-
+CREATE TABLE IF NOT EXISTS ROLES
+(
+    id            SERIAL,
+    role          TEXT      NOT NULL,
+    user_id       BIGINT    NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
+    PRIMARY KEY (id)
+);
 
 CREATE TABLE IF NOT EXISTS JOBS
 (
