@@ -85,6 +85,11 @@
                     </div>
                 </div>
             </div>
+            <div class="col-12 justify-content-start align-items-center">
+                <small class="text-danger" style="display: none;" id="searchInvalidLength">
+                    <spring:message code="landingPage.searchInvalidLength"/>
+                </small>
+            </div>
         </div>
     </div>
 
