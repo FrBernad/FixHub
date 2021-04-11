@@ -24,7 +24,8 @@ public class RegisterForm{
     private String email;
 
     @NotEmpty
-    @Pattern(regexp = "[0-9]*")
+    @Size(max = 50 )
+    @Pattern(regexp = "^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$")
     private String phoneNumber;
 
     @NotEmpty
