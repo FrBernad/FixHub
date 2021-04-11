@@ -49,6 +49,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-4 justify-content-start align-items-center">
+                            <small class="text-danger" style="display: none;" id="searchInvalidLength">
+                                <spring:message code="landingPage.searchInvalidLength"/>
+                            </small>
+                        </div>
                         <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center"
                              xyz="fade small left-5 stagger delay-10">
                             <c:forEach var="category" items="${categories}" begin="0" end="4">
@@ -83,7 +88,7 @@
                         <i class="fas iconsColor fa-search fa-2x"></i>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-                        <p class="text-start stepHeader" ><spring:message
+                        <p class="text-start stepHeader"><spring:message
                                 code="landingPage.howItWorks.firstSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center align-items-center">
@@ -102,7 +107,8 @@
                                 code="landingPage.howItWorks.secondSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start howItWorksText"><spring:message code="landingPage.howItWorks.secondSection.text"/></p>
+                        <p class="text-start howItWorksText"><spring:message
+                                code="landingPage.howItWorks.secondSection.text"/></p>
                     </div>
                 </div>
             </div>
@@ -116,7 +122,8 @@
                                 code="landingPage.howItWorks.thirdSection.title"/></p>
                     </div>
                     <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
-                        <p class="text-start howItWorksText"><spring:message code="landingPage.howItWorks.thirdSection.text"/></p>
+                        <p class="text-start howItWorksText"><spring:message
+                                code="landingPage.howItWorks.thirdSection.text"/></p>
                     </div>
                 </div>
             </div>

@@ -16,8 +16,15 @@ window.addEventListener("load", () => {
 
     searchFormButton.addEventListener("click", () => {
         searchInput.setAttribute("value", searchFormInput.value)
-        searchForm.submit();
+        if(searchFormInput.value.length > 50) {
+            document.getElementById("searchInvalidLength").style.display = "";
+        } else {
+            searchForm.submit();
+        }
     });
+    
+
+
 
 })
 
