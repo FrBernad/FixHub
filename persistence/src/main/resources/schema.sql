@@ -2,15 +2,17 @@
 -- FIXME: AGREAGAR IDENTIFICARO A CADA CAMPO DE LAS TABLAS
 CREATE TABLE IF NOT EXISTS USERS
 (
-    id           SERIAL,
-    password     VARCHAR(128)        NOT NULL,
-    name         VARCHAR(50)         NOT NULL,
-    surname      VARCHAR(50)         NOT NULL,
-    email        VARCHAR(200) UNIQUE NOT NULL,
-    phone_number VARCHAR(50)         NOT NULL,
-    state        VARCHAR(50)         NOT NULL,
-    city         VARCHAR(50)         NOT NULL,
-    PRIMARY KEY (id)
+    id             SERIAL,
+    password       VARCHAR(128)        NOT NULL,
+    name           VARCHAR(50)         NOT NULL,
+    surname        VARCHAR(50)         NOT NULL,
+    email          VARCHAR(200) UNIQUE NOT NULL,
+    phone_number   VARCHAR(50)         NOT NULL,
+    profilePicture BIGINT,
+    state          VARCHAR(50)         NOT NULL,
+    city           VARCHAR(50)         NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (profilePicture) REFERENCES IMAGES (id)
 );
 
 CREATE TABLE IF NOT EXISTS ROLES
@@ -45,6 +47,21 @@ CREATE TABLE IF NOT EXISTS REVIEWS
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS IMAGES
+(
+    id    SERIAL,
+    image BYTEA,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS JOB_IMAGES
+(
+    image_id BIGINT,
+    job_id   BIGINT,
+    PRIMARY KEY (image_id, job_id),
+    FOREIGN KEY (image_id) REFERENCES IMAGES (id),
+    FOREIGN KEY (job_id) REFERENCES JOBS (id)
+);
 
 
 
