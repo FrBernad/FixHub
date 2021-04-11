@@ -6,7 +6,7 @@
     <title><spring:message code="productName"/> |  <spring:message code="register.title"/></title>
 
     <%@ include file="../components/includes/headers.jsp" %>
-    <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
 </head>
 
 <body>

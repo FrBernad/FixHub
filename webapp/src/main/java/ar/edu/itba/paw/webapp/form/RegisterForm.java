@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class RegisterForm{
+public class RegisterForm {
 
     @NotEmpty
     @Size(max = 50)
@@ -23,8 +23,10 @@ public class RegisterForm{
     @Pattern(regexp = "^([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+)*$")
     private String email;
 
+    private String password;
+
     @NotEmpty
-    @Size(max = 50 )
+    @Size(max = 50)
     @Pattern(regexp = "^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$")
     private String phoneNumber;
 
@@ -42,7 +44,6 @@ public class RegisterForm{
         return name;
     }
 
-    @NotBlank
     public void setName(String name) {
         this.name = name;
     }
@@ -61,6 +62,14 @@ public class RegisterForm{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {

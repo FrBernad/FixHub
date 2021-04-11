@@ -7,7 +7,7 @@ import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.EmailForm;
+import ar.edu.itba.paw.webapp.form.LoginForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,54 +33,6 @@ public class NewJobController {
     @Autowired
     private JobService jobService;
 
-    @RequestMapping(path = "/join/register")
-    public ModelAndView registerEmail(@ModelAttribute("registerForm") final RegisterForm form) {
-        final ModelAndView mav = new ModelAndView("views/register");
-        return mav;
-    }
-
-    @RequestMapping(path = "/join/register", method = RequestMethod.POST)
-    public ModelAndView registerEmailPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors) {
-        if (errors.hasErrors())
-            return registerEmail(form);
-
-        try {
-            final User provider = userService.createUser("password", form.getName(), form.getSurname(), form.getEmail(), form.getPhoneNumber(),
-                    form.getState(), form.getCity());
-        } catch (DuplicateUserException e) {
-            errors.rejectValue("email", "validation.user.DuplicateEmail");
-            return registerEmail(form);
-        }
-
-        final ModelAndView mav = new ModelAndView("redirect:/join");
-        return mav;
-    }
-
-
-    @RequestMapping("/join")
-    public ModelAndView join(@ModelAttribute("emailForm") final EmailForm form) {
-        return new ModelAndView("views/join");
-    }
-
-    @RequestMapping(path = "/join", method = RequestMethod.POST)
-    public ModelAndView joinEmailPost(RedirectAttributes ra, @Valid @ModelAttribute("emailForm") final EmailForm form, final BindingResult errors) {
-
-        if (errors.hasErrors()) {
-            return join(form);
-        }
-
-        //TODO: ESTA BIEN ESTO?
-        final Optional<User> user = userService.getUserByEmail(form.getEmail());
-        if (!user.isPresent()) {
-            errors.rejectValue("email", "validation.user.emailNotRegistered");
-            return join(form);
-        }
-
-        final ModelAndView mav = new ModelAndView("redirect:/join/newJob");
-        ra.addFlashAttribute("user", user);
-        return mav;
-    }
-
     /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
     @RequestMapping(path = "/join/newJob")
     public ModelAndView newJob(@ModelAttribute("user") final User user, @ModelAttribute("jobForm") final JobForm form) {
@@ -90,7 +42,7 @@ public class NewJobController {
         //TODO: CAMBIAR EL FLUJO CUANDO TENGAMOS AUTENTICACION
 
         if (user.getEmail() == null) {
-            mav = new ModelAndView("redirect:/join");
+            mav = new ModelAndView("redirect:/login");
         } else {
             mav = new ModelAndView("/views/newJob");
             mav.addObject("user", user);
@@ -105,7 +57,7 @@ public class NewJobController {
 
     @RequestMapping(path = "/join/newJob", method = RequestMethod.POST)
     public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors,
-                                       @RequestParam("userId") final long userId) {
+                                   @RequestParam("userId") final long userId) {
 
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 

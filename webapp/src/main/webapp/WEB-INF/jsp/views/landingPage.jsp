@@ -177,7 +177,7 @@
                                     code="landingPage.joinUs.descriptionTitle"/></h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
-                            <a href="<c:url value='/join'/>">
+                            <a href="<c:url value='/login'/>">
                                 <button class="learnMoreBtn"><spring:message
                                         code="landingPage.joinUs.buttonText"/></button>
                             </a>

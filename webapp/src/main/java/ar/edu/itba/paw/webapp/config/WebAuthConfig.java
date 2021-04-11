@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("ar.edu.itba.paw.webapp.auth")
+@ComponentScan({"ar.edu.itba.paw.webapp.auth"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -41,27 +41,26 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
             .invalidSessionUrl("/login")
             .and().authorizeRequests()
-                .antMatchers("/login").anonymous()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/**").authenticated()
+                .antMatchers("/create").authenticated()
+                .antMatchers("/jobs/{jobId}/contact").authenticated()
+                .antMatchers("/**").anonymous()
             .and().formLogin()
-                .usernameParameter("j_username")
-                .passwordParameter("j_password")
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/", false)
                 .loginPage("/login")
             .and().rememberMe()
-            .rememberMeParameter("j_rememberme")
+                .rememberMeParameter("rememberme")
                 .userDetailsService(userDetailService)
                 .key(rememberMeKey.readLine())
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
             .and().logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
-                .and().exceptionHandling()
-                .accessDeniedPage("/403")
-            .and().csrf().disable();
+            .and().exceptionHandling()
+                .accessDeniedPage("/login")
+                .and().csrf().disable();
     }
-
 
     @Override
     public void configure(final WebSecurity web) {

@@ -27,6 +27,7 @@ public class UserDaoImpl implements UserDao {
         Map<Long, User> userMap = new HashMap<>();
 
         long userId;
+
         while (rs.next()) {
 
             userId = rs.getLong("id");

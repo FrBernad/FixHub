@@ -45,6 +45,8 @@ public class JobDaoImpl implements JobDao {
                 rs.getString("city"),
                 new ArrayList<>()));
 
+//    FIXME: VER Q ONDA EL ARRAY LIST
+
     @Autowired
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -113,7 +115,7 @@ public class JobDaoImpl implements JobDao {
                 ") as aux(job_id) LEFT OUTER JOIN (select job_idd, count(job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
                 "from (select id as job_idd from jobs) j " +
                 "LEFT OUTER JOIN reviews r on j.job_idd = r.job_id group by job_idd) " +
-                "r on aux.job_id = r.job_idd) " + searchQuery + orderQuery, variables.toArray(),
+                "r on aux.job_id = r.job_idd)" + searchQuery + orderQuery, variables.toArray(),
             JOB_ROW_MAPPER);
     }
 

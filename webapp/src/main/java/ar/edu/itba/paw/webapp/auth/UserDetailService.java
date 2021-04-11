@@ -21,18 +21,20 @@ public class UserDetailService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final Optional<User> user = userService.getUserByEmail(username);
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
+        final Optional<User> userOp = userService.getUserByEmail(email);
 
-        if (!user.isPresent()) {
-            throw new UsernameNotFoundException("No user by the name" + username);
+        if (!userOp.isPresent()) {
+            throw new UsernameNotFoundException("No user by the name" + email);
         }
 
-        final Collection<? extends GrantedAuthority> authorities = user.get().getRoles().
+        User user = userOp.get();
+
+        final Collection<? extends GrantedAuthority> authorities = user.getRoles().
             stream()
             .map((role) -> new SimpleGrantedAuthority(role.name()))
             .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails.User(username, user.get().getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(email, user.getPassword(), authorities);
     }
 }

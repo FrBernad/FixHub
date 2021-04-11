@@ -7,7 +7,7 @@
     <title><spring:message code="productName"/> | <spring:message code="join.jobTitle"/></title>
 
     <%@ include file="../components/includes/headers.jsp" %>
-    <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
 </head>
 
 <body>
@@ -29,21 +29,30 @@
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-12">
-                                        <c:url value="/join" var="postPath"/>
-                                        <form:form modelAttribute="emailForm" id="mailForm" action="${postPath}"
+                                        <c:url value="/login" var="postPath"/>
+                                        <form:form modelAttribute="loginForm" id="loginForm" action="${postPath}"
                                                    method="POST">
                                             <div class="form-group">
-                                                <form:label path="email"><spring:message
-                                                        code="join.EmailText"/></form:label>
-                                                <form:input type="text" class="form-control input" path="email"
+                                                <form:label path="email">
+                                                    <spring:message code="join.EmailText"/>
+                                                </form:label>
+                                                <form:input type="text" class="form-control input mb-2" path="email"
                                                             id="email"
                                                             aria-describedby="email input"/>
                                                 <form:errors path="email" cssClass="formError" element="p"/>
+
+                                                <form:label path="password">
+                                                    password
+                                                </form:label>
+                                                <form:input type="text" class="form-control input" path="password"
+                                                            id="password"
+                                                            aria-describedby="password input"/>
+                                                <form:errors path="password" cssClass="formError" element="p"/>
                                             </div>
                                         </form:form>
                                     </div>
                                     <div class="col-12 d-flex align-items-center justify-content-center">
-                                        <button form="mailForm" type="submit" class="w-100 continueBtn my-2">
+                                        <button form="loginForm" type="submit" class="w-100 continueBtn my-2">
                                             <spring:message code="join.buttonText"/>
                                         </button>
                                     </div>
@@ -52,7 +61,7 @@
                             <div class="col-12">
                                 <p class="my-4 text-center" style="font-size: 14px"><spring:message
                                         code="join.noAccountText"/>
-                                    <a href="<c:url value='/join/register'/>"><spring:message
+                                    <a href="<c:url value='/register'/>"><spring:message
                                             code="join.hyperlinkText"/> </a>
                                 </p>
                             </div>
