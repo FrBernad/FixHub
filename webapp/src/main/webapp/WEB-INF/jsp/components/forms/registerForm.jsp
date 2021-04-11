@@ -15,14 +15,16 @@
 
     </div>
     <div class="form-group">
+        <spring:message code="registerForm.emailPlaceholder" var="emailPlaceholder"/>
         <form:label class="label" path="email"><spring:message code="registerForm.userEmailTitle"/></form:label>
-        <form:input type="text" path="email" id="email" cssErrorClass="form-control is-invalid" class="form-control"/>
+        <form:input type="text" path="email" id="email" cssErrorClass="form-control is-invalid" class="form-control"
+                    placeholder="${emailPlaceholder}"/>
         <form:errors path="email" cssClass="formError" element="p"/>
 
     </div>
     <div class="form-group">
         <form:label class="label" path="phoneNumber"><spring:message code="registerForm.userPhoneTitle"/></form:label>
-        <form:input type="number" path="phoneNumber" cssErrorClass="form-control is-invalid" id="phoneNumber" class="form-control"/>
+        <form:input type="text" path="phoneNumber" cssErrorClass="form-control is-invalid" id="phoneNumber" class="form-control"/>
         <form:errors path="phoneNumber" cssClass="formError" element="p"/>
     </div>
     <div class="row">
@@ -31,7 +33,6 @@
                 <form:label class="label" path="state"><spring:message code="registerForm.userStateTitle"/></form:label>
                 <form:input type="text" path="state" cssErrorClass="form-control is-invalid" id="state" class="form-control"/>
                 <form:errors path="state" cssClass="formError" element="p"/>
-
             </div>
         </div>
         <div class="col">
