@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sun.applet.Main;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -50,25 +51,27 @@ public class WebAuthController {
 
     @RequestMapping("/login")
     public ModelAndView login(@ModelAttribute("loginForm") final LoginForm form) {
+        System.out.println("llegue");
         return new ModelAndView("views/login");
     }
 
-//    @RequestMapping(path = "/login", method = RequestMethod.POST)
-//    public ModelAndView loginPost(RedirectAttributes ra, @Valid @ModelAttribute("loginForm") final LoginForm form, final BindingResult errors) {
-//
-//        if (errors.hasErrors()) {
-//            return login(form);
-//        }
-//
-//        //TODO: ESTA BIEN ESTO?
-//        final Optional<User> user = userService.getUserByEmail(form.getEmail());
-//        if (!user.isPresent()) {
-//            errors.rejectValue("email", "validation.user.emailNotRegistered");
-//            return login(form);
-//        }
-//
-//        final ModelAndView mav = new ModelAndView("redirect:/discover");
-//        return mav;
-//    }
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public ModelAndView loginPost(RedirectAttributes ra, @Valid @ModelAttribute("loginForm") final LoginForm form, final BindingResult errors) {
+
+        if (errors.hasErrors()) {
+            return login(form);
+        }
+
+        //TODO: ESTA BIEN ESTO?
+        final Optional<User> user = userService.getUserByEmail(form.getEmail());
+        if (!user.isPresent()) {
+            errors.rejectValue("email", "validation.user.emailNotRegistered");
+            return login(form);
+        }
+
+        final ModelAndView mav = new ModelAndView("redirect:/discover");
+        return mav;
+    }
+
 
 }

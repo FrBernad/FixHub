@@ -82,22 +82,27 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("password", password);
-        map.put("name", name);
-        map.put("surname", surname);
-        map.put("email", email);
-        map.put("phone_number", phoneNumber);
-        map.put("state", state);
-        map.put("city", city);
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("password", password);
+        userInfo.put("name", name);
+        userInfo.put("surname", surname);
+        userInfo.put("email", email);
+        userInfo.put("phone_number", phoneNumber);
+        userInfo.put("state", state);
+        userInfo.put("city", city);
 
         final Number id;
 
         try {
-            id = userSimpleJdbcInsert.executeAndReturnKey(map);
+            id = userSimpleJdbcInsert.executeAndReturnKey(userInfo);
         } catch (org.springframework.dao.DuplicateKeyException e) {
             throw new DuplicateUserException();
         }
+
+        Map<String, Object> userRoles = new HashMap<>();
+        userRoles.put("role", UserRoles.ROLE_USER.name());
+        userRoles.put("user_id", id);
+        roleSimpleJdbcInsert.execute(userRoles);
 
         Collection<UserRoles> roles = new ArrayList<>();
         roles.add(UserRoles.ROLE_USER);

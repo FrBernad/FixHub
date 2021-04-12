@@ -12,8 +12,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -37,28 +41,32 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        BufferedReader rememberMeKey = new BufferedReader(new InputStreamReader(authKey.getInputStream()));
         http.sessionManagement()
-            .invalidSessionUrl("/login")
+//            .invalidSessionUrl("/login")
             .and().authorizeRequests()
-                .antMatchers("/create").authenticated()
-                .antMatchers("/jobs/{jobId}/contact").authenticated()
-                .antMatchers("/**").anonymous()
+                .antMatchers("/login").anonymous()
+                .antMatchers("/create","/jobs/{id:[\\d]+}/contact","/logout").authenticated()
+                .antMatchers("/**").permitAll()
+
             .and().formLogin()
+                .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/", false)
-                .loginPage("/login")
+                .defaultSuccessUrl("/discover", false)
+                .failureUrl("/login")
+
             .and().rememberMe()
                 .rememberMeParameter("rememberme")
                 .userDetailsService(userDetailService)
-                .key(rememberMeKey.readLine())
+                .key(FileCopyUtils.copyToString(new InputStreamReader(authKey.getInputStream())))
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+
             .and().logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
+
             .and().exceptionHandling()
-                .accessDeniedPage("/login")
+                .accessDeniedPage("/pageNotFound")
                 .and().csrf().disable();
     }
 

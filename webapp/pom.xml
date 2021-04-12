@@ -95,7 +95,7 @@
         </dependency>
 
 
-        <!--login-->
+        <!--loggin-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

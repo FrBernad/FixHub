@@ -31,13 +31,13 @@
                                     <div class="col-12">
                                         <c:url value="/login" var="postPath"/>
                                         <form:form modelAttribute="loginForm" id="loginForm" action="${postPath}"
-                                                   method="POST">
+                                                   method="POST" enctype="application/x-www-form-urlencoded">
                                             <div class="form-group">
                                                 <form:label path="email">
                                                     <spring:message code="join.EmailText"/>
                                                 </form:label>
                                                 <form:input type="text" class="form-control input mb-2" path="email"
-                                                            id="email"
+                                                            id="email" name="email"
                                                             aria-describedby="email input"/>
                                                 <form:errors path="email" cssClass="formError" element="p"/>
 
@@ -45,7 +45,7 @@
                                                     password
                                                 </form:label>
                                                 <form:input type="text" class="form-control input" path="password"
-                                                            id="password"
+                                                            id="password" name="password"
                                                             aria-describedby="password input"/>
                                                 <form:errors path="password" cssClass="formError" element="p"/>
                                             </div>
