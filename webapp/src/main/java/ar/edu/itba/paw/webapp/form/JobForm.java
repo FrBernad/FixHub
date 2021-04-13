@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.models.JobCategory;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,6 +26,7 @@ public class JobForm {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
+    private MultipartFile image;
 
     private JobCategory jobCategory;
 
@@ -44,9 +46,13 @@ public class JobForm {
         this.description = description;
     }
 
-    public JobCategory getJobCategory() {return jobCategory;}
+    public JobCategory getJobCategory() {
+        return jobCategory;
+    }
 
-    public void setJobCategory(JobCategory jobCategory) {this.jobCategory = jobCategory;}
+    public void setJobCategory(JobCategory jobCategory) {
+        this.jobCategory = jobCategory;
+    }
 
     public BigDecimal getPrice() {
         return price;
@@ -55,4 +61,13 @@ public class JobForm {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    public MultipartFile getFile() {
+        return image;
+    }
+
+    public void setFile(MultipartFile image) {
+        this.image = image;
+    }
+
 }

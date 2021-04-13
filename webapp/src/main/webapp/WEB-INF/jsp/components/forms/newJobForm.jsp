@@ -35,6 +35,12 @@
         <form:errors path="description" cssClass="formError" element="p"/>
 
     </div>
+
+    <div class="form-group">
+        <form:input type="file" class="form-control" path="image" id="image" cssErrorClass="form-control is-invalid"/>
+        <form:errors path="image" cssClass="formError" element="p"/>
+    </div>
+
     <input type="hidden" value="${user.id}" name="userId">
 
     <div class="col-12 d-flex align-items-center justify-content-center">
