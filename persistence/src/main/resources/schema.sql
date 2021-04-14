@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS USERS
     u_name            VARCHAR(50)         NOT NULL,
     u_surname         VARCHAR(50)         NOT NULL,
     u_email           VARCHAR(200) UNIQUE NOT NULL,
-    u_phone_number    VARCHAR(50)         NOT NULL,
+    u_phone_number    VARCHAR(15)         NOT NULL,
     u_profile_picture BIGINT,
     u_state           VARCHAR(50)         NOT NULL,
     u_city            VARCHAR(50)         NOT NULL,

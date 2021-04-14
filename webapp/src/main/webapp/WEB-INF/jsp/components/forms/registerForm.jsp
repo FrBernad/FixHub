@@ -4,14 +4,17 @@
 <c:url value="/register" var="postPath"/>
 <form:form modelAttribute="registerForm" action="${postPath}" id="registerForm" class="jobForm" method="POST">
     <div class="form-group">
+        <spring:message code="registerForm.namePlaceholder" var="namePlaceholder"/>
         <form:label class="label" path="name"><spring:message code="registerForm.userNameTitle"/></form:label>
-        <form:input type="text" path="name" id="name" cssErrorClass="form-control is-invalid" class="form-control"/>
+        <form:input type="text" path="name" id="name" cssErrorClass="form-control is-invalid" class="form-control"
+                    placeholder="${namePlaceholder}"/>
         <form:errors path="name" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
+        <spring:message code="registerForm.surnamePlaceholder" var="surnamePlaceholder"/>
         <form:label class="label" path="surname"><spring:message code="registerForm.userSurnameTitle"/></form:label>
         <form:input type="text" path="surname" cssErrorClass="form-control is-invalid" id="surname"
-                    class="form-control"/>
+                    class="form-control" placeholder="${surnamePlaceholder}"/>
         <form:errors path="surname" cssClass="formError" element="p"/>
 
     </div>
@@ -23,31 +26,33 @@
         <form:errors path="email" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
-        <form:label class="label" path="password">password</form:label>
-        <form:input type="text" path="password" id="email" cssErrorClass="form-control is-invalid" class="form-control"
-                    placeholder="${emailPlaceholder}"/>
+        <form:label class="label" path="password"><spring:message code="registerForm.password"/></form:label>
+        <form:input type="text" path="password" id="email" cssErrorClass="form-control is-invalid" class="form-control"/>
         <form:errors path="password" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
+        <spring:message code="registerForm.phoneNumberPlaceholder" var="phoneNumberPlaceholder"/>
         <form:label class="label" path="phoneNumber"><spring:message code="registerForm.userPhoneTitle"/></form:label>
         <form:input type="text" path="phoneNumber" cssErrorClass="form-control is-invalid" id="phoneNumber"
-                    class="form-control"/>
+                    class="form-control" placeholder="${phoneNumberPlaceholder}"/>
         <form:errors path="phoneNumber" cssClass="formError" element="p"/>
     </div>
     <div class="row">
         <div class="col">
             <div class="form-group">
+                <spring:message code="registerForm.userStatePlaceholder" var="userStatePlaceholder"/>
                 <form:label class="label" path="state"><spring:message code="registerForm.userStateTitle"/></form:label>
                 <form:input type="text" path="state" cssErrorClass="form-control is-invalid" id="state"
-                            class="form-control"/>
+                            class="form-control" placeholder="${userStatePlaceholder}"/>
                 <form:errors path="state" cssClass="formError" element="p"/>
             </div>
         </div>
         <div class="col">
             <div class="form-group">
+                <spring:message code="registerForm.userCityTitlePlaceholder" var="userCityTitlePlaceholder"/>
                 <form:label class="label" path="city"><spring:message code="registerForm.userCityTitle"/></form:label>
                 <form:input type="text" path="city" cssErrorClass="form-control is-invalid" id="city"
-                            class="form-control"/>
+                            class="form-control" placeholder="${userCityTitlePlaceholder}"/>
                 <form:errors path="city" cssClass="formError" element="p"/>
 
             </div>
