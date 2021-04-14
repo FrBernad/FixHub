@@ -1,16 +1,9 @@
 package ar.edu.itba.paw.interfaces.services;
 
 
-
 import javax.mail.MessagingException;
-import java.util.Locale;
+import java.util.Map;
 
 public interface EmailService {
-    void sendSimpleMail(final String userName,
-                        final String userSurname,
-                        final String userAddress,
-                        final String userPhoneNumber,
-                        final String userMessage,
-                        final String providerEmail,
-                        final Locale locale) throws MessagingException;
+    void sendMail(final String template, final String subject, final Map<String, Object> variables) throws MessagingException;
 }

@@ -23,26 +23,26 @@ public class JobDaoImpl implements JobDao {
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
-    private Collection<JobCategory> categories = Arrays.asList(JobCategory.values().clone());
+    private Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
 
     private final String EMPTY = " ";
 
     private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
-        new Job(rs.getString("description"),
-            rs.getString("job_provided"),
+        new Job(rs.getString("j_description"),
+            rs.getString("j_job_provided"),
             rs.getInt("avg_rating"),
             rs.getInt("total_ratings"),
-            JobCategory.valueOf(rs.getString("category")),
-            rs.getLong("job_id"),
-            rs.getBigDecimal("price"),
-            new User(rs.getLong("provider_id"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("surname"),
-                rs.getString("email"),
-                rs.getString("phone_number"),
-                rs.getString("state"),
-                rs.getString("city"),
+            JobCategory.valueOf(rs.getString("j_category")),
+            rs.getLong("j_id"),
+            rs.getBigDecimal("j_price"),
+            new User(rs.getLong("j_provider_id"),
+                rs.getString("u_password"),
+                rs.getString("u_name"),
+                rs.getString("u_surname"),
+                rs.getString("u_email"),
+                rs.getString("u_phone_number"),
+                rs.getString("u_state"),
+                rs.getString("u_city"),
                 new ArrayList<>()));
 
 //    FIXME: VER Q ONDA EL ARRAY LIST
@@ -50,18 +50,18 @@ public class JobDaoImpl implements JobDao {
     @Autowired
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("id");
+        simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("j_id");
     }
 
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider) {
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
-        map.put("provider_id", provider.getId());
-        map.put("category", category);
-        map.put("description", description);
-        map.put("job_provided", jobProvided);
-        map.put("price", price);
+        map.put("j_provider_id", provider.getId());
+        map.put("j_category", category);
+        map.put("j_description", description);
+        map.put("j_job_provided", jobProvided);
+        map.put("j_price", price);
         final Number id = simpleJdbcInsert.executeAndReturnKey(map);
 
         return new Job(description, jobProvided, averageRating, totalRatings, category, id, price, provider);
@@ -75,7 +75,7 @@ public class JobDaoImpl implements JobDao {
         String filterQuery = EMPTY;
         if (category != null) {
             variables.add(category.name());
-            filterQuery = " WHERE j.category = ? ";
+            filterQuery = " WHERE j_category = ? ";
         }
 
         String searchQuery = EMPTY;
@@ -84,7 +84,7 @@ public class JobDaoImpl implements JobDao {
             variables.add(searchByLike);
             variables.add(searchByLike);
             variables.add(searchByLike);
-            searchQuery = " WHERE description LIKE ? OR job_provided LIKE ? OR name LIKE ?";
+            searchQuery = " WHERE j_description LIKE ? OR j_job_provided LIKE ? OR u_name LIKE ?";
         }
 
         String orderQuery = getOrderQuery(orderOptions);
@@ -97,7 +97,7 @@ public class JobDaoImpl implements JobDao {
         List<Object> variables = new LinkedList<>();
         variables.add(id);
 
-        String filterQuery = " WHERE j.id = ? ";
+        String filterQuery = " WHERE j_id = ? ";
 
         return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, variables).stream().findFirst();
 
@@ -111,13 +111,20 @@ public class JobDaoImpl implements JobDao {
 
         return jdbcTemplate.query(
             "select * from (" +
-                "(select * from JOBS j JOIN USERS u ON j.provider_id = u.id " + filterQuery +
-                ") as aux(job_id) LEFT OUTER JOIN (select job_idd, count(job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
-                "from (select id as job_idd from jobs) j " +
-                "LEFT OUTER JOIN reviews r on j.job_idd = r.job_id group by job_idd) " +
-                "r on aux.job_id = r.job_idd)" + searchQuery + orderQuery, variables.toArray(),
+                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") aux1" +
+                " JOIN " +
+                "(select j_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
+                " on aux1.j_id = aux2.j_id)" + searchQuery + orderQuery, variables.toArray(),
             JOB_ROW_MAPPER);
     }
+//    ,
+//            "select * from (" +
+//                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery +
+//                ") as aux LEFT OUTER JOIN (select r_job_id, count(r_job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
+//                "from (select j_id from jobs) j " +
+//                "LEFT OUTER JOIN reviews r on j_job_idd = r_job_id group by j_job_id) " +
+//                "r on aux.j_job_id = r.r_job_id)" + searchQuery + orderQuery, variables.toArray(),
 
     private String getOrderQuery(OrderOptions orderOption) {
         String orderQuery = " ORDER BY ";
@@ -129,10 +136,10 @@ public class JobDaoImpl implements JobDao {
                 return orderQuery + "avg_rating asc";
 
             case HIGHER_PRICE:
-                return orderQuery + "price desc";
+                return orderQuery + "j_price desc";
 
             case LOWER_PRICE:
-                return orderQuery + "price asc";
+                return orderQuery + "j_price asc";
 
         }
         return null; //never reaches

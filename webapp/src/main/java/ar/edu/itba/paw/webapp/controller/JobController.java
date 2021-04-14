@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @Controller
 public class JobController {
@@ -34,7 +36,7 @@ public class JobController {
 
 
     @RequestMapping("/jobs/{jobId}")
-    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId,final Integer error) {
+    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId, final Integer error) {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/job");
         mav.addObject("job", job);
@@ -71,7 +73,7 @@ public class JobController {
         final ModelAndView mav;
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job);
-        mav.addObject("provider",provider);
+        mav.addObject("provider", provider);
         return mav;
     }
 
@@ -80,25 +82,32 @@ public class JobController {
     public ModelAndView contactPost(@PathVariable("jobId") final long jobId,
                                     @Valid @ModelAttribute("contactForm") final ContactForm form,
                                     final BindingResult errors,
-                                    @RequestParam(value = "providerEmail") final String providerEmail,
-                                    final Locale locale) throws MessagingException {
+                                    @RequestParam(value = "providerEmail") final String providerEmail) {
 
 
         if (errors.hasErrors()) {
             return contact(jobId, form);
         }
 
-        String address = String.format("%s, %s, %s %s, %s %s",form.getState(),form.getCity(),
-                form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
+        String address = String.format("%s, %s, %s %s, %s %s", form.getState(), form.getCity(),
+            form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
-        emailService.sendSimpleMail(form.getName(),
-                form.getSurname(),
-                address,
-                form.getPhoneNumber(),
-                form.getMessage(),
-                providerEmail, locale);
+        final Map<String,Object> mailAttrs = new HashMap<>();
+
+        mailAttrs.put("name",form.getName());
+        mailAttrs.put("susrname",form.getSurname());
+        mailAttrs.put("addres",address);
+        mailAttrs.put("phoneNumber",form.getName());
+        mailAttrs.put("message",form.getName());
+
+        //FIXME: VER Q ONDA ESTO
+        try {
+            emailService.sendMail("jobRequest","New job request", mailAttrs);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;

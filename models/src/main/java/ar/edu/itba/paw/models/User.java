@@ -4,15 +4,15 @@ import java.util.Collection;
 
 public class User {
     private String name, password,surname,city,state,phoneNumber,email;
-    private Number id;
-    private Collection<UserRoles> roles;
+    private Long id;
+    private Collection<Roles> roles;
 
     /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
     public User() {
 
     }
 
-    public User(Number id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<UserRoles> roles) {
+    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -80,23 +80,23 @@ public class User {
         this.email = email;
     }
 
-    public Number getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Number id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Collection<UserRoles> getRoles() {
+    public Collection<Roles> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<UserRoles> roles) {
+    public void setRoles(Collection<Roles> roles) {
         this.roles = roles;
     }
 
-    public void addRole(UserRoles role){
+    public void addRole(Roles role){
         roles.add(role);
     }
 }

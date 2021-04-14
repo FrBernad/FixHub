@@ -1,68 +1,74 @@
 -- FIXME: FIJARSE PROS Y CONS DE VARCHAR(N)
--- FIXME: AGREAGAR IDENTIFICARO A CADA CAMPO DE LAS TABLAS
+-- FIXME: AGREAGAR IDENTIFICADORES A CADA CAMPO DE LAS TABLAS
+
+CREATE TABLE IF NOT EXISTS IMAGES
+(
+    i_id    SERIAL,
+    i_image BYTEA,
+    PRIMARY KEY (i_id)
+);
+
 CREATE TABLE IF NOT EXISTS USERS
 (
-    id             SERIAL,
-    password       VARCHAR(128)        NOT NULL,
-    name           VARCHAR(50)         NOT NULL,
-    surname        VARCHAR(50)         NOT NULL,
-    email          VARCHAR(200) UNIQUE NOT NULL,
-    phone_number   VARCHAR(50)         NOT NULL,
-    profilePicture BIGINT,
-    state          VARCHAR(50)         NOT NULL,
-    city           VARCHAR(50)         NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (profilePicture) REFERENCES IMAGES (id)
+    u_id              SERIAL,
+    u_password        VARCHAR(128)        NOT NULL,
+    u_name            VARCHAR(50)         NOT NULL,
+    u_surname         VARCHAR(50)         NOT NULL,
+    u_email           VARCHAR(200) UNIQUE NOT NULL,
+    u_phone_number    VARCHAR(50)         NOT NULL,
+    u_profile_picture BIGINT,
+    u_state           VARCHAR(50)         NOT NULL,
+    u_city            VARCHAR(50)         NOT NULL,
+    PRIMARY KEY (u_id),
+    FOREIGN KEY (U_profile_picture) REFERENCES IMAGES (i_id)
 );
 
 CREATE TABLE IF NOT EXISTS ROLES
 (
-    id            SERIAL,
-    role          TEXT      NOT NULL,
-    user_id       BIGINT    NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
-    PRIMARY KEY (id)
+    r_id      SERIAL,
+    r_role    TEXT   NOT NULL,
+    r_user_id BIGINT NOT NULL,
+    FOREIGN KEY (r_user_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
+    PRIMARY KEY (r_id)
 );
 
 CREATE TABLE IF NOT EXISTS JOBS
 (
-    id           SERIAL,
-    description  VARCHAR(300) NOT NULL,
-    category     VARCHAR(50)  NOT NULL,
-    job_provided VARCHAR(50)  NOT NULL,
-    provider_id  BIGINT       NOT NULL,
-    price        DECIMAL      NOT NULL,
-    FOREIGN KEY (provider_id) REFERENCES USERS (id),
-    PRIMARY KEY (id)
+    j_id           SERIAL,
+    j_description  VARCHAR(300) NOT NULL,
+    j_category     VARCHAR(50)  NOT NULL,
+    j_job_provided VARCHAR(50)  NOT NULL,
+    j_provider_id  BIGINT       NOT NULL,
+    j_price        DECIMAL      NOT NULL,
+    FOREIGN KEY (j_provider_id) REFERENCES USERS (u_id),
+    PRIMARY KEY (j_id)
 );
 
 CREATE TABLE IF NOT EXISTS REVIEWS
 (
-    id            SERIAL,
-    description   VARCHAR(300) NOT NULL,
-    job_id        BIGINT       NOT NULL,
-    rating        INT          NOT NULL,
-    creation_date TIMESTAMP    NOT NULL,
-    FOREIGN KEY (job_id) REFERENCES JOBS (id) ON DELETE CASCADE,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS IMAGES
-(
-    id    SERIAL,
-    image BYTEA,
-    PRIMARY KEY (id)
+    r_id            SERIAL,
+    r_description   VARCHAR(300) NOT NULL,
+    r_job_id        BIGINT       NOT NULL,
+    r_rating        INT          NOT NULL,
+    r_creation_date TIMESTAMP    NOT NULL,
+    FOREIGN KEY (r_job_id) REFERENCES JOBS (j_id) ON DELETE CASCADE,
+    PRIMARY KEY (r_id)
 );
 
 CREATE TABLE IF NOT EXISTS JOB_IMAGES
 (
-    image_id BIGINT,
-    job_id   BIGINT,
-    PRIMARY KEY (image_id, job_id),
-    FOREIGN KEY (image_id) REFERENCES IMAGES (id),
-    FOREIGN KEY (job_id) REFERENCES JOBS (id)
+    ji_image_id BIGINT,
+    ji_job_id   BIGINT,
+    PRIMARY KEY (ji_image_id, ji_job_id),
+    FOREIGN KEY (ji_image_id) REFERENCES IMAGES (i_id),
+    FOREIGN KEY (ji_job_id) REFERENCES JOBS (j_id)
 );
 
-
-
-
+CREATE TABLE IF NOT EXISTS VERIFICATION_TOKENS
+(
+    vt_id      SERIAL,
+    vt_user_id BIGINT NOT NULL,
+    vt_token   TEXT,
+    FOREIGN KEY (vt_user_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
+    PRIMARY KEY (vt_id)
+);

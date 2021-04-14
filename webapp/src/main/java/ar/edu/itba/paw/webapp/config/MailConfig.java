@@ -84,8 +84,8 @@ public class MailConfig implements ApplicationContextAware, EnvironmentAware {
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setOrder(2);
-        templateResolver.setResolvablePatterns(Collections.singleton("html/*"));
-        templateResolver.setPrefix("/mail/");
+//        templateResolver.setResolvablePatterns(Collections.singleton("html/*"));
+        templateResolver.setPrefix("/mail/html/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding(EMAIL_TEMPLATE_ENCODING);

@@ -37,8 +37,8 @@ public class UserServiceImplTest {
     public void testCreate() throws DuplicateUserException {
         // 1. Setup!
         Mockito.when(mockDao.createUser(Mockito.eq(PASSWORD), Mockito.eq(NAME), Mockito.eq(SURNAME),
-                Mockito.eq(EMAIL), Mockito.eq(PHONENUMBER), Mockito.eq(STATE), Mockito.eq(CITY))).
-                thenReturn(new User(1, PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY, new ArrayList<>()));
+                Mockito.eq(EMAIL), Mockito.eq(PHONENUMBER), Mockito.eq(STATE), Mockito.eq(CITY), new ArrayList<>())).
+                thenReturn(new User(1L, PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY, new ArrayList<>()));
         // 2. "ejercito" la class under test
         User maybeUser = userService.createUser(PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY);
         // 3. Asserts!

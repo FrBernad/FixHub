@@ -79,17 +79,17 @@ public class GlobalControllerExceptionHandler {
     }
 
     /*Server error */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public ModelAndView serverException() {
-        Locale locale = LocaleContextHolder.getLocale();
-        String error = messageSource.getMessage("errors.ServerError", null, locale);
-        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
-        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
-        mav.addObject("errors", error);
-        mav.addObject("code", code);
-        return mav;
-    }
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(Exception.class)
+//    public ModelAndView serverException() {
+//        Locale locale = LocaleContextHolder.getLocale();
+//        String error = messageSource.getMessage("errors.ServerError", null, locale);
+//        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
+//        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+//        mav.addObject("errors", error);
+//        mav.addObject("code", code);
+//        return mav;
+//    }
 
 
 }
