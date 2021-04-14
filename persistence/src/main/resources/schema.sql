@@ -66,9 +66,10 @@ CREATE TABLE IF NOT EXISTS JOB_IMAGES
 
 CREATE TABLE IF NOT EXISTS VERIFICATION_TOKENS
 (
-    vt_id      SERIAL,
-    vt_user_id BIGINT NOT NULL,
-    vt_token   TEXT,
+    vt_id              SERIAL,
+    vt_user_id         BIGINT    NOT NULL,
+    vt_token           TEXT,
+    vt_expiration_date TIMESTAMP NOT NULL,
     FOREIGN KEY (vt_user_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
     PRIMARY KEY (vt_id)
 );

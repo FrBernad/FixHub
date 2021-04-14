@@ -26,7 +26,7 @@ public class JobForm {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
-    private MultipartFile image;
+//    private MultipartFile image;
 
     private JobCategory jobCategory;
 
@@ -62,12 +62,12 @@ public class JobForm {
         this.price = price;
     }
 
-    public MultipartFile getFile() {
-        return image;
-    }
-
-    public void setFile(MultipartFile image) {
-        this.image = image;
-    }
+//    public MultipartFile getFile() {
+//        return image;
+//    }
+//
+//    public void setFile(MultipartFile image) {
+//        this.image = image;
+//    }
 
 }

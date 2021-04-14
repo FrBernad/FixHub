@@ -7,11 +7,6 @@ public class User {
     private Long id;
     private Collection<Roles> roles;
 
-    /*FIXME: sacar el constructor  de user default cuando haya autenticación*/
-    public User() {
-
-    }
-
     public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) {
         this.id = id;
         this.password = password;

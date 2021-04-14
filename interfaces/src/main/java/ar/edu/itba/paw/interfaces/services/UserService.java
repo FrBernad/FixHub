@@ -14,8 +14,8 @@ public interface UserService {
 
     User createUser(String password,String name, String surname,  String email, String phoneNumber,String state, String city) throws DuplicateUserException;
 
-    VerificationToken generateVerificationToken(long id);
-
     Optional<User> verifyAccount(String token);
+
+    void resendVerificationToken(User user);
 
 }

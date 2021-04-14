@@ -4,12 +4,24 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.VerificationToken;
+import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.LoginForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,10 +34,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class WebAuthController {
@@ -37,30 +52,30 @@ public class WebAuthController {
     private EmailService emailService;
 
     @RequestMapping(path = "/register")
-    public ModelAndView registerEmail(@ModelAttribute("registerForm") final RegisterForm form) {
+    public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
         final ModelAndView mav = new ModelAndView("views/register");
         return mav;
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public ModelAndView registerEmailPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
+    public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
         if (errors.hasErrors())
-            return registerEmail(form);
+            return register(form);
 
         User user;
+        final ModelAndView mav = new ModelAndView("redirect:/discover");
         try {
             user = userService.createUser(form.getPassword(),
                 form.getName(), form.getSurname(),
                 form.getEmail(), form.getPhoneNumber(),
                 form.getState(), form.getCity());
+            forceLogin(user, request);
+            mav.addObject("loggedUser", user);
         } catch (DuplicateUserException e) {
             errors.rejectValue("email", "validation.user.DuplicateEmail");
-            return registerEmail(form);
+            return register(form);
         }
 
-        sendVerificationToken(request, user);
-
-        final ModelAndView mav = new ModelAndView("redirect:/login");
         return mav;
     }
 
@@ -90,32 +105,54 @@ public class WebAuthController {
     @RequestMapping(path = "/user/verifyAccount")
     public ModelAndView verifyAccount(HttpServletRequest request, @RequestParam String token) {
 
-        userService.verifyAccount(token);
-
-        final ModelAndView mav = new ModelAndView("redirect:/discover");
+        final Optional<User> userOptional = userService.verifyAccount(token);
+        boolean success = false;
+        //TODO: CAMBIAR TITULOOO
+        final ModelAndView mav = new ModelAndView("views/accountVerification");
+        if (userOptional.isPresent()) {
+            success = true;
+            User user = userOptional.get();
+            forceLogin(user, request);
+            mav.addObject("loggedUser", user);
+        }
+        mav.addObject("success", success);
         return mav;
     }
 
+    @RequestMapping(path = "/user/verifyAccount/resend", method = RequestMethod.POST)
+    public ModelAndView resendAccountVerification() {
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        userService.resendVerificationToken(user);
 
-    private void sendVerificationToken(HttpServletRequest request, User user) {
-        try {
-            VerificationToken token = userService.generateVerificationToken(user.getId());
-            String url = ServletUriComponentsBuilder
-                .fromRequest(request)
-                .replacePath("localhost:8080/user/verifyAccount")
-                .queryParam("token", token.getValue())
-                .build()
-                .toUriString();
+        final ModelAndView mav = new ModelAndView("redirect:/user/verifyAccount/resendConfirmation");
+        mav.addObject("loggedUser", user);
 
-            Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("confirmationURL", url);
-            mailAttrs.put("to", user.getEmail());
+        return mav;
+    }
 
-            emailService.sendMail("verification", "Account Confirmation", mailAttrs);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+    @RequestMapping("/user/verifyAccount/resendConfirmation")
+    public ModelAndView verificationResendConfirmation() {
+        return new ModelAndView("views/verificationResendConfirmation");
+    }
 
+    private void forceLogin(User user, HttpServletRequest request) {
+        //generate authentication
+        final PreAuthenticatedAuthenticationToken token =
+            new PreAuthenticatedAuthenticationToken(user.getEmail(), user.getPassword(), getAuthorities(user.getRoles()));
+
+        token.setDetails(new WebAuthenticationDetails(request));
+
+        final SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(token);
+
+        request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Roles> roles) {
+        return roles.
+            stream()
+            .map((role) -> new SimpleGrantedAuthority(role.name()))
+            .collect(Collectors.toList());
     }
 
 }

@@ -104,4 +104,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new DataSourceTransactionManager(ds);
     }
 
+    @Bean(name = "appBaseUrl")
+    public String appBaseUrl() {
+        return "localhost";
+    }
+
 }

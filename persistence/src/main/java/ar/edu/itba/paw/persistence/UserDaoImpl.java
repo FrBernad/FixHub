@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.management.relation.Role;
 import javax.sql.DataSource;
 import java.util.*;
 
@@ -79,6 +80,16 @@ public class UserDaoImpl implements UserDao {
     public Collection<Roles> getUserRoles() {
         return roles;
     }
+
+    @Override
+    public Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal) {
+        if (jdbcTemplate.update("UPDATE roles set r_role = ? where r_user_id = ? and r_role = ?",
+            newVal.name(), userId, oldVal.name()) == 1) {
+            return getUserById(userId);
+        }
+        return null;
+    }
+
 
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) throws DuplicateUserException {

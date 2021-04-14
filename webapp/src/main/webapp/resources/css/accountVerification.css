@@ -1,0 +1,11 @@
+#success {
+    color: rgb(130,201,30);
+}
+
+#error {
+    color: #FF0033;
+}
+
+.subtitle {
+    font-size: 15px;
+}
