@@ -55,6 +55,7 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider) {
+
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
         map.put("j_provider_id", provider.getId());

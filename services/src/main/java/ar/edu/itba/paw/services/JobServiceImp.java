@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.mail.Multipart;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Optional;
@@ -17,9 +18,10 @@ public class JobServiceImp implements JobService {
     @Autowired
     private JobDao jobDao;
 
+    @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user) {
-        return jobDao.createJob(jobProvided,category,description, price, user);
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, MultipartFile file, User user) {
+        return jobDao.createJob(jobProvided,category,description, price, file,user);
     }
 
     @Override

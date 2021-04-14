@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface JobService {
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider);
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, MultipartFile file, User provider);
 
     Collection<JobCategory> getJobsCategories();
 

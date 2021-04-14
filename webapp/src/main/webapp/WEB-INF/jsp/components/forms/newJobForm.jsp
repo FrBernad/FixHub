@@ -2,8 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<c:url value="/jobs/new" var="postPath"/>
-<form:form modelAttribute="jobForm" action="${postPath}" id="jobForm" class="jobForm" method="POST">
+<c:url value="/join/newJob" var="postPath"/>
+<form:form modelAttribute="jobForm" action="${postPath}" enctype="multipart/form-data" id="jobForm" class="jobForm" method="POST">
     <div class="form-group">
         <form:label class="label" path="jobProvided"><spring:message code="jobForm.jobNameTitle"/></form:label>
         <form:input type="text" path="jobProvided" id="jobProvided" class="form-control" cssErrorClass="form-control is-invalid"/>
@@ -36,10 +36,11 @@
 
     </div>
 
-<%--    <div class="form-group">--%>
-<%--        <form:input type="file" class="form-control" path="image" id="image" cssErrorClass="form-control is-invalid"/>--%>
-<%--        <form:errors path="image" cssClass="formError" element="p"/>--%>
-<%--    </div>--%>
+    <div class="form-group">
+        <form:label path="file"><spring:message code="jobForm.jobImageTitle"/></form:label>
+        <form:input type="file" class="form-control" path="image" id="image" cssErrorClass="form-control is-invalid"/>
+        <form:errors path="image" cssClass="formError" element="p"/>
+    </div>
 
     <input type="hidden" value="${user.id}" name="userId">
 
