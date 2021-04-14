@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategory;
-import ar.edu.itba.paw.models.OrderOptions;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface JobDao {
@@ -15,7 +13,7 @@ public interface JobDao {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price,User user);
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user, List<Image> images);
 
     Collection<JobCategory> getJobsCategories();
 

@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS IMAGES
 (
     i_id    SERIAL,
     i_data BYTEA,
-    data BYTEA,
+    i_mime_type TEXT,
     PRIMARY KEY (i_id)
 );
 

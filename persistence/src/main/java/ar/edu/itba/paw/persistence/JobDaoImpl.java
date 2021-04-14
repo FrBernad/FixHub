@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategory;
-import ar.edu.itba.paw.models.OrderOptions;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,7 +19,8 @@ public class JobDaoImpl implements JobDao {
     private DataSource ds;
 
     private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private SimpleJdbcInsert jobSimpleJdbcInsert;
+    private SimpleJdbcInsert jobImagesSimpleJdbcInsert;
     private Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
 
     private final String EMPTY = " ";
@@ -50,11 +48,12 @@ public class JobDaoImpl implements JobDao {
     @Autowired
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("j_id");
+        jobSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("j_id");
+        jobImagesSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS_IMAGE");
     }
 
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider,List<Image> images) {
 
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
@@ -63,7 +62,14 @@ public class JobDaoImpl implements JobDao {
         map.put("j_description", description);
         map.put("j_job_provided", jobProvided);
         map.put("j_price", price);
-        final Number id = simpleJdbcInsert.executeAndReturnKey(map);
+        final Number id = jobSimpleJdbcInsert.executeAndReturnKey(map);
+
+        Map<String,Object> imageJobMap = new HashMap<>();
+        for (Image image: images){
+            imageJobMap.put("ji_image_id",image.getImageId());
+            imageJobMap.put("ji_job_id",id);
+            jobImagesSimpleJdbcInsert.execute(imageJobMap);
+        }
 
         return new Job(description, jobProvided, averageRating, totalRatings, category, id, price, provider);
     }
@@ -148,5 +154,7 @@ public class JobDaoImpl implements JobDao {
         }
         return null; //never reaches
     }
+
+
 
 }

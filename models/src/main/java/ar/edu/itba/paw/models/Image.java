@@ -5,10 +5,20 @@ public class Image {
 
     private Number imageId;
     private byte[] data;
+    private String mimeType;
 
-    public Image(Number imageId, byte[] data) {
+    public Image(Number imageId, byte[] data, String mimeType) {
         this.imageId = imageId;
         this.data = data;
+        this.mimeType = mimeType;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 
     public Number getImageId() {

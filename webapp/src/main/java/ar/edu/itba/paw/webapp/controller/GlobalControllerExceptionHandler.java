@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.TypeMismatchException;
@@ -30,6 +31,18 @@ public class GlobalControllerExceptionHandler {
     public ModelAndView jobNotFoundException() {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Job", null, locale);
+        String code = HttpStatus.NOT_FOUND.toString();
+        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+        return mav;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = ImageNotFoundException.class)
+    public ModelAndView imageNotFoundException() {
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.NotFound.Image", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
         final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
         mav.addObject("errors", error);
