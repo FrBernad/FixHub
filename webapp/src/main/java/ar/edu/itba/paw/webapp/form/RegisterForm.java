@@ -23,6 +23,7 @@ public class RegisterForm {
     @Pattern(regexp = "^([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+)*$")
     private String email;
 
+    @NotEmpty
     @Size(min=6)
     private String password;
 
