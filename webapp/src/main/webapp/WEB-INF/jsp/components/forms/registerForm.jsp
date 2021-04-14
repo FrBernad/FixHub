@@ -27,8 +27,32 @@
     </div>
     <div class="form-group">
         <form:label class="label" path="password"><spring:message code="registerForm.password"/></form:label>
-        <form:input type="text" path="password" id="email" cssErrorClass="form-control is-invalid" class="form-control"/>
+        <form:input type="password" path="password" id="password" cssErrorClass="form-control is-invalid"
+                    class="form-control"/>
         <form:errors path="password" cssClass="formError" element="p"/>
+    </div>
+    <div class="form-group">
+        <form:label class="label" path="confirmPassword"><spring:message
+                code="registerForm.confirmPassword"/></form:label>
+        <form:input type="password" path="confirmPassword" id="confirmPassword" cssErrorClass="form-control is-invalid"
+                    class="form-control"/>
+        <form:errors path="confirmPassword" cssClass="formError" element="p"/>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col align-items-center">
+                <label for="showPassword"></label>
+                <input type="checkbox" class="mr-1" id="showPassword" onclick="togglePassword()">
+                <spring:message code="registerForm.showPassword"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <spring:hasBindErrors name="registerForm">
+            <c:if test="${errors.globalErrorCount > 0}">
+                <div class="alert alert-danger"><form:errors/></div>
+            </c:if>
+        </spring:hasBindErrors>
     </div>
     <div class="form-group">
         <spring:message code="registerForm.phoneNumberPlaceholder" var="phoneNumberPlaceholder"/>

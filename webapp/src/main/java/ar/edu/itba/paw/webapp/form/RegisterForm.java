@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.beans.Transient;
 
 public class RegisterForm {
 
@@ -26,6 +27,10 @@ public class RegisterForm {
     @NotEmpty
     @Size(min=6)
     private String password;
+
+    @NotEmpty
+    @Size(min=6)
+    private String confirmPassword;
 
     @NotEmpty
     @Size(max = 15)
@@ -76,6 +81,14 @@ public class RegisterForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public String getPhoneNumber() {

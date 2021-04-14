@@ -59,8 +59,14 @@ public class WebAuthController {
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
-        if (errors.hasErrors())
+        if (errors.hasErrors()){
+            if(!form.getPassword().equals(form.getConfirmPassword())) {
+                //Global error, that's why it has "".
+                errors.rejectValue("", "validation.user.passwordsDontMatch");
+            }
             return register(form);
+        }
+
 
         User user;
         final ModelAndView mav = new ModelAndView("redirect:/discover");

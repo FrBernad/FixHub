@@ -10,3 +10,15 @@ registerFormButton.addEventListener("click", () => {
     registerForm.submit();
     processing=false;
 })
+
+function togglePassword() {
+    let password = document.getElementById("password");
+    let confirmPassword = document.getElementById("confirmPassword");
+    if (password.type === "password" && confirmPassword.type === "password") {
+        password.type = "text";
+        confirmPassword.type = 'text';
+    } else {
+        password.type = "password";
+        confirmPassword.type = "password";
+    }
+}
