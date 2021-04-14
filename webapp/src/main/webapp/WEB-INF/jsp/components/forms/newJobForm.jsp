@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<c:url value="/join/newJob" var="postPath"/>
+<c:url value="/jobs/new" var="postPath"/>
 <form:form modelAttribute="jobForm" action="${postPath}" enctype="multipart/form-data" id="jobForm" class="jobForm" method="POST">
     <div class="form-group">
         <form:label class="label" path="jobProvided"><spring:message code="jobForm.jobNameTitle"/></form:label>
@@ -37,9 +37,9 @@
     </div>
 
     <div class="form-group">
-        <form:label path="file"><spring:message code="jobForm.jobImageTitle"/></form:label>
-        <form:input type="file" class="form-control" path="image" id="image" cssErrorClass="form-control is-invalid"/>
-        <form:errors path="image" cssClass="formError" element="p"/>
+        <form:label path="images"><spring:message code="jobForm.jobImageTitle"/></form:label>
+        <form:input type="file" class="form-control" path="images" id="image" cssErrorClass="form-control is-invalid"/>
+        <form:errors path="images" cssClass="formError" element="p"/>
     </div>
 
     <input type="hidden" value="${user.id}" name="userId">

@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class JobForm {
 
@@ -26,7 +27,7 @@ public class JobForm {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
-//    private MultipartFile image;
+    private List<MultipartFile> images;
 
     private JobCategory jobCategory;
 
@@ -62,12 +63,11 @@ public class JobForm {
         this.price = price;
     }
 
-//    public MultipartFile getFile() {
-//        return image;
-//    }
-//
-//    public void setFile(MultipartFile image) {
-//        this.image = image;
-//    }
+    public List<MultipartFile> getImages() {
+        return images;
+    }
 
+    public void setImages(List<MultipartFile> images) {
+        this.images = images;
+    }
 }

@@ -5,10 +5,7 @@ import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategory;
-import ar.edu.itba.paw.models.Review;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
@@ -21,14 +18,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 public class JobController {
@@ -140,9 +136,9 @@ public class JobController {
         return mav;
     }
 
-
+    //FIXME: ARREGLAR EXCEPCIÓN
     @RequestMapping(path = "/jobs/new", method = RequestMethod.POST)
-    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors) {
+    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
 
         if (errors.hasErrors()) {
             return newJob(form);
@@ -150,9 +146,24 @@ public class JobController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), user);
+        final List<ImageDto> imagesDto  = new LinkedList<>();
+
+        if (form.getImages() != null) {
+            for (final MultipartFile image : form.getImages()) {
+                try {
+                    imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
+                    System.out.println(image.getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), imagesDto, user);
+
+
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
+
 
 
 }

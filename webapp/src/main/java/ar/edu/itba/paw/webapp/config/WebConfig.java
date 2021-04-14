@@ -95,8 +95,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MultipartResolver multipartResolver() {
         final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(100000);
-        multipartResolver.setMaxUploadSizePerFile(4000);
+        multipartResolver.setMaxUploadSize(20000);
+        multipartResolver.setMaxUploadSizePerFile(15000);
         return multipartResolver;
     }
 

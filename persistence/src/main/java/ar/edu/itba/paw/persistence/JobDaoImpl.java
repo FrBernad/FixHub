@@ -49,7 +49,7 @@ public class JobDaoImpl implements JobDao {
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         jobSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS").usingGeneratedKeyColumns("j_id");
-        jobImagesSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOBS_IMAGE");
+        jobImagesSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOB_IMAGE");
     }
 
     @Override
