@@ -14,6 +14,8 @@ public class LoginForm {
 
     private String password;
 
+    private boolean rememberMe;
+
     public String getEmail() {
         return email;
     }
@@ -28,5 +30,13 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isRembemberMe() {
+        return rememberMe;
+    }
+
+    public void setRembemberMe(boolean rembemberMe) {
+        this.rememberMe = rembemberMe;
     }
 }

@@ -48,6 +48,16 @@
                                                             id="password" name="password"
                                                             aria-describedby="password input"/>
                                                 <form:errors path="password" cssClass="formError" element="p"/>
+                                                <div class="container-fluid px-0 mt-2">
+                                                    <div class="row">
+                                                        <div class="col-12 d-flex justify-content-start align-items-center">
+                                                            <form:checkbox name="rememberMe" path="rembemberMe"/>
+                                                            <form:label cssClass="mb-0 ml-2" path="rembemberMe">
+                                                                remember me
+                                                            </form:label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form:form>
                                     </div>

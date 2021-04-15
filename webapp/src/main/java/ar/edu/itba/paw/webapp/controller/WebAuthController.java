@@ -48,9 +48,6 @@ public class WebAuthController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private EmailService emailService;
-
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
         final ModelAndView mav = new ModelAndView("views/register");
@@ -91,7 +88,7 @@ public class WebAuthController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ModelAndView loginPost(RedirectAttributes ra, @Valid @ModelAttribute("loginForm") final LoginForm form, final BindingResult errors) {
+    public ModelAndView loginPost(@Valid @ModelAttribute("loginForm") final LoginForm form, final BindingResult errors) {
 
         if (errors.hasErrors()) {
             return login(form);
@@ -104,8 +101,7 @@ public class WebAuthController {
             return login(form);
         }
 
-        final ModelAndView mav = new ModelAndView("redirect:/discover");
-        return mav;
+        return new ModelAndView("redirect:/discover");
     }
 
     @RequestMapping(path = "/user/verifyAccount")

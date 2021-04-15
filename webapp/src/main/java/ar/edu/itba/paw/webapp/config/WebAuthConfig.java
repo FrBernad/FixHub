@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -42,32 +43,44 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.sessionManagement()
-//            .invalidSessionUrl("/login")
+            //.invalidSessionUrl("/login")
             .and().authorizeRequests()
-                .antMatchers("/login").anonymous()
-                .antMatchers("/create","/jobs/{id:[\\d]+}/contact","/logout").authenticated()
-                .antMatchers("/**").permitAll()
+            //session routes
+            .antMatchers("/login", "/register").anonymous()
+            .antMatchers(HttpMethod.POST,"/user/verifyAccount/resend").hasRole("NOT_VERIFIED")
+            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
+            .antMatchers("/user/verifyAccount").hasRole("USER")
+            .antMatchers("/logout").authenticated()
+
+            //jobs
+            .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
+            .antMatchers("/jobs/new").hasRole("PROVIDER")
+            .antMatchers("/jobs/{id:[\\d]+}").permitAll()
+            .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
+
+            //else
+            .antMatchers("/**").permitAll()
 
             .and().formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/discover", false)
-                .failureUrl("/login")
+            .loginPage("/login")
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/discover", false)
+            .failureUrl("/login")
 
             .and().rememberMe()
-                .rememberMeParameter("rememberme")
-                .userDetailsService(userDetailService)
-                .key(FileCopyUtils.copyToString(new InputStreamReader(authKey.getInputStream())))
-                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+            .rememberMeParameter("rememberMe")
+            .userDetailsService(userDetailService)
+            .key(FileCopyUtils.copyToString(new InputStreamReader(authKey.getInputStream())))
+            .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
 
             .and().logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login")
 
             .and().exceptionHandling()
-                .accessDeniedPage("/pageNotFound")
-                .and().csrf().disable();
+            .accessDeniedPage("/pageNotFound")
+            .and().csrf().disable();
     }
 
     @Override

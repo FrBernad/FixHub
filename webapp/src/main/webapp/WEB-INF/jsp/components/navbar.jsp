@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="container-fluid px-0 d-none" id="navFix" style="height: 82px"></div>
 <div class="container-fluid p-0">
-    <nav class="navbar navbar-expand navbar-light navbarTop" data-user="${loggedUser}" id="navbar">
+    <nav class="navbar navbar-expand navbar-light navbarTop" id="navbar">
         <div class="container-lg">
             <a href="<c:url value='/'/>" class="navbar-brand mr-4">
                 <img src='<c:url value="/resources/images/navbrand.png"/>' alt="FixHub brand logo"
