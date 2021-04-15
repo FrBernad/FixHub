@@ -37,14 +37,27 @@
     </div>
 
     <div class="form-group">
-        <form:label path="images"><spring:message code="jobForm.jobImageTitle"/></form:label>
-        <form:input type="file" class="form-control" path="images" id="image" cssErrorClass="form-control is-invalid"/>
-        <form:errors path="images" cssClass="formError" element="p"/>
+        <form:label path="images">
+            <spring:message code="jobForm.jobImageTitle"/></form:label>
+        <button type="button" id="addFileButtom">
+            Add File
+        </button>
+
     </div>
 
     <input type="hidden" value="${user.id}" name="userId">
 
-    <div class="col-12 d-flex align-items-center justify-content-center">
-        <button type="button" id="jobFormButton" class="w-100 continueBtn my-2"><spring:message code="jobForm.buttonText"/></button>
+    <div class="container-fluid p-0" id="imagesHolder">
+        <div class="row">
+            <div class="col-3"></div>
+        </div>
     </div>
+
+    <div class="col-12 d-flex align-items-center justify-content-center">
+        <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
+            <spring:message code="jobForm.buttonText"/>
+        </button>
+    </div>
+
+
 </form:form>

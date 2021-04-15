@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
@@ -138,7 +137,7 @@ public class JobController {
 
     //FIXME: ARREGLAR EXCEPCIÓN
     @RequestMapping(path = "/jobs/new", method = RequestMethod.POST)
-    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors){
+    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors) {
 
         if (errors.hasErrors()) {
             return newJob(form);
@@ -146,24 +145,20 @@ public class JobController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        final List<ImageDto> imagesDto  = new LinkedList<>();
+        List<ImageDto> imagesDto = new LinkedList<>();
 
         if (form.getImages() != null) {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
-                    System.out.println(image.getBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
         final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), imagesDto, user);
-
-
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
-
 
 
 }
