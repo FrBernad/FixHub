@@ -14,5 +14,6 @@ public interface JobService {
     Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider);
 
     Collection<JobCategory> getJobsCategories();
+
 }
 
