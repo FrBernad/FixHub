@@ -66,7 +66,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .usernameParameter("email")
             .passwordParameter("password")
             .defaultSuccessUrl("/discover", false)
-            .failureUrl("/login")
+            .failureUrl("/login?error=true")
 
             .and().rememberMe()
             .rememberMeParameter("rememberMe")
@@ -79,7 +79,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .logoutSuccessUrl("/login")
 
             .and().exceptionHandling()
-            .accessDeniedPage("/pageNotFound")
+            .accessDeniedPage("/")
             .and().csrf().disable();
     }
 

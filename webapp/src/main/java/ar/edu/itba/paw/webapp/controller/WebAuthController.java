@@ -1,20 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.VerificationToken;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.LoginForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
+import ar.edu.itba.paw.webapp.form.ResetPasswordEmailForm;
+import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -30,14 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,14 +41,13 @@ public class WebAuthController {
 
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
-        final ModelAndView mav = new ModelAndView("views/register");
-        return mav;
+        return new ModelAndView("views/register");
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
-        if (errors.hasErrors()){
-            if(!form.getPassword().equals(form.getConfirmPassword())) {
+        if (errors.hasErrors()) {
+            if (!form.getPassword().equals(form.getConfirmPassword())) {
                 //Global error, that's why it has "".
                 errors.rejectValue("", "validation.user.passwordsDontMatch");
             }
@@ -83,34 +73,21 @@ public class WebAuthController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(@ModelAttribute("loginForm") final LoginForm form) {
-        return new ModelAndView("views/login");
+    public ModelAndView login(@RequestParam(value = "error",defaultValue = "false") boolean error) {
+        final ModelAndView mav = new ModelAndView("views/login");
+        mav.addObject("error",error);
+        return mav;
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ModelAndView loginPost(@Valid @ModelAttribute("loginForm") final LoginForm form, final BindingResult errors) {
-
-        if (errors.hasErrors()) {
-            return login(form);
-        }
-
-        //TODO: ESTA BIEN ESTO?
-        final Optional<User> user = userService.getUserByEmail(form.getEmail());
-        if (!user.isPresent()) {
-            errors.rejectValue("email", "validation.user.emailNotRegistered");
-            return login(form);
-        }
-
-        return new ModelAndView("redirect:/discover");
-    }
+    //VERIFY ACCOUNT
 
     @RequestMapping(path = "/user/verifyAccount")
-    public ModelAndView verifyAccount(HttpServletRequest request, @RequestParam String token) {
+    public ModelAndView verifyAccount(HttpServletRequest request, @RequestParam(defaultValue = "") String token) {
 
         final Optional<User> userOptional = userService.verifyAccount(token);
         boolean success = false;
         //TODO: CAMBIAR TITULOOO
-        final ModelAndView mav = new ModelAndView("views/accountVerification");
+        final ModelAndView mav = new ModelAndView("views/user/account/verify");
         if (userOptional.isPresent()) {
             success = true;
             User user = userOptional.get();
@@ -134,7 +111,70 @@ public class WebAuthController {
 
     @RequestMapping("/user/verifyAccount/resendConfirmation")
     public ModelAndView verificationResendConfirmation() {
-        return new ModelAndView("views/verificationResendConfirmation");
+        return new ModelAndView("views/user/account/resendVerification");
+    }
+
+    //RESET PASSWORD
+
+    @RequestMapping(path = "/user/resetPasswordRequest")
+    public ModelAndView resetPasswordRequest(@ModelAttribute("resetPasswordEmailForm") final ResetPasswordEmailForm form) {
+        return new ModelAndView("views/user/account/password/resetRequest");
+    }
+
+    @RequestMapping(path = "/user/resetPasswordRequest", method = RequestMethod.POST)
+    public ModelAndView sendPasswordReset(@Valid @ModelAttribute("resetPasswordEmailForm") final ResetPasswordEmailForm form,
+                                          BindingResult errors) {
+
+        if (errors.hasErrors())
+            return resetPasswordRequest(form);
+
+        final Optional<User> user = userService.getUserByEmail(form.getEmail());
+        //FIXME: STRING DINAMIO
+        if (!user.isPresent()) {
+            errors.rejectValue("email", "errors.invalidEmail");
+            return resetPasswordRequest(form);
+        }
+
+        userService.generateNewPassword(user.get());
+
+        return new ModelAndView("views/user/account/password/resetEmailConfirmation");
+    }
+
+    @RequestMapping(path = "/user/resetPassword")
+    public ModelAndView resetPassword(@RequestParam(defaultValue = "") String token,@ModelAttribute("resetPasswordForm") final ResetPasswordForm form) {
+        if (userService.validatePasswordReset(token)) {
+            final ModelAndView mav = new ModelAndView("views/user/account/password/reset");
+            mav.addObject("token", token);
+            return mav;
+        }
+        return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping(path = "/user/resetPassword", method = RequestMethod.POST)
+    public ModelAndView resetPassword(HttpServletRequest request,
+                                      @Valid @ModelAttribute("resetPasswordForm") final ResetPasswordForm form,
+                                      BindingResult errors) {
+
+        if (errors.hasErrors())
+            return new ModelAndView("views/user/account/password/reset");
+
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            errors.rejectValue("", "validation.user.passwordsDontMatch");
+            return new ModelAndView("views/user/account/password/reset");
+        }
+
+        final Optional<User> userOptional = userService.updatePassword(form.getToken(), form.getPassword());
+        boolean success = false;
+
+        final ModelAndView mav = new ModelAndView("views/user/account/password/resetResult");
+        if (userOptional.isPresent()) {
+            success = true;
+            User user = userOptional.get();
+            forceLogin(user, request);
+            mav.addObject("loggedUser", user);
+        }
+        mav.addObject("success", success);
+        return mav;
     }
 
     private void forceLogin(User user, HttpServletRequest request) {

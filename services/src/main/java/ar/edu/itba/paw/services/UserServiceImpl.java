@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.models.PasswordResetToken;
 import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private VerificationTokenDao verificationTokenDao;
+
+    @Autowired
+    private PasswordResetTokenDao passwordResetTokenDao;
 
     @Autowired
     private EmailService emailService;
@@ -60,15 +65,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> verifyAccount(String token) {
-        Optional<VerificationToken> vtoken = verificationTokenDao.getTokenByValue(token);
+        Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
 
-        if (!vtoken.isPresent()||!vtoken.get().isValid()) {
+        if (!vtokenOpt.isPresent())
             return Optional.empty();
-        }
 
-        Optional<User> user = userDao.updateRoles(vtoken.get().getUserId(), Roles.NOT_VALIDATED, Roles.VALIDATED);
-        verificationTokenDao.removeTokenById(vtoken.get().getId()); //remove always, either token is valid or not
-        return user;
+        VerificationToken vtoken = vtokenOpt.get();
+        verificationTokenDao.removeTokenById(vtoken.getId());//remove always, either token is valid or not
+
+        if (!vtoken.isValid())
+            return Optional.empty();
+
+        return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VALIDATED, Roles.VALIDATED);
     }
 
     @Override
@@ -93,6 +101,55 @@ public class UserServiceImpl implements UserService {
     private VerificationToken generateVerificationToken(long userId) {
         String token = UUID.randomUUID().toString();
         return verificationTokenDao.createVerificationToken(userId, token, VerificationToken.generateTokenExpirationDate());
+    }
+
+    public boolean validatePasswordReset(String token) {
+        Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
+
+        if (!prtokenOpt.isPresent() || !prtokenOpt.get().isValid())
+            return false;
+
+        return true;
+    }
+
+    public void generateNewPassword(User user) {
+        passwordResetTokenDao.removeTokenByUserId(user.getId());
+        PasswordResetToken token = generatePasswordResetToken(user.getId());
+        sendPasswordResetToken(user, token);
+    }
+
+    public Optional<User> updatePassword(String token, String password) {
+        Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
+
+        if (!prtokenOpt.isPresent()) {
+            return Optional.empty();
+        }
+
+        PasswordResetToken prtoken = prtokenOpt.get();
+        passwordResetTokenDao.removeTokenById(prtoken.getId()); //remove always, either token is valid or not
+        if (!prtoken.isValid()) {
+            return Optional.empty();
+        }
+
+        return userDao.updatePassword(prtoken.getUserId(), passwordEncoder.encode(password));
+    }
+
+
+    private void sendPasswordResetToken(User user, PasswordResetToken token) {
+        try {
+            String url = new URL("http", appBaseUrl, 8080, "/user/resetPassword?token=" + token.getValue()).toString();
+            Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("confirmationURL", url);
+            mailAttrs.put("to", user.getEmail());
+            emailService.sendMail("passwordReset", "Password Reset", mailAttrs);
+        } catch (MessagingException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private PasswordResetToken generatePasswordResetToken(long userId) {
+        String token = UUID.randomUUID().toString();
+        return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
 
 }

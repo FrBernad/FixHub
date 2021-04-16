@@ -12,10 +12,17 @@ public interface UserService {
 
     Optional<User> getUserByEmail(String email);
 
-    User createUser(String password,String name, String surname,  String email, String phoneNumber,String state, String city) throws DuplicateUserException;
+    User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException;
 
     Optional<User> verifyAccount(String token);
 
     void resendVerificationToken(User user);
+
+    boolean validatePasswordReset(String token);
+
+    void generateNewPassword(User user);
+
+    Optional<User> updatePassword(String token, String password);
+
 
 }

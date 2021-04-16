@@ -20,4 +20,6 @@ public interface UserDao {
 
     Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
 
+    Optional<User> updatePassword(long userId, String password);
+
 }

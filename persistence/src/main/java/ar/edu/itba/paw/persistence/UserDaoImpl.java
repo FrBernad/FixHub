@@ -87,7 +87,16 @@ public class UserDaoImpl implements UserDao {
             newVal.name(), userId, oldVal.name()) == 1) {
             return getUserById(userId);
         }
-        return null;
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> updatePassword(long userId, String password) {
+         if (jdbcTemplate.update("UPDATE USERS set u_password = ? where u_id = ?",
+            password, userId) == 1) {
+            return getUserById(userId);
+        }
+        return Optional.empty();
     }
 
 

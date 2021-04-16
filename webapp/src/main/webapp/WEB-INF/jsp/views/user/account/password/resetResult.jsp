@@ -4,25 +4,27 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title><spring:message code="productName"/> | <spring:message code="join.jobTitle"/></title>
+    <title><spring:message code="productName"/> | <spring:message code="account.password.resetResult.title"/></title>
 
-    <%@ include file="../components/includes/headers.jsp" %>
-    <link href='<c:url value="/resources/css/accountVerification.css"/>' rel="stylesheet">
+    <%@ include file="../../../../components/includes/headers.jsp" %>
+    <link href='<c:url value="/resources/css/resetRequest.css"/>' rel="stylesheet">
 </head>
 
 <body>
 
 <div class="container-fluid px-0 outerContainer">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0 d-flex align-items-center">
         <div class="container-lg p-5 mt-5 smallContentContainer">
             <div class="row w-100 h-100 m-0 align-items-center justify-content-center">
                 <c:choose>
                     <c:when test="${success}">
                         <div class="col-12">
-                            <h1 class="text-center title">Tu cuenta se ha verificado con exito</h1>
+                            <h1 class="text-center title">
+                                <spring:message code="account.password.resetResult.success"/>
+                            </h1>
                             <p class="subtitle text-center mb-4">
-                                Comienza a disfrutar de los beneficios que Fixhub tiene para ofrecerte.
+                                <spring:message code="account.password.resetResult.successInstruction"/>
                             </p>
                         </div>
                         <div class="col-12 d-flex align-items-center justify-content-center">
@@ -31,9 +33,11 @@
                     </c:when>
                     <c:otherwise>
                         <div class="col-12">
-                            <h1 class="text-center title">Ha ocurrido un error al verificar tu cuenta</h1>
+                            <h1 class="text-center title">
+                                <spring:message code="account.password.resetResult.error"/>
+                            </h1>
                             <p class="subtitle text-center mb-4">
-                                Checkea tus datos y solicita un nuevo enlace de confirmacion.
+                                <spring:message code="account.password.resetResult.errorInstruction"/>
                             </p>
                         </div>
                         <div class="col-12 d-flex align-items-center justify-content-center">
@@ -48,7 +52,7 @@
 </div>
 
 
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
 
 </body>
 

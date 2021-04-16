@@ -4,23 +4,25 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title><spring:message code="productName"/> | <spring:message code="join.jobTitle"/></title>
+    <title><spring:message code="productName"/> | <spring:message code="account.password.resetEmailConfirmation.title"/></title>
 
-    <%@ include file="../components/includes/headers.jsp" %>
-    <link href='<c:url value="/resources/css/accountVerification.css"/>' rel="stylesheet">
+    <%@ include file="../../../../components/includes/headers.jsp" %>
+    <link href='<c:url value="/resources/css/resetRequest.css"/>' rel="stylesheet">
 </head>
 
 <body>
 
 <div class="container-fluid px-0 outerContainer">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0 d-flex align-items-center">
         <div class="container-lg p-5 mt-5 smallContentContainer">
             <div class="row w-100 h-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
-                    <h1 class="text-center title">Tu enlace de verificacion ha sido enviado</h1>
+                    <h1 class="text-center title">
+                        <spring:message code="account.password.resetEmailConfirmation.emailAck"/>
+                    </h1>
                     <p class="subtitle text-center mb-4">
-                        Revisa tu direccion de correo y verifica tu cuenta.
+                        <spring:message code="account.password.resetEmailConfirmation.checkEmail"/>
                     </p>
                 </div>
                 <div class="col-12 d-flex align-items-center justify-content-center">
@@ -32,7 +34,7 @@
 </div>
 
 
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
 
 </body>
 
