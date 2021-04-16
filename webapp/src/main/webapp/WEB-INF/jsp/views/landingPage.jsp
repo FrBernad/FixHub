@@ -145,11 +145,13 @@
                         <c:choose>
                             <c:when test="${jobs.size()>0}">
                                 <c:forEach begin="0" end="2" var="job" items="${jobs}">
-                                    <%@ include file="../components/popularJobCard.jsp" %>
+                                    <div class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
+                                        <%@ include file="../components/popularJobCard.jsp" %>
+                                    </div>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                <div class="col-12 d-flex align-items-center justify-content-center">
+                                <div class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
                                     <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
                                         <p class="m-0 text-center p-4" style="font-size: 16px;">
                                             <spring:message code="landingPage.mostPopularJobs.noPopularJobsText"/>

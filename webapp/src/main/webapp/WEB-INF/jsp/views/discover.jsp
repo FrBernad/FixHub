@@ -110,7 +110,9 @@
                             <c:when test="${jobs.size()>0}">
                                 <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                     <c:forEach var="job" items="${jobs}">
-                                        <%@ include file="../components/jobCard.jsp" %>
+                                        <div class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
+                                            <%@ include file="../components/jobCard.jsp" %>
+                                        </div>
                                     </c:forEach>
                                 </div>
                             </c:when>
