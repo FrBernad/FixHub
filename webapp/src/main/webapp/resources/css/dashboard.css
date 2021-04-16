@@ -1,0 +1,47 @@
+.list-group > .active {
+    background-color: var(--quaternary-color) !important;
+    border-color: var(--quaternary-color) !important;
+    color: var(--tertiary-color) !important;
+}
+
+.inactive {
+    color: var(--primary-color) !important;
+}
+
+.badge {
+    width: 3em;
+}
+
+.card-header {
+    background-color: var(--quaternary-color) !important;
+    border-color: var(--quaternary-color) !important;
+    color: var(--tertiary-color) !important;
+}
+
+.card-body {
+    background-color: var(--tertiary-color);
+}
+
+a.list-group-item {
+    display: flex !important;
+    align-items: center !important;
+}
+
+a .text {
+    flex: 1 !important;
+}
+
+a .badge {
+    flex: 0 0 auto !important;
+}
+
+.info-box {
+    border-color: var(--quaternary-color) !important;
+    color: var(--primary-color) !important;
+    text-align: center !important;
+}
+
+.table-head {
+    background-color: var(--primary-color) !important;
+    color: var(--tertiary-color) !important;
+}

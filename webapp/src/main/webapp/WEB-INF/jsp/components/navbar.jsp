@@ -19,6 +19,11 @@
                     </a>
                 </li>
                 <li class="nav-item mx-1">
+                    <a href="<c:url value='/dashboard'/>" class="nav-link navbarText">
+                        <spring:message code="navBar.dashboard"/>
+                    </a>
+                </li>
+                <li class="nav-item mx-1">
                     <c:choose>
                         <c:when test="${loggedUser!=null}">
                             <form id="logoutForm" class="mb-0" action="<c:url value='/logout'/>" method="post">

@@ -32,4 +32,5 @@ public class JobServiceImp implements JobService {
         return jobDao.getJobsCategories();
     }
 
+
 }
