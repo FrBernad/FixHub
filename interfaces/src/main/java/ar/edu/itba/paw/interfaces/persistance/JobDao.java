@@ -19,4 +19,6 @@ public interface JobDao {
 
     Collection<JobCategory> getJobsCategories();
 
+    Collection<Job> getJobByProviderId(long id);
+
 }

@@ -107,6 +107,16 @@ public class JobDaoImpl implements JobDao {
         return categories;
     }
 
+    @Override
+    public Collection<Job> getJobByProviderId(long id) {
+        List<Object> variables = new LinkedList<>();
+        variables.add(id);
+
+        String filterQuery = " WHERE j_provider_id = ? ";
+
+        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, variables);
+    }
+
     private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, List<Object> variables) {
 
         return jdbcTemplate.query(

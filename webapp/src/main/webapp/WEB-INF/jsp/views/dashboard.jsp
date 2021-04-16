@@ -5,6 +5,7 @@
 <head>
     <%@ include file="../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/dashboard.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
     <title><spring:message code="navBar.dashboard"/></title>
     <spring:message code="navBar.dashboard" var="dashboard"/>
     <spring:message code="dashboard.Work" var="work"/>
@@ -14,7 +15,7 @@
 
 <div class="container-fluid outerContainer p-0">
     <%@ include file="../components/navbar.jsp" %>
-    <div class="container h-100 p-5">
+    <div class="container h-100 p-2 mt-5 mb-5">
         <div class="row h-100">
             <div class="col-3">
                 <div class="list-group" role="tablist" id="tabList">
@@ -34,8 +35,8 @@
                     </a>
                 </div>
             </div>
-            <div class="col-9 h-75">
-                <div class="card h-100">
+            <div class="col-9">
+                <div class="card">
                     <div class="card-header" id="panelTitle">
                         ${dashboard}
                     </div>
@@ -72,13 +73,15 @@
                                     </div>
                                     <%--Tus Trabajos--%>
                                     <div class="tab-pane fade" role="tabpanel" id="works">
-                                        <div class="col-12 p-0">
+                                        <div class="col">
                                             <div class="container-fluid">
                                                 <c:choose>
                                                     <c:when test="${jobs.size()>0}">
-                                                        <div class="row align-items-top ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
+                                                        <div class="row align-items-top ${jobs.size()%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                                             <c:forEach var="job" items="${jobs}">
+                                                                <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
                                                                 <%@ include file="../components/jobCard.jsp" %>
+                                                                </div>
                                                             </c:forEach>
                                                         </div>
                                                     </c:when>

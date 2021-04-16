@@ -75,3 +75,8 @@
 .starsColor {
     color: #003B6D;
 }
+
+.category {
+    padding: 10px !important;
+    background-color: var(--quaternary-color) !important;
+}

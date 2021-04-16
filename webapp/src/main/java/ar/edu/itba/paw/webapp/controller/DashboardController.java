@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Job;
@@ -20,13 +21,14 @@ public class DashboardController {
     private UserService userService;
 
     @Autowired
-    private SearchService searchService;
+    private JobService jobService;
 
     @RequestMapping("/dashboard")
     public ModelAndView dashboard() {
-//        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-//        final Collection<Job> jobs = searchService.getJobsByCategory();
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final Collection<Job> jobs = jobService.getJobByProviderId(user.getId());
         final ModelAndView mav = new ModelAndView("views/dashboard");
+        mav.addObject("jobs", jobs);
 
         return mav;
     }

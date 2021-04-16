@@ -8,10 +8,6 @@
     color: var(--primary-color) !important;
 }
 
-.badge {
-    width: 3em;
-}
-
 .card-header {
     background-color: var(--quaternary-color) !important;
     border-color: var(--quaternary-color) !important;
@@ -33,6 +29,7 @@ a .text {
 
 a .badge {
     flex: 0 0 auto !important;
+    width: 3em;
 }
 
 .info-box {
@@ -45,3 +42,4 @@ a .badge {
     background-color: var(--primary-color) !important;
     color: var(--tertiary-color) !important;
 }
+

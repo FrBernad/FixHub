@@ -15,5 +15,7 @@ public interface JobService {
 
     Collection<JobCategory> getJobsCategories();
 
+    Collection<Job> getJobByProviderId(long id);
+
 }
 
