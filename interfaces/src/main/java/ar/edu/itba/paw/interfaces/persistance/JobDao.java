@@ -17,6 +17,7 @@ public interface JobDao {
 
     Collection<JobCategory> getJobsCategories();
 
+    Collection<Long> getImagesIdsByJobId(Long jobId);
     Collection<Job> getJobByProviderId(long id);
 
 }

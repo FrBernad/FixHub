@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.ImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,16 @@ public class ImageDaoImpl implements ImageDao {
     private static final RowMapper<Image> IMAGE_ROW_MAPPERS = (rs, rowNum) ->
         new Image(rs.getLong("i_id"), rs.getBytes("i_data"), rs.getString("i_mime_type"));
 
+    private static final ResultSetExtractor<Collection<Image>> JOB_IMAGE_ROW_MAPPER = rs -> {
+        Map<Long, Image> imageMap = new HashMap<>();
+        while (rs.next()) {
+            imageMap.put(rs.getLong("i_id"),
+                new Image(rs.getLong("i_id"),
+                    rs.getBytes("i_data"),
+                    rs.getString("i_mime_type") ));
+        }
+        return imageMap.values();
+    };
 
     @Autowired
     public ImageDaoImpl(final DataSource ds) {
@@ -52,7 +63,10 @@ public class ImageDaoImpl implements ImageDao {
         return jdbcTemplate.query("SELECT * FROM IMAGES where i_id = ?", new Object[]{imageId}, IMAGE_ROW_MAPPERS).stream().findFirst();
     }
 
-
+    @Override
+    public Collection<Image> getImagesByJobId(long jobId){
+        return jdbcTemplate.query("SELECT * FROM IMAGES JOIN JOB_IMAGE on i_id = ji_image_id WHERE ji_job_id = ?",new Object[]{jobId},JOB_IMAGE_ROW_MAPPER);
+    }
 }
 
 

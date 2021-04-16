@@ -28,4 +28,8 @@ public class ImageServiceImpl implements ImageService {
     public Image createImage(ImageDto image){
         return imageDao.createImage(image);
     }
+
+    public Collection<Image> getImagesByJobId(long jobId){
+        return imageDao.getImagesByJobId(jobId);
+    }
 }

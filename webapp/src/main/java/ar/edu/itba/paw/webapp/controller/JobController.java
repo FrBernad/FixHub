@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.JobService;
-import ar.edu.itba.paw.interfaces.services.ReviewService;
-import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
@@ -43,6 +41,9 @@ public class JobController {
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    private ImageService imageService;
+
 
     @RequestMapping("/jobs/{jobId}")
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId, final Integer error) {
@@ -52,6 +53,8 @@ public class JobController {
         mav.addObject("error", error);
         Collection<Review> reviews = reviewService.getReviewsByJobId(job);
         mav.addObject("reviews", reviews);
+        Collection<Long> imagesIds = jobService.getImagesIdsByJobId(jobId);
+        mav.addObject("imagesIds",imagesIds);
         return mav;
     }
 
@@ -67,7 +70,9 @@ public class JobController {
         //Se que el job existe porque ya pedí el job en la base de datos
         final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
 
+
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
+
         return mav;
     }
 
@@ -147,7 +152,8 @@ public class JobController {
 
         List<ImageDto> imagesDto = new LinkedList<>();
 
-        if (form.getImages() != null) {
+        //FIXME: SOLUCIONAR ESTO
+        if (form.getImages().get(0).getSize() != 0){
             for (final MultipartFile image : form.getImages()) {
                 try {
                     imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
@@ -159,6 +165,14 @@ public class JobController {
         final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), imagesDto, user);
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
+
+    //FIXME: SOLUCIONAR
+    @RequestMapping(path="jobs/images/{imageId}",produces = "image/jpg",method = RequestMethod.GET)
+    public @ResponseBody byte[] getJobImage(@PathVariable("imageId") long imageId){
+        Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+        return image.getData();
+    }
+
 
 
 }

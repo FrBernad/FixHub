@@ -26,13 +26,13 @@ public class JobServiceImp implements JobService {
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, List<ImageDto> images, User user) {
 
-        List<Image> jobImages = new LinkedList<>();
-        if(!images.isEmpty()){
+        List<Image> jobImages;
+        if(!images.isEmpty())
             jobImages = imageService.createImages(images);
-        }
-        Job job = jobDao.createJob(jobProvided,category,description, price,user,jobImages);
+        else
+            jobImages = new LinkedList<>();
 
-        return job;
+        return jobDao.createJob(jobProvided,category,description, price,user,jobImages);
     }
 
     @Override
@@ -46,8 +46,12 @@ public class JobServiceImp implements JobService {
     }
 
     @Override
+    public Collection<Long> getImagesIdsByJobId(Long jobId) {
+        return jobDao.getImagesIdsByJobId(jobId);
+    }
+    @Override
     public Collection<Job> getJobByProviderId(long id) { return jobDao.getJobByProviderId(id); };
-    
+
 
 
 }

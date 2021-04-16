@@ -39,9 +39,11 @@
     <div class="form-group">
         <form:label path="images">
             <spring:message code="jobForm.jobImageTitle"/></form:label>
-        <button type="button" id="addFileButtom">
-            Add File
+        <button class="" type="button" id="addFileButtom">
+            <i class="fas fa-upload"></i>
+            <spring:message code="jobForm.ImagesButton"/>
         </button>
+        <input type="file" id="inputFiles" name="images" hidden/>
 
     </div>
 

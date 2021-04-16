@@ -5,9 +5,33 @@ window.addEventListener("load", () => {
     let processing = false;
     let jobFormButton = document.getElementById("jobFormButton");
     let addFileButtom = document.getElementById("addFileButtom");
+    let inputFile = document.getElementById("inputFiles");
     let files = [];
-    let indexFile = 0;
 
+    function FileListItems(files) {
+        const b = new ClipboardEvent("").clipboardData || new DataTransfer();
+        for (let i = 0, len = files.length; i < len; i++)
+            b.items.add(files[i])
+        return b.files
+    }
+
+    function inputFileUpdate() {
+        files.push(inputFile.files[0]);
+        const text = document.createElement("h2");
+        text.textContent = inputFile.files[0].name + "aaaa";
+        imagesHolder.appendChild(text);
+        text.addEventListener("click", () => {
+             imagesHolder.removeChild(text);
+             let index = files.indexOf(inputFile);
+             files.splice(index);
+        })
+    }
+
+    inputFile.addEventListener("change", inputFileUpdate);
+
+    addFileButtom.addEventListener("click", () => {
+        inputFile.click();
+    })
 
     jobFormButton.addEventListener("click", () => {
         if (processing) {
@@ -15,31 +39,11 @@ window.addEventListener("load", () => {
         }
         processing = true;
         jobFormButton.disabled = true;
+        inputFile.removeEventListener("change", inputFileUpdate);
+        inputFile.files = new FileListItems(files);
+
         jobForm.submit();
         processing = false;
-    })
-
-    addFileButtom.addEventListener("click", () => {
-        const inputFile = document.createElement("input");
-        inputFile.setAttribute("type", "file");
-        inputFile.setAttribute("id", "image" + indexFile);
-        inputFile.setAttribute("name", "images");
-        inputFile.setAttribute("hidden", "true");
-        indexFile++;
-        inputFile.click();
-
-        imagesHolder.appendChild(inputFile);
-
-        inputFile.addEventListener("change", () => {
-            const text = document.createElement("h2");
-            text.innerHTML = inputFile.files[0].name;
-            imagesHolder.appendChild(text);
-            text.addEventListener("click", () => {
-                imagesHolder.removeChild(text);
-                imagesHolder.removeChild(inputFile);
-            })
-        })
-
     })
 
 

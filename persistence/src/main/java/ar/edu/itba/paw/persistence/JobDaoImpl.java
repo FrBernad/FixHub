@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -43,6 +44,14 @@ public class JobDaoImpl implements JobDao {
                 rs.getString("u_city"),
                 new ArrayList<>()));
 
+    private static final ResultSetExtractor<Collection<Long>> JOB_IMAGE_ROW_MAPPER = rs ->{
+        List<Long> imageIds = new LinkedList<>();
+        while(rs.next()){
+            imageIds.add(rs.getLong("ji_image_id"));
+        }
+        return imageIds;
+    };
+
 //    FIXME: VER Q ONDA EL ARRAY LIST
 
     @Autowired
@@ -53,7 +62,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider,List<Image> images) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider, List<Image> images) {
 
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
@@ -64,10 +73,10 @@ public class JobDaoImpl implements JobDao {
         map.put("j_price", price);
         final Number id = jobSimpleJdbcInsert.executeAndReturnKey(map);
 
-        Map<String,Object> imageJobMap = new HashMap<>();
-        for (Image image: images){
-            imageJobMap.put("ji_image_id",image.getImageId());
-            imageJobMap.put("ji_job_id",id);
+        Map<String, Object> imageJobMap = new HashMap<>();
+        for (Image image : images) {
+            imageJobMap.put("ji_image_id", image.getImageId());
+            imageJobMap.put("ji_job_id", id);
             jobImagesSimpleJdbcInsert.execute(imageJobMap);
         }
 
@@ -115,6 +124,11 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
+    public Collection<Long> getImagesIdsByJobId(Long jobId) {
+        return jdbcTemplate.query("SELECT * FROM JOB_IMAGE where ji_job_id = ? ORDER BY ji_image_id",new Object[]{jobId},JOB_IMAGE_ROW_MAPPER);
+    }
+
+    @Override
     public Collection<Job> getJobByProviderId(long id) {
         List<Object> variables = new LinkedList<>();
         variables.add(id);
@@ -154,7 +168,6 @@ public class JobDaoImpl implements JobDao {
         }
         return null; //never reaches
     }
-
 
 
 }

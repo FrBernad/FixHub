@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.ImageDto;
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategory;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -16,6 +13,8 @@ public interface JobService {
     Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, List<ImageDto> images, User provider);
 
     Collection<JobCategory> getJobsCategories();
+
+    Collection<Long> getImagesIdsByJobId(Long jobId);
 
     Collection<Job> getJobByProviderId(long id);
 

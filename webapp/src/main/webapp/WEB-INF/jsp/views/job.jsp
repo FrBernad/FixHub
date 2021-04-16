@@ -19,10 +19,27 @@
                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-start">
                     <div class="container">
                         <div style="position: relative;height: 400px; width:400px;">
-                            <img
-                                    src="<c:url value='/resources/images/${job.category}.jpg'/>"
-                                    alt="${job.category}" class="rounded"
-                                    style="object-fit: cover; height: 100%; width: 100%">
+                            <c:choose>
+                                <c:when test="${imagesIds.size() > 0}">
+                                    <c:forEach var="imageId" items="${imagesIds}">
+                                        <img
+                                                src="<c:url value='/jobs/images/${imageId}'/>"
+                                                alt="${job.category}" class="rounded"
+                                                style="object-fit: cover; height: 100%; width: 100%">
+
+                                    </c:forEach>
+
+                                </c:when>
+                                <c:otherwise>
+                                    <img
+
+                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                                            alt="${job.category}" class="rounded"
+                                            style="object-fit: cover; height: 100%; width: 100%">
+                                </c:otherwise>
+
+                            </c:choose>
+
                             <span class="badge badge-pill badge-secondary jobCategory">
                             <spring:message code="home.categories.${job.category}"/></span>
                             <div class="jobPrice">

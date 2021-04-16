@@ -14,5 +14,7 @@ public interface ImageDao {
     List<Image> createImages(List<ImageDto> images);
     Image createImage(ImageDto image);
     Optional<Image> getImageById(Long imageId);
+    Collection<Image> getImagesByJobId(long jobId);
+
 
 }

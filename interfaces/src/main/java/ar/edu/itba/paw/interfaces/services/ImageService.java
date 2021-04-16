@@ -14,5 +14,7 @@ public interface ImageService {
     Image createImage(ImageDto image);
 
     Optional<Image> getImageById(Long imageId);
+    Collection<Image> getImagesByJobId(long jobId);
+
 
 }
