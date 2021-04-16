@@ -30,7 +30,9 @@
                                 <form:form id="passResetRequest" modelAttribute="resetPasswordEmailForm"
                                            action="${postUrl}"
                                            method="POST">
-                                    <form:label path="email" for="email">email</form:label>
+                                    <form:label path="email" for="email">
+                                        <spring:message code="account.password.resetRequest.emailLabel"/>
+                                    </form:label>
                                     <form:input path="email" type="text" class="form-control input" id="email"
                                                 name="email"/>
                                     <form:errors path="email" cssClass="formError" element="p"/>

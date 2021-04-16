@@ -184,10 +184,10 @@
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
                                                         &nbsp;</p>
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
-                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">FixHub</span>
+                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;"th:text="#{app.title}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
-                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">Propuesta para tu trabajo </span>
+                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;"th:text="#{verification.title}"></span>
                                                     </p>
                                                 </div>
 
@@ -238,20 +238,20 @@
                                                 <div style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
                                                     <p style="line-height: 140%; font-size: 14px;"><span
                                                             style="color: #666666; font-size: 14px; line-height: 19.6px;"><span
-                                                            style="font-size: 18px; line-height: 25.2px;">Hola,</span></span>
+                                                            style="font-size: 18px; line-height: 25.2px;" th:text="#{jobRequest.greeting}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Tu cuenta de Fixhub ha sido creada con exito!</span>
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;" th:text="#{verification.success}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
 
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Verifica tu cuenta haciendo click debajo y comienza a disfrutar de nuestros servicios</span>
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;" th:text="#{verification.advice}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">
                                                         <a
                                                                 th:href="${confirmationURL}"
-                                                                style="font-size: 18px; line-height: 25.2px; color: #666666;">confirmar
+                                                                style="font-size: 18px; line-height: 25.2px; color: #666666;" th:text="#{verification.validate}">
                                                         </a>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>

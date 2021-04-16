@@ -26,9 +26,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendMail(String template, String subject, Map<String, Object> variables) throws MessagingException {
+    public void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws MessagingException {
         // Prepare the evaluation context
-        final Context ctx = new Context(LocaleContextHolder.getLocale());
+        final Context ctx = new Context(locale);
         ctx.setVariables(variables);
 
         // Prepare message using a Spring helper

@@ -11,8 +11,11 @@ import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import sun.misc.MessageUtils;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +45,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private String appBaseUrl;
+
+    @Autowired
+    private MessageSource messageSource;
+
+    private final Locale locale = LocaleContextHolder.getLocale();
 
     private final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.ROLE_USER, Roles.NOT_VALIDATED));
 
@@ -92,7 +100,8 @@ public class UserServiceImpl implements UserService {
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
-            emailService.sendMail("verification", "Account Confirmation", mailAttrs);
+
+            emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount",new Object[]{},locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             e.printStackTrace();
         }
@@ -141,7 +150,7 @@ public class UserServiceImpl implements UserService {
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
-            emailService.sendMail("passwordReset", "Password Reset", mailAttrs);
+            emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword",new Object[]{},locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             e.printStackTrace();
         }

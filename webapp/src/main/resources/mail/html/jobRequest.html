@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html xmlns:th="http://www.thymeleaf.org" th:lang=”${#locale.language}”
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
     <title th:remove="all">Template for HTML email (simple)</title>
@@ -184,10 +185,12 @@
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
                                                         &nbsp;</p>
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
-                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">FixHub</span>
+                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;"
+                                                              th:text="#{app.title}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
-                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">Propuesta para tu trabajo </span>
+                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif; "
+                                                              th:text="#{jobRequest.title}"></span>
                                                     </p>
                                                 </div>
 
@@ -238,34 +241,41 @@
                                                 <div style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
                                                     <p style="line-height: 140%; font-size: 14px;"><span
                                                             style="color: #666666; font-size: 14px; line-height: 19.6px;"><span
-                                                            style="font-size: 18px; line-height: 25.2px;">Hola,</span></span>
+                                                            style="font-size: 18px; line-height: 25.2px;"
+                                                            th:text="#{jobRequest.greeting}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Te enviamos este email para notificarte que tienes una nueva oferta para uno de tus trabajos.</span>
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"
+                                                            th:text="#{jobRequest.communication}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
 
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">La informaci&oacute;n del contacto que precisa de tus servicios es:</span>
+                                                            th:text="#{jobrequest.info.title}"
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"> <span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Nombre:
+                                                            th:text="#{jobrequest.info.name}"
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">
                                                     <span th:text="${userName}"></span> <span
-                                                                th:text="${userSurname}"></span></span>
+                                                            th:text="${userSurname}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Numero de tel&eacute;fono:
+                                                            th:text="#{jobrequest.info.phone}"
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">
                                                         <span th:text="${userPhoneNumber}"></span>
                                                     </span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Direcci&oacute;n:
+                                                            th:text="#{jobrequest.info.address}"
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">
                                                     <span th:text="${userAddress}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
 
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">Comun&iacute;cate con el mediante estos datos y comienza a trabajar!</span>
+                                                            th:text="#{jobrequest.advice}"
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                 </div>

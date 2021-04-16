@@ -15,6 +15,8 @@ import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -42,6 +44,9 @@ public class JobController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MessageSource messageSource;
 
 
     @RequestMapping("/jobs/{jobId}")
@@ -113,7 +118,7 @@ public class JobController {
 
         //FIXME: VER Q ONDA ESTO
         try {
-            emailService.sendMail("jobRequest", "New job request", mailAttrs);
+            emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest",new Object[]{},LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
             e.printStackTrace();
         }

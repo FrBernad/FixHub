@@ -7,6 +7,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -74,9 +75,20 @@ public class MailConfig implements ApplicationContextAware, EnvironmentAware {
 
     }
 
+    /*
+     *  Message externalization/internationalization for emails.
+     */
+    @Bean
+    public ResourceBundleMessageSource emailMessageSource() {
+        final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("mail/messages");
+        return messageSource;
+    }
+
     @Bean
     public TemplateEngine emailTemplateEngine() {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateEngineMessageSource(emailMessageSource());
         templateEngine.addTemplateResolver(htmlTemplateResolver());
         return templateEngine;
     }
