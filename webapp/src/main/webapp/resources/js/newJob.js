@@ -17,15 +17,22 @@ window.addEventListener("load", () => {
 
     function inputFileUpdate() {
         files.push(inputFile.files[0]);
-        const text = document.createElement("h2");
-        text.textContent = inputFile.files[0].name + "aaaa";
-        imagesHolder.appendChild(text);
-        text.addEventListener("click", () => {
-             imagesHolder.removeChild(text);
+        const file = document.createElement("button");
+        file.type="button";
+        file.className+=" btn btn-primary m-2";
+        file.textContent = inputFile.files[0].name;
+        const icon = document.createElement("i");
+        icon.className += "fas fa-times ml-1";
+        file.appendChild(icon);
+        imagesHolder.appendChild(file);
+
+        file.addEventListener("click", () => {
+             imagesHolder.removeChild(file);
              let index = files.indexOf(inputFile);
              files.splice(index);
         })
     }
+
 
     inputFile.addEventListener("change", inputFileUpdate);
 
