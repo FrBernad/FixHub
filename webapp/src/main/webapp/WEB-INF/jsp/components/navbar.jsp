@@ -32,7 +32,7 @@
                                 <div id="moreOptions" class="dropdown" data-toggle="dropdown">
                                     <img class="avatar"
                                          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.iconscout.com%2Ficon%2Ffree%2Fpng-256%2Favatar-372-456324.png&f=1&nofb=1"/>
-                                    <i class="fas ml-2 fa-chevron-down navbarText"></i>
+                                    <i class="fas ml-2 fa-chevron-down navbarText" id="navBarArrow"></i>
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <p class="mb-0 pl-3 dropdownItem ">
