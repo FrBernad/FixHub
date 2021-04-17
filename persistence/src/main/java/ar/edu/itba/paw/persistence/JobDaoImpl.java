@@ -44,9 +44,9 @@ public class JobDaoImpl implements JobDao {
                 rs.getString("u_city"),
                 new ArrayList<>()));
 
-    private static final ResultSetExtractor<Collection<Long>> JOB_IMAGE_ROW_MAPPER = rs ->{
+    private static final ResultSetExtractor<Collection<Long>> JOB_IMAGE_ROW_MAPPER = rs -> {
         List<Long> imageIds = new LinkedList<>();
-        while(rs.next()){
+        while (rs.next()) {
             imageIds.add(rs.getLong("ji_image_id"));
         }
         return imageIds;
@@ -84,7 +84,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOptions, JobCategory category) {
+    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOptions, JobCategory category, int page, int itemsPerPage) {
 
         List<Object> variables = new LinkedList<>();
 
@@ -105,8 +105,32 @@ public class JobDaoImpl implements JobDao {
 
         String orderQuery = getOrderQuery(orderOptions);
 
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, variables);
+        String offset = EMPTY;
+        if (page > 0) {
+            offset = " OFFSET ? ";
+            variables.add(page * itemsPerPage);
+        }
+
+
+        String limit = EMPTY;
+        if (itemsPerPage > 0) {
+            limit = " LIMIT ? ";
+            variables.add(itemsPerPage);
+        }
+
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, limit, offset, variables);
     }
+
+    @Override
+    public Integer getJobsCount() {
+        return jdbcTemplate.query("SELECT count(j_id) as totalJobs FROM jobs", (rs, rowNum) -> rs.getInt("totalJobs")).stream().findFirst().orElse(0);
+    }
+
+    @Override
+    public Integer getCategoryJobsCount(JobCategory category) {
+        return jdbcTemplate.query("SELECT count(j_id) as totalJobs FROM jobs WHERE j_category = ? ", new Object[]{category.name()}, (rs, rowNum) -> rs.getInt("totalJobs")).stream().findFirst().orElse(0);
+    }
+
 
     @Override
     public Optional<Job> getJobById(long id) {
@@ -115,7 +139,7 @@ public class JobDaoImpl implements JobDao {
 
         String filterQuery = " WHERE j_id = ? ";
 
-        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, variables).stream().findFirst();
+        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, variables).stream().findFirst();
 
     }
 
@@ -125,7 +149,7 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Collection<Long> getImagesIdsByJobId(Long jobId) {
-        return jdbcTemplate.query("SELECT * FROM JOB_IMAGE where ji_job_id = ? ORDER BY ji_image_id",new Object[]{jobId},JOB_IMAGE_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM JOB_IMAGES where ji_job_id = ? ORDER BY ji_image_id", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
     }
 
     @Override
@@ -135,10 +159,10 @@ public class JobDaoImpl implements JobDao {
 
         String filterQuery = " WHERE j_provider_id = ? ";
 
-        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, variables);
+        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, variables);
     }
 
-    private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, List<Object> variables) {
+    private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String offset, String limit, List<Object> variables) {
 
         return jdbcTemplate.query(
             "select * from (" +
@@ -146,7 +170,7 @@ public class JobDaoImpl implements JobDao {
                 " JOIN " +
                 "(select j_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-                " on aux1.j_id = aux2.j_id)" + searchQuery + orderQuery, variables.toArray(),
+                " on aux1.j_id = aux2.j_id)" + searchQuery + orderQuery + offset + limit, variables.toArray(),
             JOB_ROW_MAPPER);
     }
 

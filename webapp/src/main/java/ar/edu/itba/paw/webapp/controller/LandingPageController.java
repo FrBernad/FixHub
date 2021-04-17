@@ -2,7 +2,9 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
+import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
+import ar.edu.itba.paw.models.PaginatedSearchResult;
 import ar.edu.itba.paw.models.SearchResult;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,9 @@ public class LandingPageController {
     @RequestMapping("/")
     public ModelAndView landingPage(@ModelAttribute("searchForm") final SearchForm form) {
         final ModelAndView mav = new ModelAndView("views/landingPage");
-        SearchResult results = searchService.getJobsByCategory(null,"MOST_POPULAR",null);
+        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null,"MOST_POPULAR",null,0);
         Collection<JobCategory> categories = jobService.getJobsCategories();
-        mav.addObject("jobs", results.getJobs());
+        mav.addObject("jobs", results.getResults());
         mav.addObject("categories", categories);
         return mav;
     }

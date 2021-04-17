@@ -50,7 +50,7 @@ public class JobController {
     @RequestMapping("/jobs/{jobId}")
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId, final Integer error) {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        final ModelAndView mav = new ModelAndView("views/job");
+        final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
         Collection<Review> reviews = reviewService.getReviewsByJobId(job);
@@ -94,7 +94,7 @@ public class JobController {
     }
 
 
-    @RequestMapping(value = "/jobs/{jobId}/contact", method = RequestMethod.POST)
+    @RequestMapping(path = "/jobs/{jobId}/contact", method = RequestMethod.POST)
     public ModelAndView contactPost(@PathVariable("jobId") final long jobId,
                                     @Valid @ModelAttribute("contactForm") final ContactForm form,
                                     final BindingResult errors,
