@@ -168,7 +168,8 @@ public class JobController {
 
     //FIXME: SOLUCIONAR
     @RequestMapping(path="jobs/images/{imageId}",produces = "image/jpg",method = RequestMethod.GET)
-    public @ResponseBody byte[] getJobImage(@PathVariable("imageId") long imageId){
+    @ResponseBody
+    public byte[] getJobImage(@PathVariable("imageId") long imageId){
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }
