@@ -92,8 +92,8 @@ public class JobController {
         mav.addObject("provider", provider);
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        Collection<ContactInfo> contactInfo = userService.getContactInfo(user);
-        mav.addObject("contactInfo",contactInfo);
+        Collection<ContactInfo> contactInfoCollection = userService.getContactInfo(user);
+        mav.addObject("contactInfoCollection",contactInfoCollection);
 
         return mav;
     }

@@ -84,19 +84,6 @@ CREATE TABLE IF NOT EXISTS PASSWORD_RESET_TOKENS
     PRIMARY KEY (prt_id)
 );
 
-CREATE TABLE IF NOT EXISTS CONTACT
-(
-    c_id          SERIAL,
-    c_provider_id BIGINT NOT NULL,
-    c_user_id     BIGINT NOT NULL,
-    c_info        BIGINT NOT NULL,
-    c_message     VARCHAR(300),
-    primary key (c_id),
-    FOREIGN KEY (c_provider_id) REFERENCES USERS (u_id),
-    FOREIGN KEY (c_user_id) REFERENCES USERS (u_id),
-    FOREIGN KEY (c_info) REFERENCES CONTACT_INFO (ci_id)
-);
-
 CREATE TABLE IF NOT EXISTS CONTACT_INFO
 (
     ci_id                SERIAL,
@@ -110,3 +97,18 @@ CREATE TABLE IF NOT EXISTS CONTACT_INFO
     primary key (ci_id),
     FOREIGN KEY (ci_user_id) REFERENCES USERS (u_id)
 );
+
+CREATE TABLE IF NOT EXISTS CONTACT
+(
+    c_id          SERIAL,
+    c_provider_id BIGINT NOT NULL,
+    c_user_id     BIGINT NOT NULL,
+    c_info        BIGINT NOT NULL,
+    c_message     VARCHAR(300),
+    primary key (c_id),
+    FOREIGN KEY (c_provider_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (c_user_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (c_info) REFERENCES CONTACT_INFO (ci_id)
+);
+
+

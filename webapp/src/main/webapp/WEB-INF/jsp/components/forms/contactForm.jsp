@@ -4,6 +4,22 @@
 
 <c:url value="/jobs/${job.id}/contact" var="postPath"/>
 <form:form modelAttribute="contactForm" id="contactForm" action="${postPath}" class="contactForm" method="POST">
+    <c:if test="${contactInfoCollection.size() > 0}">
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item newUserContact"><c:out value="contactForm.newContactInfo"/> </a>
+                <c:forEach var="contact" items="${contactInfoCollection}">
+                    <a class="dropdown-item userContact" data-info="${contact}"><c:out value="${contact.street + ' ' + contact.addressNumber}"/></a>
+                </c:forEach>
+            </div>
+        </div>
+    </c:if>
+
+
     <div class="row">
         <div class="col">
             <div class="form-group">
@@ -87,11 +103,14 @@
                        cssErrorClass="form-control is-invalid"/>
         <form:errors path="message" cssClass="formError" element="p"/>
     </div>
+    <form:input type="hidden" path="contactInfoId" value="-1"/>
     <div class="row align-items-center justify-content-center">
         <div class="col-6 d-flex align-items-center justify-content-center">
             <button type="button" id="contactFormButton" class="contactBtn w-75"><spring:message
                     code="contactForm.submit"/></button>
         </div>
     </div>
+
+
 
 </form:form>
