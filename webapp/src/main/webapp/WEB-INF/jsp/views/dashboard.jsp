@@ -15,23 +15,23 @@
 
 <div class="container-fluid outerContainer p-0">
     <%@ include file="../components/navbar.jsp" %>
-    <div class="container h-100 p-2 mt-5 mb-5">
-        <div class="row h-100">
+    <div class="container p-2 mt-5 mb-5" style="min-height: 100%">
+        <div class="row" style="min-height: 100%">
             <div class="col-3">
                 <div class="list-group" role="tablist" id="tabList">
                     <a href="#dashboard" class="list-group-item list-group-item-action active" data-toggle="list"
                        role="tab" data-name="${dashboard}" id="tabDashboard">
-                        <i class="fas fa-chart-line mr-2"></i></i><span class="text">${dashboard}</span></span>
+                        <i class="fas fa-chart-line mr-2"></i><span class="text">${dashboard}</span></span>
                     </a>
                     <a href="#works" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${work}" id="tabWorks">
                         <i class="fas fa-wrench mr-2"></i><span class="text">${work}</span><span
-                            class="badge badge-pill badge-secondary">15</span>
+                            class="badge badge-pill badge-secondary"><c:out value="${stats.jobsCount}"/></span>
                     </a>
                     <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${contacts}" id="tabContacts">
                         <i class="fas fa-address-book mr-2"></i><span class="text">${contacts}</span><span
-                            class="badge badge-pill badge-secondary">8</span>
+                            class="badge badge-pill badge-secondary"><c:out value="${stats.jobsCount}"/></span>
                     </a>
                 </div>
             </div>
@@ -51,19 +51,20 @@
                                                 <div class="row align-items-center justify-content-between">
                                                     <div class="col">
                                                         <div class="card card-body info-box">
-                                                            <h2><i class="fas fa-wrench mr-2"></i>15</h2>
+                                                            <h2><i class="fas fa-wrench mr-2"></i><c:out value="${stats.jobsCount}"/></h2>
                                                             <h4><spring:message code="dashboard.Works"/></h4>
                                                         </div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="card card-body info-box">
-                                                            <h2><i class="fas fa-star mr-2"></i>5</h2>
+                                                            <h2><i class="fas fa-star mr-2"></i><c:out value="${stats.reviewCount}"/>
+                                                            </h2>
                                                             <h4><spring:message code="dashboard.Rating"/></h4>
                                                         </div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="card card-body info-box">
-                                                            <h2><i class="fas fa-comment mr-2"></i>204</h2>
+                                                            <h2><i class="fas fa-comment mr-2"></i><c:out value="${stats.avgRating}"/></h2>
                                                             <h4><spring:message code="dashboard.Reviews"/></h4>
                                                         </div>
                                                     </div>
@@ -80,7 +81,8 @@
                                                         <div class="row align-items-top ${jobs.size()%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                                             <c:forEach var="job" items="${jobs}">
                                                                 <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                                                                <%@ include file="../components/cards/jobCard.jsp" %>
+                                                                    <%@ include
+                                                                            file="../components/cards/jobCard.jsp" %>
                                                                 </div>
                                                             </c:forEach>
                                                         </div>

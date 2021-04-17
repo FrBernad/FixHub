@@ -128,13 +128,6 @@ public class JobDaoImpl implements JobDao {
                 " on aux1.j_id = aux2.j_id)" + searchQuery + orderQuery, variables.toArray(),
             JOB_ROW_MAPPER);
     }
-//    ,
-//            "select * from (" +
-//                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery +
-//                ") as aux LEFT OUTER JOIN (select r_job_id, count(r_job_id) as total_ratings,coalesce(avg(rating), 0) as avg_rating " +
-//                "from (select j_id from jobs) j " +
-//                "LEFT OUTER JOIN reviews r on j_job_idd = r_job_id group by j_job_id) " +
-//                "r on aux.j_job_id = r.r_job_id)" + searchQuery + orderQuery, variables.toArray(),
 
     private String getOrderQuery(OrderOptions orderOption) {
         String orderQuery = " ORDER BY ";

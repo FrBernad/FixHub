@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Roles;
+import ar.edu.itba.paw.models.UserStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -23,6 +24,26 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert userSimpleJdbcInsert;
     private SimpleJdbcInsert roleSimpleJdbcInsert;
+
+    private static final ResultSetExtractor<Collection<UserStats>> USER_STATS_ROW_MAPPER = rs -> {
+        Map<Long, UserStats> statsMap = new HashMap<>();
+
+        long userId;
+
+        while (rs.next()) {
+
+            userId = rs.getLong("u_id");
+
+            if (!statsMap.containsKey(userId)) {
+                statsMap.put(userId, new UserStats(
+                    rs.getLong("totalJobs"),
+                    rs.getLong("avgRating"),
+                    rs.getLong("totalReviews")));
+            }
+        }
+
+        return statsMap.values();
+    };
 
     private static final ResultSetExtractor<Collection<User>> USER_ROW_MAPPER = rs -> {
         Map<Long, User> userMap = new HashMap<>();
@@ -92,11 +113,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> updatePassword(long userId, String password) {
-         if (jdbcTemplate.update("UPDATE USERS set u_password = ? where u_id = ?",
+        if (jdbcTemplate.update("UPDATE USERS set u_password = ? where u_id = ?",
             password, userId) == 1) {
             return getUserById(userId);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserStats> getUserStatsById(long id) {
+        return jdbcTemplate.query(
+            "SELECT u_id, count(j_id) AS totalJobs,count(r_rating) AS totalReviews,avg(coalesce(r_rating,0)) AS avgRating" +
+                " FROM ((SELECT * FROM jobs LEFT JOIN reviews ON j_id = r_job_id) aux1 JOIN " +
+                " (SELECT * FROM users WHERE u_id = ? ) aux2 ON u_id=j_provider_id) GROUP BY u_id",
+            USER_STATS_ROW_MAPPER,
+            new Object[]{id}).stream().findFirst();
     }
 
 

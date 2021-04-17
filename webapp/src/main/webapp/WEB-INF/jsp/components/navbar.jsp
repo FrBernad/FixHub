@@ -28,7 +28,7 @@
                 <c:choose>
                     <c:when test="${loggedUser!=null}">
                         <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
-                            <div class="userContainer nav-link">
+                            <div class="userContainer pr-0 nav-link">
                                 <div id="moreOptions" class="dropdown" data-toggle="dropdown">
                                     <img class="avatar"
                                          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.iconscout.com%2Ficon%2Ffree%2Fpng-256%2Favatar-372-456324.png&f=1&nofb=1"/>

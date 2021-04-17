@@ -4,12 +4,9 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.models.PasswordResetToken;
-import ar.edu.itba.paw.models.Roles;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -141,6 +138,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return userDao.updatePassword(prtoken.getUserId(), passwordEncoder.encode(password));
+    }
+
+    @Override
+    public Optional<UserStats> getUserStatsById(long id) {
+        return userDao.getUserStatsById(id);
     }
 
 

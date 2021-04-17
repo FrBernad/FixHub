@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces.persistance;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Roles;
+import ar.edu.itba.paw.models.UserStats;
 
 import javax.management.relation.Role;
 import java.util.Collection;
@@ -21,5 +22,7 @@ public interface UserDao {
     Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
 
     Optional<User> updatePassword(long userId, String password);
+
+    Optional<UserStats> getUserStatsById(long id);
 
 }
