@@ -7,7 +7,7 @@
                 <img src='<c:url value="/resources/images/navbrand.png"/>' alt="FixHub brand logo"
                      height="56px" width="160px" type="image/png">
             </a>
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
                     <a href="<c:url value='/'/>" class="nav-link navbarText">
                         <spring:message code="navBar.home"/>
@@ -23,6 +23,8 @@
                         <spring:message code="navBar.dashboard"/>
                     </a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
                 <c:choose>
                     <c:when test="${loggedUser!=null}">
                         <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
