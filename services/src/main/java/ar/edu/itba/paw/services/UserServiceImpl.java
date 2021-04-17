@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     private final Locale locale = LocaleContextHolder.getLocale();
 
-    private final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.ROLE_USER, Roles.NOT_VALIDATED));
+    private final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VALIDATED));
 
     public Optional<User> getUserById(long id) {
         return userDao.getUserById(id);

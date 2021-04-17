@@ -177,6 +177,11 @@ public class WebAuthController {
         return mav;
     }
 
+    @RequestMapping("/user/join")
+    public ModelAndView join() {
+        return new ModelAndView("views/join");
+    }
+
     private void forceLogin(User user, HttpServletRequest request) {
         //generate authentication
         final PreAuthenticatedAuthenticationToken token =
@@ -196,5 +201,6 @@ public class WebAuthController {
             .map((role) -> new SimpleGrantedAuthority(role.name()))
             .collect(Collectors.toList());
     }
+
 
 }

@@ -179,7 +179,7 @@
                                     code="landingPage.joinUs.descriptionTitle"/></h2>
                         </div>
                         <div class="col-12 d-flex justify-content-start align-items-center">
-                            <a href="<c:url value='/login'/>">
+                            <a href="<c:url value='/user/join'/>">
                                 <button class="learnMoreBtn"><spring:message
                                         code="landingPage.joinUs.buttonText"/></button>
                             </a>
@@ -196,7 +196,7 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../components/includes/bottomScripts.jsp"%>
 <script src='<c:url value="/resources/js/landingPage.js"/>'></script>
 
 </body>

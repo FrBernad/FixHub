@@ -54,7 +54,7 @@ public class UserJdbcDaoTest {
 
     @Test
     public void testCreate() throws DuplicateUserException {
-        final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.ROLE_USER, Roles.NOT_VALIDATED));
+        final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VALIDATED));
 
         final User user = userDao.createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, new ArrayList<>());
 
