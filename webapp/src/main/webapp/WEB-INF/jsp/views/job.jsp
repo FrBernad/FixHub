@@ -19,10 +19,44 @@
                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-start">
                     <div class="container">
                         <div style="position: relative;height: 400px; width:400px;">
-                            <img
-                                    src="<c:url value='/resources/images/${job.category}.jpg'/>"
-                                    alt="${job.category}" class="rounded"
-                                    style="object-fit: cover; height: 100%; width: 100%">
+                            <c:choose>
+                                <c:when test="${imagesIds.size() > 0}">
+
+                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                        <div id="carousel" class="carousel-inner">
+                                            <c:forEach var="imageId" items="${imagesIds}">
+                                                <div class="carousel-item">
+                                                    <img
+                                                            src="<c:url value='/jobs/images/${imageId}'/>"
+                                                            alt="${job.category}" class="rounded"
+                                                            style="object-fit: cover; height: 100%; width: 100%">
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                           data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                           data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+
+
+                                </c:when>
+                                <c:otherwise>
+                                    <img
+
+                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                                            alt="${job.category}" class="rounded"
+                                            style="object-fit: cover; height: 100%; width: 100%">
+                                </c:otherwise>
+
+                            </c:choose>
+
                             <span class="badge badge-pill badge-secondary jobCategory">
                             <spring:message code="home.categories.${job.category}"/></span>
                             <div class="jobPrice">

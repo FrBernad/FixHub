@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <c:url value="/jobs/new" var="postPath"/>
-<form:form modelAttribute="jobForm" action="${postPath}" id="jobForm" class="jobForm" method="POST">
+<form:form modelAttribute="jobForm" action="${postPath}" enctype="multipart/form-data" id="jobForm" class="jobForm" method="POST">
     <div class="form-group">
         <form:label class="label" path="jobProvided"><spring:message code="jobForm.jobNameTitle"/></form:label>
         <form:input type="text" path="jobProvided" id="jobProvided" class="form-control" cssErrorClass="form-control is-invalid"/>
@@ -36,14 +36,29 @@
 
     </div>
 
-<%--    <div class="form-group">--%>
-<%--        <form:input type="file" class="form-control" path="image" id="image" cssErrorClass="form-control is-invalid"/>--%>
-<%--        <form:errors path="image" cssClass="formError" element="p"/>--%>
-<%--    </div>--%>
+    <div class="form-group">
+        <form:label path="images">
+            <spring:message code="jobForm.jobImageTitle"/></form:label>
+        <button class="" type="button" id="addFileButtom">
+            <i class="fas fa-upload"></i>
+            <spring:message code="jobForm.ImagesButton"/>
+        </button>
+        <input type="file" id="inputFiles" name="images" hidden/>
+    </div>
 
     <input type="hidden" value="${user.id}" name="userId">
 
-    <div class="col-12 d-flex align-items-center justify-content-center">
-        <button type="button" id="jobFormButton" class="w-100 continueBtn my-2"><spring:message code="jobForm.buttonText"/></button>
+    <div class="container-fluid p-0" id="imagesHolder">
+        <div class="row">
+            <div class="col-3"></div>
+        </div>
     </div>
+
+    <div class="col-12 d-flex align-items-center justify-content-center">
+        <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
+            <spring:message code="jobForm.buttonText"/>
+        </button>
+    </div>
+
+
 </form:form>

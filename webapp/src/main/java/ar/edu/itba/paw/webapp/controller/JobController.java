@@ -1,14 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.JobService;
-import ar.edu.itba.paw.interfaces.services.ReviewService;
-import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategory;
-import ar.edu.itba.paw.models.Review;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ContactForm;
@@ -17,18 +11,19 @@ import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 public class JobController {
@@ -48,6 +43,9 @@ public class JobController {
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    private ImageService imageService;
+
 
     @RequestMapping("/jobs/{jobId}")
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId, final Integer error) {
@@ -57,6 +55,8 @@ public class JobController {
         mav.addObject("error", error);
         Collection<Review> reviews = reviewService.getReviewsByJobId(job);
         mav.addObject("reviews", reviews);
+        Collection<Long> imagesIds = jobService.getImagesIdsByJobId(jobId);
+        mav.addObject("imagesIds",imagesIds);
         return mav;
     }
 
@@ -72,7 +72,9 @@ public class JobController {
         //Se que el job existe porque ya pedí el job en la base de datos
         final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
 
+
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
+
         return mav;
     }
 
@@ -140,7 +142,7 @@ public class JobController {
         return mav;
     }
 
-
+    //FIXME: ARREGLAR EXCEPCIÓN
     @RequestMapping(path = "/jobs/new", method = RequestMethod.POST)
     public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors) {
 
@@ -150,9 +152,30 @@ public class JobController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), user);
+        List<ImageDto> imagesDto = new LinkedList<>();
+
+        //FIXME: SOLUCIONAR ESTO
+        if (form.getImages().get(0).getSize() != 0){
+            for (final MultipartFile image : form.getImages()) {
+                try {
+                    imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), imagesDto, user);
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
+
+    //FIXME: SOLUCIONAR
+    @RequestMapping(path="jobs/images/{imageId}",produces = "image/jpg",method = RequestMethod.GET)
+    @ResponseBody
+    public byte[] getJobImage(@PathVariable("imageId") long imageId){
+        Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+        return image.getData();
+    }
+
 
 
 }
