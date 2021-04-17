@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
@@ -53,6 +54,20 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UserNotFoundException.class)
     public ModelAndView userNotFoundException() {
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.NotFound.User", null, locale);
+        String code = HttpStatus.NOT_FOUND.toString();
+        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+        return mav;
+    }
+
+
+    //FIXME: REVISAR LA EXCEPCION
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = ContactInfoNotFoundException.class)
+    public ModelAndView contactInfoNotFoundException() {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.User", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();

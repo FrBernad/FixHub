@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.UserInfo;
@@ -8,6 +9,7 @@ import ar.edu.itba.paw.models.UserStats;
 
 import javax.management.relation.Role;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
@@ -30,4 +32,11 @@ public interface UserDao {
 
     void addRole(long userId, Roles newRole);
 
+    ContactInfo addContactInfo( User user, String state,String  city,String street,String addressNumber,String floor,String departmentNumber);
+
+    Collection<ContactInfo> getContactInfo(User user);
+
+    Optional<ContactInfo> getContactInfoById(Long contactInfoId);
+
+    void addContact(Long providerId, User user, Long contactInfoId, String message);
 }

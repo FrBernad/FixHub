@@ -21,7 +21,6 @@ public class ContactForm {
     @Size(max = 50 )
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|15|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phoneNumber;
-
     @NotEmpty
     @Size(max = 50)
     @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
@@ -47,9 +46,20 @@ public class ContactForm {
     @Pattern(regexp = "[A-Za-z0-9]{0,30}")
     private String departmentNumber;
 
+    @NotEmpty
+    @Size(max=300)
+    private String message;
 
     @NotEmpty
-    private String message;
+    private Long contactInfoId;
+
+    public Long getContactInfoId() {
+        return contactInfoId;
+    }
+
+    public void setContactInfoId(Long contactInfoId) {
+        this.contactInfoId = contactInfoId;
+    }
 
     public String getName() {
         return name;

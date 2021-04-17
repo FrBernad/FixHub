@@ -90,6 +90,11 @@ public class JobController {
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job);
         mav.addObject("provider", provider);
+
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        Collection<ContactInfo> contactInfo = userService.getContactInfo(user);
+        mav.addObject("contactInfo",contactInfo);
+
         return mav;
     }
 
@@ -126,7 +131,12 @@ public class JobController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("redirect:/jobs/" + job.getId());
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+
+        userService.contact(job.getProvider().getId(),user,form.getContactInfoId(),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
+
+        ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
+        return mav;
     }
 
 
