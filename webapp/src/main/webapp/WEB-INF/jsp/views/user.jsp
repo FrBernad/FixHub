@@ -42,10 +42,10 @@
         <h5 style="color: darkgrey">Your Jobs</h5>
     </div>
     <div class="row  ml-5 my-2 align-content-center">
-        <%@ include file="../components/ownJobCard.jsp" %>
-        <%@ include file="../components/ownJobCard.jsp" %>
-        <%@ include file="../components/ownJobCard.jsp" %>
-        <%@ include file="../components/ownJobCard.jsp" %>
+        <%@ include file="../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../components/cards/ownJobCard.jsp" %>
     </div>
 </div>
 </div>

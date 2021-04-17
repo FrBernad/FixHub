@@ -1,13 +1,13 @@
-let registerForm = document.getElementById("registerForm")
+let resetForm = document.getElementById("passReset")
 let processing = false;
-let registerFormButton = document.getElementById("registerFormButton");
-registerFormButton.addEventListener("click", () => {
+let resetBtn = document.getElementById("sumbitBtn");
+resetBtn.addEventListener("click", () => {
     if(processing){
         return;
     }
     processing=true;
-    registerFormButton.disabled = true;
-    registerForm.submit();
+    resetBtn.disabled = true;
+    resetForm.submit();
     processing=false;
 })
 

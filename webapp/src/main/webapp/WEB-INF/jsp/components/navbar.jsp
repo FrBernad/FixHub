@@ -8,36 +8,61 @@
                      height="56px" width="160px" type="image/png">
             </a>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item mx-1">
+                <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
                     <a href="<c:url value='/'/>" class="nav-link navbarText">
                         <spring:message code="navBar.home"/>
                     </a>
                 </li>
-                <li class="nav-item mx-1">
+                <li class="nav-item navOption mx-1 d-flex justify-content-center align-items-center">
                     <a href="<c:url value='/discover'/>" class="nav-link navbarText">
                         <spring:message code="navBar.discover"/>
                     </a>
                 </li>
-                <li class="nav-item mx-1">
+                <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
                     <a href="<c:url value='/dashboard'/>" class="nav-link navbarText">
                         <spring:message code="navBar.dashboard"/>
                     </a>
                 </li>
-                <li class="nav-item mx-1">
-                    <c:choose>
-                        <c:when test="${loggedUser!=null}">
-                            <form id="logoutForm" class="mb-0" action="<c:url value='/logout'/>" method="post">
-                                <button type="submit" id="logoutInput" class="nav-link navbarText">
-                                    Logout
-                                </button>
-                            </form>
-                        </c:when>
-                        <c:otherwise>
+                <c:choose>
+                    <c:when test="${loggedUser!=null}">
+                        <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
+                            <div class="userContainer nav-link">
+                                <div id="moreOptions" class="dropdown" data-toggle="dropdown">
+                                    <img class="avatar"
+                                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.iconscout.com%2Ficon%2Ffree%2Fpng-256%2Favatar-372-456324.png&f=1&nofb=1"/>
+                                    <i class="fas ml-2 fa-chevron-down navbarText"></i>
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <p class="mb-0 pl-3 dropdownItem ">
+                                        <spring:message code="navBar.signInAs"/>
+                                        <span class="username">
+                                            <c:out value="${loggedUser.name}"/>
+                                        </span>
+                                    </p>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item pl-3" href="#">
+                                        <spring:message code="navBar.profile"/>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form id="logoutForm" class="mb-0 dropdown-item pl-3"
+                                          action="<c:url value='/logout'/>"
+                                          method="post">
+                                        <button type="submit" id="logoutInput" class="px-0">
+                                            <spring:message code="navBar.logout"/>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="nav-item mx-1 d-flex justify-content-center align-items-center navOption">
                             <a href="<c:url value='/login'/>" class="nav-link navbarText">
-                                Login
+                                <spring:message code="navBar.login"/>
                             </a>
-                        </c:otherwise>
-                    </c:choose>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
                 </li>
             </ul>
         </div>

@@ -164,7 +164,7 @@
                                 <c:choose>
                                     <c:when test="${reviews.size()>0}">
                                         <c:forEach var="review" items="${reviews}">
-                                            <%@ include file="../components/reviewCard.jsp" %>
+                                            <%@ include file="../components/cards/reviewCard.jsp" %>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>

@@ -26,26 +26,38 @@
         <form:errors path="email" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
-        <form:label class="label" path="password"><spring:message code="registerForm.password"/></form:label>
-        <form:input type="password" path="password" id="password" cssErrorClass="form-control is-invalid"
-                    class="form-control"/>
+        <form:label class="label" path="password">
+            <spring:message code="registerForm.password"/>
+        </form:label>
+        <div class="input-group d-flex justify-content-start align-items-center">
+            <form:input type="password" path="password" cssClass="form-control input"
+                        id="password1" name="password"
+                        aria-describedby="password input" cssErrorClass="form-control is-invalid"/>
+            <div class="input-group-append">
+                <button id="passwordEye1" type="button"
+                        class="btn btn-lg form-control inputBtn input-group-text">
+                    <i id="eye1" class="far fa-eye-slash"></i>
+                </button>
+            </div>
+        </div>
         <form:errors path="password" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
-        <form:label class="label" path="confirmPassword"><spring:message
-                code="registerForm.confirmPassword"/></form:label>
-        <form:input type="password" path="confirmPassword" id="confirmPassword" cssErrorClass="form-control is-invalid"
-                    class="form-control"/>
-        <form:errors path="confirmPassword" cssClass="formError" element="p"/>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col align-items-center">
-                <label for="showPassword"></label>
-                <input type="checkbox" class="mr-1" id="showPassword" onclick="togglePassword()">
-                <spring:message code="registerForm.showPassword"/>
+        <form:label class="label" path="confirmPassword">
+            <spring:message code="registerForm.confirmPassword"/>
+        </form:label>
+        <div class="input-group d-flex justify-content-start align-items-center">
+            <form:input type="password" path="confirmPassword" cssClass="form-control input"
+                        id="password2" name="confirmPassword"
+                        aria-describedby="password input" cssErrorClass="form-control is-invalid"/>
+            <div class="input-group-append">
+                <button id="passwordEye2" type="button"
+                        class="btn btn-lg form-control inputBtn input-group-text">
+                    <i id="eye2" class="far fa-eye-slash"></i>
+                </button>
             </div>
         </div>
+        <form:errors path="confirmPassword" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
         <spring:hasBindErrors name="registerForm">

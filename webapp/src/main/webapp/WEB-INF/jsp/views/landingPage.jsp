@@ -146,7 +146,7 @@
                             <c:when test="${jobs.size()>0}">
                                 <c:forEach begin="0" end="2" var="job" items="${jobs}">
                                     <div class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                                        <%@ include file="../components/popularJobCard.jsp" %>
+                                        <%@ include file="../components/cards/popularJobCard.jsp" %>
                                     </div>
                                 </c:forEach>
                             </c:when>
