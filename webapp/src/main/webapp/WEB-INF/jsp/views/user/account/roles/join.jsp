@@ -6,14 +6,14 @@
 <head>
     <title><spring:message code="productName"/> | <spring:message code="join.title"/></title>
 
-    <%@ include file="../components/includes/headers.jsp" %>
+    <%@ include file="../../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
 </head>
 
 <body>
 
 <div class="container-fluid px-0 outerContainer">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
         <div class="container-lg p-5 smallContentContainer" style="min-height: 75%">
             <div class="row w-100 m-0 align-items-center justify-content-center">
@@ -36,10 +36,10 @@
     </div>
 </div>
 
-<%@ include file="../components/footer.jsp" %>
+<%@ include file="../../../../components/footer.jsp" %>
 <script src='<c:url value="/resources/js/login.js"/>'></script>
 
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
 
 </body>
 

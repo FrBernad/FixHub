@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <%@ include file="../components/includes/headers.jsp" %>
+    <%@ include file="../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/dashboard.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
     <title><spring:message code="navBar.dashboard"/></title>
@@ -14,7 +14,7 @@
 <body>
 
 <div class="container-fluid outerContainer p-0">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../components/navbar.jsp" %>
     <div class="container p-2 mt-5 mb-5" style="min-height: 100%">
         <div class="row" style="min-height: 100%">
             <div class="col-3">
@@ -82,7 +82,7 @@
                                                             <c:forEach var="job" items="${jobs}">
                                                                 <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
                                                                     <%@ include
-                                                                            file="../components/cards/jobCard.jsp" %>
+                                                                            file="../../components/cards/jobCard.jsp" %>
                                                                 </div>
                                                             </c:forEach>
                                                         </div>
@@ -140,8 +140,8 @@
             </div>
         </div>
     </div>
-    <%@ include file="../components/footer.jsp" %>
+    <%@ include file="../../components/footer.jsp" %>
     <script src='<c:url value="/resources/js/dashboard.js"/>'></script>
-    <%@ include file="../components/includes/bottomScripts.jsp" %>
+    <%@ include file="../../components/includes/bottomScripts.jsp" %>
 </body>
 </html>

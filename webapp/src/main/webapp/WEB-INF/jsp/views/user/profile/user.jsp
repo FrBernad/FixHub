@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>User</title>
-    <%@ include file="../components/includes/headers.jsp" %>
+    <%@ include file="../../../components/includes/headers.jsp" %>
 </head>
 <body>
 <%@ include file="../components/navbarOld.jsp" %>
@@ -42,17 +42,17 @@
         <h5 style="color: darkgrey">Your Jobs</h5>
     </div>
     <div class="row  ml-5 my-2 align-content-center">
-        <%@ include file="../components/cards/ownJobCard.jsp" %>
-        <%@ include file="../components/cards/ownJobCard.jsp" %>
-        <%@ include file="../components/cards/ownJobCard.jsp" %>
-        <%@ include file="../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../../../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../../../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../../../components/cards/ownJobCard.jsp" %>
+        <%@ include file="../../../components/cards/ownJobCard.jsp" %>
     </div>
 </div>
 </div>
 
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../components/includes/bottomScripts.jsp" %>
 
-<%@ include file="../components/footer.jsp" %>
+<%@ include file="../../../components/footer.jsp" %>
 
 </body>
 </html>

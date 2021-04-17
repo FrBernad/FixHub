@@ -6,14 +6,14 @@
 <head>
     <title><spring:message code="productName"/> | <spring:message code="newJob.Title"/></title>
 
-    <%@ include file="../components/includes/headers.jsp" %>
+    <%@ include file="../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
 </head>
 
 <body>
 
 <div class="container-fluid p-0 outerContainer">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
         <div class="container-lg w-50 p-5 smallContentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
@@ -27,7 +27,7 @@
                     <div class="container-lg">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center justify-content-center">
-                                <%@include file="../components/forms/newJobForm.jsp" %>
+                                <%@include file="../../components/forms/newJobForm.jsp" %>
                             </div>
                         </div>
                     </div>
@@ -37,10 +37,10 @@
     </div>
 </div>
 
-<%@ include file="../components/footer.jsp" %>
+<%@ include file="../../components/footer.jsp" %>
 
 <script src='<c:url value="/resources/js/newJob.js"/>'></script>
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../components/includes/bottomScripts.jsp" %>
 
 </body>
 

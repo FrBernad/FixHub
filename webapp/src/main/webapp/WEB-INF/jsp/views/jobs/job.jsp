@@ -5,14 +5,14 @@
 <html>
 <head>
     <title><spring:message code="productName"/> | <c:out value="${job.jobProvided}"/></title>
-    <%@ include file="../components/includes/headers.jsp" %>
+    <%@ include file="../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/job.css"/>' rel="stylesheet">
 
 </head>
 
 <body>
 <div class="container-fluid px-0 outerContainer">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
         <div class="container-lg p-5 bigContentContainer">
             <div class="row mt-3">
@@ -188,7 +188,7 @@
                         <a href="#" type="button" data-toggle="modal" data-target="#newReview">
                             <spring:message code="job.review.hyperlink"/>
                         </a>
-                        <%@ include file="../components/forms/reviewForm.jsp" %>
+                        <%@ include file="../../components/forms/reviewForm.jsp" %>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -198,7 +198,7 @@
                                 <c:choose>
                                     <c:when test="${reviews.size()>0}">
                                         <c:forEach var="review" items="${reviews}">
-                                            <%@ include file="../components/cards/reviewCard.jsp" %>
+                                            <%@ include file="../../components/cards/reviewCard.jsp" %>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
@@ -221,10 +221,10 @@
 
 </div>
 
-<%@ include file="../components/footer.jsp" %>
+<%@ include file="../../components/footer.jsp" %>
 
 <script src='<c:url value="/resources/js/job.js"/>'></script>
-<%@ include file="../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../components/includes/bottomScripts.jsp" %>
 
 </body>
 </html>
