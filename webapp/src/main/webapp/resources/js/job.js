@@ -7,6 +7,10 @@ window.addEventListener("load", () => {
     let reviewFormCloseButton = document.getElementById("reviewFormCloseButton");
     let reviewModal = document.getElementById("newReview");
 
+    if( (document.getElementById("carousel") !== null) ){
+        document.getElementById("carousel").getElementsByTagName("div")[0].className+=" active";
+    }
+
     if (reviewModal.dataset.error) {
         $('#newReview').modal('show');
     }
@@ -28,6 +32,7 @@ window.addEventListener("load", () => {
             error.remove();
         }
     })
+
 
 
 })

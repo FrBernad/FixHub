@@ -21,13 +21,30 @@
                         <div style="position: relative;height: 400px; width:400px;">
                             <c:choose>
                                 <c:when test="${imagesIds.size() > 0}">
-                                    <c:forEach var="imageId" items="${imagesIds}">
-                                        <img
-                                                src="<c:url value='/jobs/images/${imageId}'/>"
-                                                alt="${job.category}" class="rounded"
-                                                style="object-fit: cover; height: 100%; width: 100%">
 
-                                    </c:forEach>
+                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                        <div id="carousel" class="carousel-inner">
+                                            <c:forEach var="imageId" items="${imagesIds}">
+                                                <div class="carousel-item">
+                                                    <img
+                                                            src="<c:url value='/jobs/images/${imageId}'/>"
+                                                            alt="${job.category}" class="rounded"
+                                                            style="object-fit: cover; height: 100%; width: 100%">
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                           data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                           data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+
 
                                 </c:when>
                                 <c:otherwise>
