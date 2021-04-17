@@ -2,6 +2,7 @@ package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.UserInfo;
 import ar.edu.itba.paw.models.UserStats;
 import ar.edu.itba.paw.models.VerificationToken;
 
@@ -26,5 +27,9 @@ public interface UserService {
     Optional<User> updatePassword(String token, String password);
 
     Optional<UserStats> getUserStatsById(long id);
+
+    void updateUserInfo(UserInfo userInfo, long userId);
+
+    void makeProvider(long userId);
 
 }

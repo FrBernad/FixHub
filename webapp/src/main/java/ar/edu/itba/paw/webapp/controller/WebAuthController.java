@@ -4,10 +4,12 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.UserInfo;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordEmailForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
+import ar.edu.itba.paw.webapp.form.UserInfoForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +19,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,9 +76,9 @@ public class WebAuthController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(@RequestParam(value = "error",defaultValue = "false") boolean error) {
+    public ModelAndView login(@RequestParam(value = "error", defaultValue = "false") boolean error) {
         final ModelAndView mav = new ModelAndView("views/login");
-        mav.addObject("error",error);
+        mav.addObject("error", error);
         return mav;
     }
 
@@ -141,7 +144,7 @@ public class WebAuthController {
     }
 
     @RequestMapping(path = "/user/resetPassword")
-    public ModelAndView resetPassword(@RequestParam(defaultValue = "") String token,@ModelAttribute("resetPasswordForm") final ResetPasswordForm form) {
+    public ModelAndView resetPassword(@RequestParam(defaultValue = "") String token, @ModelAttribute("resetPasswordForm") final ResetPasswordForm form) {
         if (userService.validatePasswordReset(token)) {
             final ModelAndView mav = new ModelAndView("views/user/account/password/reset");
             mav.addObject("token", token);
@@ -182,6 +185,16 @@ public class WebAuthController {
         return new ModelAndView("views/join");
     }
 
+    @RequestMapping(value = "/user/join", method = RequestMethod.POST)
+    public ModelAndView joinPost() {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        userService.makeProvider(user.getId());
+
+        ModelAndView mav = new ModelAndView("/user/profile");
+        mav.addObject("loggedUser",user);
+        return mav;
+    }
+
     private void forceLogin(User user, HttpServletRequest request) {
         //generate authentication
         final PreAuthenticatedAuthenticationToken token =
@@ -194,6 +207,25 @@ public class WebAuthController {
 
         request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
     }
+
+    @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
+    public ModelAndView updateProfile(@Valid @ModelAttribute("updateUserInfo") final UserInfoForm form,
+                                      BindingResult errors) {
+        //FIXME
+        if (errors.hasErrors()) {
+            return null;
+        }
+
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        userService.updateUserInfo(
+            new UserInfo(form.getName(), form.getSurname(),
+                form.getCity(), form.getState(),
+                form.getPhoneNumber()),
+            user.getId());
+        ModelAndView mav = new ModelAndView("/user/profile");
+        return mav;
+    }
+
 
     private Collection<? extends GrantedAuthority> getAuthorities(Collection<Roles> roles) {
         return roles.

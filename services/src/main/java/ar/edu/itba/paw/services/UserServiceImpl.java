@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public Optional<User> verifyAccount(String token) {
         Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
         return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VALIDATED, Roles.VALIDATED);
     }
 
+    @Transactional
     @Override
     public void resendVerificationToken(User user) {
         verificationTokenDao.removeTokenByUserId(user.getId());
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService {
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
 
-            emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount",new Object[]{},locale), mailAttrs, locale);
+            emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             e.printStackTrace();
         }
@@ -118,12 +120,15 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+
+    @Transactional
     public void generateNewPassword(User user) {
         passwordResetTokenDao.removeTokenByUserId(user.getId());
         PasswordResetToken token = generatePasswordResetToken(user.getId());
         sendPasswordResetToken(user, token);
     }
 
+    @Transactional
     public Optional<User> updatePassword(String token, String password) {
         Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
@@ -145,6 +150,15 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserStatsById(id);
     }
 
+    @Override
+    public void updateUserInfo(UserInfo userInfo, long userId) {
+        userDao.updateUserInfo(userInfo, userId);
+    }
+
+    @Override
+    public void makeProvider(long userId) {
+        userDao.addRole(userId, Roles.PROVIDER);
+    }
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {
         try {
@@ -152,7 +166,7 @@ public class UserServiceImpl implements UserService {
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
-            emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword",new Object[]{},locale), mailAttrs, locale);
+            emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             e.printStackTrace();
         }

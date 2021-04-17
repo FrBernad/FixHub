@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Roles;
+import ar.edu.itba.paw.models.UserInfo;
 import ar.edu.itba.paw.models.UserStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -118,6 +119,24 @@ public class UserDaoImpl implements UserDao {
             return getUserById(userId);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void updateUserInfo(UserInfo userInfo, long userId) {
+        jdbcTemplate.update("UPDATE users SET u_name = ?, u_surname = ?, " +
+                " u_city = ?, u_phone_number = ?," +
+                " u_state = ? where u_id = ?",
+            userInfo.getName(), userInfo.getSurname(),
+            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), userId);
+    }
+
+    @Override
+    public void addRole(long userId, Roles newRole) {
+        Map<String, Object> userRoles = new HashMap<>();
+        userRoles.put("r_user_id", userId);
+
+        userRoles.put("r_role", newRole.name());
+        roleSimpleJdbcInsert.execute(userRoles);
     }
 
     @Override
