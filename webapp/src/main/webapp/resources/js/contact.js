@@ -30,27 +30,27 @@ window.addEventListener("load", () => {
         newUserContact.addEventListener("click",()=>{
             state.textContent = '';
             state.setAttribute("value", '');
-            state.disabled = false;
+            state.readOnly = false;
 
             city.textContent = '';
             city.setAttribute("value", '');
-            city.disabled = false;
+            city.readOnly = false;
 
             street.textContent = '';
             street.setAttribute("value", '');
-            street.disabled = false;
+            street.readOnly = false;
 
             addressNumber.textContent = '';
             addressNumber.setAttribute("value", '');
-            addressNumber.disabled = false;
+            addressNumber.readOnly = false;
 
             floor.textContent = '';
             floor.setAttribute("value", '');
-            floor.disabled = false;
+            floor.readOnly = false;
 
             departmentNumber.textContent = '';
             departmentNumber.setAttribute("value", '');
-            departmentNumber.disabled = false;
+            departmentNumber.readOnly = false;
 
             contactId.setAttribute("value", "-1");
 
@@ -63,27 +63,27 @@ window.addEventListener("load", () => {
             let info = contact.dataset;
             state.textContent = info.state;
             state.setAttribute("value", info.state.toString());
-            state.disabled = true;
+            state.readOnly = true;
 
             city.textContent = info.city;
             city.setAttribute("value", info.city.toString());
-            city.disabled = true;
+            city.readOnly = true;
 
             street.textContent = info.street;
             street.setAttribute("value", info.street.toString());
-            street.disabled = true;
+            street.readOnly = true;
 
             addressNumber.textContent = info.addressNumber;
             addressNumber.setAttribute("value", info.addressNumber.toString());
-            addressNumber.disabled = true;
+            addressNumber.readOnly = true;
 
             floor.textContent = info.floor;
             floor.setAttribute("value", info.floor.toString());
-            floor.disabled = true;
+            floor.readOnly = true;
 
             departmentNumber.textContent = info.departmentNumber;
             departmentNumber.setAttribute("value", info.departmentNumber.toString());
-            departmentNumber.disabled = true;
+            departmentNumber.readOnly = true;
 
             contactId.setAttribute("value", info.contactInfoId.toString());
 

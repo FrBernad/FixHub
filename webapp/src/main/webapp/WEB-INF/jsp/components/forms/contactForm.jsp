@@ -15,7 +15,7 @@
                 <c:forEach var="contact" items="${contactInfoCollection}">
                     <a class="dropdown-item userContact"
                        data-state="${contact.state}" data-city="${contact.city}"
-                        data-infoId="${contact.contactInfoId}"
+                        data-info-id="${contact.contactInfoId}"
                         data-street="${contact.street}" data-address-number="${contact.addressNumber}"
                         data-floor="${contact.floor}" data-department-number="${contact.departmentNumber}">
                         <c:out value="${contact.state} ${contact.city} ${contact.street} ${contact.addressNumber} ${contact.floor} ${contact.departmentNumber}"/></a>
