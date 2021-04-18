@@ -17,69 +17,76 @@ window.addEventListener("load", () => {
         if (processing) {
             return;
         }
+        if(document.getElementById("dropdownMenuButton") == null)
+            contactId.setAttribute("value","-1");
+
         processing = true;
         contactFormButton.disabled = true;
         contactForm.submit();
         processing = false;
     })
 
-    newUserContact.addEventListener("click",()=>{
-        state.textContent = '';
-        state.value='';
-        state.disabled = false;
+    if(newUserContact !== null){
+        newUserContact.addEventListener("click",()=>{
+            state.textContent = '';
+            state.setAttribute("value", '');
+            state.disabled = false;
 
-        city.textContent = '';
-        city.value = '';
-        city.disabled = false;
+            city.textContent = '';
+            city.setAttribute("value", '');
+            city.disabled = false;
 
-        street.textContent = '';
-        street.value = '';
-        street.disabled = false;
+            street.textContent = '';
+            street.setAttribute("value", '');
+            street.disabled = false;
 
-        addressNumber.textContent = '';
-        addressNumber.value = '';
-        addressNumber.disabled = false;
+            addressNumber.textContent = '';
+            addressNumber.setAttribute("value", '');
+            addressNumber.disabled = false;
 
-        floor.textContent = '';
-        floor.value = '';
-        floor.disabled = false;
+            floor.textContent = '';
+            floor.setAttribute("value", '');
+            floor.disabled = false;
 
-        departmentNumber.textContent = '';
-        departmentNumber.value = '';
-        departmentNumber.disabled = false;
+            departmentNumber.textContent = '';
+            departmentNumber.setAttribute("value", '');
+            departmentNumber.disabled = false;
 
-        contactId.value = -1;
-    })
+            contactId.setAttribute("value", "-1");
+
+        })
+    }
+
 
     for (const contact of userContact){
         contact.addEventListener("click", ()=>{
-            let info = contact.dataset.info;
-
+            let info = contact.dataset;
             state.textContent = info.state;
-            state.value=info.state;
+            state.setAttribute("value", info.state.toString());
             state.disabled = true;
 
             city.textContent = info.city;
-            city.value = info.city;
+            city.setAttribute("value", info.city.toString());
             city.disabled = true;
 
             street.textContent = info.street;
-            street.value = info.street;
+            street.setAttribute("value", info.street.toString());
             street.disabled = true;
 
             addressNumber.textContent = info.addressNumber;
-            addressNumber.value = info.addressNumber;
+            addressNumber.setAttribute("value", info.addressNumber.toString());
             addressNumber.disabled = true;
 
             floor.textContent = info.floor;
-            floor.value = info.floor;
+            floor.setAttribute("value", info.floor.toString());
             floor.disabled = true;
 
             departmentNumber.textContent = info.departmentNumber;
-            departmentNumber.value = info.departmentNumber;
+            departmentNumber.setAttribute("value", info.departmentNumber.toString());
             departmentNumber.disabled = true;
 
-            contactId.value = info.contactInfoId;
+            contactId.setAttribute("value", info.contactInfoId.toString());
+
         })
     }
 

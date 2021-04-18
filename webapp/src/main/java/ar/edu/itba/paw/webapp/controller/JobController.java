@@ -114,15 +114,17 @@ public class JobController {
             form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+
 
         final Map<String, Object> mailAttrs = new HashMap<>();
 
-        mailAttrs.put("name", form.getName());
+        mailAttrs.put("name", user.getName());
         mailAttrs.put("to", providerEmail);
-        mailAttrs.put("surname", form.getSurname());
+        mailAttrs.put("surname", user.getSurname());
         mailAttrs.put("address", address);
-        mailAttrs.put("phoneNumber", form.getName());
-        mailAttrs.put("message", form.getName());
+        mailAttrs.put("phoneNumber", user.getPhoneNumber());
+        mailAttrs.put("message", form.getMessage());
 
         //FIXME: VER Q ONDA ESTO
         try {
@@ -131,9 +133,8 @@ public class JobController {
             e.printStackTrace();
         }
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        userService.contact(job.getProvider().getId(),user,form.getContactInfoId(),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
+        userService.contact(job.getProvider().getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
