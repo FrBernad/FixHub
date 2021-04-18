@@ -30,7 +30,7 @@ public class DashboardController {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         final Collection<Job> jobs = jobService.getJobByProviderId(user.getId());
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
-        final ModelAndView mav = new ModelAndView("views/dashboard");
+        final ModelAndView mav = new ModelAndView("views/user/dashboard");
         mav.addObject("jobs", jobs);
         mav.addObject("stats", stats);
 

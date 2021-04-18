@@ -106,7 +106,7 @@ public class WebAuthController {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.resendVerificationToken(user);
 
-        final ModelAndView mav = new ModelAndView("redirect:/user/account/verification/resendConfirmation");
+        final ModelAndView mav = new ModelAndView("redirect:views/user/account/verification/resendConfirmation");
         mav.addObject("loggedUser", user);
 
         return mav;
@@ -182,7 +182,7 @@ public class WebAuthController {
 
     @RequestMapping("/user/join")
     public ModelAndView join() {
-        return new ModelAndView("views/join");
+        return new ModelAndView("views/user/account/roles/join");
     }
 
     @RequestMapping(value = "/user/join", method = RequestMethod.POST)
@@ -190,7 +190,7 @@ public class WebAuthController {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.makeProvider(user.getId());
 
-        ModelAndView mav = new ModelAndView("/user/profile");
+        ModelAndView mav = new ModelAndView("views/user/profile");
         mav.addObject("loggedUser",user);
         return mav;
     }
@@ -222,7 +222,7 @@ public class WebAuthController {
                 form.getCity(), form.getState(),
                 form.getPhoneNumber()),
             user.getId());
-        ModelAndView mav = new ModelAndView("/user/profile");
+        ModelAndView mav = new ModelAndView("views/user/profile");
         return mav;
     }
 
