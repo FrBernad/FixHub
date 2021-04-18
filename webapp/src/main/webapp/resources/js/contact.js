@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
         if (processing) {
             return;
         }
-        if(document.getElementById("dropdownMenuButton") == null)
+        if(document.getElementById("dropdownMenuButton") === null)
             contactId.setAttribute("value","-1");
 
         processing = true;
@@ -85,7 +85,7 @@ window.addEventListener("load", () => {
             departmentNumber.setAttribute("value", info.departmentNumber.toString());
             departmentNumber.readOnly = true;
 
-            contactId.setAttribute("value", info.contactInfoId.toString());
+            contactId.setAttribute("value", info.infoId.toString());
 
         })
     }
