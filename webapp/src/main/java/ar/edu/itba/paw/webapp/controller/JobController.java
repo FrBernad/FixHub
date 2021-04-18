@@ -135,7 +135,7 @@ public class JobController {
 
         final ModelAndView mav;
 
-        mav = new ModelAndView("/views/newJob");
+        mav = new ModelAndView("/views/jobs/newJob");
         final Collection<JobCategory> categories = jobService.getJobsCategories();
         mav.addObject("categories", categories);
 

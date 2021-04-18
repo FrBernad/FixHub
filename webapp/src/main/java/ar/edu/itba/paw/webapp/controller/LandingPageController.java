@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import ar.edu.itba.paw.models.PaginatedSearchResult;
-import ar.edu.itba.paw.models.SearchResult;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

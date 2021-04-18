@@ -90,7 +90,7 @@ public class WebAuthController {
         final Optional<User> userOptional = userService.verifyAccount(token);
         boolean success = false;
         //TODO: CAMBIAR TITULOOO
-        final ModelAndView mav = new ModelAndView("views/user/account/verify");
+        final ModelAndView mav = new ModelAndView("views/user/account/verification/verify");
         if (userOptional.isPresent()) {
             success = true;
             User user = userOptional.get();
@@ -106,7 +106,7 @@ public class WebAuthController {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.resendVerificationToken(user);
 
-        final ModelAndView mav = new ModelAndView("redirect:/user/verifyAccount/resendConfirmation");
+        final ModelAndView mav = new ModelAndView("redirect:/user/account/verification/resendConfirmation");
         mav.addObject("loggedUser", user);
 
         return mav;
@@ -114,7 +114,7 @@ public class WebAuthController {
 
     @RequestMapping("/user/verifyAccount/resendConfirmation")
     public ModelAndView verificationResendConfirmation() {
-        return new ModelAndView("views/user/account/resendVerification");
+        return new ModelAndView("views/user/account/verification/resendConfirmation");
     }
 
     //RESET PASSWORD
