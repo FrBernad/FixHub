@@ -230,7 +230,7 @@ public class WebAuthController {
     private Collection<? extends GrantedAuthority> getAuthorities(Collection<Roles> roles) {
         return roles.
             stream()
-            .map((role) -> new SimpleGrantedAuthority(role.name()))
+            .map((role) -> new SimpleGrantedAuthority("ROLE_"+role.name()))
             .collect(Collectors.toList());
     }
 

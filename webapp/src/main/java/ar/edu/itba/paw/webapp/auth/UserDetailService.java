@@ -24,14 +24,14 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final User user = userService.getUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No user by the name" + username));
-
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), getAuthorities(user.getRoles()));
+        Collection<? extends GrantedAuthority> list = getAuthorities(user.getRoles());
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), list);
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Roles> roles){
+    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Roles> roles) {
         return roles.
             stream()
-            .map((role) -> new SimpleGrantedAuthority("ROLE_"+role.name()))
+            .map((role) -> new SimpleGrantedAuthority("ROLE_" + role.name()))
             .collect(Collectors.toList());
     }
 }
