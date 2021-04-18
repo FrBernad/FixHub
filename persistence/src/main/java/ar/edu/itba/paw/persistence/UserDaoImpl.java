@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
+import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.UserInfo;
@@ -24,6 +25,9 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert userSimpleJdbcInsert;
     private SimpleJdbcInsert roleSimpleJdbcInsert;
+    private SimpleJdbcInsert contactInfoSimpleJdbcInsert;
+    private SimpleJdbcInsert contactProviderSimpleJdbcInsert;
+
 
     private static final ResultSetExtractor<Collection<UserStats>> USER_STATS_ROW_MAPPER = rs -> {
         Map<Long, UserStats> statsMap = new HashMap<>();
@@ -72,6 +76,22 @@ public class UserDaoImpl implements UserDao {
         return userMap.values();
     };
 
+    private ResultSetExtractor<Collection<ContactInfo>> CONTACT_INFO_ROW_MAPPER = rs -> {
+        List<ContactInfo> contactInfo = new LinkedList<>();
+        while(rs.next()){
+            contactInfo.add(new ContactInfo(
+                rs.getLong("ci_id"),
+                rs.getLong("ci_user_id"),
+                rs.getString("ci_state"),
+                rs.getString("ci_city"),
+                rs.getString("ci_street"),
+                rs.getString("ci_address_number"),
+                rs.getString("ci_floor"),
+                rs.getString("ci_department_number")));
+        }
+        return contactInfo;
+    };
+
     private final Collection<Roles> roles = Arrays.asList(Roles.values().clone());
 
     @Autowired
@@ -79,6 +99,8 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate = new JdbcTemplate(ds);
         userSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USERS").usingGeneratedKeyColumns("u_id");
         roleSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("ROLES").usingGeneratedKeyColumns("r_id");
+        contactInfoSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("CONTACT_INFO").usingGeneratedKeyColumns("ci_id");
+        contactProviderSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("CONTACT").usingGeneratedKeyColumns("c_id");
     }
 
     @Override
@@ -178,5 +200,37 @@ public class UserDaoImpl implements UserDao {
 
         return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles);
     }
+
+    public Collection<ContactInfo> getContactInfo(User user){
+        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_user_id = ? ",new Object[]{user.getId()},CONTACT_INFO_ROW_MAPPER);
+    }
+
+    public ContactInfo addContactInfo( User user, String state,String  city,String street,String addressNumber,String floor,String departmentNumber){
+        final Map<String,Object> contactInfo = new HashMap<>();
+        contactInfo.put("ci_user_id",user.getId());
+        contactInfo.put("ci_city",city);
+        contactInfo.put("ci_state",state);
+        contactInfo.put("ci_street",street);
+        contactInfo.put("ci_floor",floor);
+        contactInfo.put("ci_address_number",addressNumber);
+        contactInfo.put("ci_department_number",departmentNumber);
+        final Number id = contactInfoSimpleJdbcInsert.executeAndReturnKey(contactInfo);
+        return new ContactInfo(id.longValue(),user.getId(),state,city,street,addressNumber,floor,departmentNumber);
+    }
+
+    public Optional<ContactInfo> getContactInfoById(Long contactInfoId){
+        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_id = ? ",new Object[]{contactInfoId},CONTACT_INFO_ROW_MAPPER).stream().findFirst();
+    }
+
+    @Override
+    public void addContact(Long providerId, User user, Long contactInfoId, String message) {
+        final Map<String,Object> contactMap = new HashMap<>();
+        contactMap.put("c_provider_id",providerId);
+        contactMap.put("c_user_id",user.getId());
+        contactMap.put("c_info",contactInfoId);
+        contactMap.put("c_message",message);
+        contactProviderSimpleJdbcInsert.execute(contactMap);
+    }
+
 
 }

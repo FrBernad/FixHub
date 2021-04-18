@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -176,5 +178,25 @@ public class UserServiceImpl implements UserService {
         String token = UUID.randomUUID().toString();
         return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
+
+    public Collection<ContactInfo> getContactInfo(User user) {
+        return userDao.getContactInfo(user);
+    }
+
+    public ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+        return userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
+    }
+
+    @Transactional
+    public void contact(Long providerId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+        ContactInfo contactInfo;
+        if (contactInfoId == -1)
+            contactInfo = userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
+        else
+            contactInfo = userDao.getContactInfoById(contactInfoId).orElseThrow(ContactInfoNotFoundException::new);
+
+        userDao.addContact(providerId,user,contactInfo.getContactInfoId(),message);
+    }
+
 
 }

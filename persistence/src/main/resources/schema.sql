@@ -2,8 +2,8 @@
 -- FIXME: AGREAGAR IDENTIFICARO A CADA CAMPO DE LAS TABLAS
 CREATE TABLE IF NOT EXISTS IMAGES
 (
-    i_id    SERIAL,
-    i_data BYTEA,
+    i_id        SERIAL,
+    i_data      BYTEA,
     i_mime_type TEXT,
     PRIMARY KEY (i_id)
 );
@@ -83,4 +83,32 @@ CREATE TABLE IF NOT EXISTS PASSWORD_RESET_TOKENS
     FOREIGN KEY (prt_user_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
     PRIMARY KEY (prt_id)
 );
+
+CREATE TABLE IF NOT EXISTS CONTACT_INFO
+(
+    ci_id                SERIAL,
+    ci_user_id           BIGINT      NOT NULL,
+    ci_city              VARCHAR(50) NOT NULL,
+    ci_state             VARCHAR(50) NOT NULL,
+    ci_street            VARCHAR(50) NOT NULL,
+    ci_address_number    INT         NOT NULL,
+    ci_floor             VARCHAR(5)  NOT NULL,
+    ci_department_number VARCHAR(50) NOT NULL,
+    primary key (ci_id),
+    FOREIGN KEY (ci_user_id) REFERENCES USERS (u_id)
+);
+
+CREATE TABLE IF NOT EXISTS CONTACT
+(
+    c_id          SERIAL,
+    c_provider_id BIGINT NOT NULL,
+    c_user_id     BIGINT NOT NULL,
+    c_info        BIGINT NOT NULL,
+    c_message     VARCHAR(300),
+    primary key (c_id),
+    FOREIGN KEY (c_provider_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (c_user_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (c_info) REFERENCES CONTACT_INFO (ci_id)
+);
+
 

@@ -2,25 +2,11 @@ package ar.edu.itba.paw.webapp.form;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class ContactForm {
-
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
-    private String name;
-
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
-    private String surname;
-
-    @NotEmpty
-    @Size(max = 50 )
-    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|15|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
-    private String phoneNumber;
 
     @NotEmpty
     @Size(max = 50)
@@ -47,33 +33,12 @@ public class ContactForm {
     @Pattern(regexp = "[A-Za-z0-9]{0,30}")
     private String departmentNumber;
 
-
     @NotEmpty
+    @Size(max=300)
     private String message;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    @NotNull
+    private String contactInfoId;
 
     public String getState() {
         return state;
@@ -115,6 +80,14 @@ public class ContactForm {
         this.floor = floor;
     }
 
+    public String getDepartmentNumber() {
+        return departmentNumber;
+    }
+
+    public void setDepartmentNumber(String departmentNumber) {
+        this.departmentNumber = departmentNumber;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -123,11 +96,11 @@ public class ContactForm {
         this.message = message;
     }
 
-    public String getDepartmentNumber() {
-        return departmentNumber;
+    public String getContactInfoId() {
+        return contactInfoId;
     }
 
-    public void setDepartmentNumber(String departmentNumber) {
-        this.departmentNumber = departmentNumber;
+    public void setContactInfoId(String contactInfoId) {
+        this.contactInfoId = contactInfoId;
     }
 }

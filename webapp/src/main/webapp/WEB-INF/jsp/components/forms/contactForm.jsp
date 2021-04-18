@@ -4,30 +4,27 @@
 
 <c:url value="/jobs/${job.id}/contact" var="postPath"/>
 <form:form modelAttribute="contactForm" id="contactForm" action="${postPath}" class="contactForm" method="POST">
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <form:label path="name"><spring:message code="contactForm.name"/></form:label>
-                <form:input type="text" path="name" id="name" class="form-control"
-                            cssErrorClass="form-control is-invalid"/>
-                <form:errors path="name" cssClass="formError" element="p"/>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <form:label path="surname"><spring:message code="contactForm.surname"/></form:label>
-                <form:input type="text" path="surname" id="surname" class="form-control"
-                            cssErrorClass="form-control is-invalid"/>
-                <form:errors path="surname" cssClass="formError" element="p"/>
-            </div>
+
+    <c:if test="${contactInfoCollection.size() > 0}">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" id="newUserContact"><spring:message code="contactForm.newContactInfo"/> </a>
+                <c:forEach var="contact" items="${contactInfoCollection}">
+                    <a class="dropdown-item userContact"
+                       data-state="${contact.state}" data-city="${contact.city}"
+                        data-info-id="${contact.contactInfoId}"
+                        data-street="${contact.street}" data-address-number="${contact.addressNumber}"
+                        data-floor="${contact.floor}" data-department-number="${contact.departmentNumber}">
+                        <c:out value="${contact.state} ${contact.city} ${contact.street} ${contact.addressNumber} ${contact.floor} ${contact.departmentNumber}"/></a>
+                </c:forEach>
         </div>
     </div>
-    <div class="form-group">
-        <form:label path="phoneNumber"><spring:message code="contactForm.phoneNumber"/></form:label>
-        <form:input type="text" path="phoneNumber" id="phoneNumber" class="form-control"
-                    cssErrorClass="form-control is-invalid"/>
-        <form:errors path="phoneNumber" cssClass="formError" element="p"/>
-    </div>
+    </c:if>
+
+
     <input type="hidden" value="${job.provider.email}" name="providerEmail">
     <div class="row">
         <div class="col">
@@ -87,11 +84,13 @@
                        cssErrorClass="form-control is-invalid"/>
         <form:errors path="message" cssClass="formError" element="p"/>
     </div>
+    <form:input type="hidden" path="contactInfoId" value="-1"/>
     <div class="row align-items-center justify-content-center">
         <div class="col-6 d-flex align-items-center justify-content-center">
             <button type="button" id="contactFormButton" class="contactBtn w-75"><spring:message
                     code="contactForm.submit"/></button>
         </div>
     </div>
+
 
 </form:form>
