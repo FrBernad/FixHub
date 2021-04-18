@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     private final Locale locale = LocaleContextHolder.getLocale();
 
-    private final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VALIDATED));
+    private final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
     public Optional<User> getUserById(long id) {
         return userDao.getUserById(id);
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
         if (!vtoken.isValid())
             return Optional.empty();
 
-        return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VALIDATED, Roles.VALIDATED);
+        return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VERIFIED, Roles.VERIFIED);
     }
 
     @Transactional
