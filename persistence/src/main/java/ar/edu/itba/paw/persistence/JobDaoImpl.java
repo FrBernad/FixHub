@@ -149,7 +149,7 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Collection<Long> getImagesIdsByJobId(Long jobId) {
-        return jdbcTemplate.query("SELECT * FROM JOB_IMAGES where ji_job_id = ? ORDER BY ji_image_id", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM JOB_IMAGE where ji_job_id = ? ORDER BY ji_image_id", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
     }
 
     @Override

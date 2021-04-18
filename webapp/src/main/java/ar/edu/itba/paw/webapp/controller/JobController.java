@@ -125,8 +125,7 @@ public class JobController {
             e.printStackTrace();
         }
 
-        ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
-        return mav;
+        return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
 
@@ -169,7 +168,9 @@ public class JobController {
     }
 
     //FIXME: SOLUCIONAR
-    @RequestMapping(path="jobs/images/{imageId}",produces = "image/jpg",method = RequestMethod.GET)
+    @RequestMapping(path="jobs/images/{imageId}",
+        produces = {MediaType.IMAGE_GIF_VALUE,MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE},
+        method = RequestMethod.GET)
     @ResponseBody
     public byte[] getJobImage(@PathVariable("imageId") long imageId){
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
