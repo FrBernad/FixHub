@@ -113,8 +113,9 @@ public class JobController {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         mailAttrs.put("name", form.getName());
-        mailAttrs.put("susrname", form.getSurname());
-        mailAttrs.put("addres", address);
+        mailAttrs.put("to", providerEmail);
+        mailAttrs.put("surname", form.getSurname());
+        mailAttrs.put("address", address);
         mailAttrs.put("phoneNumber", form.getName());
         mailAttrs.put("message", form.getName());
 

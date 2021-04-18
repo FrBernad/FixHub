@@ -20,8 +20,8 @@ import java.util.Locale;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    public static final String NOT_FOUND_VIEW = "views/pageNotFound";
-    public static final String ERROR_VIEW = "views/serverError";
+    public static final String NOT_FOUND_VIEW = "views/errors/pageNotFound";
+    public static final String ERROR_VIEW = "views/errors/serverError";
 
     @Autowired
     private MessageSource messageSource;

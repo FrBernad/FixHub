@@ -31,16 +31,13 @@ public class SearchServiceImpl implements SearchService {
             queryOrderOption = valueOf(orderBy);
         }
 
-        int totalJobs;
 
         JobCategory queryCategoryFilter;
         if (!JobCategory.contains(filterBy)) {
             queryCategoryFilter = null;
             filterBy = "";
-            totalJobs = jobDao.getJobsCount();
         } else {
             queryCategoryFilter = JobCategory.valueOf(filterBy);
-            totalJobs = jobDao.getCategoryJobsCount(queryCategoryFilter);
         }
 
         String querySearchBy;
@@ -56,6 +53,7 @@ public class SearchServiceImpl implements SearchService {
             page = 0;
         }
 
+        int totalJobs=jobDao.getJobsCountByCategory(querySearchBy, queryOrderOption, queryCategoryFilter);
         int totalPages = (int) Math.ceil((float) totalJobs / DEFAULT_ITEMS_PER_PAGE);
 
         if (page >= totalPages) {

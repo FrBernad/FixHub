@@ -25,7 +25,7 @@ public class DashboardController {
     @Autowired
     private JobService jobService;
 
-    @RequestMapping("/dashboard")
+    @RequestMapping("/user/dashboard")
     public ModelAndView dashboard() {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         final Collection<Job> jobs = jobService.getJobByProviderId(user.getId());

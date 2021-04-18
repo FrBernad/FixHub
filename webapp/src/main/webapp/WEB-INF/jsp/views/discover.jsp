@@ -132,7 +132,8 @@
                                     </div>
                                 </c:otherwise>
                             </c:choose>
-                            <div class="col-12 align-items-center justify-content-center mt-4 ${results.results.size()==0 ? 'd-none':''} ">
+                            <div class="col-12 align-items-center justify-content-center mt-4
+                                        ${results.totalPages<=1 ? 'd-none':''} ">
                                 <nav class="d-flex align-items-center justify-content-center">
                                     <ul class="pagination mb-0" id="pagination" data-page="${results.page}">
                                         <li class="page-item ${results.isFirst() ? 'disabled' : ''}">

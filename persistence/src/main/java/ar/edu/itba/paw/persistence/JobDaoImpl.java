@@ -91,16 +91,17 @@ public class JobDaoImpl implements JobDao {
         String filterQuery = EMPTY;
         if (category != null) {
             variables.add(category.name());
+
             filterQuery = " WHERE j_category = ? ";
         }
 
         String searchQuery = EMPTY;
         if (searchBy != null) {
-            final String searchByLike = String.format("%%%s%%", searchBy);
-            variables.add(searchByLike);
-            variables.add(searchByLike);
-            variables.add(searchByLike);
-            searchQuery = " WHERE j_description LIKE ? OR j_job_provided LIKE ? OR u_name LIKE ?";
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
         }
 
         String orderQuery = getOrderQuery(orderOptions);
@@ -122,15 +123,31 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Integer getJobsCount() {
-        return jdbcTemplate.query("SELECT count(j_id) as totalJobs FROM jobs", (rs, rowNum) -> rs.getInt("totalJobs")).stream().findFirst().orElse(0);
-    }
+    public Integer getJobsCountByCategory(String searchBy, OrderOptions orderOptions, JobCategory category) {
+        List<Object> variables = new LinkedList<>();
 
-    @Override
-    public Integer getCategoryJobsCount(JobCategory category) {
-        return jdbcTemplate.query("SELECT count(j_id) as totalJobs FROM jobs WHERE j_category = ? ", new Object[]{category.name()}, (rs, rowNum) -> rs.getInt("totalJobs")).stream().findFirst().orElse(0);
-    }
+        String filterQuery = EMPTY;
+        if (category != null) {
+            variables.add(category.name());
 
+            filterQuery = " WHERE j_category = ? ";
+        }
+
+        String searchQuery = EMPTY;
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
+        }
+
+        return jdbcTemplate.query(
+            "select count(*) total from " +
+                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") as aux"
+                + searchQuery, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
+
+    }
 
     @Override
     public Optional<Job> getJobById(long id) {

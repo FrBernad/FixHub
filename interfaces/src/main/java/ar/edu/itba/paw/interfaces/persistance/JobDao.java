@@ -21,8 +21,7 @@ public interface JobDao {
 
     Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOptions, JobCategory category, int page, int itemsPerPage);
 
-    Integer getJobsCount();
+    Integer getJobsCountByCategory(String searchBy, OrderOptions orderOptions, JobCategory category);
 
-    Integer getCategoryJobsCount(JobCategory category);
 }
 

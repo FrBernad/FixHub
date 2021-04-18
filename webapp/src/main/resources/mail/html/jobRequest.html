@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:lang=”${#locale.language}”
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
@@ -257,19 +257,19 @@
                                                     <p style="font-size: 14px; line-height: 140%;"> <span
                                                             th:text="#{jobrequest.info.name}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;">
-                                                    <span th:text="${userName}"></span> <span
-                                                            th:text="${userSurname}"></span></span>
+                                                    <span th:text="${name}"></span> <span
+                                                            th:text="${surname}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             th:text="#{jobrequest.info.phone}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;">
-                                                        <span th:text="${userPhoneNumber}"></span>
+                                                        <span th:text="${phoneNumber}"></span>
                                                     </span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             th:text="#{jobrequest.info.address}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;">
-                                                    <span th:text="${userAddress}"></span></span>
+                                                    <span th:text="${address}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
 

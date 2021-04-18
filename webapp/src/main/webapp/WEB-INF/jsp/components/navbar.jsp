@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
-                    <a href="<c:url value='/dashboard'/>" class="nav-link navbarText">
+                    <a href="<c:url value='/user/dashboard'/>" class="nav-link navbarText">
                         <spring:message code="navBar.dashboard"/>
                     </a>
                 </li>
@@ -35,7 +35,7 @@
                                     <i class="fas ml-2 fa-chevron-down navbarText" id="navBarArrow"></i>
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <p class="mb-0 pl-3 dropdownItem ">
+                                    <p class="mb-0 pl-3 dropdownItem">
                                         <spring:message code="navBar.signInAs"/>
                                         <span class="username">
                                             <c:out value="${loggedUser.name}"/>
