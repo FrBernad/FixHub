@@ -6,6 +6,8 @@
     <div class="form-group">
         <form:label class="label" path="city"><spring:message code="joinForm.availableCities"/></form:label>
         <form:input path="state" type="hidden" id="state" value="${state}"/>
+        <form:input path="startTime" type="hidden" id="state" value="${startTime}"/>
+        <form:input path="endTime" type="hidden" id="state" value="${endTime}"/>
         <div class="row">
             <div class="col d-flex align-items-center justify-content-center">
                 <div class="dropdown">

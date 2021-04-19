@@ -209,6 +209,8 @@ public class WebAuthController {
 
         ModelAndView mav = new ModelAndView("views/user/account/roles/chooseCity");
         mav.addObject("state", form.getState());
+        mav.addObject("startTime", form.getStartTime());
+        mav.addObject("endTime", form.getEndTime());
         mav.addObject("chooseCityForm", form);
         mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
         return mav;
