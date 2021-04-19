@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +28,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -186,6 +184,8 @@ public class WebAuthController {
         return mav;
     }
 
+    //JOIN STEPS
+
     @RequestMapping("/user/join")
     public ModelAndView join(@ModelAttribute("joinForm") final JoinForm form) {
         ModelAndView mav = new ModelAndView("views/user/account/roles/join");
@@ -194,30 +194,48 @@ public class WebAuthController {
     }
 
     @RequestMapping(path = "/user/join", method = RequestMethod.POST)
-    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final JoinForm form, final BindingResult errors) {
+    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final JoinForm form,
+                                 final BindingResult errors,
+                                 RedirectAttributes ra) {
 
-        if(errors.hasErrors())
+        if (errors.hasErrors())
             return join(form);
 
         LocalTime start = LocalTime.parse(form.getStartTime(), DateTimeFormatter.ofPattern("HH:mm"));
         LocalTime stop = LocalTime.parse(form.getEndTime(), DateTimeFormatter.ofPattern("HH:mm"));
 
-        if(start.compareTo(stop) == 0) {
+        if (start.compareTo(stop) == 0) {
             errors.rejectValue("", "validation.join.equalTime");
             return join(form);
         }
 
+        ra.addFlashAttribute("state", form.getState());
+        ra.addFlashAttribute("startTime", form.getStartTime());
+        ra.addFlashAttribute("endTime", form.getEndTime());
+        ra.addFlashAttribute("chooseCityForm", form);
+        ra.addFlashAttribute("cities", locationService.getCitiesByStateId(form.getState()));
+        ModelAndView mav = new ModelAndView("redirect:/user/join/chooseCity");
+        return mav;
+    }
+
+    @RequestMapping("/user/join/chooseCity")
+    public ModelAndView joinChooseCity(@ModelAttribute("chooseCityForm") final JoinForm form,
+                                       HttpServletRequest request) {
+
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap == null)
+            return new ModelAndView("redirect:/user/join");
+
         ModelAndView mav = new ModelAndView("views/user/account/roles/chooseCity");
-        mav.addObject("state", form.getState());
-        mav.addObject("startTime", form.getStartTime());
-        mav.addObject("endTime", form.getEndTime());
-        mav.addObject("chooseCityForm", form);
-        mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
+
+        mav.addAllObjects(flashMap);
+
         return mav;
     }
 
     @RequestMapping(path = "/user/join/chooseCity", method = RequestMethod.POST)
-    public ModelAndView joinChooseCity(@Valid @ModelAttribute("chooseCityForm") final JoinForm form, final BindingResult errors) {
+    public ModelAndView joinChooseCityPost(@Valid @ModelAttribute("chooseCityForm") final JoinForm form, final BindingResult errors) {
+
         if (errors.hasErrors()) {
             return join(form);
         }
@@ -225,23 +243,11 @@ public class WebAuthController {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.makeProvider(user.getId());
 
-        ModelAndView mav = new ModelAndView("views/user/dashboard");
-        mav.addObject("loggedUser",user);
-        return mav;
+        return new ModelAndView("redirect:/user/dashboard");
     }
 
-    private void forceLogin(User user, HttpServletRequest request) {
-        //generate authentication
-        final PreAuthenticatedAuthenticationToken token =
-            new PreAuthenticatedAuthenticationToken(user.getEmail(), user.getPassword(), getAuthorities(user.getRoles()));
 
-        token.setDetails(new WebAuthenticationDetails(request));
 
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(token);
-
-        request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-    }
 
     @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
     public ModelAndView updateProfile(@Valid @ModelAttribute("updateUserInfo") final UserInfoForm form,
@@ -261,11 +267,23 @@ public class WebAuthController {
         return mav;
     }
 
+    private void forceLogin(User user, HttpServletRequest request) {
+        //generate authentication
+        final PreAuthenticatedAuthenticationToken token =
+            new PreAuthenticatedAuthenticationToken(user.getEmail(), user.getPassword(), getAuthorities(user.getRoles()));
+
+        token.setDetails(new WebAuthenticationDetails(request));
+
+        final SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(token);
+
+        request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+    }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Collection<Roles> roles) {
         return roles.
             stream()
-            .map((role) -> new SimpleGrantedAuthority("ROLE_"+role.name()))
+            .map((role) -> new SimpleGrantedAuthority("ROLE_" + role.name()))
             .collect(Collectors.toList());
     }
 
