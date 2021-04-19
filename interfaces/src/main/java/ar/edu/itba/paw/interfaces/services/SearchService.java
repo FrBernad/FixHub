@@ -9,5 +9,7 @@ import java.util.Collection;
 public interface SearchService {
     PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page, int itemsPerPage);
 
+    PaginatedSearchResult<Job> getJobsByProviderId(String searchBy, String orderBy, Long providerId, int page, int itemsPerPage);
+
     Collection<OrderOptions> getOrderOptions();
 }

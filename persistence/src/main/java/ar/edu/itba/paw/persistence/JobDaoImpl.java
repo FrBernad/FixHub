@@ -175,6 +175,29 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
+    public Integer getJobsCountByProviderId(String searchBy, OrderOptions orderOptions, Long providerId) {
+        List<Object> variables = new LinkedList<>();
+
+        String filterQuery = " WHERE j_provider_id = ? ";
+        variables.add(providerId);
+
+        String searchQuery = EMPTY;
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
+        }
+
+        return jdbcTemplate.query(
+            "select count(*) total from " +
+                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") as aux"
+                + searchQuery, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
+
+    }
+
+    @Override
     public Optional<Job> getJobById(long id) {
         List<Object> variables = new LinkedList<>();
         variables.add(id);
@@ -195,11 +218,35 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobByProviderId(long id) {
+    public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOptions, Long providerId, int page, int itemsPerPage) {
         List<Object> variables = new LinkedList<>();
-        variables.add(id);
 
-        String filterQuery = " WHERE j_provider_id = ? ";
+        String filterQuery = " WHERE j_category = ? ";
+        variables.add(providerId);
+
+        String searchQuery = EMPTY;
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
+        }
+
+        String orderQuery = getOrderQuery(orderOptions);
+
+        String offset = EMPTY;
+        if (page > 0) {
+            offset = " OFFSET ? ";
+            variables.add(page * itemsPerPage);
+        }
+
+
+        String limit = EMPTY;
+        if (itemsPerPage > 0) {
+            limit = " LIMIT ? ";
+            variables.add(itemsPerPage);
+        }
 
         return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, variables);
     }
