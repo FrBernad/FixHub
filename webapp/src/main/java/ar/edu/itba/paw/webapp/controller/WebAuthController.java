@@ -250,18 +250,18 @@ public class WebAuthController {
 
 
 
-    @RequestMapping(path = "/account")
+    @RequestMapping(path = "/user/account")
     public ModelAndView profile(){
         final  ModelAndView mav= new ModelAndView("views/user/profile/profile");
         return mav;
     }
 
-    @RequestMapping(path="/account/update")
+    @RequestMapping(path="/user/account/update")
     public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form){
             return new ModelAndView("views/user/profile/editProfile");
     }
 
-    @RequestMapping(value = "/account/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
     public ModelAndView updateProfile(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form,
                                       BindingResult errors) {
         if (errors.hasErrors()) {
@@ -274,7 +274,7 @@ public class WebAuthController {
                 form.getCity(), form.getState(),
                 form.getPhoneNumber()),
             user.getId());
-        ModelAndView mav = new ModelAndView("redirect:/account");
+        ModelAndView mav = new ModelAndView("redirect:/user/account");
         return mav;
     }
 

@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:url value="/account/update" var="postPath"/>
+<c:url value="/user/account/update" var="postPath"/>
 
 <form:form modelAttribute="userInfoForm" action="${postPath}" id="userInfoForm" method="POST">
     <div class="form-group">
