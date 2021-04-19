@@ -24,7 +24,7 @@ public class UserController {
 
     @RequestMapping(path = "/profile")
     public ModelAndView user(){
-        final  ModelAndView mav= new ModelAndView("views/user");
+        final  ModelAndView mav= new ModelAndView("views/user/profile/user");
         return mav;
     }
 
