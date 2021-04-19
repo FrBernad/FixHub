@@ -34,7 +34,9 @@ public interface UserDao {
 
     Optional<ContactInfo> getContactInfoById(Long contactInfoId);
 
-    void addClient(Long providerId, User user, Long contactInfoId, String message, Timestamp time);
+    void addClient(Long providerId, Long jobId, User user, Long contactInfoId, String message, Timestamp time);
 
     Collection<JobContact> getClients(Long providerId);
+
+    Collection<JobContact> getProviders(Long clientId);
 }

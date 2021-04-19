@@ -189,14 +189,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void contact(Long providerId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+    public void contact(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
         ContactInfo contactInfo;
         if (contactInfoId == -1)
             contactInfo = userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
         else
             contactInfo = userDao.getContactInfoById(contactInfoId).orElseThrow(ContactInfoNotFoundException::new);
 
-        userDao.addClient(providerId,user,contactInfo.getContactInfoId(),message, Timestamp.valueOf(LocalDateTime.now()));
+        userDao.addClient(providerId,jobId,user,contactInfo.getContactInfoId(),message, Timestamp.valueOf(LocalDateTime.now()));
     }
 
     @Override
@@ -204,5 +204,9 @@ public class UserServiceImpl implements UserService {
         return userDao.getClients(providerId);
     }
 
+    @Override
+    public Collection<JobContact> getProviders(Long clientId){
+        return userDao.getProviders(clientId);
+    }
 
 }

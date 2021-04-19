@@ -4,7 +4,9 @@ import java.util.Collection;
 
 public class ContactUser  {
     private String name, surname,phoneNumber,email;
-    public ContactUser(String name, String surname, String phoneNumber, String email) {
+    private Long userId;
+    public ContactUser(Long userId,String name, String surname, String phoneNumber, String email) {
+        this.userId = userId;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;

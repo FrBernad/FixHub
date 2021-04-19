@@ -5,7 +5,6 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.UserStats;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -36,7 +35,9 @@ public interface UserService {
 
     void makeProvider(long userId);
 
-    void contact(Long providerId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
+    void contact(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
 
     Collection<JobContact> getClients(Long providerId);
+
+    Collection<JobContact> getProviders(Long clientId);
 }

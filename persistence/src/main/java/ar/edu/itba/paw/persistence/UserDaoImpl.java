@@ -93,9 +93,19 @@ public class UserDaoImpl implements UserDao {
     private static final ResultSetExtractor<Collection<JobContact>> CLIENT_ROW_MAPPER = rs -> {
         List<JobContact> contacts = new LinkedList<>();
         while (rs.next()) {
-            ContactUser client = new ContactUser(rs.getString("u_name"), rs.getString("u_surname"), rs.getString("u_phone_number"), rs.getString("u_email"));
+            ContactUser client = new ContactUser(rs.getLong("c_user_id"),rs.getString("u_name"), rs.getString("u_surname"), rs.getString("u_phone_number"), rs.getString("u_email"));
             ContactInfo contactInfo = new ContactInfo(rs.getLong("ci_id"), rs.getLong("ci_user_id"), rs.getString("ci_state"), rs.getString("ci_city"), rs.getString("ci_street"), rs.getString("ci_address_number"), rs.getString("ci_floor"), rs.getString("ci_department_number"));
-            contacts.add(new JobContact(contactInfo, client, rs.getString("c_message"), rs.getTimestamp("c_date").toLocalDateTime()));
+            contacts.add(new JobContact(contactInfo, client, rs.getString("c_message"), rs.getTimestamp("c_date").toLocalDateTime(),rs.getLong("j_id"),rs.getString("j_job_provided"),JobCategory.valueOf(rs.getString("j_category"))));
+        }
+        return contacts;
+    };
+
+    private static final ResultSetExtractor<Collection<JobContact>> PROVIDER_ROW_MAPPER = rs -> {
+        List<JobContact> contacts = new LinkedList<>();
+        while (rs.next()) {
+            ContactUser provider = new ContactUser(rs.getLong("c_provider_id"),rs.getString("u_name"), rs.getString("u_surname"), rs.getString("u_phone_number"), rs.getString("u_email"));
+            ContactInfo contactInfo = new ContactInfo(rs.getLong("ci_id"), rs.getLong("ci_user_id"),rs.getString("ci_state"), rs.getString("ci_city"), rs.getString("ci_street"), rs.getString("ci_address_number"), rs.getString("ci_floor"), rs.getString("ci_department_number"));
+            contacts.add(new JobContact(contactInfo, provider, rs.getString("c_message"), rs.getTimestamp("c_date").toLocalDateTime(),rs.getLong("j_id"),rs.getString("j_job_provided"),JobCategory.valueOf(rs.getString("j_category"))));
         }
         return contacts;
     };
@@ -231,11 +241,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addClient(Long providerId, User user, Long contactInfoId, String message, Timestamp time) {
+    public void addClient(Long providerId, Long jobId, User user, Long contactInfoId, String message, Timestamp time) {
         final Map<String, Object> contactMap = new HashMap<>();
         contactMap.put("c_provider_id", providerId);
+        contactMap.put("c_job_id",jobId);
         contactMap.put("c_user_id", user.getId());
-        contactMap.put("c_info", contactInfoId);
+        contactMap.put("c_info_id", contactInfoId);
         contactMap.put("c_message", message);
         contactMap.put("c_date", time.toLocalDateTime());
         contactProviderSimpleJdbcInsert.execute(contactMap);
@@ -244,8 +255,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<JobContact> getClients(Long providerId) {
-        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info = ci_id where c_provider_id = ? ) AUX JOIN USERS on u_id = c_user_id", new Object[]{providerId}, CLIENT_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM (SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_provider_id = ? ) AUX JOIN USERS on u_id = c_user_id) AUX2 JOIN JOBS on j_id = c_job_id", new Object[]{providerId}, CLIENT_ROW_MAPPER);
     }
 
+    @Override
+    public Collection<JobContact> getProviders(Long clientId){
+        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM (SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_user_id = ? ) AUX JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id",new Object[]{clientId},PROVIDER_ROW_MAPPER);
+    }
 
 }

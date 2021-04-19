@@ -103,13 +103,15 @@ CREATE TABLE IF NOT EXISTS CONTACT
     c_id          SERIAL,
     c_provider_id BIGINT    NOT NULL,
     c_user_id     BIGINT    NOT NULL,
-    c_info        BIGINT    NOT NULL,
+    c_job_id      BIGINT    NOT NULL,
+    c_info_id        BIGINT    NOT NULL,
     c_message     VARCHAR(300),
     c_date        TIMESTAMP NOT NULL,
     primary key (c_id),
     FOREIGN KEY (c_provider_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (c_job_id) REFERENCES JOBS (j_id),
     FOREIGN KEY (c_user_id) REFERENCES USERS (u_id),
-    FOREIGN KEY (c_info) REFERENCES CONTACT_INFO (ci_id)
+    FOREIGN KEY (c_info_id) REFERENCES CONTACT_INFO (ci_id)
 );
 
 
