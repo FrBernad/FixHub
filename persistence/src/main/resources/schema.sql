@@ -112,3 +112,17 @@ CREATE TABLE IF NOT EXISTS CONTACT
 );
 
 
+CREATE TABLE IF NOT EXISTS STATES (
+    s_id SERIAL,
+    s_name varchar(255) NOT NULL,
+    PRIMARY KEY (s_id)
+);
+
+CREATE TABLE IF NOT EXISTS CITIES (
+    c_id SERIAL,
+    c_state_id BIGINT NOT NULL,
+    c_name varchar(255) NOT NULL,
+    FOREIGN KEY (c_state_id) REFERENCES STATES (s_id) ON DELETE CASCADE,
+    PRIMARY KEY (c_id)
+);
+

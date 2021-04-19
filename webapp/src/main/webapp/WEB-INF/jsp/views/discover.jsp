@@ -61,13 +61,11 @@
                                 </button>
                             </div>
                         </c:forEach>
-
                     </div>
                 </div>
                 <div class="dropdown ">
                     <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
                         <spring:message code="discover.orderBy"/>
                         <span class="resultQuery">
                         <c:if test="${results.order!=null && !results.order.isEmpty()}">

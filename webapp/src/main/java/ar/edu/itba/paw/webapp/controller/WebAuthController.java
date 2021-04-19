@@ -1,15 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Roles;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserInfo;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.RegisterForm;
-import ar.edu.itba.paw.webapp.form.ResetPasswordEmailForm;
-import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
-import ar.edu.itba.paw.webapp.form.UserInfoForm;
+import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +29,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -42,6 +43,9 @@ public class WebAuthController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LocationService locationService;
+
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
         return new ModelAndView("views/register");
@@ -49,11 +53,13 @@ public class WebAuthController {
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
-        if (errors.hasErrors()) {
-            if (!form.getPassword().equals(form.getConfirmPassword())) {
-                //Global error, that's why it has "".
-                errors.rejectValue("", "validation.user.passwordsDontMatch");
-            }
+        if (errors.hasErrors())
+            return register(form);
+
+
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            //Global error, that's why it has "".
+            errors.rejectValue("", "validation.user.passwordsDontMatch");
             return register(form);
         }
 
@@ -181,16 +187,43 @@ public class WebAuthController {
     }
 
     @RequestMapping("/user/join")
-    public ModelAndView join() {
-        return new ModelAndView("views/user/account/roles/join");
+    public ModelAndView join(@ModelAttribute("joinForm") final JoinForm form) {
+        ModelAndView mav = new ModelAndView("views/user/account/roles/join");
+        mav.addObject("states", locationService.getStates());
+        return mav;
     }
 
-    @RequestMapping(value = "/user/join", method = RequestMethod.POST)
-    public ModelAndView joinPost() {
+    @RequestMapping(path = "/user/join", method = RequestMethod.POST)
+    public ModelAndView join(@Valid @ModelAttribute("joinForm") final JoinForm form, final BindingResult errors) {
+
+        if(errors.hasErrors())
+            return join(form);
+
+        LocalTime start = LocalTime.parse(form.getStartTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime stop = LocalTime.parse(form.getEndTime(), DateTimeFormatter.ofPattern("HH:mm"));
+
+        if(start.compareTo(stop) == 0) {
+            errors.rejectValue("", "validation.join.equalTime");
+            return join(form);
+        }
+
+        ModelAndView mav = new ModelAndView("views/user/account/roles/chooseCity");
+        mav.addObject("state", form.getState());
+        mav.addObject("chooseCityForm", form);
+        mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
+        return mav;
+    }
+
+    @RequestMapping(path = "/user/join/chooseCity", method = RequestMethod.POST)
+    public ModelAndView joinChooseCity(@Valid @ModelAttribute("chooseCityForm") final JoinForm form, final BindingResult errors) {
+        if (errors.hasErrors()) {
+            return join(form);
+        }
+
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.makeProvider(user.getId());
 
-        ModelAndView mav = new ModelAndView("views/user/profile");
+        ModelAndView mav = new ModelAndView("views/user/dashboard");
         mav.addObject("loggedUser",user);
         return mav;
     }
