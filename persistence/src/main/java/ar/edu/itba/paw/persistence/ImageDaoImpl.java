@@ -30,7 +30,7 @@ public class ImageDaoImpl implements ImageDao {
             imageMap.put(rs.getLong("i_id"),
                 new Image(rs.getLong("i_id"),
                     rs.getBytes("i_data"),
-                    rs.getString("i_mime_type") ));
+                    rs.getString("i_mime_type")));
         }
         return imageMap.values();
     };
@@ -54,8 +54,8 @@ public class ImageDaoImpl implements ImageDao {
         Map<String, Object> imageInfo = new HashMap<>();
         imageInfo.put("i_data", image.getData());
         imageInfo.put("i_mime_type", image.getMimeType());
-        final Number id = imageSimpleJdbcInsert.executeAndReturnKey(imageInfo);
-        return new Image(id.longValue(), image.getData(), image.getMimeType());
+        final long id = imageSimpleJdbcInsert.executeAndReturnKey(imageInfo).longValue();
+        return new Image(id, image.getData(), image.getMimeType());
     }
 
     @Override
@@ -64,8 +64,8 @@ public class ImageDaoImpl implements ImageDao {
     }
 
     @Override
-    public Collection<Image> getImagesByJobId(long jobId){
-        return jdbcTemplate.query("SELECT * FROM IMAGES JOIN JOB_IMAGE on i_id = ji_image_id WHERE ji_job_id = ?",new Object[]{jobId},JOB_IMAGE_ROW_MAPPER);
+    public Collection<Image> getImagesByJobId(long jobId) {
+        return jdbcTemplate.query("SELECT * FROM IMAGES JOIN JOB_IMAGE on i_id = ji_image_id WHERE ji_job_id = ?", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
     }
 }
 

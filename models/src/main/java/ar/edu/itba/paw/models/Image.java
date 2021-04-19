@@ -3,11 +3,11 @@ package ar.edu.itba.paw.models;
 
 public class Image {
 
-    private Number imageId;
+    private long imageId;
     private byte[] data;
     private String mimeType;
 
-    public Image(Number imageId, byte[] data, String mimeType) {
+    public Image(long imageId, byte[] data, String mimeType) {
         this.imageId = imageId;
         this.data = data;
         this.mimeType = mimeType;
@@ -21,11 +21,11 @@ public class Image {
         this.mimeType = mimeType;
     }
 
-    public Number getImageId() {
+    public long getImageId() {
         return imageId;
     }
 
-    public void setImageId(Number imageId) {
+    public void setImageId(long imageId) {
         this.imageId = imageId;
     }
 

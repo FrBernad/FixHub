@@ -20,11 +20,11 @@
                     <div class="container">
                         <div style="position: relative;height: 400px; width:400px;">
                             <c:choose>
-                                <c:when test="${imagesIds.size() > 0}">
+                                <c:when test="${job.imagesId.size() > 0}">
 
                                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                         <div id="carousel" class="carousel-inner">
-                                            <c:forEach var="imageId" items="${imagesIds}">
+                                            <c:forEach var="imageId" items="${job.imagesId}">
                                                 <div class="carousel-item">
                                                     <img
                                                             src="<c:url value='/jobs/images/${imageId}'/>"

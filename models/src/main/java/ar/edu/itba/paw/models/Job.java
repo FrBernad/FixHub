@@ -2,6 +2,7 @@ package ar.edu.itba.paw.models;
 
 
 import java.math.BigDecimal;
+import java.util.Collection;
 
 public class Job {
     private String description,jobProvided;
@@ -11,8 +12,9 @@ public class Job {
     private User provider;
     private BigDecimal price;
     private long totalRatings;
+    private Collection<Long> imagesId;
 
-    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, User provider) {
+    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, User provider, Collection<Long> imagesId) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -21,6 +23,7 @@ public class Job {
         this.id = id;
         this.provider = provider;
         this.price = price;
+        this.imagesId=imagesId;
     }
 
     @Override
@@ -35,6 +38,14 @@ public class Job {
                 ", price=" + price +
                 ", totalRatings=" + totalRatings +
                 '}';
+    }
+
+    public void addImageId(long imageId){
+      imagesId.add(imageId);
+    }
+
+    public long getJobThumbnailId(){
+        return imagesId.stream().findFirst().orElse(-1L);
     }
 
     public BigDecimal getPrice() {
@@ -96,5 +107,13 @@ public class Job {
 
     public void setProvider(User provider) {
         this.provider = provider;
+    }
+
+    public Collection<Long> getImagesId() {
+        return imagesId;
+    }
+
+    public void setImagesId(Collection<Long> imagesId) {
+        this.imagesId = imagesId;
     }
 }

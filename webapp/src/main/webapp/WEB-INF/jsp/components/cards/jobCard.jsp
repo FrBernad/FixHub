@@ -1,10 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="card jobCard">
     <div class="jobCardImgContainer" style="position:relative;">
-        <img
-                class="card-img jobCardImg"
-                src="<c:url value='/resources/images/${job.category}.jpg'/>"
-                alt="${job.category}">
+        <c:choose>
+            <c:when test="${job.imagesId.size() > 0}">
+                <img
+                        src="<c:url value='/jobs/images/${job.getJobThumbnailId()}'/>"
+                        alt="${job.category}" class="card-img jobCardImg"
+                >
+            </c:when>
+            <c:otherwise>
+                <img
+                        class="card-img jobCardImg"
+                        src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                        alt="${job.category}">
+            </c:otherwise>
+        </c:choose>
         <div class="jobPrice">
             <p class="text-left mb-0"><spring:message code="jobCard.priceText"/><c:out value="${job.price}"/></p>
         </div>

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -26,23 +27,43 @@ public class JobDaoImpl implements JobDao {
 
     private final String EMPTY = " ";
 
-    private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
-        new Job(rs.getString("j_description"),
-            rs.getString("j_job_provided"),
-            rs.getInt("avg_rating"),
-            rs.getInt("total_ratings"),
-            JobCategory.valueOf(rs.getString("j_category")),
-            rs.getLong("j_id"),
-            rs.getBigDecimal("j_price"),
-            new User(rs.getLong("j_provider_id"),
-                rs.getString("u_password"),
-                rs.getString("u_name"),
-                rs.getString("u_surname"),
-                rs.getString("u_email"),
-                rs.getString("u_phone_number"),
-                rs.getString("u_state"),
-                rs.getString("u_city"),
-                new ArrayList<>()));
+    private static final ResultSetExtractor<Collection<Job>> JOB_ROW_MAPPER = rs -> {
+        Map<Long, Job> jobsMap = new HashMap<>();
+
+        long jobId;
+
+        while (rs.next()) {
+
+            jobId = rs.getLong("j_id");
+
+            if (!jobsMap.containsKey(jobId)) {
+                jobsMap.put(jobId,
+                    new Job(rs.getString("j_description"),
+                        rs.getString("j_job_provided"),
+                        rs.getInt("avg_rating"),
+                        rs.getInt("total_ratings"),
+                        JobCategory.valueOf(rs.getString("j_category")),
+                        rs.getLong("j_id"),
+                        rs.getBigDecimal("j_price"),
+                        new User(rs.getLong("j_provider_id"),
+                            rs.getString("u_password"),
+                            rs.getString("u_name"),
+                            rs.getString("u_surname"),
+                            rs.getString("u_email"),
+                            rs.getString("u_phone_number"),
+                            rs.getString("u_state"),
+                            rs.getString("u_city"),
+                            new ArrayList<>()),
+                        new ArrayList<>()));
+            }
+            if (rs.getObject("ji_image_id") != null) {
+                jobsMap.get(jobId).addImageId(rs.getLong("ji_image_id"));
+            }
+        }
+
+        return jobsMap.values();
+    };
+
 
     private static final ResultSetExtractor<Collection<Long>> JOB_IMAGE_ROW_MAPPER = rs -> {
         List<Long> imageIds = new LinkedList<>();
@@ -61,6 +82,7 @@ public class JobDaoImpl implements JobDao {
         jobImagesSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOB_IMAGE");
     }
 
+    @Transactional
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider, List<Image> images) {
 
@@ -74,13 +96,16 @@ public class JobDaoImpl implements JobDao {
         final Number id = jobSimpleJdbcInsert.executeAndReturnKey(map);
 
         Map<String, Object> imageJobMap = new HashMap<>();
+        Collection<Long> imagesId = new LinkedList<>();
+
         for (Image image : images) {
             imageJobMap.put("ji_image_id", image.getImageId());
             imageJobMap.put("ji_job_id", id);
+            imagesId.add(image.getImageId());
             jobImagesSimpleJdbcInsert.execute(imageJobMap);
         }
 
-        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, provider);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, provider, imagesId);
     }
 
     @Override
@@ -182,12 +207,12 @@ public class JobDaoImpl implements JobDao {
     private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String offset, String limit, List<Object> variables) {
 
         return jdbcTemplate.query(
-            "select * from (" +
+            "select * from ( ( select * from" +
                 "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") aux1" +
                 " JOIN " +
-                "(select j_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-                " on aux1.j_id = aux2.j_id)" + searchQuery + orderQuery + offset + limit, variables.toArray(),
+                " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery + offset + limit, variables.toArray(),
             JOB_ROW_MAPPER);
     }
 

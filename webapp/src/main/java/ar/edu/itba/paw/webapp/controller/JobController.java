@@ -53,15 +53,16 @@ public class JobController {
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
                             @RequestParam(defaultValue = "0") int page) {
+
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
+
         mav.addObject("job", job);
         mav.addObject("error", error);
-        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(),page,5);
+
+        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 5);
         mav.addObject("results", results);
         mav.addObject("paginationModal", paginationModal);
-        Collection<Long> imagesIds = jobService.getImagesIdsByJobId(jobId);
-        mav.addObject("imagesIds",imagesIds);
         return mav;
     }
 
@@ -97,7 +98,7 @@ public class JobController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         Collection<ContactInfo> contactInfoCollection = userService.getContactInfo(user);
-        mav.addObject("contactInfoCollection",contactInfoCollection);
+        mav.addObject("contactInfoCollection", contactInfoCollection);
 
         return mav;
     }
@@ -132,13 +133,13 @@ public class JobController {
 
         //FIXME: VER Q ONDA ESTO
         try {
-            emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest",new Object[]{},LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+            emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
 
-        userService.contact(job.getProvider().getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
+        userService.contact(job.getProvider().getId(), user, Long.valueOf(form.getContactInfoId()), form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
@@ -170,7 +171,7 @@ public class JobController {
         List<ImageDto> imagesDto = new LinkedList<>();
 
         //FIXME: SOLUCIONAR ESTO
-        if (form.getImages().get(0).getSize() != 0){
+        if (form.getImages().get(0).getSize() != 0) {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
@@ -184,11 +185,11 @@ public class JobController {
     }
 
     //FIXME: SOLUCIONAR
-    @RequestMapping(path="jobs/images/{imageId}",
-        produces = {MediaType.IMAGE_GIF_VALUE,MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE},
+    @RequestMapping(path = "jobs/images/{imageId}",
+        produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
         method = RequestMethod.GET)
     @ResponseBody
-    public byte[] getJobImage(@PathVariable("imageId") long imageId){
+    public byte[] getJobImage(@PathVariable("imageId") long imageId) {
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }
