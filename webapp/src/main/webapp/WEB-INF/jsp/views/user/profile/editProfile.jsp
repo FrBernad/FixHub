@@ -7,12 +7,12 @@
     <title><spring:message code="productName"/> | <spring:message code="editProfilePage.title"/></title>
     <%@ include file="../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
-    <link href='<c:url value="/resources/css/user.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/profile.css"/>' rel="stylesheet">
 </head>
 <body>
 <div class="outerContainer pb-4">
     <%@ include file="../../../components/navbar.jsp" %>
-    <div class="container-lg userContainer py-4">
+    <div class="container-lg userContainerProfile py-4">
         <div class="container-lg px-0 m-2">
             <div class="container-fluid">
                 <div class="row justify-content-center align-content-center">
