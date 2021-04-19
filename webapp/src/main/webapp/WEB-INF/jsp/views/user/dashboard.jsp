@@ -21,7 +21,7 @@
                 <div class="list-group" role="tablist" id="tabList">
                     <a href="#dashboard" class="list-group-item list-group-item-action active" data-toggle="list"
                        role="tab" data-name="${dashboard}" id="tabDashboard">
-                        <i class="fas fa-chart-line mr-2"></i><span class="text">${dashboard}</span></span>
+                        <i class="fas fa-chart-line mr-2"></i><span class="text"><c:out value="${dashboard}"/></span>
                     </a>
                     <a href="#works" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${work}" id="tabWorks">
@@ -30,7 +30,7 @@
                     </a>
                     <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${contacts}" id="tabContacts">
-                        <i class="fas fa-address-book mr-2"></i><span class="text">${contacts}</span><span
+                        <i class="fas fa-address-book mr-2"></i><span class="text"><c:out value="${contacts}"/></span><span
                             class="badge badge-pill badge-secondary"><c:out value="${stats.jobsCount}"/></span>
                     </a>
                 </div>
@@ -140,6 +140,7 @@
             </div>
         </div>
     </div>
+</div>
     <%@ include file="../../components/footer.jsp" %>
     <script src='<c:url value="/resources/js/dashboard.js"/>'></script>
     <%@ include file="../../components/includes/bottomScripts.jsp" %>
