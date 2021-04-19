@@ -53,10 +53,8 @@ public class JobController {
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
                             @RequestParam(defaultValue = "0") int page) {
-
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
-
         mav.addObject("job", job);
         mav.addObject("error", error);
 
@@ -139,7 +137,7 @@ public class JobController {
         }
 
 
-        userService.contact(job.getProvider().getId(), user, Long.valueOf(form.getContactInfoId()), form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
+        userService.contact(job.getProvider().getId(),job.getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;

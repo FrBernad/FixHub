@@ -13,10 +13,8 @@ public class JoinForm {
 
     private List<Long> city;
 
-    @NotEmpty
     private String startTime;
 
-    @NotEmpty
     private String endTime;
 
     public long getState() {

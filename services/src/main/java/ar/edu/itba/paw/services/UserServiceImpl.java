@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -14,14 +13,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.MessageUtils;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @org.springframework.stereotype.Service
@@ -158,8 +155,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void makeProvider(long userId) {
+    @Transactional
+    public void makeProvider(Long userId, List<Long> citiesId, String startTime, String endTime){
         userDao.addRole(userId, Roles.PROVIDER);
+        userDao.addSchedule(userId,startTime,endTime);
+        userDao.addLocation(userId,citiesId);
     }
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {
@@ -174,29 +174,42 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     private PasswordResetToken generatePasswordResetToken(long userId) {
         String token = UUID.randomUUID().toString();
         return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
 
+    @Override
     public Collection<ContactInfo> getContactInfo(User user) {
         return userDao.getContactInfo(user);
     }
 
+    @Override
     public ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
         return userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
     }
 
+    @Override
     @Transactional
-    public void contact(Long providerId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+    public void contact(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
         ContactInfo contactInfo;
         if (contactInfoId == -1)
             contactInfo = userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
         else
             contactInfo = userDao.getContactInfoById(contactInfoId).orElseThrow(ContactInfoNotFoundException::new);
 
-        userDao.addContact(providerId,user,contactInfo.getContactInfoId(),message);
+        userDao.addClient(providerId,jobId,user,contactInfo.getContactInfoId(),message, Timestamp.valueOf(LocalDateTime.now()));
     }
 
+    @Override
+    public Collection<JobContact> getClients(Long providerId){
+        return userDao.getClients(providerId);
+    }
+
+    @Override
+    public Collection<JobContact> getProviders(Long clientId){
+        return userDao.getProviders(clientId);
+    }
 
 }
