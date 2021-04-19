@@ -2,10 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.models.ContactInfo;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.Roles;
-import ar.edu.itba.paw.models.UserInfo;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.UserStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Repository
@@ -78,7 +76,7 @@ public class UserDaoImpl implements UserDao {
 
     private ResultSetExtractor<Collection<ContactInfo>> CONTACT_INFO_ROW_MAPPER = rs -> {
         List<ContactInfo> contactInfo = new LinkedList<>();
-        while(rs.next()){
+        while (rs.next()) {
             contactInfo.add(new ContactInfo(
                 rs.getLong("ci_id"),
                 rs.getLong("ci_user_id"),
@@ -90,6 +88,16 @@ public class UserDaoImpl implements UserDao {
                 rs.getString("ci_department_number")));
         }
         return contactInfo;
+    };
+
+    private static final ResultSetExtractor<Collection<JobContact>> CLIENT_ROW_MAPPER = rs -> {
+        List<JobContact> contacts = new LinkedList<>();
+        while (rs.next()) {
+            ContactUser client = new ContactUser(rs.getString("u_name"), rs.getString("u_surname"), rs.getString("u_phone_number"), rs.getString("u_email"));
+            ContactInfo contactInfo = new ContactInfo(rs.getLong("ci_id"), rs.getLong("ci_user_id"), rs.getString("ci_state"), rs.getString("ci_city"), rs.getString("ci_street"), rs.getString("ci_address_number"), rs.getString("ci_floor"), rs.getString("ci_department_number"));
+            contacts.add(new JobContact(contactInfo, client, rs.getString("c_message"), rs.getTimestamp("c_date").toLocalDateTime()));
+        }
+        return contacts;
     };
 
     private final Collection<Roles> roles = Arrays.asList(Roles.values().clone());
@@ -201,35 +209,42 @@ public class UserDaoImpl implements UserDao {
         return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles);
     }
 
-    public Collection<ContactInfo> getContactInfo(User user){
-        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_user_id = ? ",new Object[]{user.getId()},CONTACT_INFO_ROW_MAPPER);
+    public Collection<ContactInfo> getContactInfo(User user) {
+        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_user_id = ? ", new Object[]{user.getId()}, CONTACT_INFO_ROW_MAPPER);
     }
 
-    public ContactInfo addContactInfo( User user, String state,String  city,String street,String addressNumber,String floor,String departmentNumber){
-        final Map<String,Object> contactInfo = new HashMap<>();
-        contactInfo.put("ci_user_id",user.getId());
-        contactInfo.put("ci_city",city);
-        contactInfo.put("ci_state",state);
-        contactInfo.put("ci_street",street);
-        contactInfo.put("ci_floor",floor);
-        contactInfo.put("ci_address_number",addressNumber);
-        contactInfo.put("ci_department_number",departmentNumber);
+    public ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+        final Map<String, Object> contactInfo = new HashMap<>();
+        contactInfo.put("ci_user_id", user.getId());
+        contactInfo.put("ci_city", city);
+        contactInfo.put("ci_state", state);
+        contactInfo.put("ci_street", street);
+        contactInfo.put("ci_floor", floor);
+        contactInfo.put("ci_address_number", addressNumber);
+        contactInfo.put("ci_department_number", departmentNumber);
         final Number id = contactInfoSimpleJdbcInsert.executeAndReturnKey(contactInfo);
-        return new ContactInfo(id.longValue(),user.getId(),state,city,street,addressNumber,floor,departmentNumber);
+        return new ContactInfo(id.longValue(), user.getId(), state, city, street, addressNumber, floor, departmentNumber);
     }
 
-    public Optional<ContactInfo> getContactInfoById(Long contactInfoId){
-        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_id = ? ",new Object[]{contactInfoId},CONTACT_INFO_ROW_MAPPER).stream().findFirst();
+    public Optional<ContactInfo> getContactInfoById(Long contactInfoId) {
+        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_id = ? ", new Object[]{contactInfoId}, CONTACT_INFO_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
-    public void addContact(Long providerId, User user, Long contactInfoId, String message) {
-        final Map<String,Object> contactMap = new HashMap<>();
-        contactMap.put("c_provider_id",providerId);
-        contactMap.put("c_user_id",user.getId());
-        contactMap.put("c_info",contactInfoId);
-        contactMap.put("c_message",message);
+    public void addClient(Long providerId, User user, Long contactInfoId, String message, Timestamp time) {
+        final Map<String, Object> contactMap = new HashMap<>();
+        contactMap.put("c_provider_id", providerId);
+        contactMap.put("c_user_id", user.getId());
+        contactMap.put("c_info", contactInfoId);
+        contactMap.put("c_message", message);
+        contactMap.put("c_date", time.toLocalDateTime());
         contactProviderSimpleJdbcInsert.execute(contactMap);
+    }
+
+
+    @Override
+    public Collection<JobContact> getClients(Long providerId) {
+        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info = ci_id where c_provider_id = ? ) AUX JOIN USERS on u_id = c_user_id", new Object[]{providerId}, CLIENT_ROW_MAPPER);
     }
 
 

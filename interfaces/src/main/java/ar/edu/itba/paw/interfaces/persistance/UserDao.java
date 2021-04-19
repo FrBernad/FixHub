@@ -1,15 +1,11 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.models.ContactInfo;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.Roles;
-import ar.edu.itba.paw.models.UserInfo;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.UserStats;
 
-import javax.management.relation.Role;
+import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
@@ -38,5 +34,7 @@ public interface UserDao {
 
     Optional<ContactInfo> getContactInfoById(Long contactInfoId);
 
-    void addContact(Long providerId, User user, Long contactInfoId, String message);
+    void addClient(Long providerId, User user, Long contactInfoId, String message, Timestamp time);
+
+    Collection<JobContact> getClients(Long providerId);
 }

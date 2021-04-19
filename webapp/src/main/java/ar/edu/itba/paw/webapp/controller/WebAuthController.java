@@ -194,7 +194,7 @@ public class WebAuthController {
     }
 
     @RequestMapping(path = "/user/join", method = RequestMethod.POST)
-    public ModelAndView join(@Valid @ModelAttribute("joinForm") final JoinForm form, final BindingResult errors) {
+    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final JoinForm form, final BindingResult errors) {
 
         if(errors.hasErrors())
             return join(form);
