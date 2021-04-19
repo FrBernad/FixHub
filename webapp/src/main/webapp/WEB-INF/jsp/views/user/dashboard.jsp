@@ -178,21 +178,25 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>John Doe</td>
-                                                <td>johndoe@example.com</td>
-                                                <td>14/04/2021 12:55</td>
-                                            </tr>
-                                            <tr>
-                                                <td>John Doe</td>
-                                                <td>johndoe@example.com</td>
-                                                <td>14/04/2021 12:55</td>
-                                            </tr>
-                                            <tr>
-                                                <td>John Doe</td>
-                                                <td>johndoe@example.com</td>
-                                                <td>14/04/2021 12:55</td>
-                                            </tr>
+                                            <c:choose>
+                                                <c:when test="${contactsList.size() > 0}">
+
+                                                    <c:forEach var="contact" items="${contactsList}">
+                                                        <tr>
+                                                            <td><c:out value="${contact.user.name} ${contact.user.surname}"/></td>
+                                                            <td><c:out value="${contact.user.email}"/></td>
+                                                            <td><c:out value="${contact.date}"/></td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <tr>
+                                                        <td>Ningún usuario te ha contactado</td>
+                                                    </tr>
+                                                </c:otherwise>
+                                            </c:choose>
+
+
                                             </tbody>
                                         </table>
                                     </div>

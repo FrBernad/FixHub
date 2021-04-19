@@ -3,10 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.PaginatedSearchResult;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.UserStats;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +35,11 @@ public class DashboardController {
 
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
 
+        final Collection<JobContact> contacts = userService.getClients(user.getId());
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
         mav.addObject("results", jobs);
         mav.addObject("stats", stats);
+        mav.addObject("contactsList",contacts);
 
         return mav;
     }

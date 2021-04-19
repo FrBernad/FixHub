@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 
 public class JobContact {
     private ContactInfo contactInfo;
-    private ContactUser client;
+    private ContactUser user;
     private String message,jobProvided;
     private LocalDateTime date;
     private Long jobId;
     private JobCategory category;
 
-    public JobContact(ContactInfo contactInfo, ContactUser client, String message, LocalDateTime date,Long jobId, String jobProvided,JobCategory category) {
+    public JobContact(ContactInfo contactInfo, ContactUser user, String message, LocalDateTime date,Long jobId, String jobProvided,JobCategory category) {
         this.contactInfo = contactInfo;
-        this.client = client;
+        this.user = user;
         this.message = message;
         this.date = date;
         this.jobId = jobId;
@@ -30,12 +30,12 @@ public class JobContact {
         this.contactInfo = contactInfo;
     }
 
-    public ContactUser getClient() {
-        return client;
+    public ContactUser getUser() {
+        return user;
     }
 
-    public void setClient(ContactUser client) {
-        this.client = client;
+    public void setUser(ContactUser user) {
+        this.user = user;
     }
 
     public String getMessage() {
