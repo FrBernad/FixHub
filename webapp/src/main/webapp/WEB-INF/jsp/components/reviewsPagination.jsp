@@ -6,7 +6,7 @@
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="container-lg pb-4 pt-5 px-5" style="background-color: #FAFAFA;">
+            <div class="container-lg roundedBorder pb-4 pt-5 px-5" style="background-color: #FAFAFA;">
                 <div class="row">
                     <c:url value="/jobs/${job.id}" var="postPath"/>
                     <form action="${postPath}" id="reviewsPaginationForm" type="hidden">

@@ -44,8 +44,6 @@
                                             <span class="sr-only">Next</span>
                                         </a>
                                     </div>
-
-
                                 </c:when>
                                 <c:otherwise>
                                     <img

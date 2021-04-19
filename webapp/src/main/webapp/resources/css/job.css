@@ -12,6 +12,10 @@
     color: black;
 }
 
+.roundedBorder{
+    border-radius: 8px;
+}
+
 .reviewTitle {
     color: rgba(0, 0, 0, .8);
     font-size: 16px;
@@ -102,7 +106,7 @@
     cursor: pointer;
 }
 
-.disabled{
+.disabled {
     cursor: default;
 }
 

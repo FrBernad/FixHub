@@ -97,7 +97,7 @@
         <div class="container-fluid p-0 jobsContainer">
             <div class="row" style="padding: 3em;min-height: 75%">
                 <c:if test="${results.query!=null && !results.query.isEmpty()}">
-                    <div class="col-12 mb-5 resultHeader p-0 d-flex align-items-start">
+                    <div class="col-12 mb-3 resultHeader p-0 d-flex align-items-start">
                         <p class="mb-0"><spring:message code="discover.showingResults"/>
                             <span>"<c:out value='${results.query}'/>"</span>
                         </p>

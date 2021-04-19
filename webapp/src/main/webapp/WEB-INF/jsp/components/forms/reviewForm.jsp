@@ -5,7 +5,7 @@
 <div class="modal fade" id="newReview" data-show="true" data-error="${error}" tabindex="-1" aria-labelledby="newReviewLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="container-lg p-4" style="background-color: #FAFAFA;">
+            <div class="container-lg roundedBorder p-4" style="background-color: #FAFAFA; border-radius: 8px">
                 <div class="row">
                     <div class="col-12">
                         <c:url value="/jobs/${job.id}" var="postPath"/>
