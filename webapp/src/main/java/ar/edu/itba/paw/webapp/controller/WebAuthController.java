@@ -23,15 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -250,12 +247,22 @@ public class WebAuthController {
 
 
 
-    @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@Valid @ModelAttribute("updateUserInfo") final UserInfoForm form,
+    @RequestMapping(path = "/account")
+    public ModelAndView profile(){
+        final  ModelAndView mav= new ModelAndView("views/user/profile/profile");
+        return mav;
+    }
+
+    @RequestMapping(path="/account/update")
+    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form){
+            return new ModelAndView("views/user/profile/editProfile");
+    }
+
+    @RequestMapping(value = "/account/update", method = RequestMethod.POST)
+    public ModelAndView updateProfile(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form,
                                       BindingResult errors) {
-        //FIXME
         if (errors.hasErrors()) {
-            return null;
+            return updateProfile(form);
         }
 
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
@@ -264,7 +271,7 @@ public class WebAuthController {
                 form.getCity(), form.getState(),
                 form.getPhoneNumber()),
             user.getId());
-        ModelAndView mav = new ModelAndView("views/user/profile");
+        ModelAndView mav = new ModelAndView("redirect:/account");
         return mav;
     }
 

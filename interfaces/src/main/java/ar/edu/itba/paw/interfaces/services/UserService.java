@@ -24,8 +24,6 @@ public interface UserService {
 
     void generateNewPassword(User user);
 
-    Optional<User> updateUserInfo(long userId, String name, String surname, String phoneNumber, String state, String city) throws DuplicateUserException;
-
     Optional<User> updatePassword(String token, String password);
 
     Optional<UserStats> getUserStatsById(long id);

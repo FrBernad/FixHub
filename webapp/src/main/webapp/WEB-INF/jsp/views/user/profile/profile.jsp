@@ -35,7 +35,7 @@
                         <p class="userSectionTitles"><spring:message code="profilePage.subtitle.contact"/></p>
                     </div>
                     <div class="col-md-auto justify-content-center align-content-center">
-                        <a href="<c:url value='/editProfile'/>">
+                        <a href="<c:url value='/account/update'/>">
                             <button class="continueBtn" type="submit">
                                 <spring:message code="profilePage.edit"/>
                             </button>

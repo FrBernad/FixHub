@@ -127,12 +127,6 @@ public class UserServiceImpl implements UserService {
         sendPasswordResetToken(user, token);
     }
 
-    @Override
-    public Optional<User> updateUserInfo(long userId, String name, String surname, String phoneNumber, String state, String city) throws DuplicateUserException {
-
-        return userDao.updateUserInfo(userId,name,surname,phoneNumber,state,city);
-
-    }
     @Transactional
     public Optional<User> updatePassword(String token, String password) {
         Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
@@ -155,6 +149,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserStatsById(id);
     }
 
+    @Transactional
     @Override
     public void updateUserInfo(UserInfo userInfo, long userId) {
         userDao.updateUserInfo(userInfo, userId);

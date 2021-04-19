@@ -147,16 +147,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> updateUserInfo(long userId, String name, String surname, String phoneNumber, String state, String city) throws DuplicateUserException{
-
-        //view later: jdbcTemplat.update() could throw an exception
-        if(jdbcTemplate.update("UPDATE users set u_name = ?, u_surname = ?, u_phone_number = ? , u_state = ?, u_city = ? where u_id = ?",
-                name, surname, phoneNumber, state, city, userId) == 1){
-            return getUserById(userId);
-        }
-        return Optional.empty();
-    }
-    @Override
     public Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal) {
         if (jdbcTemplate.update("UPDATE roles set r_role = ? where r_user_id = ? and r_role = ?",
             newVal.name(), userId, oldVal.name()) == 1) {

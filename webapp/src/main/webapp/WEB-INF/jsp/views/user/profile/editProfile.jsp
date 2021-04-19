@@ -5,13 +5,13 @@
 <html>
 <head>
     <title><spring:message code="productName"/> | <spring:message code="editProfilePage.title"/></title>
-    <%@ include file="../components/includes/headers.jsp" %>
+    <%@ include file="../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/user.css"/>' rel="stylesheet">
 </head>
 <body>
 <div class="outerContainer pb-4">
-    <%@ include file="../components/navbar.jsp" %>
+    <%@ include file="../../../components/navbar.jsp" %>
     <div class="container-lg userContainer py-4">
         <div class="container-lg px-0 m-2">
             <div class="container-fluid">
@@ -23,12 +23,12 @@
             </div>
         </div>
         <div class="container-lg px-4 m-2 ">
-            <%@ include file="../components/forms/editProfileForm.jsp" %>
+            <%@ include file="../../../components/forms/userInfoForm.jsp" %>
         </div>
     </div>
 </div>
-<%@ include file="../components/footer.jsp" %>
-<%@ include file="../components/includes/bottomScripts.jsp"%>
+<%@ include file="../../../components/footer.jsp" %>
+<%@ include file="../../../components/includes/bottomScripts.jsp"%>
 
 </body>
 </html>
