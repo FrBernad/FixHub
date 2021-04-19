@@ -33,10 +33,6 @@
     border-bottom: solid 2px rgba(0, 0, 0, .2);
 }
 
-.resultHeader p span {
-    color: rgb(196, 85, 0);
-}
-
 .jobCard:hover {
     box-shadow: 0 0 11px rgba(33, 33, 33, .2);
     transform: scale(1.02);
@@ -49,33 +45,3 @@
     object-fit: cover;
 }
 
-.inputBtn {
-    border-radius: 0 8px 8px 0 !important;
-    background-color: rgba(0, 59, 109, 1);
-    color: white;
-}
-
-.inputBtn:hover {
-    transition: 150ms linear;
-    color: rgba(255, 255, 255, .9);
-}
-
-.noJobsFound {
-    height: 300px;
-    width: auto;
-    background-color: white
-}
-
-.dropdown-custom {
-    border-radius: 8px !important;
-    font-size: 14px;
-    font-weight: bold;
-    background-color: white;
-    color: rgba(0, 59, 109, 1);
-    border: none;
-    padding: 8px 16px;
-}
-
-.resultQuery {
-    font-size: 12px;
-}

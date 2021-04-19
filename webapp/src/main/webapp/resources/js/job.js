@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
             })
         }
 
-        if (reviewsPagination.dataset.paginationmodal === "true") {
+        if (reviewsModal.data("paginationmodal") === "true") {
             reviewsModal.modal('show');
         }
 

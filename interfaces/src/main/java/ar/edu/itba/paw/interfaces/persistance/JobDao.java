@@ -17,12 +17,12 @@ public interface JobDao {
 
     Collection<Long> getImagesIdsByJobId(Long jobId);
 
-    Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOptions, Long providerId, int page, int itemsPerPage);
+    Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage);
 
-    Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOptions, JobCategory category, int page, int itemsPerPage);
+    Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, int page, int itemsPerPage);
 
-    Integer getJobsCountByCategory(String searchBy, OrderOptions orderOptions, JobCategory category);
+    Integer getJobsCountByCategory(String searchBy, OrderOptions orderOption, JobCategory category);
 
-    Integer getJobsCountByProviderId(String searchBy, OrderOptions orderOptions, Long providerId);
+    Integer getJobsCountByProviderId(String searchBy, OrderOptions orderOption, Long providerId);
 }
 

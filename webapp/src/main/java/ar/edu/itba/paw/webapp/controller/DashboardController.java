@@ -36,10 +36,13 @@ public class DashboardController {
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
 
         final Collection<JobContact> contacts = userService.getClients(user.getId());
+
+        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
+        mav.addObject("orderOptions", orderOptions);
         mav.addObject("results", jobs);
         mav.addObject("stats", stats);
-        mav.addObject("contactsList",contacts);
+        mav.addObject("contactsList", contacts);
 
         return mav;
     }
@@ -49,12 +52,15 @@ public class DashboardController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(form.getQuery(), form.getOrder(), user.getId(), form.getPage(), 3);
+        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(form.getQuery(), form.getOrder(), user.getId(), form.getPage(), 4);
 
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
+        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
-        mav.addObject("jobs", jobs);
+        mav.addObject("orderOptions", orderOptions);
+        mav.addObject("searched", true);
+        mav.addObject("results", jobs);
         mav.addObject("stats", stats);
 
         return mav;

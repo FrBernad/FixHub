@@ -28,7 +28,7 @@ public class JobDaoImpl implements JobDao {
     private final String EMPTY = " ";
 
     private static final ResultSetExtractor<Collection<Job>> JOB_ROW_MAPPER = rs -> {
-        Map<Long, Job> jobsMap = new HashMap<>();
+        Map<Long, Job> jobsMap = new LinkedHashMap<>();
 
         long jobId;
 
@@ -53,9 +53,10 @@ public class JobDaoImpl implements JobDao {
                             rs.getString("u_phone_number"),
                             rs.getString("u_state"),
                             rs.getString("u_city"),
-                            new ArrayList<>()),
+                            Collections.emptyList()),
                         new ArrayList<>()));
             }
+
             if (rs.getObject("ji_image_id") != null) {
                 jobsMap.get(jobId).addImageId(rs.getLong("ji_image_id"));
             }
@@ -109,7 +110,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOptions, JobCategory category, int page, int itemsPerPage) {
+    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, int page, int itemsPerPage) {
 
         List<Object> variables = new LinkedList<>();
 
@@ -129,7 +130,7 @@ public class JobDaoImpl implements JobDao {
             searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
         }
 
-        String orderQuery = getOrderQuery(orderOptions);
+        String orderQuery = getOrderQuery(orderOption);
 
         String offset = EMPTY;
         if (page > 0) {
@@ -148,7 +149,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Integer getJobsCountByCategory(String searchBy, OrderOptions orderOptions, JobCategory category) {
+    public Integer getJobsCountByCategory(String searchBy, OrderOptions orderOption, JobCategory category) {
         List<Object> variables = new LinkedList<>();
 
         String filterQuery = EMPTY;
@@ -175,7 +176,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Integer getJobsCountByProviderId(String searchBy, OrderOptions orderOptions, Long providerId) {
+    public Integer getJobsCountByProviderId(String searchBy, OrderOptions orderOption, Long providerId) {
         List<Object> variables = new LinkedList<>();
 
         String filterQuery = " WHERE j_provider_id = ? ";
@@ -218,7 +219,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOptions, Long providerId, int page, int itemsPerPage) {
+    public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage) {
         List<Object> variables = new LinkedList<>();
 
         String filterQuery = " WHERE j_provider_id = ? ";
@@ -229,11 +230,10 @@ public class JobDaoImpl implements JobDao {
             searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
             variables.add(searchBy);
             variables.add(searchBy);
-            variables.add(searchBy);
             searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? ";
         }
 
-        String orderQuery = getOrderQuery(orderOptions);
+        String orderQuery = getOrderQuery(orderOption);
 
         String offset = EMPTY;
         if (page > 0) {

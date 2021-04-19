@@ -53,6 +53,7 @@ public class JobController {
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
                             @RequestParam(defaultValue = "0") int page) {
+
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);

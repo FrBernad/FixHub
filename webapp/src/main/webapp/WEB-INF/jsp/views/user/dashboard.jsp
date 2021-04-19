@@ -20,7 +20,7 @@
 
 <div class="container-fluid outerContainer p-0">
     <%@ include file="../../components/navbar.jsp" %>
-    <div class="container p-2 mt-5 mb-5" style="min-height: 100%">
+    <div class="container py-5" style="min-height: 100%">
         <div class="row" style="min-height: 100%">
             <div class="col-3">
                 <div class="list-group" role="tablist" id="tabList">
@@ -99,9 +99,49 @@
                                     <div class="tab-pane fade" role="tabpanel" id="works">
                                         <div class="container-fluid">
                                             <div class="row">
-
+                                                <div class="col-7 d-flex align-items-center justify-content-start">
+                                                    <div class="input-group">
+                                                        <input placeholder="<spring:message code="discover.barPlaceholder"/>"
+                                                               id="searchBar"
+                                                               class="inputRadius form-control p-4"/>
+                                                        <div class="input-group-prepend">
+                                                            <button id="searchButton"
+                                                                    class="btn btn-lg inputBtn">
+                                                                <spring:message code="discover.search"/>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-5 d-flex align-items-center justify-content-end">
+                                                    <div class="dropdown ">
+                                                        <button class="dropdown-custom dropdown-toggle" type="button"
+                                                                id="orderDropdown"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                            <spring:message code="discover.orderBy"/>
+                                                            <span class="resultQuery">
+                                                            <c:if test="${results.order!=null && !results.order.isEmpty()}">
+                                                                <spring:message code="discover.orderOption.${results.order}"/>
+                                                            </c:if>
+                                                            </span>
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="orderDropdown">
+                                                            <c:forEach var="order" items="${orderOptions}">
+                                                                <div class="input-group">
+                                                                    <button data-order="${order}"
+                                                                            class="dropdown-item orderButton">
+                                                                        <spring:message
+                                                                                code="discover.orderOption.${order}"/>
+                                                                    </button>
+                                                                </div>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <c:if test="${results.query!=null && !results.query.isEmpty()}">
-                                                    <div class="col-12 mb-3 resultHeader p-0 d-flex align-items-start">
+                                                    <div class="col-12 my-2 resultHeader d-flex align-items-start">
                                                         <p class="mb-0"><spring:message code="discover.showingResults"/>
                                                             <span>"<c:out value='${results.query}'/>"</span>
                                                         </p>
@@ -111,43 +151,16 @@
                                                 <c:choose>
                                                     <c:when test="${results.results.size()>0}">
                                                         <div class="col-12">
+
                                                             <div class="container-fluid px-0">
+
                                                                 <div class="row align-items-top ${results.results.size()%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                                                     <c:forEach var="job" items="${results.results}">
                                                                         <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                                                                            <%@ include
-                                                                                    file="../../components/cards/jobCard.jsp" %>
+                                                                            <%@ include file="../../components/cards/jobCard.jsp" %>
                                                                         </div>
                                                                     </c:forEach>
-                                                                    <div class="col-12 align-items-center justify-content-center mt-4
-                                                                      ${results.totalPages<=1 ? 'd-none':''} ">
-                                                                        <nav class="d-flex align-items-center justify-content-center">
-                                                                            <ul class="pagination mb-0" id="pagination"
-                                                                                data-page="${results.page}">
-                                                                                <li class="page-item ${results.isFirst() ? 'disabled' : ''}">
-                                                                                    <a class="page-link" id="prev"
-                                                                                       aria-label="Previous">
-                                                                                        <span aria-hidden="true">&laquo;</span>
-                                                                                    </a>
-                                                                                </li>
-                                                                                <c:forEach begin="1"
-                                                                                           end="${results.totalPages}"
-                                                                                           varStatus="status">
-                                                                                    <li class="page-item ${results.page == status.index-1 ? 'active' : ''}">
-                                                                                        <a
-                                                                                                class="page-link index"
-                                                                                                data-index="${status.index}">${status.index}</a>
-                                                                                    </li>
-                                                                                </c:forEach>
-                                                                                <li class="page-item ${results.isLast() ? 'disabled' : ''}">
-                                                                                    <a class="page-link" id="next"
-                                                                                       aria-label="Next">
-                                                                                        <span aria-hidden="true">&raquo;</span>
-                                                                                    </a>
-                                                                                </li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                    </div>
+                                                                    <%@ include file="../../components/pagination.jsp" %>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -183,7 +196,8 @@
 
                                                     <c:forEach var="contact" items="${contactsList}">
                                                         <tr>
-                                                            <td><c:out value="${contact.user.name} ${contact.user.surname}"/></td>
+                                                            <td><c:out
+                                                                    value="${contact.user.name} ${contact.user.surname}"/></td>
                                                             <td><c:out value="${contact.user.email}"/></td>
                                                             <td><c:out value="${contact.date}"/></td>
                                                         </tr>

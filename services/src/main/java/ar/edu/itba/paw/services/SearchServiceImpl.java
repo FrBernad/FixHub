@@ -17,7 +17,7 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private JobDao jobDao;
 
-    private final OrderOptions defaultOrder = OrderOptions.valueOf("MOST_POPULAR");
+    private final OrderOptions DEFAULT_ORDER = OrderOptions.valueOf("MOST_POPULAR");
 
     private final int DEFAULT_ITEMS_PER_PAGE = 6;
 
@@ -25,8 +25,8 @@ public class SearchServiceImpl implements SearchService {
     public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page, int itemsPerPage) {
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
-            queryOrderOption = defaultOrder;
-            orderBy = defaultOrder.name();
+            queryOrderOption = DEFAULT_ORDER;
+            orderBy = DEFAULT_ORDER.name();
         } else {
             queryOrderOption = valueOf(orderBy);
         }
@@ -48,20 +48,19 @@ public class SearchServiceImpl implements SearchService {
             querySearchBy = searchBy;
         }
 
-
         if (page < 0) {
             page = 0;
         }
 
+        if (itemsPerPage <= 0) {
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
         int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryOrderOption, queryCategoryFilter);
-        int totalPages = (int) Math.ceil((float) totalJobs / DEFAULT_ITEMS_PER_PAGE);
+        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             page = totalPages - 1;
-        }
-
-        if (itemsPerPage <= 0) {
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
         }
 
         Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, page, itemsPerPage);
@@ -72,8 +71,8 @@ public class SearchServiceImpl implements SearchService {
     public PaginatedSearchResult<Job> getJobsByProviderId(String searchBy, String orderBy, Long providerId, int page, int itemsPerPage) {
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
-            queryOrderOption = defaultOrder;
-            orderBy = defaultOrder.name();
+            queryOrderOption = DEFAULT_ORDER;
+            orderBy = DEFAULT_ORDER.name();
         } else {
             queryOrderOption = valueOf(orderBy);
         }
@@ -91,16 +90,17 @@ public class SearchServiceImpl implements SearchService {
             page = 0;
         }
 
+        if (itemsPerPage <= 0) {
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
         int totalJobs = jobDao.getJobsCountByProviderId(querySearchBy, queryOrderOption, providerId);
-        int totalPages = (int) Math.ceil((float) totalJobs / DEFAULT_ITEMS_PER_PAGE);
+        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             page = totalPages - 1;
         }
 
-        if (itemsPerPage <= 0) {
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
-        }
 
         Collection<Job> jobs = jobDao.getJobsByProviderId(querySearchBy, queryOrderOption, providerId, page, itemsPerPage);
         return new PaginatedSearchResult<>(orderBy, providerId.toString(), searchBy, page, itemsPerPage, totalJobs, jobs);
