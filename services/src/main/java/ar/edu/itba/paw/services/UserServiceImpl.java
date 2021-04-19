@@ -155,8 +155,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void makeProvider(long userId) {
+    @Transactional
+    public void makeProvider(Long userId, List<Long> citiesId, String startTime, String endTime){
         userDao.addRole(userId, Roles.PROVIDER);
+        userDao.addSchedule(userId,startTime,endTime);
+        userDao.addLocation(userId,citiesId);
     }
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {

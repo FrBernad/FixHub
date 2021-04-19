@@ -240,8 +240,10 @@ public class WebAuthController {
             return join(form);
         }
 
+
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        userService.makeProvider(user.getId());
+        userService.makeProvider(user.getId(),form.getCity(),form.getStartTime(),form.getEndTime());
+
 
         return new ModelAndView("redirect:/user/dashboard");
     }

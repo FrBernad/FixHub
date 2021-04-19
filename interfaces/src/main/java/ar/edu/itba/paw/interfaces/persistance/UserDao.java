@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.UserStats;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
@@ -39,4 +40,9 @@ public interface UserDao {
     Collection<JobContact> getClients(Long providerId);
 
     Collection<JobContact> getProviders(Long clientId);
+
+    void addSchedule(Long userId,String startTime, String endTime);
+
+    void addLocation(Long userId, List<Long> citiesId);
+
 }

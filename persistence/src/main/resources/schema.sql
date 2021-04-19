@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS CONTACT
     c_provider_id BIGINT    NOT NULL,
     c_user_id     BIGINT    NOT NULL,
     c_job_id      BIGINT    NOT NULL,
-    c_info_id        BIGINT    NOT NULL,
+    c_info_id     BIGINT    NOT NULL,
     c_message     VARCHAR(300),
     c_date        TIMESTAMP NOT NULL,
     primary key (c_id),
@@ -131,3 +131,19 @@ CREATE TABLE IF NOT EXISTS CITIES
     PRIMARY KEY (c_id)
 );
 
+CREATE TABLE IF NOT EXISTS USER_LOCATION
+(
+  ul_city_id BIGINT NOT NULL,
+  ul_user_id BIGINT NOT NULL,
+  FOREIGN KEY (ul_user_id) REFERENCES USERS (u_id),
+  FOREIGN KEY (ul_city_id) REFERENCES CITIES (c_id),
+  PRIMARY KEY (ul_city_id,ul_user_id)
+);
+
+CREATE TABLE IF NOT EXISTS USER_SCHEDULE(
+  us_user_id BIGINT NOT NULL,
+  us_start_time VARCHAR(5) NOT NULL,
+  us_end_time VARCHAR(5) NOT NULL,
+  FOREIGN KEY (us_user_id) REFERENCES USERS(u_id),
+  PRIMARY KEY (us_user_id,us_start_time,us_end_time)
+);

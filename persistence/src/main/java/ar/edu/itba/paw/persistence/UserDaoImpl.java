@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -25,6 +26,8 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert roleSimpleJdbcInsert;
     private SimpleJdbcInsert contactInfoSimpleJdbcInsert;
     private SimpleJdbcInsert contactProviderSimpleJdbcInsert;
+    private SimpleJdbcInsert userScheduleSimpleJdbcInsert;
+    private SimpleJdbcInsert userLocationSimpleJdbcInsert;
 
 
     private static final ResultSetExtractor<Collection<UserStats>> USER_STATS_ROW_MAPPER = rs -> {
@@ -119,6 +122,8 @@ public class UserDaoImpl implements UserDao {
         roleSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("ROLES").usingGeneratedKeyColumns("r_id");
         contactInfoSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("CONTACT_INFO").usingGeneratedKeyColumns("ci_id");
         contactProviderSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("CONTACT").usingGeneratedKeyColumns("c_id");
+        userScheduleSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USER_SCHEDULE");
+        userLocationSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USER_LOCATION");
     }
 
     @Override
@@ -262,5 +267,27 @@ public class UserDaoImpl implements UserDao {
     public Collection<JobContact> getProviders(Long clientId){
         return jdbcTemplate.query("SELECT * FROM (SELECT * FROM (SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_user_id = ? ) AUX JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id",new Object[]{clientId},PROVIDER_ROW_MAPPER);
     }
+
+    @Override
+    public void addSchedule(Long userId,String startTime, String endTime){
+        Map<String,Object> schedule = new HashMap<>();
+
+        schedule.put("us_user_id",userId);
+        schedule.put("us_start_time", startTime);
+        schedule.put("us_end_time",endTime);
+        userScheduleSimpleJdbcInsert.execute(schedule);
+    }
+
+
+    @Override
+    public void addLocation(Long userId,List<Long> citiesId){
+        Map<String,Object> location = new HashMap<>();
+        for(Long cityId: citiesId){
+            location.put("ul_user_id",userId);
+            location.put("ul_city_id",cityId);
+            userLocationSimpleJdbcInsert.execute(location);
+        }
+    }
+
 
 }
