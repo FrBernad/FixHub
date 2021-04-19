@@ -26,7 +26,7 @@ public class SearchController {
     @RequestMapping("/discover")
     public ModelAndView discover(@ModelAttribute("searchForm") final SearchForm form) {
         final ModelAndView mav = new ModelAndView("views/discover");
-        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null, null, null,0);
+        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null, null, null,0,-1);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         mav.addObject("filters", categories);
@@ -41,7 +41,7 @@ public class SearchController {
         final String query = form.getQuery(), order = form.getOrder(), filter = form.getFilter();
         final int page = form.getPage();
 
-        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, filter, page);
+        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, filter, page, -1);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         Collection<OrderOptions> orderOptions = Arrays.asList(OrderOptions.values().clone());
 

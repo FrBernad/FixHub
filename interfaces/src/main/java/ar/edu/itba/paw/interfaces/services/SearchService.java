@@ -7,7 +7,7 @@ import ar.edu.itba.paw.models.PaginatedSearchResult;
 import java.util.Collection;
 
 public interface SearchService {
-    PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page);
+    PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page, int itemsPerPage);
 
     Collection<OrderOptions> getOrderOptions();
 }

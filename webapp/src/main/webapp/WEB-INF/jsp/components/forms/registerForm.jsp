@@ -34,7 +34,7 @@
                         id="password1" name="password"
                         aria-describedby="password input" cssErrorClass="form-control is-invalid"/>
             <div class="input-group-append">
-                <button id="passwordEye1" type="button"
+                <button id="passwordEye1" type="button" tabindex="-1"
                         class="btn btn-lg form-control inputBtn input-group-text">
                     <i id="eye1" class="far fa-eye-slash"></i>
                 </button>
@@ -51,7 +51,7 @@
                         id="password2" name="confirmPassword"
                         aria-describedby="password input" cssErrorClass="form-control is-invalid"/>
             <div class="input-group-append">
-                <button id="passwordEye2" type="button"
+                <button id="passwordEye2" type="button" tabindex="-1"
                         class="btn btn-lg form-control inputBtn input-group-text">
                     <i id="eye2" class="far fa-eye-slash"></i>
                 </button>

@@ -7,12 +7,12 @@ public class Job {
     private String description,jobProvided;
     private int averageRating;
     private JobCategory category;
-    private Number id;
+    private long id;
     private User provider;
     private BigDecimal price;
     private long totalRatings;
 
-    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, Number id, BigDecimal price, User provider) {
+    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, User provider) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -82,11 +82,11 @@ public class Job {
 
     public void setCategory(JobCategory category) {this.category = category;}
 
-    public Number getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Number id) {
+    public void setId(long id) {
         this.id = id;
     }
 

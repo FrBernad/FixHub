@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.models.Job;
+import ar.edu.itba.paw.models.PaginatedSearchResult;
 import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,9 +17,18 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private ReviewDao reviewDao;
 
+    private final int DEFAULT_ITEMS_PER_PAGE = 6;
+
     @Override
-    public Collection<Review> getReviewsByJobId(Job job) {
-        return reviewDao.getReviewsByJobId(job);
+    public PaginatedSearchResult<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage) {
+        int totalReviews = reviewDao.getReviewsCountByJobId(jobId);
+
+        if (itemsPerPage <= 0) {
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalReviews,
+            reviewDao.getReviewsByJobId(jobId, page, itemsPerPage));
     }
 
     @Override

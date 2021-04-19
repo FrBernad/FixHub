@@ -48,13 +48,18 @@ public class JobController {
 
 
     @RequestMapping("/jobs/{jobId}")
-    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form, @PathVariable("jobId") final Long jobId, final Integer error) {
+    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form,
+                            @PathVariable("jobId") final Long jobId,
+                            final Integer error,
+                            @RequestParam(defaultValue = "false") final boolean paginationModal,
+                            @RequestParam(defaultValue = "0") int page) {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
-        Collection<Review> reviews = reviewService.getReviewsByJobId(job);
-        mav.addObject("reviews", reviews);
+        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(),page,1);
+        mav.addObject("results", results);
+        mav.addObject("paginationModal", paginationModal);
         Collection<Long> imagesIds = jobService.getImagesIdsByJobId(jobId);
         mav.addObject("imagesIds",imagesIds);
         return mav;
@@ -66,7 +71,7 @@ public class JobController {
                                       final BindingResult errors) {
 
         if (errors.hasErrors())
-            return job(form, jobId, 1);
+            return job(form, jobId, 1, false, 0);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos

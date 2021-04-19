@@ -80,7 +80,7 @@ public class JobDaoImpl implements JobDao {
             jobImagesSimpleJdbcInsert.execute(imageJobMap);
         }
 
-        return new Job(description, jobProvided, averageRating, totalRatings, category, id, price, provider);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, provider);
     }
 
     @Override

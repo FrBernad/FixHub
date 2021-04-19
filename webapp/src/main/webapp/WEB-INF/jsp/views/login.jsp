@@ -50,7 +50,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-6 px-0 d-flex justify-content-end">
-                                                <a href="<c:url value='/user/resetPasswordRequest'/>">
+                                                <a href="<c:url value='/user/resetPasswordRequest'/>" tabindex="-1">
                                                     <span class="text-right"
                                                           style="font-size: 0.9rem; margin-bottom: .5rem">
                                                         <spring:message code="login.forgotPassword"/>
@@ -63,7 +63,7 @@
                                                            id="password" name="password"
                                                            aria-describedby="password input"/>
                                                     <div class="input-group-append">
-                                                        <button id="passwordEye" type="button"
+                                                        <button id="passwordEye" type="button" tabindex="-1"
                                                                 class="btn btn-lg form-control inputBtn input-group-text">
                                                             <i id="eye" class="far fa-eye-slash"></i>
                                                         </button>

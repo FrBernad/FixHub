@@ -25,11 +25,11 @@ public class ReviewDaoImpl implements ReviewDao {
     private SimpleJdbcInsert simpleJdbcInsert;
 
     private static final RowMapper<Review> REVIEW_ROW_MAPPER = (rs, rowNum) ->
-            new Review(rs.getLong("r_id"),
-                    rs.getString("r_description"),
-                    rs.getLong("r_job_id"),
-                    rs.getInt("r_rating"),
-                    rs.getTimestamp("r_creation_date").toLocalDateTime().toLocalDate());
+        new Review(rs.getLong("r_id"),
+            rs.getString("r_description"),
+            rs.getLong("r_job_id"),
+            rs.getInt("r_rating"),
+            rs.getTimestamp("r_creation_date").toLocalDateTime().toLocalDate());
 
     @Autowired
     public ReviewDaoImpl(final DataSource ds) {
@@ -38,10 +38,19 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public Collection<Review> getReviewsByJobId(Job job) {
+    public Collection<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage) {
         return jdbcTemplate.query(
-                "SELECT * FROM REVIEWS r WHERE r_job_id = ?", new Object[]{job.getId()}, REVIEW_ROW_MAPPER
+            "SELECT * FROM REVIEWS r WHERE r_job_id = ? OFFSET ? LIMIT ?", new Object[]{jobId, page*itemsPerPage, itemsPerPage}, REVIEW_ROW_MAPPER
         );
+    }
+
+    @Override
+    public Integer getReviewsCountByJobId(long jobId) {
+        return jdbcTemplate.query(
+            "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?",
+            new Object[]{jobId},
+            (rs, rowNum) -> rs.getInt("total")
+        ).stream().findFirst().orElse(0);
     }
 
     @Override
@@ -58,10 +67,10 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public int getReviewsCountByJobId(Job job) {
         return jdbcTemplate.query(
-                "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?", new Object[]{job.getId()},
-                rs -> {
-                    return rs.getInt("total");
-                }
+            "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?", new Object[]{job.getId()},
+            rs -> {
+                return rs.getInt("total");
+            }
         );
     }
 }

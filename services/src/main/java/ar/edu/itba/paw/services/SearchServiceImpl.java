@@ -22,7 +22,7 @@ public class SearchServiceImpl implements SearchService {
     private final int DEFAULT_ITEMS_PER_PAGE = 6;
 
     @Override
-    public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page) {
+    public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page, int itemsPerPage) {
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
             queryOrderOption = defaultOrder;
@@ -60,8 +60,12 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
+        if(itemsPerPage<=0){
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
         Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, page, DEFAULT_ITEMS_PER_PAGE);
-        return new PaginatedSearchResult<>(orderBy, filterBy, searchBy, page, DEFAULT_ITEMS_PER_PAGE, totalJobs, jobs);
+        return new PaginatedSearchResult<>(orderBy, filterBy, searchBy, page, itemsPerPage, totalJobs, jobs);
     }
 
     @Override
