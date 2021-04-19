@@ -5,13 +5,12 @@
 <html>
 <head>
     <title><spring:message code="productName"/> | <spring:message code="join.title"/></title>
+
     <%@ include file="../../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 </head>
 
 <body>
-
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../../../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
@@ -25,14 +24,13 @@
                         <span class="font-weight-bold"><spring:message
                                 code="join.description.boldText"/>
                         </span>
-                        <spring:message code="join.description.normalText"/>
-                    </p>
+                        <spring:message code="join.description.normalText"/></p>
                 </div>
                 <div class="col-12">
                     <div class="container-fluid px-0">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center justify-content-center">
-                                <%@ include file="../../../../components/forms/joinForm.jsp" %>
+                                <%@ include file="../../../../components/forms/chooseCityForm.jsp" %>
                             </div>
                         </div>
                     </div>
@@ -44,8 +42,7 @@
 
 <%@ include file="../../../../components/footer.jsp" %>
 <%@ include file="../../../../components/includes/bottomScripts.jsp" %>
-<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-<script src='<c:url value="/resources/js/join.js"/>'></script>
+<script src='<c:url value="/resources/js/chooseCity.js"/>'></script>
 </body>
 
 </html>
