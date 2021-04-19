@@ -34,12 +34,12 @@ public class DashboardController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 3);
+        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 4);
 
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
-        mav.addObject("jobs", jobs);
+        mav.addObject("results", jobs);
         mav.addObject("stats", stats);
 
         return mav;

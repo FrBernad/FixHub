@@ -221,7 +221,7 @@ public class JobDaoImpl implements JobDao {
     public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOptions, Long providerId, int page, int itemsPerPage) {
         List<Object> variables = new LinkedList<>();
 
-        String filterQuery = " WHERE j_category = ? ";
+        String filterQuery = " WHERE j_provider_id = ? ";
         variables.add(providerId);
 
         String searchQuery = EMPTY;
@@ -230,7 +230,7 @@ public class JobDaoImpl implements JobDao {
             variables.add(searchBy);
             variables.add(searchBy);
             variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? ";
         }
 
         String orderQuery = getOrderQuery(orderOptions);
@@ -248,7 +248,7 @@ public class JobDaoImpl implements JobDao {
             variables.add(itemsPerPage);
         }
 
-        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, variables);
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, offset, limit, variables);
     }
 
     private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String offset, String limit, List<Object> variables) {
