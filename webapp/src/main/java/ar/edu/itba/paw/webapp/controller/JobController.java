@@ -57,7 +57,7 @@ public class JobController {
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
-        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(),page,1);
+        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(),page,5);
         mav.addObject("results", results);
         mav.addObject("paginationModal", paginationModal);
         Collection<Long> imagesIds = jobService.getImagesIdsByJobId(jobId);
@@ -76,7 +76,6 @@ public class JobController {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos
         final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
-
 
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
 
@@ -193,7 +192,5 @@ public class JobController {
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }
-
-
 
 }

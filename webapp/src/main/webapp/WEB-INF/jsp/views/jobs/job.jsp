@@ -103,8 +103,9 @@
                                 <div class="container-fluid p-0">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-start align-items-center">
-                                            <h2 class="sectionTitle mb-3"><spring:message
-                                                    code="job.information.title"/></h2>
+                                            <h2 class="sectionTitle mb-3">
+                                                <spring:message code="job.information.title"/>
+                                            </h2>
                                         </div>
                                     </div>
                                     <div class="row">
