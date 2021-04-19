@@ -96,6 +96,7 @@
     </div>
     <div class="col-12 d-flex align-items-center justify-content-center">
         <button type="button" id="registerFormButton" form="registerForm" class="w-100 continueBtn my-2 ">
-            <spring:message code="registerForm.buttonText"/></button>
+            <spring:message code="registerForm.buttonText"/>
+        </button>
     </div>
 </form:form>

@@ -32,5 +32,4 @@ public class LandingPageController {
         mav.addObject("categories", categories);
         return mav;
     }
-
 }

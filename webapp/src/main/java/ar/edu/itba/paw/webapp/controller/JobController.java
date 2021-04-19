@@ -24,6 +24,9 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class JobController {
@@ -78,7 +81,6 @@ public class JobController {
         final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
 
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
-
         return mav;
     }
 

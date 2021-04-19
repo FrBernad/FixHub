@@ -19,6 +19,8 @@ public interface UserDao {
 
     Collection<Roles> getUserRoles();
 
+    Optional<User> updateUserInfo(long userId, String name, String surname, String phoneNumber, String state, String city) throws DuplicateUserException;
+
     Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
 
     Optional<User> updatePassword(long userId, String password);
