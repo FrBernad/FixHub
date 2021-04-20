@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 d-flex align-items-center justify-content-center">
+    <div class="col-12 px-0 d-flex align-items-center justify-content-center">
         <button type="submit" id="editFormButton" form="userInfoForm" class="w-100 continueBtn my-2 ">
             <spring:message code="userInfoForm.submit"/>
         </button>

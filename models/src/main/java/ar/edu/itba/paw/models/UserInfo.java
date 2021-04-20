@@ -11,12 +11,9 @@ public class UserInfo {
         this.phoneNumber = phoneNumber;
     }
 
-
-
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;

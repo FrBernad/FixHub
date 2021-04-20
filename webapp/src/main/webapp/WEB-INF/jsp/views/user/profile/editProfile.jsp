@@ -12,7 +12,7 @@
 <body>
 <div class="outerContainer pb-4">
     <%@ include file="../../../components/navbar.jsp" %>
-    <div class="container-lg userContainerProfile py-4">
+    <div class="container-lg mt-4 smallContentContainer py-4">
         <div class="container-lg px-4 m-2 ">
             <%@ include file="../../../components/forms/userInfoForm.jsp" %>
         </div>

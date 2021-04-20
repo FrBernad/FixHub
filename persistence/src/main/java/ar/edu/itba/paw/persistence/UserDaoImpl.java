@@ -168,7 +168,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
         jdbcTemplate.update("UPDATE users SET u_name = ?, " +
-                "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ?, " +
+                "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ? " +
                 " where u_id = ?", userInfo.getName(), userInfo.getSurname(),
             userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), user.getId());
     }

@@ -5,6 +5,12 @@
     overflow: hidden;
 }
 
+.editProfileContainer {
+    min-height: 75%;
+    background-color: rgba(250, 250, 250, 0.95);
+    border-radius: 8px;
+    overflow: hidden;
+}
 
 .backgroundImage {
     object-fit: cover;
