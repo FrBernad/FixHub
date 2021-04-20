@@ -37,7 +37,8 @@
                        role="tab" data-name="${contacts}" id="tabContacts">
                         <i class="fas fa-address-book mr-2"></i><span class="text"><c:out
                             value="${contacts}"/></span><span
-                            class="badge badge-pill badge-secondary"><c:out value="${contactsResults.totalItems}"/></span>
+                            class="badge badge-pill badge-secondary"><c:out
+                            value="${contactsResults.totalItems}"/></span>
                     </a>
                 </div>
             </div>
@@ -191,34 +192,30 @@
                                         <form:input path="page" type="hidden" id="pageInput2"/>
                                     </form:form>
                                     <div class="tab-pane fade" role="tabpanel" id="contacts">
-                                        <table class="table table-hover">
-                                            <thead class="table-head">
-                                            <tr>
-                                                <th><spring:message code="dashboard.Name"/></th>
-                                                <th><spring:message code="dashboard.Email"/></th>
-                                                <th><spring:message code="dashboard.When"/></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:choose>
-                                                <c:when test="${contactsResults.totalPages > 0}">
-                                                    <c:forEach var="contact" items="${contactsResults.results}">
-                                                        <tr>
-                                                            <td><c:out
-                                                                    value="${contact.user.name} ${contact.user.surname}"/></td>
-                                                            <td><c:out value="${contact.user.email}"/></td>
-                                                            <td><c:out value="${contact.date}"/></td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <tr>
-                                                        <td>Ningún usuario te ha contactado</td>
-                                                    </tr>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            </tbody>
-                                        </table>
+                                        <c:choose>
+                                            <c:when test="${contactsResults.totalPages > 0}">
+                                                <c:forEach var="contact" items="${contactsResults.results}"
+                                                           varStatus="status">
+                                                    <div class="mt-2">
+                                                        <%@ include
+                                                                file="../../components/cards/clientsContactCard.jsp" %>
+
+                                                    </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="col-12 d-flex align-items-center justify-content-center">
+                                                    <div class="container mt-2 d-flex align-items-center justify-content-center">
+                                                        <p class="m-0 text-center p-4" style="font-size: 16px">
+                                                            <spring:message code="dashboard.Contact.Empty"/>
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+
                                         <div class="col-12 align-items-center justify-content-center mt-4
                                                      ${contactsResults.totalPages<=1 ? 'd-none':''} ">
                                             <nav class="d-flex align-items-center justify-content-center">

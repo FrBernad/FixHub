@@ -43,3 +43,8 @@ a .badge {
     color: var(--tertiary-color) !important;
 }
 
+.client-label{
+    font-weight: bolder;
+}
+
+
