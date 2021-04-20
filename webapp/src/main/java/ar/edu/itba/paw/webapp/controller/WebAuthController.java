@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.services.LocationService;
+import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
@@ -42,6 +43,9 @@ public class WebAuthController {
 
     @Autowired
     private LocationService locationService;
+
+    @Autowired
+    private SearchService searchService;
 
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
@@ -252,7 +256,7 @@ public class WebAuthController {
     @RequestMapping(path = "/user/account")
     public ModelAndView profile(){
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final Collection<JobContact> providersContacted = userService.getProviders(user.getId());
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(),0,4);
 
         final  ModelAndView mav= new ModelAndView("views/user/profile/profile");
         mav.addObject("providersContacted",providersContacted);
