@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @Controller
 public class DashboardController {
@@ -27,7 +25,7 @@ public class DashboardController {
     private SearchService searchService;
 
     @RequestMapping("/user/dashboard")
-    public ModelAndView dashboard(@ModelAttribute("searchForm") final SearchForm form, @ModelAttribute("searchForm2") final SearchForm form2) {
+    public ModelAndView dashboard(@ModelAttribute("searchForm") final SearchForm form, @ModelAttribute("searchForm") final SearchForm form2) {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -35,7 +33,7 @@ public class DashboardController {
 
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 1);
+        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 4);
 
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
@@ -48,7 +46,7 @@ public class DashboardController {
     }
 
     @RequestMapping("/user/dashboard/jobs/search")
-    public ModelAndView dashboardSearch(@ModelAttribute("searchForm") final SearchForm form) {
+    public ModelAndView dashboardSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -57,7 +55,7 @@ public class DashboardController {
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
-        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 1);
+        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
         mav.addObject("orderOptions", orderOptions);
@@ -70,11 +68,11 @@ public class DashboardController {
     }
 
     @RequestMapping("/user/dashboard/contacts/search")
-    public ModelAndView dashboardContactsSearch(@ModelAttribute("searchForm") final SearchForm form) {
+    public ModelAndView dashboardContactsSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), form.getPage(), 1);
+        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), form.getPage(), 4);
 
         final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
