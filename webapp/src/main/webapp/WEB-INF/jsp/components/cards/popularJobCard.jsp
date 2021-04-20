@@ -19,8 +19,20 @@
                 code="home.categories.${job.category}"/></span>
     </div>
     <div class="jobCardImgContainer">
-        <img src="<c:url value='/resources/images/${job.category}.jpg'/>"
-             class="jobCardImg" alt="${job.category}">
+        <c:choose>
+            <c:when test="${job.imagesId.size() > 0}">
+                <img
+                        src="<c:url value='/jobs/images/${job.getJobThumbnailId()}'/>"
+                        alt="${job.category}" class="card-img jobCardImg"
+                >
+            </c:when>
+            <c:otherwise>
+                <img
+                        class="card-img jobCardImg"
+                        src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                        alt="${job.category}">
+            </c:otherwise>
+        </c:choose>
     </div>
     <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
     <div class="jobPrice">

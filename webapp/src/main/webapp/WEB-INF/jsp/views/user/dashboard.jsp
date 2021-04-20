@@ -87,7 +87,7 @@
 
 
                                     <%--Tus Trabajos--%>
-                                    <c:url value="/user/dashboard/search" var="postPath"/>
+                                    <c:url value="/user/dashboard/jobs/search" var="postPath"/>
                                     <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
                                                method="GET"
                                                id="searchForm">
@@ -106,7 +106,7 @@
                                                                class="inputRadius form-control p-4"/>
                                                         <div class="input-group-prepend">
                                                             <button id="searchButton"
-                                                                    class="btn btn-lg inputBtn">
+                                                                    class="btn inputBtn">
                                                                 <spring:message code="discover.search"/>
                                                             </button>
                                                         </div>
@@ -121,7 +121,8 @@
                                                             <spring:message code="discover.orderBy"/>
                                                             <span class="resultQuery">
                                                             <c:if test="${results.order!=null && !results.order.isEmpty()}">
-                                                                <spring:message code="discover.orderOption.${results.order}"/>
+                                                                <spring:message
+                                                                        code="discover.orderOption.${results.order}"/>
                                                             </c:if>
                                                             </span>
                                                         </button>
@@ -151,22 +152,22 @@
                                                 <c:choose>
                                                     <c:when test="${results.results.size()>0}">
                                                         <div class="col-12">
-
                                                             <div class="container-fluid px-0">
-
                                                                 <div class="row align-items-top ${results.results.size()%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                                                     <c:forEach var="job" items="${results.results}">
                                                                         <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                                                                            <%@ include file="../../components/cards/jobCard.jsp" %>
+                                                                            <%@ include
+                                                                                    file="../../components/cards/jobCard.jsp" %>
                                                                         </div>
                                                                     </c:forEach>
-                                                                    <%@ include file="../../components/pagination.jsp" %>
+                                                                    <%@ include
+                                                                            file="../../components/pagination.jsp" %>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <div class="col-12 d-flex align-items-center justify-content-center">
+                                                        <div class="col-12 d-flex py-4 align-items-center justify-content-center">
                                                             <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
                                                                 <p class="m-0 text-center p-4"
                                                                    style="font-size: 16px">
@@ -181,6 +182,14 @@
                                     </div>
 
                                     <%--Contactos--%>
+                                    <c:url value="/user/dashboard/contacts/search" var="postPath"/>
+                                    <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
+                                               method="GET"
+                                               id="searchForm2">
+                                        <form:input path="order" type="hidden" id="orderInput2"/>
+                                        <form:input path="query" type="hidden" id="searchInput2"/>
+                                        <form:input path="page" type="hidden" id="pageInput2"/>
+                                    </form:form>
                                     <div class="tab-pane fade" role="tabpanel" id="contacts">
                                         <table class="table table-hover">
                                             <thead class="table-head">
@@ -192,9 +201,8 @@
                                             </thead>
                                             <tbody>
                                             <c:choose>
-                                                <c:when test="${contactsList.size() > 0}">
-
-                                                    <c:forEach var="contact" items="${contactsList}">
+                                                <c:when test="${contactsResults.totalPages > 0}">
+                                                    <c:forEach var="contact" items="${contactsResults.results}">
                                                         <tr>
                                                             <td><c:out
                                                                     value="${contact.user.name} ${contact.user.surname}"/></td>
@@ -202,6 +210,7 @@
                                                             <td><c:out value="${contact.date}"/></td>
                                                         </tr>
                                                     </c:forEach>
+
                                                 </c:when>
                                                 <c:otherwise>
                                                     <tr>
@@ -209,10 +218,39 @@
                                                     </tr>
                                                 </c:otherwise>
                                             </c:choose>
-
-
                                             </tbody>
                                         </table>
+                                        <div class="col-12 align-items-center justify-content-center mt-4
+                                                     ${contactsResults.totalPages<=1 ? 'd-none':''} ">
+                                            <nav class="d-flex align-items-center justify-content-center">
+                                                <ul class="pagination mb-0" id="pagination2"
+                                                    data-page="${contactsResults.page}"
+                                                    data-contactmodal="${contactTab}">
+                                                    <li class="page-item ${contactsResults.isFirst() ? 'disabled' : ''}">
+                                                        <a class="page-link" id="prev2"
+                                                           aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <c:forEach begin="1"
+                                                               end="${contactsResults.totalPages}"
+                                                               varStatus="status">
+                                                        <li class="page-item ${contactsResults.page == status.index-1 ? 'active' : ''}">
+                                                            <a
+                                                                    class="page-link index2"
+                                                                    data-index="${status.index}">${status.index}
+                                                            </a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li class="page-item ${contactsResults.isLast() ? 'disabled' : ''}">
+                                                        <a class="page-link" id="next2"
+                                                           aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

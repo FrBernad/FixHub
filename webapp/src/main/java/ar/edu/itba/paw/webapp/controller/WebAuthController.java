@@ -214,8 +214,7 @@ public class WebAuthController {
         ra.addFlashAttribute("endTime", form.getEndTime());
         ra.addFlashAttribute("chooseCityForm", form);
         ra.addFlashAttribute("cities", locationService.getCitiesByStateId(form.getState()));
-        ModelAndView mav = new ModelAndView("redirect:/user/join/chooseCity");
-        return mav;
+        return new ModelAndView("redirect:/user/join/chooseCity");
     }
 
     @RequestMapping("/user/join/chooseCity")

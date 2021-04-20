@@ -18,11 +18,19 @@
                         <spring:message code="navBar.discover"/>
                     </a>
                 </li>
-                <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
-                    <a href="<c:url value='/user/dashboard'/>" class="nav-link navbarText">
-                        <spring:message code="navBar.dashboard"/>
-                    </a>
-                </li>
+                <c:if test="${loggedUser.hasRole('PROVIDER')}">
+                    <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+                        <a href="<c:url value='/user/dashboard'/>" class="nav-link navbarText">
+                            <spring:message code="navBar.dashboard"/>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+                        <a href="<c:url value='/jobs/new'/>" class="nav-link navbarText">
+                            <spring:message code="navBar.newJob"/>
+                        </a>
+                    </li>
+                </c:if>
+
             </ul>
             <ul class="navbar-nav ml-auto">
                 <c:choose>
@@ -45,6 +53,11 @@
                                     <a class="dropdown-item pl-3" href="#">
                                         <spring:message code="navBar.profile"/>
                                     </a>
+                                    <c:if test="${loggedUser.hasRole('PROVIDER')}">
+                                        <a href="<c:url value='/user/dashboard'/>" class="dropdown-item pl-3">
+                                            <spring:message code="navBar.dashboardItem"/>
+                                        </a>
+                                    </c:if>
                                     <div class="dropdown-divider"></div>
                                     <form id="logoutForm" class="mb-0 dropdown-item pl-3"
                                           action="<c:url value='/logout'/>"

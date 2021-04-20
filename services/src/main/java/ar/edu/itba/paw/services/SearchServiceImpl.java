@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.*;
@@ -16,6 +17,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private JobDao jobDao;
+
+    @Autowired
+    private UserDao userDao;
 
     private final OrderOptions DEFAULT_ORDER = OrderOptions.valueOf("MOST_POPULAR");
 
@@ -105,6 +109,30 @@ public class SearchServiceImpl implements SearchService {
         Collection<Job> jobs = jobDao.getJobsByProviderId(querySearchBy, queryOrderOption, providerId, page, itemsPerPage);
         return new PaginatedSearchResult<>(orderBy, providerId.toString(), searchBy, page, itemsPerPage, totalJobs, jobs);
     }
+
+    @Override
+    public PaginatedSearchResult<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage) {
+
+        if (page < 0) {
+            page = 0;
+        }
+
+        if (itemsPerPage <= 0) {
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
+        int totalJobs = userDao.getClientsCountByProviderId(providerId);
+        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+
+        if (page >= totalPages) {
+            page = totalPages - 1;
+        }
+
+
+        Collection<JobContact> contacts = userDao.getClientsByProviderId(providerId, page, itemsPerPage);
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
+    }
+
 
     @Override
     public Collection<OrderOptions> getOrderOptions() {

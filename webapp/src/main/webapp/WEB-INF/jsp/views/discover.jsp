@@ -32,7 +32,7 @@
                            id="searchBar"
                            class="inputRadius form-control p-4"/>
                     <div class="input-group-prepend">
-                        <button id="searchButton" class="btn btn-lg inputBtn">
+                        <button id="searchButton" class="btn inputBtn">
                             <spring:message code="discover.search"/>
                         </button>
                     </div>

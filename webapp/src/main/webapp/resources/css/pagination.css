@@ -59,3 +59,13 @@
 .resultHeader p span {
     color: rgb(196, 85, 0);
 }
+
+.inputRadius::placeholder {
+    color: black !important;
+}
+
+.inputRadius {
+    padding: 8px 16px!important;
+    color: black !important;
+    border-radius: 8px 0 0 8px !important;
+}

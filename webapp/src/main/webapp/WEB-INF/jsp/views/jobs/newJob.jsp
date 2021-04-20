@@ -7,6 +7,8 @@
     <title><spring:message code="productName"/> | <spring:message code="newJob.Title"/></title>
 
     <%@ include file="../../components/includes/headers.jsp" %>
+
+    <link href='<c:url value="/resources/css/newJob.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
 </head>
 
@@ -19,8 +21,10 @@
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
                     <h1 class="text-center title"><spring:message code="newJob.Title"/></h1>
-                    <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message
-                            code="newJob.description.boldText"/></span>
+                    <p class="subtitle text-center mb-4">
+                        <span class="font-weight-bold">
+                        <spring:message code="newJob.description.boldText"/>
+                        </span>
                         <spring:message code="newJob.description.normalText"/></p>
                 </div>
                 <div class="col-12">

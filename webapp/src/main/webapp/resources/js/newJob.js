@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
     let imagesHolder = document.getElementById("imagesHolder");
     let processing = false;
     let jobFormButton = document.getElementById("jobFormButton");
-    let addFileButtom = document.getElementById("addFileButtom");
+    let addFileButton = document.getElementById("addFileButton");
     let inputFile = document.getElementById("inputFiles");
     let files = [];
 
@@ -36,7 +36,7 @@ window.addEventListener("load", () => {
 
     inputFile.addEventListener("change", inputFileUpdate);
 
-    addFileButtom.addEventListener("click", () => {
+    addFileButton.addEventListener("click", () => {
         inputFile.click();
     })
 

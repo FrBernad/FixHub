@@ -36,11 +36,11 @@
 
     </div>
 
-    <div class="form-group">
-        <form:label path="images">
+    <div class="form-group d-flex justify-content-between align-items-center">
+        <form:label path="images" cssClass="mb-0">
             <spring:message code="jobForm.jobImageTitle"/></form:label>
-        <button class="" type="button" id="addFileButtom">
-            <i class="fas fa-upload"></i>
+        <button class="buttonCustom" type="button" id="addFileButton">
+            <i class="fas fa-upload mr-1"></i>
             <spring:message code="jobForm.ImagesButton"/>
         </button>
         <input type="file" id="inputFiles" name="images" hidden/>
@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div class="col-12 d-flex align-items-center justify-content-center">
+    <div class="col-12 px-0 d-flex align-items-center justify-content-center">
         <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
             <spring:message code="jobForm.buttonText"/>
         </button>

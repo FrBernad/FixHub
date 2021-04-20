@@ -87,3 +87,39 @@ if (pagination !== null) {
 }
 
 
+let pagination2 = document.getElementById("pagination2");
+if (pagination2 !== null) {
+
+    let indexs = document.getElementsByClassName("index2");
+    let formPageInput = document.getElementById("pageInput2");
+    let searchForm = document.getElementById("searchForm2");
+
+    let prevBtn = document.getElementById("prev2");
+    let nextBtn = document.getElementById("next2");
+    let currentPage = pagination2.dataset.page;
+
+    if (pagination2.dataset.contactmodal === "true") {
+        contact.tab("show")
+        panelTitle.html(contact.data('name'));
+    }
+
+    prevBtn.addEventListener("click", () => {
+        formPageInput.setAttribute("value", (parseInt(currentPage) - 1).toString());
+        searchForm.submit();
+    });
+
+    nextBtn.addEventListener("click", () => {
+        formPageInput.setAttribute("value", (parseInt(currentPage) + 1).toString());
+        searchForm.submit();
+    });
+
+    for (const index of indexs) {
+        index.addEventListener("click", () => {
+            const pageNum = index.dataset.index - 1;
+            formPageInput.setAttribute("value", pageNum.toString());
+            searchForm.submit();
+        })
+    }
+}
+
+

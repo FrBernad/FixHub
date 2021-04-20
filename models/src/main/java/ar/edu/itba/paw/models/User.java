@@ -3,7 +3,7 @@ package ar.edu.itba.paw.models;
 import java.util.Collection;
 
 public class User {
-    private String name, password,surname,city,state,phoneNumber,email;
+    private String name, password, surname, city, state, phoneNumber, email;
     private Long id;
     private Collection<Roles> roles;
 
@@ -17,6 +17,10 @@ public class User {
         this.state = state;
         this.city = city;
         this.roles = roles;
+    }
+
+    public boolean hasRole(String role) {
+        return roles.stream().anyMatch(p->p.name().equals(role));
     }
 
     public String getName() {
@@ -91,7 +95,7 @@ public class User {
         this.roles = roles;
     }
 
-    public void addRole(Roles role){
+    public void addRole(Roles role) {
         roles.add(role);
     }
 }

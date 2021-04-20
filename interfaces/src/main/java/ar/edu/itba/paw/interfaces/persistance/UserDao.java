@@ -29,7 +29,7 @@ public interface UserDao {
 
     void addRole(long userId, Roles newRole);
 
-    ContactInfo addContactInfo( User user, String state,String  city,String street,String addressNumber,String floor,String departmentNumber);
+    ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
 
     Collection<ContactInfo> getContactInfo(User user);
 
@@ -37,11 +37,13 @@ public interface UserDao {
 
     void addClient(Long providerId, Long jobId, User user, Long contactInfoId, String message, Timestamp time);
 
-    Collection<JobContact> getClients(Long providerId);
+    Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage);
+
+    int getClientsCountByProviderId(Long providerId);
 
     Collection<JobContact> getProviders(Long clientId);
 
-    void addSchedule(Long userId,String startTime, String endTime);
+    void addSchedule(Long userId, String startTime, String endTime);
 
     void addLocation(Long userId, List<Long> citiesId);
 
