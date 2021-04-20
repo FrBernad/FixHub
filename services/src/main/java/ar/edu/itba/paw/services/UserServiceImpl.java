@@ -158,14 +158,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
-        Long imageId = user.getImageId();
-        if(imageId == 0)
-            imageId = imageService.createImage(userInfo.getProfileImage()).getImageId();
-        else
-            imageService.updateImage(userInfo.getProfileImage(),imageId);
 
-        userDao.updateUserInfo(userInfo,user,imageId);
-
+        userDao.updateUserInfo(userInfo,user);
     }
 
     @Override

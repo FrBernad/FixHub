@@ -146,7 +146,7 @@ public class JobDaoImpl implements JobDao {
             variables.add(itemsPerPage);
         }
 
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, limit, offset, variables);
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, offset, limit, variables);
     }
 
     @Override

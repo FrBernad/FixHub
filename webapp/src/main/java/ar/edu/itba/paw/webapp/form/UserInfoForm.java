@@ -34,16 +34,6 @@ public class UserInfoForm {
     @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
     private String state;
 
-    private MultipartFile profileImage;
-
-    public MultipartFile getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(MultipartFile profileImage) {
-        this.profileImage = profileImage;
-    }
-
     public String getName() {
         return name;
     }

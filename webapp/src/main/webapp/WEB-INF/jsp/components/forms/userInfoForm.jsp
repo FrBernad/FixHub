@@ -7,10 +7,6 @@
 <form:form modelAttribute="userInfoForm" action="${postPath}" id="userInfoForm" method="POST" enctype="multipart/form-data">
 
     <div class="form-group">
-        <input type="file" name="profileImage"  id="profileImage"/>
-    </div>
-
-    <div class="form-group">
         <form:label class="label" path="name"><spring:message code="userInfoForm.userNameLabel"/></form:label>
         <form:input type="text" path="name" value="${loggedUser.name}" id="name" class="form-control" cssErrorClass="form-control is-invalid"/>
         <form:errors path="name" cssClass="formError" element="p"/>

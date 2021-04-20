@@ -255,7 +255,7 @@ public class WebAuthController {
     @RequestMapping(path = "/user/account")
     public ModelAndView profile(@ModelAttribute("searchForm") final SearchForm form) {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 1);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
         mav.addObject("results", providersContacted);
@@ -266,7 +266,7 @@ public class WebAuthController {
     @RequestMapping(path = "/user/account/search")
     public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), form.getPage(), 1);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), form.getPage(), 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
         mav.addObject("results", providersContacted);
@@ -289,8 +289,7 @@ public class WebAuthController {
 
         userService.updateUserInfo(
             new UserInfo(form.getName(), form.getSurname(),
-                form.getCity(), form.getState(),
-                form.getPhoneNumber(), new ImageDto(form.getProfileImage().getBytes(), form.getProfileImage().getContentType())),
+                form.getCity(), form.getState(), form.getPhoneNumber()),
             user);
 
         return new ModelAndView("redirect:/user/account");
