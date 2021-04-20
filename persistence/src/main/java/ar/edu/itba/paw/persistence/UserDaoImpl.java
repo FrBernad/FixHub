@@ -166,11 +166,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUserInfo(UserInfo userInfo, User user,long imageId) {
+    public void updateUserInfo(UserInfo userInfo, User user, long imageId) {
         jdbcTemplate.update("UPDATE users SET u_name = ?, " +
                 "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ?, " +
                 "u_profile_picture = ? where u_id = ?", userInfo.getName(), userInfo.getSurname(),
-            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(),imageId, user.getId());
+            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), imageId, user.getId());
     }
 
     @Override
@@ -203,7 +203,7 @@ public class UserDaoImpl implements UserDao {
         userInfo.put("u_phone_number", phoneNumber);
         userInfo.put("u_state", state);
         userInfo.put("u_city", city);
-        userInfo.put("u_profile_picture",null);
+        userInfo.put("u_profile_picture", null);
 
         final Number id;
 
@@ -221,7 +221,7 @@ public class UserDaoImpl implements UserDao {
             roleSimpleJdbcInsert.execute(userRoles);
         }
 
-        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles,null);
+        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null);
     }
 
     public Collection<ContactInfo> getContactInfo(User user) {
@@ -320,7 +320,7 @@ public class UserDaoImpl implements UserDao {
     public void addSchedule(Long userId, String startTime, String endTime) {
         Map<String, Object> schedule = new HashMap<>();
 
-        schedule.put("us_user_id",userId);
+        schedule.put("us_user_id", userId);
         schedule.put("us_start_time", startTime);
         schedule.put("us_end_time", endTime);
         userScheduleSimpleJdbcInsert.execute(schedule);
@@ -335,6 +335,21 @@ public class UserDaoImpl implements UserDao {
             location.put("ul_city_id", cityId);
             userLocationSimpleJdbcInsert.execute(location);
         }
+    }
+
+    @Override
+    public ProviderLocation getLocationByProviderId(Long providerId) {
+        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM USER_LOCATION JOIN CITIES on ul_city_id = c_id where ul_user_id = ?) AUX JOIN states on c_state_id = s_id" +
+            " ORDER BY c_name ", new Object[]{providerId}, (rs) -> {
+            ProviderLocation location = null;
+            while (rs.next()) {
+                if(location == null ){
+                     location = new ProviderLocation(rs.getLong("ul_user_id"),new LinkedList<>(),rs.getString("s_name"));
+                }
+                location.getCities().add(new City(rs.getLong("ul_city_id"),rs.getString("c_name")));
+            }
+           return location;
+        });
     }
 
 

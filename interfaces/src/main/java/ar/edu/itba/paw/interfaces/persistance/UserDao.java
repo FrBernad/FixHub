@@ -49,4 +49,6 @@ public interface UserDao {
 
     void addLocation(Long userId, List<Long> citiesId);
 
+    ProviderLocation getLocationByProviderId(Long providerId);
+
 }

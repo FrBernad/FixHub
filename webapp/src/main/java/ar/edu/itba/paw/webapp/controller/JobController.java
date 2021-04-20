@@ -61,7 +61,7 @@ public class JobController {
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
-
+        mav.addObject("location",userService.getLocationByProviderId(job.getProvider().getId()));
         PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 5);
         mav.addObject("results", results);
         mav.addObject("paginationModal", paginationModal);

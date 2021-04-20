@@ -50,4 +50,7 @@ public class JobServiceImp implements JobService {
         return jobDao.getImagesIdsByJobId(jobId);
     }
 
+
+
+
 }

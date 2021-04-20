@@ -217,4 +217,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public ProviderLocation getLocationByProviderId(Long providerId){
+        return userDao.getLocationByProviderId(providerId);
+    }
+
+
 }

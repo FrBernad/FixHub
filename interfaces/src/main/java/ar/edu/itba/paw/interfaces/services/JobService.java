@@ -16,5 +16,7 @@ public interface JobService {
 
     Collection<Long> getImagesIdsByJobId(Long jobId);
 
+
+
 }
 
