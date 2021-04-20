@@ -195,4 +195,15 @@ public class JobController {
         return image.getData();
     }
 
+    //FIXME: SOLUCIONAR
+    @RequestMapping(path = "/user/images/profile/{imageId}",
+        produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
+        method = RequestMethod.GET)
+    @ResponseBody
+    public byte[] getProfileImage(@PathVariable("imageId") long imageId) {
+        Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+        return image.getData();
+    }
+
+
 }

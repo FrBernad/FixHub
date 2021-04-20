@@ -16,9 +16,21 @@
         <div class="container-lg px-0 m-2">
             <div class="container-fluid">
                 <div class="row justify-content-center align-content-center">
-                    <div class="col-4 align-content-center justify-content-center">
-                        <img src="<c:url value='/resources/images/userProfile.png'/>" class="rounded card-img-bottom img-thumbnail my-3" alt="Imagen no disponible">
-                    </div>
+                    <c:choose>
+                        <c:when test="${loggedUser.imageId == 0}">
+                            <div class="col-4 align-content-center justify-content-center">
+                                <img src="<c:url value='/resources/images/userProfile.png'/>"
+                                     class="rounded card-img-bottom img-thumbnail my-3" alt="Imagen no disponible">
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="col-4 align-content-center justify-content-center">
+                                <img src="<c:url value='/user/images/profile/${loggedUser.imageId}'/>"
+                                     class="rounded card-img-bottom img-thumbnail my-3" alt="Imagen no disponible">
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
             </div>
         </div>
@@ -28,7 +40,7 @@
     </div>
 </div>
 <%@ include file="../../../components/footer.jsp" %>
-<%@ include file="../../../components/includes/bottomScripts.jsp"%>
+<%@ include file="../../../components/includes/bottomScripts.jsp" %>
 
 </body>
 </html>

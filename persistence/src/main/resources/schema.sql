@@ -20,8 +20,10 @@ CREATE TABLE IF NOT EXISTS USERS
     u_state           VARCHAR(50)         NOT NULL,
     u_city            VARCHAR(50)         NOT NULL,
     PRIMARY KEY (u_id),
-    FOREIGN KEY (U_profile_picture) REFERENCES IMAGES (i_id)
+    FOREIGN KEY (u_profile_picture) REFERENCES IMAGES (i_id)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS ROLES
 (

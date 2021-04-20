@@ -67,7 +67,8 @@ public class UserDaoImpl implements UserDao {
                     rs.getString("u_phone_number"),
                     rs.getString("u_state"),
                     rs.getString("u_city"),
-                    new ArrayList<>()));
+                    new ArrayList<>(),
+                    rs.getLong("u_profile_picture")));
             }
 
             userMap.get(userId).addRole(Roles.valueOf(rs.getString("r_role")));
@@ -165,11 +166,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUserInfo(UserInfo userInfo, User user, long imageId) {
+    public void updateUserInfo(UserInfo userInfo, User user,long imageId) {
         jdbcTemplate.update("UPDATE users SET u_name = ?, " +
                 "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ?, " +
                 "u_profile_picture = ? where u_id = ?", userInfo.getName(), userInfo.getSurname(),
-            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), imageId, user.getId());
+            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(),imageId, user.getId());
     }
 
     @Override
@@ -202,7 +203,7 @@ public class UserDaoImpl implements UserDao {
         userInfo.put("u_phone_number", phoneNumber);
         userInfo.put("u_state", state);
         userInfo.put("u_city", city);
-        userInfo.put("u_profile_picture", null);
+        userInfo.put("u_profile_picture",null);
 
         final Number id;
 
@@ -220,7 +221,7 @@ public class UserDaoImpl implements UserDao {
             roleSimpleJdbcInsert.execute(userRoles);
         }
 
-        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null);
+        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles,null);
     }
 
     public Collection<ContactInfo> getContactInfo(User user) {

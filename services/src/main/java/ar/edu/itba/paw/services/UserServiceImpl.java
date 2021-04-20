@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
@@ -37,10 +38,15 @@ public class UserServiceImpl implements UserService {
     private EmailService emailService;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private String appBaseUrl;
+
+
 
     @Autowired
     private MessageSource messageSource;
@@ -151,8 +157,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUserInfo(UserInfo userInfo, long userId) {
-        userDao.updateUserInfo(userInfo, userId);
+    public void updateUserInfo(UserInfo userInfo, User user) {
+        Long imageId = user.getImageId();
+        if(imageId == 0)
+            imageId = imageService.createImage(userInfo.getProfileImage()).getImageId();
+        else
+            imageService.updateImage(userInfo.getProfileImage(),imageId);
+
+        userDao.updateUserInfo(userInfo,user,imageId);
+
     }
 
     @Override
