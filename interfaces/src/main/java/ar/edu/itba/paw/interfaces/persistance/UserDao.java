@@ -41,7 +41,10 @@ public interface UserDao {
 
     int getClientsCountByProviderId(Long providerId);
 
-    Collection<JobContact> getProviders(Long clientId);
+    Collection<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage);
+
+
+    int getProvidersCountByClientId(Long clientId);
 
     void addSchedule(Long userId, String startTime, String endTime);
 

@@ -91,6 +91,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return dbp;
     }
 
+    //FIXME: FIJARSE QUE PASA CON IMÁGENES MUY GRANDES Y CON ARCHIVOS QUE NO SON IMAGENES
     @Bean
     public MultipartResolver multipartResolver() {
         final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

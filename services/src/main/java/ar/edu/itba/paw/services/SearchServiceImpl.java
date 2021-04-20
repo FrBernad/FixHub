@@ -139,4 +139,27 @@ public class SearchServiceImpl implements SearchService {
         return Arrays.asList(values());
     }
 
+
+    @Override
+    public PaginatedSearchResult<JobContact>  getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
+
+        if (page < 0) {
+            page = 0;
+        }
+
+        if (itemsPerPage <= 0) {
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
+        int totalJobs = userDao.getProvidersCountByClientId(clientId);
+        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+
+        if (page >= totalPages) {
+            page = totalPages - 1;
+        }
+        
+        Collection<JobContact> contacts = userDao.getProvidersByClientId(clientId, page, itemsPerPage);
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
+    }
+
 }

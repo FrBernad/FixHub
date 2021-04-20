@@ -36,7 +36,6 @@ public interface UserService {
 
     void contact(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
 
-    Collection<JobContact> getProviders(Long clientId);
 
     void makeProvider(Long userId, List<Long> citiesId, String startTime, String endTime);
 }

@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -166,12 +165,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUserInfo(UserInfo userInfo, long userId) {
-        jdbcTemplate.update("UPDATE users SET u_name = ?, u_surname = ?, " +
-                " u_city = ?, u_phone_number = ?," +
-                " u_state = ? where u_id = ?",
-            userInfo.getName(), userInfo.getSurname(),
-            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), userId);
+    public void updateUserInfo(UserInfo userInfo, User user, long imageId) {
+        jdbcTemplate.update("UPDATE users SET u_name = ?, " +
+                "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ?, " +
+                "u_profile_picture = ? where u_id = ?", userInfo.getName(), userInfo.getSurname(),
+            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), imageId, user.getId());
     }
 
     @Override
@@ -204,6 +202,7 @@ public class UserDaoImpl implements UserDao {
         userInfo.put("u_phone_number", phoneNumber);
         userInfo.put("u_state", state);
         userInfo.put("u_city", city);
+        userInfo.put("u_profile_picture", null);
 
         final Number id;
 
@@ -221,7 +220,7 @@ public class UserDaoImpl implements UserDao {
             roleSimpleJdbcInsert.execute(userRoles);
         }
 
-        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles);
+        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null);
     }
 
     public Collection<ContactInfo> getContactInfo(User user) {
@@ -288,15 +287,39 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<JobContact> getProviders(Long clientId) {
-        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM (SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_user_id = ? ) AUX JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id", new Object[]{clientId}, PROVIDER_ROW_MAPPER);
+    public Collection<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
+        List<Object> variables = new LinkedList<>();
+
+        variables.add(clientId);
+
+        String offset = " ";
+        if (page > 0) {
+            offset = " OFFSET ? ";
+            variables.add(page * itemsPerPage);
+        }
+        String limit = " ";
+        if (itemsPerPage > 0) {
+            limit = " LIMIT ? ";
+            variables.add(itemsPerPage);
+        }
+        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM " +
+            "(SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_user_id = ? ) AUX " +
+            "JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC" + offset + limit, variables.toArray(), PROVIDER_ROW_MAPPER);
+
+    }
+
+    @Override
+    public int getProvidersCountByClientId(Long clientId) {
+        return jdbcTemplate.query("SELECT count(c_user_id) as total FROM contact WHERE  c_user_id = ?",
+            new Object[]{clientId},
+            (rs, num) -> rs.getInt("total")).stream().findFirst().orElse(0);
     }
 
     @Override
     public void addSchedule(Long userId, String startTime, String endTime) {
         Map<String, Object> schedule = new HashMap<>();
 
-        schedule.put("us_user_id", userId);
+        schedule.put("us_user_id",userId);
         schedule.put("us_start_time", startTime);
         schedule.put("us_end_time", endTime);
         userScheduleSimpleJdbcInsert.execute(schedule);

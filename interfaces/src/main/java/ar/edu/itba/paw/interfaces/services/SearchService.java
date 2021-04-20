@@ -15,4 +15,8 @@ public interface SearchService {
     PaginatedSearchResult<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage);
 
     Collection<OrderOptions> getOrderOptions();
+
+    PaginatedSearchResult<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage);
+
+
 }

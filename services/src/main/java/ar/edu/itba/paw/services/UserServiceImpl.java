@@ -202,9 +202,5 @@ public class UserServiceImpl implements UserService {
         userDao.addClient(providerId, jobId, user, contactInfo.getContactInfoId(), message, Timestamp.valueOf(LocalDateTime.now()));
     }
 
-    @Override
-    public Collection<JobContact> getProviders(Long clientId) {
-        return userDao.getProviders(clientId);
-    }
 
 }
