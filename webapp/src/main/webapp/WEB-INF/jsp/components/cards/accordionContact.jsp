@@ -27,7 +27,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <a href="<c:url value="/jobs/${contact.jobId}"/>">
+                            <a href="<c:url value="/user/${contact.user.userId}"/>">
                                 <c:out value="${contact.user.name} ${contact.user.surname}"/>
                             </a>
                         </div>

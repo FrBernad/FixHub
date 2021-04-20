@@ -52,13 +52,17 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/user/verifyAccount").hasRole("USER")
             .antMatchers("/logout").authenticated()
 
-            //jobs
+            //profile routes
+            .antMatchers("/user/account").hasRole("USER")
+            .antMatchers("/user/account/search","/user/account/update").hasAnyRole("USER","VERIFIED")
+
+            //jobs routes
             .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
             .antMatchers("/jobs/new").hasRole("PROVIDER")
             .antMatchers("/jobs/{id:[\\d]+}").permitAll()
             .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
 
-            //provider
+            //provider routes
             .antMatchers("/user/dashboard","/user/dashboard/search").hasRole("PROVIDER")
             .antMatchers("/user/join","/user/join/chooseCity").not().hasAnyRole("PROVIDER","NOT_VALIDATED","ANONYMOUS")
 

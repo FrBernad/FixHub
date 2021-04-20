@@ -29,7 +29,7 @@
                         <div class="col-12">
                             <span class="client-label"><spring:message code="dashboard.client"/>:</span>
 
-                            <a href="<c:url value="/user/profile/${contact.user.userId}"/>">
+                            <a href="<c:url value="/user/${contact.user.userId}"/>">
                                 <c:out value="${contact.user.name} ${contact.user.surname}"/>
                             </a>
                         </div>
@@ -43,14 +43,14 @@
                         </div>
                         <div class="col-12">
                             <span class="client-label"><spring:message code="dashboard.clientAddress"/>:</span>
-                            <c:out value="${contact.contactInfo.street} ${contact.contactInfo.addressNumber}
-                            ${contact.contactInfo.floor} ${contact.contactInfo.departmentNumber}
-                            ${contact.contactInfo.state} ${contact.contactInfo.city}"/>
+                            <c:out value="${contact.contactInfo.street}, ${contact.contactInfo.addressNumber},
+                            ${contact.contactInfo.floor}, ${contact.contactInfo.departmentNumber},
+                            ${contact.contactInfo.state}, ${contact.contactInfo.city}"/>
                         </div>
 
                         <div class="col-12">
-                            <span class="client-label"><spring:message code="dashboard.clientMessage"/>:<br></span>
                             <p class="mb-0">
+                                <span class="client-label"><spring:message code="dashboard.clientMessage"/>:</span>
                                 <c:out value="${contact.message}"/>
                             </p>
                         </div>

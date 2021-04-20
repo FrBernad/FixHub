@@ -52,7 +52,7 @@
                         </c:if>
                         </span>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <div class="dropdown-menu" id="filterDropdownMenu" aria-labelledby="filterDropdown">
                         <div class="input-group">
                             <button id="emptyFilterButton" data-filter="" class="dropdown-item">-</button>
                         </div>
@@ -75,7 +75,7 @@
                         </c:if>
                         </span>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="orderDropdown">
+                    <div class="dropdown-menu"  aria-labelledby="orderDropdown">
                         <c:forEach var="order" items="${orderOptions}">
                             <div class="input-group">
                                 <button data-order="${order}" class="dropdown-item orderButton">
