@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.models;
 
-import java.util.Collection;
-
 public class ContactUser  {
     private String name, surname,phoneNumber,email;
     private Long userId;

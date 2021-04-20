@@ -182,8 +182,8 @@
             <div class="container-fluid mt-3">
                 <div class="row">
                     <div class="col-12 d-flex justify-content-start align-items-center">
-                        <h2 class="sectionTitle"
-                        ><spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
+                        <h2 class="sectionTitle">
+                            <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
                         </h2>
                     </div>
                     <div class="col-12 d-flex justify-content-start align-items-center">

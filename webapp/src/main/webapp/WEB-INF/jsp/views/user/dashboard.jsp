@@ -37,7 +37,7 @@
                        role="tab" data-name="${contacts}" id="tabContacts">
                         <i class="fas fa-address-book mr-2"></i><span class="text"><c:out
                             value="${contacts}"/></span><span
-                            class="badge badge-pill badge-secondary"><c:out value="${stats.jobsCount}"/></span>
+                            class="badge badge-pill badge-secondary"><c:out value="${contactsResults.totalItems}"/></span>
                     </a>
                 </div>
             </div>
@@ -210,7 +210,6 @@
                                                             <td><c:out value="${contact.date}"/></td>
                                                         </tr>
                                                     </c:forEach>
-
                                                 </c:when>
                                                 <c:otherwise>
                                                     <tr>

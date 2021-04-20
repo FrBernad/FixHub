@@ -43,7 +43,7 @@ public class SearchController {
 
         PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, filter, page, -1);
         Collection<JobCategory> categories = jobService.getJobsCategories();
-        Collection<OrderOptions> orderOptions = Arrays.asList(OrderOptions.values().clone());
+        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
         mav.addObject("orderOptions", orderOptions);
         mav.addObject("filters", categories);

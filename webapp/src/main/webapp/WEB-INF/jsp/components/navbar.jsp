@@ -38,8 +38,16 @@
                         <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
                             <div class="userContainer pr-0 nav-link">
                                 <div id="moreOptions" class="dropdown" data-toggle="dropdown">
-                                    <img class="avatar"
-                                         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.iconscout.com%2Ficon%2Ffree%2Fpng-256%2Favatar-372-456324.png&f=1&nofb=1"/>
+                                    <c:choose>
+                                        <c:when test="${loggedUser.imageId == 0}">
+                                            <img src="<c:url value='/resources/images/userProfile.png'/>"
+                                                 class="avatar"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="<c:url value='/user/images/profile/${loggedUser.imageId}'/>"
+                                                 class="avatar"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <i class="fas ml-2 fa-chevron-down navbarText" id="navBarArrow"></i>
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-right">

@@ -2,11 +2,11 @@ package ar.edu.itba.paw.models;
 
 public class ContactInfo {
 
-    private Long contactInfoId,userId;
+    private Long contactInfoId, userId;
 
-    private String state, city,street,addressNumber,floor,departmentNumber;
+    private String state, city, street, addressNumber, floor, departmentNumber;
 
-    public ContactInfo(Long contactInfoId, long userId,String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+    public ContactInfo(Long contactInfoId, long userId, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
         this.contactInfoId = contactInfoId;
         this.userId = userId;
         this.state = state;

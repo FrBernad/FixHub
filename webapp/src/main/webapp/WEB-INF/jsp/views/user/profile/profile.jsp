@@ -4,9 +4,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title><spring:message code="productName"/> | <c:out value="${loggedUser.name} ${loggedUser.surname}"/> </title>
+    <title><spring:message code="productName"/> | <c:out value="${loggedUser.name} ${loggedUser.surname}"/></title>
     <%@ include file="../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/profile.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
 </head>
 <body>
 <div class="outerContainer pb-4">
@@ -82,7 +83,7 @@
                         </div>
                         <div class="row my-2">
                             <div class="col-4 infoField">
-                                <p style="margin: 0"><spring:message code="profilePage.info.city"/> </p>
+                                <p style="margin: 0"><spring:message code="profilePage.info.city"/></p>
                             </div>
                             <div class="col-8">
                                 <c:out value="${loggedUser.city}"/>
@@ -92,11 +93,50 @@
                 </div>
             </div>
         </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-left sectionTitle">
+                        <spring:message code="profilePage.contacts.recents"/>
+                    </h1>
+                </div>
+                <c:url value="/user/account/search" var="postPath"/>
+                <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
+                           method="GET"
+                           id="searchForm">
+                    <form:input path="page" type="hidden" id="pageInput"/>
+                </form:form>
+                <c:choose>
+                    <c:when test="${results.totalPages > 0}">
+                        <c:forEach var="contact" items="${results.results}" varStatus="status">
+                            <div class="col-10 col-md-7 mt-2">
+                                <%@ include file="../../../components/cards/accordionContact.jsp" %>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <div class="container mt-2 d-flex align-items-center justify-content-center">
+                                <p class="m-0 text-center p-4" style="font-size: 16px">
+                                    <spring:message code="profilePage.contacts.noContacts"/>
+                                </p>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+                <div class="col-7 d-flex align-items-center justify-content-center ${results.totalPages<=1 ? 'd-none':''}">
+                    <div class="row">
+                        <%@ include file="../../../components/pagination.jsp" %>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <%@ include file="../../../components/footer.jsp" %>
-<%@ include file="../../../components/includes/bottomScripts.jsp"%>
+<%@ include file="../../../components/includes/bottomScripts.jsp" %>
+<script src='<c:url value="/resources/js/profile.js"/>'></script>
 
 </body>
 </html>

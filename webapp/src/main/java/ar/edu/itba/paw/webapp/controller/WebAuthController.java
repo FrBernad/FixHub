@@ -236,7 +236,7 @@ public class WebAuthController {
     }
 
     @RequestMapping(path = "/user/join/chooseCity", method = RequestMethod.POST)
-    public ModelAndView joinChooseCityPost(@Valid @ModelAttribute("chooseCityForm") final JoinForm form, final BindingResult errors) {
+    public ModelAndView joinChooseCityPost(@Valid @ModelAttribute("chooseCityForm") final JoinForm form, final BindingResult errors, HttpServletRequest request) {
 
         if (errors.hasErrors()) {
             return join(form);
@@ -244,33 +244,43 @@ public class WebAuthController {
 
 
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        userService.makeProvider(user.getId(),form.getCity(),form.getStartTime(),form.getEndTime());
+        userService.makeProvider(user.getId(), form.getCity(), form.getStartTime(), form.getEndTime());
 
+        forceLogin(user, request);
 
         return new ModelAndView("redirect:/user/dashboard");
     }
 
 
-
-
     @RequestMapping(path = "/user/account")
-    public ModelAndView profile(){
+    public ModelAndView profile(@ModelAttribute("searchForm") final SearchForm form) {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(),0,4);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 1);
 
-        final  ModelAndView mav= new ModelAndView("views/user/profile/profile");
-        mav.addObject("providersContacted",providersContacted);
+        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
+        mav.addObject("results", providersContacted);
         return mav;
     }
 
-    @RequestMapping(path="/user/account/update")
-    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form){
+
+    @RequestMapping(path = "/user/account/search")
+    public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), form.getPage(), 1);
+
+        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
+        mav.addObject("results", providersContacted);
+        return mav;
+    }
+
+    @RequestMapping(path = "/user/account/update")
+    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
         return new ModelAndView("views/user/profile/editProfile");
     }
 
     //FIXME: REVISAR EXCEPCION
     @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form,BindingResult errors) throws IOException {
+    public ModelAndView updateProfile(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form, BindingResult errors) throws IOException {
         if (errors.hasErrors()) {
             return updateProfile(form);
         }
@@ -280,7 +290,7 @@ public class WebAuthController {
         userService.updateUserInfo(
             new UserInfo(form.getName(), form.getSurname(),
                 form.getCity(), form.getState(),
-                form.getPhoneNumber(),new ImageDto(form.getProfileImage().getBytes(),form.getProfileImage().getContentType())),
+                form.getPhoneNumber(), new ImageDto(form.getProfileImage().getBytes(), form.getProfileImage().getContentType())),
             user);
 
         return new ModelAndView("redirect:/user/account");

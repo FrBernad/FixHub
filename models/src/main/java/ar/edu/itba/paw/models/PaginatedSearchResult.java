@@ -75,6 +75,10 @@ public class PaginatedSearchResult<T> {
         this.itemsPerPage = itemsPerPage;
     }
 
+    public int getTotalItems() {
+        return totalItems;
+    }
+
     public int setTotalItems() {
         return totalItems;
     }
