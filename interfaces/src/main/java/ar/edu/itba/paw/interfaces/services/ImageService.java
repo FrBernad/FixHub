@@ -17,4 +17,5 @@ public interface ImageService {
     Collection<Image> getImagesByJobId(long jobId);
 
 
+    void updateImage(ImageDto image,long imageId);
 }

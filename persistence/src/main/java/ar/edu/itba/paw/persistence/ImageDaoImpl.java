@@ -67,6 +67,11 @@ public class ImageDaoImpl implements ImageDao {
     public Collection<Image> getImagesByJobId(long jobId) {
         return jdbcTemplate.query("SELECT * FROM IMAGES JOIN JOB_IMAGE on i_id = ji_image_id WHERE ji_job_id = ?", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
     }
+
+    @Override
+    public void updateImage(ImageDto image,long imageId){
+        jdbcTemplate.update("UPDATE IMAGES SET i_data = ?, i_mime_type = ? where i_id = ?",new Object[]{image.getData(),image.getMimeType(),imageId});
+    }
 }
 
 

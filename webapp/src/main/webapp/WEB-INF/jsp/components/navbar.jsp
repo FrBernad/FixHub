@@ -50,7 +50,7 @@
                                         </span>
                                     </p>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item pl-3" href="#">
+                                    <a href="<c:url value='/user/account'/>" class="dropdown-item pl-3">
                                         <spring:message code="navBar.profile"/>
                                     </a>
                                     <c:if test="${loggedUser.hasRole('PROVIDER')}">

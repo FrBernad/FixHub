@@ -53,7 +53,8 @@ public class JobDaoImpl implements JobDao {
                             rs.getString("u_phone_number"),
                             rs.getString("u_state"),
                             rs.getString("u_city"),
-                            Collections.emptyList()),
+                            Collections.emptyList(),
+                            rs.getLong("u_profile_picture")),
                         new ArrayList<>()));
             }
 

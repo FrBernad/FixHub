@@ -24,6 +24,9 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class JobController {
@@ -78,7 +81,6 @@ public class JobController {
         final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
 
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
-
         return mav;
     }
 
@@ -192,5 +194,16 @@ public class JobController {
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }
+
+    //FIXME: SOLUCIONAR
+    @RequestMapping(path = "/user/images/profile/{imageId}",
+        produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
+        method = RequestMethod.GET)
+    @ResponseBody
+    public byte[] getProfileImage(@PathVariable("imageId") long imageId) {
+        Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+        return image.getData();
+    }
+
 
 }

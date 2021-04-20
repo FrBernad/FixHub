@@ -27,7 +27,7 @@ public class JobForm {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
-    private List<MultipartFile> images = null;
+    private List<MultipartFile> images;
 
     private JobCategory jobCategory;
 

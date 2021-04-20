@@ -1,30 +1,28 @@
 package ar.edu.itba.paw.webapp.form;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserInfoForm {
+
     @NotEmpty
     @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
+    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]*$")
     private String name;
 
     @NotEmpty
     @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
+    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]*$")
     private String surname;
+
 
     @NotEmpty
     @Size(max = 50)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|15|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phoneNumber;
-
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
-    private String state;
 
     @NotEmpty
     @Size(max = 50)
@@ -34,17 +32,17 @@ public class UserInfoForm {
     @NotEmpty
     @Size(max = 50)
     @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
-    private String street;
+    private String state;
 
-    @NotEmpty
-    @Pattern(regexp = "[0-9]{0,9}")
-    private String addressNumber;
+    private MultipartFile profileImage;
 
-    @Pattern(regexp = "[0-9]{0,9}")
-    private String floor;
+    public MultipartFile getProfileImage() {
+        return profileImage;
+    }
 
-    @Pattern(regexp = "[A-Za-z0-9]{0,30}")
-    private String departmentNumber;
+    public void setProfileImage(MultipartFile profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public String getName() {
         return name;
@@ -70,14 +68,6 @@ public class UserInfoForm {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public String getCity() {
         return city;
     }
@@ -86,35 +76,11 @@ public class UserInfoForm {
         this.city = city;
     }
 
-    public String getStreet() {
-        return street;
+    public String getState() {
+        return state;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getAddressNumber() {
-        return addressNumber;
-    }
-
-    public void setAddressNumber(String addressNumber) {
-        this.addressNumber = addressNumber;
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-
-    public String getDepartmentNumber() {
-        return departmentNumber;
-    }
-
-    public void setDepartmentNumber(String departmentNumber) {
-        this.departmentNumber = departmentNumber;
+    public void setState(String state) {
+        this.state = state;
     }
 }

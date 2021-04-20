@@ -25,7 +25,7 @@ public interface UserDao {
 
     Optional<UserStats> getUserStatsById(long id);
 
-    void updateUserInfo(UserInfo userInfo, long userId);
+    void updateUserInfo(UserInfo userInfo, User user, long imageId);
 
     void addRole(long userId, Roles newRole);
 

@@ -3,11 +3,11 @@ package ar.edu.itba.paw.models;
 import java.util.Collection;
 
 public class User {
-    private String name, password, surname, city, state, phoneNumber, email;
-    private Long id;
+    private String name, password,surname,city,state,phoneNumber,email;
+    private Long id,imageId;
     private Collection<Roles> roles;
 
-    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) {
+    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles,Long imageId) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -17,6 +17,15 @@ public class User {
         this.state = state;
         this.city = city;
         this.roles = roles;
+        this.imageId = imageId;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
     public boolean hasRole(String role) {

@@ -32,4 +32,9 @@ public class ImageServiceImpl implements ImageService {
     public Collection<Image> getImagesByJobId(long jobId){
         return imageDao.getImagesByJobId(jobId);
     }
+
+    @Override
+    public void updateImage(ImageDto image,long imageId) {
+        imageDao.updateImage(image,imageId);
+    }
 }

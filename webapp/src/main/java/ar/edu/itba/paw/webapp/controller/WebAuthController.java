@@ -2,10 +2,9 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.services.LocationService;
+import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.Roles;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.UserInfo;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -43,6 +43,9 @@ public class WebAuthController {
 
     @Autowired
     private LocationService locationService;
+
+    @Autowired
+    private SearchService searchService;
 
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
@@ -250,22 +253,37 @@ public class WebAuthController {
 
 
 
+    @RequestMapping(path = "/user/account")
+    public ModelAndView profile(){
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(),0,4);
+
+        final  ModelAndView mav= new ModelAndView("views/user/profile/profile");
+        mav.addObject("providersContacted",providersContacted);
+        return mav;
+    }
+
+    @RequestMapping(path="/user/account/update")
+    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form){
+        return new ModelAndView("views/user/profile/editProfile");
+    }
+
+    //FIXME: REVISAR EXCEPCION
     @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@Valid @ModelAttribute("updateUserInfo") final UserInfoForm form,
-                                      BindingResult errors) {
-        //FIXME
+    public ModelAndView updateProfile(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form,BindingResult errors) throws IOException {
         if (errors.hasErrors()) {
-            return null;
+            return updateProfile(form);
         }
 
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+
         userService.updateUserInfo(
             new UserInfo(form.getName(), form.getSurname(),
                 form.getCity(), form.getState(),
-                form.getPhoneNumber()),
-            user.getId());
-        ModelAndView mav = new ModelAndView("views/user/profile");
-        return mav;
+                form.getPhoneNumber(),new ImageDto(form.getProfileImage().getBytes(),form.getProfileImage().getContentType())),
+            user);
+
+        return new ModelAndView("redirect:/user/account");
     }
 
     private void forceLogin(User user, HttpServletRequest request) {
