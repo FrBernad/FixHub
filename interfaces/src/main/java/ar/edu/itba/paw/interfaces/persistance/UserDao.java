@@ -29,13 +29,13 @@ public interface UserDao {
 
     void addRole(long userId, Roles newRole);
 
-    ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
+    ContactInfo addContactInfo(ContactDto contactDto);
 
     Collection<ContactInfo> getContactInfo(User user);
 
     Optional<ContactInfo> getContactInfoById(Long contactInfoId);
 
-    void addClient(Long providerId, Long jobId, User user, Long contactInfoId, String message, Timestamp time);
+    void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time);
 
     Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage);
 

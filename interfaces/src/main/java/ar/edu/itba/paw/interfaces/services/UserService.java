@@ -30,11 +30,9 @@ public interface UserService {
 
     Collection<ContactInfo> getContactInfo(User user);
 
-    ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
-
     void updateUserInfo(UserInfo userInfo, User user);
 
-    void contact(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber);
+    void contact(ContactDto contactDto);
 
     ProviderLocation getLocationByProviderId(Long providerId);
 

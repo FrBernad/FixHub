@@ -214,21 +214,17 @@ public class UserServiceImpl implements UserService {
         return userDao.getContactInfo(user);
     }
 
-    @Override
-    public ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
-        return userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
-    }
 
     @Override
     @Transactional
-    public void contact(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+    public void contact(ContactDto contactDto) {
         ContactInfo contactInfo;
-        if (contactInfoId == -1)
-            contactInfo = userDao.addContactInfo(user, state, city, street, addressNumber, floor, departmentNumber);
+        if (contactDto.getContactInfoId() == -1)
+            contactInfo = userDao.addContactInfo(contactDto);
         else
-            contactInfo = userDao.getContactInfoById(contactInfoId).orElseThrow(ContactInfoNotFoundException::new);
+            contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
 
-        userDao.addClient(providerId, jobId, user, contactInfo.getContactInfoId(), message, Timestamp.valueOf(LocalDateTime.now()));
+        userDao.addClient(contactDto,contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
     }
 
 

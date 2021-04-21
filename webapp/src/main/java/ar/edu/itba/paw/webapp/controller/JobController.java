@@ -141,21 +141,11 @@ public class JobController {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        ContactDto contactDto = new ContactDto(job.getProvider().getId(),job.getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
-        final Map<String, Object> mailAttrs2 = new HashMap<>();
+        userService.contact(contactDto);
 
-        mailAttrs2.put("name", user.getName());
-        mailAttrs2.put("to", user.getEmail());
-        mailAttrs2.put("providerJob", job.getJobProvided());
-        mailAttrs2.put("providerName", job.getProvider().getName());
-
-        try {
-            emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs2, LocaleContextHolder.getLocale());
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-
-        userService.contact(job.getProvider().getId(), job.getId(), user, Long.valueOf(form.getContactInfoId()), form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
+        userService.contact(job.getProvider().getId(),job.getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;

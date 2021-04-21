@@ -229,17 +229,18 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_user_id = ? ", new Object[]{user.getId()}, CONTACT_INFO_ROW_MAPPER);
     }
 
-    public ContactInfo addContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+    @Override
+    public ContactInfo addContactInfo(ContactDto contact){
         final Map<String, Object> contactInfo = new HashMap<>();
-        contactInfo.put("ci_user_id", user.getId());
-        contactInfo.put("ci_city", city);
-        contactInfo.put("ci_state", state);
-        contactInfo.put("ci_street", street);
-        contactInfo.put("ci_floor", floor);
-        contactInfo.put("ci_address_number", addressNumber);
-        contactInfo.put("ci_department_number", departmentNumber);
+        contactInfo.put("ci_user_id", contact.getUser().getId());
+        contactInfo.put("ci_city", contact.getCity());
+        contactInfo.put("ci_state", contact.getState());
+        contactInfo.put("ci_street", contact.getStreet());
+        contactInfo.put("ci_floor", contact.getFloor());
+        contactInfo.put("ci_address_number", contact.getAddressNumber());
+        contactInfo.put("ci_department_number", contact.getDepartmentNumber());
         final Number id = contactInfoSimpleJdbcInsert.executeAndReturnKey(contactInfo);
-        return new ContactInfo(id.longValue(), user.getId(), state, city, street, addressNumber, floor, departmentNumber);
+        return new ContactInfo(id.longValue(), contact.getUser().getId(), contact.getState(), contact.getCity(), contact.getStreet(), contact.getAddressNumber(), contact.getFloor(), contact.getDepartmentNumber());
     }
 
     public Optional<ContactInfo> getContactInfoById(Long contactInfoId) {
@@ -247,13 +248,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addClient(Long providerId, Long jobId, User user, Long contactInfoId, String message, Timestamp time) {
+    public void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time) {
         final Map<String, Object> contactMap = new HashMap<>();
-        contactMap.put("c_provider_id", providerId);
-        contactMap.put("c_job_id", jobId);
-        contactMap.put("c_user_id", user.getId());
+        contactMap.put("c_provider_id", contactDto.getProviderId());
+        contactMap.put("c_job_id", contactDto.getJobId());
+        contactMap.put("c_user_id", contactDto.getUser().getId());
         contactMap.put("c_info_id", contactInfoId);
-        contactMap.put("c_message", message);
+        contactMap.put("c_message", contactDto.getMessage());
         contactMap.put("c_date", time.toLocalDateTime());
         contactProviderSimpleJdbcInsert.execute(contactMap);
     }
