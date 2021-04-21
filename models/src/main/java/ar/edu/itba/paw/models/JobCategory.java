@@ -3,27 +3,27 @@ package ar.edu.itba.paw.models;
 import java.util.Arrays;
 
 public enum JobCategory {
-    MECANICO,
-    ELECTRICISTA,
-    PLOMERO,
-    JARDINERO,
-    GASISTA,
     CARPINTERO,
-    PINTOR,
+    CATERING,
+    CHEF,
+    CUIDADOR_DE_ANCIANO,
+    ELECTRICISTA,
+    ENTREGA,
+    FOTOGRAFO,
+    FUMIGADOR,
+    GASISTA,
     HERRERO,
-    TECHISTA,
+    JARDINERO,
     LIMPIEZA,
     MANTENIMIENTO,
-    ENTREGA,
+    MECANICO,
     MUDANZA,
     NINERA,
     PASEADOR_DE_PERRO,
-    CUIDADOR_DE_ANCIANO,
-    CHEF,
-    CATERING,
-    VIDRIERO,
-    FUMIGADOR,
-    FOTOGRAFO;
+    PLOMERO,
+    PINTOR,
+    TECHISTA,
+    VIDRIERO;
 
    public static boolean contains(String value){
         return Arrays.stream(values()).map(Enum::name).anyMatch(code -> code.equals(value));

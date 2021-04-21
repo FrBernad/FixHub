@@ -103,7 +103,7 @@
                                             <div class="row">
                                                 <div class="col-7 d-flex align-items-center justify-content-start">
                                                     <div class="input-group">
-                                                        <input placeholder="<spring:message code="discover.barPlaceholder"/>"
+                                                        <input placeholder="<spring:message code="dashboard.barPlaceholder"/>"
                                                                id="searchBar"
                                                                class="inputRadius form-control p-4"/>
                                                         <div class="input-group-prepend">
