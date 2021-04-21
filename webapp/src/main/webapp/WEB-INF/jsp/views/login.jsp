@@ -37,7 +37,7 @@
                                     <label>
                                         <spring:message code="login.EmailText"/>
                                     </label>
-                                    <input type="text" class="form-control input mb-2"
+                                    <input type="text" class="form-control mb-2"
                                            id="email" name="email"
                                            aria-describedby="email input"/>
                                 </div>
@@ -59,7 +59,7 @@
                                             </div>
                                             <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                                                 <div class="input-group d-flex justify-content-start align-items-center">
-                                                    <input type="password" class="form-control input"
+                                                    <input type="password" class="form-control"
                                                            id="password" name="password"
                                                            aria-describedby="password input"/>
                                                     <div class="input-group-append">

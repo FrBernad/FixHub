@@ -22,11 +22,11 @@ public class RegisterForm {
     private String email;
 
     @NotEmpty
-    @Size(min=6)
+    @Size(min=6,max=20)
     private String password;
 
     @NotEmpty
-    @Size(min=6)
+    @Size(min=6,max=20)
     private String confirmPassword;
 
     @NotEmpty

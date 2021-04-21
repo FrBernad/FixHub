@@ -35,3 +35,7 @@ p,h1,h2,h3{
 .formError {
     color: #ff0000;
 }
+
+.required-field{
+    color:#ff0000;
+}

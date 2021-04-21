@@ -12,13 +12,13 @@
                         <form:form modelAttribute="reviewForm" action="${postPath}" id="reviewForm"
                                    class="reviewForm px-0" method="POST">
                             <div class="form-group">
-                                <form:label path="description"><spring:message code="reviewForm.descriptionTitle"/></form:label>
+                                <form:label path="description"><spring:message code="reviewForm.descriptionTitle"/> <span class="required-field">*</span></form:label>
                                 <form:textarea type="text" path="description" id="reviewFormTextArea"
                                                class="form-control"  cssErrorClass="form-control is-invalid" cssStyle="resize: none;"/>
                                 <form:errors path="description" cssClass="formError" element="p"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="rating"><spring:message code="reviewForm.qualificationTitle"/></form:label>
+                                <form:label path="rating"><spring:message code="reviewForm.qualificationTitle"/> <span class="required-field">*</span></form:label>
                                 <form:select path="rating" class="form-control"  cssErrorClass="form-control is-invalid">
                                     <option value="1">1</option>
                                     <option value="2">2</option>

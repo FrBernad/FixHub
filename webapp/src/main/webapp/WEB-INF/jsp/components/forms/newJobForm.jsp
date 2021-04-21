@@ -5,14 +5,14 @@
 <c:url value="/jobs/new" var="postPath"/>
 <form:form modelAttribute="jobForm" action="${postPath}" enctype="multipart/form-data" id="jobForm" class="jobForm" method="POST">
     <div class="form-group">
-        <form:label class="label" path="jobProvided"><spring:message code="jobForm.jobNameTitle"/>*</form:label>
+        <form:label  path="jobProvided"><spring:message code="jobForm.jobNameTitle"/> <span class="required-field">*</span></form:label>
         <form:input type="text" path="jobProvided" id="jobProvided" class="form-control" cssErrorClass="form-control is-invalid"/>
         <form:errors path="jobProvided" cssClass="formError" element="p"/>
     </div>
     <div class="row">
         <div class="col-6">
             <div class="form-group">
-                <form:label class="label" path="jobCategory"><spring:message code="jobForm.jobTypeTitle"/>*</form:label>
+                <form:label  path="jobCategory"><spring:message code="jobForm.jobTypeTitle"/> <span class="required-field">*</span></form:label>
                 <form:select id="jobCategory" path="jobCategory" class="form-control">
                     <c:forEach var="category" items="${categories}">
                         <option selected value="${category}"><spring:message code="home.categories.${category}"/></option>
@@ -23,21 +23,21 @@
         </div>
         <div class="col-6">
             <div class="form-group">
-                <form:label class="label" path="price"><spring:message code="jobForm.jobPriceTitle"/>*</form:label>
+                <form:label  path="price"><spring:message code="jobForm.jobPriceTitle"/> <span class="required-field">*</span></form:label>
                 <form:input type="number" path="price" id="price" class="form-control" cssErrorClass="form-control is-invalid"/>
                 <form:errors path="price" cssClass="formError" element="p"/>
             </div>
         </div>
     </div>
     <div class="form-group">
-        <form:label class="label" path="description"><spring:message code="jobForm.jobDescriptionTitle"/>*</form:label>
+        <form:label  path="description"><spring:message code="jobForm.jobDescriptionTitle"/> <span class="required-field">*</span></form:label>
         <form:textarea class="form-control" path="description" id="description" cssErrorClass="form-control is-invalid"/>
         <form:errors path="description" cssClass="formError" element="p"/>
 
     </div>
 
     <div class="form-group d-flex justify-content-between align-items-center">
-        <form:label path="images" class="label mb-0">
+        <form:label path="images" class="mb-0">
             <spring:message code="jobForm.jobImageTitle"/></form:label>
         <button class="buttonCustom" type="button" id="addFileButton">
             <i class="fas fa-upload mr-1"></i>

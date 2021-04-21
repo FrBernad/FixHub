@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="col-12 my-1">
-                <p class="card-text m-0"><c:out value="${job.provider.name}"/></p>
+                <p class="card-text m-0"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
             </div>
         </div>
     </div>
