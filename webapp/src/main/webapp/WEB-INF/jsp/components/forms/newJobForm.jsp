@@ -56,7 +56,7 @@
             <i class="fas fa-upload mr-1"></i>
             <spring:message code="jobForm.ImagesButton"/>
         </button>
-        <input type="file" id="inputFiles" name="images" hidden/>
+        <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
     </div>
 
     <input type="hidden" value="${user.id}" name="userId">

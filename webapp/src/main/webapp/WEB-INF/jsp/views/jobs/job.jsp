@@ -77,8 +77,10 @@
                                             <h1 class="jobTitle mt-3"><c:out value="${job.jobProvided}"/></h1>
                                         </div>
                                         <div class="col-12 pl-0">
-                                            <h1 class="contactInfo"><c:out value="${job.provider.name}"/> <c:out
-                                                    value="${job.provider.surname}"/></h1>
+                                            <a href="<c:url value="/user/${job.provider.id}"/>">
+                                                <h1 class="contactInfo"><c:out value="${job.provider.name}"/> <c:out
+                                                        value="${job.provider.surname}"/></h1>
+                                            </a>
                                         </div>
                                         <div class="col-12 pl-0 mt-2">
                                             <c:forEach begin="1" end="${job.averageRating}">
