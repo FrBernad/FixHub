@@ -33,12 +33,13 @@
                         <c:url value="/user/account/updateCoverImage" var="postCoverImage"/>
                         <form:form id="changeCoverForm" type="hidden" action="${postCoverImage}" method="POST"
                                    enctype="multipart/form-data">
+                            <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
+
                         </form:form>
                         <button type="button" id="changeCoverImageButton">
                             <i class="fas fa-camera mr-2"></i>
                             <span><spring:message code="profilePage.picture.changeBg"/></span>
                         </button>
-                        <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
                     </div>
                 </div>
             </div>
@@ -62,11 +63,13 @@
                                 <c:url value="/user/account/updateProfileImage" var="postProfileImage"/>
                                 <form:form id="changeProfileForm" type="hidden" action="${postProfileImage}"
                                            method="POST" enctype="multipart/form-data">
+                                    <input type="file" id="profileInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
+
                                 </form:form>
+
                                 <button type="button" id="changeProfileImageButton">
                                     <i class="fas fa-camera"></i>
                                 </button>
-                                <input type="file" id="profileInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
                             </div>
                         </div>
                         <div class="col-8 mt-5">
