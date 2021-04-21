@@ -18,6 +18,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -285,14 +286,13 @@ public class WebAuthController {
     }
 
     //FIXME: REVISAR EXCEPCION
-    @RequestMapping(value = "/user/account/update", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form, BindingResult errors) throws IOException {
+    @RequestMapping(value = "/user/account/updateInfo", method = RequestMethod.POST)
+    public ModelAndView updateProfileInfo(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form, BindingResult errors) throws IOException {
         if (errors.hasErrors()) {
             return updateProfile(form);
         }
 
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-
         userService.updateUserInfo(
             new UserInfo(form.getName(), form.getSurname(),
                 form.getCity(), form.getState(), form.getPhoneNumber()),
@@ -300,6 +300,23 @@ public class WebAuthController {
 
         return new ModelAndView("redirect:/user/account");
     }
+
+    @RequestMapping(value="/user/account/updateCoverImage",method = RequestMethod.POST)
+    public ModelAndView updateCoverImage(@RequestParam("image") MultipartFile file) throws IOException {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()),user);
+        return new ModelAndView("redirect:/user/account");
+    }
+
+
+    @RequestMapping(value="/user/account/updateProfileImage",method = RequestMethod.POST)
+    public ModelAndView updateProfileImage(@RequestParam("image") MultipartFile file) throws IOException {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()),user);
+        return new ModelAndView("redirect:/user/account");
+    }
+
+
 
     private void forceLogin(User user, HttpServletRequest request) {
         //generate authentication

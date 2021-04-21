@@ -27,6 +27,14 @@ window.addEventListener("load", () => {
         let nextBtn = document.getElementById("next");
         let currentPage = pagination.dataset.page;
 
+        let coverImageButton = document.getElementById("changeCoverImageButton")
+        let changeCoverForm = document.getElementById("changeCoverForm");
+        let coverInput = document.getElementById("coverInputFile");
+
+        let profileImageButton = document.getElementById("changeProfileImageButton")
+        let changeProfileForm = document.getElementById("changeProfileForm");
+        let profileInput = document.getElementById("profileInputFile");
+
 
         prevBtn.addEventListener("click", () => {
             formPageInput.setAttribute("value", (parseInt(currentPage) - 1).toString());
@@ -45,5 +53,25 @@ window.addEventListener("load", () => {
                 searchForm.submit();
             })
         }
+
+
+        coverInput.addEventListener("change",()=>{
+            changeCoverForm.submit();
+        })
+
+        coverImageButton.addEventListener("click",()=>{
+            coverInput.click();
+        })
+
+
+
+        profileInput.addEventListener("change",()=>{
+            changeProfileForm.submit();
+        })
+
+        profileImageButton.addEventListener("click",()=>{
+            profileInput.click();
+        })
+
     }
 })

@@ -29,12 +29,12 @@
                         <div class="profilePictureContainer">
                             <div class="picContainer">
                                 <c:choose>
-                                    <c:when test="${user.imageId == 0}">
+                                    <c:when test="${user.profileImageId == 0}">
                                         <img src="<c:url value='/resources/images/userProfile.png'/>"
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="<c:url value='/user/images/profile/${user.imageId}'/>"
+                                        <img src="<c:url value='/user/images/profile/${user.profileImageId}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>

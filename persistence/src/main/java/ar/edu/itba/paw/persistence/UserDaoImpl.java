@@ -68,7 +68,8 @@ public class UserDaoImpl implements UserDao {
                     rs.getString("u_state"),
                     rs.getString("u_city"),
                     new ArrayList<>(),
-                    rs.getLong("u_profile_picture")));
+                    rs.getLong("u_profile_picture"),
+                    rs.getLong("u_cover_picture")));
             }
 
             userMap.get(userId).addRole(Roles.valueOf(rs.getString("r_role")));
@@ -221,7 +222,7 @@ public class UserDaoImpl implements UserDao {
             roleSimpleJdbcInsert.execute(userRoles);
         }
 
-        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null);
+        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null,null);
     }
 
     public Collection<ContactInfo> getContactInfo(User user) {
@@ -351,6 +352,17 @@ public class UserDaoImpl implements UserDao {
            return location;
         });
     }
+
+    @Override
+    public void updateProfileImage(Long imageId, User user){
+        jdbcTemplate.update("UPDATE USERS set u_profile_picture = ? where u_id = ?",new Object[]{imageId,user.getId()});
+    }
+
+    @Override
+    public void updateCoverImage(Long imageId, User user){
+        jdbcTemplate.update("UPDATE USERS set u_cover_picture = ? where u_id = ?",new Object[]{imageId,user.getId()});
+    }
+
 
 
 }

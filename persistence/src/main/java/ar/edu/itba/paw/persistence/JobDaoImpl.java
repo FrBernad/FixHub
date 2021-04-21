@@ -54,7 +54,8 @@ public class JobDaoImpl implements JobDao {
                             rs.getString("u_state"),
                             rs.getString("u_city"),
                             Collections.emptyList(),
-                            rs.getLong("u_profile_picture")),
+                            rs.getLong("u_profile_picture"),
+                            rs.getLong("u_cover_picture")),
                         new ArrayList<>()));
             }
 

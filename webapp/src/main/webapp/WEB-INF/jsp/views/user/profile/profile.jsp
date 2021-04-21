@@ -19,15 +19,26 @@
             <%--USER PICTURES--%>
             <div class="col-12 px-0">
                 <div class="container-fluid px-0 position-relative">
-                    <img src="https://media-exp1.licdn.com/dms/image/C4E16AQFt_jaEDLpfzw/profile-displaybackgroundimage-shrink_200_800/0/1615241156937?e=1624492800&v=beta&t=8dfcwrjdLN8UgoSoV6k3iNEXT7xoekjs6iZNB6rZl1o"
-                         class="backgroundImage"
-                    >
-                    <a href="<c:url value="/user/account/update"/>" class="profileBackgroundPic">
-                        <button>
-                            <i class="fas fa-camera mr-2"></i>
-                            <span><spring:message code="profilePage.picture.changeBg"/></span>
-                        </button>
-                    </a>
+                    <c:choose>
+                        <c:when test="${loggedUser.coverImageId == 0}">
+                            <img src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
+                                 class="backgroundImage">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="<c:url value='/user/images/profile/${loggedUser.coverImageId}'/>"
+                                 class="backgroundImage">
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="profileBackgroundPic">
+                        <c:url value="/user/account/updateCoverImage" var="postCoverImage"/>
+                        <form:form id="changeCoverForm" action="${postCoverImage}" method="POST" enctype="multipart/form-data">
+                            <button type="button" id="changeCoverImageButton">
+                                <i class="fas fa-camera mr-2"></i>
+                                <span><spring:message code="profilePage.picture.changeBg"/></span>
+                            </button>
+                            <input type="file" id="coverInputFile" name="image" hidden/>
+                        </form:form>
+                    </div>
                 </div>
             </div>
             <div class="col-12 mt-4">
@@ -36,21 +47,25 @@
                         <div class="profilePictureContainer">
                             <div class="picContainer">
                                 <c:choose>
-                                    <c:when test="${loggedUser.imageId == 0}">
+                                    <c:when test="${loggedUser.profileImageId == 0}">
                                         <img src="<c:url value='/resources/images/userProfile.png'/>"
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="<c:url value='/user/images/profile/${loggedUser.imageId}'/>"
+                                        <img src="<c:url value='/user/images/profile/${loggedUser.profileImageId}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            <a href="<c:url value="/user/account/update"/>" class="profilePicEditBtn">
-                                <button>
-                                    <i class="fas fa-camera"></i>
-                                </button>
-                            </a>
+                            <div class="profilePicEditBtn">
+                                <c:url value="/user/account/updateProfileImage" var="postProfileImage"/>
+                                <form:form id="changeProfileForm" action="${postProfileImage}" method="POST" enctype="multipart/form-data">
+                                    <button type="button" id="changeProfileImageButton">
+                                        <i class="fas fa-camera"></i>
+                                    </button>
+                                    <input type="file" id="profileInputFile" name="image" hidden/>
+                                </form:form>
+                            </div>
                         </div>
                         <div class="col-8 mt-5">
                             <h1 class="userSectionTitles text-center">

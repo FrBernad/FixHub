@@ -17,10 +17,12 @@ CREATE TABLE IF NOT EXISTS USERS
     u_email           VARCHAR(200) UNIQUE NOT NULL,
     u_phone_number    VARCHAR(15)         NOT NULL,
     u_profile_picture BIGINT,
+    u_cover_picture   BIGINT,
     u_state           VARCHAR(50)         NOT NULL,
     u_city            VARCHAR(50)         NOT NULL,
     PRIMARY KEY (u_id),
-    FOREIGN KEY (u_profile_picture) REFERENCES IMAGES (i_id)
+    FOREIGN KEY (u_profile_picture) REFERENCES IMAGES (i_id),
+    FOREIGN KEY (u_cover_picture) REFERENCES IMAGES (i_id)
 );
 
 
@@ -135,17 +137,18 @@ CREATE TABLE IF NOT EXISTS CITIES
 
 CREATE TABLE IF NOT EXISTS USER_LOCATION
 (
-  ul_city_id BIGINT NOT NULL,
-  ul_user_id BIGINT NOT NULL,
-  FOREIGN KEY (ul_user_id) REFERENCES USERS (u_id),
-  FOREIGN KEY (ul_city_id) REFERENCES CITIES (c_id),
-  PRIMARY KEY (ul_city_id,ul_user_id)
+    ul_city_id BIGINT NOT NULL,
+    ul_user_id BIGINT NOT NULL,
+    FOREIGN KEY (ul_user_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (ul_city_id) REFERENCES CITIES (c_id),
+    PRIMARY KEY (ul_city_id, ul_user_id)
 );
 
-CREATE TABLE IF NOT EXISTS USER_SCHEDULE(
-  us_user_id BIGINT NOT NULL,
-  us_start_time VARCHAR(5) NOT NULL,
-  us_end_time VARCHAR(5) NOT NULL,
-  FOREIGN KEY (us_user_id) REFERENCES USERS(u_id),
-  PRIMARY KEY (us_user_id,us_start_time,us_end_time)
+CREATE TABLE IF NOT EXISTS USER_SCHEDULE
+(
+    us_user_id    BIGINT     NOT NULL,
+    us_start_time VARCHAR(5) NOT NULL,
+    us_end_time   VARCHAR(5) NOT NULL,
+    FOREIGN KEY (us_user_id) REFERENCES USERS (u_id),
+    PRIMARY KEY (us_user_id, us_start_time, us_end_time)
 );

@@ -38,7 +38,7 @@ public class UserServiceImplTest {
         // 1. Setup!
         Mockito.when(mockDao.createUser(Mockito.eq(PASSWORD), Mockito.eq(NAME), Mockito.eq(SURNAME),
                 Mockito.eq(EMAIL), Mockito.eq(PHONENUMBER), Mockito.eq(STATE), Mockito.eq(CITY), new ArrayList<>())).
-                thenReturn(new User(1L, PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY, new ArrayList<>(),null));
+                thenReturn(new User(1L, PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY, new ArrayList<>(),null,null));
         // 2. "ejercito" la class under test
         User maybeUser = userService.createUser(PASSWORD, NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY);
         // 3. Asserts!

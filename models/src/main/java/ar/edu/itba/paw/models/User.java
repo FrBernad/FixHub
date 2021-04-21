@@ -4,10 +4,10 @@ import java.util.Collection;
 
 public class User {
     private String name, password,surname,city,state,phoneNumber,email;
-    private Long id,imageId;
+    private Long id,profileImageId,coverImageId;
     private Collection<Roles> roles;
 
-    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles,Long imageId) {
+    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles,Long profileImageId,Long coverImageId) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -17,15 +17,24 @@ public class User {
         this.state = state;
         this.city = city;
         this.roles = roles;
-        this.imageId = imageId;
+        this.coverImageId = coverImageId;
+        this.profileImageId = profileImageId;
     }
 
-    public Long getImageId() {
-        return imageId;
+    public Long getProfileImageId() {
+        return profileImageId;
     }
 
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
+    public void setProfileImageId(Long profileImageId) {
+        this.profileImageId = profileImageId;
+    }
+
+    public Long getCoverImageId() {
+        return coverImageId;
+    }
+
+    public void setCoverImageId(Long coverImageId) {
+        this.coverImageId = coverImageId;
     }
 
     public boolean hasRole(String role) {

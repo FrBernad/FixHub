@@ -155,11 +155,32 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserStatsById(id);
     }
 
-    @Transactional
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
 
         userDao.updateUserInfo(userInfo,user);
+    }
+
+    @Override
+    public void updateCoverImage(ImageDto imageDto,User user){
+        Long imageId = user.getCoverImageId();
+        if(imageId == 0){
+            imageId = imageService.createImage(imageDto).getImageId();
+            userDao.updateCoverImage(imageId,user);
+        }
+        else
+            imageService.updateImage(imageDto,user.getProfileImageId());
+    }
+
+    @Override
+    public void updateProfileImage(ImageDto imageDto,User user){
+        Long imageId = user.getProfileImageId();
+        if(imageId == 0){
+            imageId = imageService.createImage(imageDto).getImageId();
+            userDao.updateProfileImage(imageId,user);
+        }
+        else
+            imageService.updateImage(imageDto,user.getProfileImageId());
     }
 
     @Override

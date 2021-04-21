@@ -39,4 +39,8 @@ public interface UserService {
     ProviderLocation getLocationByProviderId(Long providerId);
 
     void makeProvider(Long userId, List<Long> citiesId, String startTime, String endTime);
+
+    void updateCoverImage(ImageDto imageDto, User user);
+
+    void updateProfileImage(ImageDto imageDto, User user);
 }

@@ -51,4 +51,7 @@ public interface UserDao {
 
     ProviderLocation getLocationByProviderId(Long providerId);
 
+    void updateCoverImage(Long imageId, User user);
+
+    void updateProfileImage(Long imageId, User user);
 }
