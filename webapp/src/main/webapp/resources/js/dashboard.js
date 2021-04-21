@@ -21,6 +21,7 @@ contact.click(function (e) {
     panelTitle.html(contact.data('name'));
 });
 
+//JOBS
 let pagination = document.getElementById("pagination");
 if (pagination !== null) {
 

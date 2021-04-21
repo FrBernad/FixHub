@@ -157,13 +157,12 @@
                                                             <div class="container-fluid px-0">
                                                                 <div class="row align-items-top ${results.results.size()%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                                                     <c:forEach var="job" items="${results.results}">
-                                                                        <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
+                                                                        <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center
+                                                                        justify-content-center">
                                                                             <%@ include
                                                                                     file="../../components/cards/jobCard.jsp" %>
                                                                         </div>
                                                                     </c:forEach>
-                                                                    <%@ include
-                                                                            file="../../components/pagination.jsp" %>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -179,6 +178,7 @@
                                                         </div>
                                                     </c:otherwise>
                                                 </c:choose>
+                                                <%@ include file="../../components/pagination.jsp" %>
                                             </div>
                                         </div>
                                     </div>
