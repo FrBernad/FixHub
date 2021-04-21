@@ -10,6 +10,7 @@
 
     <link href='<c:url value="/resources/css/newJob.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/login.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/join.css"/>' rel="stylesheet">
 </head>
 
 <body>

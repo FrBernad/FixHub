@@ -8,6 +8,18 @@ window.addEventListener("load", () => {
     let inputFile = document.getElementById("inputFiles");
     let files = [];
 
+    let categories = document.getElementsByClassName("categoryButton");
+    let categoryName = document.getElementById("categoryName");
+    let categoryInput = document.getElementById("jobCategory");
+
+    for (const category of categories) {
+        category.addEventListener("click", () => {
+            const name = category.dataset.name;
+            categoryName.innerText = name;
+            categoryInput.value = name;
+        })
+    }
+
     function FileListItems(files) {
         const b = new ClipboardEvent("").clipboardData || new DataTransfer();
         for (let i = 0, len = files.length; i < len; i++)
@@ -18,8 +30,8 @@ window.addEventListener("load", () => {
     function inputFileUpdate() {
         files.push(inputFile.files[0]);
         const file = document.createElement("button");
-        file.type="button";
-        file.className+=" btn btn-primary m-2";
+        file.type = "button";
+        file.className += " btn btn-primary m-2";
         file.textContent = inputFile.files[0].name;
         const icon = document.createElement("i");
         icon.className += "fas fa-times ml-1";
@@ -27,9 +39,9 @@ window.addEventListener("load", () => {
         imagesHolder.appendChild(file);
 
         file.addEventListener("click", () => {
-             imagesHolder.removeChild(file);
-             let index = files.indexOf(inputFile);
-             files.splice(index);
+            imagesHolder.removeChild(file);
+            let index = files.indexOf(inputFile);
+            files.splice(index);
         })
     }
 

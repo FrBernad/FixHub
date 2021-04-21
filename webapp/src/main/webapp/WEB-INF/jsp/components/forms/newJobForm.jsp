@@ -13,11 +13,24 @@
         <div class="col-6">
             <div class="form-group">
                 <form:label  path="jobCategory"><spring:message code="jobForm.jobTypeTitle"/> <span class="required-field">*</span></form:label>
-                <form:select id="jobCategory" path="jobCategory" class="form-control">
-                    <c:forEach var="category" items="${categories}">
-                        <option selected value="${category}"><spring:message code="home.categories.${category}"/></option>
-                    </c:forEach>
-                </form:select>
+                <form:input type="hidden" id="jobCategory" path="jobCategory"/>
+                <div class="dropdown">
+                    <button class="dropdown-custom dropdown-toggle" type="button" id="categoryDropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <spring:message code="newJob.category"/>
+                        <span class="category" id="categoryName">
+                        </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <c:forEach var="category" items="${categories}">
+                            <div class="input-group">
+                                <button class="dropdown-item categoryButton" type="button" data-name="${category}">
+                                        ${category}
+                                </button>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
                 <form:errors path="jobCategory" cssClass="formError" element="p"/>
             </div>
         </div>
