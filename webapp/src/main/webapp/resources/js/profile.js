@@ -1,4 +1,21 @@
 window.addEventListener("load", () => {
+
+    let resendBtn = document.getElementById("resendBtn");
+    let resendForm = document.getElementById("resendForm");
+    let processing = false;
+    if (resendForm !== null) {
+        resendBtn.addEventListener("click", () => {
+            if (processing) {
+                return;
+            }
+            processing = true;
+            resendBtn.disabled = true;
+            resendForm.submit();
+            processing = false;
+        })
+
+    }
+
     let pagination = document.getElementById("pagination");
     if (pagination !== null) {
 

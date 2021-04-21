@@ -90,11 +90,10 @@
                 <form:input type="text" path="city" cssErrorClass="form-control is-invalid" id="city"
                             class="form-control" placeholder="${userCityTitlePlaceholder}"/>
                 <form:errors path="city" cssClass="formError" element="p"/>
-
             </div>
         </div>
     </div>
-    <div class="col-12 d-flex align-items-center justify-content-center">
+    <div class="col-12 px-0 d-flex align-items-center justify-content-center">
         <button type="button" id="registerFormButton" form="registerForm" class="w-100 continueBtn my-2 ">
             <spring:message code="registerForm.buttonText"/>
         </button>

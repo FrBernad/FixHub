@@ -41,20 +41,29 @@
     border: solid white 4px;
 }
 
-.detailsSection {
-    background-color: white;
-    border-radius: 8px;
-}
-
 .profilePicture {
     height: 100%;
     width: 100%;
     object-fit: cover;
 }
 
+.detailsSection {
+    background-color: white;
+    border-radius: 8px;
+}
+
 .userSectionTitles {
     font-size: 22px;
     font-weight: 700;
+}
+
+#resendBtn {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+#resendBtn:hover {
+    color: rgba(4,54,96,0.8);
 }
 
 .info {
@@ -65,6 +74,11 @@
 .extraInfo {
     font-size: 16px;
     font-weight: normal;
+}
+
+
+.client-label {
+    font-weight: bolder;
 }
 
 
@@ -85,7 +99,7 @@
 }
 
 .profilePicEditBtn button:hover {
-    background-color: rgba(228,230,235,0.9);
+    background-color: rgba(228, 230, 235, 0.9);
 }
 
 .profilePicEditBtn {
@@ -95,7 +109,7 @@
 }
 
 .profileBackgroundPic button:hover {
-    background-color: rgb(228,230,235);
+    background-color: rgb(228, 230, 235);
 }
 
 .profileBackgroundPic button {

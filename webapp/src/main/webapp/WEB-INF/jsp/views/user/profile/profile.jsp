@@ -10,6 +10,7 @@
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
 </head>
 <body>
+<%@ include file="../../../components/accountNotVerified.jsp" %>
 <div class="outerContainer pb-4">
     <%@ include file="../../../components/navbar.jsp" %>
     <div class="container-lg userContainerProfile pb-4">

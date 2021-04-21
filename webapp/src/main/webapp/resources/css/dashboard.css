@@ -4,14 +4,17 @@
     color: var(--tertiary-color) !important;
 }
 
+.accordionCard {
+    border: none;
+    background-color: transparent;
+}
+
 .inactive {
     color: var(--primary-color) !important;
 }
 
 .card-header {
-    background-color: var(--quaternary-color) !important;
-    border-color: var(--quaternary-color) !important;
-    color: var(--tertiary-color) !important;
+    color: black !important;
 }
 
 .card-body {

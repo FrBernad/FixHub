@@ -110,7 +110,7 @@ public class WebAuthController {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.resendVerificationToken(user);
 
-        final ModelAndView mav = new ModelAndView("redirect:views/user/account/verification/resendConfirmation");
+        final ModelAndView mav = new ModelAndView("redirect:/user/verifyAccount/resendConfirmation");
         mav.addObject("loggedUser", user);
 
         return mav;

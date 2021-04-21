@@ -27,12 +27,14 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
+                            <span class="client-label"><spring:message code="dashboard.provider"/>:</span>
                             <a href="<c:url value="/user/${contact.user.userId}"/>">
                                 <c:out value="${contact.user.name} ${contact.user.surname}"/>
                             </a>
                         </div>
                         <div class="col-12">
                             <p class="mb-0">
+                                <span class="client-label"><spring:message code="dashboard.clientMessage"/>:</span>
                                 <c:out value="${contact.message}"/>
                             </p>
                         </div>
