@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
             userDao.updateCoverImage(imageId,user);
         }
         else
-            imageService.updateImage(imageDto,user.getProfileImageId());
+            imageService.updateImage(imageDto,imageId);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
             userDao.updateProfileImage(imageId,user);
         }
         else
-            imageService.updateImage(imageDto,user.getProfileImageId());
+            imageService.updateImage(imageDto,imageId);
     }
 
     @Override
