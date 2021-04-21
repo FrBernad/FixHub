@@ -235,9 +235,20 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price,long jobId) {
-         jdbcTemplate.update("UPDATE jobs SET j_job_provided = ?, " +
+    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price,List<Image> images,long jobId) {
+
+        jdbcTemplate.update("UPDATE jobs SET j_job_provided = ?, " +
                 "j_category = ?, j_description = ?, j_price = ? where j_id = ? ",jobProvided,category.toString(),description,price,jobId);
+
+        Map<String, Object> imageJobMap = new HashMap<>();
+        Collection<Long> imagesId = new LinkedList<>();
+
+        for (Image image : images) {
+            imageJobMap.put("ji_image_id", image.getImageId());
+            imageJobMap.put("ji_job_id", jobId);
+            imagesId.add(image.getImageId());
+            jobImagesSimpleJdbcInsert.execute(imageJobMap);
+        }
 
     }
 

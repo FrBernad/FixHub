@@ -108,8 +108,25 @@ public class JobController {
             return updateJob(jobId,form);
         }
 
+        List<ImageDto> imagesDto = new LinkedList<>();
+        String contentType;
+        //FIXME: SOLUCIONAR ESTO
+        if (form.getImages().get(0).getSize() != 0) {
+            for (final MultipartFile image : form.getImages()) {
+                try {
+                    contentType = image.getContentType();
+                    if(!imageService.getContentTypes().contains(contentType))
+                        throw new IllegalContentTypeException();
 
-        jobService.updateJob(form.getJobProvided(),form.getJobCategory(),form.getDescription(),form.getPrice(),jobId);
+                    imagesDto.add(new ImageDto(image.getBytes(), contentType));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        jobService.updateJob(form.getJobProvided(),form.getJobCategory(),form.getDescription(),form.getPrice(),imagesDto,jobId);
 
         return new ModelAndView("redirect:/jobs/{jobId}");
     }
