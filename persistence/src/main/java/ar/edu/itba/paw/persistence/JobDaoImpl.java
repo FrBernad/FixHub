@@ -253,6 +253,13 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
+    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price,long jobId) {
+         jdbcTemplate.update("UPDATE jobs SET j_job_provided = ?, " +
+                "j_category = ?, j_description = ?, j_price = ? where j_id = ? ",jobProvided,category.toString(),description,price,jobId);
+
+    }
+
+    @Override
     public Optional<Job> getJobById(long id) {
         List<Object> variables = new LinkedList<>();
         variables.add(id);
