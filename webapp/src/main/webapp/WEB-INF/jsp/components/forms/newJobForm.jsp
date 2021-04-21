@@ -25,7 +25,7 @@
                         <c:forEach var="category" items="${categories}">
                             <div class="input-group">
                                 <button class="dropdown-item categoryButton" type="button" data-name="${category}">
-                                        ${category}
+                                        <spring:message code="home.categories.${category}"/>
                                 </button>
                             </div>
                         </c:forEach>
