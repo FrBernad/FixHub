@@ -80,13 +80,13 @@
                         <div class="col-12 mt-2">
                             <h3 class="info">
                                 <span class="detailField"><spring:message code="profilePage.info.email"/></span>
-                                <c:out value="${user.email}."/>
+                                <c:out value="${user.email}"/>
                             </h3>
                         </div>
                         <div class="col-12 mt-2">
                             <h3 class="info">
                                 <span class="detailField"><spring:message code="profilePage.info.phone"/></span>
-                                <c:out value="${user.phoneNumber}."/>
+                                <c:out value="${user.phoneNumber}"/>
                             </h3>
                         </div>
                     </div>

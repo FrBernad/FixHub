@@ -3,12 +3,12 @@
         <div class="card-header px-0">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-7">
                         <a href="<c:url value="/jobs/${contact.jobId}"/>">
                             <c:out value="${contact.jobProvided}"/>
                         </a>
                     </div>
-                    <div class="col-5 d-flex align-items-center justify-content-end">
+                    <div class="col-4 d-flex align-items-center justify-content-end">
                         <span>
                             <c:out value="${contact.date.toLocalDate()}"/>
                         </span>
@@ -36,6 +36,14 @@
                             <p class="mb-0">
                                 <span class="client-label"><spring:message code="dashboard.clientMessage"/>:</span>
                                 <c:out value="${contact.message}"/>
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <p class="mb-0">
+                                <span class="client-label"><spring:message code="dashboard.clientAddress"/>:</span>
+                                <c:out value="${contact.contactInfo.street} ${contact.contactInfo.addressNumber}
+                                ${contact.contactInfo.city} ${contact.contactInfo.departmentNumber}
+                                ${contact.contactInfo.floor} ${contact.contactInfo.state}"/>
                             </p>
                         </div>
                     </div>
