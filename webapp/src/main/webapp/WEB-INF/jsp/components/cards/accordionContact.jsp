@@ -41,9 +41,9 @@
                         <div class="col-12">
                             <p class="mb-0">
                                 <span class="client-label"><spring:message code="dashboard.clientAddress"/>:</span>
-                                <c:out value="${contact.contactInfo.street} ${contact.contactInfo.addressNumber}
-                                ${contact.contactInfo.city} ${contact.contactInfo.departmentNumber}
-                                ${contact.contactInfo.floor} ${contact.contactInfo.state}"/>
+                                <c:out value="${contact.contactInfo.state}, ${contact.contactInfo.city}, ${contact.contactInfo.street} ${contact.contactInfo.addressNumber}
+                                ${contact.contactInfo.departmentNumber}
+                                ${contact.contactInfo.floor} "/>
                             </p>
                         </div>
                     </div>

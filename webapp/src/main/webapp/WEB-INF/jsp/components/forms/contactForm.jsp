@@ -6,7 +6,7 @@
 <form:form modelAttribute="contactForm" id="contactForm" action="${postPath}" class="contactForm" method="POST">
 
     <c:if test="${contactInfoCollection.size() > 0}">
-    <div class="dropdown">
+    <div class="dropdown mb-4">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <spring:message code="contactForm.Dropdown.Information"/>
@@ -87,8 +87,8 @@
     </div>
     <form:input type="hidden" path="contactInfoId" value="-1"/>
     <div class="row align-items-center justify-content-center">
-        <div class="col-6 d-flex align-items-center justify-content-center">
-            <button type="button" id="contactFormButton" class="contactBtn w-75"><spring:message code="contactForm.submit"/></button>
+        <div class="col-12 px-0 d-flex align-items-center justify-content-center">
+            <button type="button" id="contactFormButton" class="contactBtn w-50"><spring:message code="contactForm.submit"/></button>
         </div>
     </div>
 

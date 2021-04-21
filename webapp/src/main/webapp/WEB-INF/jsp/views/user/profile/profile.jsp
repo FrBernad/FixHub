@@ -88,7 +88,7 @@
 
             <%--USER INFO--%>
             <div class="col-12 col-md-6 pl-0 pl-md-5">
-                <div class="container-lg h-100 detailsSection">
+                <div class="container-lg detailsSection">
                     <div class="row py-2">
                         <div class="col-6 my-2">
                             <h3 class="sectionTitle text-left">
