@@ -2,16 +2,16 @@ package ar.edu.itba.paw.models;
 
 public class ContactDto {
 
-    private Long providerId,jobId,contactInfoId;
+    private Job job;
+    private Long contactInfoId;
     private User user;
-    private String message,state,city,street,addressNumber,floor,departmentNumber;
+    private String message, state, city, street, addressNumber, floor, departmentNumber;
 
-    public ContactDto(Long providerId, Long jobId, User user, Long contactInfoId, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
-        this.providerId = providerId;
-        this.jobId = jobId;
+    public ContactDto(Job job, Long contactInfoId, User user, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+        this.job = job;
+        this.contactInfoId = contactInfoId;
         this.user = user;
         this.message = message;
-        this.contactInfoId = contactInfoId;
         this.state = state;
         this.city = city;
         this.street = street;
@@ -20,28 +20,20 @@ public class ContactDto {
         this.departmentNumber = departmentNumber;
     }
 
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
     public Long getContactInfoId() {
         return contactInfoId;
     }
 
     public void setContactInfoId(Long contactInfoId) {
         this.contactInfoId = contactInfoId;
-    }
-
-    public Long getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(Long providerId) {
-        this.providerId = providerId;
-    }
-
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
     }
 
     public User getUser() {

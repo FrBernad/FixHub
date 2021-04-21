@@ -250,8 +250,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time) {
         final Map<String, Object> contactMap = new HashMap<>();
-        contactMap.put("c_provider_id", contactDto.getProviderId());
-        contactMap.put("c_job_id", contactDto.getJobId());
+        contactMap.put("c_provider_id", contactDto.getJob().getProvider().getId());
+        contactMap.put("c_job_id", contactDto.getJob().getId());
         contactMap.put("c_user_id", contactDto.getUser().getId());
         contactMap.put("c_info_id", contactInfoId);
         contactMap.put("c_message", contactDto.getMessage());

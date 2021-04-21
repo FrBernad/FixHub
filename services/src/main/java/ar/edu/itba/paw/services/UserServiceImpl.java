@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
     private String appBaseUrl;
 
 
-
     @Autowired
     private MessageSource messageSource;
 
@@ -158,29 +157,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
 
-        userDao.updateUserInfo(userInfo,user);
+        userDao.updateUserInfo(userInfo, user);
     }
 
     @Override
-    public void updateCoverImage(ImageDto imageDto,User user){
+    public void updateCoverImage(ImageDto imageDto, User user) {
         Long imageId = user.getCoverImageId();
-        if(imageId == 0){
+        if (imageId == 0) {
             imageId = imageService.createImage(imageDto).getImageId();
-            userDao.updateCoverImage(imageId,user);
-        }
-        else
-            imageService.updateImage(imageDto,imageId);
+            userDao.updateCoverImage(imageId, user);
+        } else
+            imageService.updateImage(imageDto, imageId);
     }
 
     @Override
-    public void updateProfileImage(ImageDto imageDto,User user){
+    public void updateProfileImage(ImageDto imageDto, User user) {
         Long imageId = user.getProfileImageId();
-        if(imageId == 0){
+        if (imageId == 0) {
             imageId = imageService.createImage(imageDto).getImageId();
-            userDao.updateProfileImage(imageId,user);
-        }
-        else
-            imageService.updateImage(imageDto,imageId);
+            userDao.updateProfileImage(imageId, user);
+        } else
+            imageService.updateImage(imageDto, imageId);
     }
 
     @Override
@@ -219,19 +216,60 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void contact(ContactDto contactDto) {
         ContactInfo contactInfo;
+
         if (contactDto.getContactInfoId() == -1)
             contactInfo = userDao.addContactInfo(contactDto);
         else
             contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
 
-        userDao.addClient(contactDto,contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
+        sendJobRequestEmail(contactDto);
+        sendJobRequestConfirmationEmail(contactDto);
+
+        userDao.addClient(contactDto, contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
     }
 
-
     @Override
-    public ProviderLocation getLocationByProviderId(Long providerId){
+    public ProviderLocation getLocationByProviderId(Long providerId) {
         return userDao.getLocationByProviderId(providerId);
     }
 
+     private void sendJobRequestEmail(ContactDto contactDto) {
+        final Map<String, Object> mailAttrs = new HashMap<>();
+
+        final String address = String.format("%s, %s, %s %s, %s %s", contactDto.getState(), contactDto.getCity(),
+            contactDto.getStreet(), contactDto.getAddressNumber(), contactDto.getFloor(), contactDto.getDepartmentNumber());
+
+        mailAttrs.put("to", contactDto.getJob().getProvider().getEmail());
+        mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
+        mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
+        mailAttrs.put("name", contactDto.getUser().getName());
+        mailAttrs.put("surname", contactDto.getUser().getSurname());
+        mailAttrs.put("address", address);
+        mailAttrs.put("phoneNumber", contactDto.getUser().getPhoneNumber());
+        mailAttrs.put("message", contactDto.getMessage());
+
+        try {
+            emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+        } catch (MessagingException e) {
+        //FIXME: LOGGEAR
+            e.printStackTrace();
+        }
+    }
+
+    private void sendJobRequestConfirmationEmail(ContactDto contactDto) {
+        final Map<String, Object> mailAttrs = new HashMap<>();
+
+        mailAttrs.put("to", contactDto.getUser().getEmail());
+        mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
+        mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
+        mailAttrs.put("name", contactDto.getUser().getName());
+
+        try {
+            emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+        } catch (MessagingException e) {
+        //FIXME: LOGGEAR
+            e.printStackTrace();
+        }
+    }
 
 }

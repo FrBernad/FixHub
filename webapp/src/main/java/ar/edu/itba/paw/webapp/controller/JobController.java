@@ -117,37 +117,14 @@ public class JobController {
             return contact(jobId, form);
         }
 
-        final String address = String.format("%s, %s, %s %s, %s %s", form.getState(), form.getCity(),
-            form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
-
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-
-        final Map<String, Object> mailAttrs = new HashMap<>();
-
-        mailAttrs.put("name", user.getName());
-        mailAttrs.put("to", providerEmail);
-        mailAttrs.put("providerJob", job.getJobProvided());
-        mailAttrs.put("providerName", job.getProvider().getName());
-        mailAttrs.put("surname", user.getSurname());
-        mailAttrs.put("address", address);
-        mailAttrs.put("phoneNumber", user.getPhoneNumber());
-        mailAttrs.put("message", form.getMessage());
-
-        //FIXME: VER Q ONDA ESTO
-        try {
-            emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        ContactDto contactDto = new ContactDto(job.getProvider().getId(),job.getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
+        ContactDto contactDto = new ContactDto(job, Long.valueOf(form.getContactInfoId()), user, form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
         userService.contact(contactDto);
 
-
-        ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
-        return mav;
+        return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
 
