@@ -1,17 +1,11 @@
 package ar.edu.itba.paw.webapp.form;
 
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.constraints.Min;
-import java.util.List;
 
-public class JoinForm {
+public class FirstJoinForm {
 
     @Min(1)
     private long state;
-
-    private List<Long> city;
 
     private String startTime;
 
@@ -23,14 +17,6 @@ public class JoinForm {
 
     public void setState(long state) {
         this.state = state;
-    }
-
-    public List<Long> getCity() {
-        return city;
-    }
-
-    public void setCity(List<Long> city) {
-        this.city = city;
     }
 
     public String getStartTime() {
@@ -49,3 +35,4 @@ public class JoinForm {
         this.endTime = endTime;
     }
 }
+

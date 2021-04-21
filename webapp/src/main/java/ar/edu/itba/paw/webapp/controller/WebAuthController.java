@@ -51,7 +51,6 @@ public class WebAuthController {
     private ImageService imageService;
 
 
-
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
         return new ModelAndView("views/register");
@@ -195,14 +194,14 @@ public class WebAuthController {
     //JOIN STEPS
 
     @RequestMapping("/user/join")
-    public ModelAndView join(@ModelAttribute("joinForm") final JoinForm form) {
+    public ModelAndView join(@ModelAttribute("joinForm") final FirstJoinForm form) {
         ModelAndView mav = new ModelAndView("views/user/account/roles/join");
         mav.addObject("states", locationService.getStates());
         return mav;
     }
 
     @RequestMapping(path = "/user/join", method = RequestMethod.POST)
-    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final JoinForm form,
+    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final FirstJoinForm form,
                                  final BindingResult errors,
                                  RedirectAttributes ra) {
 
@@ -220,31 +219,36 @@ public class WebAuthController {
         ra.addFlashAttribute("state", form.getState());
         ra.addFlashAttribute("startTime", form.getStartTime());
         ra.addFlashAttribute("endTime", form.getEndTime());
-        ra.addFlashAttribute("chooseCityForm", form);
         ra.addFlashAttribute("cities", locationService.getCitiesByStateId(form.getState()));
         return new ModelAndView("redirect:/user/join/chooseCity");
     }
 
     @RequestMapping("/user/join/chooseCity")
-    public ModelAndView joinChooseCity(@ModelAttribute("chooseCityForm") final JoinForm form,
+    public ModelAndView joinChooseCity(@ModelAttribute("chooseCityForm") final SecondJoinForm form,
                                        HttpServletRequest request) {
 
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-        if (flashMap == null)
+        if (flashMap == null && form == null)
             return new ModelAndView("redirect:/user/join");
 
         ModelAndView mav = new ModelAndView("views/user/account/roles/chooseCity");
 
-        mav.addAllObjects(flashMap);
+        if (flashMap != null)
+            mav.addAllObjects(flashMap);
+
+        //FIXME:
+        if(form.getState() != 0) {
+            mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
+        }
 
         return mav;
     }
 
     @RequestMapping(path = "/user/join/chooseCity", method = RequestMethod.POST)
-    public ModelAndView joinChooseCityPost(@Valid @ModelAttribute("chooseCityForm") final JoinForm form, final BindingResult errors, HttpServletRequest request) {
+    public ModelAndView joinChooseCityPost(@Valid @ModelAttribute("chooseCityForm") final SecondJoinForm form, final BindingResult errors, HttpServletRequest request) {
 
         if (errors.hasErrors()) {
-            return join(form);
+            return joinChooseCity(form, request);
         }
 
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
@@ -312,8 +316,8 @@ public class WebAuthController {
     @RequestMapping(value = "/user/account/updateCoverImage", method = RequestMethod.POST)
     public ModelAndView updateCoverImage(@RequestParam("image") MultipartFile file) throws IOException {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()),user);
-        if(!imageService.getContentTypes().contains(file.getContentType())){
+        userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()), user);
+        if (!imageService.getContentTypes().contains(file.getContentType())) {
             throw new IllegalContentTypeException();
         }
         return new ModelAndView("redirect:/user/account");
@@ -323,10 +327,10 @@ public class WebAuthController {
     @RequestMapping(value = "/user/account/updateProfileImage", method = RequestMethod.POST)
     public ModelAndView updateProfileImage(@RequestParam("image") MultipartFile file) throws IOException {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        if(!imageService.getContentTypes().contains(file.getContentType())){
+        if (!imageService.getContentTypes().contains(file.getContentType())) {
             throw new IllegalContentTypeException();
         }
-        userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()),user);
+        userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()), user);
         return new ModelAndView("redirect:/user/account");
     }
 

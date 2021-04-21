@@ -62,10 +62,10 @@
                 </div>
             </div>
         </div>
-        <form:errors path="state" cssClass="formError" element="p"/>
+        <form:errors path="state" cssClass="formError text-center mt-2" element="p"/>
     </div>
     <div class="col-12 d-flex align-items-center justify-content-center">
-        <button class="w-100 continueBtn my-2" form="joinForm">
+        <button class="w-100 continueBtn my-1" form="joinForm">
             <spring:message code="joinForm.continue"/>
         </button>
     </div>

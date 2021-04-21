@@ -30,6 +30,7 @@
             </div>
         </div>
     </div>
+    <form:errors path="city" cssClass="formError text-center" element="p"/>
     <div class="form-group">
         <div class="row">
             <div class="col">
