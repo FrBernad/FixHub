@@ -71,7 +71,7 @@ public class WebAuthController {
 
 
         User user;
-        final ModelAndView mav = new ModelAndView("redirect:/discover");
+        final ModelAndView mav = new ModelAndView("redirect:/user/account");
         try {
             user = userService.createUser(form.getPassword(),
                 form.getName(), form.getSurname(),
@@ -247,9 +247,9 @@ public class WebAuthController {
             return join(form);
         }
 
-
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.makeProvider(user.getId(), form.getCity(), form.getStartTime(), form.getEndTime());
+        user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
         forceLogin(user, request);
 
@@ -282,13 +282,14 @@ public class WebAuthController {
     public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
         return new ModelAndView("views/user/profile/editProfile");
     }
-     @RequestMapping(path = "/user/{userId}")
+
+    @RequestMapping(path = "/user/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
 
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         ModelAndView mav = new ModelAndView("views/user/profile/otherProfile");
-        mav.addObject("user",user);
+        mav.addObject("user", user);
         return mav;
     }
 
@@ -308,7 +309,7 @@ public class WebAuthController {
         return new ModelAndView("redirect:/user/account");
     }
 
-    @RequestMapping(value="/user/account/updateCoverImage",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/account/updateCoverImage", method = RequestMethod.POST)
     public ModelAndView updateCoverImage(@RequestParam("image") MultipartFile file) throws IOException {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()),user);
@@ -319,7 +320,7 @@ public class WebAuthController {
     }
 
 
-    @RequestMapping(value="/user/account/updateProfileImage",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/account/updateProfileImage", method = RequestMethod.POST)
     public ModelAndView updateProfileImage(@RequestParam("image") MultipartFile file) throws IOException {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         if(!imageService.getContentTypes().contains(file.getContentType())){
@@ -328,7 +329,6 @@ public class WebAuthController {
         userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()),user);
         return new ModelAndView("redirect:/user/account");
     }
-
 
 
     private void forceLogin(User user, HttpServletRequest request) {

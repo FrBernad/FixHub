@@ -190,7 +190,7 @@
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%; text-align: center;">
                                                         <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif; "
-                                                              th:text="#{jobRequest.title}"></span>
+                                                              th:text="#{jobRequestConfirmation.title}"></span>
                                                     </p>
                                                 </div>
 
@@ -237,52 +237,36 @@
                                         <tr>
                                             <td style="overflow-wrap:break-word;word-break:break-word;padding:30px 40px 20px;font-family:'Lato',sans-serif;"
                                                 align="left">
-
                                                 <div style="color: #000000; line-height: 140%; text-align: left; word-wrap: break-word;">
                                                     <p style="line-height: 140%; font-size: 14px;"><span
                                                             style="color: #666666; font-size: 14px; line-height: 19.6px;"><span
                                                             style="font-size: 18px; line-height: 25.2px;"
-                                                            th:text="#{jobRequest.greeting}"></span></span>
+                                                            th:text="#{jobRequestConfirmation.greeting}"></span></span>
                                                         <span
-                                                            style="color: #666666; font-size: 14px; line-height: 19.6px;"><span
-                                                            style="font-size: 18px; line-height: 25.2px;"
-                                                            th:text="${providerName}"></span></span>
+                                                                style="color: #666666; font-size: 14px; line-height: 19.6px;"><span
+                                                                style="font-size: 18px; line-height: 25.2px;"
+                                                                th:text="${name}"></span></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;"
-                                                            th:text="#{jobRequest.communication}"></span>
+                                                            th:text="#{jobRequestConfirmation.communication1}"></span>
                                                         <span
-                                                            style="font-size: 18px; line-height: 25.2px; color: #000000;"
-                                                            th:text="${providerJob}"></span>
+                                                                style="font-size: 18px; line-height: 25.2px; color: #000000;"
+                                                                th:text="${providerJob}"></span>
+                                                        <span
+                                                                style="font-size: 18px; line-height: 25.2px; color: #666666;"
+                                                                th:text="#{jobRequestConfirmation.communication2}"></span>
+                                                        <span
+                                                                style="font-size: 18px; line-height: 25.2px; color: #000000;"
+                                                                th:text="${providerName}"></span>
+                                                        <span
+                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"
+                                                            th:text="#{jobRequestConfirmation.communication3}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
 
                                                     <p style="font-size: 14px; line-height: 140%;"><span
-                                                            th:text="#{jobRequest.info.title}"
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
-                                                    </p>
-                                                    <p style="font-size: 14px; line-height: 140%;"> <span
-                                                            th:text="#{jobRequest.info.name}"
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
-                                                        <span th:text="${name}"></span> <span
-                                                                th:text="${surname}"></span>
-                                                    </p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><span
-                                                            th:text="#{jobRequest.info.phone}"
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">
-                                                    </span>
-                                                        <span th:text="${phoneNumber}"></span>
-                                                    </p>
-                                                    <p style="font-size: 14px; line-height: 140%;"><span
-                                                            th:text="#{jobRequest.info.address}"
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;">
-                                                   </span>
-                                                        <span th:text="${address}"></span>
-                                                    </p>
-                                                    <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
-
-                                                    <p style="font-size: 14px; line-height: 140%;"><span
-                                                            th:text="#{jobRequest.advice}"
+                                                            th:text="#{jobRequestConfirmation.advice}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>

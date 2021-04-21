@@ -64,7 +64,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
             //provider routes
             .antMatchers("/user/dashboard","/user/dashboard/search").hasRole("PROVIDER")
-            .antMatchers("/user/join","/user/join/chooseCity").not().hasAnyRole("PROVIDER","NOT_VALIDATED","ANONYMOUS")
+            .antMatchers("/user/join","/user/join/chooseCity").not().hasAnyRole("NOT_VERIFIED","PROVIDER", "ANONYMOUS")
 
             //else
             .antMatchers("/**").permitAll()
@@ -73,7 +73,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .loginPage("/login")
             .usernameParameter("email")
             .passwordParameter("password")
-            .defaultSuccessUrl("/user/account", false)
+            .defaultSuccessUrl("/user/account", true)
             .failureUrl("/login?error=true")
 
             .and().rememberMe()

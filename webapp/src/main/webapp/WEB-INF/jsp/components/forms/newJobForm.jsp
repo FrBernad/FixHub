@@ -37,7 +37,7 @@
     </div>
 
     <div class="form-group d-flex justify-content-between align-items-center">
-        <form:label path="images" class="label">
+        <form:label path="images" class="label mb-0">
             <spring:message code="jobForm.jobImageTitle"/></form:label>
         <button class="buttonCustom" type="button" id="addFileButton">
             <i class="fas fa-upload mr-1"></i>

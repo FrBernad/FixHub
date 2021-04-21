@@ -62,7 +62,7 @@ public class JobController {
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
-        mav.addObject("location",userService.getLocationByProviderId(job.getProvider().getId()));
+        mav.addObject("location", userService.getLocationByProviderId(job.getProvider().getId()));
         PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 5);
         mav.addObject("results", results);
         mav.addObject("paginationModal", paginationModal);
@@ -128,6 +128,8 @@ public class JobController {
 
         mailAttrs.put("name", user.getName());
         mailAttrs.put("to", providerEmail);
+        mailAttrs.put("providerJob", job.getJobProvided());
+        mailAttrs.put("providerName", job.getProvider().getName());
         mailAttrs.put("surname", user.getSurname());
         mailAttrs.put("address", address);
         mailAttrs.put("phoneNumber", user.getPhoneNumber());
@@ -140,8 +142,20 @@ public class JobController {
             e.printStackTrace();
         }
 
+        final Map<String, Object> mailAttrs2 = new HashMap<>();
 
-        userService.contact(job.getProvider().getId(),job.getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
+        mailAttrs2.put("name", user.getName());
+        mailAttrs2.put("to", user.getEmail());
+        mailAttrs2.put("providerJob", job.getJobProvided());
+        mailAttrs2.put("providerName", job.getProvider().getName());
+
+        try {
+            emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs2, LocaleContextHolder.getLocale());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        userService.contact(job.getProvider().getId(), job.getId(), user, Long.valueOf(form.getContactInfoId()), form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
@@ -177,7 +191,7 @@ public class JobController {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
-                    if(!imageService.getContentTypes().contains(contentType))
+                    if (!imageService.getContentTypes().contains(contentType))
                         throw new IllegalContentTypeException();
 
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
