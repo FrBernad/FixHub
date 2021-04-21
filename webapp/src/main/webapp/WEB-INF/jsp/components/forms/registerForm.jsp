@@ -5,14 +5,14 @@
 <form:form modelAttribute="registerForm" action="${postPath}" id="registerForm" class="jobForm" method="POST">
     <div class="form-group">
         <spring:message code="registerForm.namePlaceholder" var="namePlaceholder"/>
-        <form:label class="label" path="name"><spring:message code="registerForm.userNameTitle"/></form:label>
+        <form:label class="label" path="name"><spring:message code="registerForm.userNameTitle"/>*</form:label>
         <form:input type="text" path="name" id="name" cssErrorClass="form-control is-invalid" class="form-control"
                     placeholder="${namePlaceholder}"/>
         <form:errors path="name" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
         <spring:message code="registerForm.surnamePlaceholder" var="surnamePlaceholder"/>
-        <form:label class="label" path="surname"><spring:message code="registerForm.userSurnameTitle"/></form:label>
+        <form:label class="label" path="surname"><spring:message code="registerForm.userSurnameTitle"/>*</form:label>
         <form:input type="text" path="surname" cssErrorClass="form-control is-invalid" id="surname"
                     class="form-control" placeholder="${surnamePlaceholder}"/>
         <form:errors path="surname" cssClass="formError" element="p"/>
@@ -20,14 +20,14 @@
     </div>
     <div class="form-group">
         <spring:message code="registerForm.emailPlaceholder" var="emailPlaceholder"/>
-        <form:label class="label" path="email"><spring:message code="registerForm.userEmailTitle"/></form:label>
+        <form:label class="label" path="email"><spring:message code="registerForm.userEmailTitle"/>*</form:label>
         <form:input type="text" path="email" id="email" cssErrorClass="form-control is-invalid" class="form-control"
                     placeholder="${emailPlaceholder}"/>
         <form:errors path="email" cssClass="formError" element="p"/>
     </div>
     <div class="form-group">
         <form:label class="label" path="password">
-            <spring:message code="registerForm.password"/>
+            <spring:message code="registerForm.password"/>*
         </form:label>
         <div class="input-group d-flex justify-content-start align-items-center">
             <form:input type="password" path="password" cssClass="form-control input"
@@ -44,7 +44,7 @@
     </div>
     <div class="form-group">
         <form:label class="label" path="confirmPassword">
-            <spring:message code="registerForm.confirmPassword"/>
+            <spring:message code="registerForm.confirmPassword"/>*
         </form:label>
         <div class="input-group d-flex justify-content-start align-items-center">
             <form:input type="password" path="confirmPassword" cssClass="form-control input"
@@ -68,7 +68,7 @@
     </div>
     <div class="form-group">
         <spring:message code="registerForm.phoneNumberPlaceholder" var="phoneNumberPlaceholder"/>
-        <form:label class="label" path="phoneNumber"><spring:message code="registerForm.userPhoneTitle"/></form:label>
+        <form:label class="label" path="phoneNumber"><spring:message code="registerForm.userPhoneTitle"/>*</form:label>
         <form:input type="text" path="phoneNumber" cssErrorClass="form-control is-invalid" id="phoneNumber"
                     class="form-control" placeholder="${phoneNumberPlaceholder}"/>
         <form:errors path="phoneNumber" cssClass="formError" element="p"/>
@@ -77,7 +77,7 @@
         <div class="col">
             <div class="form-group">
                 <spring:message code="registerForm.userStatePlaceholder" var="userStatePlaceholder"/>
-                <form:label class="label" path="state"><spring:message code="registerForm.userStateTitle"/></form:label>
+                <form:label class="label" path="state"><spring:message code="registerForm.userStateTitle"/>*</form:label>
                 <form:input type="text" path="state" cssErrorClass="form-control is-invalid" id="state"
                             class="form-control" placeholder="${userStatePlaceholder}"/>
                 <form:errors path="state" cssClass="formError" element="p"/>
@@ -86,7 +86,7 @@
         <div class="col">
             <div class="form-group">
                 <spring:message code="registerForm.userCityTitlePlaceholder" var="userCityTitlePlaceholder"/>
-                <form:label class="label" path="city"><spring:message code="registerForm.userCityTitle"/></form:label>
+                <form:label class="label" path="city"><spring:message code="registerForm.userCityTitle"/>*</form:label>
                 <form:input type="text" path="city" cssErrorClass="form-control is-invalid" id="city"
                             class="form-control" placeholder="${userCityTitlePlaceholder}"/>
                 <form:errors path="city" cssClass="formError" element="p"/>
