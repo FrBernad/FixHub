@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendVerificationToken(User user, VerificationToken token) {
         try {
-            String url = new URL("http", appBaseUrl, 8080, "/user/verifyAccount?token=" + token.getValue()).toString();
+            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {
         try {
-            String url = new URL("http", appBaseUrl, 8080, "/user/resetPassword?token=" + token.getValue()).toString();
+            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());

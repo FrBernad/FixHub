@@ -24,18 +24,18 @@
     </div>
     <div style="padding: 1.25rem">
         <div class="row">
-            <div class="col-12 col-md-7 d-flex align-items-center">
+            <div class="col-12 d-flex align-items-center">
                 <h5 class="card-title m-0 jobCardName"><c:out value="${job.jobProvided}"/></h5>
             </div>
-            <div class="col-12 col-md-5 d-flex align-items-center">
+            <div class="col-6 my-2">
+                <p class="card-text m-0"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
+            </div>
+            <div class="col-6 my-2 pr-0 col-md-5 d-flex align-items-center justify-content-end">
                 <div>
-                    <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                    <i class="fas iconsColor fa-star fa-1x mr-2" style="color: rgb(0,59,109)"></i>
                     <span class="jobCardAvgRating"><c:out value="${job.averageRating}"/></span>
                     <span class="jobCardAvgRatingCount"> (<c:out value="${job.totalRatings})"/></span>
                 </div>
-            </div>
-            <div class="col-12 my-1">
-                <p class="card-text m-0"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
             </div>
         </div>
     </div>

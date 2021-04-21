@@ -68,7 +68,6 @@ public class WebAuthController {
             return register(form);
         }
 
-
         User user;
         final ModelAndView mav = new ModelAndView("redirect:/user/account");
         try {

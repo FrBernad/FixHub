@@ -4,19 +4,22 @@
 <div class="card jobCard" style="position: relative">
     <div style="padding: 1.25rem">
         <div class="row">
-            <div class="col-7">
+            <div class="col-12">
                 <h5 class="card-title jobCardName">
                     <c:out value="${job.jobProvided}"/>
                 </h5>
             </div>
-            <div class="col-5">
-                <i class="fas iconsColor fa-star fa-1x mr-2"></i>
-                <span class="jobCardAvgRating"><c:out value="${job.averageRating}"/></span>
-                <span class="jobCardAvgRatingCount"> (<c:out value="${job.totalRatings})"/></span>
+            <div class="col-6">
+                <p class="card-text m-0"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-center">
+                <div style="height: 23px">
+                    <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                    <span class="jobCardAvgRating"><c:out value="${job.averageRating}"/></span>
+                    <span class="jobCardAvgRatingCount"> (<c:out value="${job.totalRatings})"/></span>
+                </div>
             </div>
         </div>
-        <span class="badge badge-pill badge-secondary category"><spring:message
-                code="home.categories.${job.category}"/></span>
     </div>
     <div class="jobCardImgContainer">
         <c:choose>
@@ -33,6 +36,9 @@
                         alt="${job.category}">
             </c:otherwise>
         </c:choose>
+        <span class="badge badge-pill badge-secondary category" style="position: absolute; top: 10px; left: 10px">
+             <spring:message code="home.categories.${job.category}"/>
+        </span>
     </div>
     <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
     <div class="jobPrice">
