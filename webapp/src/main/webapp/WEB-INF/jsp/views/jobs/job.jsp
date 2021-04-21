@@ -93,11 +93,13 @@
                                     </row>
                                 </div>
                             </div>
-                            <div class="col-5 d-flex justify-content-start align-items-center">
-                                <a href="<c:url value='/jobs/${job.id}/contact'/>">
-                                    <button class="contactBtn"><spring:message code="job.contact"/></button>
-                                </a>
-                            </div>
+                            <c:if test="${job.provider.id != loggedUser.id}">
+                                <div class="col-5 d-flex justify-content-start align-items-center">
+                                    <a href="<c:url value='/jobs/${job.id}/contact'/>">
+                                        <button class="contactBtn"><spring:message code="job.contact"/></button>
+                                    </a>
+                                </div>
+                            </c:if>
 
                             <hr class="text-left ml-0 my-4" style="width: 80%;">
                             <div class="col-12 mt-2">
@@ -193,9 +195,11 @@
                         </h2>
                     </div>
                     <div class="col-12 d-flex justify-content-start align-items-center">
-                        <a href="#" type="button" data-toggle="modal" data-target="#newReview">
-                            <spring:message code="job.review.hyperlink"/>
-                        </a>
+                        <c:if test="${job.provider.id != loggedUser.id}">
+                            <a href="#" type="button" data-toggle="modal" data-target="#newReview">
+                                <spring:message code="job.review.hyperlink"/>
+                            </a>
+                        </c:if>
                         <%@ include file="../../components/forms/reviewForm.jsp" %>
                     </div>
                 </div>
