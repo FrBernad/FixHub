@@ -95,22 +95,23 @@
                                     </row>
                                 </div>
                             </div>
-                            <c:choose>
-                                <c:when test="${!job.paused}">
-                                <div class="col-5 d-flex justify-content-start align-items-center">
-                                    <a href="<c:url value='/jobs/${job.id}/contact'/>">
-                                        <button class="contactBtn"><spring:message code="job.contact"/></button>
-                                    </a>
-                                </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="col-5 d-flex justify-content-start align-items-center">
-                                        <i class="fas fa-info-circle mr-2" style="color:#ffc107"></i>
-                                        <span><spring:message code="job.pause"/></span>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                            <hr class="text-left ml-0 my-4" style="width: 100%;">
+                            <div class="col-5 d-flex justify-content-start align-items-center">
+                                <c:choose>
+                                    <c:when test="${loggedUser!=null && loggedUser.id==job.provider.id}">
+
+                                        <a href="<c:url value='/jobs/${job.id}/edit'/>">
+                                            <button class="contactBtn">editar</button>
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="<c:url value='/jobs/${job.id}/contact'/>">
+                                            <button class="contactBtn"><spring:message code="job.contact"/></button>
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+
+                            <hr class="text-left ml-0 my-4" style="width: 80%;">
                             <div class="col-12 mt-2">
                                 <div class="container-fluid p-0">
                                     <div class="row">

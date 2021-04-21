@@ -62,5 +62,11 @@ public class JobServiceImpl implements JobService {
         return jobDao.getImagesIdsByJobId(jobId);
     }
 
+    @Transactional
+    @Override
+    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, long jobID) {
+
+        jobDao.updateJob(jobProvided,category,description,price,jobID);
+    }
 
 }

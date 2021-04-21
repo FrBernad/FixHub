@@ -16,7 +16,7 @@ public interface JobService {
 
     Collection<Long> getImagesIdsByJobId(Long jobId);
 
-
+    void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, long jobId);
 
 }
 

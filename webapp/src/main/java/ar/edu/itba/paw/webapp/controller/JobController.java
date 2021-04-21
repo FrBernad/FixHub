@@ -92,6 +92,27 @@ public class JobController {
         return mav;
     }
 
+    @RequestMapping("/jobs/{jobId}/edit")
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("jobForm") final JobForm form){
+        ModelAndView mav = new ModelAndView("views/jobs/editJob");
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        final Collection<JobCategory> categories = jobService.getJobsCategories();
+        mav.addObject("categories", categories);
+        mav.addObject("job",job);
+        return mav;
+    }
+    @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("jobForm") final JobForm form,BindingResult errors){
+
+        if (errors.hasErrors()){
+            return updateJob(jobId,form);
+        }
+
+
+        jobService.updateJob(form.getJobProvided(),form.getJobCategory(),form.getDescription(),form.getPrice(),jobId);
+
+        return new ModelAndView("redirect:/jobs/{jobId}");
+    }
 
     @RequestMapping("/jobs/{jobId}/contact")
     public ModelAndView contact(@PathVariable("jobId") final long jobId,
@@ -137,6 +158,8 @@ public class JobController {
 
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
+
+
 
 
     @RequestMapping(path = "/jobs/new")

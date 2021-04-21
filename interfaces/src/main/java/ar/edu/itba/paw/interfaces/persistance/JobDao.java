@@ -24,5 +24,7 @@ public interface JobDao {
     Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city);
 
     Integer getJobsCountByProviderId(String searchBy, Long providerId);
+
+    void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, long jobId);
 }
 
