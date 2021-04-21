@@ -17,10 +17,17 @@
 
             <%--USER PICTURES--%>
             <div class="col-12 px-0">
-                <div class="container-fluid px-0 position-relative">
-                    <img src="https://media-exp1.licdn.com/dms/image/C4E16AQFt_jaEDLpfzw/profile-displaybackgroundimage-shrink_200_800/0/1615241156937?e=1624492800&v=beta&t=8dfcwrjdLN8UgoSoV6k3iNEXT7xoekjs6iZNB6rZl1o"
-                         class="backgroundImage"
-                    >
+                <div class="container-fluid px-0 position-relative backgroundImageContainer">
+                    <c:choose>
+                        <c:when test="${user.coverImageId == 0}">
+                            <img src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
+                                 class="backgroundImage">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="<c:url value='/user/images/profile/${user.coverImageId}'/>"
+                                 class="backgroundImage">
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
             <div class="col-12 mt-4">
@@ -86,8 +93,8 @@
                 </div>
             </div>
 
+        </div>
     </div>
-</div>
 </div>
 
 <%@ include file="../../../components/footer.jsp" %>

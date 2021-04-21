@@ -18,7 +18,7 @@
 
             <%--USER PICTURES--%>
             <div class="col-12 px-0">
-                <div class="container-fluid px-0 position-relative">
+                <div class="container-fluid px-0 position-relative backgroundImageContainer">
                     <c:choose>
                         <c:when test="${loggedUser.coverImageId == 0}">
                             <img src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
@@ -31,13 +31,14 @@
                     </c:choose>
                     <div class="profileBackgroundPic">
                         <c:url value="/user/account/updateCoverImage" var="postCoverImage"/>
-                        <form:form id="changeCoverForm" action="${postCoverImage}" method="POST" enctype="multipart/form-data">
-                            <button type="button" id="changeCoverImageButton">
-                                <i class="fas fa-camera mr-2"></i>
-                                <span><spring:message code="profilePage.picture.changeBg"/></span>
-                            </button>
-                            <input type="file" id="coverInputFile" name="image" hidden/>
+                        <form:form id="changeCoverForm" type="hidden" action="${postCoverImage}" method="POST"
+                                   enctype="multipart/form-data">
                         </form:form>
+                        <button type="button" id="changeCoverImageButton">
+                            <i class="fas fa-camera mr-2"></i>
+                            <span><spring:message code="profilePage.picture.changeBg"/></span>
+                        </button>
+                        <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
                     </div>
                 </div>
             </div>
@@ -59,12 +60,13 @@
                             </div>
                             <div class="profilePicEditBtn">
                                 <c:url value="/user/account/updateProfileImage" var="postProfileImage"/>
-                                <form:form id="changeProfileForm" action="${postProfileImage}" method="POST" enctype="multipart/form-data">
-                                    <button type="button" id="changeProfileImageButton">
-                                        <i class="fas fa-camera"></i>
-                                    </button>
-                                    <input type="file" id="profileInputFile" name="image" hidden/>
+                                <form:form id="changeProfileForm" type="hidden" action="${postProfileImage}"
+                                           method="POST" enctype="multipart/form-data">
                                 </form:form>
+                                <button type="button" id="changeProfileImageButton">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <input type="file" id="profileInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
                             </div>
                         </div>
                         <div class="col-8 mt-5">

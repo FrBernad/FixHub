@@ -12,6 +12,11 @@
     overflow: hidden;
 }
 
+.backgroundImageContainer {
+    height: 200px;
+    width: 100%;
+}
+
 .backgroundImage {
     object-fit: cover;
     width: 100%;
@@ -63,7 +68,7 @@
 }
 
 #resendBtn:hover {
-    color: rgba(4,54,96,0.8);
+    color: rgba(4, 54, 96, 0.8);
 }
 
 .info {
