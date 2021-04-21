@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.IllegalContentTypeException;
 import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -21,8 +23,7 @@ import java.util.Locale;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    public static final String NOT_FOUND_VIEW = "views/errors/pageNotFound";
-    public static final String ERROR_VIEW = "views/errors/serverError";
+    public static final String ERROR_VIEW = "views/errors/errors";
 
     @Autowired
     private MessageSource messageSource;
@@ -33,9 +34,10 @@ public class GlobalControllerExceptionHandler {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Job", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
+
         return mav;
     }
 
@@ -45,38 +47,49 @@ public class GlobalControllerExceptionHandler {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Image", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
+
         return mav;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = UserNotFoundException.class)
+    @ExceptionHandler(value = {ContactInfoNotFoundException.class,UserNotFoundException.class})
     public ModelAndView userNotFoundException() {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.User", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
         return mav;
     }
 
-
-    //FIXME: REVISAR LA EXCEPCION
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = ContactInfoNotFoundException.class)
-    public ModelAndView contactInfoNotFoundException() {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = IllegalContentTypeException.class)
+    public ModelAndView ilegalContentTypeException() {
         Locale locale = LocaleContextHolder.getLocale();
-        String error = messageSource.getMessage("errors.NotFound.User", null, locale);
-        String code = HttpStatus.NOT_FOUND.toString();
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        String error = messageSource.getMessage("errors.IllegalContentTypeException", null, locale);
+        String code = HttpStatus.BAD_REQUEST.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
         return mav;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = MultipartException.class)
+    public ModelAndView maxUploadSizeException() {
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.MaxUploadSizeException", null, locale);
+        String code = HttpStatus.BAD_REQUEST.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+
+        return mav;
+    }
 
     /*By default when the DispatcherServlet can't find a handler for a request it sends a 404 response. However if its property "throwExceptionIfNoHandlerFound" is set to true this exception is raised and may be handled with a configured HandlerExceptionResolver.
      * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/NoHandlerFoundException.html
@@ -88,9 +101,10 @@ public class GlobalControllerExceptionHandler {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Resource", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
+
         return mav;
     }
 
@@ -100,24 +114,27 @@ public class GlobalControllerExceptionHandler {
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.BadRequest", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();
-        final ModelAndView mav = new ModelAndView(NOT_FOUND_VIEW);
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
         return mav;
     }
 
+
+
     /*Server error */
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ExceptionHandler(Exception.class)
-//    public ModelAndView serverException() {
-//        Locale locale = LocaleContextHolder.getLocale();
-//        String error = messageSource.getMessage("errors.ServerError", null, locale);
-//        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
-//        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
-//        mav.addObject("errors", error);
-//        mav.addObject("code", code);
-//        return mav;
-//    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ModelAndView serverException() {
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.ServerError", null, locale);
+        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+
+        return mav;
+    }
 
 
 }

@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.webapp.exceptions.IllegalContentTypeException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,11 @@ public class WebAuthController {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private ImageService imageService;
+
+
 
     @RequestMapping(path = "/register")
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
@@ -305,6 +312,9 @@ public class WebAuthController {
     public ModelAndView updateCoverImage(@RequestParam("image") MultipartFile file) throws IOException {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()),user);
+        if(!imageService.getContentTypes().contains(file.getContentType())){
+            throw new IllegalContentTypeException();
+        }
         return new ModelAndView("redirect:/user/account");
     }
 
@@ -312,6 +322,9 @@ public class WebAuthController {
     @RequestMapping(value="/user/account/updateProfileImage",method = RequestMethod.POST)
     public ModelAndView updateProfileImage(@RequestParam("image") MultipartFile file) throws IOException {
         User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        if(!imageService.getContentTypes().contains(file.getContentType())){
+            throw new IllegalContentTypeException();
+        }
         userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()),user);
         return new ModelAndView("redirect:/user/account");
     }

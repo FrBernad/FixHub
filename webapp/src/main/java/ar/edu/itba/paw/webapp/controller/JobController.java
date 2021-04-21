@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.webapp.exceptions.IllegalContentTypeException;
 import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
@@ -170,12 +171,16 @@ public class JobController {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
         List<ImageDto> imagesDto = new LinkedList<>();
-
+        String contentType;
         //FIXME: SOLUCIONAR ESTO
         if (form.getImages().get(0).getSize() != 0) {
             for (final MultipartFile image : form.getImages()) {
                 try {
-                    imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
+                    contentType = image.getContentType();
+                    if(!imageService.getContentTypes().contains(contentType))
+                        throw new IllegalContentTypeException();
+
+                    imagesDto.add(new ImageDto(image.getBytes(), contentType));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

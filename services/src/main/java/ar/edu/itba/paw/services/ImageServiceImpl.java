@@ -8,15 +8,16 @@ import ar.edu.itba.paw.models.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
     private ImageDao imageDao;
+
+    private final  Collection<String> CONTENT_TYPES = Collections.unmodifiableCollection(Arrays.asList("image/png", "image/jpeg", "image/gif"));
+
 
     public Optional<Image> getImageById(Long imageId){
         return imageDao.getImageById(imageId);
@@ -36,5 +37,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void updateImage(ImageDto image,long imageId) {
         imageDao.updateImage(image,imageId);
+    }
+
+    @Override
+    public Collection<String> getContentTypes(){
+        return CONTENT_TYPES;
     }
 }
