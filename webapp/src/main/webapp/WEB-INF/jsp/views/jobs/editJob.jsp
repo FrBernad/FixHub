@@ -61,9 +61,7 @@
                             </c:choose>
                         </div>
                         <div class="row my-2 align-content-center">
-                            <div class="form-group align-content-center">
-                                <input type="file" name="profileImage"  id="profileImage"/>
-                            </div>
+                            <form:input path="images" type="file" name="images"  id="images"/>
                         </div>
                     </div>
                 </div>
