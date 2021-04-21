@@ -145,7 +145,6 @@ public class JobController {
 
         userService.contact(contactDto);
 
-        userService.contact(job.getProvider().getId(),job.getId(),user,Long.valueOf(form.getContactInfoId()),form.getMessage(),form.getState(),form.getCity(),form.getStreet(),form.getAddressNumber(),form.getFloor(),form.getDepartmentNumber());
 
         ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
