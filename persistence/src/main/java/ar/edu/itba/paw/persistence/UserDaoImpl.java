@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.UserStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +29,9 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert userScheduleSimpleJdbcInsert;
     private SimpleJdbcInsert userLocationSimpleJdbcInsert;
 
+
+    private static final RowMapper<UserSchedule> USER_SCHEDULE_ROW_MAPPER = (rs, rowNum) ->
+        new UserSchedule(rs.getString("us_start_time"), rs.getString("us_end_time"));
 
     private static final ResultSetExtractor<Collection<UserStats>> USER_STATS_ROW_MAPPER = rs -> {
         Map<Long, UserStats> statsMap = new HashMap<>();
@@ -357,6 +361,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateProfileImage(Long imageId, User user){
         jdbcTemplate.update("UPDATE USERS set u_profile_picture = ? where u_id = ?",new Object[]{imageId,user.getId()});
+    }
+
+    @Override
+    public Optional<UserSchedule> getScheduleByUserId(long userId) {
+        return jdbcTemplate.query("SELECT * FROM USER_SCHEDULE WHERE us_user_id = ?", new Object[]{userId}, USER_SCHEDULE_ROW_MAPPER).stream().findFirst();
     }
 
     @Override

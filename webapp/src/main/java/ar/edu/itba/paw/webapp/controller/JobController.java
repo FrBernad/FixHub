@@ -2,10 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.webapp.exceptions.IllegalContentTypeException;
-import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
@@ -59,6 +56,8 @@ public class JobController {
                             @RequestParam(defaultValue = "0") int page) {
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        final UserSchedule userSchedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
@@ -66,6 +65,8 @@ public class JobController {
         PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 5);
         mav.addObject("results", results);
         mav.addObject("paginationModal", paginationModal);
+        mav.addObject("startTime", userSchedule.getStartTime());
+        mav.addObject("endTime", userSchedule.getEndTime());
         return mav;
     }
 
@@ -92,11 +93,11 @@ public class JobController {
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final User provider = job.getProvider();
-
         final ModelAndView mav;
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job);
         mav.addObject("provider", provider);
+
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         Collection<ContactInfo> contactInfoCollection = userService.getContactInfo(user);

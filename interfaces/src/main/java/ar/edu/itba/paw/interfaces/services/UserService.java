@@ -41,4 +41,6 @@ public interface UserService {
     void updateCoverImage(ImageDto imageDto, User user);
 
     void updateProfileImage(ImageDto imageDto, User user);
+
+    Optional<UserSchedule> getScheduleByUserId(long userId);
 }

@@ -272,4 +272,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public Optional<UserSchedule> getScheduleByUserId(long userId) {
+        return userDao.getScheduleByUserId(userId);
+    }
+
 }

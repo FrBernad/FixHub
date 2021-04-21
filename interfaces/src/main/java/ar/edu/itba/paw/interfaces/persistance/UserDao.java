@@ -54,4 +54,7 @@ public interface UserDao {
     void updateCoverImage(Long imageId, User user);
 
     void updateProfileImage(Long imageId, User user);
+
+    Optional<UserSchedule> getScheduleByUserId(long userId);
+
 }
