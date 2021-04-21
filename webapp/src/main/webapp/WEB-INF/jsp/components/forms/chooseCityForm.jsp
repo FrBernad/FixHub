@@ -4,7 +4,7 @@
 <c:url value="/user/join/chooseCity" var="postPath"/>
 <form:form modelAttribute="chooseCityForm" action="${postPath}" id="chooseCityForm" method="POST">
     <div class="form-group">
-        <form:label class="label" path="city"><spring:message code="joinForm.availableCities"/>*</form:label>
+        <form:label class="label text font-weight-bold" path="city"><spring:message code="joinForm.availableCities"/></form:label>
         <form:input path="state" type="hidden" id="state" value="${state}"/>
         <form:input path="startTime" type="hidden" id="state" value="${startTime}"/>
         <form:input path="endTime" type="hidden" id="state" value="${endTime}"/>
@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 d-flex align-items-center justify-content-center">
+    <div class="col-12 px-0 d-flex align-items-center justify-content-center">
         <button class="w-100 continueBtn my-2" type="button" id="submitButton">
             <spring:message code="joinForm.Finish"/>
         </button>

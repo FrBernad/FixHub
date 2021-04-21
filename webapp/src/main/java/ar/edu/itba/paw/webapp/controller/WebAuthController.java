@@ -195,6 +195,10 @@ public class WebAuthController {
 
     @RequestMapping("/user/join")
     public ModelAndView join(@ModelAttribute("joinForm") final FirstJoinForm form) {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        if (user.hasRole("PROVIDER")) {
+            return new ModelAndView("redirect:/user/dashboard");
+        }
         ModelAndView mav = new ModelAndView("views/user/account/roles/join");
         mav.addObject("states", locationService.getStates());
         return mav;
@@ -204,7 +208,10 @@ public class WebAuthController {
     public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final FirstJoinForm form,
                                  final BindingResult errors,
                                  RedirectAttributes ra) {
-
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        if (user.hasRole("PROVIDER")) {
+            return new ModelAndView("redirect:/user/dashboard");
+        }
         if (errors.hasErrors())
             return join(form);
 
@@ -226,6 +233,10 @@ public class WebAuthController {
     @RequestMapping("/user/join/chooseCity")
     public ModelAndView joinChooseCity(@ModelAttribute("chooseCityForm") final SecondJoinForm form,
                                        HttpServletRequest request) {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        if (user.hasRole("PROVIDER")) {
+            return new ModelAndView("redirect:/user/dashboard");
+        }
 
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         if (flashMap == null && form == null)
@@ -237,7 +248,7 @@ public class WebAuthController {
             mav.addAllObjects(flashMap);
 
         //FIXME:
-        if(form.getState() != 0) {
+        if (form!=null && form.getState() != 0) {
             mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
         }
 
@@ -246,12 +257,15 @@ public class WebAuthController {
 
     @RequestMapping(path = "/user/join/chooseCity", method = RequestMethod.POST)
     public ModelAndView joinChooseCityPost(@Valid @ModelAttribute("chooseCityForm") final SecondJoinForm form, final BindingResult errors, HttpServletRequest request) {
+        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        if (user.hasRole("PROVIDER")) {
+            return new ModelAndView("redirect:/user/dashboard");
+        }
 
         if (errors.hasErrors()) {
             return joinChooseCity(form, request);
         }
 
-        User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         userService.makeProvider(user.getId(), form.getCity(), form.getStartTime(), form.getEndTime());
         user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -267,6 +281,7 @@ public class WebAuthController {
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
+        mav.addObject("loggedUser",user);
         mav.addObject("results", providersContacted);
         return mav;
     }
@@ -282,7 +297,7 @@ public class WebAuthController {
         return mav;
     }
 
-    @RequestMapping(path = "/user/account/update")
+    @RequestMapping(path = "/user/account/updateInfo")
     public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
         return new ModelAndView("views/user/profile/editProfile");
     }

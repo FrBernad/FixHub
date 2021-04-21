@@ -53,6 +53,7 @@ if (pagination !== null) {
         if (e.key === "Enter") {
             const query = formSearchBar.value;
             formSearchInput.setAttribute("value", query);
+            formPageInput.setAttribute("value", "0");
             searchForm.submit();
         }
     });
@@ -63,6 +64,7 @@ if (pagination !== null) {
         if (formSearchInput.value.length > 50) {
             document.getElementById("searchInvalidLength").style.display = "";
         } else {
+            formPageInput.setAttribute("value", "0");
             searchForm.submit();
         }
     })

@@ -35,10 +35,11 @@
                     </a>
                     <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${contacts}" id="tabContacts">
-                        <i class="fas fa-address-book mr-2"></i><span class="text"><c:out
-                            value="${contacts}"/></span><span
-                            class="badge badge-pill badge-secondary"><c:out
-                            value="${contactsResults.totalItems}"/></span>
+                        <i class="fas fa-address-book mr-2"></i>
+                        <span class="text"><c:out value="${contacts}"/></span>
+                        <span class="badge badge-pill badge-secondary">
+                            <c:out value="${contactsResults.totalItems}"/>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -69,7 +70,7 @@
                                                     <div class="col">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-star mr-2"></i><c:out
-                                                                    value="${stats.reviewCount}"/>
+                                                                    value="${stats.avgRating}"/>
                                                             </h2>
                                                             <h4><spring:message code="dashboard.Rating"/></h4>
                                                         </div>
@@ -77,7 +78,7 @@
                                                     <div class="col">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-comment mr-2"></i><c:out
-                                                                    value="${stats.avgRating}"/></h2>
+                                                                    value="${stats.reviewCount}"/></h2>
                                                             <h4><spring:message code="dashboard.Reviews"/></h4>
                                                         </div>
                                                     </div>

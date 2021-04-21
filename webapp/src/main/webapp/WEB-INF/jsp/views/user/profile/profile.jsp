@@ -34,7 +34,6 @@
                         <form:form id="changeCoverForm" type="hidden" action="${postCoverImage}" method="POST"
                                    enctype="multipart/form-data">
                             <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
-
                         </form:form>
                         <button type="button" id="changeCoverImageButton">
                             <i class="fas fa-camera mr-2"></i>
@@ -97,7 +96,7 @@
                             </h3>
                         </div>
                         <div class="col-6 d-flex align-items-center justify-content-end">
-                            <a href="<c:url value="/user/account/update"/>">
+                            <a href="<c:url value="/user/account/updateInfo"/>">
                                 <button class="editBtn">
                                     <i class="fas fa-pen"></i>
                                 </button>

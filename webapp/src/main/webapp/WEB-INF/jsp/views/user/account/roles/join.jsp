@@ -15,7 +15,7 @@
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../../../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
-        <div class="container-lg p-5 smallContentContainer" style="min-height: 75%">
+        <div class="container-lg p-5 smallContentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col-12">
                     <h1 class="text-center title">

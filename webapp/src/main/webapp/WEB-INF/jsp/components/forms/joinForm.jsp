@@ -5,7 +5,7 @@
 <form:form modelAttribute="joinForm" action="${postPath}" id="joinForm" method="POST">
     <div class="row">
         <div class="col">
-            <p class="subtitle text-center mb-4">
+            <p class="subtitle text-left mb-4 font-weight-bold">
                 <spring:message code="joinForm.availableHours"/>
             </p>
         </div>
@@ -38,7 +38,7 @@
         </spring:hasBindErrors>
     </div>
     <div class="form-group">
-        <form:label class="label" path="state"><spring:message code="joinForm.availableZones"/>*</form:label>
+        <form:label class="label font-weight-bold" path="state"><spring:message code="joinForm.availableZones"/>*</form:label>
         <form:input path="state" type="hidden" id="state"/>
         <div class="row">
             <div class="col d-flex align-items-center justify-content-center">

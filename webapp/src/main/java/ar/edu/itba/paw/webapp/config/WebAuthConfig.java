@@ -66,7 +66,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
             //provider routes
             .antMatchers("/user/dashboard", "/user/dashboard/search").hasRole("PROVIDER")
-            .antMatchers("/user/join", "/user/join/chooseCity").not().hasAnyRole("NOT_VERIFIED", "PROVIDER", "ANONYMOUS")
+            .antMatchers("/user/join", "/user/join/chooseCity").hasRole("VERIFIED")
 
             //else
             .antMatchers("/**").permitAll()

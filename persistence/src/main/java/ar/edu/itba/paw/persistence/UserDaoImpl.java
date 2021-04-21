@@ -186,7 +186,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<UserStats> getUserStatsById(long id) {
         return jdbcTemplate.query(
-            "SELECT u_id, count(j_id) AS totalJobs,count(r_rating) AS totalReviews,avg(coalesce(r_rating,0)) AS avgRating" +
+            "SELECT u_id, count(j_id) AS totalJobs,count(r_rating) AS totalReviews,avg(r_rating) AS avgRating" +
                 " FROM ((SELECT * FROM jobs LEFT OUTER JOIN reviews ON j_id = r_job_id) aux1 RIGHT OUTER JOIN " +
                 " (SELECT * FROM users WHERE u_id = ? ) aux2 ON u_id=j_provider_id) GROUP BY u_id",
             USER_STATS_ROW_MAPPER,
