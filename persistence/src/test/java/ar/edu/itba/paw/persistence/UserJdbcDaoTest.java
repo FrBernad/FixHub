@@ -26,7 +26,8 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 
 @Rollback //Se vuelven atras las transacciones luego de cada test para que la base de datos vuelva a su estado original
-@Sql(scripts = "classpath:user-test.sql") //sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
+@Sql(scripts = "classpath:user-test.sql")
+//sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 public class UserJdbcDaoTest {
@@ -41,6 +42,7 @@ public class UserJdbcDaoTest {
 
     @Autowired
     private DataSource ds;
+
     @Autowired
     private UserDao userDao;
     private JdbcTemplate jdbcTemplate;
@@ -65,7 +67,7 @@ public class UserJdbcDaoTest {
         Assert.assertEquals(CITY, user.getCity());
         Assert.assertEquals(STATE, user.getState());
 
-        assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+        assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "jobs"));
     }
 }
 

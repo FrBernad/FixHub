@@ -45,15 +45,6 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public Integer getReviewsCountByJobId(long jobId) {
-        return jdbcTemplate.query(
-            "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?",
-            new Object[]{jobId},
-            (rs, rowNum) -> rs.getInt("total")
-        ).stream().findFirst().orElse(0);
-    }
-
-    @Override
     public Review createReview(String description, Job job, int rating, Timestamp creationDate) {
         Map<String, Object> map = new HashMap<>();
         map.put("r_description", description);

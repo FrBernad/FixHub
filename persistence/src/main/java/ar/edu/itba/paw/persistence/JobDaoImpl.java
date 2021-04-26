@@ -151,7 +151,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Integer getJobsCountByCategory(String searchBy, OrderOptions orderOption, JobCategory category) {
+    public Integer getJobsCountByCategory(String searchBy, JobCategory category) {
         List<Object> variables = new LinkedList<>();
 
         String filterQuery = EMPTY;
@@ -170,15 +170,14 @@ public class JobDaoImpl implements JobDao {
             searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
         }
 
-        return jdbcTemplate.query(
-            "select count(*) total from " +
-                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") as aux"
-                + searchQuery, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
+        final String query = String.format("select count(j_id) total from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux %s", filterQuery, searchQuery);
+
+        return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
 
     }
 
     @Override
-    public Integer getJobsCountByProviderId(String searchBy, OrderOptions orderOption, Long providerId) {
+    public Integer getJobsCountByProviderId(String searchBy, Long providerId) {
         List<Object> variables = new LinkedList<>();
 
         String filterQuery = " WHERE j_provider_id = ? ";

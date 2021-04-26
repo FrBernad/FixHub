@@ -60,7 +60,7 @@ public class SearchServiceImpl implements SearchService {
             itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
         }
 
-        int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryOrderOption, queryCategoryFilter);
+        int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter);
         int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -98,7 +98,7 @@ public class SearchServiceImpl implements SearchService {
             itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
         }
 
-        int totalJobs = jobDao.getJobsCountByProviderId(querySearchBy, queryOrderOption, providerId);
+        int totalJobs = jobDao.getJobsCountByProviderId(querySearchBy, providerId);
         int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
