@@ -34,4 +34,6 @@ public class UserStats {
     public void setReviewCount(long reviewCount) {
         this.reviewCount = reviewCount;
     }
+
+
 }

@@ -31,6 +31,9 @@ public class TestConfig {
     @Value("classpath:jobDaoTest.sql")
     private Resource jobDaoTest;
 
+    @Value("classpath:user-test.sql")
+    private Resource userTestSql;
+
     @Bean
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
@@ -56,7 +59,7 @@ public class TestConfig {
 
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScripts(hsqldbSql, schemaSql, jobDaoTest); //Esto lo que hace es que setee el modo compatibilidad con postgres.
+        dbp.addScripts(hsqldbSql, schemaSql, jobDaoTest,userTestSql); //Esto lo que hace es que setee el modo compatibilidad con postgres.
         return dbp;
     }
 }

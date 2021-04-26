@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class User {
     private String name, password,surname,city,state,phoneNumber,email;
@@ -116,4 +117,13 @@ public class User {
     public void addRole(Roles role) {
         roles.add(role);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return name.equals(user.name) && password.equals(user.password) && surname.equals(user.surname) && city.equals(user.city) && state.equals(user.state) && phoneNumber.equals(user.phoneNumber) && email.equals(user.email) && id.equals(user.id) && Objects.equals(profileImageId, user.profileImageId) && Objects.equals(coverImageId, user.coverImageId) && roles.containsAll(user.roles);
+    }
+
 }
