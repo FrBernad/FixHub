@@ -53,7 +53,7 @@
                                             <spring:message code="account.password.reset.newPasswordConfirmLabel"/>
                                         </form:label>
                                         <div class="input-group d-flex justify-content-start align-items-center">
-                                            <form:input type="text" path="confirmPassword" cssClass="form-control input"
+                                            <form:input type="password" path="confirmPassword" cssClass="form-control input"
                                                         id="password2" name="confirmPassword"
                                                         cssErrorClass="form-control is-invalid"/>
                                             <form:errors path="" cssClass="formError" element="p"/>

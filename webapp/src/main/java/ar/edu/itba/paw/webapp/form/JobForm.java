@@ -29,6 +29,7 @@ public class JobForm {
 
     private List<MultipartFile> images;
 
+    @NotNull
     private JobCategory jobCategory;
 
     public String getJobProvided() {

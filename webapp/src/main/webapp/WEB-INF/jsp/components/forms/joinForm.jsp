@@ -13,7 +13,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col">
-                <form:label class="label" path="startTime"><spring:message code="joinForm.startTime"/>*</form:label>
+                <form:label class="label" path="startTime"><spring:message code="joinForm.startTime"/></form:label>
             </div>
             <div class="col align-items-center justify-content-end">
                 <form:input path="startTime" cssClass="timepicker" id="startTime"/>
@@ -23,7 +23,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col">
-                <form:label class="label" path="endTime"><spring:message code="joinForm.endTime"/>*</form:label>
+                <form:label class="label" path="endTime"><spring:message code="joinForm.endTime"/></form:label>
             </div>
             <div class="col align-items-center justify-content-end">
                 <form:input path="endTime" cssClass="timepicker" id="endTime"/>

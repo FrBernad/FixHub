@@ -50,9 +50,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MessageSource messageSource;
 
-    private final Locale locale = LocaleContextHolder.getLocale();
-
-    private final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
+    public final static Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
     public Optional<User> getUserById(long id) {
         return userDao.getUserById(id);
@@ -99,6 +97,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendVerificationToken(User user, VerificationToken token) {
         try {
+            Locale locale = LocaleContextHolder.getLocale();
             String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
@@ -106,6 +105,7 @@ public class UserServiceImpl implements UserService {
 
             emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
+            System.out.println("error");
             e.printStackTrace();
         }
     }
@@ -190,6 +190,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {
         try {
+            Locale locale = LocaleContextHolder.getLocale();
             String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
