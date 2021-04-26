@@ -56,9 +56,9 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int getReviewsCountByJobId(Job job) {
+    public int getReviewsCountByJobId(long jobId) {
         return jdbcTemplate.query(
-            "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?", new Object[]{job.getId()},
+            "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?", new Object[]{jobId},
             rs -> {
                 return rs.getInt("total");
             }

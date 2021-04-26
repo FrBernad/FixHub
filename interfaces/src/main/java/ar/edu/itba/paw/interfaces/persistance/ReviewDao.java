@@ -12,5 +12,5 @@ public interface ReviewDao {
 
     Review createReview(String description, Job job, int rating, Timestamp creationDate);
 
-    int getReviewsCountByJobId(Job job);
+    int getReviewsCountByJobId(long jobId);
 }
