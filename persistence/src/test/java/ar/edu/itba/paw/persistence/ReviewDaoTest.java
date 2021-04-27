@@ -51,7 +51,7 @@ public class ReviewDaoTest {
     private static final String REVIEW_DESCRIPTION = "Muy buen trabajo, gracias por todo";
     private static final Timestamp CREATION_DATE = Timestamp.valueOf("2021-04-05 20:26:02");
 
-    private static final long ID = 1;
+    private static final long ID = 1L;
     private static final int REVIEWS_AMOUNT = 5;
 
     private static final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
@@ -68,7 +68,7 @@ public class ReviewDaoTest {
     private JdbcTemplate jdbcTemplate;
 
     @Before
-    public void setUp() { jdbcTemplate = new JdbcTemplate(ds); }
+    public void setUp() { this.jdbcTemplate = new JdbcTemplate(ds); }
 
     @Test
     public void testCreate(){
