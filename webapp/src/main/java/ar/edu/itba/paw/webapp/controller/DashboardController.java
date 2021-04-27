@@ -5,6 +5,8 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.SearchForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.Collection;
 
 @Controller
@@ -24,10 +27,16 @@ public class DashboardController {
     @Autowired
     private SearchService searchService;
 
-    @RequestMapping("/user/dashboard")
-    public ModelAndView dashboard(@ModelAttribute("searchForm") final SearchForm form, @ModelAttribute("searchForm") final SearchForm form2) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardController.class);
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+    @RequestMapping("/user/dashboard")
+    public ModelAndView dashboard(@ModelAttribute("searchForm") final SearchForm form,
+                                  @ModelAttribute("searchForm") final SearchForm form2,
+                                  Principal principal) {
+
+        LOGGER.info("Accessed /user/dashboard GET controller");
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 4);
 
@@ -46,9 +55,11 @@ public class DashboardController {
     }
 
     @RequestMapping("/user/dashboard/jobs/search")
-    public ModelAndView dashboardSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
+    public ModelAndView dashboardSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors, Principal principal) {
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Accessed /user/dashboard/jobs/search GET controller");
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(form.getQuery(), form.getOrder(), user.getId(), form.getPage(), 4);
 
@@ -68,9 +79,11 @@ public class DashboardController {
     }
 
     @RequestMapping("/user/dashboard/contacts/search")
-    public ModelAndView dashboardContactsSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
+    public ModelAndView dashboardContactsSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors, Principal principal) {
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Accessed /user/dashboard/contacts/search GET controller");
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), form.getPage(), 4);
 

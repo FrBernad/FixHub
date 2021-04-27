@@ -9,6 +9,8 @@ import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -46,26 +48,32 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private String appBaseUrl;
 
-
     @Autowired
     private MessageSource messageSource;
 
     public final static Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     public Optional<User> getUserById(long id) {
+        LOGGER.debug("Retrieving user with id {}", id);
         return userDao.getUserById(id);
     }
 
     @Override
     public Optional<User> getUserByEmail(String email) {
+        LOGGER.debug("Retrieving user with email {}", email);
         return userDao.getUserByEmail(email);
     }
 
     @Transactional
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException {
+        LOGGER.debug("Creating user with email {}", email);
         User user = userDao.createUser(passwordEncoder.encode(password), name, surname, email, phoneNumber, state, city, DEFAULT_ROLES);
+        LOGGER.debug("Created user with id {}", user.getId());
         VerificationToken token = generateVerificationToken(user.getId());
+        LOGGER.debug("Created verification token with id {}", token.getId());
         sendVerificationToken(user, token);
         return user;
     }
@@ -75,23 +83,31 @@ public class UserServiceImpl implements UserService {
     public Optional<User> verifyAccount(String token) {
         Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
 
-        if (!vtokenOpt.isPresent())
+        if (!vtokenOpt.isPresent()) {
+            LOGGER.warn("No verification token with value {}", token);
             return Optional.empty();
+        }
 
         VerificationToken vtoken = vtokenOpt.get();
         verificationTokenDao.removeTokenById(vtoken.getId());//remove always, either token is valid or not
+        LOGGER.debug("Removed token with id {}", vtoken.getId());
 
-        if (!vtoken.isValid())
+        if (!vtoken.isValid()) {
+            LOGGER.warn("Token with value {} is invalid", token);
             return Optional.empty();
+        }
 
+        LOGGER.debug("Validating user with id {}", vtoken.getUserId());
         return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VERIFIED, Roles.VERIFIED);
     }
 
     @Transactional
     @Override
     public void resendVerificationToken(User user) {
+        LOGGER.debug("Removing token for user with id {}", user.getId());
         verificationTokenDao.removeTokenByUserId(user.getId());
         VerificationToken token = generateVerificationToken(user.getId());
+        LOGGER.debug("Created token with id {}", token.getId());
         sendVerificationToken(user, token);
     }
 
@@ -118,17 +134,22 @@ public class UserServiceImpl implements UserService {
     public boolean validatePasswordReset(String token) {
         Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
-        if (!prtokenOpt.isPresent() || !prtokenOpt.get().isValid())
+        if (!prtokenOpt.isPresent() || !prtokenOpt.get().isValid()) {
+            LOGGER.info("token {} is not valid", token);
             return false;
+        }
 
+        LOGGER.info("token {} is valid", token);
         return true;
     }
 
 
     @Transactional
     public void generateNewPassword(User user) {
+        LOGGER.debug("Removing password reset token for user {}", user.getId());
         passwordResetTokenDao.removeTokenByUserId(user.getId());
         PasswordResetToken token = generatePasswordResetToken(user.getId());
+        LOGGER.info("created password reset token for user {}", user.getId());
         sendPasswordResetToken(user, token);
     }
 
@@ -137,15 +158,19 @@ public class UserServiceImpl implements UserService {
         Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
         if (!prtokenOpt.isPresent()) {
+            LOGGER.warn("Token {} is not valid", token);
             return Optional.empty();
         }
 
         PasswordResetToken prtoken = prtokenOpt.get();
+        LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
         passwordResetTokenDao.removeTokenById(prtoken.getId()); //remove always, either token is valid or not
         if (!prtoken.isValid()) {
+            LOGGER.warn("Token {} has expired", token);
             return Optional.empty();
         }
 
+        LOGGER.debug("Updating user password for user {}", prtoken.getUserId());
         return userDao.updatePassword(prtoken.getUserId(), passwordEncoder.encode(password));
     }
 
@@ -156,13 +181,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
-
+        LOGGER.debug("Updating user info for user {}", user.getEmail());
         userDao.updateUserInfo(userInfo, user);
     }
 
     @Override
     public void updateCoverImage(ImageDto imageDto, User user) {
         Long imageId = user.getCoverImageId();
+        LOGGER.debug("Updating user {} cover image", user.getEmail());
         if (imageId == 0) {
             imageId = imageService.createImage(imageDto).getImageId();
             userDao.updateCoverImage(imageId, user);
@@ -173,6 +199,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateProfileImage(ImageDto imageDto, User user) {
         Long imageId = user.getProfileImageId();
+        LOGGER.debug("Updating user {} profile image", user.getEmail());
         if (imageId == 0) {
             imageId = imageService.createImage(imageDto).getImageId();
             userDao.updateProfileImage(imageId, user);
@@ -184,6 +211,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void makeProvider(Long userId, List<Long> citiesId, String startTime, String endTime) {
         userDao.addRole(userId, Roles.PROVIDER);
+        LOGGER.info("User {} is now provider", userId);
         userDao.addSchedule(userId, startTime, endTime);
         userDao.addLocation(userId, citiesId);
     }
@@ -218,14 +246,18 @@ public class UserServiceImpl implements UserService {
     public void contact(ContactDto contactDto) {
         ContactInfo contactInfo;
 
-        if (contactDto.getContactInfoId() == -1)
+        if (contactDto.getContactInfoId() == -1) {
+            LOGGER.debug("Adding new contact info");
             contactInfo = userDao.addContactInfo(contactDto);
-        else
+        } else {
+            LOGGER.debug("Retrieving used contact info");
             contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
+        }
 
         sendJobRequestEmail(contactDto);
         sendJobRequestConfirmationEmail(contactDto);
 
+        LOGGER.debug("Adding new client to provider {}",contactDto.getJob().getProvider().getId());
         userDao.addClient(contactDto, contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
     }
 
@@ -234,7 +266,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getLocationByProviderId(providerId);
     }
 
-     private void sendJobRequestEmail(ContactDto contactDto) {
+    private void sendJobRequestEmail(ContactDto contactDto) {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         final String address = String.format("%s, %s, %s %s, %s %s", contactDto.getState(), contactDto.getCity(),
@@ -252,7 +284,7 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
-        //FIXME: LOGGEAR
+            //FIXME: LOGGEAR
             e.printStackTrace();
         }
     }
@@ -268,7 +300,7 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
-        //FIXME: LOGGEAR
+            //FIXME: LOGGEAR
             e.printStackTrace();
         }
     }

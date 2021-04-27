@@ -2,6 +2,8 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.models.PasswordResetToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,6 +31,8 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PasswordResetTokenDaoImpl.class);
+
     @Autowired
     public PasswordResetTokenDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -50,31 +54,38 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
         values.put("prt_token", token);
         values.put("prt_expiration_date", expirationDate);
         Number tokenId = simpleJdbcInsert.executeAndReturnKey(values);
+        LOGGER.debug("Created new reset token with id {}", tokenId);
 
         return new PasswordResetToken(tokenId.longValue(), token, userId, expirationDate);//never returns null
     }
 
     @Override
     public Optional<PasswordResetToken> getTokenByValue(String token) {
-        return jdbcTemplate.query("SELECT * FROM password_reset_tokens WHERE prt_token = ?",
-            new Object[]{token},
-            PASSWORD_RESET_TOKEN_ROW_MAPPER).stream().findFirst();
+        final String query = "SELECT * FROM password_reset_tokens WHERE prt_token = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{token}, PASSWORD_RESET_TOKEN_ROW_MAPPER)
+            .stream().findFirst();
     }
 
     @Override
     public void removeTokenById(long id) {
-        jdbcTemplate.update("DELETE from password_reset_tokens where prt_id = ?", id);
+        final String query = "DELETE from password_reset_tokens where prt_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        jdbcTemplate.update(query, id);
     }
 
     @Override
     public void removeTokenByUserId(long userId) {
-        jdbcTemplate.update("DELETE from password_reset_tokens where prt_user_id = ?", userId);
+        final String query = "DELETE from password_reset_tokens where prt_user_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        jdbcTemplate.update(query, userId);
     }
 
     @Override
     public Optional<PasswordResetToken> getTokenByUserId(long userId) {
-        return jdbcTemplate.query("SELECT * FROM password_reset_tokens WHERE prt_user_id = ?",
-            new Object[]{userId},
-            PASSWORD_RESET_TOKEN_ROW_MAPPER).stream().findFirst();
+        final String query = "SELECT * FROM password_reset_tokens WHERE prt_user_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query,new Object[]{userId},PASSWORD_RESET_TOKEN_ROW_MAPPER)
+            .stream().findFirst();
     }
 }

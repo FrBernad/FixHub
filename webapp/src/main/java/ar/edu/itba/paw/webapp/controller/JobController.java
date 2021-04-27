@@ -6,25 +6,21 @@ import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class JobController {
@@ -36,17 +32,12 @@ public class JobController {
     private JobService jobService;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private MessageSource messageSource;
 
     @Autowired
     private ImageService imageService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 
     @RequestMapping("/jobs/{jobId}")
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form,
@@ -54,6 +45,8 @@ public class JobController {
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
                             @RequestParam(defaultValue = "0") int page) {
+
+        LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final UserSchedule userSchedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
@@ -75,8 +68,12 @@ public class JobController {
                                       @Valid @ModelAttribute("reviewForm") final ReviewForm form,
                                       final BindingResult errors) {
 
-        if (errors.hasErrors())
+        LOGGER.info("Accessed /jobs/{} POST controller", jobId);
+
+        if (errors.hasErrors()) {
+            LOGGER.warn("Error in form ReviewForm data for job {}", jobId);
             return job(form, jobId, 1, false, 0);
+        }
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos
@@ -89,7 +86,9 @@ public class JobController {
 
     @RequestMapping("/jobs/{jobId}/contact")
     public ModelAndView contact(@PathVariable("jobId") final long jobId,
-                                @ModelAttribute("contactForm") final ContactForm form) {
+                                @ModelAttribute("contactForm") final ContactForm form, Principal principal) {
+
+        LOGGER.info("Accessed /jobs/{}/contact GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final User provider = job.getProvider();
@@ -98,9 +97,9 @@ public class JobController {
         mav.addObject("job", job);
         mav.addObject("provider", provider);
 
-
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         Collection<ContactInfo> contactInfoCollection = userService.getContactInfo(user);
+        LOGGER.info("Retrieved user {} contactInfo", user.getId());
         mav.addObject("contactInfoCollection", contactInfoCollection);
 
         return mav;
@@ -111,15 +110,17 @@ public class JobController {
     public ModelAndView contactPost(@PathVariable("jobId") final long jobId,
                                     @Valid @ModelAttribute("contactForm") final ContactForm form,
                                     final BindingResult errors,
-                                    @RequestParam(value = "providerEmail") final String providerEmail) {
+                                    @RequestParam(value = "providerEmail") final String providerEmail, Principal principal) {
 
+        LOGGER.info("Accessed /jobs/{}/contact POST controller", jobId);
 
         if (errors.hasErrors()) {
-            return contact(jobId, form);
+            LOGGER.warn("Error in form contactForm data for job {}", jobId);
+            return contact(jobId, form, principal);
         }
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         ContactDto contactDto = new ContactDto(job, Long.valueOf(form.getContactInfoId()), user, form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
@@ -132,6 +133,8 @@ public class JobController {
     @RequestMapping(path = "/jobs/new")
     public ModelAndView newJob(@ModelAttribute("jobForm") final JobForm form) {
 
+        LOGGER.info("Accessed /jobs/new GET controller");
+
         final ModelAndView mav;
 
         mav = new ModelAndView("/views/jobs/newJob");
@@ -143,16 +146,20 @@ public class JobController {
 
     //FIXME: ARREGLAR EXCEPCIÓN
     @RequestMapping(path = "/jobs/new", method = RequestMethod.POST)
-    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors) {
+    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors, Principal principal) {
+
+        LOGGER.info("Accessed /jobs/new POST controller");
 
         if (errors.hasErrors()) {
+            LOGGER.warn("Error in form JobForm data");
             return newJob(form);
         }
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
+
         //FIXME: SOLUCIONAR ESTO
         if (form.getImages().get(0).getSize() != 0) {
             for (final MultipartFile image : form.getImages()) {
@@ -163,11 +170,13 @@ public class JobController {
 
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
                 } catch (IOException e) {
+                    LOGGER.warn("Error creating image, content type is not valid");
                     e.printStackTrace();
                 }
             }
         }
         final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), imagesDto, user);
+        LOGGER.info("Created job with id {}", job.getId());
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
@@ -177,6 +186,8 @@ public class JobController {
         method = RequestMethod.GET)
     @ResponseBody
     public byte[] getJobImage(@PathVariable("imageId") long imageId) {
+        LOGGER.info("Accessed jobs/images/{} GET controller", imageId);
+
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }
@@ -187,6 +198,8 @@ public class JobController {
         method = RequestMethod.GET)
     @ResponseBody
     public byte[] getProfileImage(@PathVariable("imageId") long imageId) {
+        LOGGER.info("Accessed /user/images/profile/{} GET controller", imageId);
+
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }

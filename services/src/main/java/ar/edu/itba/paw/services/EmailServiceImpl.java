@@ -1,8 +1,9 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -24,6 +25,10 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private TemplateEngine htmlTemplateEngine;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
+
+    private static final String FIXHUB_EMAIL = "fixhubcompany@gmail.com";
+
     @Async
     @Override
     public void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws MessagingException {
@@ -34,9 +39,10 @@ public class EmailServiceImpl implements EmailService {
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = mailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+        final String to = (String) variables.get("to");
         message.setSubject(subject);
-        message.setFrom("fixhubcompany@gmail.com");
-        message.setTo((String) variables.get("to"));
+        message.setFrom(FIXHUB_EMAIL);
+        message.setTo(to);
 
         // Create the HTML body using Thymeleaf
         final String htmlContent = htmlTemplateEngine.process(template, ctx);
@@ -44,5 +50,6 @@ public class EmailServiceImpl implements EmailService {
 
         // Send email
         mailSender.send(mimeMessage);
+        LOGGER.info("Sent email with subject {} from {} to {} using template {}",subject,FIXHUB_EMAIL,to,template);
     }
 }

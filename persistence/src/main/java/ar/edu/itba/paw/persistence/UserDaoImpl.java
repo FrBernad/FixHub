@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.UserStats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -29,6 +31,7 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert userScheduleSimpleJdbcInsert;
     private SimpleJdbcInsert userLocationSimpleJdbcInsert;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private static final RowMapper<UserSchedule> USER_SCHEDULE_ROW_MAPPER = (rs, rowNum) ->
         new UserSchedule(rs.getString("us_start_time"), rs.getString("us_end_time"));
@@ -133,16 +136,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> getUserById(long id) {
-
+        final String query = "SELECT * FROM USERS u JOIN ROLES r on u_id=r_user_id WHERE u_id = ?";
+        LOGGER.debug("Executing query: {}", query);
         return jdbcTemplate.
-            query("SELECT * FROM USERS u JOIN ROLES r on u_id=r_user_id WHERE u_id = ?", new Object[]{id}, USER_ROW_MAPPER)
+            query(query, new Object[]{id}, USER_ROW_MAPPER)
             .stream()
             .findFirst();
     }
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM USERS WHERE u_email = ?) as AUX JOIN roles r on u_id = r_user_id", new Object[]{email}, USER_ROW_MAPPER)
+        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_email = ?) as AUX JOIN roles r on u_id = r_user_id";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{email}, USER_ROW_MAPPER)
             .stream()
             .findFirst();
     }
@@ -154,28 +160,40 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal) {
-        if (jdbcTemplate.update("UPDATE roles set r_role = ? where r_user_id = ? and r_role = ?",
-            newVal.name(), userId, oldVal.name()) == 1) {
+        final String query = "UPDATE roles set r_role = ? where r_user_id = ? and r_role = ?";
+        LOGGER.debug("Executing query: {}", query);
+        if (jdbcTemplate.update(query, newVal.name(), userId, oldVal.name()) == 1) {
+            LOGGER.debug("Roles updated");
             return getUserById(userId);
         }
+        LOGGER.debug("Roles not updated");
         return Optional.empty();
     }
 
     @Override
     public Optional<User> updatePassword(long userId, String password) {
-        if (jdbcTemplate.update("UPDATE USERS set u_password = ? where u_id = ?",
-            password, userId) == 1) {
+        final String query = "UPDATE USERS set u_password = ? where u_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        if (jdbcTemplate.update(query, password, userId) == 1) {
+            LOGGER.debug("Password updated");
             return getUserById(userId);
         }
+        LOGGER.debug("Password not updated");
         return Optional.empty();
     }
 
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
-        jdbcTemplate.update("UPDATE users SET u_name = ?, " +
-                "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ? " +
-                " where u_id = ?", userInfo.getName(), userInfo.getSurname(),
-            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), user.getId());
+        final String query = "UPDATE users SET u_name = ?, " +
+            "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ? " +
+            " where u_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        if (jdbcTemplate.update(query, userInfo.getName(), userInfo.getSurname(),
+            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), user.getId()) == 1)
+            LOGGER.debug("user info updated");
+        else
+            LOGGER.debug("user info not updated");
+
     }
 
     @Override
@@ -184,16 +202,19 @@ public class UserDaoImpl implements UserDao {
         userRoles.put("r_user_id", userId);
 
         userRoles.put("r_role", newRole.name());
+
         roleSimpleJdbcInsert.execute(userRoles);
+        LOGGER.info("Added role {} to user {}", newRole.name(), userId);
     }
 
     @Override
     public Optional<UserStats> getUserStatsById(long id) {
-        return jdbcTemplate.query(
-            "SELECT u_id, count(DISTINCT j_id) AS totalJobs,count(r_rating) AS totalReviews,avg(r_rating) AS avgRating" +
-                " FROM ((SELECT * FROM jobs LEFT OUTER JOIN reviews ON j_id = r_job_id) aux1 RIGHT OUTER JOIN " +
-                " (SELECT * FROM users WHERE u_id = ? ) aux2 ON u_id=j_provider_id) GROUP BY u_id",USER_STATS_ROW_MAPPER,
-            new Object[]{id}).stream().findFirst();
+        final String query = "SELECT u_id, count(DISTINCT j_id) AS totalJobs,count(r_rating) AS totalReviews,avg(r_rating) AS avgRating" +
+            " FROM ((SELECT * FROM jobs LEFT OUTER JOIN reviews ON j_id = r_job_id) aux1 RIGHT OUTER JOIN " +
+            " (SELECT * FROM users WHERE u_id = ? ) aux2 ON u_id=j_provider_id) GROUP BY u_id";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, USER_STATS_ROW_MAPPER, new Object[]{id})
+            .stream().findFirst();
     }
 
 
@@ -213,6 +234,7 @@ public class UserDaoImpl implements UserDao {
 
         try {
             id = userSimpleJdbcInsert.executeAndReturnKey(userInfo);
+            LOGGER.info("Created user with id {}", id);
         } catch (org.springframework.dao.DuplicateKeyException e) {
             throw new DuplicateUserException();
         }
@@ -223,17 +245,20 @@ public class UserDaoImpl implements UserDao {
         for (Roles role : roles) {
             userRoles.put("r_role", role.name());
             roleSimpleJdbcInsert.execute(userRoles);
+            LOGGER.info("Added role {} to user {}", role.name(), id);
         }
 
-        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null,null);
+        return new User(id.longValue(), password, name, surname, email, phoneNumber, state, city, roles, null, null);
     }
 
     public Collection<ContactInfo> getContactInfo(User user) {
-        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_user_id = ? ", new Object[]{user.getId()}, CONTACT_INFO_ROW_MAPPER);
+        final String query = "SELECT * FROM CONTACT_INFO WHERE ci_user_id = ? ";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{user.getId()}, CONTACT_INFO_ROW_MAPPER);
     }
 
     @Override
-    public ContactInfo addContactInfo(ContactDto contact){
+    public ContactInfo addContactInfo(ContactDto contact) {
         final Map<String, Object> contactInfo = new HashMap<>();
         contactInfo.put("ci_user_id", contact.getUser().getId());
         contactInfo.put("ci_city", contact.getCity());
@@ -243,11 +268,15 @@ public class UserDaoImpl implements UserDao {
         contactInfo.put("ci_address_number", contact.getAddressNumber());
         contactInfo.put("ci_department_number", contact.getDepartmentNumber());
         final Number id = contactInfoSimpleJdbcInsert.executeAndReturnKey(contactInfo);
+        LOGGER.debug("Created new contact info with id {}", id);
         return new ContactInfo(id.longValue(), contact.getUser().getId(), contact.getState(), contact.getCity(), contact.getStreet(), contact.getAddressNumber(), contact.getFloor(), contact.getDepartmentNumber());
     }
 
     public Optional<ContactInfo> getContactInfoById(Long contactInfoId) {
-        return jdbcTemplate.query("SELECT * FROM CONTACT_INFO WHERE ci_id = ? ", new Object[]{contactInfoId}, CONTACT_INFO_ROW_MAPPER).stream().findFirst();
+        final String query = "SELECT * FROM CONTACT_INFO WHERE ci_id = ? ";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{contactInfoId}, CONTACT_INFO_ROW_MAPPER)
+            .stream().findFirst();
     }
 
     @Override
@@ -259,6 +288,7 @@ public class UserDaoImpl implements UserDao {
         contactMap.put("c_info_id", contactInfoId);
         contactMap.put("c_message", contactDto.getMessage());
         contactMap.put("c_date", time.toLocalDateTime());
+        LOGGER.debug("Created new client");
         contactProviderSimpleJdbcInsert.execute(contactMap);
     }
 
@@ -279,16 +309,19 @@ public class UserDaoImpl implements UserDao {
             variables.add(itemsPerPage);
         }
 
-        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM " +
-                "(SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_provider_id = ?)" +
-                " AUX JOIN USERS on u_id = c_user_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC " + offset + limit,
-            variables.toArray(), CLIENT_ROW_MAPPER);
+        final String query = "SELECT * FROM (SELECT * FROM " +
+            "(SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_provider_id = ?)" +
+            " AUX JOIN USERS on u_id = c_user_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC " + offset + limit;
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.query(query, variables.toArray(), CLIENT_ROW_MAPPER);
     }
 
     @Override
     public int getClientsCountByProviderId(Long providerId) {
-        return jdbcTemplate.query("SELECT count(c_provider_id) as total FROM contact WHERE  c_provider_id = ?",
-            new Object[]{providerId},
+        final String query = "SELECT count(c_provider_id) as total FROM contact WHERE  c_provider_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{providerId},
             (rs, num) -> rs.getInt("total")).stream().findFirst().orElse(0);
     }
 
@@ -308,16 +341,20 @@ public class UserDaoImpl implements UserDao {
             limit = " LIMIT ? ";
             variables.add(itemsPerPage);
         }
-        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM " +
+        final String query = "SELECT * FROM (SELECT * FROM " +
             "(SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_user_id = ? ) AUX " +
-            "JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC" + offset + limit, variables.toArray(), PROVIDER_ROW_MAPPER);
+            "JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC" +
+            offset + limit;
+        LOGGER.debug("Executing query: {}", query);
 
+        return jdbcTemplate.query(query, variables.toArray(), PROVIDER_ROW_MAPPER);
     }
 
     @Override
     public int getProvidersCountByClientId(Long clientId) {
-        return jdbcTemplate.query("SELECT count(c_user_id) as total FROM contact WHERE  c_user_id = ?",
-            new Object[]{clientId},
+        final String query = "SELECT count(c_user_id) as total FROM contact WHERE  c_user_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{clientId},
             (rs, num) -> rs.getInt("total")).stream().findFirst().orElse(0);
     }
 
@@ -329,6 +366,7 @@ public class UserDaoImpl implements UserDao {
         schedule.put("us_start_time", startTime);
         schedule.put("us_end_time", endTime);
         userScheduleSimpleJdbcInsert.execute(schedule);
+        LOGGER.info("Inserted schedule for user {}", userId);
     }
 
 
@@ -339,39 +377,53 @@ public class UserDaoImpl implements UserDao {
             location.put("ul_user_id", userId);
             location.put("ul_city_id", cityId);
             userLocationSimpleJdbcInsert.execute(location);
+            LOGGER.info("Inserted location for user {}", userId);
         }
     }
 
     @Override
     public ProviderLocation getLocationByProviderId(Long providerId) {
-        return jdbcTemplate.query("SELECT * FROM (SELECT * FROM USER_LOCATION JOIN CITIES on ul_city_id = c_id where ul_user_id = ?) AUX JOIN states on c_state_id = s_id" +
-            " ORDER BY c_name ", new Object[]{providerId}, (rs) -> {
+        final String query = "SELECT * FROM (SELECT * FROM USER_LOCATION JOIN CITIES on ul_city_id = c_id where ul_user_id = ?) AUX JOIN states on c_state_id = s_id" +
+            " ORDER BY c_name ";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{providerId}, (rs) -> {
             ProviderLocation location = null;
             while (rs.next()) {
-                if(location == null ){
-                     location = new ProviderLocation(rs.getLong("ul_user_id"),new LinkedList<>(),rs.getString("s_name"));
+                if (location == null) {
+                    location = new ProviderLocation(rs.getLong("ul_user_id"), new LinkedList<>(), rs.getString("s_name"));
                 }
-                location.getCities().add(new City(rs.getLong("ul_city_id"),rs.getString("c_name")));
+                location.getCities().add(new City(rs.getLong("ul_city_id"), rs.getString("c_name")));
             }
-           return location;
+            return location;
         });
     }
 
     @Override
-    public void updateProfileImage(Long imageId, User user){
-        jdbcTemplate.update("UPDATE USERS set u_profile_picture = ? where u_id = ?",new Object[]{imageId,user.getId()});
+    public void updateProfileImage(Long imageId, User user) {
+        final String query = "UPDATE USERS set u_profile_picture = ? where u_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        if (jdbcTemplate.update(query, imageId, user.getId()) == 1)
+            LOGGER.debug("Profile picture of user {} updated", user.getId());
+        else
+            LOGGER.debug("Profile picture of user {} not updated", user.getId());
     }
 
     @Override
     public Optional<UserSchedule> getScheduleByUserId(long userId) {
-        return jdbcTemplate.query("SELECT * FROM USER_SCHEDULE WHERE us_user_id = ?", new Object[]{userId}, USER_SCHEDULE_ROW_MAPPER).stream().findFirst();
+        final String query = "SELECT * FROM USER_SCHEDULE WHERE us_user_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{userId}, USER_SCHEDULE_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
-    public void updateCoverImage(Long imageId, User user){
-        jdbcTemplate.update("UPDATE USERS set u_cover_picture = ? where u_id = ?",new Object[]{imageId,user.getId()});
+    public void updateCoverImage(Long imageId, User user) {
+        final String query = "UPDATE USERS set u_cover_picture = ? where u_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        if (jdbcTemplate.update(query, imageId, user.getId()) == 1)
+            LOGGER.debug("Profile cover of user {} updated", user.getId());
+        else
+            LOGGER.debug("Profile cover of user {} not updated", user.getId());
     }
-
 
 
 }

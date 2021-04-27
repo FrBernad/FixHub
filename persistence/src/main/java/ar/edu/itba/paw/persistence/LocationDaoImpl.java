@@ -3,6 +3,8 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.State;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -24,7 +26,7 @@ public class LocationDaoImpl implements LocationDao {
 
     private static final ResultSetExtractor<Collection<State>> STATE_ROW_MAPPER = rs -> {
         List<State> states = new LinkedList<>();
-        while(rs.next()) {
+        while (rs.next()) {
             states.add(new State(rs.getLong("s_id"), rs.getString("s_name")));
         }
         return states;
@@ -32,12 +34,13 @@ public class LocationDaoImpl implements LocationDao {
 
     private static final ResultSetExtractor<Collection<City>> CITY_ROW_MAPPER = rs -> {
         List<City> cities = new LinkedList<>();
-        while(rs.next()) {
+        while (rs.next()) {
             cities.add(new City(rs.getLong("c_id"), rs.getString("c_name")));
         }
         return cities;
     };
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationDaoImpl.class);
 
 
     @Autowired
@@ -48,16 +51,22 @@ public class LocationDaoImpl implements LocationDao {
 
     @Override
     public Collection<State> getStates() {
-        return jdbcTemplate.query("SELECT * FROM STATES", STATE_ROW_MAPPER);
+        final String query = "SELECT * FROM STATES";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, STATE_ROW_MAPPER);
     }
 
     @Override
     public Optional<State> getStateById(long stateId) {
-        return jdbcTemplate.query("SELECT * FROM STATES WHERE s_id = ?", new Object[]{stateId}, STATE_ROW_MAPPER).stream().findFirst();
+        final String query = "SELECT * FROM STATES WHERE s_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{stateId}, STATE_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
     public Collection<City> getCitiesByStateId(long stateId) {
-        return jdbcTemplate.query("SELECT * FROM CITIES WHERE c_state_id = ?", new Object[]{stateId}, CITY_ROW_MAPPER);
+        final String query = "SELECT * FROM CITIES WHERE c_state_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{stateId}, CITY_ROW_MAPPER);
     }
 }

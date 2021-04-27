@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.State;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -15,19 +17,23 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationDao locationDao;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationServiceImpl.class);
 
     @Override
-    public Collection<State> getStates(){
+    public Collection<State> getStates() {
+        LOGGER.debug("Retrieving states");
         return locationDao.getStates();
-    };
+    }
 
     @Override
     public Optional<State> getStateById(long stateId) {
+        LOGGER.debug("Retrieving state with id {}", stateId);
         return locationDao.getStateById(stateId);
     }
 
     @Override
     public Collection<City> getCitiesByStateId(long stateId) {
+        LOGGER.debug("Retrieving cities with state id {}", stateId);
         return locationDao.getCitiesByStateId(stateId);
     }
 }

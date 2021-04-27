@@ -40,4 +40,14 @@
         <appender-ref ref="paw-appender"/>
     </logger>
 
+    <logger name="ar.edu.itba.paw" level="INFO" additivity="false">
+        <appender-ref ref="paw-appender"/>
+    </logger>
+
+
+    <logger name="org.springframework.security" level="DEBUG" additivity="false">
+        <appender-ref ref="paw-appender"/>
+    </logger>
+
+
 </configuration>
