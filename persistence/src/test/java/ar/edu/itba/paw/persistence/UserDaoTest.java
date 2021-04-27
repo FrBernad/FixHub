@@ -14,19 +14,21 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-@Rollback //Se vuelven atras las transacciones luego de cada test para que la base de datos vuelva a su estado original
 //@Sql(scripts = "classpath:user-test.sql")//sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@Transactional
 public class UserDaoTest {
 
     private static final String PASSWORD = "password";
@@ -37,11 +39,16 @@ public class UserDaoTest {
     private static final String STATE = "Palermo";
     private static final String CITY = "CABA";
 
-    private static final Collection<Roles> PROVIDER_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.PROVIDER,Roles.VERIFIED,Roles.USER));
-    private static final User USER = new User(1L, "password","Ignacio", "Lopez", "ignacio@yopmail.com", "5491112345678",  "Caballito", "CABA",PROVIDER_VERIFIED_ROLES,0L, 0L);
-    private static final UserStats USER_STATS = new UserStats(6,3,4);
-    private static final UserInfo USER_INFO = new UserInfo("Gonzalo","Martinez","Burzaco","Buenos Aires","5491143218765");
+    private static final Collection<Roles> PROVIDER_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.PROVIDER, Roles.VERIFIED, Roles.USER));
+    private static final Collection<Roles> CLIENT_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.VERIFIED, Roles.USER));
 
+    private static final User USER = new User(1L, "password", "Ignacio", "Lopez", "ignacio@yopmail.com", "5491112345678", "Caballito", "CABA", PROVIDER_VERIFIED_ROLES, 0L, 0L);
+    private static final Job JOB = new Job("'Limpieza total'", "Limpieza de filtros", 0, 0, JobCategory.MECANICO, 1, BigDecimal.valueOf(300), USER, new ArrayList<>());
+    private static final UserStats USER_STATS = new UserStats(6, 3, 4);
+    private static final UserInfo USER_INFO = new UserInfo("Gonzalo", "Martinez", "Burzaco", "Buenos Aires", "5491143218765");
+
+    private static final User CLIENT = new User(3L, "password", "Pedro", "Romero", "pedro@yopmail.com", "5491109876543", "Once", "CABA", CLIENT_VERIFIED_ROLES, 0L, 0L);
+    private static final ContactDto CONTACT_DTO = new ContactDto(JOB, -1L, CLIENT, "message", "Adrogue", "Buenos Aires", "Nother", "123", "21", "A");
 
 
     @Autowired
@@ -60,6 +67,7 @@ public class UserDaoTest {
     }
 
     @Test
+    @Rollback
     public void testCreateUser() throws DuplicateUserException {
         final User user = userDao.createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
         assertNotNull(user);
@@ -94,58 +102,65 @@ public class UserDaoTest {
     }
 
     @Test
-    public void updatePassword(){
+    @Rollback
+    public void updatePassword() {
         final String newPassword = "newPassword";
-        userDao.updatePassword(USER.getId(),newPassword);
+        userDao.updatePassword(USER.getId(), newPassword);
         String query = "u_id = " + USER.getId() + " and u_password = '" + newPassword + "'";
-        assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users",query));
+        assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", query));
 
     }
 
 
     @Test
-    public void getUserStatsById(){
+    public void getUserStatsById() {
         Optional<UserStats> userStats = userDao.getUserStatsById(USER.getId());
         assertTrue(userStats.isPresent());
-        assertEquals(userStats.get().getJobsCount(),USER_STATS.getJobsCount());
-        assertEquals(userStats.get().getAvgRating(),USER_STATS.getAvgRating());
-        assertEquals(userStats.get().getReviewCount(),USER_STATS.getReviewCount());
+        assertEquals(userStats.get().getJobsCount(), USER_STATS.getJobsCount());
+        assertEquals(userStats.get().getAvgRating(), USER_STATS.getAvgRating());
+        assertEquals(userStats.get().getReviewCount(), USER_STATS.getReviewCount());
     }
 
 
-
     @Test
-    public void updateUserRoles(){
-
-
-    }
-    @Test
-    public void updateUserInfo(){
-        userDao.updateUserInfo(USER_INFO,USER);
+    @Rollback
+    public void updateUserInfo() {
+        userDao.updateUserInfo(USER_INFO, USER);
         String query = new StringBuilder("u_id = ").append(USER.getId())
             .append(" and u_name = '").append(USER_INFO.getName()).append("'")
             .append(" and u_surname = '").append(USER_INFO.getSurname()).append("'")
             .append(" and u_city = '").append(USER_INFO.getCity()).append("'")
             .append(" and u_state = '").append(USER_INFO.getState()).append("'")
             .append(" and u_phone_number = '").append(USER_INFO.getPhoneNumber()).append("'").toString();
-        assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users",query));
+        assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", query));
 
     }
 
-    //    Collection<Roles> getUserRoles();
-//
-//    Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
-//
-//    void updateUserInfo(UserInfo userInfo, User user);
-//
-//    void addRole(long userId, Roles newRole);
-//
-//    ContactInfo addContactInfo(ContactDto contactDto);
-//
-//    Collection<ContactInfo> getContactInfo(User user);
-//
-//    Optional<ContactInfo> getContactInfoById(Long contactInfoId);
-//
+    @Test
+    @Rollback
+    public void addContactInfo() {
+        ContactInfo contactInfo = userDao.addContactInfo(CONTACT_DTO);
+
+        String query = new StringBuilder("ci_user_id = ").append(CLIENT.getId())
+            .append(" and ci_city = '").append(CONTACT_DTO.getCity()).append("'")
+            .append(" and ci_state = '").append(CONTACT_DTO.getState()).append("'")
+            .append(" and ci_street = '").append(CONTACT_DTO.getStreet()).append("'")
+            .append(" and ci_address_number = '").append(CONTACT_DTO.getAddressNumber()).append("'")
+            .append(" and ci_floor = '").append(CONTACT_DTO.getFloor()).append("'")
+            .append(" and ci_department_number = '").append(CONTACT_DTO.getDepartmentNumber()).append("'").toString();
+
+        assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "contact_info", query));
+
+    }
+
+    @Test
+    public void getContactInfo() {
+        Collection<ContactInfo> contactInfo = userDao.getContactInfo(CLIENT);
+        Assert.assertEquals(contactInfo.size(), 2);
+    }
+
+
+
 //    void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time);
 //
 //    Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage);
@@ -168,6 +183,10 @@ public class UserDaoTest {
 //
 //    Optional<UserSchedule> getScheduleByUserId(long userId);
 
+// Collection<Roles> getUserRoles();
+//    Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
+//    void addRole(long userId, Roles newRole);
+//    Optional<ContactInfo> getContactInfoById(Long contactInfoId);
 
 }
 
