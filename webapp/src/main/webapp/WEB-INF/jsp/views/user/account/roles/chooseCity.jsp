@@ -41,7 +41,7 @@
 </div>
 
 <%@ include file="../../../../components/footer.jsp" %>
-<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/globalScripts.jsp" %>
 <script src='<c:url value="/resources/js/chooseCity.js"/>'></script>
 </body>
 

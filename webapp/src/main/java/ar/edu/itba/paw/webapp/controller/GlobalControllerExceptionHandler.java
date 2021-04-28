@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.IllegalContentTypeException;
-import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.IllegalContentTypeException;
+import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -139,21 +139,21 @@ public class GlobalControllerExceptionHandler {
     }
 
 
-//    /*Server error */
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ExceptionHandler(Exception.class)
-//    public ModelAndView serverException() {
-//        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
-//
-//        Locale locale = LocaleContextHolder.getLocale();
-//        String error = messageSource.getMessage("errors.ServerError", null, locale);
-//        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
-//        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
-//        mav.addObject("errors", error);
-//        mav.addObject("code", code);
-//
-//        return mav;
-//    }
+    /*Server error */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ModelAndView serverException() {
+        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
+
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.ServerError", null, locale);
+        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+
+        return mav;
+    }
 
 
 }

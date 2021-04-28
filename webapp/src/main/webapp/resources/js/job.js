@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     let reviewForm = document.getElementById("reviewForm");
     let reviewFormTextArea = document.getElementById("reviewFormTextArea");
@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
         let paginationModalInput = document.getElementById("paginationModalInput")
         let currentPage = reviewsPagination.dataset.page;
 
-        let reviewsModal =  $('#reviewsModal');
+        let reviewsModal = $('#reviewsModal');
 
         prevBtn.addEventListener("click", () => {
             formPageInput.setAttribute("value", (parseInt(currentPage) - 1).toString());

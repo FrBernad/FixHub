@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
     let inputState = document.getElementById("state");
     let states = document.getElementsByClassName("stateButton");
     let stateName = document.getElementById("stateName");
