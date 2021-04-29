@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container-fluid h-100" id="mainContainer">
-    <%@ include file="../../components/navbar.jsp" %>
+    <%@ include file="../../components/navbar.jsp"%>
     <div class="row">
         <div class="col-12 d-flex justify-content-center align-items-center">
             <h1><c:out value="${code}"/>: <c:out value="${errors}"/></h1>
