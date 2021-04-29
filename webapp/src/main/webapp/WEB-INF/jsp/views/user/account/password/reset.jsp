@@ -83,7 +83,7 @@
 
 <script src="<c:url value='/resources/js/resetPassword.js'/>"></script>
 
-<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/globalScripts.jsp" %>
 
 </body>
 

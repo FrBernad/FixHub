@@ -52,7 +52,7 @@
 </div>
 
 
-<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/globalScripts.jsp" %>
 
 </body>
 

@@ -261,7 +261,7 @@
 
 <%@ include file="../../components/footer.jsp" %>
 <script src='<c:url value="/resources/js/dashboard.js"/>'></script>
-<%@ include file="../../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../components/includes/globalScripts.jsp" %>
 
 </body>
 </html>

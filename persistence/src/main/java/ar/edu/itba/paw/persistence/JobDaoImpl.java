@@ -2,10 +2,11 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,10 @@ public class JobDaoImpl implements JobDao {
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jobSimpleJdbcInsert;
     private SimpleJdbcInsert jobImagesSimpleJdbcInsert;
-    private Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
+    private static final Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
 
-    private final String EMPTY = " ";
+    private static final String EMPTY = " ";
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
 
     private static final ResultSetExtractor<Collection<Job>> JOB_ROW_MAPPER = rs -> {
         Map<Long, Job> jobsMap = new LinkedHashMap<>();
@@ -97,6 +99,7 @@ public class JobDaoImpl implements JobDao {
         map.put("j_job_provided", jobProvided);
         map.put("j_price", price);
         final Number id = jobSimpleJdbcInsert.executeAndReturnKey(map);
+        LOGGER.debug("Created job with id {}", id);
 
         Map<String, Object> imageJobMap = new HashMap<>();
         Collection<Long> imagesId = new LinkedList<>();
@@ -106,6 +109,7 @@ public class JobDaoImpl implements JobDao {
             imageJobMap.put("ji_job_id", id);
             imagesId.add(image.getImageId());
             jobImagesSimpleJdbcInsert.execute(imageJobMap);
+            LOGGER.debug("Inserted image with id to job with id {}", image.getImageId(), id);
         }
 
         return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, provider, imagesId);
@@ -171,6 +175,7 @@ public class JobDaoImpl implements JobDao {
         }
 
         final String query = String.format("select count(j_id) total from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux %s", filterQuery, searchQuery);
+        LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
 
@@ -192,10 +197,10 @@ public class JobDaoImpl implements JobDao {
             searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
         }
 
-        return jdbcTemplate.query(
-            "select count(*) total from " +
-                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") as aux"
-                + searchQuery, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
+        final String query = " select count(*) total from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id" + filterQuery + " ) as aux" + searchQuery;
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
 
     }
 
@@ -207,7 +212,6 @@ public class JobDaoImpl implements JobDao {
         String filterQuery = " WHERE j_id = ? ";
 
         return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, variables).stream().findFirst();
-
     }
 
     public Collection<JobCategory> getJobsCategories() {
@@ -216,7 +220,9 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Collection<Long> getImagesIdsByJobId(Long jobId) {
-        return jdbcTemplate.query("SELECT * FROM JOB_IMAGE where ji_job_id = ? ORDER BY ji_image_id", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
+        final String query = "SELECT * FROM JOB_IMAGE where ji_job_id = ? ORDER BY ji_image_id";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
     }
 
     @Override
@@ -253,15 +259,16 @@ public class JobDaoImpl implements JobDao {
     }
 
     private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String offset, String limit, List<Object> variables) {
+        final String query = "select * from ( ( select * from" +
+            "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") aux1" +
+            " JOIN " +
+            "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+            "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
+            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery + offset + limit;
 
-        return jdbcTemplate.query(
-            "select * from ( ( select * from" +
-                "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") aux1" +
-                " JOIN " +
-                "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-                "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-                " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery + offset + limit, variables.toArray(),
-            JOB_ROW_MAPPER);
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.query(query, variables.toArray(), JOB_ROW_MAPPER);
     }
 
     private String getOrderQuery(OrderOptions orderOption) {

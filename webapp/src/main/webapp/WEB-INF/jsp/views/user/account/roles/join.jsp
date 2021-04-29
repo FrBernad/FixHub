@@ -43,7 +43,7 @@
 </div>
 
 <%@ include file="../../../../components/footer.jsp" %>
-<%@ include file="../../../../components/includes/bottomScripts.jsp" %>
+<%@ include file="../../../../components/includes/globalScripts.jsp" %>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script src='<c:url value="/resources/js/join.js"/>'></script>
 </body>

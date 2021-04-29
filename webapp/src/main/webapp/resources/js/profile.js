@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     let resendBtn = document.getElementById("resendBtn");
     let resendForm = document.getElementById("resendForm");

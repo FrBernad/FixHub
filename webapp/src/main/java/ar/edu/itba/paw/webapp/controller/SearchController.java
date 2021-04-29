@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.form.SearchForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -23,10 +25,14 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
+
     @RequestMapping("/discover")
     public ModelAndView discover(@ModelAttribute("searchForm") final SearchForm form) {
+        LOGGER.info("Accessed /discover GET controller");
+
         final ModelAndView mav = new ModelAndView("views/discover");
-        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null, null, null,0,-1);
+        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null, null, null, 0, -1);
         Collection<JobCategory> categories = jobService.getJobsCategories();
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         mav.addObject("filters", categories);
@@ -37,6 +43,8 @@ public class SearchController {
 
     @RequestMapping("/discover/search")
     public ModelAndView discoverSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
+        LOGGER.info("Accessed /discover/search GET controller");
+
         final ModelAndView mav = new ModelAndView("views/discover");
         final String query = form.getQuery(), order = form.getOrder(), filter = form.getFilter();
         final int page = form.getPage();

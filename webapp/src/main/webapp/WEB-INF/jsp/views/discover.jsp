@@ -12,6 +12,7 @@
     <link href='<c:url value="/resources/css/discover.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
+    <script src='<c:url value="/resources/js/discover.js"/>'></script>
 
 <body>
 <div class="outerContainer pb-4">
@@ -75,7 +76,7 @@
                         </c:if>
                         </span>
                     </button>
-                    <div class="dropdown-menu"  aria-labelledby="orderDropdown">
+                    <div class="dropdown-menu" aria-labelledby="orderDropdown">
                         <c:forEach var="order" items="${orderOptions}">
                             <div class="input-group">
                                 <button data-order="${order}" class="dropdown-item orderButton">
@@ -143,9 +144,7 @@
 </div>
 
 <%@ include file="../components/footer.jsp" %>
-
-<%@ include file="../components/includes/bottomScripts.jsp" %>
-<script src='<c:url value="/resources/js/discover.js"/>'></script>
+<%@ include file="../components/includes/globalScripts.jsp" %>
 
 </body>
 </html>

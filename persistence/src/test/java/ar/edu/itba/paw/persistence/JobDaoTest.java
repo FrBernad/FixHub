@@ -58,7 +58,6 @@ public class JobDaoTest {
     private static final String SEARCH_QUERY = "techo";
     private static final String TRICKY_SEARCH_QUERY = "%";
     private static final OrderOptions ORDER_OPTION = LESS_POPULAR;
-    private static final JobCategory JOB_CATEGORY = TECHISTA;
 
     @Before
     public void setUp() {
@@ -69,7 +68,6 @@ public class JobDaoTest {
     @Test
     public void createJob() {
         Job job = jobDao.createJob(JOB_PROVIDED, CATEGORY, DESCRIPTION, PRICE, DEFAULT_USER, IMAGES);
-
         assertNotNull(job);
         assertEquals(DESCRIPTION, job.getDescription());
         assertEquals(JOB_PROVIDED, job.getJobProvided());
@@ -113,7 +111,6 @@ public class JobDaoTest {
         assertEquals(26, count);
     }
 
-
     @Test
     public void getJobsByProviderId() {
         Collection<Job> jobs = jobDao.
@@ -130,12 +127,11 @@ public class JobDaoTest {
         jobs = jobDao.
             getJobsByProviderId(TRICKY_SEARCH_QUERY, ORDER_OPTION,
                 1L, 0, 4);
-
         assertEquals(0, jobs.size());
     }
 
     @Test
-    public void getJobsByCategory() {
+    public void getJobsByCategoryOrderedLessPopular() {
         //LESS POP
         Collection<Job> jobs = jobDao.
             getJobsByCategory(SEARCH_QUERY, LESS_POPULAR, CATEGORY, 0, 4);

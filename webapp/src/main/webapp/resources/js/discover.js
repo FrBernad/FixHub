@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
     let searchForm = document.getElementById("searchForm");
 
     let formSearchInput = document.getElementById("searchInput");

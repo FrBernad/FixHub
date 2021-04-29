@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
     let contactForm = document.getElementById("contactForm")
     let processing = false;
     let contactFormButton = document.getElementById("contactFormButton");

@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.IllegalContentTypeException;
-import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.IllegalContentTypeException;
+import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -28,9 +30,13 @@ public class GlobalControllerExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = JobNotFoundException.class)
     public ModelAndView jobNotFoundException() {
+        LOGGER.error("Error encountered, jobNotFoundException caught");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Job", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
@@ -44,6 +50,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = ImageNotFoundException.class)
     public ModelAndView imageNotFoundException() {
+        LOGGER.error("Error encountered, ImageNotFoundException caught");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Image", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
@@ -55,8 +63,10 @@ public class GlobalControllerExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = {ContactInfoNotFoundException.class,UserNotFoundException.class})
+    @ExceptionHandler(value = {ContactInfoNotFoundException.class, UserNotFoundException.class})
     public ModelAndView userNotFoundException() {
+        LOGGER.error("Error encountered, ContactInfoNotFoundException caught");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.User", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
@@ -69,6 +79,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalContentTypeException.class)
     public ModelAndView ilegalContentTypeException() {
+        LOGGER.error("Error encountered, IllegalContentTypeException caught");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.IllegalContentTypeException", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();
@@ -81,6 +93,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MultipartException.class)
     public ModelAndView maxUploadSizeException() {
+        LOGGER.error("Error encountered, MultipartException caught (max size exceeded)");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.MaxUploadSizeException", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();
@@ -98,6 +112,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public ModelAndView resourceNotFoundException() {
+        LOGGER.error("Error encountered, NoHandlerFoundException (no resource found)");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NotFound.Resource", null, locale);
         String code = HttpStatus.NOT_FOUND.toString();
@@ -111,6 +127,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(TypeMismatchException.class)
     public ModelAndView badRequestException() {
+        LOGGER.error("Error encountered, badRequestException");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.BadRequest", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();
@@ -121,11 +139,12 @@ public class GlobalControllerExceptionHandler {
     }
 
 
-
     /*Server error */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ModelAndView serverException() {
+        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
+
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.ServerError", null, locale);
         String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();

@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.*;
@@ -20,6 +22,8 @@ public class ImageDaoImpl implements ImageDao {
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert imageSimpleJdbcInsert;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageDaoImpl.class);
 
     private static final RowMapper<Image> IMAGE_ROW_MAPPERS = (rs, rowNum) ->
         new Image(rs.getLong("i_id"), rs.getBytes("i_data"), rs.getString("i_mime_type"));
@@ -51,7 +55,7 @@ public class ImageDaoImpl implements ImageDao {
     }
 
     public Image createImage(ImageDto image) {
-        Map<String, Object> imageInfo = new HashMap<>();
+        final Map<String, Object> imageInfo = new HashMap<>();
         imageInfo.put("i_data", image.getData());
         imageInfo.put("i_mime_type", image.getMimeType());
         final long id = imageSimpleJdbcInsert.executeAndReturnKey(imageInfo).longValue();
@@ -60,18 +64,30 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public Optional<Image> getImageById(Long imageId) {
-        return jdbcTemplate.query("SELECT * FROM IMAGES where i_id = ?", new Object[]{imageId}, IMAGE_ROW_MAPPERS).stream().findFirst();
+        final String query = "SELECT * FROM IMAGES where i_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{imageId}, IMAGE_ROW_MAPPERS).stream().findFirst();
     }
 
     @Override
     public Collection<Image> getImagesByJobId(long jobId) {
-        return jdbcTemplate.query("SELECT * FROM IMAGES JOIN JOB_IMAGE on i_id = ji_image_id WHERE ji_job_id = ?", new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
+        final String query = "SELECT * FROM IMAGES JOIN JOB_IMAGE on i_id = ji_image_id WHERE ji_job_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
     }
 
     @Override
-    public void updateImage(ImageDto image,long imageId){
-        jdbcTemplate.update("UPDATE IMAGES SET i_data = ?, i_mime_type = ? where i_id = ?",new Object[]{image.getData(),image.getMimeType(),imageId});
+    public void updateImage(ImageDto image, long imageId) {
+        final String update = "UPDATE IMAGES SET i_data = ?, i_mime_type = ? where i_id = ?";
+        LOGGER.debug("Executing query: {}", update);
+
+        int rowsAffected = jdbcTemplate.update(update, image.getData(), image.getMimeType(), imageId);
+        if (rowsAffected == 1)
+            LOGGER.debug("Image updated");
+        else
+            LOGGER.debug("Image not updated");
     }
+
 }
 
 

@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     let jobForm = document.getElementById("jobForm")
     let imagesHolder = document.getElementById("imagesHolder");
