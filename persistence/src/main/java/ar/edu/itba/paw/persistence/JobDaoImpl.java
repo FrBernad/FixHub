@@ -111,7 +111,7 @@ public class JobDaoImpl implements JobDao {
             imageJobMap.put("ji_job_id", id);
             imagesId.add(image.getImageId());
             jobImagesSimpleJdbcInsert.execute(imageJobMap);
-            LOGGER.debug("Inserted image with id to job with id {}", image.getImageId(), id);
+            LOGGER.debug("Inserted image with id {} to job with id {}", image.getImageId(), id);
         }
 
         return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused ,provider, imagesId);

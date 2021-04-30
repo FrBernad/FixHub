@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 
@@ -121,7 +122,7 @@ public class GlobalControllerExceptionHandler {
      * */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ModelAndView resourceNotFoundException() {
+    public ModelAndView resourceNotFoundException(HttpServletRequest request) {
         LOGGER.error("Error encountered, NoHandlerFoundException (no resource found)");
 
         Locale locale = LocaleContextHolder.getLocale();

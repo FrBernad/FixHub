@@ -18,7 +18,7 @@
                         <spring:message code="navBar.discover"/>
                     </a>
                 </li>
-                <c:if test="${loggedUser.hasRole('PROVIDER')}">
+                <c:if test="${loggedUser != null && loggedUser.hasRole('PROVIDER')}">
                     <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
                         <a href="<c:url value='/user/dashboard'/>" class="nav-link navbarText">
                             <spring:message code="navBar.dashboard"/>

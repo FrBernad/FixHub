@@ -123,8 +123,7 @@ public class UserServiceImpl implements UserService {
 
             emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
-            System.out.println("error");
-            e.printStackTrace();
+            LOGGER.warn("Error, user verification mail not sent");
         }
     }
 
@@ -227,7 +226,7 @@ public class UserServiceImpl implements UserService {
             mailAttrs.put("to", user.getEmail());
             emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.warn("Error, user password reset mail not sent");
         }
     }
 
@@ -286,8 +285,7 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
-            //FIXME: LOGGEAR
-            e.printStackTrace();
+            LOGGER.warn("Error, Job request mail not sent");
         }
     }
 
@@ -302,15 +300,14 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
-            //FIXME: LOGGEAR
-            e.printStackTrace();
+            LOGGER.warn("Error, Job request confirmation mail not sent");
         }
     }
 
-   @Override
-    public boolean hasContactJobProvided(Job job, User user){
-        return userDao.hasContactJobProvided(job,user);
-   }
+    @Override
+    public boolean hasContactJobProvided(Job job, User user) {
+        return userDao.hasContactJobProvided(job, user);
+    }
 
     @Override
     public Optional<UserSchedule> getScheduleByUserId(long userId) {

@@ -10,9 +10,7 @@
 </head>
 <body>
 <div class="container-fluid h-100" id="mainContainer">
-    <%@ include file="../../components/navbar.jsp" %>
-
-    <div class="row h-75 align-items-center ">
+    <div class="row h-100 align-items-center ">
         <div class="col-12">
             <div class="container-fluid px-0">
                 <div class="row">
