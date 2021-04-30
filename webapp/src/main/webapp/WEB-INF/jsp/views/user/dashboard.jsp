@@ -10,7 +10,7 @@
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
 
 
-    <title><spring:message code="navBar.dashboard"/></title>
+    <title><spring:message code="productName"/> | <spring:message code="navBar.dashboard"/></title>
 
     <spring:message code="navBar.dashboard" var="dashboard"/>
     <spring:message code="dashboard.Work" var="work"/>
