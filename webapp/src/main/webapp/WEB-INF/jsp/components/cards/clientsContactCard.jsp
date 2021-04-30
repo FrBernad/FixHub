@@ -5,7 +5,10 @@
                 <div class="row">
                     <div class="col-8">
                         <a href="<c:url value="/jobs/${contact.jobId}"/>">
-                            <c:out value="${contact.jobProvided}"/>
+                            <c:out value="${contact.jobProvided}"/></a>
+                        |
+                        <a href="<c:url value="/user/${contact.user.userId}"/>">
+                            <c:out value="${contact.user.name} ${contact.user.surname}"/>
                         </a>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-end">
@@ -28,7 +31,6 @@
                     <div class="row">
                         <div class="col-12">
                             <span class="client-label"><spring:message code="dashboard.client"/>:</span>
-
                             <a href="<c:url value="/user/${contact.user.userId}"/>">
                                 <c:out value="${contact.user.name} ${contact.user.surname}"/>
                             </a>
