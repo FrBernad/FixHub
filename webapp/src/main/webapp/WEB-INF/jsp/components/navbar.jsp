@@ -70,7 +70,7 @@
                                     <form id="logoutForm" class="mb-0 dropdown-item pl-3"
                                           action="<c:url value='/logout'/>"
                                           method="post">
-                                        <button type="submit" id="logoutInput" class="px-0">
+                                        <button type="submit" id="logoutInput" class="px-0 btn-block text-left">
                                             <spring:message code="navBar.logout"/>
                                         </button>
                                     </form>
