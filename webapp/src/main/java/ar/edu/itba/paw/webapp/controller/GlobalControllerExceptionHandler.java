@@ -149,7 +149,6 @@ public class GlobalControllerExceptionHandler {
         return mav;
     }
 
-
     /*Server error */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = {ServerInternalException.class, Exception.class})
@@ -163,6 +162,19 @@ public class GlobalControllerExceptionHandler {
         mav.addObject("errors", error);
         mav.addObject("code", code);
 
+        return mav;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = IllegalContactException.class)
+    public ModelAndView illegalContactException(){
+        LOGGER.error("Error encountered, the user can't contact himself");
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.illegalContactException", null, locale);
+        String code = HttpStatus.BAD_REQUEST.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
         return mav;
     }
 

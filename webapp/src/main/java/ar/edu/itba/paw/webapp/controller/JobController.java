@@ -95,8 +95,12 @@ public class JobController {
     @RequestMapping("/jobs/{jobId}/edit")
     public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("jobForm") final JobForm form){
         ModelAndView mav = new ModelAndView("views/jobs/editJob");
+
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final Collection<JobCategory> categories = jobService.getJobsCategories();
+
+        LOGGER.info("Accessed /jobs/{}/edit GET controller", jobId);
+
         mav.addObject("categories", categories);
         mav.addObject("job",job);
         return mav;
@@ -110,6 +114,9 @@ public class JobController {
 
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
+
+        LOGGER.info("Accessed /jobs/{}/edit POST controller", jobId);
+
         //FIXME: SOLUCIONAR ESTO
         if (form.getImages().get(0).getSize() != 0) {
             for (final MultipartFile image : form.getImages()) {

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -244,7 +245,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void contact(ContactDto contactDto) {
+    public void contact(ContactDto contactDto) throws IllegalContactException {
         ContactInfo contactInfo;
 
         if (contactDto.getContactInfoId() == -1) {
@@ -254,6 +255,8 @@ public class UserServiceImpl implements UserService {
             LOGGER.debug("Retrieving used contact info");
             contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
         }
+        if(contactDto.getJob().getProvider().getId().equals(contactDto.getUser().getId()))
+            throw new IllegalContactException();
 
         sendJobRequestEmail(contactDto);
         sendJobRequestConfirmationEmail(contactDto);

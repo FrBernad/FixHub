@@ -100,7 +100,7 @@
                                     <c:when test="${loggedUser!=null && loggedUser.id==job.provider.id}">
 
                                         <a href="<c:url value='/jobs/${job.id}/edit'/>">
-                                            <button class="contactBtn">editar</button>
+                                            <button class="contactBtn"><spring:message code="job.editTitle"/></button>
                                         </a>
                                     </c:when>
                                     <c:otherwise>
