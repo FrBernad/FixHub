@@ -23,6 +23,10 @@
     font-weight: 600;
 }
 
+.reviewerImage{
+    border-radius: 50%;
+}
+
 .iconsColor {
     color: #003B6D;
 }

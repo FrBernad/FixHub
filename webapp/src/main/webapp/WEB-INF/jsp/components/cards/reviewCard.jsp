@@ -1,15 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div class="container-fluid p-0">
+<div class="container-fluid p-0" >
     <div class="row">
         <div class="col-2">
             <c:choose>
                 <c:when test="${review.reviewer.profileImageId == 0}">
-                    <img width="50px" height="50px" src="<c:url value='/resources/images/userProfile.png'/>"
+                    <img width="50px" height="50px" class="reviewerImage" src="<c:url value='/resources/images/userProfile.png'/>"
                     >
                 </c:when>
                 <c:otherwise>
-                    <img width="50px" height="50px"
+                    <img width="50px" height="50px" class="reviewerImage"
                          src="<c:url value='/user/images/profile/${review.reviewer.profileImageId}'/>">
                 </c:otherwise>
             </c:choose>
