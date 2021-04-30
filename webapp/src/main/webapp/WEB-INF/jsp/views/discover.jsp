@@ -27,7 +27,7 @@
             <form:input path="page" type="hidden" id="pageInput"/>
         </form:form>
         <div class="row pb-4 align-items-center justify-content-between">
-            <div class="col-7 p-0 d-flex align-items-center justify-content-start">
+            <div class="col-12 col-md-6 pl-0 d-flex align-items-center justify-content-start">
                 <div class="input-group">
                     <input placeholder="<spring:message code="discover.barPlaceholder"/>"
                            id="searchBar"
@@ -39,12 +39,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-5 d-flex p-0 align-items-center justify-content-end">
-                <div class="dropdown mr-4">
-                    <button class="dropdown-custom dropdown-toggle" type="button" id="filterDropdown"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <spring:message code="discover.filterBy"/>
-                        <span class="resultQuery">
+            <div class="col-md-6 col-12 mt-4 mt-md-0 d-flex p-0 align-items-center justify-content-md-end justify-content-around">
+                <div class="container-fluid px-0">
+                    <div class="row justify-content-around align-items-center">
+                        <div class="col-6 d-flex align-items-center justify-content-md-end">
+                            <div class="dropdown w-100">
+                                <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                                        type="button" id="filterDropdown"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><spring:message code="discover.filterBy"/></span>
+                                    <span class="resultQuery">
                         <c:if test="${results.filter!=null && !results.filter.isEmpty()}">
                             <spring:message code="home.categories.${results.filter}"/>
                         </c:if>
@@ -52,38 +56,44 @@
                             -
                         </c:if>
                         </span>
-                    </button>
-                    <div class="dropdown-menu" id="filterDropdownMenu" aria-labelledby="filterDropdown">
-                        <div class="input-group">
-                            <button id="emptyFilterButton" data-filter="" class="dropdown-item">-</button>
-                        </div>
-                        <c:forEach var="filter" items="${filters}">
-                            <div class="input-group">
-                                <button data-filter="${filter}" class="dropdown-item filterButton">
-                                    <spring:message code="home.categories.${filter}"/>
                                 </button>
+                                <div class="dropdown-menu" id="filterDropdownMenu" aria-labelledby="filterDropdown">
+                                    <div class="input-group">
+                                        <button id="emptyFilterButton" data-filter="" class="dropdown-item">-</button>
+                                    </div>
+                                    <c:forEach var="filter" items="${filters}">
+                                        <div class="input-group">
+                                            <button data-filter="${filter}" class="dropdown-item filterButton">
+                                                <spring:message code="home.categories.${filter}"/>
+                                            </button>
+                                        </div>
+                                    </c:forEach>
+                                </div>
                             </div>
-                        </c:forEach>
-                    </div>
-                </div>
-                <div class="dropdown ">
-                    <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <spring:message code="discover.orderBy"/>
-                        <span class="resultQuery">
+                        </div>
+                        <div class="col-6  d-flex align-items-center justify-content-md-end">
+                            <div class="dropdown w-100">
+                                <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                                        type="button" id="orderDropdown"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><spring:message code="discover.orderBy"/></span>
+                                    <span class="resultQuery">
                         <c:if test="${results.order!=null && !results.order.isEmpty()}">
                             <spring:message code="discover.orderOption.${results.order}"/>
                         </c:if>
                         </span>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="orderDropdown">
-                        <c:forEach var="order" items="${orderOptions}">
-                            <div class="input-group">
-                                <button data-order="${order}" class="dropdown-item orderButton">
-                                    <spring:message code="discover.orderOption.${order}"/>
                                 </button>
+                                <div class="dropdown-menu" aria-labelledby="orderDropdown">
+                                    <c:forEach var="order" items="${orderOptions}">
+                                        <div class="input-group">
+                                            <button data-order="${order}" class="dropdown-item orderButton">
+                                                <spring:message code="discover.orderOption.${order}"/>
+                                            </button>
+                                        </div>
+                                    </c:forEach>
+                                </div>
                             </div>
-                        </c:forEach>
+                        </div>
                     </div>
                 </div>
             </div>

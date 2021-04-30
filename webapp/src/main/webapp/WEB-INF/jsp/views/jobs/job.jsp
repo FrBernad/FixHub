@@ -16,7 +16,7 @@
 <body>
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../../components/navbar.jsp" %>
-    <div class="container-fluid py-4 px-0">
+    <div class="container-fluid py-4">
         <div class="container-lg p-5 bigContentContainer">
             <div class="row mt-3">
                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-start">
@@ -74,7 +74,7 @@
                                 <div class="container-fluid p-0">
                                     <row>
                                         <div class="col-12 pl-0">
-                                            <h1 class="jobTitle mt-3"><c:out value="${job.jobProvided}"/></h1>
+                                            <h1 class="jobTitle"><c:out value="${job.jobProvided}"/></h1>
                                         </div>
                                         <div class="col-12 pl-0">
                                             <a href="<c:url value="/user/${job.provider.id}"/>">

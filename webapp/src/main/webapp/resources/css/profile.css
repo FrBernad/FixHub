@@ -57,6 +57,12 @@
     border-radius: 8px;
 }
 
+.recentContacts{
+    background-color: white;
+    border-radius: 8px;
+    min-height: 354px;
+}
+
 .userSectionTitles {
     font-size: 22px;
     font-weight: 700;

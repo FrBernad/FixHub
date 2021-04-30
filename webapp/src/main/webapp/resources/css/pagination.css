@@ -43,6 +43,8 @@
 }
 
 .dropdown-custom {
+    min-width: 233px;
+    width: 100%;
     border-radius: 8px !important;
     font-size: 14px;
     font-weight: bold;

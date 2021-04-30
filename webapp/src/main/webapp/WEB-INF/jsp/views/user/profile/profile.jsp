@@ -62,7 +62,8 @@
                                 <c:url value="/user/account/updateProfileImage" var="postProfileImage"/>
                                 <form:form id="changeProfileForm" type="hidden" action="${postProfileImage}"
                                            method="POST" enctype="multipart/form-data">
-                                    <input type="file" id="profileInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
+                                    <input type="file" id="profileInputFile" name="image" hidden
+                                           accept=".png,.jpg,.jpeg"/>
 
                                 </form:form>
 
@@ -126,8 +127,8 @@
 
             <%--RECENT CONTACTS--%>
             <div class="col-12 col-md-6 pr-0 pr-md-5">
-                <div class="container-lg  detailsSection">
-                    <div class="row py-2">
+                <div class="container-lg recentContacts">
+                    <div class="row py-2 ${results.totalPages > 0 ? "":"h-100" } align-items-start">
                         <div class="col-12 my-2">
                             <h1 class="text-left sectionTitle">
                                 <spring:message code="profilePage.contacts.recents"/>
