@@ -5,7 +5,7 @@
 }
 
 .limitSizeDropdown {
-    height: 200px !important;
+    max-height: 200px !important;
     overflow-y: auto !important;
 }
 

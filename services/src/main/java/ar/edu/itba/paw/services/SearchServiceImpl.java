@@ -69,10 +69,13 @@ public class SearchServiceImpl implements SearchService {
         }
 
         String queryState;
+        String queryCity;
         Collection<City> cities = Collections.emptyList();
         if (state == null || state.equals("")) {
             LOGGER.debug("State query is empty, setting city to none");
             queryState = null;
+            queryCity = null;
+            city = "";
             state = "";
         } else {
             long stateId = -1;
@@ -90,26 +93,24 @@ public class SearchServiceImpl implements SearchService {
                     queryState = null;
                 }
             }
-        }
-
-        String queryCity;
-        if (city == null || city.equals("")) {
-            LOGGER.debug("City query is empty, setting searchQuery to none");
-            queryCity = null;
-            city = "";
-        } else {
-            long cityId = -1;
-            try {
-                cityId = Long.parseLong(city);
-            } catch (NumberFormatException ignored) {
-            } finally {
+            if (city == null || city.equals("")) {
+                LOGGER.debug("City query is empty, setting searchQuery to none");
+                queryCity = null;
                 city = "";
-                Optional<City> cityOtp = locationDao.getCityById(cityId);
-                if (cityOtp.isPresent()) {
-                    city = cityOtp.get().getName();
-                    queryCity = String.valueOf(cityId);
-                } else {
-                    queryCity = null;
+            } else {
+                long cityId = -1;
+                try {
+                    cityId = Long.parseLong(city);
+                } catch (NumberFormatException ignored) {
+                } finally {
+                    city = "";
+                    Optional<City> cityOtp = locationDao.getCityByCityAndStateId(cityId,stateId);
+                    if (cityOtp.isPresent()) {
+                        city = cityOtp.get().getName();
+                        queryCity = String.valueOf(cityId);
+                    } else {
+                        queryCity = null;
+                    }
                 }
             }
         }
@@ -159,7 +160,6 @@ public class SearchServiceImpl implements SearchService {
             LOGGER.debug("Search query is valid: {}", searchBy);
             querySearchBy = searchBy;
         }
-
 
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
