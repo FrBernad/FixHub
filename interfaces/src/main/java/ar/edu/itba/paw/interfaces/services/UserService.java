@@ -43,4 +43,6 @@ public interface UserService {
     void updateProfileImage(ImageDto imageDto, User user);
 
     Optional<UserSchedule> getScheduleByUserId(long userId);
+
+    boolean hasContactJobProvided(Job job, User user);
 }

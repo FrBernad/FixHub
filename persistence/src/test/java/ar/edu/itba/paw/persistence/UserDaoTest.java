@@ -139,7 +139,7 @@ public class UserDaoTest {
     @Test
     @Rollback
     public void addContactInfo() {
-        ContactInfo contactInfo = userDao.addContactInfo(CONTACT_DTO);
+        userDao.addContactInfo(CONTACT_DTO);
 
         String query = new StringBuilder("ci_user_id = ").append(CLIENT.getId())
             .append(" and ci_city = '").append(CONTACT_DTO.getCity()).append("'")

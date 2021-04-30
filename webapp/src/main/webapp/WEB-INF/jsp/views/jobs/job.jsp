@@ -205,12 +205,15 @@
                             <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
                         </h2>
                     </div>
-                    <div class="col-12 d-flex justify-content-start align-items-center">
-                        <a href="#" type="button" data-toggle="modal" data-target="#newReview">
-                            <spring:message code="job.review.hyperlink"/>
-                        </a>
-                        <%@ include file="../../components/forms/reviewForm.jsp" %>
-                    </div>
+                    <c:if test="${canReview == true}">
+                        <div class="col-12 d-flex justify-content-start align-items-center">
+                            <a href="#" type="button" data-toggle="modal" data-target="#newReview">
+                                <spring:message code="job.review.hyperlink"/>
+                            </a>
+                            <%@ include file="../../components/forms/reviewForm.jsp" %>
+                        </div>
+                    </c:if>
+
                 </div>
                 <div class="row mt-2">
                     <div class="col-12 d-flex align-items-center">

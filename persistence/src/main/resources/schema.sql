@@ -54,7 +54,10 @@ CREATE TABLE IF NOT EXISTS REVIEWS
     r_job_id        BIGINT       NOT NULL,
     r_rating        INT          NOT NULL,
     r_creation_date TIMESTAMP    NOT NULL,
+    r_reviewer_id   BIGINT       NOT NULL,
+
     FOREIGN KEY (r_job_id) REFERENCES JOBS (j_id) ON DELETE CASCADE,
+    FOREIGN KEY (r_reviewer_id) REFERENCES USERS(u_id) ON DELETE CASCADE,
     PRIMARY KEY (r_id)
 );
 

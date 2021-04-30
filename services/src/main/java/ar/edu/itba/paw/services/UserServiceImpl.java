@@ -306,6 +306,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+   @Override
+    public boolean hasContactJobProvided(Job job, User user){
+        return userDao.hasContactJobProvided(job,user);
+   }
+
     @Override
     public Optional<UserSchedule> getScheduleByUserId(long userId) {
         return userDao.getScheduleByUserId(userId);

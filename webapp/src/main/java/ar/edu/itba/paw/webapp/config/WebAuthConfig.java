@@ -61,7 +61,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             //jobs routes
             .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
             .antMatchers("/jobs/new").hasRole("PROVIDER")
-            .antMatchers("/jobs/{id:[\\d]+}").permitAll()
+            .antMatchers(HttpMethod.GET,"/jobs/{id:[\\d]+}").permitAll()
             .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
 
             //provider routes

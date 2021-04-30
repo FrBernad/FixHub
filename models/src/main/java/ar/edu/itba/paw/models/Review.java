@@ -9,13 +9,15 @@ public class Review {
     private Number jobId;
     private int rating;
     private LocalDate creationDate;
+    private ReviewUser reviewer;
 
-    public Review(Number id, String description, Number jobId, int rating, LocalDate creationDate) {
+    public Review(Number id, String description, Number jobId, int rating, LocalDate creationDate, ReviewUser reviewer) {
         this.id = id;
         this.description = description;
         this.jobId = jobId;
         this.rating = rating;
         this.creationDate = creationDate;
+        this.reviewer = reviewer;
     }
 
     public Number getId() {
@@ -56,6 +58,14 @@ public class Review {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public ReviewUser getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(ReviewUser reviewer) {
+        this.reviewer = reviewer;
     }
 
     @Override
