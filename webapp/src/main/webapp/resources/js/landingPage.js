@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     let searchForm = document.getElementById("searchForm");
     let searchInput = document.getElementById("searchInput");
-    document.getElementById("filterInput").setAttribute("value","");
+    document.getElementById("categoryInput").setAttribute("value","");
     document.getElementById("orderInput").setAttribute("value","");
 
     let searchFormInput = document.getElementById("searchFormInput");

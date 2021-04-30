@@ -35,7 +35,7 @@
                             <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
                                        id="searchForm">
                                 <form:input path="order" type="hidden" id="orderInput"/>
-                                <form:input path="filter" type="hidden" id="filterInput"/>
+                                <form:input path="category" type="hidden" id="categoryInput"/>
                                 <form:input path="query" type="hidden" id="searchInput"/>
                             </form:form>
                             <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
@@ -59,7 +59,7 @@
                             <c:forEach var="category" items="${categories}" begin="0" end="4">
                                 <form action="<c:url value="/discover/search"/>" method="GET"
                                       class="mb-0 xyz-in">
-                                    <input type="hidden" name="filter" value="${category}">
+                                    <input type="hidden" name="category" value="${category}">
                                     <div class="input-group-prepend">
                                         <button class="btn-sm suggestionBtn mr-4">
                                             <spring:message code="home.categories.${category}"/>

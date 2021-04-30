@@ -283,7 +283,7 @@ public class JobDaoImpl implements JobDao {
             variables.add(itemsPerPage);
         }
 
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, offset, EMPTY, EMPTY, limit, variables);
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, EMPTY, EMPTY, offset, limit, variables);
     }
 
     private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String stateQuery, String cityQuery, String offset, String limit, List<Object> variables) {
