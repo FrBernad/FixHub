@@ -11,7 +11,7 @@ public interface JobDao {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User user, List<Image> images);
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused,User user, List<Image> images);
 
     Collection<JobCategory> getJobsCategories();
 

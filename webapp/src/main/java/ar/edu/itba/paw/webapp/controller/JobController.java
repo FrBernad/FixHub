@@ -184,7 +184,7 @@ public class JobController {
                 }
             }
         }
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), imagesDto, user);
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(),false,imagesDto, user);
         LOGGER.info("Created job with id {}", job.getId());
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }

@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS JOBS
     j_job_provided VARCHAR(50)  NOT NULL,
     j_provider_id  BIGINT       NOT NULL,
     j_price        DECIMAL      NOT NULL,
+    j_paused       BOOLEAN      NOT NULL,
     FOREIGN KEY (j_provider_id) REFERENCES USERS (u_id),
     PRIMARY KEY (j_id)
 );
