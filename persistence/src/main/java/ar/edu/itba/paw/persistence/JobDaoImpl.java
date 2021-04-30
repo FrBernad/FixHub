@@ -129,15 +129,6 @@ public class JobDaoImpl implements JobDao {
             filterQuery = " WHERE j_category = ? ";
         }
 
-        String searchQuery = EMPTY;
-        if (searchBy != null) {
-            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-            variables.add(searchBy);
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
-        }
-
         String orderQuery = getOrderQuery(orderOption);
 
         String stateQuery = EMPTY;
@@ -150,6 +141,15 @@ public class JobDaoImpl implements JobDao {
         if (city != null) {
             cityQuery = " AND c_id = ? ";
             variables.add(Integer.valueOf(city));
+        }
+
+        String searchQuery = EMPTY;
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
         }
 
         String offset = EMPTY;
@@ -179,15 +179,6 @@ public class JobDaoImpl implements JobDao {
             filterQuery = " WHERE j_category = ? ";
         }
 
-        String searchQuery = EMPTY;
-        if (searchBy != null) {
-            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-            variables.add(searchBy);
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
-        }
-
         String stateQuery = EMPTY;
         if (state != null) {
             stateQuery = " WHERE c_state_id = ? ";
@@ -200,11 +191,20 @@ public class JobDaoImpl implements JobDao {
             variables.add(Integer.valueOf(city));
         }
 
+        String searchQuery = EMPTY;
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
+        }
+
         final String query = String.format("select count(distinct j_id) total from " +
-            "((select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
+            "(select * from ( (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
             "JOIN (SELECT distinct ul_user_id from " +
             " cities join user_location on c_id = user_location.ul_city_id %s %s) " +
-            " as aux1 ON aux0.j_provider_id=aux1.ul_user_id ) as aux2 %s", filterQuery, stateQuery, cityQuery, searchQuery);
+            " as aux1 ON aux0.j_provider_id=aux1.ul_user_id ) as aux2 %s) as aux3", filterQuery, stateQuery, cityQuery, searchQuery);
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
