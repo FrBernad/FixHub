@@ -47,6 +47,7 @@ public class JobDaoImpl implements JobDao {
                         JobCategory.valueOf(rs.getString("j_category")),
                         rs.getLong("j_id"),
                         rs.getBigDecimal("j_price"),
+                        rs.getBoolean("j_paused"),
                         new User(rs.getLong("j_provider_id"),
                             rs.getString("u_password"),
                             rs.getString("u_name"),
@@ -89,7 +90,7 @@ public class JobDaoImpl implements JobDao {
 
     @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, User provider, List<Image> images) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused,User provider, List<Image> images) {
 
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
@@ -98,6 +99,7 @@ public class JobDaoImpl implements JobDao {
         map.put("j_description", description);
         map.put("j_job_provided", jobProvided);
         map.put("j_price", price);
+        map.put("j_paused", paused);
         final Number id = jobSimpleJdbcInsert.executeAndReturnKey(map);
         LOGGER.debug("Created job with id {}", id);
 
@@ -112,7 +114,7 @@ public class JobDaoImpl implements JobDao {
             LOGGER.debug("Inserted image with id to job with id {}", image.getImageId(), id);
         }
 
-        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, provider, imagesId);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused ,provider, imagesId);
     }
 
     @Override
