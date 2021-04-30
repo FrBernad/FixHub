@@ -44,13 +44,12 @@ public class JobController {
                             @PathVariable("jobId") final Long jobId,
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
-                            @RequestParam(defaultValue = "0") int page) {
+                            @RequestParam(defaultValue = "0") int page, Principal principal) {
 
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final UserSchedule userSchedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
-
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
@@ -58,6 +57,15 @@ public class JobController {
         PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 5);
         mav.addObject("results", results);
         mav.addObject("paginationModal", paginationModal);
+
+        boolean canReview = false;
+        if( principal != null){
+            final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+            canReview = userService.hasContactJobProvided(job,user);
+        }
+
+        mav.addObject("canReview",canReview);
+
         mav.addObject("startTime", userSchedule.getStartTime());
         mav.addObject("endTime", userSchedule.getEndTime());
         return mav;
@@ -72,7 +80,7 @@ public class JobController {
 
         if (errors.hasErrors()) {
             LOGGER.warn("Error in form ReviewForm data for job {}", jobId);
-            return job(form, jobId, 1, false, 0);
+            return job(form, jobId, 1, false, 0,principal);
         }
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);

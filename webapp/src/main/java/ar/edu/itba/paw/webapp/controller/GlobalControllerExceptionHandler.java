@@ -84,7 +84,7 @@ public class GlobalControllerExceptionHandler {
         mav.addObject("code", code);
         return mav;
     }
-    
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalContentTypeException.class)
@@ -150,20 +150,20 @@ public class GlobalControllerExceptionHandler {
 
 
     /*Server error */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public ModelAndView serverException() {
-        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
-
-        Locale locale = LocaleContextHolder.getLocale();
-        String error = messageSource.getMessage("errors.ServerError", null, locale);
-        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
-        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
-        mav.addObject("errors", error);
-        mav.addObject("code", code);
-
-        return mav;
-    }
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(Exception.class)
+//    public ModelAndView serverException() {
+//        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
+//
+//        Locale locale = LocaleContextHolder.getLocale();
+//        String error = messageSource.getMessage("errors.ServerError", null, locale);
+//        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
+//        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+//        mav.addObject("errors", error);
+//        mav.addObject("code", code);
+//
+//        return mav;
+//    }
 
 
 }
