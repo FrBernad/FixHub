@@ -66,7 +66,7 @@ public class JobController {
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
                                       @Valid @ModelAttribute("reviewForm") final ReviewForm form,
-                                      final BindingResult errors) {
+                                      final BindingResult errors, Principal principal) {
 
         LOGGER.info("Accessed /jobs/{} POST controller", jobId);
 
@@ -75,9 +75,10 @@ public class JobController {
             return job(form, jobId, 1, false, 0);
         }
 
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos
-        final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()));
+        final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()),user);
 
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;

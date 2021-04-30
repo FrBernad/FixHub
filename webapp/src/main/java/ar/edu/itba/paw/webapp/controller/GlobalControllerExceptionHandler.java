@@ -1,10 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.IllegalContentTypeException;
-import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -75,6 +71,20 @@ public class GlobalControllerExceptionHandler {
         mav.addObject("code", code);
         return mav;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = NoContactFoundException.class)
+    public ModelAndView noContactFoundException(){
+        LOGGER.error("Error encountered, the user who wants to make the review has not contacted the user ");
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.NoContactFoundException", null, locale);
+        String code = HttpStatus.BAD_REQUEST.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+        return mav;
+    }
+    
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalContentTypeException.class)
