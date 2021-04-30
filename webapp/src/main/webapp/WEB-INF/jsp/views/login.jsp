@@ -37,7 +37,7 @@
                                     <label>
                                         <spring:message code="login.EmailText"/>
                                     </label>
-                                    <input type="text" class="form-control mb-2"
+                                    <input type="email" class="form-control mb-2"
                                            id="email" name="email"
                                            aria-describedby="email input"/>
                                 </div>

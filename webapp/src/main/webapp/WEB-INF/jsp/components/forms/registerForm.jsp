@@ -21,7 +21,7 @@
     <div class="form-group">
         <spring:message code="registerForm.emailPlaceholder" var="emailPlaceholder"/>
         <form:label  path="email"><spring:message code="registerForm.userEmailTitle"/> <span class="required-field">*</span></form:label>
-        <form:input type="text" path="email" id="email" cssErrorClass="form-control is-invalid" class="form-control"
+        <form:input type="email" path="email" id="email" cssErrorClass="form-control is-invalid" class="form-control"
                     placeholder="${emailPlaceholder}"/>
         <form:errors path="email" cssClass="formError" element="p"/>
     </div>
