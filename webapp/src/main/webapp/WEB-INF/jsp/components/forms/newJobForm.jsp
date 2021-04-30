@@ -26,11 +26,11 @@
                             </span>
                         <span class="category" id="categoryName">-</span>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu w-100">
                         <c:forEach var="category" items="${categories}">
                             <spring:message var="categoryName" code="home.categories.${category}"/>
                             <div class="input-group">
-                                <button class="dropdown-item categoryButton" type="button" data-name="${category}" data-i18name="${categoryName}">
+                                <button class="dropdown-item categoryButton " type="button" data-name="${category}" data-i18name="${categoryName}">
                                    <c:out value="${categoryName}"/>
                                 </button>
                             </div>
