@@ -10,21 +10,37 @@
 </head>
 <body>
 <div class="container-fluid h-100" id="mainContainer">
-    <%@ include file="../../components/navbar.jsp"%>
-    <div class="row">
-        <div class="col-12 d-flex justify-content-center align-items-center">
-            <h1><c:out value="${code}"/>: <c:out value="${errors}"/></h1>
+    <%@ include file="../../components/navbar.jsp" %>
+
+    <div class="row h-75 align-items-center ">
+        <div class="col-12">
+            <div class="container-fluid px-0">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center align-items-center mb-4">
+                        <img src="<c:url value="/resources/images/errors.png"/>" alt="not found image"
+                             style="object-fit: cover; width: 400px; height: 200px;">
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <h1><c:out value="${code}"/></h1>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <p><c:out value="${errors}"/></p>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <a href="<c:url value='/'/>" style="font-size: 18px;">
+                            <spring:message code="navBar.home"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="col-12 d-flex justify-content-center align-items-center">
-            <img src="<c:url value="/resources/images/errors.png"/>" alt="not found image"
-                 style="object-fit: cover; width: 700px; height: 500px;">
-        </div>
-        <div class="col-12 d-flex justify-content-center align-items-center">
-            <a href="<c:url value='/'/>" style="font-size: 30px;">
-                <spring:message code="navBar.home"/>
-            </a>
-        </div>
+
     </div>
+
     <%@ include file="../../components/includes/globalScripts.jsp" %>
 </body>
 </html>
