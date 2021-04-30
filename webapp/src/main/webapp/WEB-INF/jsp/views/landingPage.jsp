@@ -168,6 +168,7 @@
 </div>
 
 <%--JOIN SECTION--%>
+<c:if test="${loggedUser == null || !loggedUser.hasRole('PROVIDER')}">
 <div class="container-fluid py-5" style="background-color: var(--primary-color);">
     <div class="container-lg px-0 d-flex align-items-center py-5">
         <div class="row align-items-center justify-content-between w-100">
@@ -194,6 +195,7 @@
         </div>
     </div>
 </div>
+</c:if>
 
 <%@ include file="../components/footer.jsp" %>
 <%@ include file="../components/includes/globalScripts.jsp"%>
