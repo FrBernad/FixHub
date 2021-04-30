@@ -3,18 +3,20 @@
         <div class="card-header px-0">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-7">
-                        <a href="<c:url value="/jobs/${contact.jobId}"/>"><c:out value="${contact.jobProvided}"/></a> | <a href="<c:url value="/user/${contact.user.userId}"/>"><c:out value="${contact.user.name} ${contact.user.surname}"/></a>
+                    <div class="col-11">
+                        <a href="<c:url value="/jobs/${contact.jobId}"/>"><c:out value="${contact.jobProvided}"/></a> |
+                        <a href="<c:url value="/user/${contact.user.userId}"/>"><c:out
+                                value="${contact.user.name} ${contact.user.surname}"/></a>
                     </div>
-                    <div class="col-4 d-flex align-items-center justify-content-end">
-                        <span>
-                            <c:out value="${contact.date.toLocalDate()}"/>
-                        </span>
-                    </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1 d-flex align-items-center justify-content-end">
                         <i type="button" data-toggle="collapse"
                            data-target="#collapse${status.index}"
                            class="fas fa-chevron-down navbarText dropDownArrow"></i>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <span>
+                            <c:out value="${contact.date.toLocalDate()}"/>
+                        </span>
                     </div>
                 </div>
             </div>

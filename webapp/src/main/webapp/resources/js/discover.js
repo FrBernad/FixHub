@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const query = formSearchBar.value;
         formSearchInput.setAttribute("value", query);
         if (formSearchInput.value.length > 50) {
+            formSearchInput.setAttribute("value", "");
             document.getElementById("searchInvalidLength").style.display = "";
         } else {
             formPageInput.setAttribute("value", "0");

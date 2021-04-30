@@ -35,11 +35,16 @@
                            id="searchBar"
                            class="inputRadius form-control p-4"/>
                     <div class="input-group-prepend">
-                        <button id="searchButton" class="btn inputBtn">
+                        <button id="searchButton" class="btn inputBtn" style="background-color: #003258">
                             <spring:message code="discover.search"/>
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="col-12 px-0 justify-content-start align-items-center">
+                <small class="text-danger" style="display: none;" id="searchInvalidLength">
+                    <spring:message code="landingPage.searchInvalidLength"/>
+                </small>
             </div>
             <div class="col-12 mt-4 d-flex p-0 align-items-center justify-content-md-end justify-content-around">
                 <div class="container-fluid px-0">
@@ -167,11 +172,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 px-0 justify-content-start align-items-center">
-                <small class="text-danger" style="display: none;" id="searchInvalidLength">
-                    <spring:message code="landingPage.searchInvalidLength"/>
-                </small>
-            </div>
+
         </div>
     </div>
 

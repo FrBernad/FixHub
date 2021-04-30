@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const category of categories) {
         category.addEventListener("click", () => {
             const name = category.dataset.name;
-            categoryName.innerText = name;
+            categoryName.innerText =  category.dataset.i18name;
             categoryInput.value = name;
         })
     }
