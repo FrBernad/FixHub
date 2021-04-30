@@ -59,12 +59,12 @@ public class JobController {
         mav.addObject("paginationModal", paginationModal);
 
         boolean canReview = false;
-        if( principal != null){
+        if (principal != null) {
             final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-            canReview = userService.hasContactJobProvided(job,user);
+            canReview = userService.hasContactJobProvided(job, user);
         }
 
-        mav.addObject("canReview",canReview);
+        mav.addObject("canReview", canReview);
 
         mav.addObject("startTime", userSchedule.getStartTime());
         mav.addObject("endTime", userSchedule.getEndTime());
@@ -80,13 +80,13 @@ public class JobController {
 
         if (errors.hasErrors()) {
             LOGGER.warn("Error in form ReviewForm data for job {}", jobId);
-            return job(form, jobId, 1, false, 0,principal);
+            return job(form, jobId, 1, false, 0, principal);
         }
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos
-        final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()),user);
+        final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()), user);
 
         final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
         return mav;
@@ -153,7 +153,6 @@ public class JobController {
         return mav;
     }
 
-    //FIXME: ARREGLAR EXCEPCIÓN
     @RequestMapping(path = "/jobs/new", method = RequestMethod.POST)
     public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors, Principal principal) {
 
@@ -174,17 +173,18 @@ public class JobController {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
-                    if (!imageService.getContentTypes().contains(contentType))
+                    if (!imageService.getContentTypes().contains(contentType)) {
+                        LOGGER.error("Error creating image, content type is not valid");
                         throw new IllegalContentTypeException();
-
+                    }
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
                 } catch (IOException e) {
-                    LOGGER.warn("Error creating image, content type is not valid");
-                    e.printStackTrace();
+                    LOGGER.error("Error getting bytes from images");
+                    throw new ServerInternalException();
                 }
             }
         }
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(),false,imagesDto, user);
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
         LOGGER.info("Created job with id {}", job.getId());
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
