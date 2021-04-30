@@ -22,12 +22,14 @@
         <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
                    id="searchForm">
             <form:input path="order" type="hidden" id="orderInput"/>
-            <form:input path="filter" type="hidden" id="filterInput"/>
+            <form:input path="category" type="hidden" id="categoryInput"/>
+            <form:input path="state" type="hidden" id="stateInput"/>
+            <form:input path="city" type="hidden" id="cityInput"/>
             <form:input path="query" type="hidden" id="searchInput"/>
             <form:input path="page" type="hidden" id="pageInput"/>
         </form:form>
         <div class="row pb-4 align-items-center justify-content-between">
-            <div class="col-12 col-md-6 pl-0 d-flex align-items-center justify-content-start">
+            <div class="col-12 px-0 d-flex align-items-center justify-content-start">
                 <div class="input-group">
                     <input placeholder="<spring:message code="discover.barPlaceholder"/>"
                            id="searchBar"
@@ -39,49 +41,117 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-12 mt-4 mt-md-0 d-flex p-0 align-items-center justify-content-md-end justify-content-around">
+            <div class="col-12 mt-4 d-flex p-0 align-items-center justify-content-md-end justify-content-around">
                 <div class="container-fluid px-0">
                     <div class="row justify-content-around align-items-center">
-                        <div class="col-6 d-flex align-items-center justify-content-md-end">
+
+                        <%--CATEGORY--%>
+                        <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
                             <div class="dropdown w-100">
                                 <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
-                                        type="button" id="filterDropdown"
+                                        type="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span><spring:message code="discover.filterBy"/></span>
+                                    <span><spring:message code="discover.category"/></span>
                                     <span class="resultQuery">
-                        <c:if test="${results.filter!=null && !results.filter.isEmpty()}">
-                            <spring:message code="home.categories.${results.filter}"/>
-                        </c:if>
-                        <c:if test="${results.filter!=null && results.filter.isEmpty()}">
-                            -
-                        </c:if>
-                        </span>
+                                        <c:if test="${results.category!=null && !results.category.isEmpty()}">
+                                            <spring:message code="home.categories.${results.category}"/>
+                                        </c:if>
+                                        <c:if test="${results.category!=null && results.category.isEmpty()}">
+                                            -
+                                        </c:if>
+                                    </span>
                                 </button>
-                                <div class="dropdown-menu" id="filterDropdownMenu" aria-labelledby="filterDropdown">
+                                <div class="dropdown-menu limitSizeDropdown" id="categoryDropdownMenu"
+                                     aria-labelledby="categoryDropdown">
                                     <div class="input-group">
-                                        <button id="emptyFilterButton" data-filter="" class="dropdown-item">-</button>
+                                        <button id="emptyCategoryButton" data-category="" class="dropdown-item">-
+                                        </button>
                                     </div>
-                                    <c:forEach var="filter" items="${filters}">
+                                    <c:forEach var="category" items="${categories}">
                                         <div class="input-group">
-                                            <button data-filter="${filter}" class="dropdown-item filterButton">
-                                                <spring:message code="home.categories.${filter}"/>
+                                            <button data-category="${category}" class="dropdown-item categoryButton">
+                                                <spring:message code="home.categories.${category}"/>
                                             </button>
                                         </div>
                                     </c:forEach>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6  d-flex align-items-center justify-content-md-end">
+
+                        <%--STATE--%>
+                        <div class="col-6 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-md-end">
+                            <div class="dropdown w-100">
+                                <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                                        type="button" id="stateDropdown"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><spring:message code="discover.state"/></span>
+                                    <span class="resultQuery">
+                                        <c:if test="${results.state!=null && !results.state.isEmpty()}">
+                                            <c:out value="${results.state}"/>
+                                        </c:if>
+                                         <c:if test="${results.state!=null && results.state.isEmpty()}">
+                                             -
+                                         </c:if>
+                                   </span>
+                                </button>
+                                <div class="dropdown-menu limitSizeDropdown" aria-labelledby="orderDropdown">
+                                    <div class="input-group">
+                                        <button id="emptyStateButton" data-state="" class="dropdown-item">-</button>
+                                    </div>
+                                    <c:forEach var="state" items="${states}">
+                                        <div class="input-group">
+                                            <button data-state="${state.id}" class="dropdown-item stateButton">
+                                                <c:out value="${state.name}"/>
+                                            </button>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+
+                        <%--CITY--%>
+                        <div class="col-6 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-md-end">
+                            <div class="dropdown w-100">
+                                <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                                        type="button" id="cityDropdown"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><spring:message code="discover.city"/></span>
+                                    <span class="resultQuery">
+                                         <c:if test="${results.city!=null && !results.city.isEmpty()}">
+                                             <c:out value="${results.city}"/>
+                                         </c:if>
+                                         <c:if test="${results.city!=null && results.city.isEmpty()}">
+                                             -
+                                         </c:if>
+                                    </span>
+                                </button>
+                                <div class="dropdown-menu limitSizeDropdown" aria-labelledby="orderDropdown">
+                                    <div class="input-group">
+                                        <button id="emptyCityButton" data-city="" class="dropdown-item">-</button>
+                                    </div>
+                                    <c:forEach var="city" items="${cities}">
+                                        <div class="input-group">
+                                            <button data-city="${city.id}" class="dropdown-item cityButton">
+                                                <c:out value="${city.name}"/>
+                                            </button>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+
+                        <%--ORDER--%>
+                        <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
                             <div class="dropdown w-100">
                                 <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
                                         type="button" id="orderDropdown"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span><spring:message code="discover.orderBy"/></span>
                                     <span class="resultQuery">
-                        <c:if test="${results.order!=null && !results.order.isEmpty()}">
-                            <spring:message code="discover.orderOption.${results.order}"/>
-                        </c:if>
-                        </span>
+                                        <c:if test="${results.order!=null && !results.order.isEmpty()}">
+                                            <spring:message code="discover.orderOption.${results.order}"/>
+                                        </c:if>
+                                    </span>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="orderDropdown">
                                     <c:forEach var="order" items="${orderOptions}">

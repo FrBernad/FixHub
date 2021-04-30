@@ -116,7 +116,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, int page, int itemsPerPage) {
+    public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, String state, String city, int page, int itemsPerPage) {
 
         List<Object> variables = new LinkedList<>();
 
@@ -138,6 +138,18 @@ public class JobDaoImpl implements JobDao {
 
         String orderQuery = getOrderQuery(orderOption);
 
+        String stateQuery = EMPTY;
+        if (state != null) {
+            stateQuery = " WHERE c_state_id = ? ";
+            variables.add(Integer.valueOf(state));
+        }
+
+        String cityQuery = EMPTY;
+        if (city != null) {
+            cityQuery = " AND c_id = ? ";
+            variables.add(Integer.valueOf(city));
+        }
+
         String offset = EMPTY;
         if (page > 0) {
             offset = " OFFSET ? ";
@@ -151,11 +163,11 @@ public class JobDaoImpl implements JobDao {
             variables.add(itemsPerPage);
         }
 
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, offset, limit, variables);
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, stateQuery, cityQuery, offset, limit, variables);
     }
 
     @Override
-    public Integer getJobsCountByCategory(String searchBy, JobCategory category) {
+    public Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city) {
         List<Object> variables = new LinkedList<>();
 
         String filterQuery = EMPTY;
@@ -174,7 +186,23 @@ public class JobDaoImpl implements JobDao {
             searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
         }
 
-        final String query = String.format("select count(j_id) total from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux %s", filterQuery, searchQuery);
+        String stateQuery = EMPTY;
+        if (state != null) {
+            stateQuery = " WHERE c_state_id = ? ";
+            variables.add(Integer.valueOf(state));
+        }
+
+        String cityQuery = EMPTY;
+        if (city != null) {
+            cityQuery = " AND c_id = ? ";
+            variables.add(Integer.valueOf(city));
+        }
+
+        final String query = String.format("select count(distinct j_id) total from " +
+            "((select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
+            "JOIN (SELECT distinct ul_user_id from " +
+            " cities join user_location on c_id = user_location.ul_city_id %s %s) " +
+            " as aux1 ON aux0.j_provider_id=aux1.ul_user_id ) as aux2 %s", filterQuery, stateQuery, cityQuery, searchQuery);
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
@@ -211,7 +239,7 @@ public class JobDaoImpl implements JobDao {
 
         String filterQuery = " WHERE j_id = ? ";
 
-        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, variables).stream().findFirst();
+        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, EMPTY, EMPTY, variables).stream().findFirst();
     }
 
     public Collection<JobCategory> getJobsCategories() {
@@ -255,12 +283,15 @@ public class JobDaoImpl implements JobDao {
             variables.add(itemsPerPage);
         }
 
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, offset, limit, variables);
+        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, offset, EMPTY, EMPTY, limit, variables);
     }
 
-    private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String offset, String limit, List<Object> variables) {
+    private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String stateQuery, String cityQuery, String offset, String limit, List<Object> variables) {
         final String query = "select * from ( ( select * from" +
-            "(select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") aux1" +
+            "((select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery +
+            ") aux3 JOIN (SELECT distinct ul_user_id from " +
+            " cities join user_location on c_id = user_location.ul_city_id " + stateQuery + cityQuery + ") " +
+            " as aux0 ON aux3.j_provider_id=aux0.ul_user_id ) as aux1 " +
             " JOIN " +
             "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
             "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
@@ -275,16 +306,16 @@ public class JobDaoImpl implements JobDao {
         String orderQuery = " ORDER BY ";
         switch (orderOption) {
             case MOST_POPULAR:
-                return orderQuery + "avg_rating desc";
+                return orderQuery + "avg_rating desc ";
 
             case LESS_POPULAR:
-                return orderQuery + "avg_rating asc";
+                return orderQuery + "avg_rating asc ";
 
             case HIGHER_PRICE:
-                return orderQuery + "j_price desc";
+                return orderQuery + "j_price desc ";
 
             case LOWER_PRICE:
-                return orderQuery + "j_price asc";
+                return orderQuery + "j_price asc ";
 
         }
         return null; //never reaches

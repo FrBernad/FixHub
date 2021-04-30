@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 import static ar.edu.itba.paw.models.OrderOptions.*;
 
@@ -23,6 +26,9 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private LocationDao locationDao;
+
     private final OrderOptions DEFAULT_ORDER = OrderOptions.valueOf("MOST_POPULAR");
 
     private final int DEFAULT_ITEMS_PER_PAGE = 6;
@@ -30,7 +36,7 @@ public class SearchServiceImpl implements SearchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     @Override
-    public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String filterBy, int page, int itemsPerPage) {
+    public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String category, String state, String city, int page, int itemsPerPage) {
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
             LOGGER.debug("Order option {} not valid, setting default order", orderBy);
@@ -43,23 +49,69 @@ public class SearchServiceImpl implements SearchService {
 
 
         JobCategory queryCategoryFilter;
-        if (!JobCategory.contains(filterBy)) {
-            LOGGER.debug("Filter option {} not valid, defaulting filter to none", filterBy);
+        if (!JobCategory.contains(category)) {
+            LOGGER.debug("Filter option {} not valid, defaulting filter to none", category);
             queryCategoryFilter = null;
-            filterBy = "";
+            category = "";
         } else {
             LOGGER.debug("Filter is valid");
-            queryCategoryFilter = JobCategory.valueOf(filterBy);
+            queryCategoryFilter = JobCategory.valueOf(category);
         }
 
         String querySearchBy;
         if (searchBy != null && searchBy.equals("")) {
-            LOGGER.debug("Search query is empty, setting searchQuery to none");
+            LOGGER.debug("Search query is empty, setting state to none");
             querySearchBy = null;
             searchBy = "";
         } else {
             LOGGER.debug("Search query is valid: {}", searchBy);
             querySearchBy = searchBy;
+        }
+
+        String queryState;
+        Collection<City> cities = Collections.emptyList();
+        if (state == null || state.equals("")) {
+            LOGGER.debug("State query is empty, setting city to none");
+            queryState = null;
+            state = "";
+        } else {
+            long stateId = -1;
+            try {
+                stateId = Long.parseLong(state);
+            } catch (NumberFormatException ignored) {
+            } finally {
+                state = "";
+                Optional<State> stateOpt = locationDao.getStateById(stateId);
+                if (stateOpt.isPresent()) {
+                    cities = locationDao.getCitiesByStateId(stateId);
+                    state = stateOpt.get().getName();
+                    queryState = String.valueOf(stateId);
+                } else {
+                    queryState = null;
+                }
+            }
+        }
+
+        String queryCity;
+        if (city == null || city.equals("")) {
+            LOGGER.debug("City query is empty, setting searchQuery to none");
+            queryCity = null;
+            city = "";
+        } else {
+            long cityId = -1;
+            try {
+                cityId = Long.parseLong(city);
+            } catch (NumberFormatException ignored) {
+            } finally {
+                city = "";
+                Optional<City> cityOtp = locationDao.getCityById(cityId);
+                if (cityOtp.isPresent()) {
+                    city = cityOtp.get().getName();
+                    queryCity = String.valueOf(cityId);
+                } else {
+                    queryCity = null;
+                }
+            }
         }
 
         if (page < 0) {
@@ -73,7 +125,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total jobs count");
-        int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter);
+        int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter, queryState, queryCity);
         int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -81,9 +133,9 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
-        LOGGER.debug("Retrieving page {} for jobs by category {}", page, filterBy);
-        Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, page, itemsPerPage);
-        return new PaginatedSearchResult<>(orderBy, filterBy, searchBy, page, itemsPerPage, totalJobs, jobs);
+        LOGGER.debug("Retrieving page {} for jobs by category {}", page, category);
+        Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, queryState, queryCity, page, itemsPerPage);
+        return new PaginatedSearchResult<>(orderBy, category, searchBy, state, city, cities, page, itemsPerPage, totalJobs, jobs);
     }
 
     @Override
