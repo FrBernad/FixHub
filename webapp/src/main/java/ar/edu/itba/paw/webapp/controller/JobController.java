@@ -135,7 +135,7 @@ public class JobController {
         }
 
 
-        jobService.updateJob(form.getJobProvided(),form.getJobCategory(),form.getDescription(),form.getPrice(),imagesDto,jobId);
+        jobService.updateJob(form.getJobProvided(),form.getJobCategory(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId);
 
         return new ModelAndView("redirect:/jobs/{jobId}");
     }

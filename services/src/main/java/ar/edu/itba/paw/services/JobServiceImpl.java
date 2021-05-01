@@ -61,14 +61,14 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price,List<ImageDto> images,long jobID) {
+    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused,List<ImageDto> images,long jobID) {
         List<Image> jobImages;
         if (!images.isEmpty())
             jobImages = imageService.createImages(images);
         else
             jobImages = new LinkedList<>();
 
-        jobDao.updateJob(jobProvided,category,description,price,jobImages,jobID);
+        jobDao.updateJob(jobProvided,category,description,price, paused,jobImages,jobID);
     }
 
     @Override

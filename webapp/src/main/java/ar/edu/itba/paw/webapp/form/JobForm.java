@@ -29,6 +29,8 @@ public class JobForm {
 
     private List<MultipartFile> images;
 
+    private boolean paused;
+
     @NotNull
     private JobCategory jobCategory;
 
@@ -70,5 +72,13 @@ public class JobForm {
 
     public void setImages(List<MultipartFile> images) {
         this.images = images;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }
