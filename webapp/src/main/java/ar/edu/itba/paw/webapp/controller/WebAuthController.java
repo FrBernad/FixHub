@@ -295,7 +295,7 @@ public class WebAuthController {
         }
 
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-        if (flashMap == null && form == null) {
+        if (flashMap == null && form.getState() == 0) {
             LOGGER.warn("Flashmap and form are null redirecting to first step");
             return new ModelAndView("redirect:/user/join");
         }
@@ -310,6 +310,8 @@ public class WebAuthController {
             LOGGER.debug("Adding state cities again due to error in chooseCity form");
             mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
         }
+
+
 
         return mav;
     }

@@ -8,7 +8,7 @@
     <link href='<c:url value="/resources/css/dashboard.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
-
+    <script src='<c:url value="/resources/js/dashboard.js"/>'></script>
 
     <title><spring:message code="productName"/> | <spring:message code="navBar.dashboard"/></title>
 
@@ -56,7 +56,7 @@
 
                                     <%--Dashboard--%>
 
-                                    <div class="tab-pane fade show active" role="tabpanel" id="dashboard">
+                                    <div class="tab-pane fade ${!contactTab && !searched ? 'show active': ""}" role="tabpanel" id="dashboard">
                                         <div class="col">
                                             <div class="container-fluid p-0">
                                                 <div class="row align-items-center justify-content-between">
@@ -140,6 +140,12 @@
                                                             </c:forEach>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-12 justify-content-start align-items-center">
+                                                    <small class="text-danger" style="display: none;"
+                                                           id="searchInvalidLength">
+                                                        <spring:message code="landingPage.searchInvalidLength"/>
+                                                    </small>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -260,7 +266,6 @@
 </div>
 
 <%@ include file="../../components/footer.jsp" %>
-<script src='<c:url value="/resources/js/dashboard.js"/>'></script>
 <%@ include file="../../components/includes/globalScripts.jsp" %>
 
 </body>

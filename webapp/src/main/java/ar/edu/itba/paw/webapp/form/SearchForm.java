@@ -3,9 +3,13 @@ package ar.edu.itba.paw.webapp.form;
 public class SearchForm {
     private String query;
 
-    private String filter;
+    private String category;
 
     private String order;
+
+    private String state;
+
+    private String city;
 
     private int page;
 
@@ -17,12 +21,12 @@ public class SearchForm {
         this.query = query;
     }
 
-    public String getFilter() {
-        return filter;
+    public String getCategory() {
+        return category;
     }
 
-    public void setFilter(String filter) {
-        this.filter = filter;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getOrder() {
@@ -31,6 +35,22 @@ public class SearchForm {
 
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public int getPage() {

@@ -57,4 +57,5 @@ public interface UserDao {
 
     Optional<UserSchedule> getScheduleByUserId(long userId);
 
+    boolean hasContactJobProvided(Job job, User user);
 }

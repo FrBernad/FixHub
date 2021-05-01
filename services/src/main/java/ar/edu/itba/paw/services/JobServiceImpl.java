@@ -28,7 +28,7 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, List<ImageDto> images, User user) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused ,List<ImageDto> images, User user) {
 
         List<Image> jobImages;
         if (!images.isEmpty()) {
@@ -39,7 +39,7 @@ public class JobServiceImpl implements JobService {
             jobImages = new LinkedList<>();
         }
 
-        Job job = jobDao.createJob(jobProvided, category, description, price, user, jobImages);
+        Job job = jobDao.createJob(jobProvided, category, description, price, paused, user, jobImages);
         LOGGER.info("Created job {} with id {}", job.getJobProvided(), job.getId());
         return job;
     }
@@ -62,5 +62,16 @@ public class JobServiceImpl implements JobService {
         return jobDao.getImagesIdsByJobId(jobId);
     }
 
+    @Transactional
+    @Override
+    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price,List<ImageDto> images,long jobID) {
+        List<Image> jobImages;
+        if (!images.isEmpty())
+            jobImages = imageService.createImages(images);
+        else
+            jobImages = new LinkedList<>();
+
+        jobDao.updateJob(jobProvided,category,description,price,jobImages,jobID);
+    }
 
 }

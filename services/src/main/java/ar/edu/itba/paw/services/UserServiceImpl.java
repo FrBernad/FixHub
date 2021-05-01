@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -113,6 +114,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendVerificationToken(User user, VerificationToken token) {
         try {
+//            FIXME: CAMBIAR DEVUELTA PARA PROD
             Locale locale = LocaleContextHolder.getLocale();
 //            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
             String url = new URL("http", appBaseUrl, 8080, "/user/verifyAccount?token=" + token.getValue()).toString();
@@ -122,8 +124,7 @@ public class UserServiceImpl implements UserService {
 
             emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
-            System.out.println("error");
-            e.printStackTrace();
+            LOGGER.warn("Error, user verification mail not sent");
         }
     }
 
@@ -226,7 +227,7 @@ public class UserServiceImpl implements UserService {
             mailAttrs.put("to", user.getEmail());
             emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.warn("Error, user password reset mail not sent");
         }
     }
 
@@ -244,7 +245,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void contact(ContactDto contactDto) {
+    public void contact(ContactDto contactDto) throws IllegalContactException {
         ContactInfo contactInfo;
 
         if (contactDto.getContactInfoId() == -1) {
@@ -254,6 +255,8 @@ public class UserServiceImpl implements UserService {
             LOGGER.debug("Retrieving used contact info");
             contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
         }
+        if(contactDto.getJob().getProvider().getId().equals(contactDto.getUser().getId()))
+            throw new IllegalContactException();
 
         sendJobRequestEmail(contactDto);
         sendJobRequestConfirmationEmail(contactDto);
@@ -285,8 +288,7 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
-            //FIXME: LOGGEAR
-            e.printStackTrace();
+            LOGGER.warn("Error, Job request mail not sent");
         }
     }
 
@@ -301,9 +303,13 @@ public class UserServiceImpl implements UserService {
         try {
             emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException e) {
-            //FIXME: LOGGEAR
-            e.printStackTrace();
+            LOGGER.warn("Error, Job request confirmation mail not sent");
         }
+    }
+
+    @Override
+    public boolean hasContactJobProvided(Job job, User user) {
+        return userDao.hasContactJobProvided(job, user);
     }
 
     @Override

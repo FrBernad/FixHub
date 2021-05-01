@@ -416,6 +416,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean hasContactJobProvided(Job job, User user){
+        return  jdbcTemplate.query("SELECT count(*) as aux FROM CONTACT where c_job_id = ? and c_user_id = ?",new Object[]{job.getId(),user.getId()},
+            (rs , rowNum)-> rs.getInt("aux"))
+            .stream().findFirst().orElse(0) > 0;
+    }
+    @Override
     public void updateCoverImage(Long imageId, User user) {
         final String query = "UPDATE USERS set u_cover_picture = ? where u_id = ?";
         LOGGER.debug("Executing query: {}", query);

@@ -2,15 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
     let searchForm = document.getElementById("searchForm");
 
     let formSearchInput = document.getElementById("searchInput");
-    let formFilterInput = document.getElementById("filterInput");
+    let formCategoryInput = document.getElementById("categoryInput");
     let formOrderInput = document.getElementById("orderInput");
     let formPageInput = document.getElementById("pageInput");
+    let formStateInput = document.getElementById("stateInput");
+    let formCityInput = document.getElementById("cityInput");
 
     let formSearchBar = document.getElementById("searchBar");
 
     let searchButton = document.getElementById("searchButton");
-    let filterButtons = document.getElementsByClassName("filterButton");
-    let emptyFilterButton = document.getElementById("emptyFilterButton");
+    let categoryButtons = document.getElementsByClassName("categoryButton");
+    let stateButtons = document.getElementsByClassName("stateButton");
+    let cityButtons = document.getElementsByClassName("cityButton");
+    let emptyCategoryButton = document.getElementById("emptyCategoryButton");
+    let emptyStateButton = document.getElementById("emptyStateButton");
+    let emptyCityButton = document.getElementById("emptyCityButton");
     let orderButtons = document.getElementsByClassName("orderButton");
 
     let indexs = document.getElementsByClassName("index");
@@ -50,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const query = formSearchBar.value;
         formSearchInput.setAttribute("value", query);
         if (formSearchInput.value.length > 50) {
+            formSearchInput.setAttribute("value", "");
             document.getElementById("searchInvalidLength").style.display = "";
         } else {
             formPageInput.setAttribute("value", "0");
@@ -57,15 +64,40 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
-    for (const filterButton of filterButtons) {
-        filterButton.addEventListener("click", () => {
-            formFilterInput.setAttribute("value", filterButton.dataset.filter)
+    for (const categoryBtn of categoryButtons) {
+        categoryBtn.addEventListener("click", () => {
+            formCategoryInput.setAttribute("value", categoryBtn.dataset.category)
             searchForm.submit();
         })
     }
 
-    emptyFilterButton.addEventListener("click", () => {
-        formFilterInput.setAttribute("value", emptyFilterButton.dataset.filter)
+    emptyCategoryButton.addEventListener("click", () => {
+        formCategoryInput.setAttribute("value", emptyCategoryButton.dataset.category)
+        searchForm.submit();
+    })
+
+    for (const stateBtn of stateButtons) {
+        stateBtn.addEventListener("click", () => {
+            console.log("hola");
+            formStateInput.setAttribute("value", stateBtn.dataset.state)
+            searchForm.submit();
+        })
+    }
+
+    emptyStateButton.addEventListener("click", () => {
+        formStateInput.setAttribute("value", emptyStateButton.dataset.state)
+        searchForm.submit();
+    })
+
+    for (const cityBtn of cityButtons) {
+        cityBtn.addEventListener("click", () => {
+            formCityInput.setAttribute("value", cityBtn.dataset.city)
+            searchForm.submit();
+        })
+    }
+
+    emptyCityButton.addEventListener("click", () => {
+        formCityInput.setAttribute("value", emptyCityButton.dataset.city)
         searchForm.submit();
     })
 

@@ -96,9 +96,19 @@
                                 </div>
                             </div>
                             <div class="col-5 d-flex justify-content-start align-items-center">
-                                <a href="<c:url value='/jobs/${job.id}/contact'/>">
-                                    <button class="contactBtn"><spring:message code="job.contact"/></button>
-                                </a>
+                                <c:choose>
+                                    <c:when test="${loggedUser!=null && loggedUser.id==job.provider.id}">
+
+                                        <a href="<c:url value='/jobs/${job.id}/edit'/>">
+                                            <button class="contactBtn"><spring:message code="job.editTitle"/></button>
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="<c:url value='/jobs/${job.id}/contact'/>">
+                                            <button class="contactBtn"><spring:message code="job.contact"/></button>
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
 
                             <hr class="text-left ml-0 my-4" style="width: 80%;">
@@ -205,12 +215,15 @@
                             <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
                         </h2>
                     </div>
-                    <div class="col-12 d-flex justify-content-start align-items-center">
-                        <a href="#" type="button" data-toggle="modal" data-target="#newReview">
-                            <spring:message code="job.review.hyperlink"/>
-                        </a>
-                        <%@ include file="../../components/forms/reviewForm.jsp" %>
-                    </div>
+                    <c:if test="${canReview == true && !job.paused}">
+                        <div class="col-12 d-flex justify-content-start align-items-center">
+                            <a href="#" type="button" data-toggle="modal" data-target="#newReview">
+                                <spring:message code="job.review.hyperlink"/>
+                            </a>
+                            <%@ include file="../../components/forms/reviewForm.jsp" %>
+                        </div>
+                    </c:if>
+
                 </div>
                 <div class="row mt-2">
                     <div class="col-12 d-flex align-items-center">

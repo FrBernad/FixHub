@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.webapp.auth.CustomAccessDeniedHandler;
+import ar.edu.itba.paw.webapp.auth.RefererRedirectionAuthenticationSuccessHandler;
 import ar.edu.itba.paw.webapp.auth.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.util.FileCopyUtils;
 
@@ -35,6 +39,16 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Value("classpath:auth/auth_key.pem")
     private Resource authKey;
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new RefererRedirectionAuthenticationSuccessHandler();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
@@ -43,7 +57,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.sessionManagement()
-            //.invalidSessionUrl("/login")
             .and().authorizeRequests()
             //session routes
             .antMatchers("/login", "/register").anonymous()
@@ -61,7 +74,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             //jobs routes
             .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
             .antMatchers("/jobs/new").hasRole("PROVIDER")
-            .antMatchers("/jobs/{id:[\\d]+}").permitAll()
+            .antMatchers(HttpMethod.GET, "/jobs/{id:[\\d]+}").permitAll()
             .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
 
             //provider routes
@@ -75,7 +88,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .loginPage("/login")
             .usernameParameter("email")
             .passwordParameter("password")
-            .defaultSuccessUrl("/user/account", true)
+            .successHandler(authenticationSuccessHandler())
+            .defaultSuccessUrl("/user/account", false)
             .failureUrl("/login?error=true")
 
             .and().rememberMe()
@@ -89,7 +103,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .logoutSuccessUrl("/login")
 
             .and().exceptionHandling()
-            .accessDeniedPage("/")
+            .accessDeniedHandler(accessDeniedHandler())
             .and().csrf().disable();
     }
 

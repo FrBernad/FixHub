@@ -127,38 +127,46 @@
 
             <%--RECENT CONTACTS--%>
             <div class="col-12 col-md-6 pr-0 pr-md-5">
-                <div class="container-lg recentContacts">
-                    <div class="row py-2 ${results.totalPages > 0 ? "":"h-100" } align-items-start">
-                        <div class="col-12 my-2">
-                            <h1 class="text-left sectionTitle">
+                <div class="container-lg d-flex flex-column recentContacts">
+                    <div class="row py-2">
+                        <div class="col-12 mt-2">
+                            <h1 class="text-left mb-0 sectionTitle">
                                 <spring:message code="profilePage.contacts.recents"/>
                             </h1>
                         </div>
+                    </div>
+                    <div class="row pb-2 align-items-start flex-grow-1 align-content-between">
                         <c:url value="/user/account/search" var="postPath"/>
                         <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
                                    method="GET"
                                    id="searchForm">
                             <form:input path="page" type="hidden" id="pageInput"/>
                         </form:form>
-                        <c:choose>
-                            <c:when test="${results.totalPages > 0}">
-                                <c:forEach var="contact" items="${results.results}" varStatus="status">
-                                    <div class="col-12 mt-2">
-                                        <%@ include file="../../../components/cards/accordionContact.jsp" %>
-                                    </div>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="col-12 d-flex align-items-center justify-content-center">
-                                    <div class="container mt-2 d-flex align-items-center justify-content-center">
-                                        <p class="m-0 text-center p-4" style="font-size: 16px">
-                                            <spring:message code="profilePage.contacts.noContacts"/>
-                                        </p>
-                                    </div>
+                        <div class="col-12">
+                            <div class="container-fluid px-0">
+                                <div class="row">
+                                    <c:choose>
+                                        <c:when test="${results.totalPages > 0}">
+                                            <c:forEach var="contact" items="${results.results}" varStatus="status">
+                                                <div class="col-12 mt-2">
+                                                    <%@ include file="../../../components/cards/accordionContact.jsp" %>
+                                                </div>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="col-12 d-flex align-items-center justify-content-center">
+                                                <div class="container mt-2 d-flex align-items-center justify-content-center">
+                                                    <p class="m-0 text-center p-4" style="font-size: 16px">
+                                                        <spring:message code="profilePage.contacts.noContacts"/>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
-                            </c:otherwise>
-                        </c:choose>
-                        <div class="col-12 mb-2 d-flex align-items-center justify-content-center ${results.totalPages<=1 ? 'd-none':''}">
+                            </div>
+                        </div>
+                        <div class="col-12 mb-2 d-flex align-self-end align-items-center justify-content-center ${results.totalPages<=1 ? 'd-none':''}">
                             <div class="row">
                                 <%@ include file="../../../components/pagination.jsp" %>
                             </div>
@@ -170,7 +178,6 @@
 
 
     </div>
-</div>
 </div>
 
 <%@ include file="../../../components/footer.jsp" %>

@@ -43,7 +43,7 @@ public class UserDaoTest {
     private static final Collection<Roles> CLIENT_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.VERIFIED, Roles.USER));
 
     private static final User USER = new User(1L, "password", "Ignacio", "Lopez", "ignacio@yopmail.com", "5491112345678", "Caballito", "CABA", PROVIDER_VERIFIED_ROLES, 0L, 0L);
-    private static final Job JOB = new Job("'Limpieza total'", "Limpieza de filtros", 0, 0, JobCategory.MECANICO, 1, BigDecimal.valueOf(300), USER, new ArrayList<>());
+    private static final Job JOB = new Job("'Limpieza total'", "Limpieza de filtros", 0, 0, JobCategory.MECANICO, 1, BigDecimal.valueOf(300), false, USER, new ArrayList<>());
     private static final UserStats USER_STATS = new UserStats(6, 3, 4);
     private static final UserInfo USER_INFO = new UserInfo("Gonzalo", "Martinez", "Burzaco", "Buenos Aires", "5491143218765");
 
@@ -139,7 +139,7 @@ public class UserDaoTest {
     @Test
     @Rollback
     public void addContactInfo() {
-        ContactInfo contactInfo = userDao.addContactInfo(CONTACT_DTO);
+        userDao.addContactInfo(CONTACT_DTO);
 
         String query = new StringBuilder("ci_user_id = ").append(CLIENT.getId())
             .append(" and ci_city = '").append(CONTACT_DTO.getCity()).append("'")

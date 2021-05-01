@@ -4,8 +4,8 @@
     background-color: rgba(250, 250, 250, 0.95);
 }
 
-#filterDropdownMenu {
-    height: 200px !important;
+.limitSizeDropdown {
+    max-height: 200px !important;
     overflow-y: auto !important;
 }
 

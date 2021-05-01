@@ -38,7 +38,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Value("classpath:schema.sql")
     private Resource schemaSql;
 
-    private static final int MAX_SIZE_PER_FILE = 5000000;
+    private static final int MAX_SIZE_PER_FILE = 3000000;
 
     @Bean
     public MessageSource messageSource() {
@@ -93,8 +93,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return dbp;
     }
 
-
-    //FIXME: FIJARSE QUE PASA CON IMÁGENES MUY GRANDES Y CON ARCHIVOS QUE NO SON IMAGENES
     @Bean
     public MultipartResolver multipartResolver() {
         final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

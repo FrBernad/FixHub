@@ -69,4 +69,11 @@ public class LocationDaoImpl implements LocationDao {
         LOGGER.debug("Executing query: {}", query);
         return jdbcTemplate.query(query, new Object[]{stateId}, CITY_ROW_MAPPER);
     }
+
+    @Override
+    public Optional<City> getCityByCityAndStateId(long cityId, long stateId) {
+        final String query = "SELECT * FROM CITIES WHERE c_id = ? AND c_state_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query, new Object[]{cityId, stateId}, CITY_ROW_MAPPER).stream().findFirst();
+    }
 }

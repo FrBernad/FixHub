@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const category of categories) {
         category.addEventListener("click", () => {
             const name = category.dataset.name;
-            categoryName.innerText = name;
+            categoryName.innerText =  category.dataset.i18name;
             categoryInput.value = name;
         })
     }
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         files.push(inputFile.files[0]);
         const file = document.createElement("button");
         file.type = "button";
-        file.className += " btn btn-primary m-2";
+        file.className += "imgFile m-2";
         file.textContent = inputFile.files[0].name;
         const icon = document.createElement("i");
         icon.className += "fas fa-times ml-1";

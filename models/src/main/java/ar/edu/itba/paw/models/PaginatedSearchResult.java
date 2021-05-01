@@ -4,23 +4,60 @@ import java.util.Collection;
 
 public class PaginatedSearchResult<T> {
 
-    private String order, filter, query;
+    private String order, category, query, state, city;
+    private Collection<City> cities;
     private boolean isLast, isFirst;
     private int page, itemsPerPage, totalItems, totalPages;
 
     private Collection<T> results;
 
-    public PaginatedSearchResult(String order, String filter, String query, int page, int itemsPerPage, int totalItems, Collection<T> results) {
+    public PaginatedSearchResult(String order, String category, String query, int page, int itemsPerPage, int totalItems, Collection<T> results) {
         this.order = order;
-        this.filter = filter;
+        this.category = category;
         this.query = query;
         this.page = page;
         this.itemsPerPage = itemsPerPage;
         this.totalItems = totalItems;
         this.results = results;
-        this.totalPages = (int)Math.ceil((float)totalItems/itemsPerPage);
-        this.isFirst=page==0;
-        this.isLast=itemsPerPage*page+results.size()>itemsPerPage*(totalPages-1) && itemsPerPage*page+results.size()<=itemsPerPage*(totalPages);
+        this.totalPages = (int) Math.ceil((float) totalItems / itemsPerPage);
+        this.isFirst = page == 0;
+        this.isLast = itemsPerPage * page + results.size() > itemsPerPage * (totalPages - 1) && itemsPerPage * page + results.size() <= itemsPerPage * (totalPages);
+    }
+
+    public PaginatedSearchResult(String order, String category, String query, String state, String city, Collection<City> cities, int page, int itemsPerPage, int totalItems, Collection<T> results) {
+        this.order = order;
+        this.category = category;
+        this.query = query;
+        this.page = page;
+        this.itemsPerPage = itemsPerPage;
+        this.totalItems = totalItems;
+        this.results = results;
+        this.totalPages = (int) Math.ceil((float) totalItems / itemsPerPage);
+        this.isFirst = page == 0;
+        this.isLast = itemsPerPage * page + results.size() > itemsPerPage * (totalPages - 1) && itemsPerPage * page + results.size() <= itemsPerPage * (totalPages);
+        this.state = state;
+        this.city = city;
+        this.cities = cities;
+    }
+
+    public Collection<City> getCities() {
+        return cities;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getOrder() {
@@ -31,12 +68,12 @@ public class PaginatedSearchResult<T> {
         this.order = order;
     }
 
-    public String getFilter() {
-        return filter;
+    public String getCategory() {
+        return category;
     }
 
-    public void setFilter(String filter) {
-        this.filter = filter;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getQuery() {

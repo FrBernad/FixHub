@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.PaginatedSearchResult;
 import ar.edu.itba.paw.models.Review;
+import ar.edu.itba.paw.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private ReviewDao reviewDao;
+
+    @Autowired
+    private UserService userService;
 
     private static final int DEFAULT_ITEMS_PER_PAGE = 6;
 
@@ -40,10 +46,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review createReview(String description, Job job, int rating) {
-        final Review review = reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()));
-        LOGGER.debug("Created review for job {} with id {}",job.getJobProvided(),job.getId());
-        return review;
+    public Review createReview(String description, Job job, int rating, User user) {
+        if (!userService.hasContactJobProvided(job, user))
+            throw new NoContactFoundException();
+        else {
+            final Review review = reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()), user);
+            LOGGER.debug("Created review for job {} with id {} by user with id {}", job.getJobProvided(), job.getId(),user.getId());
+            return review;
+        }
     }
 
 

@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS JOBS
     j_job_provided VARCHAR(50)  NOT NULL,
     j_provider_id  BIGINT       NOT NULL,
     j_price        DECIMAL      NOT NULL,
+    j_paused       BOOLEAN      NOT NULL,
     FOREIGN KEY (j_provider_id) REFERENCES USERS (u_id),
     PRIMARY KEY (j_id)
 );
@@ -54,7 +55,10 @@ CREATE TABLE IF NOT EXISTS REVIEWS
     r_job_id        BIGINT       NOT NULL,
     r_rating        INT          NOT NULL,
     r_creation_date TIMESTAMP    NOT NULL,
+    r_reviewer_id   BIGINT       NOT NULL,
+
     FOREIGN KEY (r_job_id) REFERENCES JOBS (j_id) ON DELETE CASCADE,
+    FOREIGN KEY (r_reviewer_id) REFERENCES USERS(u_id) ON DELETE CASCADE,
     PRIMARY KEY (r_id)
 );
 

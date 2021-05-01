@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.UserStats;
 
@@ -32,7 +33,7 @@ public interface UserService {
 
     void updateUserInfo(UserInfo userInfo, User user);
 
-    void contact(ContactDto contactDto);
+    void contact(ContactDto contactDto) throws IllegalContactException;
 
     ProviderLocation getLocationByProviderId(Long providerId);
 
@@ -43,4 +44,6 @@ public interface UserService {
     void updateProfileImage(ImageDto imageDto, User user);
 
     Optional<UserSchedule> getScheduleByUserId(long userId);
+
+    boolean hasContactJobProvided(Job job, User user);
 }

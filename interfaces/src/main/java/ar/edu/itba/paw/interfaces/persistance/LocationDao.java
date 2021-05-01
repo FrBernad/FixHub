@@ -13,4 +13,6 @@ public interface LocationDao {
     Optional<State> getStateById(long stateId);
 
     Collection<City> getCitiesByStateId(long stateId);
+
+    Optional<City> getCityByCityAndStateId(long cityId, long stateId);
 }
