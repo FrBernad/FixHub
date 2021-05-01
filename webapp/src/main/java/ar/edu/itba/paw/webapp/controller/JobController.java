@@ -145,8 +145,15 @@ public class JobController {
             }
         }
 
+        List <Long> imagesIdDeleted;
+        if(form.getImagesIdDeleted() == null){
+            imagesIdDeleted = new LinkedList<>();
+        }else{
+            imagesIdDeleted = form.getImagesIdDeleted();
+        }
 
-        jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId,form.getImagesIdDeleted());
+
+        jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId,imagesIdDeleted);
 
         LOGGER.info("The job with id {} has been updated successfully", jobId);
 
