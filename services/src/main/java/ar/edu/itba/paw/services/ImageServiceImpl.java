@@ -60,4 +60,10 @@ public class ImageServiceImpl implements ImageService {
         return imageDao.deleteImageById(imageId);
     }
 
+    @Override
+    public int deleteImagesById(List<Long> imagesId){
+        return imageDao.deleteImagesById(imagesId);
+    }
+
+
 }

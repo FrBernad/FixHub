@@ -218,13 +218,19 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<Image> images, long jobId) {
+    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<Image> images, long jobId,List<Long> imagesIdDeleted) {
+
+        LOGGER.info("Updating job with id {} information",jobId);
 
         jdbcTemplate.update("UPDATE jobs SET j_job_provided = ?, " +
             "j_description = ?, j_paused = ?,j_price = ? where j_id = ? ", jobProvided, description, paused, price, jobId);
 
         Map<String, Object> imageJobMap = new HashMap<>();
         Collection<Long> imagesId = new LinkedList<>();
+
+        for(Long imageId: imagesIdDeleted){
+            jdbcTemplate.update("DELETE FROM JOB_IMAGE where ji_image_id = ?",new Object[]{imageId});
+        }
 
         for (Image image : images) {
             imageJobMap.put("ji_image_id", image.getImageId());

@@ -16,7 +16,7 @@ public interface JobService {
 
     Collection<Long> getImagesIdsByJobId(Long jobId);
 
-    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<ImageDto> images, long jobId);
+    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<ImageDto> images, long jobId,List<Long> imagesIdDeleted);
 
     void deleteImageFromJob(long jobId, long imageId, User user);
 }

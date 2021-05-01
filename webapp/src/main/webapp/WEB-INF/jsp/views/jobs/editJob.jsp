@@ -166,7 +166,7 @@
         </div>
 
 
-        <div id="imageIdDeletedContainer" hidden></div>
+        <div id="imageIdDeletedContainer" class="d-none"></div>
 
         </form:form>
     </div>

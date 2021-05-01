@@ -28,7 +28,7 @@ public class EditJobForm {
 
     private List<MultipartFile> images;
 
-    private List<String> imagesIdDeleted;
+    private List<Long> imagesIdDeleted;
 
     private boolean paused;
 
@@ -64,11 +64,11 @@ public class EditJobForm {
         this.images = images;
     }
 
-    public List<String> getImagesIdDeleted() {
+    public List<Long> getImagesIdDeleted() {
         return imagesIdDeleted;
     }
 
-    public void setImagesIdDeleted(List<String> imagesIdDeleted) {
+    public void setImagesIdDeleted(List<Long> imagesIdDeleted) {
         this.imagesIdDeleted = imagesIdDeleted;
     }
 

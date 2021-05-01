@@ -108,16 +108,27 @@ public class JobController {
         return mav;
     }
     @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form,BindingResult errors){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form,BindingResult errors,Principal principal){
 
-        if (errors.hasErrors()){
+        LOGGER.info("Accessed /jobs/{}/edit POST controller", jobId);
+
+        if (errors.hasErrors() ){
+            LOGGER.warn("The form has errors");
             return updateJob(jobId,form);
+        }
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+
+        if(!job.getProvider().getId().equals(user.getId())){
+            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",user.getId(),jobId,job.getProvider().getId());
+            throw new IllegalOperationException();
         }
 
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
 
-        LOGGER.info("Accessed /jobs/{}/edit POST controller", jobId);
+
 
         //FIXME: SOLUCIONAR ESTO
         if (form.getImages().get(0).getSize() != 0) {
@@ -135,7 +146,9 @@ public class JobController {
         }
 
 
-        jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId);
+        jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId,form.getImagesIdDeleted());
+
+        LOGGER.info("The job with id {} has been updated successfully", jobId);
 
         return new ModelAndView("redirect:/jobs/{jobId}");
     }

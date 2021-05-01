@@ -49,13 +49,17 @@ public class ImageDaoImpl implements ImageDao {
 
     public List<Image> createImages(List<ImageDto> imageInfo) {
         List<Image> images = new LinkedList<>();
+        Image img;
         for (ImageDto image : imageInfo) {
-            images.add(createImage(image));
+            img = createImage(image);
+            LOGGER.info("Image with id {} has been created succesfully",img.getImageId());
+            images.add(img);
         }
         return images;
     }
 
     public Image createImage(ImageDto image) {
+        LOGGER.info("Trying to create a new image");
         final Map<String, Object> imageInfo = new HashMap<>();
         imageInfo.put("i_data", image.getData());
         imageInfo.put("i_mime_type", image.getMimeType());
@@ -92,6 +96,8 @@ public class ImageDaoImpl implements ImageDao {
     //FIXME:CORRESPONDE LANZAR EXCEPCION?
     @Override
     public int deleteImageById(long imageId){
+        LOGGER.info("Trying to deleted the image with id {}",imageId);
+
         int res = jdbcTemplate.update("DELETE FROM IMAGES where i_id = ?",new Object[]{imageId});
 
         if(res == 0 ){
@@ -99,8 +105,22 @@ public class ImageDaoImpl implements ImageDao {
             throw new ImageNotFoundException();
         }
 
+        LOGGER.info("The image with id {} has been deleted successfully",imageId);
+
         return res;
     }
+
+    @Override
+    public int deleteImagesById(List<Long> imagesId){
+        LOGGER.info("Trying to ");
+        int res = 0;
+        for(Long imageId: imagesId){
+            res+=deleteImageById(imageId);
+        }
+
+        return res;
+    }
+
 
 
 }
