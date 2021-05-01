@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="form-group d-flex justify-content-between align-items-center">
-                            <form:label path="images" class="mb-0">
+                            <form:label path="images" class="mt-2">
                                 <spring:message code="jobForm.jobImageTitle"/></form:label>
                             <button class="buttonCustom" type="button" id="addFileButton">
                                 <i class="fas fa-upload mr-1"></i>
