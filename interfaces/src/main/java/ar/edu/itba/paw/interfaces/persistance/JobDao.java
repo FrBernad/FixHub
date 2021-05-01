@@ -27,5 +27,7 @@ public interface JobDao {
 
     int deleteImageById(long imageId, long jobId);
     void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused,List<Image> images, long jobId);
+
+    int deleteImageById(long imageId, long jobId);
 }
 
