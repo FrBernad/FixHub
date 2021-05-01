@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let categoryName = document.getElementById("categoryName");
     let categoryInput = document.getElementById("jobCategory");
 
+    let loadingSpinner = document.getElementById("loadingSpinner");
+
     for (const category of categories) {
         category.addEventListener("click", () => {
             const name = category.dataset.name;
@@ -52,15 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
         inputFile.click();
     })
 
+
     jobFormButton.addEventListener("click", () => {
         if (processing) {
             return;
         }
         processing = true;
         jobFormButton.disabled = true;
+        loadingSpinner.removeAttribute("hidden");
         inputFile.removeEventListener("change", inputFileUpdate);
         inputFile.files = new FileListItems(files);
-
         jobForm.submit();
         processing = false;
     })
