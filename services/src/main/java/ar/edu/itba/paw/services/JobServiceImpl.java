@@ -70,7 +70,6 @@ public class JobServiceImpl implements JobService {
             jobImages = imageService.createImages(images);
         else
             jobImages = new LinkedList<>();
-
         jobDao.updateJob(jobProvided,description,price, paused,jobImages,jobId,imagesIdDeleted);
     }
 
