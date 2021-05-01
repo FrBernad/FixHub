@@ -90,7 +90,7 @@ public class JobDaoImpl implements JobDao {
 
     @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused,User provider, List<Image> images) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, List<Image> images) {
 
         Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
@@ -114,7 +114,7 @@ public class JobDaoImpl implements JobDao {
             LOGGER.debug("Inserted image with id {} to job with id {}", image.getImageId(), id);
         }
 
-        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused ,provider, imagesId);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused, provider, imagesId);
     }
 
     @Override
@@ -316,7 +316,8 @@ public class JobDaoImpl implements JobDao {
             " JOIN " +
             "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
             "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery + offset + limit;
+            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery
+            + ", total_ratings desc, j_id desc " + offset + limit;
 
         LOGGER.debug("Executing query: {}", query);
 
