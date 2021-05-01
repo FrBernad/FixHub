@@ -175,9 +175,8 @@ public class GlobalControllerExceptionHandler {
         final ModelAndView mav = new ModelAndView(ERROR_VIEW);
         mav.addObject("errors", error);
         mav.addObject("code", code);
-
-    }
         return mav;
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalContactException.class)

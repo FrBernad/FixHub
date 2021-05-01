@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.form.ContactForm;
+import ar.edu.itba.paw.webapp.form.EditJobForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.slf4j.Logger;
@@ -95,10 +96,11 @@ public class JobController {
     }
 
     @RequestMapping("/jobs/{jobId}/edit")
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("jobForm") final JobForm form){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("editJobForm") final JobForm form){
         ModelAndView mav = new ModelAndView("views/jobs/editJob");
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        job.setImagesId(jobService.getImagesIdsByJobId(jobId));
         final Collection<JobCategory> categories = jobService.getJobsCategories();
 
         LOGGER.info("Accessed /jobs/{}/edit GET controller", jobId);
@@ -108,7 +110,7 @@ public class JobController {
         return mav;
     }
     @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("jobForm") final JobForm form,BindingResult errors){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final JobForm form,BindingResult errors){
 
         if (errors.hasErrors()){
             return updateJob(jobId,form);
@@ -135,7 +137,7 @@ public class JobController {
         }
 
 
-        jobService.updateJob(form.getJobProvided(),form.getJobCategory(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId);
+        jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId);
 
         return new ModelAndView("redirect:/jobs/{jobId}");
     }
