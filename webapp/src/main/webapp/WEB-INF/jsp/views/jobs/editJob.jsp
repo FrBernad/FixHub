@@ -106,15 +106,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12 pl-0 form-group ">
-                                            <form:label class="label" path="jobCategory"><spring:message
-                                                    code="jobForm.jobTypeTitle"/></form:label>
-                                            <form:select id="jobCategory" path="jobCategory" class="form-control">
-                                                <c:forEach var="category" items="${categories}">
-                                                    <option selected value="${category}"><spring:message
-                                                            code="home.categories.${category}"/></option>
-                                                </c:forEach>
-                                            </form:select>
-                                            <form:errors path="jobCategory" cssClass="formError" element="p"/>
+                                            <span class="label"><spring:message code="jobForm.jobTypeTitle"/></span><br>
+                                            <input class="form-control "type="text" value="<spring:message code="home.categories.${job.category}"/>" disabled/>
                                         </div>
                                     </div>
                                     <div class="row">

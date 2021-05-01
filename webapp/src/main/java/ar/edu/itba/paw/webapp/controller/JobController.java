@@ -96,21 +96,19 @@ public class JobController {
     }
 
     @RequestMapping("/jobs/{jobId}/edit")
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("editJobForm") final JobForm form){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("editJobForm") final EditJobForm form){
         ModelAndView mav = new ModelAndView("views/jobs/editJob");
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         job.setImagesId(jobService.getImagesIdsByJobId(jobId));
-        final Collection<JobCategory> categories = jobService.getJobsCategories();
 
         LOGGER.info("Accessed /jobs/{}/edit GET controller", jobId);
 
-        mav.addObject("categories", categories);
         mav.addObject("job",job);
         return mav;
     }
     @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final JobForm form,BindingResult errors){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form,BindingResult errors){
 
         if (errors.hasErrors()){
             return updateJob(jobId,form);
