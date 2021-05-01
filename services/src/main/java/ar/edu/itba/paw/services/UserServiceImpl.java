@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
+import ar.edu.itba.paw.interfaces.persistance.FollowsDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordResetTokenDao passwordResetTokenDao;
+
+    @Autowired
+    private FollowsDao followsDao;
 
     @Autowired
     private EmailService emailService;
@@ -255,7 +259,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.debug("Retrieving used contact info");
             contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
         }
-        if(contactDto.getJob().getProvider().getId().equals(contactDto.getUser().getId()))
+        if (contactDto.getJob().getProvider().getId().equals(contactDto.getUser().getId()))
             throw new IllegalContactException();
 
         sendJobRequestEmail(contactDto);
@@ -310,6 +314,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean hasContactJobProvided(Job job, User user) {
         return userDao.hasContactJobProvided(job, user);
+    }
+
+    @Override
+    public int getFollowersCount(Long userId) {
+        return userDao.getUserFollowersCount(userId);
+    }
+
+    @Override
+    public int getFollowingCount(Long userId) {
+        return userDao.getUserFollowingCount(userId);
+    }
+
+    @Override
+    public Collection<Integer> getAllUserFollowingsIds(Long userId) {
+        return userDao.getAllUserFollowingsIds(userId);
+    }
+
+    @Override
+    public void followUserById(Long userId, Long followerId) {
+        followsDao.followUser(userId,followerId);
+    }
+
+    @Override
+    public void unfollowUserById(Long userId, Long followerId) {
+        followsDao.unfollowUser(userId,followerId);
     }
 
     @Override

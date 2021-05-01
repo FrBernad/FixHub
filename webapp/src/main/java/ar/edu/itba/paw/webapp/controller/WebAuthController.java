@@ -349,6 +349,8 @@ public class WebAuthController {
         LOGGER.info("Accessed /user/account GET controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        user.setFollowers(userService.getFollowersCount(user.getId()));
+        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
@@ -356,7 +358,6 @@ public class WebAuthController {
         mav.addObject("results", providersContacted);
         return mav;
     }
-
 
     @RequestMapping(path = "/user/account/search")
     public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form,
@@ -366,10 +367,103 @@ public class WebAuthController {
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), form.getPage(), 4);
 
-        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
+        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", providersContacted);
         return mav;
     }
+
+    @RequestMapping(path = "/user/follow", method = RequestMethod.POST)
+    public ModelAndView follow(@RequestParam("userId") long userId, Principal principal) {
+        LOGGER.info("Accessed /user/follow POST controller");
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        if (user.getId() != userId) {
+            userService.followUserById(user.getId(), userId);
+        }
+        final ModelAndView mav = new ModelAndView("redirect:/user/" + userId);
+        mav.addObject("loggedUser", user);
+        return mav;
+    }
+
+    @RequestMapping(path = "/user/unfollow", method = RequestMethod.POST)
+    public ModelAndView unfollow(@RequestParam("userId") long userId, Principal principal) {
+        LOGGER.info("Accessed /user/unfollow POST controller");
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        if (user.getId() != userId) {
+            userService.unfollowUserById(user.getId(), userId);
+        }
+        final ModelAndView mav = new ModelAndView("redirect:/user/" + userId);
+        mav.addObject("loggedUser", user);
+        return mav;
+    }
+
+
+    @RequestMapping(path = "/user/{userId}/followers")
+    public ModelAndView followers(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form) {
+        LOGGER.info("Accessed /user/profile/followers GET controller");
+
+        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        user.setFollowers(userService.getFollowersCount(user.getId()));
+        user.setFollowing(userService.getFollowingCount(user.getId()));
+        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user.getId(), 0, 4);
+
+        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
+        mav.addObject("results", followers);
+        mav.addObject("user", user);
+
+        return mav;
+    }
+
+    @RequestMapping(path = "/user/{userId}/followers/search")
+    public ModelAndView followersSearch(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form, BindingResult errors) {
+        LOGGER.info("Accessed /user/profile/followers/search GET controller");
+
+        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        user.setFollowers(userService.getFollowersCount(user.getId()));
+        user.setFollowing(userService.getFollowingCount(user.getId()));
+        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user.getId(), form.getPage(), 4);
+
+        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
+        mav.addObject("results", followers);
+        mav.addObject("user", user);
+
+        return mav;
+    }
+
+    @RequestMapping(path = "/user/{userId}/following")
+    public ModelAndView following(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form) {
+        LOGGER.info("Accessed /user/profile/following GET controller");
+
+        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        user.setFollowers(userService.getFollowersCount(user.getId()));
+        user.setFollowing(userService.getFollowingCount(user.getId()));
+        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), 0, 4);
+
+        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
+        mav.addObject("following", true);
+        mav.addObject("results", following);
+        mav.addObject("user", user);
+
+        return mav;
+    }
+
+    @RequestMapping(path = "/user/{userId}/following/search")
+    public ModelAndView followingSearch(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form, BindingResult errors) {
+        LOGGER.info("Accessed /user/profile/following/search GET controller");
+
+        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        user.setFollowers(userService.getFollowersCount(user.getId()));
+        user.setFollowing(userService.getFollowingCount(user.getId()));
+        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), form.getPage(), 4);
+        boolean aux = following.getResults().stream().anyMatch(u -> u.getId() == 1L);
+        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
+        mav.addObject("results", following);
+        mav.addObject("user", user);
+
+        return mav;
+    }
+
 
     @RequestMapping(path = "/user/account/updateInfo")
     public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
@@ -381,16 +475,20 @@ public class WebAuthController {
     public ModelAndView userProfile(@PathVariable("userId") final long userId, Principal principal) {
 
         LOGGER.info("Accessed /user/{} GET controller", userId);
+        ModelAndView mav = new ModelAndView("views/user/profile/otherProfile");
         if (principal != null) {
             User loggedUser = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
             if (loggedUser.getId() == userId) {
                 LOGGER.debug("Redirecting to /user/account");
                 return new ModelAndView("redirect:/user/account");
             }
+            boolean followed = userService.getAllUserFollowingsIds(loggedUser.getId()).stream().anyMatch(id -> id == userId);
+            mav.addObject("loggedUser", loggedUser);
+            mav.addObject("followed", followed);
         }
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-
-        ModelAndView mav = new ModelAndView("views/user/profile/otherProfile");
+        user.setFollowers(userService.getFollowersCount(user.getId()));
+        user.setFollowing(userService.getFollowingCount(user.getId()));
         mav.addObject("user", user);
         return mav;
     }

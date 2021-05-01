@@ -52,6 +52,28 @@
                                 <c:out value="${user.name} ${user.surname}"/>
                             </h1>
                         </div>
+                        <div class="followBtnContainer">
+                            <c:if test="${loggedUser!=null}">
+                                <c:choose>
+                                    <c:when test="${followed}">
+                                        <form id="unfollowForm" action="<c:url value='/user/unfollow'/>" method="POST">
+                                            <input type="hidden" name="userId" value="${user.id}">
+                                        </form>
+                                        <button class="followBtn" id="unfollowBtn">
+                                            <spring:message code="profilePage.unfollow"/>
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form id="followForm" action="<c:url value='/user/follow'/>" method="POST">
+                                            <input type="hidden" name="userId" value="${user.id}">
+                                        </form>
+                                        <button class="followBtn" id="followBtn">
+                                            <spring:message code="profilePage.follow"/>
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,22 +94,83 @@
                             </h3>
                         </div>
                         <div class="col-12">
-                            <h3 class="info">
-                                <span class="detailField"><spring:message code="profilePage.info.location"/></span>
-                                <c:out value="${user.state}, ${user.city}."/>
-                            </h3>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <h3 class="info">
-                                <span class="detailField"><spring:message code="profilePage.info.email"/></span>
-                                <c:out value="${user.email}"/>
-                            </h3>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <h3 class="info">
-                                <span class="detailField"><spring:message code="profilePage.info.phone"/></span>
-                                <c:out value="${user.phoneNumber}"/>
-                            </h3>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span>
+                                                      <c:out value="${user.state}, ${user.city}."/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-2">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="far fa-envelope"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span><c:out value="${user.email}."/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-2">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-phone-alt"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span><c:out value="${user.phoneNumber}."/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-2 mb-2">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-user-friends"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <spring:message var="followers"
+                                                                    code="profilePage.info.followers"/>
+                                                    <spring:message var="following"
+                                                                    code="profilePage.info.following"/>
+                                                    <a class="extraInfo"
+                                                       href="<c:url value="/user/${user.id}/followers"/>">
+                                                            <span class="detailField">
+                                                                <c:out value="${user.followers}"/>
+                                                            </span>
+                                                        ${followers}
+                                                    </a>
+                                                    ·
+                                                    <a class="extraInfo"
+                                                       href="<c:url value="/user/${user.id}/following"/>">
+                                                        <span class="detailField">
+                                                            <c:out value="${user.following}"/>
+                                                        </span>
+                                                        ${following}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -99,7 +182,7 @@
 
 <%@ include file="../../../components/footer.jsp" %>
 <%@ include file="../../../components/includes/globalScripts.jsp" %>
-<script src='<c:url value="/resources/js/profile.js"/>'></script>
+<script src='<c:url value="/resources/js/otherProfile.js"/>'></script>
 
 </body>
 </html>

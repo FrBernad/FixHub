@@ -1,62 +1,169 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
+<%--FIXME: ARREGLAR TITULO--%>
 <head>
     <title>Title</title>
     <%@ include file="../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/followers.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
 </head>
 <body>
 <div class="outerContainer pb-4">
     <%@ include file="../../../components/navbar.jsp" %>
     <div class="container-lg userContainerProfile pb-4">.
         <div class="row">
-            <div class="col-3 d-flex justify-content-center pt-1">
+
+            <div class="col-12 col-md-4 d-flex justify-content-center pt-1">
                 <div class="container-lg">
-                    <div class="row">
-                        <div class="col">
-                            <img src="<c:url value='/resources/images/userProfile.png'/>"
-                                 class="avatarPicture" width="200" height="200" style="border-radius: 50%;">
+
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <div class="profilePictureContainer">
+                            <div class="picContainer">
+                                <c:choose>
+                                    <c:when test="${user.profileImageId == 0}">
+                                        <img src="<c:url value='/resources/images/userProfile.png'/>"
+                                             class="profilePicture">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="<c:url value='/user/images/profile/${user.profileImageId}'/>"
+                                             class="profilePicture">
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col d-flex justify-content-start">
-                            <span style="font-weight: 600;">El frano</span>
-                        </div>
+
+                    <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
+                        <a href="<c:url value='/user/${user.id}'/>">
+                            <span class="userSectionTitles">
+                                <c:out value="${user.name} ${user.surname}"/>
+                            </span>
+                        </a>
                     </div>
-                    <div class="row">
-                        <div class="col d-flex justify-content-start">
-                            <span>frano@frano.com</span>
-                        </div>
+
+                    <div class="col-12 my-2">
+                        <hr>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2 p-0 d-flex justify-content-end align-items-center">
-                            <i class="fas fa-users" aria-hidden="true"></i>
-                        </div>
-                        <div class="col-5 p-0 d-flex justify-content-center align-items-center">
-                            <span>8 followers |</span>
-                        </div>
-                        <div class="col-5 p-0 d-flex justify-content-start align-items-center">
-                            <span>7 following</span>
+
+                    <div class="col-12">
+                        <div class="container-fluid">
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <div class="container-fluid px-0">
+                                        <div class="row">
+                                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </div>
+                                            <div class="col-10">
+                                                    <span>
+                                                      <c:out value="${user.state}, ${user.city}."/>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-2">
+                                    <div class="container-fluid px-0">
+                                        <div class="row">
+                                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                                <i class="far fa-envelope"></i>
+                                            </div>
+                                            <div class="col-10">
+                                                <span><c:out value="${user.email}."/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-2">
+                                    <div class="container-fluid px-0">
+                                        <div class="row">
+                                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-phone-alt"></i>
+                                            </div>
+                                            <div class="col-10">
+                                                <span><c:out value="${user.phoneNumber}."/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-2 mb-2">
+                                    <div class="container-fluid px-0">
+                                        <div class="row">
+                                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-user-friends"></i>
+                                            </div>
+                                            <div class="col-10">
+                                                <spring:message var="followers" code="profilePage.info.followers"/>
+                                                <spring:message var="following" code="profilePage.info.following"/>
+                                                <a class="extraInfo"
+                                                   href="<c:url value="/user/${user.id}/followers"/>">
+                                                            <span class="detailField">
+                                                                <c:out value="${user.followers}"/>
+                                                            </span>
+                                                    ${followers}
+                                                </a>
+                                                ·
+                                                <a class="extraInfo"
+                                                   href="<c:url value="/user/${user.id}/following"/>">
+                                                        <span class="detailField">
+                                                            <c:out value="${user.following}"/>
+                                                        </span>
+                                                    ${following}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-9 pt-5">
-                <c:forEach var="i" begin="0" end="4">
-                    <%@ include file="../../../components/followers.jsp" %>
-                </c:forEach>
-            </div>
+
+            <c:url value="/user/${user.id}/${following ? 'following' : 'followers'}/search" var="postPath"/>
+            <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
+                       id="searchForm">
+                <form:input path="page" type="hidden" id="pageInput"/>
+            </form:form>
+
+            <c:choose>
+                <c:when test="${results.results.size()>0}">
+                    <div class="col-12 col-md-8 pt-5">
+                        <c:forEach var="follower" items="${results.results}">
+                            <div class="col-12 mt-3">
+                                <%@ include file="../../../components/followers.jsp" %>
+                            </div>
+                            <div class="col-10">
+                                <hr>
+                            </div>
+                        </c:forEach>
+                        <%@ include file="../../../components/pagination.jsp" %>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-12 col-md-8 d-flex align-items-center justify-content-center">
+                        <div class="container h-100 mt-2 d-flex align-items-center justify-content-center noJobsFound">
+                            <p class="m-0 text-center p-4" style="font-size: 16px">
+                                <spring:message code="profilePage.noFollowers"/>
+                            </p>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
 </div>
 <%@ include file="../../../components/footer.jsp" %>
+<script src='<c:url value="/resources/js/followers.js"/>'></script>
 <%@ include file="../../../components/includes/globalScripts.jsp" %>
 </body>
 </html>

@@ -104,7 +104,7 @@ public class SearchServiceImpl implements SearchService {
                 } catch (NumberFormatException ignored) {
                 } finally {
                     city = "";
-                    Optional<City> cityOtp = locationDao.getCityByCityAndStateId(cityId,stateId);
+                    Optional<City> cityOtp = locationDao.getCityByCityAndStateId(cityId, stateId);
                     if (cityOtp.isPresent()) {
                         city = cityOtp.get().getName();
                         queryCity = String.valueOf(cityId);
@@ -210,6 +210,60 @@ public class SearchServiceImpl implements SearchService {
         LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, providerId);
         Collection<JobContact> contacts = userDao.getClientsByProviderId(providerId, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
+    }
+
+    @Override
+    public PaginatedSearchResult<User> getUserFollowers(Long userId, Integer page, Integer itemsPerPage) {
+
+        if (page < 0) {
+            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
+            page = 0;
+        }
+
+        if (itemsPerPage == 0) {
+            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
+        LOGGER.debug("Retrieving total followers count");
+        int totalJobs = userDao.getUserFollowersCount(userId);
+        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+
+        if (page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
+            page = totalPages - 1;
+        }
+
+        LOGGER.debug("Retrieving page {} for user followers with id {}", page, userId);
+        Collection<User> users = userDao.getUserFollowers(userId, page, itemsPerPage);
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
+
+    }
+
+    @Override
+    public PaginatedSearchResult<User> getUserFollowing(Long userId, Integer page, Integer itemsPerPage) {
+        if (page < 0) {
+            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
+            page = 0;
+        }
+
+        if (itemsPerPage <= 0) {
+            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
+        LOGGER.debug("Retrieving total following count");
+        int totalJobs = userDao.getUserFollowingCount(userId);
+        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+
+        if (page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
+            page = totalPages - 1;
+        }
+
+        LOGGER.debug("Retrieving page {} for user following with id {}", page, userId);
+        Collection<User> users = userDao.getUserFollowings(userId, page, itemsPerPage);
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
     }
 
     @Override

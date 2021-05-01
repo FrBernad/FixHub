@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobContact;
-import ar.edu.itba.paw.models.OrderOptions;
-import ar.edu.itba.paw.models.PaginatedSearchResult;
+import ar.edu.itba.paw.models.*;
 
 import java.util.Collection;
 
@@ -17,5 +14,9 @@ public interface SearchService {
     PaginatedSearchResult<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage);
 
     Collection<OrderOptions> getOrderOptions();
+
+    PaginatedSearchResult<User> getUserFollowers(Long userId, Integer page, Integer itemsPerPage);
+
+    PaginatedSearchResult<User> getUserFollowing(Long userId, Integer page, Integer itemsPerPage);
 
 }

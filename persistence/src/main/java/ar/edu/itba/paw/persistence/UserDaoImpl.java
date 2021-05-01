@@ -30,6 +30,7 @@ public class UserDaoImpl implements UserDao {
     private SimpleJdbcInsert contactProviderSimpleJdbcInsert;
     private SimpleJdbcInsert userScheduleSimpleJdbcInsert;
     private SimpleJdbcInsert userLocationSimpleJdbcInsert;
+    private SimpleJdbcInsert userFollowsSimpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
@@ -56,7 +57,7 @@ public class UserDaoImpl implements UserDao {
         return statsMap.values();
     };
 
-    private static final ResultSetExtractor<Collection<User>> USER_ROW_MAPPER = rs -> {
+    private static final ResultSetExtractor<Collection<User>> USER_RS_EXTRACTOR_MAPPER = rs -> {
         Map<Long, User> userMap = new HashMap<>();
 
         long userId;
@@ -84,6 +85,21 @@ public class UserDaoImpl implements UserDao {
 
         return userMap.values();
     };
+
+
+    private static final RowMapper<User> USER_ROW_MAPPER = (rs, num) ->
+        new User(
+            rs.getLong("u_id"),
+            rs.getString("u_password"),
+            rs.getString("u_name"),
+            rs.getString("u_surname"),
+            rs.getString("u_email"),
+            rs.getString("u_phone_number"),
+            rs.getString("u_state"),
+            rs.getString("u_city"),
+            new ArrayList<>(),
+            rs.getLong("u_profile_picture"),
+            rs.getLong("u_cover_picture"));
 
     private ResultSetExtractor<Collection<ContactInfo>> CONTACT_INFO_ROW_MAPPER = rs -> {
         List<ContactInfo> contactInfo = new LinkedList<>();
@@ -132,6 +148,7 @@ public class UserDaoImpl implements UserDao {
         contactProviderSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("CONTACT").usingGeneratedKeyColumns("c_id");
         userScheduleSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USER_SCHEDULE");
         userLocationSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USER_LOCATION");
+        userFollowsSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("FOLLOWS");
     }
 
     @Override
@@ -139,7 +156,7 @@ public class UserDaoImpl implements UserDao {
         final String query = "SELECT * FROM USERS u JOIN ROLES r on u_id=r_user_id WHERE u_id = ?";
         LOGGER.debug("Executing query: {}", query);
         return jdbcTemplate.
-            query(query, new Object[]{id}, USER_ROW_MAPPER)
+            query(query, new Object[]{id}, USER_RS_EXTRACTOR_MAPPER)
             .stream()
             .findFirst();
     }
@@ -148,7 +165,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> getUserByEmail(String email) {
         final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_email = ?) as AUX JOIN roles r on u_id = r_user_id";
         LOGGER.debug("Executing query: {}", query);
-        return jdbcTemplate.query(query, new Object[]{email}, USER_ROW_MAPPER)
+        return jdbcTemplate.query(query, new Object[]{email}, USER_RS_EXTRACTOR_MAPPER)
             .stream()
             .findFirst();
     }
@@ -416,11 +433,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean hasContactJobProvided(Job job, User user){
-        return  jdbcTemplate.query("SELECT count(*) as aux FROM CONTACT where c_job_id = ? and c_user_id = ?",new Object[]{job.getId(),user.getId()},
-            (rs , rowNum)-> rs.getInt("aux"))
+    public boolean hasContactJobProvided(Job job, User user) {
+        return jdbcTemplate.query("SELECT count(*) as aux FROM CONTACT where c_job_id = ? and c_user_id = ?",
+            new Object[]{job.getId(), user.getId()},
+            (rs, rowNum) -> rs.getInt("aux"))
             .stream().findFirst().orElse(0) > 0;
     }
+
     @Override
     public void updateCoverImage(Long imageId, User user) {
         final String query = "UPDATE USERS set u_cover_picture = ? where u_id = ?";
@@ -429,6 +448,90 @@ public class UserDaoImpl implements UserDao {
             LOGGER.debug("Profile cover of user {} updated", user.getId());
         else
             LOGGER.debug("Profile cover of user {} not updated", user.getId());
+    }
+
+    @Override
+    public Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage) {
+        List<Object> variables = new LinkedList<>();
+
+        variables.add(userId);
+
+        String offset = " ";
+        if (page > 0) {
+            offset = " OFFSET ? ";
+            variables.add(page * itemsPerPage);
+        }
+        String limit = " ";
+        if (itemsPerPage > 0) {
+            limit = " LIMIT ? ";
+            variables.add(itemsPerPage);
+        }
+
+        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_id IN " +
+            "(SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?)) u " +
+            " order by u_id desc " + offset + limit;
+
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.
+            query(query, USER_ROW_MAPPER, variables.toArray());
+    }
+
+    @Override
+    public Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage) {
+        List<Object> variables = new LinkedList<>();
+
+        variables.add(userId);
+
+        String offset = " ";
+        if (page > 0) {
+            offset = " OFFSET ? ";
+            variables.add(page * itemsPerPage);
+        }
+        String limit = " ";
+        if (itemsPerPage > 0) {
+            limit = " LIMIT ? ";
+            variables.add(itemsPerPage);
+        }
+
+        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_id IN " +
+            "(SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?)) u " +
+            " order by u_id desc " + offset + limit;
+
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.
+            query(query, USER_ROW_MAPPER, variables.toArray());
+    }
+
+    @Override
+    public Collection<Integer> getAllUserFollowingsIds(Long userId) {
+        final String query = "SELECT u_id FROM (SELECT * FROM USERS WHERE u_id IN " +
+            "(SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?)) u ";
+
+
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.
+            query(query, (rs, rowNum) -> rs.getInt("u_id"), userId);
+    }
+
+    @Override
+    public Integer getUserFollowersCount(Long userId) {
+        final String query = "SELECT count(f_user_id) total FROM FOLLOWS WHERE f_followed_user_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query,
+            (rs, rowNum) -> rs.getInt("total"),
+            new Object[]{userId}).stream().findFirst().orElse(0);
+    }
+
+    @Override
+    public Integer getUserFollowingCount(Long userId) {
+        final String query = "SELECT count(f_followed_user_id) total FROM FOLLOWS WHERE f_user_id = ?";
+        LOGGER.debug("Executing query: {}", query);
+        return jdbcTemplate.query(query,
+            (rs, rowNum) -> rs.getInt("total"),
+            new Object[]{userId}).stream().findFirst().orElse(0);
     }
 
 

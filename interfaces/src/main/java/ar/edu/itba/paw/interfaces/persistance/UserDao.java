@@ -58,4 +58,16 @@ public interface UserDao {
     Optional<UserSchedule> getScheduleByUserId(long userId);
 
     boolean hasContactJobProvided(Job job, User user);
+
+    Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
+
+    Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage);
+
+    Collection<Integer> getAllUserFollowingsIds(Long userId);
+
+    Integer getUserFollowersCount(Long userId);
+
+    Integer getUserFollowingCount(Long userId);
+
+
 }

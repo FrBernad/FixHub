@@ -4,6 +4,16 @@
     color: var(--tertiary-color) !important;
 }
 
+a {
+    color: black;
+    transition: hover 1s;
+}
+
+a:hover {
+    color: rgb(0,104,192);
+    text-decoration: none;
+}
+
 .accordionCard {
     border: none;
     background-color: transparent;

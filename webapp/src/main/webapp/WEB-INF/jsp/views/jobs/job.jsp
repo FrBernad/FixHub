@@ -52,11 +52,9 @@
                                     </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <img
-
-                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"
-                                            alt="${job.category}" class="rounded"
-                                            style="object-fit: cover; height: 100%; width: 100%">
+                                    <img src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                                         alt="${job.category}" class="rounded"
+                                         style="object-fit: cover; height: 100%; width: 100%">
                                 </c:otherwise>
 
                             </c:choose>

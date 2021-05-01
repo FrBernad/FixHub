@@ -25,6 +25,16 @@ CREATE TABLE IF NOT EXISTS USERS
 );
 
 
+CREATE TABLE IF NOT EXISTS FOLLOWS
+(
+    f_user_id          BIGINT,
+    f_followed_user_id BIGINT,
+    PRIMARY KEY (f_user_id, f_followed_user_id),
+    FOREIGN KEY (f_user_id) REFERENCES USERS (u_id),
+    FOREIGN KEY (f_followed_user_id) REFERENCES USERS (u_id)
+);
+
+
 
 CREATE TABLE IF NOT EXISTS ROLES
 (
@@ -58,7 +68,7 @@ CREATE TABLE IF NOT EXISTS REVIEWS
     r_reviewer_id   BIGINT       NOT NULL,
 
     FOREIGN KEY (r_job_id) REFERENCES JOBS (j_id) ON DELETE CASCADE,
-    FOREIGN KEY (r_reviewer_id) REFERENCES USERS(u_id) ON DELETE CASCADE,
+    FOREIGN KEY (r_reviewer_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
     PRIMARY KEY (r_id)
 );
 

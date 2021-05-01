@@ -106,14 +106,21 @@
                         <div class="col-12">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-1 d-flex align-items-center justify-content-center">
-                                        <i class="fas fa-map-marker-alt"></i>
+                                    <div class="col-12">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span>
+                                                      <c:out value="${loggedUser.state}, ${loggedUser.city}."/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-10">
-                                        <span>
-                                          <c:out value="${loggedUser.state}, ${loggedUser.city}."/>
-                                        </span>
-                                    </div>
+
                                     <div class="col-12 mt-2">
                                         <div class="container-fluid px-0">
                                             <div class="row">
@@ -126,6 +133,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-12 mt-2">
                                         <div class="container-fluid px-0">
                                             <div class="row">
@@ -138,6 +146,36 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-12 mt-2 mb-2">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-user-friends"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <spring:message var="followers" code="profilePage.info.followers"/>
+                                                    <spring:message var="following" code="profilePage.info.following"/>
+                                                    <a class="extraInfo"
+                                                       href="<c:url value="/user/${loggedUser.id}/followers"/>">
+                                                            <span class="detailField">
+                                                                <c:out value="${loggedUser.followers}"/>
+                                                            </span>
+                                                        ${followers}
+                                                    </a>
+                                                    ·
+                                                    <a class="extraInfo"
+                                                       href="<c:url value="/user/${loggedUser.id}/following"/>">
+                                                        <span class="detailField">
+                                                            <c:out value="${loggedUser.following}"/>
+                                                        </span>
+                                                        ${following}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -229,7 +267,8 @@
                                         <c:when test="${results.totalPages > 0}">
                                             <c:forEach var="contact" items="${results.results}" varStatus="status">
                                                 <div class="col-12 mt-2">
-                                                    <%@ include file="../../../components/cards/accordionContact.jsp" %>
+                                                    <%@ include
+                                                            file="../../../components/cards/accordionContact.jsp" %>
                                                 </div>
                                             </c:forEach>
                                         </c:when>

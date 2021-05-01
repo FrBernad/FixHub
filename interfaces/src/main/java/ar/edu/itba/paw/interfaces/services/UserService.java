@@ -46,4 +46,15 @@ public interface UserService {
     Optional<UserSchedule> getScheduleByUserId(long userId);
 
     boolean hasContactJobProvided(Job job, User user);
+
+    int getFollowersCount(Long userId);
+
+    int getFollowingCount(Long userId);
+
+    Collection<Integer> getAllUserFollowingsIds(Long userId);
+
+    void followUserById(Long userId, Long followerId);
+
+    void unfollowUserById(Long userId, Long followerId);
+
 }

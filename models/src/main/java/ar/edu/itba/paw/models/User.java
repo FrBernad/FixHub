@@ -4,11 +4,13 @@ import java.util.Collection;
 import java.util.Objects;
 
 public class User {
-    private String name, password,surname,city,state,phoneNumber,email;
-    private Long id,profileImageId,coverImageId;
+    private String name, password, surname, city, state, phoneNumber, email;
+    private Long id, profileImageId, coverImageId;
     private Collection<Roles> roles;
+    private int followers;
+    private int following;
 
-    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles,Long profileImageId,Long coverImageId) {
+    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles, Long profileImageId, Long coverImageId) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -39,7 +41,7 @@ public class User {
     }
 
     public boolean hasRole(String role) {
-        return roles.stream().anyMatch(p->p.name().equals(role));
+        return roles.stream().anyMatch(p -> p.name().equals(role));
     }
 
     public String getName() {
@@ -116,6 +118,22 @@ public class User {
 
     public void addRole(Roles role) {
         roles.add(role);
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(int following) {
+        this.following = following;
     }
 
     @Override
