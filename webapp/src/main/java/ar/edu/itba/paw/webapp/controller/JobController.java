@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
 import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
@@ -234,6 +235,27 @@ public class JobController {
         final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
         LOGGER.info("Created job with id {}", job.getId());
         return new ModelAndView("redirect:/jobs/" + job.getId());
+    }
+
+    //FIXME: revisar si esta bien el principal aca y que sea el que tiene que ser. Revisar si no hay que agregarlo al webAuthConfig
+    @RequestMapping(path = "jobs/images/delete/{imageId}")
+    public ModelAndView deleteJobImage(@PathVariable("imageId") long imageId, @RequestParam("jobId") long jobId,Principal principal){
+
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Trying to delete image with id {} from job with id {} by user with id {}",imageId,jobId,user.getId());
+
+        Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+
+        if(!job.getProvider().getId().equals(user.getId())){
+            LOGGER.error("Error, user with id {} is trying to delete an image with id {} that belongs to user with id {}",user.getId(),imageId,job.getProvider().getId());
+            throw new IllegalOperationException();
+        }
+        jobService.deleteImageFromJob(jobId,imageId,user);
+
+        LOGGER.info("Image with id {} from job with id{} deleted successfully",imageId,jobId);
+
+        return new ModelAndView("redirect:/jobs/"+jobId+"/edit");
+
     }
 
     //FIXME: SOLUCIONAR

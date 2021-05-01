@@ -164,6 +164,19 @@ public class GlobalControllerExceptionHandler {
 //
 //        return mav;
 //    }
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = {IllegalOperationException.class})
+    public ModelAndView forbiddenException() {
+        LOGGER.error("Error encountered, ForbiddenException caught by a forbidden action");
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.ForbiddenError", null, locale);
+        String code = HttpStatus.FORBIDDEN.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+
+    }
+        return mav;
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalContactException.class)

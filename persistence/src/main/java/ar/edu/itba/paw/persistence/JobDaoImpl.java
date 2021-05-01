@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.*;
@@ -342,5 +342,15 @@ public class JobDaoImpl implements JobDao {
         return null; //never reaches
     }
 
+    //FIXME:CORRESPONDE LANZAR EXCEPCION?
+    @Override
+    public int deleteImageById(long imageId, long jobId){
+        int res = jdbcTemplate.update("DELETE FROM JOB_IMAGE WHERE ji_job_id = ? AND ji_image_id = ?",new Object[]{jobId,imageId});
+        if(res == 0 ){
+            LOGGER.error("Error, trying to delete a non-existent image with id {}",imageId);
+            throw new ImageNotFoundException();
+        }
+        return res;
+    }
 
 }

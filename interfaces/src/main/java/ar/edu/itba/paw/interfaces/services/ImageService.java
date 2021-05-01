@@ -19,4 +19,6 @@ public interface ImageService {
 
 
     void updateImage(ImageDto image,long imageId);
+
+    int deleteImageById(long imageId);
 }

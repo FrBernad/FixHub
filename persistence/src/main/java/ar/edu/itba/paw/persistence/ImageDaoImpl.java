@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.slf4j.Logger;
@@ -87,6 +88,20 @@ public class ImageDaoImpl implements ImageDao {
         else
             LOGGER.debug("Image not updated");
     }
+
+    //FIXME:CORRESPONDE LANZAR EXCEPCION?
+    @Override
+    public int deleteImageById(long imageId){
+        int res = jdbcTemplate.update("DELETE FROM IMAGES where i_id = ?",new Object[]{imageId});
+
+        if(res == 0 ){
+            LOGGER.error("Error trying to delete an image with non-existent id {}",imageId);
+            throw new ImageNotFoundException();
+        }
+
+        return res;
+    }
+
 
 }
 

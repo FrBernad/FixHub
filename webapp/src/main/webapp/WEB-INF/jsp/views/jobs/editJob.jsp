@@ -35,7 +35,7 @@
                                                     <div class="carousel-item">
                                                         <img
                                                                 src="<c:url value='/jobs/images/${imageId}'/>"
-                                                                alt="${job.category}" class="rounded"
+                                                                alt="${job.category}"  class="rounded jobImages"
                                                                 style="object-fit: cover; height: 100%; width: 100%">
                                                     </div>
                                                 </c:forEach>
@@ -127,6 +127,7 @@
 <%@ include file="../../components/footer.jsp" %>
 
 <script src='<c:url value="/resources/js/job.js"/>'></script>
+
 <%@ include file="../../components/includes/globalScripts.jsp" %>
 
 </body>

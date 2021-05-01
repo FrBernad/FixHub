@@ -18,5 +18,6 @@ public interface JobService {
 
     void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, List<ImageDto> images, long jobId);
 
+    void deleteImageFromJob(long jobId, long imageId, User user);
 }
 

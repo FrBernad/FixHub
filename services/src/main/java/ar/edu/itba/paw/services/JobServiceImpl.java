@@ -74,4 +74,12 @@ public class JobServiceImpl implements JobService {
         jobDao.updateJob(jobProvided,category,description,price,jobImages,jobID);
     }
 
+    @Override
+    @Transactional
+    public void deleteImageFromJob(long jobId, long imageId, User user){
+        imageService.deleteImageById(imageId);
+        jobDao.deleteImageById(imageId,jobId);
+    }
+
+
 }

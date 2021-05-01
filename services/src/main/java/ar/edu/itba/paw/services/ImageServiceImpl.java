@@ -54,4 +54,10 @@ public class ImageServiceImpl implements ImageService {
         LOGGER.debug("Retrieving content types");
         return CONTENT_TYPES;
     }
+
+    @Override
+    public int deleteImageById(long imageId){
+        return imageDao.deleteImageById(imageId);
+    }
+
 }
