@@ -12,10 +12,11 @@ public class Job {
     private User provider;
     private BigDecimal price;
     private long totalRatings;
+    private Long coverImageId;
     private Collection<Long> imagesId;
     private boolean paused;
 
-    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, boolean paused ,User provider, Collection<Long> imagesId) {
+    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, boolean paused ,User provider, Long coverImageId, Collection<Long> imagesId) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -26,6 +27,15 @@ public class Job {
         this.price = price;
         this.paused = paused;
         this.imagesId=imagesId;
+        this.coverImageId=coverImageId;
+    }
+
+    public Long getCoverImageId() {
+        return coverImageId;
+    }
+
+    public void setCoverImageId(Long coverImageId) {
+        this.coverImageId = coverImageId;
     }
 
     @Override
@@ -47,7 +57,7 @@ public class Job {
     }
 
     public long getJobThumbnailId(){
-        return imagesId.stream().findFirst().orElse(-1L);
+        return coverImageId;
     }
 
     public BigDecimal getPrice() {

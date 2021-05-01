@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,46 +30,28 @@ public class JobDaoImpl implements JobDao {
     private static final String EMPTY = " ";
     private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
 
-    private static final ResultSetExtractor<Collection<Job>> JOB_ROW_MAPPER = rs -> {
-        Map<Long, Job> jobsMap = new LinkedHashMap<>();
-
-        long jobId;
-
-        while (rs.next()) {
-
-            jobId = rs.getLong("j_id");
-
-            if (!jobsMap.containsKey(jobId)) {
-                jobsMap.put(jobId,
-                    new Job(rs.getString("j_description"),
-                        rs.getString("j_job_provided"),
-                        rs.getInt("avg_rating"),
-                        rs.getInt("total_ratings"),
-                        JobCategory.valueOf(rs.getString("j_category")),
-                        rs.getLong("j_id"),
-                        rs.getBigDecimal("j_price"),
-                        rs.getBoolean("j_paused"),
-                        new User(rs.getLong("j_provider_id"),
-                            rs.getString("u_password"),
-                            rs.getString("u_name"),
-                            rs.getString("u_surname"),
-                            rs.getString("u_email"),
-                            rs.getString("u_phone_number"),
-                            rs.getString("u_state"),
-                            rs.getString("u_city"),
-                            Collections.emptyList(),
-                            rs.getLong("u_profile_picture"),
-                            rs.getLong("u_cover_picture")),
-                        new ArrayList<>()));
-            }
-
-            if (rs.getObject("ji_image_id") != null) {
-                jobsMap.get(jobId).addImageId(rs.getLong("ji_image_id"));
-            }
-        }
-
-        return jobsMap.values();
-    };
+    private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
+        new Job(rs.getString("j_description"),
+            rs.getString("j_job_provided"),
+            rs.getInt("avg_rating"),
+            rs.getInt("total_ratings"),
+            JobCategory.valueOf(rs.getString("j_category")),
+            rs.getLong("j_id"),
+            rs.getBigDecimal("j_price"),
+            rs.getBoolean("j_paused"),
+            new User(rs.getLong("j_provider_id"),
+                rs.getString("u_password"),
+                rs.getString("u_name"),
+                rs.getString("u_surname"),
+                rs.getString("u_email"),
+                rs.getString("u_phone_number"),
+                rs.getString("u_state"),
+                rs.getString("u_city"),
+                Collections.emptyList(),
+                rs.getLong("u_profile_picture"),
+                rs.getLong("u_cover_picture")),
+            rs.getLong("ji_image_id"),
+            Collections.emptyList());
 
 
     private static final ResultSetExtractor<Collection<Long>> JOB_IMAGE_ROW_MAPPER = rs -> {
@@ -114,7 +97,7 @@ public class JobDaoImpl implements JobDao {
             LOGGER.debug("Inserted image with id {} to job with id {}", image.getImageId(), id);
         }
 
-        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused, provider, imagesId);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused, provider, imagesId.stream().findFirst().orElse(null), imagesId);
     }
 
     @Override
@@ -316,7 +299,7 @@ public class JobDaoImpl implements JobDao {
             " JOIN " +
             "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
             "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery + offset + limit;
+            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN (select ji_job_id, min(ji_image_id) as ji_image_id from job_image group by ji_job_id) aux4 on aux3.j_id = aux4.ji_job_id)" + searchQuery + orderQuery + offset + limit;
 
         LOGGER.debug("Executing query: {}", query);
 
