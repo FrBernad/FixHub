@@ -235,10 +235,10 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price,List<Image> images,long jobId) {
+    public void updateJob(String jobProvided, JobCategory category, String description, BigDecimal price, List<Image> images, long jobId) {
 
         jdbcTemplate.update("UPDATE jobs SET j_job_provided = ?, " +
-                "j_category = ?, j_description = ?, j_price = ? where j_id = ? ",jobProvided,category.toString(),description,price,jobId);
+            "j_category = ?, j_description = ?, j_price = ? where j_id = ? ", jobProvided, category.toString(), description, price, jobId);
 
         Map<String, Object> imageJobMap = new HashMap<>();
         Collection<Long> imagesId = new LinkedList<>();
@@ -316,8 +316,7 @@ public class JobDaoImpl implements JobDao {
             " JOIN " +
             "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
             "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery
-            + ", total_ratings desc, j_id desc " + offset + limit;
+            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN job_image on aux3.j_id = ji_job_id)" + searchQuery + orderQuery + offset + limit;
 
         LOGGER.debug("Executing query: {}", query);
 
@@ -328,16 +327,16 @@ public class JobDaoImpl implements JobDao {
         String orderQuery = " ORDER BY ";
         switch (orderOption) {
             case MOST_POPULAR:
-                return orderQuery + "avg_rating desc ";
+                return orderQuery + " avg_rating desc, total_ratings desc, j_id desc ";
 
             case LESS_POPULAR:
-                return orderQuery + "avg_rating asc ";
+                return orderQuery + " avg_rating asc, total_ratings desc, j_id desc ";
 
             case HIGHER_PRICE:
-                return orderQuery + "j_price desc ";
+                return orderQuery + " j_price desc, total_ratings desc, j_id desc ";
 
             case LOWER_PRICE:
-                return orderQuery + "j_price asc ";
+                return orderQuery + " j_price asc, total_ratings desc, j_id desc ";
 
         }
         return null; //never reaches
