@@ -57,28 +57,30 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("carousel").getElementsByTagName("div")[0].className += " active";
     }
 
-    if (reviewModal.dataset.error) {
-        $('#newReview').modal('show');
+    if (reviewModal != null) {
+
+        if (reviewModal.dataset.error) {
+            $('#newReview').modal('show');
+        }
+
+        reviewFormButton.addEventListener("click", () => {
+            if (processing) {
+                return;
+            }
+            processing = true;
+            reviewFormButton.disabled = true;
+            reviewForm.submit();
+            processing = false;
+        })
+
+        reviewFormCloseButton.addEventListener("click", () => {
+            reviewFormTextArea.classList.remove("is-invalid");
+            let error = document.getElementById("description.errors");
+            if (error !== null) {
+                error.remove();
+            }
+        })
     }
-
-    reviewFormButton.addEventListener("click", () => {
-        if (processing) {
-            return;
-        }
-        processing = true;
-        reviewFormButton.disabled = true;
-        reviewForm.submit();
-        processing = false;
-    })
-
-    reviewFormCloseButton.addEventListener("click", () => {
-        reviewFormTextArea.classList.remove("is-invalid");
-        let error = document.getElementById("description.errors");
-        if (error !== null) {
-            error.remove();
-        }
-    })
-
 
 })
 

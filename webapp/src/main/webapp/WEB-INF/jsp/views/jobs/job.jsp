@@ -19,8 +19,8 @@
     <div class="container-fluid py-4">
         <div class="container-lg p-5 bigContentContainer">
             <div class="row mt-3">
-                <div class="col-12 col-md-6 d-flex justify-content-center align-items-start">
-                    <div class="container">
+                <div class="col-12 col-lg-6 d-flex justify-content-lg-start justify-content-center align-items-start">
+                    <div>
                         <div style="position: relative;height: 400px; width:400px;">
                             <c:choose>
                                 <c:when test="${job.imagesId.size() > 0}">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 d-flex justify-content-start align-items-start">
+                <div class="col-12 col-lg-6 mt-lg-0 mt-4 d-flex justify-content-start align-items-start">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-7">

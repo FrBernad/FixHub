@@ -312,7 +312,6 @@ public class WebAuthController {
         }
 
 
-
         return mav;
     }
 
@@ -379,9 +378,16 @@ public class WebAuthController {
     }
 
     @RequestMapping(path = "/user/{userId}")
-    public ModelAndView userProfile(@PathVariable("userId") final long userId) {
-        LOGGER.info("Accessed /user/{} GET controller", userId);
+    public ModelAndView userProfile(@PathVariable("userId") final long userId, Principal principal) {
 
+        LOGGER.info("Accessed /user/{} GET controller", userId);
+        if (principal != null) {
+            User loggedUser = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+            if (loggedUser.getId() == userId) {
+                LOGGER.debug("Redirecting to /user/account");
+                return new ModelAndView("redirect:/user/account");
+            }
+        }
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
 
         ModelAndView mav = new ModelAndView("views/user/profile/otherProfile");

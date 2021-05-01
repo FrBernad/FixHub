@@ -88,7 +88,7 @@
             </div>
 
             <%--USER INFO--%>
-            <div class="col-12 col-md-6 pl-0 pl-md-5">
+            <div class="col-12 col-md-6 pl-md-0 pl-md-5">
                 <div class="container-lg detailsSection">
                     <div class="row py-2">
                         <div class="col-6 my-2">
@@ -104,29 +104,109 @@
                             </a>
                         </div>
                         <div class="col-12">
-                            <h3 class="info">
-                                <span class="detailField"><spring:message code="profilePage.info.location"/></span>
-                                <c:out value="${loggedUser.state}, ${loggedUser.city}."/>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-1 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="col-10">
+                                        <span>
+                                          <c:out value="${loggedUser.state}, ${loggedUser.city}."/>
+                                        </span>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="far fa-envelope"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span><c:out value="${loggedUser.email}."/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <div class="container-fluid px-0">
+                                            <div class="row">
+                                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-phone-alt"></i>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span><c:out value="${loggedUser.phoneNumber}."/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="container-lg detailsSection my-4">
+                    <div class="row py-2 pb-3">
+                        <div class="col-6 my-2">
+                            <h3 class="sectionTitle text-left">
+                                <spring:message code="profilePage.subtitle.account"/>
                             </h3>
                         </div>
-                        <div class="col-12 mt-2">
-                            <h3 class="info">
-                                <span class="detailField"><spring:message code="profilePage.info.email"/></span>
-                                <c:out value="${loggedUser.email}."/>
-                            </h3>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <h3 class="info">
-                                <span class="detailField"><spring:message code="profilePage.info.phone"/></span>
-                                <c:out value="${loggedUser.phoneNumber}."/>
-                            </h3>
+                        <div class="col-12">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12 pl-0">
+                                        <h1 class="extraInfo mb-0">
+                                            <span class="detailField">
+                                                <spring:message code="profilePage.subtitle.state"/>
+                                            </span>
+                                            <span>
+                                                <c:choose>
+                                                    <c:when test="${loggedUser.hasRole('VERIFIED')}">
+                                                        <spring:message code="profilePage.subtitle.verified"/>
+                                                        <i class="ml-1 fas fa-check" style="color: green"></i>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <spring:message code="profilePage.subtitle.notVerified"/>
+                                                        <i class="ml-1 fas fa-times" style="color: darkred"></i>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </span>
+                                        </h1>
+                                    </div>
+                                    <div class="col-12 pl-0 mt-2">
+                                        <h1 class="extraInfo mb-0">
+                                            <span class="detailField">
+                                                <spring:message code="profilePage.subtitle.provider"/>
+                                            </span>
+                                            <span>
+                                                <c:choose>
+                                                    <c:when test="${loggedUser.hasRole('PROVIDER')}">
+                                                        <spring:message code="profilePage.subtitle.active"/>
+                                                        <i class="ml-1 fas fa-check" style="color: green"></i>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <spring:message code="profilePage.subtitle.inactive"/>
+                                                        <i class="ml-1 fas fa-times" style="color: darkred"></i>
+                                                        <a class="ml-2" href="<c:url value="/user/join"/>">
+                                                            <spring:message code="profilePage.subtitle.join"/>
+                                                        </a>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
             <%--RECENT CONTACTS--%>
-            <div class="col-12 col-md-6 pr-0 pr-md-5">
+            <div class="col-12 col-md-6 pr-md-5">
                 <div class="container-lg d-flex flex-column recentContacts">
                     <div class="row py-2">
                         <div class="col-12 mt-2">
