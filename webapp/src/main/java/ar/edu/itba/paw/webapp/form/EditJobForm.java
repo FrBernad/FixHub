@@ -26,6 +26,7 @@ public class EditJobForm {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
+    @Size(max = 6)
     private List<MultipartFile> images;
 
     private List<Long> imagesIdDeleted;

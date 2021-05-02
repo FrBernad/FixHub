@@ -83,12 +83,7 @@
                                     <spring:message code="jobForm.ImagesButton"/>
                                 </button>
                                 <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
-                            </div>
-
-                            <div class="container-fluid p-0" id="imagesHolder">
-                                <div class="row">
-                                    <div class="col-3"></div>
-                                </div>
+                                <form:errors path="images" cssClass="formError" element="p"/>
                             </div>
                         </div>
                     </div>
