@@ -173,7 +173,7 @@
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.city"/></span>
                                                             <c:forEach var="city" items="${location.cities}">
-                                                                <span class="badge badge-pill badge-secondary p-2"><c:out
+                                                                <span class="badge badge-pill badge-secondary p-2 mt-2"><c:out
                                                                         value="${city.name}"/></span>
                                                             </c:forEach>
                                                         </p>
