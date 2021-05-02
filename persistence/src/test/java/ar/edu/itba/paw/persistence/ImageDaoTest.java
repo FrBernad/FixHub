@@ -101,6 +101,7 @@ public class ImageDaoTest {
 
 
     @Test
+
     public void getImageByIdTest(){
 
         Image imgIn =imageDao.createImage(new ImageDto(imgInfo1,imgType));
@@ -117,6 +118,7 @@ public class ImageDaoTest {
     }
 
     @Test
+    @Sql(scripts = "classpath:image-dao-test.sql")
     public void getImagesByIdJobTest(){
 
         List<ImageDto> dtos1 = new ArrayList<>();
