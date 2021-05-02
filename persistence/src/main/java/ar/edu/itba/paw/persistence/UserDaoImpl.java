@@ -478,6 +478,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Collection<User> getAllUserFollowers(Long userId) {
+        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_id IN " +
+            "(SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?)) u " +
+            " order by u_id desc";
+
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.
+            query(query, USER_ROW_MAPPER, userId);
+    }
+
+    @Override
     public Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage) {
         List<Object> variables = new LinkedList<>();
 
@@ -509,6 +521,17 @@ public class UserDaoImpl implements UserDao {
         final String query = "SELECT u_id FROM (SELECT * FROM USERS WHERE u_id IN " +
             "(SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?)) u ";
 
+
+        LOGGER.debug("Executing query: {}", query);
+
+        return jdbcTemplate.
+            query(query, (rs, rowNum) -> rs.getInt("u_id"), userId);
+    }
+
+    @Override
+    public Collection<Integer> getAllUserFollowersIds(Long userId) {
+        final String query = "SELECT u_id FROM (SELECT * FROM USERS WHERE u_id IN " +
+            "(SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?)) u ";
 
         LOGGER.debug("Executing query: {}", query);
 

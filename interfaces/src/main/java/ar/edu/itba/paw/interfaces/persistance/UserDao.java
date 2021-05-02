@@ -63,7 +63,11 @@ public interface UserDao {
 
     Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage);
 
+    Collection<User> getAllUserFollowers(Long userId);
+
     Collection<Integer> getAllUserFollowingsIds(Long userId);
+
+    Collection<Integer> getAllUserFollowersIds(Long userId);
 
     Integer getUserFollowersCount(Long userId);
 

@@ -44,6 +44,11 @@
     right: 10%;
 }
 
+#resendBtn{
+    background-color: transparent;
+    border:none;
+}
+
 .picContainer {
     height: 170px;
     width: 170px;

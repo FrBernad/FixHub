@@ -48,7 +48,6 @@ public class PasswordResetTokenDaoTest {
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("password_reset_tokens").usingGeneratedKeyColumns("prt_id");
     }
 
-    //TODO: Para testear create habria que cambiar el metodo y que reciba un timestamp, hay que hacerlo?
     @Test
     public void testRemoveTokenByUserId() {
 

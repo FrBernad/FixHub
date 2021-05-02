@@ -62,8 +62,6 @@ public class JobDaoImpl implements JobDao {
         return imageIds;
     };
 
-//    FIXME: VER Q ONDA EL ARRAY LIST
-
     @Autowired
     public JobDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);

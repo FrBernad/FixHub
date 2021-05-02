@@ -19,26 +19,26 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("carousel").getElementsByTagName("div")[0].className += " active";
     }
 
-    if(document.getElementById("carousel") !== null){
+    if (document.getElementById("carousel") !== null) {
 
         let carousel = document.getElementById("carousel");
         let jobImages = document.getElementsByClassName("jobImages");
-        for (const image of jobImages){
+        for (const image of jobImages) {
             let imageContainer = document.getElementById(image.dataset.imageId);
 
-            image.addEventListener("click",()=>{
+            image.addEventListener("click", () => {
                 imagesIdDeleted.push(image.dataset.imageId);
                 imageContainer.removeChild(image);
                 carousel.removeChild(imageContainer);
-                if(jobImages.length !== 0){
-                    carousel.getElementsByTagName("div")[0].className+=" active";
+                if (jobImages.length !== 0) {
+                    carousel.getElementsByTagName("div")[0].className += " active";
                 }
 
             })
         }
     }
 
-    function FileListItems(files) {
+    function fileListItems(files) {
         const b = new ClipboardEvent("").clipboardData || new DataTransfer();
         for (let i = 0, len = files.length; i < len; i++)
             b.items.add(files[i])
@@ -79,20 +79,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         processing = true;
         editFormButton.disabled = true;
+
         inputFile.removeEventListener("change", inputFileUpdate);
-        inputFile.files = new FileListItems(files);
+        inputFile.files = new fileListItems(files);
 
-
-        for(const imageIdDeleted  of imagesIdDeleted){
+        let aux = document.getElementById("deletedImages");
+        let deletedImages = "";
+        for (const imageIdDeleted of imagesIdDeleted) {
             let image = document.createElement("input");
-            image.type = "hidden";
-            image.name="imagesIdDeleted";
-            image.value=imageIdDeleted;
-            console.log(image);
-            console.log("aaaaa")
-            imagesIdDeletedContainer.appendChild(image);
+            // image.type = "hidden";
+            // image.name = "imagesIdDeleted";
+            // image.value = imageIdDeleted;
+            deletedImages+=imageIdDeleted+"&"
+            // console.log(image);
+            // imagesIdDeletedContainer.appendChild(image);
         }
+
+        // aux.setAttribute("value",deletedImages);
+
         console.log(imagesIdDeletedContainer);
-        editJobForm.submit();
+        setTimeout(()=>{editJobForm.submit()},1000);
     })
-})
+});

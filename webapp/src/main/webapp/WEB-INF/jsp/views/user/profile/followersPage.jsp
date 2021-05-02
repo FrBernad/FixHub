@@ -3,9 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
-<%--FIXME: ARREGLAR TITULO--%>
 <head>
-    <title>Title</title>
+    <title><spring:message code="productName"/> | <spring:message code="profilePage.${following ? 'following' : 'followers'}"/></title>
     <%@ include file="../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/followers.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">

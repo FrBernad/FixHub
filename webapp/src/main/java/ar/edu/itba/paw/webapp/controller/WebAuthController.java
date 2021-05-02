@@ -116,7 +116,6 @@ public class WebAuthController {
 
         final Optional<User> userOptional = userService.verifyAccount(token);
         boolean success = false;
-        //TODO: CAMBIAR TITULOOO
         final ModelAndView mav = new ModelAndView("views/user/account/verification/verify");
         if (userOptional.isPresent()) {
             success = true;
@@ -168,7 +167,6 @@ public class WebAuthController {
         }
 
         final Optional<User> user = userService.getUserByEmail(form.getEmail());
-        //FIXME: STRING DINAMIO
         if (!user.isPresent()) {
             LOGGER.warn("Error in form ResetPasswordForm, user under email {} not found", form.getEmail());
 

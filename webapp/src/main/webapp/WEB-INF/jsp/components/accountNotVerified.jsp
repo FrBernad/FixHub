@@ -12,9 +12,9 @@
                             <div class="col-12 mt-2">
                                 <h2 class="text-center" style="font-size: 18px">
                                     <spring:message code="errors.notVerified.notRecieved"/>
-                                    <span id="resendBtn">
+                                    <button id="resendBtn">
                                         <spring:message code="errors.notVerified.resend"/>
-                                    </span>
+                                    </button>
                                 </h2>
                                 <form action="<c:url value='/user/verifyAccount/resend'/>"
                                       method="POST" id="resendForm"

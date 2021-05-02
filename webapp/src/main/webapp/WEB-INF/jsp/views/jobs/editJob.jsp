@@ -166,13 +166,15 @@
         </div>
 
 
-        <div id="imageIdDeletedContainer" class="d-none"></div>
-
+        <div id="imageIdDeletedContainer" class="invisible"></div>
+<%--        <input type="hidden" name="imagesIdDeleted" id="deletedImages">--%>
+        <input type="hidden" name="imagesIdDeleted" value="2">
+        <input type="hidden" name="imagesIdDeleted" value="3">
         </form:form>
     </div>
 </div>
 
-<%@ include file="../../components/footer.jsp" %>
+<%@ include file="../../components/footer.jsp"%>
 
 <script src='<c:url value="/resources/js/editJob.js"/>'></script>
 <%@ include file="../../components/includes/globalScripts.jsp" %>
