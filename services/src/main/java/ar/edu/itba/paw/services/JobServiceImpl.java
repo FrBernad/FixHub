@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
+import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
@@ -105,7 +106,10 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
-        Collection<Long> oldImagesId = getImagesIdsByJobId(jobId);
+
+        Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
+
+        Collection<Long> oldImagesId = job.getImagesId();
 
         //If a user tries to delete images that are not from the job to update
         if(!oldImagesId.containsAll(imagesIdDeleted)){
