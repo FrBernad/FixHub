@@ -75,7 +75,7 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = NoContactFoundException.class)
-    public ModelAndView noContactFoundException(){
+    public ModelAndView noContactFoundException() {
         LOGGER.error("Error encountered, the user who wants to make the review has not contacted the user ");
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NoContactFoundException", null, locale);
@@ -149,21 +149,6 @@ public class GlobalControllerExceptionHandler {
         return mav;
     }
 
-//    /*Server error */
-   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = {ServerInternalException.class, Exception.class})
-    public ModelAndView serverException() {
-        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
-
-        Locale locale = LocaleContextHolder.getLocale();
-        String error = messageSource.getMessage("errors.ServerError", null, locale);
-        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
-        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
-        mav.addObject("errors", error);
-        mav.addObject("code", code);
-
-        return mav;
-    }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = {IllegalOperationException.class})
@@ -180,7 +165,7 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalContactException.class)
-    public ModelAndView illegalContactException(){
+    public ModelAndView illegalContactException() {
         LOGGER.error("Error encountered, the user can't contact himself");
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.illegalContactException", null, locale);
@@ -191,5 +176,21 @@ public class GlobalControllerExceptionHandler {
         return mav;
     }
 
+//    FIXME: DESCOMENTAR
+//    //    /*Server error */
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(value = {ServerInternalException.class, Exception.class})
+//    public ModelAndView serverException() {
+//        LOGGER.error("Error encountered, Exception caught (internal error or specific exception not caught) ");
+//
+//        Locale locale = LocaleContextHolder.getLocale();
+//        String error = messageSource.getMessage("errors.ServerError", null, locale);
+//        String code = HttpStatus.INTERNAL_SERVER_ERROR.toString();
+//        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+//        mav.addObject("errors", error);
+//        mav.addObject("code", code);
+//
+//        return mav;
+//    }
 
 }

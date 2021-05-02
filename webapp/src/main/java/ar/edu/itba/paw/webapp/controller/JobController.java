@@ -107,6 +107,7 @@ public class JobController {
         mav.addObject("job",job);
         return mav;
     }
+
     @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
     public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form,BindingResult errors,Principal principal){
 

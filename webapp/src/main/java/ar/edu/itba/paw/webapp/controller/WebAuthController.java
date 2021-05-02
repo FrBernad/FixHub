@@ -331,7 +331,7 @@ public class WebAuthController {
             return joinChooseCity(form, request, principal);
         }
 
-        userService.makeProvider(user.getId(), form.getCity(), form.getStartTime(), form.getEndTime());
+        userService.makeProvider(user, form.getCity(), form.getStartTime(), form.getEndTime());
 
         user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 

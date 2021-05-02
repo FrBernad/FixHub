@@ -214,11 +214,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void makeProvider(Long userId, List<Long> citiesId, String startTime, String endTime) {
-        userDao.addRole(userId, Roles.PROVIDER);
-        LOGGER.info("User {} is now provider", userId);
-        userDao.addSchedule(userId, startTime, endTime);
-        userDao.addLocation(userId, citiesId);
+    public void makeProvider(User user, List<Long> citiesId, String startTime, String endTime) {
+        userDao.addRole(user.getId(), Roles.PROVIDER);
+        LOGGER.info("User {} is now provider", user.getId());
+        userDao.addSchedule(user.getId(), startTime, endTime);
+        userDao.addLocation(user.getId(), citiesId);
+        sendProviderNotificationEmail(user);
+    }
+
+    private void sendProviderNotificationEmail(User user) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("to", user.getEmail());
+            mailAttrs.put("name", user.getName());
+            emailService.sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
+        } catch (MessagingException e) {
+            LOGGER.warn("Error, provider notification mail not sent");
+        }
     }
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {
