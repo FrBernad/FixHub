@@ -50,14 +50,12 @@ public class UserDaoTest {
     private static final User CLIENT = new User(3L, "password", "Pedro", "Romero", "pedro@yopmail.com", "5491109876543", "Once", "CABA", CLIENT_VERIFIED_ROLES, 0L, 0L);
     private static final ContactDto CONTACT_DTO = new ContactDto(JOB, -1L, CLIENT, "message", "Adrogue", "Buenos Aires", "Nother", "123", "21", "A");
 
-
     @Autowired
     private DataSource ds;
     @Autowired
     private UserDao userDao;
 
     private JdbcTemplate jdbcTemplate;
-
 
     private static final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
@@ -67,7 +65,6 @@ public class UserDaoTest {
     }
 
     @Test
-    @Rollback
     public void testCreateUser() throws DuplicateUserException {
         final User user = userDao.createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
         assertNotNull(user);
@@ -102,13 +99,11 @@ public class UserDaoTest {
     }
 
     @Test
-    @Rollback
     public void updatePassword() {
         final String newPassword = "newPassword";
         userDao.updatePassword(USER.getId(), newPassword);
         String query = "u_id = " + USER.getId() + " and u_password = '" + newPassword + "'";
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", query));
-
     }
 
 
@@ -123,7 +118,6 @@ public class UserDaoTest {
 
 
     @Test
-    @Rollback
     public void updateUserInfo() {
         userDao.updateUserInfo(USER_INFO, USER);
         String query = new StringBuilder("u_id = ").append(USER.getId())
@@ -137,7 +131,6 @@ public class UserDaoTest {
     }
 
     @Test
-    @Rollback
     public void addContactInfo() {
         userDao.addContactInfo(CONTACT_DTO);
 

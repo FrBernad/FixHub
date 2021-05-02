@@ -78,7 +78,7 @@ public class ImageDaoTest {
     }
 
     @Test
-    public void creteImagesTest(){
+    public void createImagesTest(){
 
         List<ImageDto> dtos1 = new ArrayList<>();
 
