@@ -108,14 +108,17 @@ public class JobServiceImpl implements JobService {
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
         List<Image> jobImages;
-        if (!imagesIdDeleted.isEmpty()) {
-            imageService.deleteImagesById(imagesIdDeleted);
-        }
+
         if (!images.isEmpty())
             jobImages = imageService.createImages(images);
         else
             jobImages = new LinkedList<>();
+
         jobDao.updateJob(jobProvided, description, price, paused, jobImages, jobId, imagesIdDeleted);
+
+        if (!imagesIdDeleted.isEmpty()) {
+            imageService.deleteImagesById(imagesIdDeleted);
+        }
     }
 
     @Override
