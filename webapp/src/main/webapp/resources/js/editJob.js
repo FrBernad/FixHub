@@ -4,8 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let pauseCheck = document.getElementById("pauseCheck");
     let editJobForm = document.getElementById("editJobForm");
     let processing = false;
+    let imagesQuantityText = document.getElementById("imagesQuantity");
+    let imagesQuantity = imagesQuantityText.dataset.quantity;
 
-    let imagesIdDeleted = [];
     let imagesIdDeletedContainer = document.getElementById("imageIdDeletedContainer");
 
     let inputFile = document.getElementById("inputFiles");
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("carousel").getElementsByTagName("div")[0].className += " active";
     }
 
-    if(pauseCheck.value === "true") {
+    if (pauseCheck.value === "true") {
         pauseCheck.setAttribute("checked", "");
     } else {
         pauseCheck.removeAttribute("checked");
@@ -32,15 +33,21 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const image of imageDelete) {
             let imageContainer = document.getElementById(image.dataset.imageId);
 
-            image.addEventListener("click",()=>{
+            image.addEventListener("click", () => {
+                if (parseInt(imagesQuantity) === 6) {
+                    addFileButton.disabled = false;
+                    addFileButton.classList.replace('buttonDisabled','buttonEnabled');
+                }
                 carousel.removeChild(imageContainer);
                 let aux = document.createElement("input");
                 aux.type = "hidden";
-                aux.name="imagesIdDeleted";
-                aux.value=image.dataset.imageId;
+                aux.name = "imagesIdDeleted";
+                aux.value = image.dataset.imageId;
                 imagesIdDeletedContainer.appendChild(aux);
-                if(jobImages.length !== 0){
-                    carousel.getElementsByTagName("div")[0].className+=" active";
+                imagesQuantity--;
+                imagesQuantityText.textContent = imagesQuantity.toString();
+                if (jobImages.length !== 0) {
+                    carousel.getElementsByTagName("div")[0].className += " active";
                 }
             })
 
@@ -61,24 +68,47 @@ document.addEventListener("DOMContentLoaded", () => {
         file.type = "button";
         file.className += "imgFile m-2";
         file.textContent = inputFile.files[0].name;
+        imagesQuantity++;
+        imagesQuantityText.textContent = imagesQuantity.toString();
         const icon = document.createElement("i");
         icon.className += "fas fa-times ml-1";
         file.appendChild(icon);
         imagesHolder.appendChild(file);
+        if (parseInt(imagesQuantity) === 6) {
+            addFileButton.disabled = true;
+            addFileButton.classList.replace('buttonEnabled','buttonDisabled');
+
+        }
 
         file.addEventListener("click", () => {
+            if (parseInt(imagesQuantity) === 6) {
+                addFileButton.disabled = false;
+                addFileButton.classList.replace('buttonDisabled','buttonEnabled');
+            }
             imagesHolder.removeChild(file);
             let index = files.indexOf(inputFile);
             files.splice(index);
+            imagesQuantity--;
+            imagesQuantityText.textContent = imagesQuantity.toString();
         })
     }
 
 
     inputFile.addEventListener("change", inputFileUpdate);
 
-    addFileButton.addEventListener("click", () => {
+
+    addFileButton.addEventListener("click", clickInputFile);
+
+    if(parseInt(imagesQuantity) === 6 ){
+        addFileButton.className+= " buttonDisabled ";
+        addFileButton.disabled=true;
+    }else{
+        addFileButton.className+= " buttonEnabled ";
+    }
+
+    function clickInputFile() {
         inputFile.click();
-    })
+    }
 
     editFormButton.addEventListener("click", () => {
         if (processing) {

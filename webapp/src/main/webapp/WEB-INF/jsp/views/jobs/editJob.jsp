@@ -87,9 +87,13 @@
                                 <div class="col-12 px-0">
                                     <div class="form-group d-flex justify-content-between align-items-center">
                                         <form:label path="images" class="mt-2">
-                                            <spring:message code="jobForm.jobImageTitle"/>
-                                            <spring:message code="jobForm.imageLimit"/>
-                                        </form:label>
+                                            <spring:message code="jobForm.jobImageTitle"/></form:label>
+                                        <div>
+
+                                            <span id="imagesQuantity" data-quantity="${job.imagesId.size()}"><c:out value="${job.imagesId.size()}"/></span>
+                                            <span>/ <spring:message code="jobForm.imageLimit"/></span>
+                                        </div>
+
                                         <button class="buttonCustom d-flex align-items-center justify-content-center"
                                                 type="button" id="addFileButton">
                                             <i class="fas fa-upload mr-1"></i>
@@ -102,7 +106,7 @@
 
                                     <div class="container-fluid p-0" id="imagesHolder">
                                         <div class="row">
-                                            <div class="col-3"></div>
+                                            <div class="col-12"></div>
                                         </div>
                                     </div>
                                 </div>
