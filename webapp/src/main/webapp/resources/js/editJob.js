@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let processing = false;
     let imagesQuantityText = document.getElementById("imagesQuantity");
     let imagesQuantity = imagesQuantityText.dataset.quantity;
+    let imagesMax = imagesQuantityText.dataset.max;
 
     let imagesIdDeletedContainer = document.getElementById("imageIdDeletedContainer");
 
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let imageContainer = document.getElementById(image.dataset.imageId);
 
             image.addEventListener("click", () => {
-                if (parseInt(imagesQuantity) === 6) {
+                if (parseInt(imagesQuantity) === parseInt(imagesMax)) {
                     addFileButton.disabled = false;
                     addFileButton.classList.replace('buttonDisabled','buttonEnabled');
                 }
@@ -77,14 +78,14 @@ document.addEventListener("DOMContentLoaded", () => {
         icon.className += "fas fa-times ml-1";
         file.appendChild(icon);
         imagesHolder.appendChild(file);
-        if (parseInt(imagesQuantity) === 6) {
+        if (parseInt(imagesQuantity) === parseInt(imagesMax)) {
             addFileButton.disabled = true;
             addFileButton.classList.replace('buttonEnabled','buttonDisabled');
 
         }
 
         file.addEventListener("click", () => {
-            if (parseInt(imagesQuantity) === 6) {
+            if (parseInt(imagesQuantity) === parseInt(imagesMax)) {
                 addFileButton.disabled = false;
                 addFileButton.classList.replace('buttonDisabled','buttonEnabled');
             }
@@ -102,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addFileButton.addEventListener("click", clickInputFile);
 
-    if(parseInt(imagesQuantity) === 6 ){
+    if(parseInt(imagesQuantity) === parseInt(imagesMax) ){
         addFileButton.className+= " buttonDisabled ";
         addFileButton.disabled=true;
     }else{

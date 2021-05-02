@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:url value="/jobs/new" var="postPath"/>
 <form:form modelAttribute="jobForm" action="${postPath}" enctype="multipart/form-data" id="jobForm" class="jobForm"
@@ -60,10 +61,15 @@
 
     <div class="form-group d-flex justify-content-between align-items-center">
         <form:label path="images" class="mb-0">
-            <spring:message code="jobForm.jobImageTitle"/><br>
-            <spring:message code="jobForm.imageLimit"/>
+            <spring:message code="jobForm.jobImageTitle"/>
         </form:label>
-        <button class="buttonCustom" type="button" id="addFileButton">
+
+        <div>
+
+            <span id="imagesQuantity"  data-max="${maxImagesPerJob}">0</span>
+            <span>/ <c:out value="${maxImagesPerJob}"/></span>
+        </div>
+        <button class="buttonCustom buttonEnabled" type="button" id="addFileButton">
             <i class="fas fa-upload mr-1"></i>
             <spring:message code="jobForm.ImagesButton"/>
         </button>
@@ -75,7 +81,7 @@
 
     <div class="container-fluid p-0" id="imagesHolder">
         <div class="row">
-            <div class="col-3"></div>
+            <div class="col-12"></div>
         </div>
     </div>
 

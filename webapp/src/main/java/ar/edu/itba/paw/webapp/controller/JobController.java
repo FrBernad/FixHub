@@ -101,7 +101,7 @@ public class JobController {
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
         LOGGER.info("Accessed /jobs/{}/edit GET controller", jobId);
-
+        mav.addObject("maxImagesPerJob", Job.MAX_IMAGES_PER_JOB);
         mav.addObject("job",job);
         return mav;
     }
@@ -220,6 +220,7 @@ public class JobController {
 
         mav = new ModelAndView("/views/jobs/newJob");
         final Collection<JobCategory> categories = jobService.getJobsCategories();
+        mav.addObject("maxImagesPerJob",Job.MAX_IMAGES_PER_JOB);
         mav.addObject("categories", categories);
 
         return mav;

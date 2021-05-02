@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let addFileButton = document.getElementById("addFileButton");
     let inputFile = document.getElementById("inputFiles");
     let files = [];
+    let imagesQuantity = document.getElementById("imagesQuantity");
+    let imagesMax = imagesQuantity.dataset.max;
+    let quantity = 0;
+
 
     let categories = document.getElementsByClassName("categoryButton");
     let categoryName = document.getElementById("categoryName");
@@ -38,9 +42,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const icon = document.createElement("i");
         icon.className += "fas fa-times ml-1";
         file.appendChild(icon);
+        quantity++;
+        imagesQuantity.textContent = quantity.toString();
         imagesHolder.appendChild(file);
+        if (quantity === parseInt(imagesMax)) {
+            addFileButton.disabled = true;
+            addFileButton.classList.replace('buttonEnabled','buttonDisabled');
+        }
 
         file.addEventListener("click", () => {
+            quantity--;
+            imagesQuantity.textContent = quantity.toString();
+            if (quantity === parseInt(imagesMax)) {
+                addFileButton.disabled = false;
+                addFileButton.classList.replace('buttonDisabled','buttonEnabled');
+            }
             imagesHolder.removeChild(file);
             let index = files.indexOf(inputFile);
             files.splice(index);
@@ -53,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addFileButton.addEventListener("click", () => {
         inputFile.click();
     })
+
 
 
     jobFormButton.addEventListener("click", () => {

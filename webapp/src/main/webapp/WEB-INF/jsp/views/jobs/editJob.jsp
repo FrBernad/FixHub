@@ -90,9 +90,8 @@
                                             <spring:message code="jobForm.jobImageTitle"/></form:label>
                                         <div>
 
-                                            <span id="imagesQuantity" data-quantity="${job.imagesId.size()}"><c:out
-                                                    value="${job.imagesId.size()}"/></span>
-                                            <span>/ <spring:message code="jobForm.imageLimit"/></span>
+                                            <span id="imagesQuantity"  data-max="${maxImagesPerJob}" data-quantity="${fn:length(job.imagesId)}"><c:out value="${fn:length(job.imagesId)}"/></span>
+                                            <span>/ <c:out value="${maxImagesPerJob}"/></span>
                                         </div>
 
                                         <button class="buttonCustom d-flex align-items-center justify-content-center"
