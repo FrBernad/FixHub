@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let imageDelete = document.getElementsByClassName("imageDelete");
 
+    let loadingSpinner = document.getElementById("loadingSpinner");
+
+
     if ((document.getElementById("carousel") !== null)) {
         document.getElementById("carousel").getElementsByTagName("div")[0].className += " active";
     }
@@ -119,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         processing = true;
         editFormButton.disabled = true;
-
+        loadingSpinner.removeAttribute("hidden");
         inputFile.removeEventListener("change", inputFileUpdate);
         inputFile.files = new fileListItems(files);
 

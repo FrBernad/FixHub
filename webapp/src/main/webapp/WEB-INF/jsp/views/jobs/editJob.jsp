@@ -165,6 +165,7 @@
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <button type="button" id="editFormButton" form="editJobForm" class="w-25 continueBtn my-2 ">
+                        <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status" aria-hidden="true"></span>
                         <spring:message code="job.submit"/>
                     </button>
                 </div>
