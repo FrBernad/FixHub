@@ -246,7 +246,7 @@
                                 <c:choose>
                                     <c:when test="${results.totalPages > 0}">
                                         <c:forEach var="review" items="${results.results}">
-                                            <div class="col-12 mt-3">
+                                            <div class="col-12 mt-3 col-md-7">
                                                 <%@ include file="../../components/cards/reviewCard.jsp" %>
                                             </div>
                                         </c:forEach>
