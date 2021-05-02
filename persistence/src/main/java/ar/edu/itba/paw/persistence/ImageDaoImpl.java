@@ -93,31 +93,26 @@ public class ImageDaoImpl implements ImageDao {
             LOGGER.debug("Image not updated");
     }
 
-    //FIXME:CORRESPONDE LANZAR EXCEPCION?
     @Override
     public int deleteImageById(long imageId){
         LOGGER.info("Trying to deleted the image with id {}",imageId);
 
         int res = jdbcTemplate.update("DELETE FROM IMAGES where i_id = ?",new Object[]{imageId});
 
-        if(res == 0 ){
-            LOGGER.error("Error trying to delete an image with non-existent id {}",imageId);
-            throw new ImageNotFoundException();
-        }
-
-        LOGGER.info("The image with id {} has been deleted successfully",imageId);
+        if(res == 0 )
+            LOGGER.warn("Error trying to delete an image with non-existent id {}",imageId);
+        else
+            LOGGER.info("The image with id {} has been deleted successfully",imageId);
 
         return res;
     }
 
     @Override
     public int deleteImagesById(List<Long> imagesId){
-        LOGGER.info("Trying to ");
         int res = 0;
         for(Long imageId: imagesId){
             res+=deleteImageById(imageId);
         }
-
         return res;
     }
 

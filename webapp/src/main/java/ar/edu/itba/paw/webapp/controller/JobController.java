@@ -129,8 +129,6 @@ public class JobController {
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
 
-
-
         //FIXME: SOLUCIONAR ESTO
         if (form.getImages().get(0).getSize() != 0) {
             for (final MultipartFile image : form.getImages()) {
@@ -260,27 +258,6 @@ public class JobController {
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
-    //FIXME: revisar si esta bien el principal aca y que sea el que tiene que ser. Revisar si no hay que agregarlo al webAuthConfig
-    @RequestMapping(path = "jobs/images/delete/{imageId}")
-    public ModelAndView deleteJobImage(@PathVariable("imageId") long imageId, @RequestParam("jobId") long jobId,Principal principal){
-
-        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        LOGGER.info("Trying to delete image with id {} from job with id {} by user with id {}",imageId,jobId,user.getId());
-
-        Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-
-        if(!job.getProvider().getId().equals(user.getId())){
-            LOGGER.error("Error, user with id {} is trying to delete an image with id {} that belongs to user with id {}",user.getId(),imageId,job.getProvider().getId());
-            throw new IllegalOperationException();
-        }
-        jobService.deleteImageFromJob(jobId,imageId,user);
-
-        LOGGER.info("Image with id {} from job with id{} deleted successfully",imageId,jobId);
-
-        return new ModelAndView("redirect:/jobs/"+jobId+"/edit");
-
-    }
-
     //FIXME: SOLUCIONAR
     @RequestMapping(path = "jobs/images/{imageId}",
         produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
@@ -288,7 +265,6 @@ public class JobController {
     @ResponseBody
     public byte[] getJobImage(@PathVariable("imageId") long imageId) {
         LOGGER.info("Accessed jobs/images/{} GET controller", imageId);
-
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }

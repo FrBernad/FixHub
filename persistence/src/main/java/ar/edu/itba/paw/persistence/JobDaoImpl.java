@@ -329,15 +329,4 @@ public class JobDaoImpl implements JobDao {
         return null; //never reaches
     }
 
-    //FIXME:CORRESPONDE LANZAR EXCEPCION?
-    @Override
-    public int deleteImageById(long imageId, long jobId){
-        int res = jdbcTemplate.update("DELETE FROM JOB_IMAGE WHERE ji_job_id = ? AND ji_image_id = ?",new Object[]{jobId,imageId});
-        if(res == 0 ){
-            LOGGER.error("Error, trying to delete a non-existent image with id {}",imageId);
-            throw new ImageNotFoundException();
-        }
-        return res;
-    }
-
 }

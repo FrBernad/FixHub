@@ -121,12 +121,6 @@ public class JobServiceImpl implements JobService {
         }
     }
 
-    @Override
-    @Transactional
-    public void deleteImageFromJob(long jobId, long imageId, User user) {
-        imageService.deleteImageById(imageId);
-        jobDao.deleteImageById(imageId, jobId);
-    }
 
 
 }
