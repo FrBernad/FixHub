@@ -86,7 +86,9 @@
                                 <div class="col-12 px-0">
                                     <div class="form-group d-flex justify-content-between align-items-center">
                                         <form:label path="images" class="mt-2">
-                                            <spring:message code="jobForm.jobImageTitle"/></form:label>
+                                            <spring:message code="jobForm.jobImageTitle"/>
+                                            <spring:message code="jobForm.imageLimit"/>
+                                        </form:label>
                                         <button class="buttonCustom d-flex align-items-center justify-content-center"
                                                 type="button" id="addFileButton">
                                             <i class="fas fa-upload mr-1"></i>
@@ -95,6 +97,7 @@
                                         <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg"
                                                hidden/>
                                     </div>
+                                    <form:errors path="images" cssClass="formError" element="p"/>
 
                                     <div class="container-fluid p-0" id="imagesHolder">
                                         <div class="row">

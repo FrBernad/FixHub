@@ -60,14 +60,16 @@
 
     <div class="form-group d-flex justify-content-between align-items-center">
         <form:label path="images" class="mb-0">
-            <spring:message code="jobForm.jobImageTitle"/></form:label>
+            <spring:message code="jobForm.jobImageTitle"/><br>
+            <spring:message code="jobForm.imageLimit"/>
+        </form:label>
         <button class="buttonCustom" type="button" id="addFileButton">
             <i class="fas fa-upload mr-1"></i>
             <spring:message code="jobForm.ImagesButton"/>
         </button>
         <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
-        <form:errors path="images" cssClass="formError" element="p"/>
     </div>
+    <form:errors path="images" cssClass="formError" element="p"/>
 
     <input type="hidden" value="${user.id}" name="userId">
 
