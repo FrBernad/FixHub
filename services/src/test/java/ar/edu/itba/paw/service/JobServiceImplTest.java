@@ -1,18 +1,21 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
+import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.services.JobServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import static ar.edu.itba.paw.models.JobCategory.*;
+import static ar.edu.itba.paw.services.UserServiceImpl.DEFAULT_ROLES;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
@@ -20,8 +23,6 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class JobServiceImplTest {
 
-    public final static Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(
-            Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
     private static final String PASSWORD = "password";
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
@@ -49,9 +50,13 @@ public class JobServiceImplTest {
     @Mock
     private JobDao mockJobDao;
 
+    @Mock
+    private UserDao userDao;
+
     @Test
     public void testCreate() {
-        when(mockJobDao.createJob(JOB_PROVIDED, CATEGORY, DESCRIPTION, PRICE, false, DEFAULT_USER, IMAGES)).thenReturn(DEFAULT_JOB);
+        when(mockJobDao.createJob(Mockito.eq(JOB_PROVIDED), Mockito.eq(CATEGORY), Mockito.eq(DESCRIPTION), Mockito.eq(PRICE), Mockito.eq(false), Mockito.eq(DEFAULT_USER), Mockito.any())).thenReturn(DEFAULT_JOB);
+        when(userDao.getAllUserFollowers(Mockito.eq(DEFAULT_USER.getId()))).thenReturn(Collections.emptyList());
 
         Job maybeJob = jobService.createJob(JOB_PROVIDED, CATEGORY, DESCRIPTION, PRICE, false, Collections.emptyList(), DEFAULT_USER);
 

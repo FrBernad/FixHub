@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Objects;
+
 public class ReviewUser {
 
     private long userId, profileImageId;
@@ -42,6 +44,14 @@ public class ReviewUser {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReviewUser that = (ReviewUser) o;
+        return userId == that.userId && profileImageId == that.profileImageId && Objects.equals(name, that.name) && Objects.equals(surname, that.surname);
     }
 
 }
