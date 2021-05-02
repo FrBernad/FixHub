@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 @Rollback
-@Sql(scripts = "classpath:imageDaoTest.sql")
+//@Sql(scripts = "classpath:image-dao-test.sql")
 @ContextConfiguration(classes = TestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ImageDaoTest {

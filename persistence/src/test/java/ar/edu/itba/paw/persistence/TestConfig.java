@@ -28,11 +28,17 @@ public class TestConfig {
     @Value("classpath:schema.sql")
     private Resource schemaSql;
 
-    @Value("classpath:jobDaoTest.sql")
-    private Resource jobDaoTest;
+    @Value("classpath:job-dao-test.sql")
+    private Resource jobTestSql;
 
-    @Value("classpath:user-test.sql")
+    @Value("classpath:user-dao-test.sql")
     private Resource userTestSql;
+
+    @Value("classpath:image-dao-test.sql")
+    private Resource imageTestSql;
+
+    @Value("classpath:review-dao-test.sql")
+    private Resource reviewTestSql;
 
     @Bean
     public DataSource dataSource() {
@@ -59,7 +65,8 @@ public class TestConfig {
 
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScripts(hsqldbSql, schemaSql, userTestSql); //Esto lo que hace es que setee el modo compatibilidad con postgres.
+        dbp.addScripts(hsqldbSql, schemaSql); //Esto lo que hace es que setee el modo compatibilidad con postgres.
+        dbp.addScript(imageTestSql);
         return dbp;
     }
 }

@@ -4,10 +4,11 @@ import java.util.Objects;
 
 public class ReviewUser {
 
-    private long userId, profileImageId;
+    private long userId;
+    private Long profileImageId;
     private String name, surname;
 
-    public ReviewUser(long userId, String name, String surname, long profileImageId) {
+    public ReviewUser(long userId, String name, String surname, Long profileImageId) {
         this.userId = userId;
         this.profileImageId = profileImageId;
         this.name = name;
@@ -22,11 +23,11 @@ public class ReviewUser {
         this.userId = userId;
     }
 
-    public long getProfileImageId() {
+    public Long getProfileImageId() {
         return profileImageId;
     }
 
-    public void setProfileImageId(long profileImageId) {
+    public void setProfileImageId(Long profileImageId) {
         this.profileImageId = profileImageId;
     }
 

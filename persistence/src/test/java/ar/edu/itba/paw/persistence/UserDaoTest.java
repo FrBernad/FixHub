@@ -25,7 +25,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-//@Sql(scripts = "classpath:user-test.sql")//sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
+//@Sql(scripts = "classpath:user-dao-test.sql")//sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
