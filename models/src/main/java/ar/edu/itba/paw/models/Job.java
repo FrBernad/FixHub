@@ -16,6 +16,7 @@ public class Job {
     private Long coverImageId;
     private Collection<Long> imagesId;
     private boolean paused;
+    public static final int MAX_IMAGES_PER_JOB=6;
 
     public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, boolean paused ,User provider, Long coverImageId, Collection<Long> imagesId) {
         this.description = description;

@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
+import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -18,6 +20,8 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+
+import static ar.edu.itba.paw.models.Job.MAX_IMAGES_PER_JOB;
 
 @org.springframework.stereotype.Service
 public class JobServiceImpl implements JobService {
@@ -107,6 +111,17 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
+        Collection<Long> oldImagesId = getImagesIdsByJobId(jobId);
+
+        //If a user tries to delete images that are not from the job to update
+        if(!oldImagesId.containsAll(imagesIdDeleted)){
+            throw new IllegalOperationException();
+        }
+        //If a job reaches the limit of images
+        if(oldImagesId.size()-imagesIdDeleted.size()+images.size()>MAX_IMAGES_PER_JOB){
+            throw new MaxImagesPerJobException();
+        }
+
         List<Image> jobImages;
 
         if (!images.isEmpty())
