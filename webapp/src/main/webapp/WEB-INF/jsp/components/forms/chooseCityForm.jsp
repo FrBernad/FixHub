@@ -34,7 +34,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col">
-                <div class="container-fluid" id="citiesHolder">
+                <div class="container-fluid" id="citiesHolder" style="width: 418px;">
 
                 </div>
             </div>
