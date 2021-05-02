@@ -2,6 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <html>
 <head>
     <%@ include file="../../components/includes/headers.jsp" %>
@@ -158,10 +160,10 @@
                                                 </c:if>
 
                                                 <c:choose>
-                                                    <c:when test="${results.results.size()>0}">
+                                                    <c:when test="${fn:length(results.results) gt 0}">
                                                         <div class="col-12">
                                                             <div class="container-fluid px-0">
-                                                                <div class="row align-items-top ${results.results.size()%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
+                                                                <div class="row align-items-top ${fn:length(results.results)%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
                                                                     <c:forEach var="job" items="${results.results}">
                                                                         <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center
                                                                         justify-content-center">

@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -141,9 +142,9 @@
             </div>
             <div class="col-12 p-0">
                 <div class="container-fluid p-0">
-                    <div class="row ${jobs.size()%3 == 0 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
+                    <div class="row ${fn:length(jobs)%3 == 0 ? 'justify-content-between': 'justify-content-start'} align-items-center m-0">
                         <c:choose>
-                            <c:when test="${jobs.size()>0}">
+                            <c:when test="${fn:length(jobs) gt 0}">
                                 <c:forEach begin="0" end="2" var="job" items="${jobs}">
                                     <div class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
                                         <%@ include file="../components/cards/popularJobCard.jsp" %>

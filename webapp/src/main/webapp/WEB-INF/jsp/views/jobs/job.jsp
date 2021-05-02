@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -23,8 +24,7 @@
                     <div>
                         <div style="position: relative;height: 400px; width:400px;">
                             <c:choose>
-                                <c:when test="${job.imagesId.size() > 0}">
-
+                                <c:when test="${fn:length(job.imagesId) gt 0}">
                                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                         <div id="carousel" class="carousel-inner">
                                             <c:forEach var="imageId" items="${job.imagesId}">
@@ -35,7 +35,7 @@
                                                 </div>
                                             </c:forEach>
                                         </div>
-                                        <c:if test="${job.imagesId.size() > 1}">
+                                        <c:if test="${fn:length(job.imagesId) gt 1}">
                                             <a class="carousel-control-prev" href="#carouselExampleControls"
                                                role="button"
                                                data-slide="prev">

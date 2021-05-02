@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:url value="/jobs/${job.id}/contact" var="postPath"/>
 <form:form modelAttribute="contactForm" id="contactForm" action="${postPath}" class="contactForm" method="POST">
 
-    <c:if test="${contactInfoCollection.size() > 0}">
+    <c:if test="${fn:length(contactInfoCollection) gt 0}">
     <div class="dropdown mb-4">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

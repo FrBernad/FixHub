@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title><spring:message code="productName"/> | <spring:message code="profilePage.${following ? 'following' : 'followers'}"/></title>
@@ -134,7 +135,7 @@
             </form:form>
 
             <c:choose>
-                <c:when test="${results.results.size()>0}">
+                <c:when test="${fn:length(results.results) gt 0}">
                     <div class="col-12 col-md-8 pt-5">
                         <c:forEach var="follower" items="${results.results}">
                             <div class="col-12 mt-3">

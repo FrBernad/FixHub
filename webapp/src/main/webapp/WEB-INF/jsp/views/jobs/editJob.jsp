@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title><spring:message code="productName"/> | <spring:message code="job.editTitle"/> <c:out
@@ -32,7 +33,7 @@
                                     <div>
                                         <div style="height: 400px; width:400px;">
                                             <c:choose>
-                                                <c:when test="${job.imagesId.size() > 0}">
+                                                <c:when test="${fn:length(job.imagesId) gt 0}">
                                                     <div id="carouselExampleControls" class="carousel slide"
                                                          data-ride="carousel">
                                                         <div id="carousel" class="carousel-inner">
@@ -50,7 +51,7 @@
                                                             </c:forEach>
                                                         </div>
 
-                                                        <c:if test="${job.imagesId.size() > 1}">
+                                                        <c:if test="${fn:length(job.imagesId) gt 1}">
 
                                                             <a class="carousel-control-prev"
                                                                href="#carouselExampleControls"
