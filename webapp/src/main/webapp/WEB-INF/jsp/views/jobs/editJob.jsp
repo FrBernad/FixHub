@@ -84,13 +84,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 px-0">
+                                <div class="col-10 mt-3 px-0">
                                     <div class="form-group d-flex justify-content-between align-items-center">
                                         <form:label path="images" class="mt-2">
                                             <spring:message code="jobForm.jobImageTitle"/></form:label>
                                         <div>
 
-                                            <span id="imagesQuantity" data-quantity="${job.imagesId.size()}"><c:out value="${job.imagesId.size()}"/></span>
+                                            <span id="imagesQuantity" data-quantity="${job.imagesId.size()}"><c:out
+                                                    value="${job.imagesId.size()}"/></span>
                                             <span>/ <spring:message code="jobForm.imageLimit"/></span>
                                         </div>
 
@@ -138,7 +139,23 @@
                                                 class="form-control"/>
                                     <form:errors path="price" cssClass="formError" element="p"/>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 px-0 form-group">
+                                    <form:label class="label" path="description"><spring:message
+                                            code="jobForm.jobDescriptionTitle"/></form:label>
+                                    <form:textarea type="text" path="description" value="${job.description}"
+                                                cssErrorClass="form-control is-invalid"
+                                                cssStyle="width: 100%;
+                                                          height: 100px;
+                                                          padding: 12px 20px;
+                                                          box-sizing: border-box;
+                                                          border: 2px solid #ccc;
+                                                          border-radius: 4px;
+                                                          background-color: #f8f8f8;
+                                                          resize: none;"
+                                                id="state" class="form-control"/>
+                                    <form:errors path="description" cssClass="formError" element="p"/>
+                                </div>
+                                <div class="col-12 px-0">
                                     <div class="form-group">
                                         <form:input path="paused" type="hidden" id="paused"
                                                     value="${job.paused}"/>
@@ -156,20 +173,14 @@
                     </div>
                 </div>
                 <hr class="text-left ml-0 my-3" style="width: 100%;">
-                <div class="col-12 form-group">
-                    <form:label class="label" path="description"><spring:message
-                            code="jobForm.jobDescriptionTitle"/></form:label>
-                    <form:input type="text" path="description" value="${job.description}"
-                                cssErrorClass="form-control is-invalid" id="state" class="form-control"/>
-                    <form:errors path="description" cssClass="formError" element="p"/>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center">
+
+                <div class="col-12 px-0 d-flex justify-content-center align-items-center">
                     <button type="button" id="editFormButton" form="editJobForm" class="w-25 continueBtn my-2 ">
-                        <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status" aria-hidden="true"></span>
+                        <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status"
+                              aria-hidden="true"></span>
                         <spring:message code="job.submit"/>
                     </button>
                 </div>
-
 
                 <div id="imageIdDeletedContainer" class="d-none">
 

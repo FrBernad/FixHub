@@ -100,7 +100,7 @@
                                 <c:choose>
                                     <c:when test="${loggedUser!=null && loggedUser.id==job.provider.id}">
                                         <div class="col-12">
-                                            <a href="<c:url value='/jobs/${job.id}/edit'/>">
+                                            <a href="<c:url value='/jobs/${job.id}/edit'/>" style="text-decoration: none">
                                                 <button class="contactBtn"><spring:message code="job.editTitle"/></button>
                                             </a>
                                             <c:if test="${job.paused}">
