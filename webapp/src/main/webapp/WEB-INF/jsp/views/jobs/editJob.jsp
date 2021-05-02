@@ -166,10 +166,10 @@
         </div>
 
 
-        <div id="imageIdDeletedContainer" class="invisible"></div>
-<%--        <input type="hidden" name="imagesIdDeleted" id="deletedImages">--%>
-        <input type="hidden" name="imagesIdDeleted" value="2">
-        <input type="hidden" name="imagesIdDeleted" value="3">
+        <div id="imageIdDeletedContainer" class="d-none">
+
+        </div>
+
         </form:form>
     </div>
 </div>

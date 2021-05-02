@@ -140,7 +140,8 @@ public class JobController {
 
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Error getting bytes from images");
+                    throw new ServerInternalException();
                 }
             }
         }

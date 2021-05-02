@@ -26,15 +26,20 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const image of jobImages) {
             let imageContainer = document.getElementById(image.dataset.imageId);
 
-            image.addEventListener("click", () => {
-                imagesIdDeleted.push(image.dataset.imageId);
+            image.addEventListener("click",()=>{
                 imageContainer.removeChild(image);
                 carousel.removeChild(imageContainer);
-                if (jobImages.length !== 0) {
-                    carousel.getElementsByTagName("div")[0].className += " active";
+                let aux = document.createElement("input");
+                aux.type = "hidden";
+                aux.name="imagesIdDeleted";
+                aux.value=image.dataset.imageId;
+                imagesIdDeletedContainer.appendChild(aux);
+                if(jobImages.length !== 0){
+                    carousel.getElementsByTagName("div")[0].className+=" active";
                 }
-
             })
+
+
         }
     }
 
@@ -83,21 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
         inputFile.removeEventListener("change", inputFileUpdate);
         inputFile.files = new fileListItems(files);
 
-        let aux = document.getElementById("deletedImages");
-        let deletedImages = "";
-        for (const imageIdDeleted of imagesIdDeleted) {
-            let image = document.createElement("input");
-            // image.type = "hidden";
-            // image.name = "imagesIdDeleted";
-            // image.value = imageIdDeleted;
-            deletedImages+=imageIdDeleted+"&"
-            // console.log(image);
-            // imagesIdDeletedContainer.appendChild(image);
-        }
-
-        // aux.setAttribute("value",deletedImages);
-
-        console.log(imagesIdDeletedContainer);
-        setTimeout(()=>{editJobForm.submit()},1000);
+        editJobForm.submit();
     })
 });
