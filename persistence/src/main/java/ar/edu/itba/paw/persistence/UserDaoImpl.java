@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
         return statsMap.values();
     };
 
-    private static final ResultSetExtractor<Collection<User>> USER_RS_EXTRACTOR_MAPPER = rs -> {
+    private static final ResultSetExtractor<Collection<User>> USER_RS_EXTRACTOR = rs -> {
         Map<Long, User> userMap = new HashMap<>();
 
         long userId;
@@ -75,7 +75,7 @@ public class UserDaoImpl implements UserDao {
                     rs.getString("u_phone_number"),
                     rs.getString("u_state"),
                     rs.getString("u_city"),
-                    new ArrayList<>(),
+                    new HashSet<>(),
                     rs.getLong("u_profile_picture"),
                     rs.getLong("u_cover_picture")));
             }
@@ -85,21 +85,6 @@ public class UserDaoImpl implements UserDao {
 
         return userMap.values();
     };
-
-
-    private static final RowMapper<User> USER_ROW_MAPPER = (rs, num) ->
-        new User(
-            rs.getLong("u_id"),
-            rs.getString("u_password"),
-            rs.getString("u_name"),
-            rs.getString("u_surname"),
-            rs.getString("u_email"),
-            rs.getString("u_phone_number"),
-            rs.getString("u_state"),
-            rs.getString("u_city"),
-            new ArrayList<>(),
-            rs.getLong("u_profile_picture"),
-            rs.getLong("u_cover_picture"));
 
     private ResultSetExtractor<Collection<ContactInfo>> CONTACT_INFO_ROW_MAPPER = rs -> {
         List<ContactInfo> contactInfo = new LinkedList<>();
@@ -156,7 +141,7 @@ public class UserDaoImpl implements UserDao {
         final String query = "SELECT * FROM USERS u JOIN ROLES r on u_id=r_user_id WHERE u_id = ?";
         LOGGER.debug("Executing query: {}", query);
         return jdbcTemplate.
-            query(query, new Object[]{id}, USER_RS_EXTRACTOR_MAPPER)
+            query(query, new Object[]{id}, USER_RS_EXTRACTOR)
             .stream()
             .findFirst();
     }
@@ -165,7 +150,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> getUserByEmail(String email) {
         final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_email = ?) as AUX JOIN roles r on u_id = r_user_id";
         LOGGER.debug("Executing query: {}", query);
-        return jdbcTemplate.query(query, new Object[]{email}, USER_RS_EXTRACTOR_MAPPER)
+        return jdbcTemplate.query(query, new Object[]{email}, USER_RS_EXTRACTOR)
             .stream()
             .findFirst();
     }
@@ -315,20 +300,11 @@ public class UserDaoImpl implements UserDao {
 
         variables.add(providerId);
 
-        String offset = " ";
-        if (page > 0) {
-            offset = " OFFSET ? ";
-            variables.add(page * itemsPerPage);
-        }
-        String limit = " ";
-        if (itemsPerPage > 0) {
-            limit = " LIMIT ? ";
-            variables.add(itemsPerPage);
-        }
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
         final String query = "SELECT * FROM (SELECT * FROM " +
             "(SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_provider_id = ?)" +
-            " AUX JOIN USERS on u_id = c_user_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC " + offset + limit;
+            " AUX JOIN USERS on u_id = c_user_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC, c_id DESC " + offsetAndLimitQuery;
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.query(query, variables.toArray(), CLIENT_ROW_MAPPER);
@@ -347,6 +323,7 @@ public class UserDaoImpl implements UserDao {
         List<Object> variables = new LinkedList<>();
 
         variables.add(clientId);
+
 
         String offset = " ";
         if (page > 0) {
@@ -452,69 +429,81 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
         variables.add(userId);
 
-        String offset = " ";
-        if (page > 0) {
-            offset = " OFFSET ? ";
-            variables.add(page * itemsPerPage);
-        }
-        String limit = " ";
-        if (itemsPerPage > 0) {
-            limit = " LIMIT ? ";
-            variables.add(itemsPerPage);
-        }
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
-        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_id IN " +
-            "(SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?)) u " +
-            " order by u_id desc " + offset + limit;
+        final String USER_WHERE_IDS_QUERY =
+            " where u_id in (select u_id " +
+                " from USERS " +
+                " JOIN " +
+                " (SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?) followersIds " +
+                " on f_user_id = users.u_id " +
+                " order by u_id desc " + offsetAndLimitQuery + " ) ";
+
+        final String query =
+            " SELECT * FROM " +
+                " (SELECT * FROM USERS " + USER_WHERE_IDS_QUERY + " ) u " +
+                " JOIN " +
+                " ROLES on u.u_id = roles.r_user_id " +
+                " order by u_id desc ";
 
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.
-            query(query, USER_ROW_MAPPER, variables.toArray());
+            query(query, USER_RS_EXTRACTOR, variables.toArray());
     }
 
     @Override
     public Collection<User> getAllUserFollowers(Long userId) {
-        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_id IN " +
-            "(SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?)) u " +
-            " order by u_id desc";
+        final String USER_WHERE_IDS_QUERY =
+            " where u_id in (select u_id " +
+                " from USERS " +
+                " JOIN " +
+                " (SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?) followersIds " +
+                " on f_user_id = users.u_id " +
+                " order by u_id desc ) ";
 
-        LOGGER.debug("Executing query: {}", query);
+        final String query =
+            " SELECT * FROM " +
+                " (SELECT * FROM USERS " + USER_WHERE_IDS_QUERY + " ) u" +
+                " JOIN " +
+                " ROLES on u.u_id = roles.r_user_id ";
 
         return jdbcTemplate.
-            query(query, USER_ROW_MAPPER, userId);
+            query(query, USER_RS_EXTRACTOR, userId);
     }
 
     @Override
     public Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
         variables.add(userId);
 
-        String offset = " ";
-        if (page > 0) {
-            offset = " OFFSET ? ";
-            variables.add(page * itemsPerPage);
-        }
-        String limit = " ";
-        if (itemsPerPage > 0) {
-            limit = " LIMIT ? ";
-            variables.add(itemsPerPage);
-        }
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
-        final String query = "SELECT * FROM (SELECT * FROM USERS WHERE u_id IN " +
-            "(SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?)) u " +
-            " order by u_id desc " + offset + limit;
+        final String USER_WHERE_IDS_QUERY =
+            " where u_id in (select u_id " +
+                " from USERS " +
+                " JOIN " +
+                " (SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?) followedIds " +
+                " on f_followed_user_id = users.u_id " +
+                " order by u_id desc " + offsetAndLimitQuery + " ) ";
+
+        final String query =
+            " SELECT * FROM " +
+                " (SELECT * FROM USERS " + USER_WHERE_IDS_QUERY + " ) u" +
+                " JOIN " +
+                " ROLES on u.u_id = roles.r_user_id ";
 
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.
-            query(query, USER_ROW_MAPPER, variables.toArray());
+            query(query, USER_RS_EXTRACTOR, variables.toArray());
     }
+
 
     @Override
     public Collection<Integer> getAllUserFollowingsIds(Long userId) {
@@ -555,6 +544,19 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query(query,
             (rs, rowNum) -> rs.getInt("total"),
             new Object[]{userId}).stream().findFirst().orElse(0);
+    }
+
+    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
+        StringBuilder offsetAndLimitQuery = new StringBuilder();
+        if (page > 0) {
+            offsetAndLimitQuery.append(" OFFSET ? ");
+            variables.add(page * itemsPerPage);
+        }
+        if (itemsPerPage > 0) {
+            offsetAndLimitQuery.append(" LIMIT ? ");
+            variables.add(itemsPerPage);
+        }
+        return offsetAndLimitQuery.toString();
     }
 
 

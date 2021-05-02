@@ -102,12 +102,6 @@ public class JobServiceImpl implements JobService {
         return jobDao.getJobsCategories();
     }
 
-    @Override
-    public Collection<Long> getImagesIdsByJobId(Long jobId) {
-        LOGGER.debug("Retrieving job images for job id {}", jobId);
-        return jobDao.getImagesIdsByJobId(jobId);
-    }
-
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {

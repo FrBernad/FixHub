@@ -9,9 +9,9 @@ public class Review {
     private Number jobId;
     private int rating;
     private LocalDate creationDate;
-    private ReviewUser reviewer;
+    private User reviewer;
 
-    public Review(Number id, String description, Number jobId, int rating, LocalDate creationDate, ReviewUser reviewer) {
+    public Review(Number id, String description, Number jobId, int rating, LocalDate creationDate, User reviewer) {
         this.id = id;
         this.description = description;
         this.jobId = jobId;
@@ -60,11 +60,11 @@ public class Review {
         this.creationDate = creationDate;
     }
 
-    public ReviewUser getReviewer() {
+    public User getReviewer() {
         return reviewer;
     }
 
-    public void setReviewer(ReviewUser reviewer) {
+    public void setReviewer(User reviewer) {
         this.reviewer = reviewer;
     }
 

@@ -7,11 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
+
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.*;
@@ -27,39 +26,52 @@ public class JobDaoImpl implements JobDao {
     private SimpleJdbcInsert jobImagesSimpleJdbcInsert;
     private static final Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
 
-    private static final String EMPTY = " ";
     private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
 
-    private static final RowMapper<Job> JOB_ROW_MAPPER = (rs, rowNum) ->
-        new Job(rs.getString("j_description"),
-            rs.getString("j_job_provided"),
-            rs.getInt("avg_rating"),
-            rs.getInt("total_ratings"),
-            JobCategory.valueOf(rs.getString("j_category")),
-            rs.getLong("j_id"),
-            rs.getBigDecimal("j_price"),
-            rs.getBoolean("j_paused"),
-            new User(rs.getLong("j_provider_id"),
-                rs.getString("u_password"),
-                rs.getString("u_name"),
-                rs.getString("u_surname"),
-                rs.getString("u_email"),
-                rs.getString("u_phone_number"),
-                rs.getString("u_state"),
-                rs.getString("u_city"),
-                Collections.emptyList(),
-                rs.getLong("u_profile_picture"),
-                rs.getLong("u_cover_picture")),
-            rs.getLong("ji_image_id"),
-            Collections.emptyList());
+    private static final ResultSetExtractor<Collection<Job>> JOB_RS_EXTRACTOR = (rs) ->
+    {
+        final Map<Long, Job> jobsMap = new LinkedHashMap<>();
+        long jobId;
 
-
-    private static final ResultSetExtractor<Collection<Long>> JOB_IMAGE_ROW_MAPPER = rs -> {
-        List<Long> imageIds = new LinkedList<>();
         while (rs.next()) {
-            imageIds.add(rs.getLong("ji_image_id"));
+
+            jobId = rs.getLong("j_id");
+
+            if (!jobsMap.containsKey(jobId)) {
+                jobsMap.put(jobId,
+                    new Job(rs.getString("j_description"),
+                        rs.getString("j_job_provided"),
+                        rs.getInt("avg_rating"),
+                        rs.getInt("total_ratings"),
+                        JobCategory.valueOf(rs.getString("j_category")),
+                        rs.getLong("j_id"),
+                        rs.getBigDecimal("j_price"),
+                        rs.getBoolean("j_paused"),
+                        new User(rs.getLong("j_provider_id"),
+                            rs.getString("u_password"),
+                            rs.getString("u_name"),
+                            rs.getString("u_surname"),
+                            rs.getString("u_email"),
+                            rs.getString("u_phone_number"),
+                            rs.getString("u_state"),
+                            rs.getString("u_city"),
+                            new HashSet<>(),
+                            rs.getLong("u_profile_picture"),
+                            rs.getLong("u_cover_picture")),
+                        new HashSet<>()));
+            }
+
+            final Job job = jobsMap.get(jobId);
+
+            job.getProvider().addRole(Roles.valueOf(rs.getString("r_role")));
+
+            final Long imageId = rs.getLong("ji_image_id");
+            if (imageId != 0)
+                job.addImageId(imageId);
+
         }
-        return imageIds;
+
+        return jobsMap.values();
     };
 
     @Autowired
@@ -95,97 +107,71 @@ public class JobDaoImpl implements JobDao {
             LOGGER.debug("Inserted image with id {} to job with id {}", image.getImageId(), id);
         }
 
-        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused, provider, imagesId.stream().findFirst().orElse(null), imagesId);
+        return new Job(description, jobProvided, averageRating, totalRatings, category, id.longValue(), price, paused, provider, imagesId);
     }
+
 
     @Override
     public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, String state, String city, int page, int itemsPerPage) {
 
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
-        String filterQuery = EMPTY;
-        if (category != null) {
-            variables.add(category.name());
+        final String filterQuery = getCategoryFilterQuery(category, variables);
 
-            filterQuery = " WHERE j_category = ? ";
-        }
+        final String orderQuery = getOrderQuery(orderOption);
 
-        String orderQuery = getOrderQuery(orderOption);
+        final String stateAndCityQuery = getStateAndCityQuery(state, city, variables);
 
-        String stateQuery = EMPTY;
-        if (state != null) {
-            stateQuery = " WHERE c_state_id = ? ";
-            variables.add(Integer.valueOf(state));
-        }
+        final String searchQuery = getSearchQuery(searchBy, variables);
 
-        String cityQuery = EMPTY;
-        if (city != null) {
-            cityQuery = " AND c_id = ? ";
-            variables.add(Integer.valueOf(city));
-        }
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
-        String searchQuery = EMPTY;
-        if (searchBy != null) {
-            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-            variables.add(searchBy);
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
-        }
+        final String JOBS_WHERE_ID_QUERY =
+            " where j_id in ( " +
+                " select j_id from " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") w0 " +
+                " JOIN " +
+                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id " + stateAndCityQuery + " ) as w1 " +
+                " ON w0.j_provider_id=w1.ul_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
+                " on job_id=j_id " + orderQuery + searchQuery + offsetAndLimitQuery + " ) ";
 
-        String offset = EMPTY;
-        if (page > 0) {
-            offset = " OFFSET ? ";
-            variables.add(page * itemsPerPage);
-        }
+        final String query =
+            " select * from " +
+                " (select * from JOBS " + JOBS_WHERE_ID_QUERY + " ) selectedJobs " +
+                " JOIN " +
+                " USERS on selectedJobs.j_provider_id=users.u_id " +
+                " JOIN " +
+                " ROLES on users.u_id = roles.r_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) as jobsStats " +
+                " on j_id = jobsStats.job_id " +
+                " LEFT OUTER JOIN " +
+                " (select ji_job_id, ji_image_id from job_image) jobImages " +
+                " on j_id = jobImages.ji_job_id " + orderQuery;
 
-
-        String limit = EMPTY;
-        if (itemsPerPage > 0) {
-            limit = " LIMIT ? ";
-            variables.add(itemsPerPage);
-        }
-
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, stateQuery, cityQuery, offset, limit, variables);
+        return executeQuery(query, variables);
     }
 
     @Override
     public Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city) {
         List<Object> variables = new LinkedList<>();
 
-        String filterQuery = EMPTY;
-        if (category != null) {
-            variables.add(category.name());
+        final String filterQuery = getCategoryFilterQuery(category, variables);
 
-            filterQuery = " WHERE j_category = ? ";
-        }
+        final String stateAndCityQuery = getStateAndCityQuery(state, city, variables);
 
-        String stateQuery = EMPTY;
-        if (state != null) {
-            stateQuery = " WHERE c_state_id = ? ";
-            variables.add(Integer.valueOf(state));
-        }
+        final String searchQuery = getSearchQuery(searchBy, variables);
 
-        String cityQuery = EMPTY;
-        if (city != null) {
-            cityQuery = " AND c_id = ? ";
-            variables.add(Integer.valueOf(city));
-        }
-
-        String searchQuery = EMPTY;
-        if (searchBy != null) {
-            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-            variables.add(searchBy);
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
-        }
 
         final String query = String.format("select count(distinct j_id) total from " +
             "(select * from ( (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
             "JOIN (SELECT distinct ul_user_id from " +
-            " cities join user_location on c_id = user_location.ul_city_id %s %s) " +
-            " as aux1 ON aux0.j_provider_id=aux1.ul_user_id ) as aux2 %s) as aux3", filterQuery, stateQuery, cityQuery, searchQuery);
+            " cities join user_location on c_id = user_location.ul_city_id %s) " +
+            " as aux1 ON aux0.j_provider_id=aux1.ul_user_id ) as aux2 %s) as aux3", filterQuery, stateAndCityQuery, searchQuery);
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
@@ -194,19 +180,12 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Integer getJobsCountByProviderId(String searchBy, Long providerId) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
-        String filterQuery = " WHERE j_provider_id = ? ";
+        final String filterQuery = " WHERE j_provider_id = ? ";
         variables.add(providerId);
 
-        String searchQuery = EMPTY;
-        if (searchBy != null) {
-            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-            variables.add(searchBy);
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ?";
-        }
+        final String searchQuery = getSearchQuery(searchBy, variables);
 
         final String query = " select count(*) total from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id" + filterQuery + " ) as aux" + searchQuery;
         LOGGER.debug("Executing query: {}", query);
@@ -216,18 +195,18 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<Image> images, long jobId,List<Long> imagesIdDeleted) {
+    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<Image> images, long jobId, List<Long> imagesIdDeleted) {
 
-        LOGGER.info("Updating job with id {} information",jobId);
+        LOGGER.info("Updating job with id {} information", jobId);
 
         jdbcTemplate.update("UPDATE jobs SET j_job_provided = ?, " +
             "j_description = ?, j_paused = ?,j_price = ? where j_id = ? ", jobProvided, description, paused, price, jobId);
 
-        Map<String, Object> imageJobMap = new HashMap<>();
-        Collection<Long> imagesId = new LinkedList<>();
+        final Map<String, Object> imageJobMap = new HashMap<>();
+        final Collection<Long> imagesId = new LinkedList<>();
 
-        for(Long imageId: imagesIdDeleted){
-            jdbcTemplate.update("DELETE FROM JOB_IMAGE where ji_image_id = ?",new Object[]{imageId});
+        for (Long imageId : imagesIdDeleted) {
+            jdbcTemplate.update("DELETE FROM JOB_IMAGE where ji_image_id = ?", imageId);
         }
 
         for (Image image : images) {
@@ -242,12 +221,39 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<Job> getJobById(long id) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
         variables.add(id);
 
-        String filterQuery = " WHERE j_id = ? ";
+        final String filterQuery = " WHERE j_id = ? ";
 
-        return createAndExecuteQuery(EMPTY, EMPTY, filterQuery, EMPTY, EMPTY, EMPTY, EMPTY, variables).stream().findFirst();
+        final String JOBS_WHERE_ID_QUERY =
+            " where j_id in ( " +
+                " select j_id from " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") w0 " +
+                " JOIN " +
+                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id ) as w1 " +
+                " ON w0.j_provider_id=w1.ul_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
+                " on job_id=j_id ) ";
+
+        final String query =
+            " select * from " +
+                " (select * from JOBS " + JOBS_WHERE_ID_QUERY + " ) selectedJobs " +
+                " JOIN " +
+                " USERS on selectedJobs.j_provider_id=users.u_id " +
+                " JOIN " +
+                " ROLES on users.u_id = roles.r_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) as jobsStats " +
+                " on j_id = jobsStats.job_id " +
+                " LEFT OUTER JOIN " +
+                " (select ji_job_id, ji_image_id from job_image) jobImages " +
+                " on j_id = jobImages.ji_job_id ";
+
+        return executeQuery(query, variables).stream().findFirst();
     }
 
     public Collection<JobCategory> getJobsCategories() {
@@ -255,59 +261,56 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Long> getImagesIdsByJobId(Long jobId) {
-        final String query = "SELECT * FROM JOB_IMAGE where ji_job_id = ? ORDER BY ji_image_id";
-        LOGGER.debug("Executing query: {}", query);
-        return jdbcTemplate.query(query, new Object[]{jobId}, JOB_IMAGE_ROW_MAPPER);
-    }
-
-    @Override
     public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
-        String filterQuery = " WHERE j_provider_id = ? ";
+        final String filterQuery = " WHERE j_provider_id = ? ";
         variables.add(providerId);
 
-        String searchQuery = EMPTY;
-        if (searchBy != null) {
-            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-            variables.add(searchBy);
-            variables.add(searchBy);
-            searchQuery = " WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? ";
-        }
+        final String searchQuery = getSearchQuery(searchBy, variables);
 
-        String orderQuery = getOrderQuery(orderOption);
+        final String orderQuery = getOrderQuery(orderOption);
 
-        String offset = EMPTY;
-        if (page > 0) {
-            offset = " OFFSET ? ";
-            variables.add(page * itemsPerPage);
-        }
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
+        final String JOBS_WHERE_ID_QUERY =
+            " where j_id in ( " +
+                " select j_id from " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") w0 " +
+                " JOIN " +
+                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id ) as w1 " +
+                " ON w0.j_provider_id=w1.ul_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
+                " on job_id=j_id " + orderQuery + searchQuery + offsetAndLimitQuery + " ) ";
 
-        String limit = EMPTY;
-        if (itemsPerPage > 0) {
-            limit = " LIMIT ? ";
-            variables.add(itemsPerPage);
-        }
+        final String query =
+            " select * from " +
+                " (select * from JOBS " + JOBS_WHERE_ID_QUERY + " ) selectedJobs " +
+                " JOIN " +
+                " USERS on selectedJobs.j_provider_id=users.u_id " +
+                " JOIN " +
+                " ROLES on users.u_id = roles.r_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) as jobsStats " +
+                " on j_id = jobsStats.job_id " +
+                " LEFT OUTER JOIN " +
+                " (select ji_job_id, ji_image_id from job_image) jobImages " +
+                " on j_id = jobImages.ji_job_id " + orderQuery;
 
-        return createAndExecuteQuery(searchQuery, orderQuery, filterQuery, EMPTY, EMPTY, offset, limit, variables);
+        return executeQuery(query, variables);
     }
 
-    private Collection<Job> createAndExecuteQuery(String searchQuery, String orderQuery, String filterQuery, String stateQuery, String cityQuery, String offset, String limit, List<Object> variables) {
-        final String query = "select * from ( ( select * from" +
-            "((select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery +
-            ") aux3 JOIN (SELECT distinct ul_user_id from " +
-            " cities join user_location on c_id = user_location.ul_city_id " + stateQuery + cityQuery + ") " +
-            " as aux0 ON aux3.j_provider_id=aux0.ul_user_id ) as aux1 " +
-            " JOIN " +
-            "(select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-            "FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) aux2" +
-            " on aux1.j_id = aux2.job_id) aux3 LEFT OUTER JOIN (select ji_job_id, min(ji_image_id) as ji_image_id from job_image group by ji_job_id) aux4 on aux3.j_id = aux4.ji_job_id)" + searchQuery + orderQuery + offset + limit;
-
+    private Collection<Job> executeQuery(String query, List<Object> variables) {
         LOGGER.debug("Executing query: {}", query);
 
-        return jdbcTemplate.query(query, variables.toArray(), JOB_ROW_MAPPER);
+        if (variables != null) {
+            return jdbcTemplate.query(query, variables.toArray(), JOB_RS_EXTRACTOR);
+        }
+
+        return jdbcTemplate.query(query, JOB_RS_EXTRACTOR);
     }
 
     private String getOrderQuery(OrderOptions orderOption) {
@@ -327,6 +330,54 @@ public class JobDaoImpl implements JobDao {
 
         }
         return null; //never reaches
+    }
+
+
+    private String getCategoryFilterQuery(JobCategory category, List<Object> variables) {
+        StringBuilder filterQuery = new StringBuilder();
+        if (category != null) {
+            variables.add(category.name());
+            filterQuery.append(" WHERE j_category = ? ");
+        }
+        return filterQuery.toString();
+    }
+
+    private String getStateAndCityQuery(String state, String city, List<Object> variables) {
+        StringBuilder stateAndCityQuery = new StringBuilder();
+        if (state != null) {
+            stateAndCityQuery.append(" WHERE c_state_id = ? ");
+            variables.add(Integer.valueOf(state));
+        }
+        if (city != null) {
+            stateAndCityQuery.append(" AND c_id = ? ");
+            variables.add(Integer.valueOf(city));
+        }
+        return stateAndCityQuery.toString();
+    }
+
+    private String getSearchQuery(String searchBy, List<Object> variables) {
+        StringBuilder searchQuery = new StringBuilder();
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery.append(" WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ? ");
+        }
+        return searchQuery.toString();
+    }
+
+    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
+        StringBuilder offsetAndLimitQuery = new StringBuilder();
+        if (page > 0) {
+            offsetAndLimitQuery.append(" OFFSET ? ");
+            variables.add(page * itemsPerPage);
+        }
+        if (itemsPerPage > 0) {
+            offsetAndLimitQuery.append(" LIMIT ? ");
+            variables.add(itemsPerPage);
+        }
+        return offsetAndLimitQuery.toString();
     }
 
 }

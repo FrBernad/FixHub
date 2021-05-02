@@ -6,19 +6,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class Job {
-    private String description,jobProvided;
+    private String description, jobProvided;
     private int averageRating;
     private JobCategory category;
     private long id;
     private User provider;
     private BigDecimal price;
     private long totalRatings;
-    private Long coverImageId;
     private Collection<Long> imagesId;
     private boolean paused;
     public static final int MAX_IMAGES_PER_JOB=6;
 
-    public Job(String description,String jobProvided, int averageRating, long totalRatings,JobCategory category, long id, BigDecimal price, boolean paused ,User provider, Long coverImageId, Collection<Long> imagesId) {
+    public Job(String description, String jobProvided, int averageRating, long totalRatings, JobCategory category, long id, BigDecimal price, boolean paused, User provider, Collection<Long> imagesId) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -28,38 +27,29 @@ public class Job {
         this.provider = provider;
         this.price = price;
         this.paused = paused;
-        this.imagesId=imagesId;
-        this.coverImageId=coverImageId;
-    }
-
-    public Long getCoverImageId() {
-        return coverImageId;
-    }
-
-    public void setCoverImageId(Long coverImageId) {
-        this.coverImageId = coverImageId;
+        this.imagesId = imagesId;
     }
 
     @Override
     public String toString() {
         return "Job{" +
-                "description='" + description + '\'' +
-                ", jobProvided='" + jobProvided + '\'' +
-                ", averageRating=" + averageRating +
-                ", category=" + category +
-                ", id=" + id +
-                ", provider=" + provider +
-                ", price=" + price +
-                ", totalRatings=" + totalRatings +
-                '}';
+            "description='" + description + '\'' +
+            ", jobProvided='" + jobProvided + '\'' +
+            ", averageRating=" + averageRating +
+            ", category=" + category +
+            ", id=" + id +
+            ", provider=" + provider +
+            ", price=" + price +
+            ", totalRatings=" + totalRatings +
+            '}';
     }
 
-    public void addImageId(long imageId){
-      imagesId.add(imageId);
+    public void addImageId(long imageId) {
+        imagesId.add(imageId);
     }
 
-    public long getJobThumbnailId(){
-        return coverImageId;
+    public Long getJobThumbnailId(){
+        return imagesId.stream().findFirst().orElse(0L);
     }
 
     public BigDecimal getPrice() {
@@ -111,9 +101,13 @@ public class Job {
     }
 
 
-    public JobCategory getCategory() { return category;}
+    public JobCategory getCategory() {
+        return category;
+    }
 
-    public void setCategory(JobCategory category) {this.category = category;}
+    public void setCategory(JobCategory category) {
+        this.category = category;
+    }
 
     public long getId() {
         return id;

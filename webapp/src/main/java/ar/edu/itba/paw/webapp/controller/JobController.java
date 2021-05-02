@@ -51,7 +51,6 @@ public class JobController {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        job.setImagesId(jobService.getImagesIdsByJobId(jobId));
         final UserSchedule userSchedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
@@ -100,7 +99,6 @@ public class JobController {
         ModelAndView mav = new ModelAndView("views/jobs/editJob");
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        job.setImagesId(jobService.getImagesIdsByJobId(jobId));
 
         LOGGER.info("Accessed /jobs/{}/edit GET controller", jobId);
 

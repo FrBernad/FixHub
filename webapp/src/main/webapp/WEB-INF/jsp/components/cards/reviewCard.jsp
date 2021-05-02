@@ -16,7 +16,7 @@
                         </span>
         </div>
         <div class="col-7 mt-2 d-flex align-items-center justify-content-between">
-            <a href="<c:url value="/user/${review.reviewer.userId}"/>">
+            <a href="<c:url value="/user/${review.reviewer.id}"/>">
                 <c:out value="${review.reviewer.name} ${review.reviewer.surname}"/>
             </a>
         </div>

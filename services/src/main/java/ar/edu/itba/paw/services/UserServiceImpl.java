@@ -116,25 +116,6 @@ public class UserServiceImpl implements UserService {
         sendVerificationToken(user, token);
     }
 
-    private void sendVerificationToken(User user, VerificationToken token) {
-        try {
-            Locale locale = LocaleContextHolder.getLocale();
-            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
-//            String url = new URL("http", appBaseUrl, 8080, "/user/verifyAccount?token=" + token.getValue()).toString();
-            Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("confirmationURL", url);
-            mailAttrs.put("to", user.getEmail());
-
-            emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
-            LOGGER.warn("Error, user verification mail not sent");
-        }
-    }
-
-    private VerificationToken generateVerificationToken(long userId) {
-        String token = UUID.randomUUID().toString();
-        return verificationTokenDao.createVerificationToken(userId, token, VerificationToken.generateTokenExpirationDate());
-    }
 
     public boolean validatePasswordReset(String token) {
         Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
@@ -222,37 +203,6 @@ public class UserServiceImpl implements UserService {
         sendProviderNotificationEmail(user);
     }
 
-    private void sendProviderNotificationEmail(User user) {
-        try {
-            Locale locale = LocaleContextHolder.getLocale();
-            Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("to", user.getEmail());
-            mailAttrs.put("name", user.getName());
-            emailService.sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException e) {
-            LOGGER.warn("Error, provider notification mail not sent");
-        }
-    }
-
-    private void sendPasswordResetToken(User user, PasswordResetToken token) {
-        try {
-            Locale locale = LocaleContextHolder.getLocale();
-            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
-            Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("confirmationURL", url);
-            mailAttrs.put("to", user.getEmail());
-            emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
-            LOGGER.warn("Error, user password reset mail not sent");
-        }
-    }
-
-
-    private PasswordResetToken generatePasswordResetToken(long userId) {
-        String token = UUID.randomUUID().toString();
-        return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
-    }
-
     @Override
     public Collection<ContactInfo> getContactInfo(User user) {
         return userDao.getContactInfo(user);
@@ -285,6 +235,42 @@ public class UserServiceImpl implements UserService {
     public ProviderLocation getLocationByProviderId(Long providerId) {
         return userDao.getLocationByProviderId(providerId);
     }
+
+    @Override
+    public boolean hasContactJobProvided(Job job, User user) {
+        return userDao.hasContactJobProvided(job, user);
+    }
+
+    @Override
+    public int getFollowersCount(Long userId) {
+        return userDao.getUserFollowersCount(userId);
+    }
+
+    @Override
+    public int getFollowingCount(Long userId) {
+        return userDao.getUserFollowingCount(userId);
+    }
+
+    @Override
+    public Collection<Integer> getAllUserFollowingsIds(Long userId) {
+        return userDao.getAllUserFollowingsIds(userId);
+    }
+
+    @Override
+    public void followUserById(Long userId, Long followerId) {
+        followsDao.followUser(userId, followerId);
+    }
+
+    @Override
+    public void unfollowUserById(Long userId, Long followerId) {
+        followsDao.unfollowUser(userId, followerId);
+    }
+
+    @Override
+    public Optional<UserSchedule> getScheduleByUserId(long userId) {
+        return userDao.getScheduleByUserId(userId);
+    }
+
 
     private void sendJobRequestEmail(ContactDto contactDto) {
         final Map<String, Object> mailAttrs = new HashMap<>();
@@ -323,39 +309,56 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public boolean hasContactJobProvided(Job job, User user) {
-        return userDao.hasContactJobProvided(job, user);
+    private void sendProviderNotificationEmail(User user) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("to", user.getEmail());
+            mailAttrs.put("name", user.getName());
+            emailService.sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
+        } catch (MessagingException e) {
+            LOGGER.warn("Error, provider notification mail not sent");
+        }
     }
 
-    @Override
-    public int getFollowersCount(Long userId) {
-        return userDao.getUserFollowersCount(userId);
+    private void sendPasswordResetToken(User user, PasswordResetToken token) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
+            Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("confirmationURL", url);
+            mailAttrs.put("to", user.getEmail());
+            emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
+        } catch (MessagingException | MalformedURLException e) {
+            LOGGER.warn("Error, user password reset mail not sent");
+        }
     }
 
-    @Override
-    public int getFollowingCount(Long userId) {
-        return userDao.getUserFollowingCount(userId);
+
+    private PasswordResetToken generatePasswordResetToken(long userId) {
+        String token = UUID.randomUUID().toString();
+        return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
 
-    @Override
-    public Collection<Integer> getAllUserFollowingsIds(Long userId) {
-        return userDao.getAllUserFollowingsIds(userId);
+
+    private void sendVerificationToken(User user, VerificationToken token) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
+//            String url = new URL("http", appBaseUrl, 8080, "/user/verifyAccount?token=" + token.getValue()).toString();
+            Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("confirmationURL", url);
+            mailAttrs.put("to", user.getEmail());
+
+            emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
+        } catch (MessagingException | MalformedURLException e) {
+            LOGGER.warn("Error, user verification mail not sent");
+        }
     }
 
-    @Override
-    public void followUserById(Long userId, Long followerId) {
-        followsDao.followUser(userId,followerId);
-    }
-
-    @Override
-    public void unfollowUserById(Long userId, Long followerId) {
-        followsDao.unfollowUser(userId,followerId);
-    }
-
-    @Override
-    public Optional<UserSchedule> getScheduleByUserId(long userId) {
-        return userDao.getScheduleByUserId(userId);
+    private VerificationToken generateVerificationToken(long userId) {
+        String token = UUID.randomUUID().toString();
+        return verificationTokenDao.createVerificationToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
 
 }

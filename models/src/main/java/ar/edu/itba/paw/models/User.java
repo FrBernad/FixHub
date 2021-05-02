@@ -144,4 +144,8 @@ public class User {
         return name.equals(user.name) && password.equals(user.password) && surname.equals(user.surname) && city.equals(user.city) && state.equals(user.state) && phoneNumber.equals(user.phoneNumber) && email.equals(user.email) && id.equals(user.id) && Objects.equals(profileImageId, user.profileImageId) && Objects.equals(coverImageId, user.coverImageId) && roles.containsAll(user.roles);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, id);
+    }
 }

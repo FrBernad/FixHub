@@ -23,7 +23,7 @@
     </div>
     <div class="jobCardImgContainer">
         <c:choose>
-            <c:when test="${job.coverImageId != 0}">
+            <c:when test="${job.imagesId.size() > 0}">
                 <img src="<c:url value='/jobs/images/${job.getJobThumbnailId()}'/>"
                      alt="${job.category}" class="card-img jobCardImg">
             </c:when>

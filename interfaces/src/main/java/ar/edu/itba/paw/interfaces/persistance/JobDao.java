@@ -15,8 +15,6 @@ public interface JobDao {
 
     Collection<JobCategory> getJobsCategories();
 
-    Collection<Long> getImagesIdsByJobId(Long jobId);
-
     Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage);
 
     Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, String state, String city, int page, int itemsPerPage);
