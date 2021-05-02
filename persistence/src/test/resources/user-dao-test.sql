@@ -49,27 +49,27 @@ insert into ROLES(r_role, r_user_id)
 VALUES ('VERIFIED', 3);
 
 
-INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price)
-VALUES ('Limpieza total', 'MECANICO', 'Limpieza de filtros', 1, 300);
-INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price)
-VALUES ('Soluciono problemas de tensión', 'ELECTRICISTA', 'Revisión de tableros', 1, 300);
-INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price)
-VALUES ('Instalación de riegos de ultima generación', 'PLOMERO', 'Instalación de riegos', 1, 300);
-INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price)
-VALUES ('Corto el pasto y hago plantaciones', 'JARDINERO', 'Corte de pasto', 1, 300);
-INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price)
-VALUES ('Descripción de trabajo', 'GASISTA', 'Instalación de medidor de gas', 1, 300);
-INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price)
-VALUES ('Descripcion de trbajo', 'CARPINTERO', 'Armado de muebles', 1, 300);
+INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES ('Limpieza total', 'MECANICO', 'Limpieza de filtros', 1, 300,false);
+INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES ('Soluciono problemas de tensión', 'ELECTRICISTA', 'Revisión de tableros', 1, 300,false);
+INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES ('Instalación de riegos de ultima generación', 'PLOMERO', 'Instalación de riegos', 1, 300,false);
+INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES ('Corto el pasto y hago plantaciones', 'JARDINERO', 'Corte de pasto', 1, 300,false);
+INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES ('Descripción de trabajo', 'GASISTA', 'Instalación de medidor de gas', 1, 300,false);
+INSERT INTO JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES ('Descripcion de trbajo', 'CARPINTERO', 'Armado de muebles', 1, 300,false);
 
-insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date)
-VALUES ('Muy buen trabajo, gracias por todo', 1, 1, '2021-04-05 20:26:02');
-insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date)
-VALUES ('Muy buen trabajo, gracias por todo', 1, 1, '2021-04-05 20:26:02');
-insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date)
-VALUES ('Muy buen trabajo, gracias por todo', 2, 5, '2021-04-05 20:26:02');
-insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date)
-VALUES ('Muy buen trabajo, gracias por todo', 1, 5, '2021-04-05 20:26:02');
+insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date,r_reviewer_id)
+VALUES ('Muy buen trabajo, gracias por todo', 1, 1, '2021-04-05 20:26:02',3);
+insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date,r_reviewer_id)
+VALUES ('Muy buen trabajo, gracias por todo', 1, 1, '2021-04-05 20:26:02',3);
+insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date,r_reviewer_id)
+VALUES ('Muy buen trabajo, gracias por todo', 2, 5, '2021-04-05 20:26:02',3);
+insert into REVIEWS(r_description, r_job_id, r_rating, r_creation_date,r_reviewer_id)
+VALUES ('Muy buen trabajo, gracias por todo', 1, 5, '2021-04-05 20:26:02',3);
 
 INSERT INTO CONTACT_INFO(ci_user_id, ci_city, ci_state, ci_street, ci_address_number, ci_floor, ci_department_number)
 VALUES (3,'Lomas de Zamora','Buenos Aires', 'Spiro','312','21','B');

@@ -66,7 +66,7 @@ public class TestConfig {
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
         dbp.addScripts(hsqldbSql, schemaSql); //Esto lo que hace es que setee el modo compatibilidad con postgres.
-        dbp.addScript(imageTestSql);
+        dbp.addScript(jobTestSql);
         return dbp;
     }
 }
