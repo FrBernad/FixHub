@@ -365,7 +365,7 @@ public class WebAuthController {
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), form.getPage(), 4);
 
-        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
+        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
         mav.addObject("results", providersContacted);
         return mav;
     }
