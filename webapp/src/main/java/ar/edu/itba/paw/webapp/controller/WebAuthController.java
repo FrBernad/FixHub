@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
+import ar.edu.itba.paw.interfaces.exceptions.ServerInternalException;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
@@ -545,7 +546,7 @@ public class WebAuthController {
             userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()), user);
         } catch (IOException e) {
             LOGGER.warn("Error accessing file bytes");
-            throw new IllegalContentTypeException();
+            throw new ServerInternalException();
         }
         return new ModelAndView("redirect:/user/account");
     }
