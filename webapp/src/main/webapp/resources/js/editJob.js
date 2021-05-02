@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let imagesHolder = document.getElementById("imagesHolder");
     let files = [];
 
+    let imageDelete = document.getElementsByClassName("imageDelete");
+
     if ((document.getElementById("carousel") !== null)) {
         document.getElementById("carousel").getElementsByTagName("div")[0].className += " active";
     }
@@ -27,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let carousel = document.getElementById("carousel");
         let jobImages = document.getElementsByClassName("jobImages");
-        for (const image of jobImages) {
+        for (const image of imageDelete) {
             let imageContainer = document.getElementById(image.dataset.imageId);
 
             image.addEventListener("click",()=>{
@@ -91,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inputFile.removeEventListener("change", inputFileUpdate);
         inputFile.files = new fileListItems(files);
 
+        console.log(imagesIdDeletedContainer);
         editJobForm.submit();
     })
 });
