@@ -125,18 +125,11 @@
                                                 <div class="form-group">
                                                     <form:input path="paused" type="hidden" id="paused"
                                                                 value="${job.paused}"/>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                               name="inlineRadioOptions" id="editPaused">
-                                                        <label class="form-check-label" for="editPaused"><spring:message
-                                                                code="job.editPaused"/></label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                               name="inlineRadioOptions" id="editUnpaused">
-                                                        <label class="form-check-label"
-                                                               for="editUnpaused"><spring:message
-                                                                code="job.editUnpaused"/></label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="${job.paused}" id="pauseCheck">
+                                                        <label class="form-check-label" for="pauseCheck">
+                                                            <spring:message code="job.editPaused"/>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>

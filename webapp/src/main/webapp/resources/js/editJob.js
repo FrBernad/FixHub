@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     let editFormButton = document.getElementById("editFormButton");
     let pauseInput = document.getElementById("paused");
-    let pauseRadio = document.getElementById("editPaused");
+    let pauseCheck = document.getElementById("pauseCheck");
     let editJobForm = document.getElementById("editJobForm");
     let processing = false;
 
@@ -13,10 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let imagesHolder = document.getElementById("imagesHolder");
     let files = [];
 
-    pauseRadio.checked = pauseInput.value;
-
     if ((document.getElementById("carousel") !== null)) {
         document.getElementById("carousel").getElementsByTagName("div")[0].className += " active";
+    }
+
+    if(pauseCheck.value === "true") {
+        pauseCheck.setAttribute("checked", "");
+    } else {
+        pauseCheck.removeAttribute("checked");
     }
 
     if (document.getElementById("carousel") !== null) {
@@ -80,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        pauseInput.value = pauseRadio.checked;
+        pauseInput.value = pauseCheck.checked;
 
         processing = true;
         editFormButton.disabled = true;
