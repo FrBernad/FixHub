@@ -2,12 +2,12 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.persistence.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -53,7 +53,6 @@ public class ReviewDaoTest {
     private static final long ID_R = 2L;
 
 
-
     //Job data
     private static final String JOB_DESCRIPTION = "El mejor cambio de aceite";
     private static final String JOB_PROVIDED = "Cambio de aceite";
@@ -71,14 +70,14 @@ public class ReviewDaoTest {
 
     private static final int REVIEWS_AMOUNT = 5;
 
-    private static final Collection<Roles> PROVIDER_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.VERIFIED,Roles.PROVIDER));
+    private static final Collection<Roles> PROVIDER_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.VERIFIED, Roles.PROVIDER));
     private static final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.VERIFIED));
 
 
     private static final User PROVIDER = new User(ID, PASSWORD, NAME, SURNAME, EMAIL, PHONE_NUMBER, STATE, CITY, PROVIDER_ROLES, null, null);
     private static final User REVIEWER = new User(ID_R, PASSWORD_R, NAME_R, SURNAME_R, EMAIL_R, PHONE_NUMBER_R, STATE_R, CITY_R, DEFAULT_ROLES, null, null);
 
-    private static final Job JOB = new Job(JOB_DESCRIPTION, JOB_PROVIDED, AVG_JOB_RATING, TOTAL_JOB_RATINGS, JOB_CATEGORY, ID, PRICE, PAUSED,PROVIDER, IMAGES);
+    private static final Job JOB = new Job(JOB_DESCRIPTION, JOB_PROVIDED, AVG_JOB_RATING, TOTAL_JOB_RATINGS, JOB_CATEGORY, ID, PRICE, PAUSED, PROVIDER, IMAGES);
 
     @Autowired
     private DataSource ds;
@@ -89,11 +88,13 @@ public class ReviewDaoTest {
     private JdbcTemplate jdbcTemplate;
 
     @Before
-    public void setUp() { this.jdbcTemplate = new JdbcTemplate(ds); }
+    public void setUp() {
+        this.jdbcTemplate = new JdbcTemplate(ds);
+    }
 
     @Test
-    public void testCreate(){
-        final Review review = reviewDao.createReview(REVIEW_DESCRIPTION, JOB, RATING, CREATION_DATE,REVIEWER);
+    public void testCreate() {
+        final Review review = reviewDao.createReview(REVIEW_DESCRIPTION, JOB, RATING, CREATION_DATE, REVIEWER);
         assertNotNull(review);
         assertEquals(REVIEW_DESCRIPTION, review.getDescription());
         assertEquals(JOB.getId(), review.getJobId());

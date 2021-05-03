@@ -2,19 +2,23 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import static ar.edu.itba.paw.models.JobCategory.*;
 import static ar.edu.itba.paw.models.OrderOptions.*;
@@ -22,6 +26,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@Sql(scripts = "classpath:job-dao-test.sql")
 @Transactional
 public class JobDaoTest {
 
@@ -33,160 +38,323 @@ public class JobDaoTest {
 
     private JdbcTemplate jdbcTemplate;
 
-    public final static Collection<Roles> DEFAULT_ROLES = Collections.
-        unmodifiableCollection(
-            Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
-
-    private static final String PASSWORD = "password";
-    private static final String NAME = "name";
-    private static final String SURNAME = "surname";
-    private static final String EMAIL = "email";
-    private static final String PHONENUMBER = "phoneNumber";
-    private static final String STATE = "state";
-    private static final String CITY = "city";
-    private static final User DEFAULT_USER = new User(1L, PASSWORD, NAME, SURNAME,
-        EMAIL, PHONENUMBER, STATE, CITY,
-        DEFAULT_ROLES, null, null);
-
-    private static final List<Image> IMAGES = Collections.emptyList();
-
-    private static final String DESCRIPTION = "arreglo techos y los dejo como nuevos, años de experiencia";
-    private static final String JOB_PROVIDED = "arreglo techos";
-    private static final JobCategory CATEGORY = TECHISTA;
-    private static final BigDecimal PRICE = BigDecimal.valueOf(3000);
-    private static final boolean PAUSED = false;
-
-
-    private static final String SEARCH_QUERY = "techo";
-    private static final String TRICKY_SEARCH_QUERY = "%";
-    private static final OrderOptions ORDER_OPTION = LESS_POPULAR;
-
     @Before
     public void setUp() {
         jdbcTemplate = new JdbcTemplate(ds);
     }
 
-    @Rollback
+    //GET JOBS BY CATEGORY
+
+    //GET COUNTS
     @Test
-    public void createJob() {
-        Job job = jobDao.createJob(JOB_PROVIDED, CATEGORY, DESCRIPTION, PRICE,PAUSED ,DEFAULT_USER, IMAGES);
-        assertNotNull(job);
-        assertEquals(DESCRIPTION, job.getDescription());
-        assertEquals(JOB_PROVIDED, job.getJobProvided());
-        assertEquals(0, job.getAverageRating());
-        assertEquals(0, job.getTotalRatings());
-        assertEquals(DEFAULT_USER, job.getProvider());
-        assertEquals(PRICE, job.getPrice());
-        assertEquals(CATEGORY, job.getCategory());
+    public void testGetJobsCountByCategoryNoSearchQuery() {
+        int count = jobDao.getJobsCountByCategory(null, ELECTRICISTA, null, null);
+        assertEquals(3, count);
     }
 
     @Test
-    public void getJobsCountByProviderId() {
-        int count = jobDao.getJobsCountByProviderId(SEARCH_QUERY, 1L);
+    public void testGetJobsCountByCategoryTrickySearchQuery() {
+        int count = jobDao.getJobsCountByCategory("%", ELECTRICISTA, null, null);
+        assertEquals(0, count);
+    }
+
+    @Test
+    public void testGetJobsCountByCategorySearchQuery() {
+        int count = jobDao.getJobsCountByCategory("errores", ELECTRICISTA, null, null);
         assertEquals(1, count);
-
-        count = jobDao.getJobsCountByProviderId(TRICKY_SEARCH_QUERY, 1L);
-        assertEquals(0, count);
-
-        count = jobDao.getJobsCountByProviderId(null, 1L);
-        assertEquals(26, count);
-
-        count = jobDao.getJobsCountByProviderId(null, 2L);
-        assertEquals(0, count);
     }
 
     @Test
-    public void getJobsCountByCategory() {
-        int count = jobDao.getJobsCountByCategory("tejas", TECHISTA,null,null);
+    public void testGetJobsCountByCategorySearchQueryCityAndState() {
+        int count = jobDao.getJobsCountByCategory("errores", ELECTRICISTA, "2", "1");
         assertEquals(1, count);
-
-        count = jobDao.getJobsCountByCategory(TRICKY_SEARCH_QUERY, CATEGORY,null,null);
-        assertEquals(0, count);
-
-        count = jobDao.getJobsCountByCategory(null, MECANICO,null,null);
-        assertEquals(6, count);
-
-        count = jobDao.getJobsCountByCategory("asdadasd", MECANICO,null,null);
-        assertEquals(0, count);
-
-        count = jobDao.getJobsCountByCategory(null, null,null,null);
-        assertEquals(26, count);
     }
 
+
+    //GET JOBS
     @Test
-    public void getJobsByProviderId() {
+    public void testGetJobsByCategoryIdSeachQuery() {
+
         Collection<Job> jobs = jobDao.
-            getJobsByProviderId(SEARCH_QUERY, ORDER_OPTION,
-                1L, 0, 4);
+            getJobsByCategory("tot", MOST_POPULAR, MECANICO,
+                null, null, 0, 4);
 
-        assertEquals(1, jobs.size());
+        assertEquals(3, jobs.size());
         assertTrue(jobs.size() <= 4);
         for (Job job : jobs) {
             long jobProviderId = job.getProvider().getId();
             assertEquals(jobProviderId, 1L);
         }
 
-        jobs = jobDao.
-            getJobsByProviderId(TRICKY_SEARCH_QUERY, ORDER_OPTION,
-                1L, 0, 4);
-        assertEquals(0, jobs.size());
     }
 
     @Test
-    public void getJobsByCategoryOrderedLessPopular() {
-        //LESS POP
-        Collection<Job> jobs = jobDao.
-            getJobsByCategory(SEARCH_QUERY, LESS_POPULAR, CATEGORY,null,null, 0, 4);
+    public void testGetJobsByCategoryHigherPrice() {
+        final Long[] orderedIds = {1L, 3L, 2L};
 
-        assertEquals(0, jobs.size());
+        Collection<Job> jobs = jobDao.getJobsByCategory(null, HIGHER_PRICE,
+            MECANICO, null, null, 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobsByCategoryLowerPrice() {
+        final Long[] orderedIds = {2L, 3L, 1L};
+
+        Collection<Job> jobs = jobDao.getJobsByCategory(null, LOWER_PRICE,
+            MECANICO, null, null, 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+
+    @Test
+    public void testGetJobsByCategoryMostPopular() {
+        final Long[] orderedIds = {1L, 2L, 3L};
+
+        Collection<Job> jobs = jobDao.getJobsByCategory(null, MOST_POPULAR,
+            MECANICO, null, null, 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobsByCategoryLessPopular() {
+        final Long[] orderedIds = {3L, 2L, 1L};
+
+        Collection<Job> jobs = jobDao.getJobsByCategory(null, LESS_POPULAR,
+            MECANICO, null, null, 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobsByCategoryOrderAndStringQuery() {
+        final Long[] orderedIds = {6L, 4L, 5L};
+
+        Collection<Job> jobs = jobDao.getJobsByCategory("Soluciono", HIGHER_PRICE,
+            ELECTRICISTA, null, null, 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+
+    @Test
+    public void testGetJobsByCategoryOrderAndStringQueryAndStateCity() {
+        final Long[] orderedIds = {6L, 4L, 5L};
+
+        Collection<Job> jobs = jobDao.getJobsByCategory("Soluciono", HIGHER_PRICE,
+            ELECTRICISTA, "2", "1", 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+
+    @Test
+    public void testGetJobsByCategoryOrderAndStateCity() {
+        final Long[] orderedIds = {4L, 6L, 5L};
+
+        Collection<Job> jobs = jobDao.getJobsByCategory(null, MOST_POPULAR,
+            ELECTRICISTA, "2", "1", 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    //GET JOBS BY PROVIDER ID
+
+    //GET COUNTS
+    @Test
+    public void testGetJobsCountByProviderIdTrickSearchQuery() {
+        int count = jobDao.getJobsCountByProviderId("%", 1L);
+        assertEquals(0, count);
+    }
+
+    @Test
+    public void testGetJobsCountByProviderIdSearchQuery() {
+        int count = jobDao.getJobsCountByProviderId("techo", 1L);
+        assertEquals(3, count);
+    }
+
+    @Test
+    public void testGetJobsCountByProviderIdNoSearchQuery() {
+        int count = jobDao.getJobsCountByProviderId(null, 1L);
+        assertEquals(9, count);
+    }
+
+    //GET JOBS
+    @Test
+    public void testGetJobsByProviderIdSeachQuery() {
+
+        Collection<Job> jobs = jobDao.
+            getJobsByProviderId("limpie", MOST_POPULAR,
+                1L, 0, 4);
+
+        assertEquals(3, jobs.size());
         assertTrue(jobs.size() <= 4);
         for (Job job : jobs) {
-            JobCategory jobCategory = job.getCategory();
-            assertEquals(jobCategory, CATEGORY);
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
         }
 
-        assertTrue(isSorted(jobs, Comparator.comparingInt(Job::getAverageRating)));
-
-        //MOST POP
-        jobs = jobDao.
-            getJobsByCategory(SEARCH_QUERY, MOST_POPULAR, CATEGORY,null,null, 0, 4);
-
-        assertTrue(jobs.size() <= 4);
-
-        assertTrue(isSorted(jobs, Comparator.comparingInt(Job::getAverageRating).reversed()));
-
-        //HIGHER PRICE
-        jobs = jobDao.
-            getJobsByCategory(SEARCH_QUERY, HIGHER_PRICE, CATEGORY,null,null, 0, 4);
-
-        assertTrue(jobs.size() <= 4);
-
-        assertTrue(isSorted(jobs, (o1, o2) -> o2.getPrice().intValue() - o1.getPrice().intValue()));
-
-        //LOWER PRICE
-        jobs = jobDao.
-            getJobsByCategory(SEARCH_QUERY, LOWER_PRICE, CATEGORY,null,null, 0, 4);
-
-        assertTrue(jobs.size() <= 4);
-
-        assertTrue(isSorted(jobs, Comparator.comparingInt(o -> o.getPrice().intValue())));
-
-        //% QUERY
-        jobs = jobDao.
-            getJobsByCategory(TRICKY_SEARCH_QUERY, ORDER_OPTION, CATEGORY,null,null, 0, 4);
-
-        assertEquals(0, jobs.size());
-
-
-        //% NO SEARCH NO CATEGORY
-        jobs = jobDao.
-            getJobsByCategory(null, ORDER_OPTION, null,null,null, 0, 4);
-
-        assertTrue(jobs.size() <= 4);
     }
 
     @Test
-    public void getJobById() {
+    public void testGetJobsByProviderHigherPrice() {
+        final Long[] orderedIds = {9L, 7L, 8L, 6L};
+
+        Collection<Job> jobs = jobDao.getJobsByProviderId(null, HIGHER_PRICE, 1L, 0, 4);
+
+        assertEquals(4, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobsByProviderLowerPrice() {
+        final Long[] orderedIds = {2L, 3L, 1L, 4L};
+
+        Collection<Job> jobs = jobDao.getJobsByProviderId(null, LOWER_PRICE, 1L, 0, 4);
+
+        assertEquals(4, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+
+    @Test
+    public void testGetJobsByProviderMostPopular() {
+        final Long[] orderedIds = {1L, 2L, 3L, 4L};
+
+        Collection<Job> jobs = jobDao.getJobsByProviderId(null, MOST_POPULAR, 1L, 0, 4);
+
+        assertEquals(4, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobsByProviderLessPopular() {
+        final Long[] orderedIds = {9L, 8L, 7L, 6L};
+
+        Collection<Job> jobs = jobDao.getJobsByProviderId(null, LESS_POPULAR, 1L, 0, 4);
+
+        assertEquals(4, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobsByProviderOrderAndStringQuery() {
+        final Long[] orderedIds = {6L, 4L, 5L};
+
+        Collection<Job> jobs = jobDao.getJobsByProviderId("Soluciono", HIGHER_PRICE, 1L, 0, 4);
+
+        assertEquals(3, jobs.size());
+        assertTrue(jobs.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Job job : jobs) {
+            resultIds.add(job.getId());
+            long jobProviderId = job.getProvider().getId();
+            assertEquals(jobProviderId, 1L);
+        }
+        Assert.assertArrayEquals(orderedIds, resultIds.toArray());
+    }
+
+    @Test
+    public void testGetJobById() {
         Optional<Job> job = jobDao.getJobById(1);
 
         assertTrue(job.isPresent());
@@ -195,24 +363,6 @@ public class JobDaoTest {
         job = jobDao.getJobById(-1);
 
         assertFalse(job.isPresent());
-    }
-
-
-    private boolean isSorted(Collection<Job> jobs, Comparator<Job> jobComparator) {
-        if (jobs.isEmpty() || jobs.size() == 1) {
-            return true;
-        }
-
-        Iterator<Job> iter = jobs.iterator();
-        Job current, previous = iter.next();
-        while (iter.hasNext()) {
-            current = iter.next();
-            if (jobComparator.compare(previous, current) > 0) {
-                return false;
-            }
-            previous = current;
-        }
-        return true;
     }
 
 }
