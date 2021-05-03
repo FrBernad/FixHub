@@ -126,7 +126,7 @@ public class UserServiceImplTest {
     @Test(expected = DuplicateUserException.class)
     public void testCreateAlreadyExists() throws DuplicateUserException {
 
-        //Assuming the DEFAULT_USER already exists 
+        //Assuming the DEFAULT_USER already exists
         when(mockEncoder.encode(PASSWORD)).thenReturn(PASSWORD);
         when(mockUserDao.createUser(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.eq(DEFAULT_USER.getEmail()),Mockito.anyString(),
                 Mockito.anyString(),Mockito.anyString(),Mockito.any())).thenThrow(new DuplicateUserException());

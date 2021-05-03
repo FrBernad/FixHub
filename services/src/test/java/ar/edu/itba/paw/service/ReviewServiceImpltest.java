@@ -37,7 +37,6 @@ public class ReviewServiceImpltest {
     //Review Info
     private static final Number REVIEW_ID = 1;
     private static final String REVIEW_DESCRIPTION = "Excelente Servicio";
-    private static final Number JOB_REVIEW_ID = 1;
     private static final int RATING = 4;
     private static final Timestamp CREATIONDATE=Timestamp.valueOf("2021-04-05 20:26:02");
 
@@ -56,10 +55,9 @@ public class ReviewServiceImpltest {
 
     private static final User USER =new User(USER_ID,PASSWORD,NAME,SURNAME,EMAIL,PHONENUMBER,STATE,CITY,DEFAULT_ROLES,null,null);
     private static final Job AUX_JOB=new Job(DESCRIPTION,JOB_PROVIDED,AVG_RATINGS,TOTAL_RATINGS,CATEGORY, JOB_ID,PRICE,PAUSED,USER,new ArrayList<>());
-    private ReviewUser reviewUser=new ReviewUser(USER_ID,NAME,SURNAME,PROFILE_IMAGE_ID);
 
     @InjectMocks
-    private ReviewService reviewService=new ReviewServiceImpl();
+    private final ReviewService reviewService=new ReviewServiceImpl();
 
     @Mock
     private ReviewDao reviewDao;
@@ -74,7 +72,7 @@ public class ReviewServiceImpltest {
 
         Mockito.when(reviewDao.createReview(Mockito.eq(REVIEW_DESCRIPTION),Mockito.eq(AUX_JOB),Mockito.eq(RATING)
                 ,Mockito.any(),Mockito.eq(USER))).thenReturn(
-                    new Review(REVIEW_ID,REVIEW_DESCRIPTION,JOB_REVIEW_ID,RATING,CREATIONDATE.toLocalDateTime().toLocalDate(),USER));
+                    new Review(REVIEW_ID,REVIEW_DESCRIPTION,AUX_JOB.getId(),RATING,CREATIONDATE.toLocalDateTime().toLocalDate(),USER));
 
         Review review= reviewService.createReview(REVIEW_DESCRIPTION,AUX_JOB,RATING,USER);
 
@@ -82,7 +80,7 @@ public class ReviewServiceImpltest {
         assertEquals(review.getReviewer(),USER);
         assertEquals(review.getDescription(),REVIEW_DESCRIPTION);
         assertEquals(review.getId(),REVIEW_ID);
-        assertEquals(review.getJobId(),JOB_REVIEW_ID);
+        assertEquals(review.getJobId(),AUX_JOB.getId());
         assertEquals(review.getRating(),RATING);
     }
 
