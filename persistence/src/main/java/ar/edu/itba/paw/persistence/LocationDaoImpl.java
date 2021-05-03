@@ -19,10 +19,7 @@ import java.util.Optional;
 @Repository
 public class LocationDaoImpl implements LocationDao {
 
-    @Autowired
-    private DataSource ds;
-
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     private static final ResultSetExtractor<Collection<State>> STATE_ROW_MAPPER = rs -> {
         List<State> states = new LinkedList<>();

@@ -19,17 +19,14 @@ import java.util.Optional;
 @Repository
 public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
-    @Autowired
-    private DataSource ds;
-
     private static final RowMapper<PasswordResetToken> PASSWORD_RESET_TOKEN_ROW_MAPPER = (rs, rowNum) ->
         new PasswordResetToken(rs.getLong("prt_id"),
             rs.getString("prt_token"),
             rs.getLong("prt_user_id"),
             rs.getTimestamp("prt_expiration_date").toLocalDateTime());
 
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PasswordResetTokenDaoImpl.class);
 
@@ -38,7 +35,6 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
         jdbcTemplate = new JdbcTemplate(ds);
         simpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("password_reset_tokens").usingGeneratedKeyColumns("prt_id");
     }
-
 
     @Override
     public Optional<PasswordResetToken> getToken(long id) {
@@ -49,11 +45,11 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
     @Override
     public PasswordResetToken createToken(long userId, String token, LocalDateTime expirationDate) {
-        Map<String, Object> values = new HashMap<>();
+        final Map<String, Object> values = new HashMap<>();
         values.put("prt_user_id", userId);
         values.put("prt_token", token);
         values.put("prt_expiration_date", expirationDate);
-        Number tokenId = simpleJdbcInsert.executeAndReturnKey(values);
+        final Number tokenId = simpleJdbcInsert.executeAndReturnKey(values);
         LOGGER.debug("Created new reset token with id {}", tokenId);
 
         return new PasswordResetToken(tokenId.longValue(), token, userId, expirationDate);//never returns null
@@ -85,7 +81,7 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
     public Optional<PasswordResetToken> getTokenByUserId(long userId) {
         final String query = "SELECT * FROM password_reset_tokens WHERE prt_user_id = ?";
         LOGGER.debug("Executing query: {}", query);
-        return jdbcTemplate.query(query,new Object[]{userId},PASSWORD_RESET_TOKEN_ROW_MAPPER)
+        return jdbcTemplate.query(query, new Object[]{userId}, PASSWORD_RESET_TOKEN_ROW_MAPPER)
             .stream().findFirst();
     }
 }

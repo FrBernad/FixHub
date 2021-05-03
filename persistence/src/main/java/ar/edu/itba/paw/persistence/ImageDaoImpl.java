@@ -18,11 +18,9 @@ import java.util.*;
 
 @Repository
 public class ImageDaoImpl implements ImageDao {
-    @Autowired
-    private DataSource ds;
 
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert imageSimpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert imageSimpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageDaoImpl.class);
 
@@ -30,7 +28,7 @@ public class ImageDaoImpl implements ImageDao {
         new Image(rs.getLong("i_id"), rs.getBytes("i_data"), rs.getString("i_mime_type"));
 
     private static final ResultSetExtractor<Collection<Image>> JOB_IMAGE_ROW_MAPPER = rs -> {
-        Map<Long, Image> imageMap = new HashMap<>();
+        final Map<Long, Image> imageMap = new HashMap<>();
         while (rs.next()) {
             imageMap.put(rs.getLong("i_id"),
                 new Image(rs.getLong("i_id"),
@@ -46,9 +44,8 @@ public class ImageDaoImpl implements ImageDao {
         imageSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("IMAGES").usingGeneratedKeyColumns("i_id");
     }
 
-
     public List<Image> createImages(List<ImageDto> imageInfo) {
-        List<Image> images = new LinkedList<>();
+        final List<Image> images = new LinkedList<>();
         Image img;
         for (ImageDto image : imageInfo) {
             img = createImage(image);

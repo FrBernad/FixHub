@@ -126,8 +126,8 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total jobs count");
-        int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter, queryState, queryCity);
-        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter, queryState, queryCity);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
@@ -135,7 +135,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for jobs by category {}", page, category);
-        Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, queryState, queryCity, page, itemsPerPage);
+        final Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, queryState, queryCity, page, itemsPerPage);
         return new PaginatedSearchResult<>(orderBy, category, searchBy, state, city, cities, page, itemsPerPage, totalJobs, jobs);
     }
 
@@ -172,8 +172,8 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total jobs count");
-        int totalJobs = jobDao.getJobsCountByProviderId(querySearchBy, providerId);
-        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalJobs = jobDao.getJobsCountByProviderId(querySearchBy, providerId);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
@@ -181,7 +181,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for jobs by provider id {}", page, providerId);
-        Collection<Job> jobs = jobDao.getJobsByProviderId(querySearchBy, queryOrderOption, providerId, page, itemsPerPage);
+        final Collection<Job> jobs = jobDao.getJobsByProviderId(querySearchBy, queryOrderOption, providerId, page, itemsPerPage);
         return new PaginatedSearchResult<>(orderBy, providerId.toString(), searchBy, page, itemsPerPage, totalJobs, jobs);
     }
 
@@ -199,8 +199,8 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total clients count");
-        int totalJobs = userDao.getClientsCountByProviderId(providerId);
-        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalJobs = userDao.getClientsCountByProviderId(providerId);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
@@ -208,7 +208,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, providerId);
-        Collection<JobContact> contacts = userDao.getClientsByProviderId(providerId, page, itemsPerPage);
+        final Collection<JobContact> contacts = userDao.getClientsByProviderId(providerId, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
     }
 
@@ -226,8 +226,8 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total followers count");
-        int totalJobs = userDao.getUserFollowersCount(userId);
-        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalJobs = userDao.getUserFollowersCount(userId);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
@@ -235,7 +235,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for user followers with id {}", page, userId);
-        Collection<User> users = userDao.getUserFollowers(userId, page, itemsPerPage);
+        final Collection<User> users = userDao.getUserFollowers(userId, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
 
     }
@@ -253,8 +253,8 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total following count");
-        int totalJobs = userDao.getUserFollowingCount(userId);
-        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalJobs = userDao.getUserFollowingCount(userId);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
@@ -262,7 +262,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for user following with id {}", page, userId);
-        Collection<User> users = userDao.getUserFollowings(userId, page, itemsPerPage);
+        final Collection<User> users = userDao.getUserFollowings(userId, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
     }
 
@@ -280,8 +280,8 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total providers count");
-        int totalJobs = userDao.getProvidersCountByClientId(clientId);
-        int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalJobs = userDao.getProvidersCountByClientId(clientId);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
@@ -289,7 +289,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for providers by client id {}", page, clientId);
-        Collection<JobContact> contacts = userDao.getProvidersByClientId(clientId, page, itemsPerPage);
+        final Collection<JobContact> contacts = userDao.getProvidersByClientId(clientId, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
     }
 

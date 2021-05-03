@@ -18,27 +18,21 @@ import java.util.*;
 @Repository
 public class JobDaoImpl implements JobDao {
 
-    @Autowired
-    private DataSource ds;
-
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jobSimpleJdbcInsert;
-    private SimpleJdbcInsert jobImagesSimpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jobSimpleJdbcInsert;
+    private final SimpleJdbcInsert jobImagesSimpleJdbcInsert;
     private static final Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
+    private static final Map<OrderOptions, String> ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
 
-    private static final String JOBS_WHERE_ID_QUERY =
-        " where j_id in ( " +
-            " select j_id from " +
-            " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
-            " JOIN " +
-            " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id %s ) as w1 " +
-            " ON w0.j_provider_id=w1.ul_user_id " +
-            " JOIN " +
-            " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-            " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
-            " on job_id=j_id %s %s %s ) ";
+    static {
+        ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, j_id desc");
+        ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, j_id desc");
+        ORDER_OPTIONS.put(OrderOptions.HIGHER_PRICE, "j_price desc, total_ratings desc, j_id desc");
+        ORDER_OPTIONS.put(OrderOptions.LOWER_PRICE, "j_price asc, total_ratings desc, j_id desc");
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
 
     private static final ResultSetExtractor<Collection<Job>> JOB_RS_EXTRACTOR = (rs) ->
     {
@@ -97,7 +91,7 @@ public class JobDaoImpl implements JobDao {
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, List<Image> images) {
 
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         final int averageRating = 0, totalRatings = 0;
         map.put("j_provider_id", provider.getId());
         map.put("j_category", category);
@@ -108,8 +102,8 @@ public class JobDaoImpl implements JobDao {
         final Number id = jobSimpleJdbcInsert.executeAndReturnKey(map);
         LOGGER.debug("Created job with id {}", id);
 
-        Map<String, Object> imageJobMap = new HashMap<>();
-        Collection<Long> imagesId = new LinkedList<>();
+        final Map<String, Object> imageJobMap = new HashMap<>();
+        final Collection<Long> imagesId = new LinkedList<>();
 
         for (Image image : images) {
             imageJobMap.put("ji_image_id", image.getImageId());
@@ -332,27 +326,11 @@ public class JobDaoImpl implements JobDao {
     }
 
     private String getOrderQuery(OrderOptions orderOption) {
-        String orderQuery = " ORDER BY ";
-        switch (orderOption) {
-            case MOST_POPULAR:
-                return orderQuery + " avg_rating desc, total_ratings desc, j_id desc ";
-
-            case LESS_POPULAR:
-                return orderQuery + " avg_rating asc, total_ratings desc, j_id desc ";
-
-            case HIGHER_PRICE:
-                return orderQuery + " j_price desc, total_ratings desc, j_id desc ";
-
-            case LOWER_PRICE:
-                return orderQuery + " j_price asc, total_ratings desc, j_id desc ";
-
-        }
-        return null; //never reaches
+        return String.format(" ORDER BY %s ",ORDER_OPTIONS.get(orderOption));
     }
 
-
     private String getCategoryFilterQuery(JobCategory category, List<Object> variables) {
-        StringBuilder filterQuery = new StringBuilder();
+        final StringBuilder filterQuery = new StringBuilder();
         if (category != null) {
             variables.add(category.name());
             filterQuery.append(" WHERE j_category = ? ");
@@ -361,7 +339,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     private String getStateAndCityQuery(String state, String city, List<Object> variables) {
-        StringBuilder stateAndCityQuery = new StringBuilder();
+        final StringBuilder stateAndCityQuery = new StringBuilder();
         if (state != null) {
             stateAndCityQuery.append(" WHERE c_state_id = ? ");
             variables.add(Integer.valueOf(state));
@@ -374,7 +352,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     private String getSearchQuery(String searchBy, List<Object> variables) {
-        StringBuilder searchQuery = new StringBuilder();
+        final StringBuilder searchQuery = new StringBuilder();
         if (searchBy != null) {
             searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
             variables.add(searchBy);
@@ -386,7 +364,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
-        StringBuilder offsetAndLimitQuery = new StringBuilder();
+        final StringBuilder offsetAndLimitQuery = new StringBuilder();
         if (page > 0) {
             offsetAndLimitQuery.append(" OFFSET ? ");
             variables.add(page * itemsPerPage);

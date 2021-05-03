@@ -51,7 +51,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, List<ImageDto> images, User user) {
 
-        List<Image> jobImages;
+        final List<Image> jobImages;
         if (!images.isEmpty()) {
             LOGGER.debug("Job {} has images", jobProvided);
             jobImages = imageService.createImages(images);
@@ -60,10 +60,10 @@ public class JobServiceImpl implements JobService {
             jobImages = new LinkedList<>();
         }
 
-        Job job = jobDao.createJob(jobProvided, category, description, price, paused, user, jobImages);
+        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, user, jobImages);
         LOGGER.info("Created job {} with id {}", job.getJobProvided(), job.getId());
 
-        Collection<User> providerFollowers = userDao.getAllUserFollowers(user.getId());
+        final Collection<User> providerFollowers = userDao.getAllUserFollowers(user.getId());
 
         for (User follower : providerFollowers) {
             sendNewJobNotificationMail(follower, job);
@@ -87,9 +87,9 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
-        Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        final Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
-        Collection<Long> oldImagesId = job.getImagesId();
+        final Collection<Long> oldImagesId = job.getImagesId();
 
         //If a user tries to delete images that are not from the job to update
         if (!oldImagesId.containsAll(imagesIdDeleted)) {
@@ -102,7 +102,7 @@ public class JobServiceImpl implements JobService {
             throw new MaxImagesPerJobException();
         }
 
-        List<Image> jobImages;
+        final List<Image> jobImages;
 
         if (!images.isEmpty())
             jobImages = imageService.createImages(images);
@@ -120,11 +120,11 @@ public class JobServiceImpl implements JobService {
 
     private void sendNewJobNotificationMail(User user, Job job) {
         try {
-            Locale locale = LocaleContextHolder.getLocale();
-            String url = new URL("http", appBaseUrl, "/paw-2021a-06/job/" + job.getId()).toString();
-            User provider = job.getProvider();
+            final Locale locale = LocaleContextHolder.getLocale();
+            final String url = new URL("http", appBaseUrl, "/paw-2021a-06/job/" + job.getId()).toString();
+            final User provider = job.getProvider();
 
-            Map<String, Object> mailAttrs = new HashMap<>();
+            final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("newJobUrl", url);
             mailAttrs.put("to", user.getEmail());
             mailAttrs.put("providerName", String.format("%s %s", provider.getName(), provider.getSurname()));

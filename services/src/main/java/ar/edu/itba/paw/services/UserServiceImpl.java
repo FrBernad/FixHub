@@ -75,9 +75,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city) throws DuplicateUserException {
         LOGGER.debug("Creating user with email {}", email);
-        User user = userDao.createUser(passwordEncoder.encode(password), name, surname, email, phoneNumber, state, city, DEFAULT_ROLES);
+        final User user = userDao.createUser(passwordEncoder.encode(password), name, surname, email, phoneNumber, state, city, DEFAULT_ROLES);
         LOGGER.debug("Created user with id {}", user.getId());
-        VerificationToken token = generateVerificationToken(user.getId());
+        final VerificationToken token = generateVerificationToken(user.getId());
         LOGGER.debug("Created verification token with id {}", token.getId());
         sendVerificationToken(user, token);
         return user;
@@ -86,14 +86,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<User> verifyAccount(String token) {
-        Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
+        final Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
 
         if (!vtokenOpt.isPresent()) {
             LOGGER.warn("No verification token with value {}", token);
             return Optional.empty();
         }
 
-        VerificationToken vtoken = vtokenOpt.get();
+        final VerificationToken vtoken = vtokenOpt.get();
         verificationTokenDao.removeTokenById(vtoken.getId());//remove always, either token is valid or not
         LOGGER.debug("Removed token with id {}", vtoken.getId());
 
@@ -111,14 +111,14 @@ public class UserServiceImpl implements UserService {
     public void resendVerificationToken(User user) {
         LOGGER.debug("Removing token for user with id {}", user.getId());
         verificationTokenDao.removeTokenByUserId(user.getId());
-        VerificationToken token = generateVerificationToken(user.getId());
+        final VerificationToken token = generateVerificationToken(user.getId());
         LOGGER.debug("Created token with id {}", token.getId());
         sendVerificationToken(user, token);
     }
 
 
     public boolean validatePasswordReset(String token) {
-        Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
+        final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
         if (!prtokenOpt.isPresent() || !prtokenOpt.get().isValid()) {
             LOGGER.info("token {} is not valid", token);
@@ -134,21 +134,21 @@ public class UserServiceImpl implements UserService {
     public void generateNewPassword(User user) {
         LOGGER.debug("Removing password reset token for user {}", user.getId());
         passwordResetTokenDao.removeTokenByUserId(user.getId());
-        PasswordResetToken token = generatePasswordResetToken(user.getId());
+        final PasswordResetToken token = generatePasswordResetToken(user.getId());
         LOGGER.info("created password reset token for user {}", user.getId());
         sendPasswordResetToken(user, token);
     }
 
     @Transactional
     public Optional<User> updatePassword(String token, String password) {
-        Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
+        final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
         if (!prtokenOpt.isPresent()) {
             LOGGER.warn("Token {} is not valid", token);
             return Optional.empty();
         }
 
-        PasswordResetToken prtoken = prtokenOpt.get();
+        final PasswordResetToken prtoken = prtokenOpt.get();
         LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
         passwordResetTokenDao.removeTokenById(prtoken.getId()); //remove always, either token is valid or not
         if (!prtoken.isValid()) {
@@ -316,8 +316,8 @@ public class UserServiceImpl implements UserService {
 
     private void sendProviderNotificationEmail(User user) {
         try {
-            Locale locale = LocaleContextHolder.getLocale();
-            Map<String, Object> mailAttrs = new HashMap<>();
+            final Locale locale = LocaleContextHolder.getLocale();
+            final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("to", user.getEmail());
             mailAttrs.put("name", user.getName());
             emailService.sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
@@ -328,8 +328,8 @@ public class UserServiceImpl implements UserService {
 
     private void sendPasswordResetToken(User user, PasswordResetToken token) {
         try {
-            Locale locale = LocaleContextHolder.getLocale();
-            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
+            final Locale locale = LocaleContextHolder.getLocale();
+            final String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -341,17 +341,17 @@ public class UserServiceImpl implements UserService {
 
 
     private PasswordResetToken generatePasswordResetToken(long userId) {
-        String token = UUID.randomUUID().toString();
+        final String token = UUID.randomUUID().toString();
         return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
 
 
     private void sendVerificationToken(User user, VerificationToken token) {
         try {
-            Locale locale = LocaleContextHolder.getLocale();
-            String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
+            final Locale locale = LocaleContextHolder.getLocale();
+            final String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
 //            String url = new URL("http", appBaseUrl, 8080, "/user/verifyAccount?token=" + token.getValue()).toString();
-            Map<String, Object> mailAttrs = new HashMap<>();
+            final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
 
@@ -362,7 +362,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private VerificationToken generateVerificationToken(long userId) {
-        String token = UUID.randomUUID().toString();
+        final String token = UUID.randomUUID().toString();
         return verificationTokenDao.createVerificationToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
 

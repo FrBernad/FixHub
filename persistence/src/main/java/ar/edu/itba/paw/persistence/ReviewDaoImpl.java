@@ -21,15 +21,12 @@ import java.util.*;
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
 
-    @Autowired
-    private DataSource ds;
-
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     private static final ResultSetExtractor<Collection<Review>> REVIEW_RS_EXTRACTOR = (rs) ->
     {
-        Map<Long, Review> reviewsMap = new HashMap<>();
+        final Map<Long, Review> reviewsMap = new HashMap<>();
 
         long reviewId;
 
@@ -75,7 +72,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public Collection<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
         variables.add(jobId);
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
@@ -105,7 +102,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public Review createReview(String description, Job job, int rating, Timestamp creationDate, User user) {
-        Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("r_description", description);
         map.put("r_job_id", job.getId());
         map.put("r_rating", rating);
@@ -126,7 +123,7 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
-        StringBuilder offsetAndLimitQuery = new StringBuilder();
+        final StringBuilder offsetAndLimitQuery = new StringBuilder();
         if (page > 0) {
             offsetAndLimitQuery.append(" OFFSET ? ");
             variables.add(page * itemsPerPage);

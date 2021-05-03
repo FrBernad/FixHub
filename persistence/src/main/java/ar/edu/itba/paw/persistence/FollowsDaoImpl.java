@@ -17,11 +17,8 @@ import java.util.Map;
 @Repository
 public class FollowsDaoImpl implements FollowsDao {
 
-    @Autowired
-    private DataSource ds;
-
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert userFollowsSimpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert userFollowsSimpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FollowsDaoImpl.class);
 
@@ -33,7 +30,7 @@ public class FollowsDaoImpl implements FollowsDao {
 
     @Override
     public void followUser(Long userId, Long userToFollowId) {
-        Map<String, Object> newFollow = new HashMap<>();
+        final Map<String, Object> newFollow = new HashMap<>();
         newFollow.put("f_user_id", userId);
         newFollow.put("f_followed_user_id", userToFollowId);
         try {

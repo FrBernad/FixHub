@@ -20,17 +20,14 @@ import java.util.*;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private DataSource ds;
-
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert userSimpleJdbcInsert;
-    private SimpleJdbcInsert roleSimpleJdbcInsert;
-    private SimpleJdbcInsert contactInfoSimpleJdbcInsert;
-    private SimpleJdbcInsert contactProviderSimpleJdbcInsert;
-    private SimpleJdbcInsert userScheduleSimpleJdbcInsert;
-    private SimpleJdbcInsert userLocationSimpleJdbcInsert;
-    private SimpleJdbcInsert userFollowsSimpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert userSimpleJdbcInsert;
+    private final SimpleJdbcInsert roleSimpleJdbcInsert;
+    private final SimpleJdbcInsert contactInfoSimpleJdbcInsert;
+    private final SimpleJdbcInsert contactProviderSimpleJdbcInsert;
+    private final SimpleJdbcInsert userScheduleSimpleJdbcInsert;
+    private final SimpleJdbcInsert userLocationSimpleJdbcInsert;
+    private final SimpleJdbcInsert userFollowsSimpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
@@ -86,7 +83,7 @@ public class UserDaoImpl implements UserDao {
         return userMap.values();
     };
 
-    private ResultSetExtractor<Collection<ContactInfo>> CONTACT_INFO_ROW_MAPPER = rs -> {
+    private final ResultSetExtractor<Collection<ContactInfo>> CONTACT_INFO_ROW_MAPPER = rs -> {
         List<ContactInfo> contactInfo = new LinkedList<>();
         while (rs.next()) {
             contactInfo.add(new ContactInfo(
@@ -200,7 +197,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addRole(long userId, Roles newRole) {
-        Map<String, Object> userRoles = new HashMap<>();
+        final Map<String, Object> userRoles = new HashMap<>();
         userRoles.put("r_user_id", userId);
 
         userRoles.put("r_role", newRole.name());
@@ -222,7 +219,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) throws DuplicateUserException {
-        Map<String, Object> userInfo = new HashMap<>();
+        final Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("u_password", password);
         userInfo.put("u_name", name);
         userInfo.put("u_surname", surname);
@@ -241,7 +238,7 @@ public class UserDaoImpl implements UserDao {
             throw new DuplicateUserException();
         }
 
-        Map<String, Object> userRoles = new HashMap<>();
+        final Map<String, Object> userRoles = new HashMap<>();
         userRoles.put("r_user_id", id);
 
         for (Roles role : roles) {
@@ -296,7 +293,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
         variables.add(providerId);
 
@@ -320,25 +317,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
-        List<Object> variables = new LinkedList<>();
+        final List<Object> variables = new LinkedList<>();
 
         variables.add(clientId);
 
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
-        String offset = " ";
-        if (page > 0) {
-            offset = " OFFSET ? ";
-            variables.add(page * itemsPerPage);
-        }
-        String limit = " ";
-        if (itemsPerPage > 0) {
-            limit = " LIMIT ? ";
-            variables.add(itemsPerPage);
-        }
         final String query = "SELECT * FROM (SELECT * FROM " +
             "(SELECT * FROM CONTACT JOIN CONTACT_INFO on c_info_id = ci_id where c_user_id = ? ) AUX " +
             "JOIN USERS on u_id = c_provider_id) AUX2 JOIN JOBS on j_id = c_job_id ORDER BY c_date DESC" +
-            offset + limit;
+            offsetAndLimitQuery;
         LOGGER.debug("Executing query: {}", query);
 
         return jdbcTemplate.query(query, variables.toArray(), PROVIDER_ROW_MAPPER);
@@ -354,7 +342,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addSchedule(Long userId, String startTime, String endTime) {
-        Map<String, Object> schedule = new HashMap<>();
+        final Map<String, Object> schedule = new HashMap<>();
 
         schedule.put("us_user_id", userId);
         schedule.put("us_start_time", startTime);
@@ -366,7 +354,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addLocation(Long userId, List<Long> citiesId) {
-        Map<String, Object> location = new HashMap<>();
+        final Map<String, Object> location = new HashMap<>();
         for (Long cityId : citiesId) {
             location.put("ul_user_id", userId);
             location.put("ul_city_id", cityId);
@@ -547,7 +535,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
-        StringBuilder offsetAndLimitQuery = new StringBuilder();
+        final StringBuilder offsetAndLimitQuery = new StringBuilder();
         if (page > 0) {
             offsetAndLimitQuery.append(" OFFSET ? ");
             variables.add(page * itemsPerPage);

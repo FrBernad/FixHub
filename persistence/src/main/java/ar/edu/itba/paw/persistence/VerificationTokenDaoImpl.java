@@ -19,17 +19,14 @@ import java.util.Optional;
 @Repository
 public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
-    @Autowired
-    private DataSource ds;
-
     private static final RowMapper<VerificationToken> VERIFICATION_TOKEN_ROW_MAPPER = (rs, rowNum) ->
         new VerificationToken(rs.getLong("vt_id"),
             rs.getString("vt_token"),
             rs.getLong("vt_user_id"),
             rs.getTimestamp("vt_expiration_date").toLocalDateTime());
 
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VerificationTokenDaoImpl.class);
 
@@ -51,11 +48,11 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public VerificationToken createVerificationToken(long userId, String token, LocalDateTime expirationDate) {
-        Map<String, Object> values = new HashMap<>();
+        final Map<String, Object> values = new HashMap<>();
         values.put("vt_user_id", userId);
         values.put("vt_token", token);
         values.put("vt_expiration_date", expirationDate);
-        Number tokenId = simpleJdbcInsert.executeAndReturnKey(values);
+        final Number tokenId = simpleJdbcInsert.executeAndReturnKey(values);
         LOGGER.info("Created new verification token for user with id {}", userId);
 
         return new VerificationToken(tokenId.longValue(), token, userId, expirationDate);//never returns null
