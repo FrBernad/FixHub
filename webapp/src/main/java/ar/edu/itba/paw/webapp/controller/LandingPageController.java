@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collection;
 
 
-//FIXME:MOVER DE ACA
 @Controller
 public class LandingPageController {
 

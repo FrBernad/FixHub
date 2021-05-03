@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    //TODO: Acomodar el codigo
     let cities = document.getElementsByClassName("cityButton");
     let cityName = document.getElementById("cityName");
     let citiesHolder = document.getElementById("citiesHolder");

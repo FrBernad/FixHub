@@ -304,7 +304,6 @@ public class WebAuthController {
         if (flashMap != null)
             mav.addAllObjects(flashMap);
 
-        //FIXME:
         if (form != null && form.getState() != 0) {
             LOGGER.debug("Adding state cities again due to error in chooseCity form");
             mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
@@ -491,7 +490,6 @@ public class WebAuthController {
         return new ModelAndView("views/user/profile/editProfile");
     }
 
-    //FIXME: REVISAR EXCEPCION
     @RequestMapping(value = "/user/account/updateInfo", method = RequestMethod.POST)
     public ModelAndView updateProfileInfo(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form,
                                           BindingResult errors, Principal principal) {
