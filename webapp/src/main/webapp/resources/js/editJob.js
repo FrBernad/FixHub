@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let imagesHolder = document.getElementById("imagesHolder");
     let files = [];
 
+    let description = document.getElementById("textArea");
+    description.value = description.dataset.description;
+
     let imageDelete = document.getElementsByClassName("imageDelete");
 
     let loadingSpinner = document.getElementById("loadingSpinner");

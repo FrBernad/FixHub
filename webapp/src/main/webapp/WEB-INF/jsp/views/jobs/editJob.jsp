@@ -140,6 +140,7 @@
                                            value="<spring:message code="home.categories.${job.category}"/>"
                                            disabled/>
                                 </div>
+
                                 <div class="col-12 pl-0 form-group">
                                     <form:label class="label" path="price"><spring:message
                                             code="jobForm.jobPriceTitle"/></form:label>
@@ -151,8 +152,9 @@
                                 <div class="col-12 px-0 form-group">
                                     <form:label class="label" path="description"><spring:message
                                             code="jobForm.jobDescriptionTitle"/></form:label>
-                                    <form:textarea type="text" path="description"  value="${job.description}"
+                                    <form:textarea type="text" path="description"
                                                    cssErrorClass="form-control is-invalid"
+                                                   data-description="${job.description}"
                                                    cssStyle="width: 100%;
                                                           height: 100px;
                                                           padding: 12px 20px;
@@ -161,7 +163,7 @@
                                                           border-radius: 4px;
                                                           background-color: #f8f8f8;
                                                           resize: none;"
-                                                id="state" class="form-control"/>
+                                                   id="textArea" class="form-control"/>
 
                                     <form:errors path="description" cssClass="formError" element="p"/>
                                 </div>

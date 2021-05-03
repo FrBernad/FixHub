@@ -143,7 +143,7 @@ public class JobDaoImpl implements JobDao {
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
                 " on job_id=j_id %s %s %s ) ",
-            filterQuery, stateAndCityQuery, orderQuery, searchQuery, offsetAndLimitQuery);
+            filterQuery, stateAndCityQuery, searchQuery, orderQuery, offsetAndLimitQuery);
 
         final String query = String.format(
             " select * from " +
@@ -285,21 +285,22 @@ public class JobDaoImpl implements JobDao {
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
-        final String JOBS_WHERE_ID_QUERY =
+        final String JOBS_WHERE_ID_QUERY = String.format(
             " where j_id in ( " +
                 " select j_id from " +
-                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") w0 " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
                 " JOIN " +
                 " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id ) as w1 " +
                 " ON w0.j_provider_id=w1.ul_user_id " +
                 " JOIN " +
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
-                " on job_id=j_id " + orderQuery + searchQuery + offsetAndLimitQuery + " ) ";
+                " on job_id=j_id %s %s %s ) "
+            , filterQuery, searchQuery, orderQuery, offsetAndLimitQuery);
 
-        final String query =
+        final String query = String.format(
             " select * from " +
-                " (select * from JOBS " + JOBS_WHERE_ID_QUERY + " ) selectedJobs " +
+                " (select * from JOBS %s ) selectedJobs " +
                 " JOIN " +
                 " USERS on selectedJobs.j_provider_id=users.u_id " +
                 " JOIN " +
@@ -310,7 +311,8 @@ public class JobDaoImpl implements JobDao {
                 " on j_id = jobsStats.job_id " +
                 " LEFT OUTER JOIN " +
                 " (select ji_job_id, ji_image_id from job_image) jobImages " +
-                " on j_id = jobImages.ji_job_id " + orderQuery;
+                " on j_id = jobImages.ji_job_id %s "
+                ,JOBS_WHERE_ID_QUERY,orderQuery);
 
         return executeQuery(query, variables);
     }
@@ -326,7 +328,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     private String getOrderQuery(OrderOptions orderOption) {
-        return String.format(" ORDER BY %s ",ORDER_OPTIONS.get(orderOption));
+        return String.format(" ORDER BY %s ", ORDER_OPTIONS.get(orderOption));
     }
 
     private String getCategoryFilterQuery(JobCategory category, List<Object> variables) {

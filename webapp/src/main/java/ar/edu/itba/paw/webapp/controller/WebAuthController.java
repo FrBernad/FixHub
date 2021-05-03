@@ -462,13 +462,6 @@ public class WebAuthController {
         return mav;
     }
 
-
-    @RequestMapping(path = "/user/account/updateInfo")
-    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
-        LOGGER.info("Accessed /user/account/updateInfo GET controller");
-        return new ModelAndView("views/user/profile/editProfile");
-    }
-
     @RequestMapping(path = "/user/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId, Principal principal) {
 
@@ -489,6 +482,13 @@ public class WebAuthController {
         user.setFollowing(userService.getFollowingCount(user.getId()));
         mav.addObject("user", user);
         return mav;
+    }
+
+
+    @RequestMapping(path = "/user/account/updateInfo")
+    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
+        LOGGER.info("Accessed /user/account/updateInfo GET controller");
+        return new ModelAndView("views/user/profile/editProfile");
     }
 
     //FIXME: REVISAR EXCEPCION
