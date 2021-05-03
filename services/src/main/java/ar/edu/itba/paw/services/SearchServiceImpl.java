@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import static ar.edu.itba.paw.models.OrderOptions.*;
 
@@ -46,7 +43,6 @@ public class SearchServiceImpl implements SearchService {
             LOGGER.debug("Order option is valid");
             queryOrderOption = valueOf(orderBy);
         }
-
 
         JobCategory queryCategoryFilter;
         if (!JobCategory.contains(category)) {
@@ -93,8 +89,8 @@ public class SearchServiceImpl implements SearchService {
                     queryState = null;
                 }
             }
-            if (city == null || city.equals("")) {
-                LOGGER.debug("City query is empty, setting searchQuery to none");
+            if (state.equals("") || city == null || city.equals("")) {
+                LOGGER.debug("City query is empty or state is empty, setting searchQuery to none");
                 queryCity = null;
                 city = "";
             } else {
@@ -212,6 +208,34 @@ public class SearchServiceImpl implements SearchService {
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
     }
 
+
+    @Override
+    public PaginatedSearchResult<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
+
+        if (page < 0) {
+            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
+            page = 0;
+        }
+
+        if (itemsPerPage <= 0) {
+            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
+            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        }
+
+        LOGGER.debug("Retrieving total providers count");
+        final int totalJobs = userDao.getProvidersCountByClientId(clientId);
+        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+
+        if (page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
+            page = totalPages - 1;
+        }
+
+        LOGGER.debug("Retrieving page {} for providers by client id {}", page, clientId);
+        final Collection<JobContact> contacts = userDao.getProvidersByClientId(clientId, page, itemsPerPage);
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
+    }
+
     @Override
     public PaginatedSearchResult<User> getUserFollowers(Long userId, Integer page, Integer itemsPerPage) {
 
@@ -220,7 +244,7 @@ public class SearchServiceImpl implements SearchService {
             page = 0;
         }
 
-        if (itemsPerPage == 0) {
+        if (itemsPerPage <= 0) {
             LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
             itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
         }
@@ -267,37 +291,8 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PaginatedSearchResult<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
-
-        if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
-        }
-
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
-        }
-
-        LOGGER.debug("Retrieving total providers count");
-        final int totalJobs = userDao.getProvidersCountByClientId(clientId);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
-
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
-        }
-
-        LOGGER.debug("Retrieving page {} for providers by client id {}", page, clientId);
-        final Collection<JobContact> contacts = userDao.getProvidersByClientId(clientId, page, itemsPerPage);
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
-    }
-
-
-    @Override
     public Collection<OrderOptions> getOrderOptions() {
         return Arrays.asList(values());
     }
-
 
 }
