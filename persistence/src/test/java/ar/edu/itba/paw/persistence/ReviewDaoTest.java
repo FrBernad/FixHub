@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ import java.util.LinkedList;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-@Rollback
+@Transactional
 @Sql(scripts = "classpath:review-dao-test.sql")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)

@@ -12,7 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +26,10 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-//@Sql(scripts = "classpath:user-dao-test.sql")//sirve para partir siempre de una base de datos conocida. Se ejecuta antes de cada test
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
+@Sql(scripts = "classpath:user-dao-test.sql")
 public class UserDaoTest {
 
     private static final String PASSWORD = "password";
@@ -76,55 +79,53 @@ public class UserDaoTest {
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "u_id = " + user.getId()));
     }
 
-
-    @Test
-    public void testGetUserById() {
-        final Optional<User> user = userDao.getUserById(USER.getId());
-        assertTrue(user.isPresent());
-        assertEquals(user.get(), USER);
-
-        final Optional<User> userNotPresent = userDao.getUserById(50);
-        assertFalse(userNotPresent.isPresent());
+    @Test(expected = DuplicateUserException.class)
+    public void testCreateDuplicateUser() throws DuplicateUserException {
+        final User user = userDao.createUser(USER.getPassword(), USER.getName(), USER.getSurname(),
+            USER.getEmail(), USER.getPhoneNumber(), USER.getState(), USER.getCity(), DEFAULT_ROLES);
     }
 
-    @Test
-    public void testGetUserByEmail() {
-        final Optional<User> user = userDao.getUserByEmail(USER.getEmail());
-        assertTrue(user.isPresent());
-        assertEquals(user.get(), USER);
+    @Test(expected = UserNotFoundException.class)
+    public void testGetUserById() throws DuplicateUserException {
+        final User user = userDao.getUserById(USER.getId()).orElseThrow(UserNotFoundException::new);
+        assertNotNull(user);
+        assertEquals(user, USER);
 
-        final Optional<User> userNotPresent = userDao.getUserByEmail("gonzalo@yopmail.com");
-        assertFalse(userNotPresent.isPresent());
+        final User userNotPresent = userDao.getUserById(50).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void testGetUserByEmail() {
+        final User user = userDao.getUserByEmail(USER.getEmail()).orElseThrow(UserNotFoundException::new);
+        assertNotNull(user);
+        assertEquals(user, USER);
+
+        final User userNotPresent = userDao.getUserByEmail("gonzalo@yopmail.com").orElseThrow(UserNotFoundException::new);
     }
 
     @Test
     public void updatePassword() {
         final String newPassword = "newPassword";
         userDao.updatePassword(USER.getId(), newPassword);
-        String query = "u_id = " + USER.getId() + " and u_password = '" + newPassword + "'";
+        String query = String.format("u_id = %s and u_password = '%s' ", USER.getId(), newPassword);
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", query));
     }
 
 
     @Test
     public void getUserStatsById() {
-        Optional<UserStats> userStats = userDao.getUserStatsById(USER.getId());
-        assertTrue(userStats.isPresent());
-        assertEquals(userStats.get().getJobsCount(), USER_STATS.getJobsCount());
-        assertEquals(userStats.get().getAvgRating(), USER_STATS.getAvgRating());
-        assertEquals(userStats.get().getReviewCount(), USER_STATS.getReviewCount());
+        UserStats userStats = userDao.getUserStatsById(USER.getId()).orElseThrow(UserNotFoundException::new);
+        assertNotNull(userStats);
+        assertEquals(userStats.getJobsCount(), USER_STATS.getJobsCount());
+        assertEquals(userStats.getAvgRating(), USER_STATS.getAvgRating());
+        assertEquals(userStats.getReviewCount(), USER_STATS.getReviewCount());
     }
 
 
     @Test
     public void updateUserInfo() {
         userDao.updateUserInfo(USER_INFO, USER);
-        String query = new StringBuilder("u_id = ").append(USER.getId())
-            .append(" and u_name = '").append(USER_INFO.getName()).append("'")
-            .append(" and u_surname = '").append(USER_INFO.getSurname()).append("'")
-            .append(" and u_city = '").append(USER_INFO.getCity()).append("'")
-            .append(" and u_state = '").append(USER_INFO.getState()).append("'")
-            .append(" and u_phone_number = '").append(USER_INFO.getPhoneNumber()).append("'").toString();
+        String query = String.format("u_id = %s and u_name = '%s' and u_surname = '%s' and u_city = '%s' and u_state = '%s' and u_phone_number = '%s' ", USER.getId(), USER_INFO.getName(), USER_INFO.getSurname(), USER_INFO.getCity(), USER_INFO.getState(), USER_INFO.getPhoneNumber());
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", query));
 
     }
@@ -133,13 +134,15 @@ public class UserDaoTest {
     public void addContactInfo() {
         userDao.addContactInfo(CONTACT_DTO);
 
-        String query = new StringBuilder("ci_user_id = ").append(CLIENT.getId())
-            .append(" and ci_city = '").append(CONTACT_DTO.getCity()).append("'")
-            .append(" and ci_state = '").append(CONTACT_DTO.getState()).append("'")
-            .append(" and ci_street = '").append(CONTACT_DTO.getStreet()).append("'")
-            .append(" and ci_address_number = '").append(CONTACT_DTO.getAddressNumber()).append("'")
-            .append(" and ci_floor = '").append(CONTACT_DTO.getFloor()).append("'")
-            .append(" and ci_department_number = '").append(CONTACT_DTO.getDepartmentNumber()).append("'").toString();
+        String query =  String.format("ci_user_id = %s and ci_city = '%s' and ci_state = '%s' and ci_street = '%s' and " +
+                "ci_address_number = '%s' and ci_floor = '%s' and ci_department_number = '%s' ",
+            CLIENT.getId(),
+            CONTACT_DTO.getCity(),
+            CONTACT_DTO.getState(),
+            CONTACT_DTO.getStreet(),
+            CONTACT_DTO.getAddressNumber(),
+            CONTACT_DTO.getFloor(),
+            CONTACT_DTO.getDepartmentNumber());
 
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "contact_info", query));
 
@@ -197,7 +200,7 @@ public class UserDaoTest {
         ProviderLocation providerLocation = userDao.getLocationByProviderId(1L);
         City[] cities = providerLocation.getCities().toArray(new City[0]);
         for (int i = 0; i < 3; i++) {
-            assertEquals(cities[i].getId(), i+1);
+            assertEquals(cities[i].getId(), i + 1);
         }
         assertEquals(3, cities.length);
 
