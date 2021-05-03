@@ -11,7 +11,7 @@
 .buttonEnabled {
     background-color: var(--primary-color);
     color: white;
-    border:none;
+    border: none;
 }
 
 .buttonDisabled {
@@ -28,4 +28,26 @@
     padding: 5px;
     font-size: 12px;
     height: 30px;
+}
+
+.trashIcon {
+    color: var(--primary-color);
+}
+
+.deleteButton{
+    border-radius: 50%;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    background-color: rgba(189, 189, 189, 1);
+    transition:hover 1s;
+    border:none;
+    width:40px;
+    height: 40px;
+    transform: translate(-50%, -50%);
+}
+
+.deleteButton:hover{
+    background-color: rgba(189, 189, 189, 0.8);
+
 }

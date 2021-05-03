@@ -44,8 +44,10 @@
                                                                          style="object-fit: cover; height: 100%; width: 100%">
                                                                     <span class="imageDelete" style="cursor: pointer;"
                                                                           data-image-id="${imageId}">
-                                                                <i class="fas fa-trash fa-2x"
-                                                                   style="position:absolute; bottom: 20px; left: 50%; text-align: center; color: red;"></i>
+
+                                                                        <button class="deleteButton">
+                                                                            <i class="fas fa-trash fa-lg trashIcon"></i></button>
+
                                                                 </span>
                                                                 </div>
                                                             </c:forEach>
@@ -80,10 +82,10 @@
                                                     </div>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <%--                                                    <img--%>
-                                                    <%--                                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"--%>
-                                                    <%--                                                            alt="${job.category}" class="rounded"--%>
-                                                    <%--                                                            style="object-fit: cover; height: 100%; width: 100%"/>--%>
+                                                    <img
+                                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                                                            alt="${job.category}" class="rounded"
+                                                            style="object-fit: cover; height: 100%; width: 100%"/>
                                                 </c:otherwise>
 
                                             </c:choose>
@@ -149,7 +151,7 @@
                                 <div class="col-12 px-0 form-group">
                                     <form:label class="label" path="description"><spring:message
                                             code="jobForm.jobDescriptionTitle"/></form:label>
-                                    <form:textarea type="text" path="description" value="${job.description}"
+                                    <form:textarea type="text" path="description"  value="${job.description}"
                                                    cssErrorClass="form-control is-invalid"
                                                    cssStyle="width: 100%;
                                                           height: 100px;
@@ -159,7 +161,8 @@
                                                           border-radius: 4px;
                                                           background-color: #f8f8f8;
                                                           resize: none;"
-                                                   id="state" class="form-control"/>
+                                                id="state" class="form-control"/>
+
                                     <form:errors path="description" cssClass="formError" element="p"/>
                                 </div>
                                 <div class="col-12 px-0">

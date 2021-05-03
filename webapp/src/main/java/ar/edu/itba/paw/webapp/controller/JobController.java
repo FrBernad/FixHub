@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -129,8 +130,7 @@ public class JobController {
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
 
-        //FIXME: SOLUCIONAR ESTO
-        if (form.getImages().get(0).getSize() != 0) {
+        if (!form.getImages().get(0).isEmpty()) {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
@@ -243,8 +243,7 @@ public class JobController {
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
 
-        //FIXME: SOLUCIONAR ESTO
-        if (form.getImages().get(0).getSize() != 0) {
+        if (!form.getImages().get(0).isEmpty()){
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
@@ -264,7 +263,6 @@ public class JobController {
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
-    //FIXME: SOLUCIONAR
     @RequestMapping(path = "jobs/images/{imageId}",
         produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
         method = RequestMethod.GET)
@@ -275,14 +273,12 @@ public class JobController {
         return image.getData();
     }
 
-    //FIXME: SOLUCIONAR
     @RequestMapping(path = "/user/images/profile/{imageId}",
         produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
         method = RequestMethod.GET)
     @ResponseBody
     public byte[] getProfileImage(@PathVariable("imageId") long imageId) {
         LOGGER.info("Accessed /user/images/profile/{} GET controller", imageId);
-
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getData();
     }
