@@ -85,22 +85,31 @@ public class UserDaoTest {
             USER.getEmail(), USER.getPhoneNumber(), USER.getState(), USER.getCity(), DEFAULT_ROLES);
     }
 
-    @Test(expected = UserNotFoundException.class)
-    public void testGetUserById() throws DuplicateUserException {
-        final User user = userDao.getUserById(USER.getId()).orElseThrow(UserNotFoundException::new);
-        assertNotNull(user);
-        assertEquals(user, USER);
+    @Test
+    public void testGetUserById(){
+        final Optional<User> user = userDao.getUserById(USER.getId());
+        assertTrue(user.isPresent());
+        assertEquals(user.get(),USER);
 
-        final User userNotPresent = userDao.getUserById(50).orElseThrow(UserNotFoundException::new);
     }
 
-    @Test(expected = UserNotFoundException.class)
-    public void testGetUserByEmail() {
-        final User user = userDao.getUserByEmail(USER.getEmail()).orElseThrow(UserNotFoundException::new);
-        assertNotNull(user);
-        assertEquals(user, USER);
+    @Test
+    public void testGetUserByIdNotFound(){
+        final Optional<User> user = userDao.getUserById(50);
+        assertFalse(user.isPresent());
+    }
 
-        final User userNotPresent = userDao.getUserByEmail("gonzalo@yopmail.com").orElseThrow(UserNotFoundException::new);
+    @Test
+    public void testGetUserByEmail() {
+        final Optional<User> user = userDao.getUserByEmail(USER.getEmail());
+        assertTrue(user.isPresent());
+        assertEquals(user.get(),USER);
+    }
+
+    @Test
+    public void testGetUserByEmailNotFound() {
+        final Optional<User> user = userDao.getUserByEmail("gonzalo@yopmail.com");
+        assertFalse(user.isPresent());
     }
 
     @Test

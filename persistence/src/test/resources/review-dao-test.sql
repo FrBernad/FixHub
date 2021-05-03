@@ -2,6 +2,9 @@ TRUNCATE TABLE users RESTART IDENTITY AND COMMIT NO CHECK;
 TRUNCATE TABLE jobs RESTART IDENTITY AND COMMIT NO CHECK;
 TRUNCATE TABLE reviews RESTART IDENTITY AND COMMIT NO CHECK;
 TRUNCATE TABLE roles RESTART IDENTITY AND COMMIT NO CHECK;
+TRUNCATE TABLE contact_info RESTART IDENTITY AND COMMIT NO CHECK;
+TRUNCATE TABLE contact RESTART IDENTITY AND COMMIT NO CHECK;
+
 
 
 insert into USERS(u_id, u_password, u_name, u_surname, u_email, u_phone_number,
@@ -25,8 +28,8 @@ insert into ROLES(r_id,r_role, r_user_id)
 VALUES (7,'VERIFIED', 2);
 
 
-insert into JOBS(j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
-VALUES ('El mejor cambio de aceite', 'MECANICO', 'Cambio de aceite', 1,3500.50,false);
+insert into JOBS(j_id,j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES (1,'El mejor cambio de aceite', 'MECANICO', 'Cambio de aceite', 1,3500.50,false);
 
 INSERT INTO CONTACT_INFO(ci_id,ci_user_id, ci_city, ci_state, ci_street, ci_address_number, ci_floor, ci_department_number)
 VALUES (1,2,'Lomas de Zamora','Buenos Aires', 'Spiro','312','21','B');
