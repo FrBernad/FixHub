@@ -49,6 +49,12 @@
                                                                 </span>
                                                                 </div>
                                                             </c:forEach>
+                                                            <div style="display: none;" id="defaultImageCarousel">
+                                                                <img id="defaultImage"
+                                                                     src="<c:url value='/resources/images/${job.category}.jpg'/>"
+                                                                     alt="${job.category}" class="rounded"
+                                                                     style="object-fit: cover; height: 100%; width: 100%;"/>
+                                                            </div>
                                                         </div>
 
                                                         <c:if test="${fn:length(job.imagesId) gt 1}">
@@ -56,7 +62,7 @@
                                                             <a class="carousel-control-prev"
                                                                href="#carouselExampleControls"
                                                                role="button"
-                                                               data-slide="prev">
+                                                               data-slide="prev" id="previous">
                                                         <span class="carousel-control-prev-icon"
                                                               aria-hidden="true"></span>
                                                                 <span class="sr-only">Previous</span>
@@ -64,7 +70,7 @@
                                                             <a class="carousel-control-next"
                                                                href="#carouselExampleControls"
                                                                role="button"
-                                                               data-slide="next">
+                                                               data-slide="next" id="next">
                                                         <span class="carousel-control-next-icon"
                                                               aria-hidden="true"></span>
                                                                 <span class="sr-only">Next</span>
@@ -74,10 +80,10 @@
                                                     </div>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <img
-                                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"
-                                                            alt="${job.category}" class="rounded"
-                                                            style="object-fit: cover; height: 100%; width: 100%"/>
+                                                    <%--                                                    <img--%>
+                                                    <%--                                                            src="<c:url value='/resources/images/${job.category}.jpg'/>"--%>
+                                                    <%--                                                            alt="${job.category}" class="rounded"--%>
+                                                    <%--                                                            style="object-fit: cover; height: 100%; width: 100%"/>--%>
                                                 </c:otherwise>
 
                                             </c:choose>
@@ -90,7 +96,9 @@
                                             <spring:message code="jobForm.jobImageTitle"/></form:label>
                                         <div>
 
-                                            <span id="imagesQuantity"  data-max="${maxImagesPerJob}" data-quantity="${fn:length(job.imagesId)}"><c:out value="${fn:length(job.imagesId)}"/></span>
+                                            <span id="imagesQuantity" data-max="${maxImagesPerJob}"
+                                                  data-quantity="${fn:length(job.imagesId)}"><c:out
+                                                    value="${fn:length(job.imagesId)}"/></span>
                                             <span>/ <c:out value="${maxImagesPerJob}"/></span>
                                         </div>
 
@@ -142,8 +150,8 @@
                                     <form:label class="label" path="description"><spring:message
                                             code="jobForm.jobDescriptionTitle"/></form:label>
                                     <form:textarea type="text" path="description" value="${job.description}"
-                                                cssErrorClass="form-control is-invalid"
-                                                cssStyle="width: 100%;
+                                                   cssErrorClass="form-control is-invalid"
+                                                   cssStyle="width: 100%;
                                                           height: 100px;
                                                           padding: 12px 20px;
                                                           box-sizing: border-box;
@@ -151,7 +159,7 @@
                                                           border-radius: 4px;
                                                           background-color: #f8f8f8;
                                                           resize: none;"
-                                                id="state" class="form-control"/>
+                                                   id="state" class="form-control"/>
                                     <form:errors path="description" cssClass="formError" element="p"/>
                                 </div>
                                 <div class="col-12 px-0">

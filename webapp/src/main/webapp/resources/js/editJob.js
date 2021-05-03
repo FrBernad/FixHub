@@ -50,8 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 imagesIdDeletedContainer.appendChild(aux);
                 imagesQuantity--;
                 imagesQuantityText.textContent = imagesQuantity.toString();
-                if (jobImages.length !== 0) {
+                if(jobImages.length !== 0){
                     carousel.getElementsByTagName("div")[0].className += " active";
+                    if (jobImages.length === 1) {
+                        let aux = document.getElementById("carouselExampleControls");
+                        aux.removeChild(document.getElementById("next"));
+                        aux.removeChild(document.getElementById("previous"));
+                    }
+                }else{
+                    document.getElementById("defaultImageCarousel").style.display="block";
+                    document.getElementById("defaultImageCarousel").className += "carousel-item active";
                 }
             })
 
@@ -68,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function inputFileUpdate() {
         files.push(inputFile.files[0]);
+        console.log(inputFile.files[0]);
         const file = document.createElement("button");
         file.type = "button";
         file.className += "imgFile m-2";
@@ -78,10 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
         icon.className += "fas fa-times ml-1";
         file.appendChild(icon);
         imagesHolder.appendChild(file);
+
+
         if (parseInt(imagesQuantity) === parseInt(imagesMax)) {
             addFileButton.disabled = true;
             addFileButton.classList.replace('buttonEnabled','buttonDisabled');
-
         }
 
         file.addEventListener("click", () => {
