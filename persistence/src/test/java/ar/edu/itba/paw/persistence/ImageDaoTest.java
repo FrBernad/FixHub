@@ -39,8 +39,9 @@ public class ImageDaoTest {
     private ImageDao imageDao;
 
     private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jobJdbcInsert;
-    private SimpleJdbcInsert jobImageJdbcInsert;
+    private SimpleJdbcInsert imageSimpleJdbcInsert;
+    private SimpleJdbcInsert jobImageSimpleJdbcInsert;
+
 
 
     //User data
@@ -55,19 +56,23 @@ public class ImageDaoTest {
     private static boolean JOB_PAUSE=false;
 
 
+    private static final byte[] imgInfo1={0,1,2,3,4,5,6,7,8,9};
+    private static final byte[] imgInfo2={0,9,8,7,6,5,4,3,2,1};
+    private static final byte[] imgInfo3={2,2,1,3,0,4,9,4,9,9};
 
-    private final byte[] imgInfo1={0,4,2,7,8,3,5,8,9,5,4,2};
-    private final byte[] imgInfo2={1,2,4,9,8,0,3,7,4,2,1,1};
-    private final byte[] imgInfo3={2,2,1,3,0,4,9,4,9,9,1,9};
+    private static final String imgType ="image/jpeg";
 
-    private final String imgType =".png";
+    private static final ImageDto IMAGEDTO1 = new ImageDto(imgInfo1,imgType);
+    private static final ImageDto IMAGEDTO2 = new ImageDto(imgInfo2,imgType);
+    private static final ImageDto IMAGEDTO3 = new ImageDto(imgInfo3,imgType);
+
 
     @Before
     public void setUp(){
-
         jdbcTemplate=new JdbcTemplate(ds);
-        jobJdbcInsert =new SimpleJdbcInsert(ds).withTableName("jobs").usingGeneratedKeyColumns("j_id");
-        jobImageJdbcInsert=new SimpleJdbcInsert(ds).withTableName("job_image");
+        imageSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("IMAGES").usingGeneratedKeyColumns("i_id");
+        jobImageSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("JOB_IMAGE");
+
     }
 
     @Test
@@ -87,15 +92,16 @@ public class ImageDaoTest {
 
         List<ImageDto> dtos1 = new ArrayList<>();
 
-        dtos1.add(new ImageDto(imgInfo1,imgType));
-        dtos1.add(new ImageDto(imgInfo2,imgType));
-        dtos1.add(new ImageDto(imgInfo2,imgType));
+        dtos1.add(IMAGEDTO1);
+        dtos1.add(IMAGEDTO2);
+        dtos1.add(IMAGEDTO3);
+
 
         List<Image> dtos2 = imageDao.createImages(dtos1);
 
         assertNotNull(dtos2);
 
-        assertEquals(dtos1.size(), JdbcTestUtils.countRowsInTableWhere(jdbcTemplate,"images",""));
+        assertEquals(dtos1.size(), JdbcTestUtils.countRowsInTable(jdbcTemplate,"images"));
 
         for (int i = 0; i < dtos1.size() ; i++) {
             assertArrayEquals(dtos1.get(i).getData(),dtos2.get(i).getData());
@@ -108,16 +114,52 @@ public class ImageDaoTest {
     @Test
 
     public void getImageByIdTest(){
+        final Map<String, Object> imageInfo = new HashMap<>();
+        imageInfo.put("i_data", IMAGEDTO1.getData());
+        imageInfo.put("i_mime_type", IMAGEDTO1.getMimeType());
+        final long id = imageSimpleJdbcInsert.executeAndReturnKey(imageInfo).longValue();
+        Image image = new Image(id,IMAGEDTO1.getData(),IMAGEDTO1.getMimeType());
 
-        Image imgIn =imageDao.createImage(new ImageDto(imgInfo1,imgType));
+        Optional<Image> maybeImg = imageDao.getImageById(image.getImageId());
 
-        Optional<Image> imgOutOptl = imageDao.getImageById(imgIn.getImageId());
+        assertTrue(maybeImg.isPresent());
+        assertEquals(image.getImageId(),maybeImg.get().getImageId());
+        assertArrayEquals(image.getData(), maybeImg.get().getData());
+        assertEquals(image.getMimeType(),maybeImg.get().getMimeType());
 
-        assertNotNull(imgOutOptl);
-        assertTrue(imgOutOptl.isPresent());
-        assertEquals(imgIn.getImageId(),imgOutOptl.get().getImageId());
-        assertArrayEquals(imgIn.getData(), imgOutOptl.get().getData());
-        assertEquals(imgIn.getMimeType(),imgOutOptl.get().getMimeType());
+
+    }
+
+    @Test
+    public void deleteImagesByJobId(){
+        List<ImageDto> imageDtos = new LinkedList<>();
+        imageDtos.add(IMAGEDTO1);
+        imageDtos.add(IMAGEDTO2);
+        imageDtos.add(IMAGEDTO3);
+
+        final Map<String, Object> imageInfo = new HashMap<>();
+        long id;
+
+        List<Image> images = new LinkedList<>();
+
+        for(ImageDto imageDto : imageDtos){
+            imageInfo.put("i_data", imageDto.getData());
+            imageInfo.put("i_mime_type", imageDto.getMimeType());
+            id = imageSimpleJdbcInsert.executeAndReturnKey(imageInfo).longValue();
+            images.add(new Image(id,imageDto.getData(),imageDto.getMimeType()));
+        }
+
+        assertEquals(imageDtos.size(),JdbcTestUtils.countRowsInTable(jdbcTemplate,"images"));
+
+        List<Long> imagesId = new LinkedList<>();
+        for(Image aux : images){
+            imagesId.add(aux.getImageId());
+        }
+
+        imageDao.deleteImagesById(imagesId);
+
+
+        assertEquals(0,JdbcTestUtils.countRowsInTable(jdbcTemplate,"images"));
 
 
     }
@@ -125,38 +167,35 @@ public class ImageDaoTest {
     @Test
     public void getImagesByIdJobTest(){
 
-        List<ImageDto> dtos1 = new ArrayList<>();
+        List<ImageDto> imageDtos = new LinkedList<>();
+        imageDtos.add(IMAGEDTO1);
+        imageDtos.add(IMAGEDTO2);
+        imageDtos.add(IMAGEDTO3);
 
-        dtos1.add(new ImageDto(imgInfo1,imgType));
-        dtos1.add(new ImageDto(imgInfo2,imgType));
-        dtos1.add(new ImageDto(imgInfo2,imgType));
+        final Map<String, Object> imageInfo = new HashMap<>();
+        long id;
 
-        Collection<Image> list = imageDao.createImages(dtos1);
+        List<Image> images = new LinkedList<>();
 
-        Map<String,Object> jobMap = new HashMap<>();
-        jobMap.put("j_description",JOB_DESCRIPTION);
-        jobMap.put("j_category",JOB_CATEGORY);
-        jobMap.put("j_job_provided",JOB_PROVIDED);
-        jobMap.put("j_provider_id",USER_ID);
-        jobMap.put("j_price",JOB_PRICE);
-        jobMap.put("j_paused",JOB_PAUSE);
-
-        jobJdbcInsert.execute(jobMap);
-
-        Map<String, Object> imageJobMap = new HashMap<>();
-        Collection<Long> imagesId = new LinkedList<>();
-
-        for (Image image : list) {
-            imageJobMap.put("ji_image_id", image.getImageId());
-            imageJobMap.put("ji_job_id", JOB_ID);
-            imagesId.add(image.getImageId());
-            jobImageJdbcInsert.execute(imageJobMap);
+        for(ImageDto imageDto : imageDtos){
+            imageInfo.put("i_data", imageDto.getData());
+            imageInfo.put("i_mime_type", imageDto.getMimeType());
+            id = imageSimpleJdbcInsert.executeAndReturnKey(imageInfo).longValue();
+            images.add(new Image(id,imageDto.getData(),imageDto.getMimeType()));
         }
 
-        Collection<Image> imgs=imageDao.getImagesByJobId(1);
+        Map<String, Object> imageJobMap = new HashMap<>();
 
-        assertNotNull(imgs);
-        assertEquals(imgs.size(),list.size());
+        for (Image image : images) {
+            imageJobMap.put("ji_image_id", image.getImageId());
+            imageJobMap.put("ji_job_id", JOB_ID);
+            jobImageSimpleJdbcInsert.execute(imageJobMap);
+        }
+
+        Collection<Image> jobImages = imageDao.getImagesByJobId(JOB_ID);
+
+        assertNotNull(jobImages);
+        assertEquals(jobImages.size(),images.size());
 
     }
 
