@@ -48,7 +48,7 @@ public class VerificationTokenDaoTest {
     @Test
     public void testGetTokenByUserId() {
         VerificationToken verificationToken = verificationTokenDao.getTokenByUserId(ID).orElseThrow(UserNotFoundException::new);
-        assertEquals(verificationToken.getUserId(), ID);
+        assertEquals(ID, verificationToken.getUserId());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class VerificationTokenDaoTest {
     @Test
     public void testGetVerificationToken() {
         VerificationToken verificationToken = verificationTokenDao.getVerificationToken(ID).orElseThrow(UserNotFoundException::new);
-        assertEquals(verificationToken.getId(), ID);
+        assertEquals(ID, verificationToken.getId());
     }
 
 

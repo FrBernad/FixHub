@@ -117,6 +117,6 @@ public class ReviewDaoTest {
     @Test
     public void testGetReviewsCountByJobId() {
         final int reviewsCount = reviewDao.getReviewsCountByJobId(JOB.getId());
-        assertEquals(reviewsCount, REVIEWS_AMOUNT);
+        assertEquals(REVIEWS_AMOUNT, reviewsCount);
     }
 }
