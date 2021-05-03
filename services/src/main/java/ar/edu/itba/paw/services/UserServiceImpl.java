@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Override
     public Optional<User> getUserById(long id) {
         LOGGER.debug("Retrieving user with id {}", id);
         return userDao.getUserById(id);
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
         sendVerificationToken(user, token);
     }
 
-
+    @Override
     public boolean validatePasswordReset(String token) {
         final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
@@ -131,6 +132,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional
+    @Override
     public void generateNewPassword(User user) {
         LOGGER.debug("Removing password reset token for user {}", user.getId());
         passwordResetTokenDao.removeTokenByUserId(user.getId());
@@ -140,6 +142,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @Override
     public Optional<User> updatePassword(String token, String password) {
         final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
 
@@ -193,8 +196,8 @@ public class UserServiceImpl implements UserService {
             imageService.updateImage(imageDto, imageId);
     }
 
-    @Override
     @Transactional
+    @Override
     public void makeProvider(User user, List<Long> citiesId, String startTime, String endTime) {
         userDao.addRole(user.getId(), Roles.PROVIDER);
         LOGGER.info("User {} is now provider", user.getId());
@@ -209,7 +212,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void contact(ContactDto contactDto) throws IllegalContactException {
         ContactInfo contactInfo;
 

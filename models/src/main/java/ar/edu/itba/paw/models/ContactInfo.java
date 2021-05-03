@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Objects;
+
 public class ContactInfo {
 
     private Long contactInfoId, userId;
@@ -81,5 +83,16 @@ public class ContactInfo {
         this.departmentNumber = departmentNumber;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactInfo that = (ContactInfo) o;
+        return contactInfoId.equals(that.contactInfoId) && userId.equals(that.userId) && state.equals(that.state) && city.equals(that.city) && street.equals(that.street) && addressNumber.equals(that.addressNumber) && Objects.equals(floor, that.floor) && Objects.equals(departmentNumber, that.departmentNumber);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactInfoId, userId, state, city, street, addressNumber, floor, departmentNumber);
+    }
 }

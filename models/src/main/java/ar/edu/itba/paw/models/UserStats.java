@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Objects;
+
 public class UserStats {
     private long jobsCount;
     private long avgRating;
@@ -35,5 +37,12 @@ public class UserStats {
         this.reviewCount = reviewCount;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserStats userStats = (UserStats) o;
+        return jobsCount == userStats.jobsCount && avgRating == userStats.avgRating && reviewCount == userStats.reviewCount;
+    }
 
 }
