@@ -28,18 +28,6 @@ public class TestConfig {
     @Value("classpath:schema.sql")
     private Resource schemaSql;
 
-    @Value("classpath:job-dao-test.sql")
-    private Resource jobTestSql;
-
-    @Value("classpath:user-dao-test.sql")
-    private Resource userTestSql;
-
-    @Value("classpath:image-dao-test.sql")
-    private Resource imageTestSql;
-
-    @Value("classpath:review-dao-test.sql")
-    private Resource reviewTestSql;
-
     @Bean
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
