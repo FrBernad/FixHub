@@ -105,15 +105,17 @@ public class ReviewDaoTest {
     @Test
     public void testGetReviewsByJobId() {
         final Collection<Review> reviews = reviewDao.getReviewsByJobId(JOB.getId(), 0, REVIEWS_AMOUNT);
+
         for(Review review : reviews) {
             assertEquals(ID, review.getJobId());
         }
+
         assertEquals(REVIEWS_AMOUNT, reviews.size());
     }
 
     @Test
     public void testGetReviewsCountByJobId() {
-//        final int reviewsCount = reviewDao.getReviewsCountByJobId(JOB.getId());
-//        assertEquals(reviewsCount, REVIEWS_AMOUNT);
+        final int reviewsCount = reviewDao.getReviewsCountByJobId(JOB.getId());
+        assertEquals(reviewsCount, REVIEWS_AMOUNT);
     }
 }
