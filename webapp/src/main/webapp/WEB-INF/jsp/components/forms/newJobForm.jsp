@@ -64,23 +64,24 @@
     <div class="form-group d-flex justify-content-between align-items-center">
         <div class="container-fluid px-0">
             <div class="row">
-                <div class="col-8 d-flex align-items-center justify-content-start">
+                <div class="col-6 d-flex align-items-center justify-content-start">
                     <form:label path="images" class="mb-0">
                         <spring:message code="jobForm.jobImageTitle"/>
                     </form:label>
                 </div>
-                <div class="col-5 mt-3">
-                    <button class="buttonCustom buttonEnabled d-flex align-items-center justify-content-center" type="button" id="addFileButton">
-                        <i class="fas fa-upload mr-1"></i>
-                        <spring:message code="jobForm.ImagesButton"/>
-                    </button>
-                </div>
-                <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
+                <div class="col-2 d-flex px-0 align-items-center justify-content-start">
                     <div>
                         <span id="imagesQuantity" data-max="${maxImagesPerJob}">0</span>
                         <span>/ <c:out value="${maxImagesPerJob}"/></span>
                     </div>
                 </div>
+                <div class="col-4 d-flex align-items-center justify-content-center">
+                    <button class="buttonCustom buttonEnabled d-flex align-items-center justify-content-center" type="button" id="addFileButton">
+                        <i class="fas fa-upload mr-1"></i>
+                        <spring:message code="jobForm.ImagesButton"/>
+                    </button>
+                </div>
+
                 <div class="col-12">
                     <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
                 </div>

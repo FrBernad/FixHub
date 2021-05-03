@@ -128,14 +128,14 @@
                             <div class="row">
                                 <div class="col-12 pl-0 form-group">
                                     <form:label class="label" path="jobProvided"><spring:message
-                                            code="jobForm.jobNameTitle"/> </form:label>
+                                            code="jobForm.jobNameTitle"/><span class="required-field"> *</span></form:label>
                                     <form:input type="text" path="jobProvided" value="${job.jobProvided}"
                                                 cssErrorClass="form-control is-invalid" id="state"
                                                 class="form-control"/>
                                     <form:errors path="jobProvided" cssClass="formError" element="p"/>
                                 </div>
                                 <div class="col-12 pl-0 form-group ">
-                                    <span class="label"><spring:message code="jobForm.jobTypeTitle"/></span><br>
+                                    <span class="label"><spring:message code="jobForm.jobTypeTitle"/><span class="required-field"> *</span></span><br>
                                     <input class="form-control " type="text"
                                            value="<spring:message code="home.categories.${job.category}"/>"
                                            disabled/>
@@ -143,7 +143,7 @@
 
                                 <div class="col-12 pl-0 form-group">
                                     <form:label class="label" path="price"><spring:message
-                                            code="jobForm.jobPriceTitle"/></form:label>
+                                            code="jobForm.jobPriceTitle"/><span class="required-field"> *</span></form:label>
                                     <form:input type="number" path="price" value="${job.price}"
                                                 cssErrorClass="form-control is-invalid" id="price"
                                                 class="form-control"/>
@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="col-12 px-0 form-group">
                                     <form:label class="label" path="description"><spring:message
-                                            code="jobForm.jobDescriptionTitle"/></form:label>
+                                            code="jobForm.jobDescriptionTitle"/><span class="required-field"> *</span></form:label>
                                     <form:textarea type="text" path="description"
                                                    cssErrorClass="form-control is-invalid"
                                                    data-description="${job.description}"
