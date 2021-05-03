@@ -208,7 +208,6 @@ public class UserServiceImpl implements UserService {
         return userDao.getContactInfo(user);
     }
 
-
     @Override
     @Transactional
     public void contact(ContactDto contactDto) throws IllegalContactException {
@@ -350,7 +349,6 @@ public class UserServiceImpl implements UserService {
         try {
             final Locale locale = LocaleContextHolder.getLocale();
             final String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
-//            String url = new URL("http", appBaseUrl, 8080, "/user/verifyAccount?token=" + token.getValue()).toString();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());

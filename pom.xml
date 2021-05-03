@@ -24,6 +24,8 @@
         <org.hibernate.validator>4.3.1.Final</org.hibernate.validator>
         <thymeleaf.version>3.0.12.RELEASE</thymeleaf.version>
         <junit.version>4.12</junit.version>
+        <junit-jupiter-engine.version>5.2.0</junit-jupiter-engine.version>
+        <junit-platform-runner.version>1.2.0</junit-platform-runner.version>
         <spring-security.version>4.0.4.RELEASE</spring-security.version>
         <org.slf4j.version>1.7.5</org.slf4j.version>
         <logback.version>1.1.2</logback.version>
@@ -173,10 +175,17 @@
                 <scope>test</scope>
             </dependency>
 
+            <!--JUNIT 5-->
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-runner</artifactId>
+                <version>${junit-platform-runner.version}</version>
                 <scope>test</scope>
             </dependency>
 
