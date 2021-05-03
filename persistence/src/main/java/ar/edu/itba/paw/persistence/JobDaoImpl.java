@@ -28,6 +28,18 @@ public class JobDaoImpl implements JobDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
 
+    private static final String JOBS_WHERE_ID_QUERY =
+        " where j_id in ( " +
+            " select j_id from " +
+            " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
+            " JOIN " +
+            " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id %s ) as w1 " +
+            " ON w0.j_provider_id=w1.ul_user_id " +
+            " JOIN " +
+            " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+            " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
+            " on job_id=j_id %s %s %s ) ";
+
     private static final ResultSetExtractor<Collection<Job>> JOB_RS_EXTRACTOR = (rs) ->
     {
         final Map<Long, Job> jobsMap = new LinkedHashMap<>();
@@ -126,21 +138,22 @@ public class JobDaoImpl implements JobDao {
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
-        final String JOBS_WHERE_ID_QUERY =
+        final String jobWhereQuery = String.format(
             " where j_id in ( " +
                 " select j_id from " +
-                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") w0 " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
                 " JOIN " +
-                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id " + stateAndCityQuery + " ) as w1 " +
+                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id %s ) as w1 " +
                 " ON w0.j_provider_id=w1.ul_user_id " +
                 " JOIN " +
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
-                " on job_id=j_id " + orderQuery + searchQuery + offsetAndLimitQuery + " ) ";
+                " on job_id=j_id %s %s %s ) ",
+            filterQuery, stateAndCityQuery, orderQuery, searchQuery, offsetAndLimitQuery);
 
-        final String query =
+        final String query = String.format(
             " select * from " +
-                " (select * from JOBS " + JOBS_WHERE_ID_QUERY + " ) selectedJobs " +
+                " (select * from JOBS %s ) selectedJobs " +
                 " JOIN " +
                 " USERS on selectedJobs.j_provider_id=users.u_id " +
                 " JOIN " +
@@ -151,7 +164,9 @@ public class JobDaoImpl implements JobDao {
                 " on j_id = jobsStats.job_id " +
                 " LEFT OUTER JOIN " +
                 " (select ji_job_id, ji_image_id from job_image) jobImages " +
-                " on j_id = jobImages.ji_job_id " + orderQuery;
+                " on j_id = jobImages.ji_job_id %s ",
+            jobWhereQuery, orderQuery
+        );
 
         return executeQuery(query, variables);
     }
@@ -226,21 +241,23 @@ public class JobDaoImpl implements JobDao {
 
         final String filterQuery = " WHERE j_id = ? ";
 
-        final String JOBS_WHERE_ID_QUERY =
+        final String JOBS_WHERE_ID_QUERY = String.format(
             " where j_id in ( " +
                 " select j_id from " +
-                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id " + filterQuery + ") w0 " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
                 " JOIN " +
                 " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id ) as w1 " +
                 " ON w0.j_provider_id=w1.ul_user_id " +
                 " JOIN " +
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
-                " on job_id=j_id ) ";
+                " on job_id=j_id ) ",
+            filterQuery
+        );
 
-        final String query =
+        final String query = String.format(
             " select * from " +
-                " (select * from JOBS " + JOBS_WHERE_ID_QUERY + " ) selectedJobs " +
+                " (select * from JOBS %s ) selectedJobs " +
                 " JOIN " +
                 " USERS on selectedJobs.j_provider_id=users.u_id " +
                 " JOIN " +
@@ -251,7 +268,8 @@ public class JobDaoImpl implements JobDao {
                 " on j_id = jobsStats.job_id " +
                 " LEFT OUTER JOIN " +
                 " (select ji_job_id, ji_image_id from job_image) jobImages " +
-                " on j_id = jobImages.ji_job_id ";
+                " on j_id = jobImages.ji_job_id ", JOBS_WHERE_ID_QUERY
+        );
 
         return executeQuery(query, variables).stream().findFirst();
     }

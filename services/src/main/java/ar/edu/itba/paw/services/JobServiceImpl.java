@@ -72,25 +72,6 @@ public class JobServiceImpl implements JobService {
         return job;
     }
 
-    private void sendNewJobNotificationMail(User user, Job job) {
-        try {
-            Locale locale = LocaleContextHolder.getLocale();
-            String url = new URL("http", appBaseUrl, "/paw-2021a-06/job/"+job.getId()).toString();
-            User provider = job.getProvider();
-
-            Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("newJobUrl", url);
-            mailAttrs.put("to", user.getEmail());
-            mailAttrs.put("providerName",String.format("%s %s",provider.getName(),provider.getSurname()));
-            mailAttrs.put("followerName",user.getName());
-            mailAttrs.put("jobName",job.getJobProvided());
-
-            emailService.sendMail("newJobNotification", messageSource.getMessage("email.newJobNotification", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
-            LOGGER.warn("Error, new job notification mail not sent");
-        }
-    }
-
     @Override
     public Optional<Job> getJobById(long id) {
         LOGGER.debug("Retrieving job with id {}", id);
@@ -106,17 +87,18 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
-
         Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
         Collection<Long> oldImagesId = job.getImagesId();
 
         //If a user tries to delete images that are not from the job to update
-        if(!oldImagesId.containsAll(imagesIdDeleted)){
+        if (!oldImagesId.containsAll(imagesIdDeleted)) {
+            LOGGER.warn("error: tried to delete image not corresponding to job");
             throw new IllegalOperationException();
         }
         //If a job reaches the limit of images
-        if(oldImagesId.size()-imagesIdDeleted.size()+images.size()>MAX_IMAGES_PER_JOB){
+        if (oldImagesId.size() - imagesIdDeleted.size() + images.size() > MAX_IMAGES_PER_JOB) {
+            LOGGER.warn("error: tried to add more images than permitted");
             throw new MaxImagesPerJobException();
         }
 
@@ -127,13 +109,32 @@ public class JobServiceImpl implements JobService {
         else
             jobImages = new LinkedList<>();
 
+        LOGGER.debug("Updating job");
         jobDao.updateJob(jobProvided, description, price, paused, jobImages, jobId, imagesIdDeleted);
 
         if (!imagesIdDeleted.isEmpty()) {
+            LOGGER.debug("Deleting job images");
             imageService.deleteImagesById(imagesIdDeleted);
         }
     }
 
+    private void sendNewJobNotificationMail(User user, Job job) {
+        try {
+            Locale locale = LocaleContextHolder.getLocale();
+            String url = new URL("http", appBaseUrl, "/paw-2021a-06/job/" + job.getId()).toString();
+            User provider = job.getProvider();
 
+            Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("newJobUrl", url);
+            mailAttrs.put("to", user.getEmail());
+            mailAttrs.put("providerName", String.format("%s %s", provider.getName(), provider.getSurname()));
+            mailAttrs.put("followerName", user.getName());
+            mailAttrs.put("jobName", job.getJobProvided());
+
+            emailService.sendMail("newJobNotification", messageSource.getMessage("email.newJobNotification", new Object[]{}, locale), mailAttrs, locale);
+        } catch (MessagingException | MalformedURLException e) {
+            LOGGER.warn("Error, new job notification mail not sent");
+        }
+    }
 
 }

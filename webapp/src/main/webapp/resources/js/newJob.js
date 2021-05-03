@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         icon.className += "fas fa-times ml-1";
         file.appendChild(icon);
         quantity++;
+        inputFile.value=null;
         imagesQuantity.textContent = quantity.toString();
         imagesHolder.appendChild(file);
         if (quantity === parseInt(imagesMax)) {
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             imagesHolder.removeChild(file);
             let index = files.indexOf(inputFile);
-            files.splice(index);
+            files.splice(index,1);
         })
     }
 
@@ -69,8 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
     addFileButton.addEventListener("click", () => {
         inputFile.click();
     })
-
-
 
     jobFormButton.addEventListener("click", () => {
         if (processing) {

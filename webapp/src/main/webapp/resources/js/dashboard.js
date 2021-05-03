@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const orderButton of orderButtons) {
             orderButton.addEventListener("click", () => {
                 formOrderInput.setAttribute("value", orderButton.dataset.order)
+                formPageInput.setAttribute("value", "0");
                 searchForm.submit();
             })
         }

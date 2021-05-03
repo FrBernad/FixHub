@@ -20,7 +20,8 @@
                         class="required-field">*</span></form:label>
                 <form:input type="hidden" id="jobCategory" path="jobCategory"/>
                 <div class="dropdown">
-                    <button class="dropdown-custom dropdown-toggle w-100 d-flex align-items-center justify-content-between" type="button" id="categoryDropdown"
+                    <button class="dropdown-custom dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                            type="button" id="categoryDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>
                             <spring:message code="newJob.category"/>
@@ -31,8 +32,9 @@
                         <c:forEach var="category" items="${categories}">
                             <spring:message var="categoryName" code="home.categories.${category}"/>
                             <div class="input-group">
-                                <button class="dropdown-item categoryButton " type="button" data-name="${category}" data-i18name="${categoryName}">
-                                   <c:out value="${categoryName}"/>
+                                <button class="dropdown-item categoryButton " type="button" data-name="${category}"
+                                        data-i18name="${categoryName}">
+                                    <c:out value="${categoryName}"/>
                                 </button>
                             </div>
                         </c:forEach>
@@ -60,20 +62,32 @@
     </div>
 
     <div class="form-group d-flex justify-content-between align-items-center">
-        <form:label path="images" class="mb-0">
-            <spring:message code="jobForm.jobImageTitle"/>
-        </form:label>
-
-        <div>
-
-            <span id="imagesQuantity"  data-max="${maxImagesPerJob}">0</span>
-            <span>/ <c:out value="${maxImagesPerJob}"/></span>
+        <div class="container-fluid px-0">
+            <div class="row">
+                <div class="col-8 d-flex align-items-center justify-content-start">
+                    <form:label path="images" class="mb-0">
+                        <spring:message code="jobForm.jobImageTitle"/>
+                    </form:label>
+                </div>
+                <div class="col-5 mt-3">
+                    <button class="buttonCustom buttonEnabled d-flex align-items-center justify-content-center" type="button" id="addFileButton">
+                        <i class="fas fa-upload mr-1"></i>
+                        <spring:message code="jobForm.ImagesButton"/>
+                    </button>
+                </div>
+                <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
+                    <div>
+                        <span id="imagesQuantity" data-max="${maxImagesPerJob}">0</span>
+                        <span>/ <c:out value="${maxImagesPerJob}"/></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
+                </div>
+            </div>
         </div>
-        <button class="buttonCustom buttonEnabled" type="button" id="addFileButton">
-            <i class="fas fa-upload mr-1"></i>
-            <spring:message code="jobForm.ImagesButton"/>
-        </button>
-        <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
+
+
     </div>
     <form:errors path="images" cssClass="formError" element="p"/>
 
@@ -87,7 +101,8 @@
 
     <div class="col-12 px-0 d-flex align-items-center justify-content-center">
         <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
-            <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status" aria-hidden="true"></span>
+            <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status"
+                  aria-hidden="true"></span>
             <spring:message code="jobForm.buttonText"/>
         </button>
     </div>

@@ -67,42 +67,48 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const categoryBtn of categoryButtons) {
         categoryBtn.addEventListener("click", () => {
             formCategoryInput.setAttribute("value", categoryBtn.dataset.category)
+            formPageInput.setAttribute("value", "0");
             searchForm.submit();
         })
     }
 
     emptyCategoryButton.addEventListener("click", () => {
         formCategoryInput.setAttribute("value", emptyCategoryButton.dataset.category)
+        formPageInput.setAttribute("value", "0");
         searchForm.submit();
     })
 
     for (const stateBtn of stateButtons) {
         stateBtn.addEventListener("click", () => {
-            console.log("hola");
+            formPageInput.setAttribute("value", "0");
             formStateInput.setAttribute("value", stateBtn.dataset.state)
             searchForm.submit();
         })
     }
 
     emptyStateButton.addEventListener("click", () => {
+        formPageInput.setAttribute("value", "0");
         formStateInput.setAttribute("value", emptyStateButton.dataset.state)
         searchForm.submit();
     })
 
     for (const cityBtn of cityButtons) {
         cityBtn.addEventListener("click", () => {
+            formPageInput.setAttribute("value", "0");
             formCityInput.setAttribute("value", cityBtn.dataset.city)
             searchForm.submit();
         })
     }
 
     emptyCityButton.addEventListener("click", () => {
+        formPageInput.setAttribute("value", "0");
         formCityInput.setAttribute("value", emptyCityButton.dataset.city)
         searchForm.submit();
     })
 
     for (const orderButton of orderButtons) {
         orderButton.addEventListener("click", () => {
+            formPageInput.setAttribute("value", "0");
             formOrderInput.setAttribute("value", orderButton.dataset.order)
             searchForm.submit();
         })

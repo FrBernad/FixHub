@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         }
 
-        if (reviewsModal.data("paginationmodal") === "true") {
+        if (reviewsModal.data("paginationmodal") === true) {
             reviewsModal.modal('show');
         }
 

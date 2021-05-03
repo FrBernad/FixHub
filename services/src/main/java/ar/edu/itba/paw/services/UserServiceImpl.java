@@ -243,26 +243,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getFollowersCount(Long userId) {
+        LOGGER.debug("Getting user followers count");
         return userDao.getUserFollowersCount(userId);
     }
 
     @Override
     public int getFollowingCount(Long userId) {
+        LOGGER.debug("Getting user following count");
         return userDao.getUserFollowingCount(userId);
     }
 
     @Override
     public Collection<Integer> getAllUserFollowingsIds(Long userId) {
+        LOGGER.debug("Getting all user following ids");
         return userDao.getAllUserFollowingsIds(userId);
     }
 
     @Override
     public void followUserById(Long userId, Long followerId) {
+        LOGGER.debug("Adding user {} to user {} followers", followerId, userId);
         followsDao.followUser(userId, followerId);
     }
 
     @Override
     public void unfollowUserById(Long userId, Long followerId) {
+        LOGGER.debug("Removing user {} to user {} followers", followerId, userId);
         followsDao.unfollowUser(userId, followerId);
     }
 

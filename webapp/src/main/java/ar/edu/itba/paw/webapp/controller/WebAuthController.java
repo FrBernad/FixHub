@@ -455,7 +455,6 @@ public class WebAuthController {
         user.setFollowers(userService.getFollowersCount(user.getId()));
         user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), form.getPage(), 4);
-        boolean aux = following.getResults().stream().anyMatch(u -> u.getId() == 1L);
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", following);
         mav.addObject("user", user);
