@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistance.ImageDao;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.ImageDto;
+import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -24,8 +26,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
-@Rollback
-//@Sql(scripts = "classpath:image-dao-test.sql")
+@Transactional
+@Sql(scripts = "classpath:image-dao-test.sql")
 @ContextConfiguration(classes = TestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ImageDaoTest {
@@ -50,6 +52,9 @@ public class ImageDaoTest {
     private static final String JOB_DESCRIPTION = "Trabajo en muebles de roble y pino";
     private static final BigDecimal JOB_PRICE = BigDecimal.valueOf(1500);
     private static final Integer JOB_ID=1;
+    private static boolean JOB_PAUSE=false;
+
+
 
     private final byte[] imgInfo1={0,4,2,7,8,3,5,8,9,5,4,2};
     private final byte[] imgInfo2={1,2,4,9,8,0,3,7,4,2,1,1};
@@ -118,7 +123,6 @@ public class ImageDaoTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:image-dao-test.sql")
     public void getImagesByIdJobTest(){
 
         List<ImageDto> dtos1 = new ArrayList<>();
@@ -135,6 +139,7 @@ public class ImageDaoTest {
         jobMap.put("j_job_provided",JOB_PROVIDED);
         jobMap.put("j_provider_id",USER_ID);
         jobMap.put("j_price",JOB_PRICE);
+        jobMap.put("j_paused",JOB_PAUSE);
 
         jobJdbcInsert.execute(jobMap);
 
