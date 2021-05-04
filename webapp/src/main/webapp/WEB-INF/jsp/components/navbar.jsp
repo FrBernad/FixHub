@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="loggedUser" scope="request" type="ar.edu.itba.paw.models.User"/>
 <div class="container-fluid px-0 d-none" id="navFix" style="height: 82px"></div>
 <div class="container-fluid p-0">
     <nav class="navbar navbar-expand navbar-light navbarTop" id="navbar">
