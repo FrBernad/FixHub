@@ -78,7 +78,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
         final String USER_WHERE_IDS_QUERY =
             " where r_id in (select r_id FROM " +
-                " REVIEWS where r_job_id = ? " +
+                " REVIEWS r where r_job_id = ? " +
                 " order by r.r_creation_date desc, r_id desc " + offsetAndLimitQuery + " ) ";
 
         final String query =
