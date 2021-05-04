@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let changeProfileForm = document.getElementById("changeProfileForm");
         let profileInput = document.getElementById("profileInputFile");
 
-
         prevBtn.addEventListener("click", () => {
             formPageInput.setAttribute("value", (parseInt(currentPage) - 1).toString());
             searchForm.submit();
@@ -54,22 +53,23 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         }
 
-
-        coverInput.addEventListener("change",()=>{
+        coverInput.addEventListener("change", () => {
+            document.getElementById("coverCamaraIcon").classList.add("d-none");
+            document.getElementById("coverLoadingSpinner").removeAttribute("hidden");
             changeCoverForm.submit();
         })
 
-        coverImageButton.addEventListener("click",()=>{
+        coverImageButton.addEventListener("click", () => {
             coverInput.click();
         })
 
-
-
-        profileInput.addEventListener("change",()=>{
+        profileInput.addEventListener("change", () => {
+            document.getElementById("profileCamaraIcon").classList.add("d-none");
+            document.getElementById("profileLoadingSpinner").removeAttribute("hidden");
             changeProfileForm.submit();
         })
 
-        profileImageButton.addEventListener("click",()=>{
+        profileImageButton.addEventListener("click", () => {
             profileInput.click();
         })
 

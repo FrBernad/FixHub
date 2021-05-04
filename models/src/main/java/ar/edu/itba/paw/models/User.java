@@ -136,6 +136,10 @@ public class User {
         this.following = following;
     }
 
+    public boolean getIsProvider(){
+        return roles.stream().anyMatch(p -> p.name().equals(Roles.PROVIDER.name()));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

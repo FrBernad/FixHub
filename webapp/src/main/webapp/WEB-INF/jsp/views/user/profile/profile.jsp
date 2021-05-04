@@ -35,9 +35,15 @@
                                    enctype="multipart/form-data">
                             <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
                         </form:form>
-                        <button type="button" id="changeCoverImageButton">
-                            <i class="fas fa-camera mr-2"></i>
-                            <span><spring:message code="profilePage.picture.changeBg"/></span>
+                        <button type="button" class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
+                                style="width: 224px">
+                            <div id="coverCamaraIcon">
+                                <i class="fas fa-camera mr-2"></i>
+                                <span><spring:message code="profilePage.picture.changeBg"/></span>
+                            </div>
+                            <span id="coverLoadingSpinner"
+                                  class="spinner-border spinner-border-sm mr-1" hidden
+                            ></span>
                         </button>
                     </div>
                 </div>
@@ -64,11 +70,13 @@
                                            method="POST" enctype="multipart/form-data">
                                     <input type="file" id="profileInputFile" name="image" hidden
                                            accept=".png,.jpg,.jpeg"/>
-
                                 </form:form>
 
-                                <button type="button" id="changeProfileImageButton">
-                                    <i class="fas fa-camera"></i>
+                                <button type="button" id="changeProfileImageButton" class="d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-camera" id="profileCamaraIcon"></i>
+                                    <span id="profileLoadingSpinner"
+                                          class="spinner-border spinner-border-sm mr-1" hidden
+                                    ></span>
                                 </button>
                             </div>
                         </div>

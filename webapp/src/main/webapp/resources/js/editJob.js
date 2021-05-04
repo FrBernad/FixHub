@@ -137,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         processing = true;
         editFormButton.disabled = true;
+        document.getElementById("senBtnText").classList.add("d-none");
         loadingSpinner.removeAttribute("hidden");
         inputFile.removeEventListener("change", inputFileUpdate);
         inputFile.files = new fileListItems(files);

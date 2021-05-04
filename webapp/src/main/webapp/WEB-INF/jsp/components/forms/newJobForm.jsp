@@ -70,7 +70,8 @@
                     </form:label>
                 </div>
                 <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
-                    <button class="buttonCustom buttonEnabled d-flex align-items-center justify-content-center" type="button" id="addFileButton">
+                    <button class="buttonCustom buttonEnabled d-flex align-items-center justify-content-center"
+                            type="button" id="addFileButton">
                         <i class="fas fa-upload mr-1"></i>
                         <spring:message code="jobForm.ImagesButton"/>
                     </button>
@@ -99,11 +100,13 @@
         </div>
     </div>
 
-    <div class="col-12 px-0 d-flex align-items-center justify-content-center">
+    <div class="col-12 px-0 hide d-flex align-items-center justify-content-center">
         <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
             <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status"
                   aria-hidden="true"></span>
-            <spring:message code="jobForm.buttonText"/>
+            <span id="jobFormBtnText">
+                <spring:message code="jobForm.buttonText"/>
+            </span>
         </button>
     </div>
 

@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let imagesHolder = document.getElementById("imagesHolder");
     let processing = false;
     let jobFormButton = document.getElementById("jobFormButton");
+    let jobFormButtonText = document.getElementById("jobFormBtnText");
     let addFileButton = document.getElementById("addFileButton");
     let inputFile = document.getElementById("inputFiles");
     let files = [];
     let imagesQuantity = document.getElementById("imagesQuantity");
     let imagesMax = imagesQuantity.dataset.max;
     let quantity = 0;
-
 
     let categories = document.getElementsByClassName("categoryButton");
     let categoryName = document.getElementById("categoryName");
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const category of categories) {
         category.addEventListener("click", () => {
             const name = category.dataset.name;
-            categoryName.innerText =  category.dataset.i18name;
+            categoryName.innerText = category.dataset.i18name;
             categoryInput.value = name;
         })
     }
@@ -43,12 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
         icon.className += "fas fa-times ml-1";
         file.appendChild(icon);
         quantity++;
-        inputFile.value=null;
+        inputFile.value = null;
         imagesQuantity.textContent = quantity.toString();
         imagesHolder.appendChild(file);
         if (quantity === parseInt(imagesMax)) {
             addFileButton.disabled = true;
-            addFileButton.classList.replace('buttonEnabled','buttonDisabled');
+            addFileButton.classList.replace('buttonEnabled', 'buttonDisabled');
         }
 
         file.addEventListener("click", () => {
@@ -56,11 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
             imagesQuantity.textContent = quantity.toString();
             if (quantity === parseInt(imagesMax)) {
                 addFileButton.disabled = false;
-                addFileButton.classList.replace('buttonDisabled','buttonEnabled');
+                addFileButton.classList.replace('buttonDisabled', 'buttonEnabled');
             }
             imagesHolder.removeChild(file);
             let index = files.indexOf(inputFile);
-            files.splice(index,1);
+            files.splice(index, 1);
         })
     }
 
@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         processing = true;
         jobFormButton.disabled = true;
+        jobFormButtonText.classList.add("d-none");
         loadingSpinner.removeAttribute("hidden");
         inputFile.removeEventListener("change", inputFileUpdate);
         inputFile.files = new FileListItems(files);

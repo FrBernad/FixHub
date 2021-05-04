@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="loggedUser" scope="request" type="ar.edu.itba.paw.models.User"/>
 <div class="container-fluid px-0 d-none" id="navFix" style="height: 82px"></div>
 <div class="container-fluid p-0">
     <nav class="navbar navbar-expand navbar-light navbarTop" id="navbar">
@@ -18,7 +19,7 @@
                         <spring:message code="navBar.discover"/>
                     </a>
                 </li>
-                <c:if test="${loggedUser != null && loggedUser.hasRole('PROVIDER')}">
+                <c:if test="${loggedUser != null && loggedUser.isProvider}">
                     <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
                         <a href="<c:url value='/user/dashboard'/>" class="nav-link navbarText">
                             <spring:message code="navBar.dashboard"/>
@@ -41,10 +42,12 @@
                                     <c:choose>
                                         <c:when test="${loggedUser.profileImageId == 0}">
                                             <img src="<c:url value='/resources/images/userProfile.png'/>"
-                                                 class="avatar"/>
+                                                 class="avatar"
+                                                 alt="profileImg"/>
                                         </c:when>
                                         <c:otherwise>
                                             <img src="<c:url value='/user/images/profile/${loggedUser.profileImageId}'/>"
+                                                 alt="profileImg"
                                                  class="avatar"/>
                                         </c:otherwise>
                                     </c:choose>
@@ -61,7 +64,7 @@
                                     <a href="<c:url value='/user/account'/>" class="dropdown-item pl-3">
                                         <spring:message code="navBar.profile"/>
                                     </a>
-                                    <c:if test="${loggedUser.hasRole('PROVIDER')}">
+                                    <c:if test="${loggedUser.isProvider}">
                                         <a href="<c:url value='/user/dashboard'/>" class="dropdown-item pl-3">
                                             <spring:message code="navBar.dashboardItem"/>
                                         </a>

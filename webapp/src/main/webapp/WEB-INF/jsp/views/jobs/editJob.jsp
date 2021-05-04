@@ -128,14 +128,16 @@
                             <div class="row">
                                 <div class="col-12 pl-0 form-group">
                                     <form:label class="label" path="jobProvided"><spring:message
-                                            code="jobForm.jobNameTitle"/><span class="required-field"> *</span></form:label>
+                                            code="jobForm.jobNameTitle"/><span
+                                            class="required-field"> *</span></form:label>
                                     <form:input type="text" path="jobProvided" value="${job.jobProvided}"
                                                 cssErrorClass="form-control is-invalid" id="state"
                                                 class="form-control"/>
                                     <form:errors path="jobProvided" cssClass="formError" element="p"/>
                                 </div>
                                 <div class="col-12 pl-0 form-group ">
-                                    <span class="label"><spring:message code="jobForm.jobTypeTitle"/><span class="required-field"> *</span></span><br>
+                                    <span class="label"><spring:message code="jobForm.jobTypeTitle"/><span
+                                            class="required-field"> *</span></span><br>
                                     <input class="form-control " type="text"
                                            value="<spring:message code="home.categories.${job.category}"/>"
                                            disabled/>
@@ -143,7 +145,8 @@
 
                                 <div class="col-12 pl-0 form-group">
                                     <form:label class="label" path="price"><spring:message
-                                            code="jobForm.jobPriceTitle"/><span class="required-field"> *</span></form:label>
+                                            code="jobForm.jobPriceTitle"/><span
+                                            class="required-field"> *</span></form:label>
                                     <form:input type="number" path="price" value="${job.price}"
                                                 cssErrorClass="form-control is-invalid" id="price"
                                                 class="form-control"/>
@@ -151,7 +154,8 @@
                                 </div>
                                 <div class="col-12 px-0 form-group">
                                     <form:label class="label" path="description"><spring:message
-                                            code="jobForm.jobDescriptionTitle"/><span class="required-field"> *</span></form:label>
+                                            code="jobForm.jobDescriptionTitle"/><span
+                                            class="required-field"> *</span></form:label>
                                     <form:textarea type="text" path="description"
                                                    cssErrorClass="form-control is-invalid"
                                                    data-description="${job.description}"
@@ -187,10 +191,13 @@
                 <hr class="text-left ml-0 my-3" style="width: 100%;">
 
                 <div class="col-12 px-0 d-flex justify-content-center align-items-center">
-                    <button type="button" id="editFormButton" form="editJobForm" class="w-25 continueBtn my-2 ">
+                    <button type="button" id="editFormButton" form="editJobForm"
+                            class="w-25 continueBtn my-2 d-flex align-items-center justify-content-center">
                         <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status"
                               aria-hidden="true"></span>
-                        <spring:message code="job.submit"/>
+                        <span id="senBtnText">
+                            <spring:message code="job.submit"/>
+                        </span>
                     </button>
                 </div>
 

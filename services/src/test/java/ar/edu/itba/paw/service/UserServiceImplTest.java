@@ -102,7 +102,6 @@ public class UserServiceImplTest {
 
     @Test
     public void testCreate() throws DuplicateUserException, MessagingException {
-        // 1. Setup!
         when(mockMessageSource.getMessage(anyString(),any(),eq(LocaleContextHolder.getLocale()))).
             thenReturn(VERIFICATION_SUBJECT);
         when(mockVerificationTokenDao.createVerificationToken(eq(DEFAULT_USER.getId()), anyString(), any(LocalDateTime.class)))
@@ -113,10 +112,8 @@ public class UserServiceImplTest {
             thenReturn(DEFAULT_USER);
 
 
-        // 2. "ejercito" la class under test
         User maybeUser = userService.createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY);
 
-        // 3. Asserts!
         verify(mockEmailService, times(1)).sendMail("verification", VERIFICATION_SUBJECT,
             DEFAULT_MAIL_ATTRS, LocaleContextHolder.getLocale());
         assertNotNull(maybeUser);
