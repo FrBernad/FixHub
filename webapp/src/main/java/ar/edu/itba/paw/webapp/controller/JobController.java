@@ -130,8 +130,11 @@ public class JobController {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
-                    if(!imageService.getContentTypesNoGIF().contains(contentType))
-                        throw new IllegalContentTypeException();
+                    if(!imageService.getContentTypesNoGIF().contains(contentType)){
+                        LOGGER.error("Error updating job while creating image, content type is not valid");
+                        errors.rejectValue("images","errors.IllegalContentTypeException");
+                        return updateJob(jobId,form);
+                    }
 
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
                 } catch (IOException e) {
@@ -244,8 +247,9 @@ public class JobController {
                 try {
                     contentType = image.getContentType();
                     if (!imageService.getContentTypesNoGIF().contains(contentType)) {
-                        LOGGER.error("Error creating image, content type is not valid");
-                        throw new IllegalContentTypeException();
+                        LOGGER.error("Error creating job while creating image, content type is not valid");
+                        errors.rejectValue("images","errors.IllegalContentTypeException");
+                        return newJob(form);
                     }
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
                 } catch (IOException e) {

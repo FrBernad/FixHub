@@ -83,6 +83,7 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <form:errors path="images" cssClass="formError" element="p"/>
                     <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden/>
                 </div>
             </div>
@@ -90,7 +91,6 @@
 
 
     </div>
-    <form:errors path="images" cssClass="formError" element="p"/>
 
     <input type="hidden" value="${user.id}" name="userId">
 

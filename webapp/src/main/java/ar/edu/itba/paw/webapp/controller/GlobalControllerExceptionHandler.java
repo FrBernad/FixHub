@@ -88,10 +88,22 @@ public class GlobalControllerExceptionHandler {
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = IllegalContentTypeException.class)
-    public ModelAndView ilegalContentTypeException() {
-        LOGGER.error("Error encountered, IllegalContentTypeException caught");
+    @ExceptionHandler(value = IllegalContentTypeExceptionGIF.class)
+    public ModelAndView ilegalContentTypeExceptionGIF() {
+        LOGGER.error("Error encountered, IllegalContentTypeException caught because user tried ");
+        Locale locale = LocaleContextHolder.getLocale();
+        String error = messageSource.getMessage("errors.IllegalContentTypeExceptionGIF", null, locale);
+        String code = HttpStatus.BAD_REQUEST.toString();
+        final ModelAndView mav = new ModelAndView(ERROR_VIEW);
+        mav.addObject("errors", error);
+        mav.addObject("code", code);
+        return mav;
+    }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = IllegalContentTypeException.class)
+    public ModelAndView ilegalContentTypeException(){
+        LOGGER.error("Error encountered, IllegalContentTypeException caught");
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.IllegalContentTypeException", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();

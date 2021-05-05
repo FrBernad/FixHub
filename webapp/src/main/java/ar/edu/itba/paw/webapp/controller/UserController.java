@@ -216,7 +216,7 @@ public class UserController {
             userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()), user);
         } catch (IOException e) {
             LOGGER.warn("Error accessing file bytes");
-            throw new IllegalContentTypeException();
+            throw new ServerInternalException();
         }
         return new ModelAndView("redirect:/user/account");
     }
