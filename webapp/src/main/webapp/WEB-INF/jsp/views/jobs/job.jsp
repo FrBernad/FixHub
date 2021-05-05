@@ -141,7 +141,7 @@
                         </div>
 
                         <hr class="text-left ml-0 my-4" style="width: 100%;">
-                        <div class="col-12 mt-2">
+                        <div class="col-12 mt-2 px-0">
                             <div class="container-fluid p-0">
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-start align-items-center">
@@ -197,12 +197,13 @@
                                                     <p class="text-left">
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.time"/></span>
-                                                            <spring:message
-                                                                    code="job.information.from" arguments="${startTime}"  javaScriptEscape="true" htmlEscape="true"/>
-                                                            <spring:message
-                                                                    code="job.information.to" arguments="${endTime}"  javaScriptEscape="true" htmlEscape="true"/>
-                                                        </p>
-                                                    </div>
+                                                        <spring:message
+                                                                code="job.information.from" arguments="${startTime}"
+                                                                javaScriptEscape="true" htmlEscape="true"/>
+                                                        <spring:message
+                                                                code="job.information.to" arguments="${endTime}"
+                                                                javaScriptEscape="true" htmlEscape="true"/>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,80 +216,79 @@
                 </div>
             </div>
 
-        </div>
 
-        <hr class="text-left ml-0 my-5" style="width: 80%;">
+            <hr class="text-left ml-0 my-5" style="width: 80%;">
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="sectionTitle"><spring:message code="job.description.title"/></h1>
-                </div>
-                <div class="col-12">
-                    <p class="text-left contactInfo" style="font-weight: normal">
-                        <c:out value="${job.description}"/>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <hr class="text-left ml-0 my-5" style="width: 80%;">
-
-        <div class="container-fluid mt-3">
-            <div class="row">
-                <div class="col-12 d-flex justify-content-start align-items-center">
-                    <h2 class="sectionTitle">
-                        <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
-                    </h2>
-                </div>
-                <c:if test="${canReview == true && !job.paused}">
-                    <div class="col-12 d-flex justify-content-start align-items-center">
-                        <a href="#" type="button" data-toggle="modal" data-target="#newReview">
-                            <spring:message code="job.review.hyperlink"/>
-                        </a>
-                        <%@ include file="../../components/forms/reviewForm.jsp" %>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="sectionTitle"><spring:message code="job.description.title"/></h1>
                     </div>
-                </c:if>
-
+                    <div class="col-12">
+                        <p class="text-left contactInfo" style="font-weight: normal">
+                            <c:out value="${job.description}"/>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-12 d-flex align-items-center">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <c:choose>
-                                <c:when test="${results.totalPages > 0}">
-                                    <c:forEach var="review" items="${firstResults.results}">
-                                        <div class="col-12 mt-3 col-md-7">
-                                            <%@ include file="../../components/cards/reviewCard.jsp" %>
+
+            <hr class="text-left ml-0 my-5" style="width: 80%;">
+
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-start align-items-center">
+                        <h2 class="sectionTitle">
+                            <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
+                        </h2>
+                    </div>
+                    <c:if test="${canReview == true && !job.paused}">
+                        <div class="col-12 d-flex justify-content-start align-items-center">
+                            <a href="#" type="button" data-toggle="modal" data-target="#newReview">
+                                <spring:message code="job.review.hyperlink"/>
+                            </a>
+                            <%@ include file="../../components/forms/reviewForm.jsp" %>
+                        </div>
+                    </c:if>
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <c:choose>
+                                    <c:when test="${results.totalPages > 0}">
+                                        <c:forEach var="review" items="${firstResults.results}">
+                                            <div class="col-12 mt-3 col-md-7">
+                                                <%@ include file="../../components/cards/reviewCard.jsp" %>
+                                            </div>
+                                        </c:forEach>
+                                        <c:if test="${results.totalPages>1}">
+                                            <div class="col-12 mt-4">
+                                                <a href="#" type="button" data-toggle="modal"
+                                                   data-target="#reviewsModal">
+                                                    Ver más
+                                                </a>
+                                                <%@ include file="../../components/reviewsPagination.jsp" %>
+                                            </div>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="col-12 d-flex align-items-center justify-content-center">
+                                            <div class="container mt-2 d-flex align-items-center justify-content-center">
+                                                <p class="m-0 text-center p-4" style="font-size: 16px">
+                                                    <spring:message code="job.review.noReviews"/>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </c:forEach>
-                                    <c:if test="${results.totalPages>1}">
-                                        <div class="col-12 mt-4 pl-0">
-                                            <a href="#" type="button" data-toggle="modal"
-                                               data-target="#reviewsModal">
-                                                Ver más
-                                            </a>
-                                            <%@ include file="../../components/reviewsPagination.jsp" %>
-                                        </div>
-                                    </c:if>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="col-12 d-flex align-items-center justify-content-center">
-                                        <div class="container mt-2 d-flex align-items-center justify-content-center">
-                                            <p class="m-0 text-center p-4" style="font-size: 16px">
-                                                <spring:message code="job.review.noReviews"/>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 </div>
 
