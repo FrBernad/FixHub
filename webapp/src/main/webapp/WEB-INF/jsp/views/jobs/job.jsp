@@ -104,8 +104,11 @@
                                                 <button class="contactBtn"><spring:message code="job.editTitle"/></button>
                                             </a>
                                             <c:if test="${job.paused}">
-                                                    <i class="fas fa-info-circle ml-1" style="color:#ffc107"></i>
-                                                    <span><spring:message code="job.pause"/></span>
+                                                    <br>
+                                                    <div class="mt-2">
+                                                        <i class="fas fa-info-circle" style="color:#ffc107"></i>
+                                                        <span><spring:message code="job.pause"/></span>
+                                                    </div>
                                             </c:if>
                                         </div>
                                     </c:when>
