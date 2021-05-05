@@ -12,8 +12,8 @@
                 </c:forEach>
             </div>
             <span>
-                         <c:out value="${review.creationDate}"/>
-                        </span>
+                <c:out value="${review.creationDate}"/>
+            </span>
         </div>
         <div class="col-7 mt-2 d-flex align-items-center justify-content-between">
             <a href="<c:url value="/user/${review.reviewer.id}"/>">

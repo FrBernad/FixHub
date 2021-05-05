@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.models;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class JobContact {
     private ContactInfo contactInfo;
@@ -18,6 +21,10 @@ public class JobContact {
         this.jobId = jobId;
         this.jobProvided=jobProvided;
         this.category = category;
+    }
+
+    public Date getContactDate(){
+        return Date.from(Instant.from(date));
     }
 
     public ContactInfo getContactInfo() {
@@ -52,8 +59,8 @@ public class JobContact {
         this.jobProvided = jobProvided;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDate getDate() {
+        return date.toLocalDate();
     }
 
     public void setDate(LocalDateTime date) {

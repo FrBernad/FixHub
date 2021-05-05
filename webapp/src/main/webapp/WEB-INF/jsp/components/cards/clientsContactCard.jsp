@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-end">
                         <span>
-                            <c:out value="${contact.date.toLocalDate()}"/>
+                            <c:out value="${contact.date}"/>
                         </span>
                     </div>
                     <div class="col-1 d-flex align-items-center justify-content-center">
