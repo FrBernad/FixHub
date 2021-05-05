@@ -60,13 +60,7 @@
         </div>
         <form:errors path="confirmPassword" cssClass="formError" element="p"/>
     </div>
-    <div class="form-group">
-        <spring:hasBindErrors name="registerForm">
-            <c:if test="${errors.globalErrorCount > 0}">
-                <div class="alert alert-danger"><form:errors/></div>
-            </c:if>
-        </spring:hasBindErrors>
-    </div>
+
     <div class="form-group">
         <spring:message code="registerForm.phoneNumberPlaceholder" var="phoneNumberPlaceholder"/>
         <form:label  path="phoneNumber"><spring:message code="registerForm.userPhoneTitle"/> <span class="required-field">*</span></form:label>

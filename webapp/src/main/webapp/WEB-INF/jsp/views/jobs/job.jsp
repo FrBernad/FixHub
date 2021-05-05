@@ -197,15 +197,12 @@
                                                     <p class="text-left">
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.time"/></span>
-                                                        <spring:message
-                                                                code="job.information.from"/>
-                                                        <c:out
-                                                                value="${startTime}"/>
-                                                        <spring:message
-                                                                code="job.information.to"/>
-                                                        <c:out
-                                                                value="${endTime}"/>
-                                                    </p>
+                                                            <spring:message
+                                                                    code="job.information.from" arguments="${startTime}"  javaScriptEscape="true" htmlEscape="true"/>
+                                                            <spring:message
+                                                                    code="job.information.to" arguments="${endTime}"  javaScriptEscape="true" htmlEscape="true"/>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

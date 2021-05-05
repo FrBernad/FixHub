@@ -67,7 +67,7 @@ public class WebAuthController {
     public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
         LOGGER.info("Accessed /register POST controller");
 
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() ) {
             LOGGER.warn("Error in form RegisterForm data");
             return register(form);
         }
@@ -75,7 +75,7 @@ public class WebAuthController {
         if (!form.getPassword().equals(form.getConfirmPassword())) {
             //Global error, that's why it has "".
             LOGGER.warn("Error in form RegisterForm, passwords dont match");
-            errors.rejectValue("", "validation.user.passwordsDontMatch");
+            errors.rejectValue("confirmPassword", "validation.user.passwordsDontMatch");
             return register(form);
         }
 
