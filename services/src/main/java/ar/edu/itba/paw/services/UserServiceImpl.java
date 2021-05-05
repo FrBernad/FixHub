@@ -289,6 +289,7 @@ public class UserServiceImpl implements UserService {
         mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
         mailAttrs.put("name", contactDto.getUser().getName());
         mailAttrs.put("surname", contactDto.getUser().getSurname());
+        mailAttrs.put("email", contactDto.getUser().getEmail());
         mailAttrs.put("address", address);
         mailAttrs.put("phoneNumber", contactDto.getUser().getPhoneNumber());
         mailAttrs.put("message", contactDto.getMessage());
