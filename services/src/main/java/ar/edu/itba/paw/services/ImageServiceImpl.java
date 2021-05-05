@@ -19,7 +19,8 @@ public class ImageServiceImpl implements ImageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageServiceImpl.class);
 
-    private static final Collection<String> CONTENT_TYPES = Collections.unmodifiableCollection(Arrays.asList("image/png", "image/jpeg", "image/gif"));
+    private static final Collection<String> CONTENT_TYPE_NO_GIF = Collections.unmodifiableCollection(Arrays.asList("image/png", "image/jpeg"));
+    private static final Collection<String> CONTENT_TYPE_GIF = Collections.unmodifiableCollection(Arrays.asList("image/png", "image/jpeg", "image/gif"));
 
     public Optional<Image> getImageById(Long imageId) {
         LOGGER.debug("Looking for image by id {}", imageId);
@@ -49,9 +50,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Collection<String> getContentTypes() {
-        LOGGER.debug("Retrieving content types");
-        return CONTENT_TYPES;
+    public Collection<String> getContentTypesGIF() {
+        LOGGER.debug("Retrieving content types with gif");
+        return CONTENT_TYPE_GIF;
+    }
+
+    @Override
+    public Collection<String> getContentTypesNoGIF() {
+        LOGGER.debug("Retrieving content types no gif");
+        return CONTENT_TYPE_NO_GIF;
     }
 
     @Override

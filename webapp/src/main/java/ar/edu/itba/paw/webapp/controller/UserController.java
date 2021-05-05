@@ -208,7 +208,7 @@ public class UserController {
         LOGGER.info("Accessed /user/account/updateCoverImage POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (!imageService.getContentTypes().contains(file.getContentType())) {
+        if (!imageService.getContentTypesNoGIF().contains(file.getContentType())) {
             LOGGER.warn("Image content type is not valid");
             throw new IllegalContentTypeException();
         }
@@ -228,7 +228,7 @@ public class UserController {
         LOGGER.info("Accessed /user/account/updateProfileImage POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (!imageService.getContentTypes().contains(file.getContentType())) {
+        if (!imageService.getContentTypesGIF().contains(file.getContentType())) {
             LOGGER.warn("Image content type is not valid");
             throw new IllegalContentTypeException();
         }

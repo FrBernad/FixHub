@@ -73,7 +73,7 @@
                                 <form:form id="changeProfileForm" type="hidden" action="${postProfileImage}"
                                            method="POST" enctype="multipart/form-data">
                                     <input type="file" id="profileInputFile" name="image" hidden
-                                           accept=".png,.jpg,.jpeg"/>
+                                           accept=".png,.jpg,.jpeg,.gif"/>
                                 </form:form>
 
                                 <button type="button" id="changeProfileImageButton"
