@@ -10,7 +10,7 @@
                 </h5>
             </div>
             <div class="col-7">
-                <p class="card-text m-0"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
+                <p class="card-text m-0 names"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
             </div>
             <div class="col-5 d-flex justify-content-end align-items-center">
                 <div style="height: 23px">

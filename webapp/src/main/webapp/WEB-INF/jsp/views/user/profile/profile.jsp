@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="col-8 mt-5">
-                            <h1 class="userSectionTitles text-center">
+                            <h1 class="userSectionTitles text-center names">
                                 <c:out value="${loggedUser.name} ${loggedUser.surname}"/>
                             </h1>
                         </div>

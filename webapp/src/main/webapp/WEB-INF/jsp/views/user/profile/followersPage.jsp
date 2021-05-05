@@ -38,7 +38,7 @@
 
                     <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
                         <a href="<c:url value='/user/${user.id}'/>">
-                            <span class="userSectionTitles">
+                            <span class="userSectionTitles names">
                                 <c:out value="${user.name} ${user.surname}"/>
                             </span>
                         </a>

@@ -50,3 +50,7 @@ p,h1,h2,h3{
 .required-field{
     color:#ff0000;
 }
+
+.names{
+    text-transform: capitalize;
+}

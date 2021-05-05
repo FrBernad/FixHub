@@ -55,7 +55,7 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <p class="mb-0 pl-3 dropdownItem">
                                         <spring:message code="navBar.signInAs"/>
-                                        <span class="username">
+                                        <span class="username names">
                                             <c:out value="${loggedUser.name}"/>
                                         </span>
                                     </p>

@@ -77,7 +77,7 @@
                                         </div>
                                         <div class="col-12 pl-0">
                                             <a href="<c:url value="/user/${job.provider.id}"/>">
-                                                <h1 class="contactInfo"><c:out value="${job.provider.name}"/> <c:out
+                                                <h1 class="contactInfo names"><c:out value="${job.provider.name}"/> <c:out
                                                         value="${job.provider.surname}"/></h1>
                                             </a>
                                         </div>
@@ -156,7 +156,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <p class="text-left contactInfo">
-                                                        <span class="font-weight-bold"><spring:message
+                                                        <span class="font-weight-bold names"><spring:message
                                                                 code="job.information.name&surname"/></span> <c:out
                                                             value="${job.provider.name}"/> <c:out
                                                             value="${job.provider.surname}"/>

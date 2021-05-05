@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-12 d-flex align-items-center justify-content-start">
                         <a href="<c:url value='/user/${follower.id}'/>">
-                            <span>
+                            <span class="names">
                                 <c:out value="${follower.name} ${follower.surname}"/>
                             </span>
                         </a>

@@ -14,7 +14,7 @@
         <div class="container-lg p-5 w-50 bigContentContainer">
             <div class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="col">
-                    <h1 class="text-center title"><spring:message code="contact.contactTitle"/>
+                    <h1 class="text-center title names"><spring:message code="contact.contactTitle"/>
                         <c:out value="${provider.name}"/></h1>
                     <p class="subtitle text-center mb-4"><span class="font-weight-bold"><spring:message
                             code="contact.description.boldText"/></span>
