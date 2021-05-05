@@ -28,7 +28,7 @@
                             </span>
                         <span class="category" id="categoryName">-</span>
                     </button>
-                    <div class="dropdown-menu w-100">
+                    <div class="dropdown-menu dropdown-size w-100">
                         <c:forEach var="category" items="${categories}">
                             <spring:message var="categoryName" code="home.categories.${category}"/>
                             <div class="input-group">

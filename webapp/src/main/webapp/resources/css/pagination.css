@@ -57,6 +57,10 @@
     font-size: 12px;
 }
 
+.resultHeader {
+    max-height: 70px;
+}
+
 .resultHeader p span {
     color: rgb(196, 85, 0);
 }

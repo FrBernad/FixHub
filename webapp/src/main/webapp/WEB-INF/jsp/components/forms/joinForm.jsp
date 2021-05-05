@@ -49,7 +49,7 @@
                         <span class="state" id="stateName">
                         </span>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-size">
                         <c:forEach var="state" items="${states}">
                             <div class="input-group">
                                 <button class="dropdown-item stateButton" type="button" data-id="${state.id}"

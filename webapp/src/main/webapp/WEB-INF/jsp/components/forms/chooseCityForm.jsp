@@ -17,7 +17,7 @@
                         <span class="state" id="cityName">
                         </span>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-size">
                         <c:forEach var="city" items="${cities}">
                             <div class="input-group">
                                 <button class="dropdown-item cityButton" type="button" data-id="${city.id}" data-name="${city.name}">

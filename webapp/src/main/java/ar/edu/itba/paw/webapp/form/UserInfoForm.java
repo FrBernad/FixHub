@@ -20,7 +20,7 @@ public class UserInfoForm {
 
     @NotEmpty
     @Size(max = 50)
-    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|15|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
+    @Pattern(regexp = "^[+]?(?:(?:00)?549?)?0?(?:11|15|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phoneNumber;
 
     @NotEmpty

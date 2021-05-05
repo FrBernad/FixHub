@@ -102,7 +102,7 @@
 
                                     <div class="tab-pane fade" role="tabpanel" id="works">
                                         <div class="container-fluid">
-                                            <div class="row">
+                                            <div class="row align-content-start">
                                                 <div class="col-7 d-flex align-items-center justify-content-start">
                                                     <div class="input-group">
                                                         <input placeholder="<spring:message code="dashboard.barPlaceholder"/>"
