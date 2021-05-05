@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function fileListItems(files) {
+    function FileListItems(files) {
         const b = new ClipboardEvent("").clipboardData || new DataTransfer();
         for (let i = 0, len = files.length; i < len; i++)
             b.items.add(files[i])
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("senBtnText").classList.add("d-none");
         loadingSpinner.removeAttribute("hidden");
         inputFile.removeEventListener("change", inputFileUpdate);
-        inputFile.files = new fileListItems(files);
+        inputFile.files = new FileListItems(files);
 
         console.log(imagesIdDeletedContainer);
         editJobForm.submit();

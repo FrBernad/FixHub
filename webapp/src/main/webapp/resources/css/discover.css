@@ -10,7 +10,7 @@
 }
 
 .jobCard {
-    border-radius: 8ppx;
+    border-radius: 8px;
     background: #fff;
     transition: box-shadow .3s, transform .3s;
     cursor: pointer;

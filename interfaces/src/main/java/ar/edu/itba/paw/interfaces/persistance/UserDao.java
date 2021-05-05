@@ -2,7 +2,6 @@ package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.UserStats;
 
 import java.sql.Timestamp;
 import java.util.Collection;

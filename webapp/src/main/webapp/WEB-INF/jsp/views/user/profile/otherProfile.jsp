@@ -20,11 +20,11 @@
                 <div class="container-fluid px-0 position-relative backgroundImageContainer">
                     <c:choose>
                         <c:when test="${user.coverImageId == 0}">
-                            <img src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
+                            <img alt="profile cover picture" src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
                                  class="backgroundImage">
                         </c:when>
                         <c:otherwise>
-                            <img src="<c:url value='/user/images/profile/${user.coverImageId}'/>"
+                            <img alt="profile cover picture" src="<c:url value='/user/images/profile/${user.coverImageId}'/>"
                                  class="backgroundImage">
                         </c:otherwise>
                     </c:choose>
@@ -37,11 +37,11 @@
                             <div class="picContainer">
                                 <c:choose>
                                     <c:when test="${user.profileImageId == 0}">
-                                        <img src="<c:url value='/resources/images/userProfile.png'/>"
+                                        <img alt="profile picture" src="<c:url value='/resources/images/userProfile.png'/>"
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="<c:url value='/user/images/profile/${user.profileImageId}'/>"
+                                        <img alt="profile picture" src="<c:url value='/user/images/profile/${user.profileImageId}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>

@@ -3,7 +3,6 @@ package ar.edu.itba.paw.interfaces.services;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.UserStats;
 
 import java.util.Collection;
 import java.util.List;

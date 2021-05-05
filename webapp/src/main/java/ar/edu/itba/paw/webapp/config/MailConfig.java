@@ -18,7 +18,6 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Properties;
 
 @Configuration

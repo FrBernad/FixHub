@@ -21,31 +21,33 @@
                 <div class="container-fluid px-0 position-relative backgroundImageContainer">
                     <c:choose>
                         <c:when test="${loggedUser.coverImageId == 0}">
-                            <img src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
+                            <img alt="profile cover picture"
+                                 src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
                                  class="backgroundImage">
                         </c:when>
                         <c:otherwise>
-                            <img src="<c:url value='/user/images/profile/${loggedUser.coverImageId}'/>"
+                            <img alt="profile cover picture"
+                                 src="<c:url value='/user/images/profile/${loggedUser.coverImageId}'/>"
                                  class="backgroundImage">
                         </c:otherwise>
                     </c:choose>
-                    <div class="profileBackgroundPic">
+                    <span class="profileBackgroundPic">
                         <c:url value="/user/account/updateCoverImage" var="postCoverImage"/>
                         <form:form id="changeCoverForm" type="hidden" action="${postCoverImage}" method="POST"
                                    enctype="multipart/form-data">
                             <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
                         </form:form>
-                        <button type="button" class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
+                        <button type="button" class="d-flex align-items-center justify-content-center"
+                                id="changeCoverImageButton"
                                 style="width: 224px">
-                            <div id="coverCamaraIcon">
+                            <span id="coverCamaraIcon">
                                 <i class="fas fa-camera mr-2"></i>
                                 <span><spring:message code="profilePage.picture.changeBg"/></span>
-                            </div>
+                            </span>
                             <span id="coverLoadingSpinner"
-                                  class="spinner-border spinner-border-sm mr-1" hidden
+                                  class="spinner-border spinner-border-sm" hidden
                             ></span>
                         </button>
-                    </div>
                 </div>
             </div>
             <div class="col-12 mt-4">
@@ -55,11 +57,13 @@
                             <div class="picContainer">
                                 <c:choose>
                                     <c:when test="${loggedUser.profileImageId == 0}">
-                                        <img src="<c:url value='/resources/images/userProfile.png'/>"
+                                        <img alt="profile picture"
+                                             src="<c:url value='/resources/images/userProfile.png'/>"
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="<c:url value='/user/images/profile/${loggedUser.profileImageId}'/>"
+                                        <img alt="profile picture"
+                                             src="<c:url value='/user/images/profile/${loggedUser.profileImageId}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>
@@ -72,10 +76,11 @@
                                            accept=".png,.jpg,.jpeg"/>
                                 </form:form>
 
-                                <button type="button" id="changeProfileImageButton" class="d-flex align-items-center justify-content-center">
+                                <button type="button" id="changeProfileImageButton"
+                                        class="d-flex align-items-center justify-content-center">
                                     <i class="fas fa-camera" id="profileCamaraIcon"></i>
                                     <span id="profileLoadingSpinner"
-                                          class="spinner-border spinner-border-sm mr-1" hidden
+                                          class="spinner-border spinner-border-sm" hidden
                                     ></span>
                                 </button>
                             </div>
@@ -235,7 +240,8 @@
                                                     <c:otherwise>
                                                         <spring:message code="profilePage.subtitle.inactive"/>
                                                         <i class="ml-1 fas fa-times" style="color: darkred"></i>
-                                                        <a class="ml-2" href="<c:url value="/user/join"/>" style="font-weight: 500">
+                                                        <a class="ml-2" href="<c:url value="/user/join"/>"
+                                                           style="font-weight: 500">
                                                             <spring:message code="profilePage.subtitle.join"/>
                                                         </a>
                                                     </c:otherwise>

@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.models;
 
-import java.util.Objects;
-
 public class UserStats {
     private long jobsCount;
     private long avgRating;

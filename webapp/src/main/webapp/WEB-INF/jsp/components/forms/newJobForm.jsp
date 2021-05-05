@@ -102,7 +102,7 @@
 
     <div class="col-12 px-0 hide d-flex align-items-center justify-content-center">
         <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
-            <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status"
+            <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
                   aria-hidden="true"></span>
             <span id="jobFormBtnText">
                 <spring:message code="jobForm.buttonText"/>

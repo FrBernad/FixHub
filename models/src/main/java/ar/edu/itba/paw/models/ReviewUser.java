@@ -52,7 +52,7 @@ public class ReviewUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReviewUser that = (ReviewUser) o;
-        return userId == that.userId && profileImageId == that.profileImageId && Objects.equals(name, that.name) && Objects.equals(surname, that.surname);
+        return userId == that.userId && profileImageId.equals(that.profileImageId) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname);
     }
 
 }

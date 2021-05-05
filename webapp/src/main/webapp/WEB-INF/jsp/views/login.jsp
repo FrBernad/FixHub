@@ -34,7 +34,7 @@
                               method="POST" enctype="application/x-www-form-urlencoded">
                             <div class="row">
                                 <div class="col-12">
-                                    <label>
+                                    <label for="email">
                                         <spring:message code="login.EmailText"/>
                                     </label>
                                     <input type="email" class="form-control mb-2"
@@ -81,8 +81,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-3 d-flex justify-content-start align-items-center">
-                                    <input type="checkbox" name="rememberMe"/>
-                                    <label class="mb-0 ml-2">
+                                    <input type="checkbox" name="rememberMe" id="rememberMe"/>
+                                    <label for="rememberMe" class="mb-0 ml-2">
                                         <spring:message code="login.rememberme"/>
                                     </label>
                                 </div>

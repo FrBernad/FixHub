@@ -1,6 +1,6 @@
 let navbar = document.getElementById("navbar");
 let navFix = document.getElementById("navFix");
-document.addEventListener("scroll", e => {
+document.addEventListener("scroll", () => {
         let scrolled = document.scrollingElement.scrollTop;
         if (scrolled > 0) {
             navFix.classList.remove("d-none");

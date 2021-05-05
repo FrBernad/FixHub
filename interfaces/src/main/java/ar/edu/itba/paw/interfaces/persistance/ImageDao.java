@@ -3,7 +3,6 @@ package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.ImageDto;
-import ar.edu.itba.paw.models.Job;
 
 import java.util.Collection;
 import java.util.List;

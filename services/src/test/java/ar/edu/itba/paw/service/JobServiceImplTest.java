@@ -76,7 +76,7 @@ public class JobServiceImplTest {
         add(new Image(7L,IMAGE_TO_UPLOAD4.getData(),IMAGE_TO_UPLOAD4.getMimeType()));
     }};
 
-    private List<Long> IMAGES_ID_TO_DELETE = new LinkedList<Long>() {{
+    private static final List<Long> IMAGES_ID_TO_DELETE = new LinkedList<Long>() {{
         add(1L);
         add(2L);
     }};

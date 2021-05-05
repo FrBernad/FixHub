@@ -3,7 +3,6 @@ package ar.edu.itba.paw.models;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.LinkedList;
 
 public class Job {
     private String description, jobProvided;

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @org.springframework.stereotype.Service
 public class ReviewServiceImpl implements ReviewService {

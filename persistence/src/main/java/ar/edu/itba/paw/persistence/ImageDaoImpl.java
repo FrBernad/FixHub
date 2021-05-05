@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import ar.edu.itba.paw.interfaces.exceptions.ImageNotFoundException;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.slf4j.Logger;
@@ -94,7 +93,7 @@ public class ImageDaoImpl implements ImageDao {
     public int deleteImageById(long imageId){
         LOGGER.info("Trying to deleted the image with id {}",imageId);
 
-        int res = jdbcTemplate.update("DELETE FROM IMAGES where i_id = ?",new Object[]{imageId});
+        int res = jdbcTemplate.update("DELETE FROM IMAGES where i_id = ?", imageId);
 
         if(res == 0 )
             LOGGER.warn("Error trying to delete an image with non-existent id {}",imageId);

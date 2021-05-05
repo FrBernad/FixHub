@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.UserStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class UserDaoImpl implements UserDao {
     private final SimpleJdbcInsert contactProviderSimpleJdbcInsert;
     private final SimpleJdbcInsert userScheduleSimpleJdbcInsert;
     private final SimpleJdbcInsert userLocationSimpleJdbcInsert;
-    private final SimpleJdbcInsert userFollowsSimpleJdbcInsert;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
@@ -130,7 +128,6 @@ public class UserDaoImpl implements UserDao {
         contactProviderSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("CONTACT").usingGeneratedKeyColumns("c_id");
         userScheduleSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USER_SCHEDULE");
         userLocationSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("USER_LOCATION");
-        userFollowsSimpleJdbcInsert = new SimpleJdbcInsert(ds).withTableName("FOLLOWS");
     }
 
     @Override

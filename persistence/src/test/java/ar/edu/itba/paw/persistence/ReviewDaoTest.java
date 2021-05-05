@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @Transactional
 @Sql(scripts = "classpath:review-dao-test.sql")

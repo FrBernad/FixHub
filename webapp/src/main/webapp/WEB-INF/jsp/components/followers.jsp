@@ -3,11 +3,11 @@
         <div class="col-2 p-0 d-flex justify-content-center align-items-center">
             <c:choose>
                 <c:when test="${follower.profileImageId == 0}">
-                    <img src="<c:url value='/resources/images/userProfile.png'/>"
+                    <img alt="profile picture" src="<c:url value='/resources/images/userProfile.png'/>"
                          class="avatarPicture">
                 </c:when>
                 <c:otherwise>
-                    <img src="<c:url value='/user/images/profile/${follower.profileImageId}'/>"
+                    <img alt="profile picture" src="<c:url value='/user/images/profile/${follower.profileImageId}'/>"
                          class="avatarPicture">
                 </c:otherwise>
             </c:choose>

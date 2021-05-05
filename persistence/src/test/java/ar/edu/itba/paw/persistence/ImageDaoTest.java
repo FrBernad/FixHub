@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistance.ImageDao;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.ImageDto;
-import ar.edu.itba.paw.models.Job;
 import ar.edu.itba.paw.models.JobCategory;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,10 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @Transactional
 @Sql(scripts = "classpath:image-dao-test.sql")
@@ -53,7 +49,7 @@ public class ImageDaoTest {
     private static final String JOB_DESCRIPTION = "Trabajo en muebles de roble y pino";
     private static final BigDecimal JOB_PRICE = BigDecimal.valueOf(1500);
     private static final Integer JOB_ID=1;
-    private static boolean JOB_PAUSE=false;
+    private static final boolean JOB_PAUSE=false;
 
 
     private static final byte[] imgInfo1={0,1,2,3,4,5,6,7,8,9};

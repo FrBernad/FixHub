@@ -193,7 +193,7 @@
                 <div class="col-12 px-0 d-flex justify-content-center align-items-center">
                     <button type="button" id="editFormButton" form="editJobForm"
                             class="w-25 continueBtn my-2 d-flex align-items-center justify-content-center">
-                        <span id="loadingSpinner" class="spinner-border spinner-border-sm mr-1" hidden role="status"
+                        <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
                               aria-hidden="true"></span>
                         <span id="senBtnText">
                             <spring:message code="job.submit"/>

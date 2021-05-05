@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-7">
                                 <div class="container-fluid p-0">
-                                    <row>
+                                    <div class="row">
                                         <div class="col-12 pl-0">
                                             <h1 class="jobTitle"><c:out value="${job.jobProvided}"/></h1>
                                         </div>
@@ -91,7 +91,7 @@
                                             <span style="font-style: normal; font-weight: 400;">(<c:out
                                                     value="${job.totalRatings})"/></span>
                                         </div>
-                                    </row>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-5 p-0 d-flex justify-content-start align-items-center">
@@ -144,14 +144,14 @@
                         <div class="col-12 mt-2 px-0">
                             <div class="container-fluid p-0">
                                 <div class="row">
-                                    <div class="col-12 d-flex justify-content-start align-items-center">
+                                    <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                                         <h2 class="sectionTitle mb-3">
                                             <spring:message code="job.information.title"/>
                                         </h2>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-12 px-0">
                                         <div class="container-fluid p-0">
                                             <div class="row">
                                                 <div class="col-12">

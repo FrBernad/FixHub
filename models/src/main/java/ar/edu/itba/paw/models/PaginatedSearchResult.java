@@ -6,7 +6,7 @@ public class PaginatedSearchResult<T> {
 
     private String order, category, query, state, city;
     private Collection<City> cities;
-    private boolean isLast, isFirst;
+    private final boolean isLast, isFirst;
     private int page, itemsPerPage, totalItems, totalPages;
 
     private Collection<T> results;
