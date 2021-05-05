@@ -197,7 +197,7 @@ public class WebAuthController {
         if (!form.getPassword().equals(form.getConfirmPassword())) {
             LOGGER.warn("Error in form resetPasswordForm data, form passwords dont match");
 
-            errors.rejectValue("", "validation.user.passwordsDontMatch");
+            errors.rejectValue("confirmPassword", "validation.user.passwordsDontMatch");
             return new ModelAndView("views/user/account/password/reset");
         }
 

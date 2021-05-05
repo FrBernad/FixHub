@@ -53,10 +53,10 @@
                                             <spring:message code="account.password.reset.newPasswordConfirmLabel"/>
                                         </form:label>
                                         <div class="input-group d-flex justify-content-start align-items-center">
-                                            <form:input type="password" path="confirmPassword" cssClass="form-control input"
+                                            <form:input type="password" path="confirmPassword"
+                                                        cssClass="form-control input"
                                                         id="password2" name="confirmPassword"
                                                         cssErrorClass="form-control is-invalid"/>
-                                            <form:errors path="" cssClass="formError" element="p"/>
                                             <div class="input-group-append">
                                                 <button id="passwordEye2" type="button" tabindex="-1"
                                                         class="btn btn-lg form-control inputBtn input-group-text">
@@ -65,7 +65,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <form:errors path="" cssClass="formError" element="p"/>
+                                    <form:errors path="confirmPassword" cssClass="formError" element="p"/>
                                 </form:form>
                             </div>
                             <div class="col-12 mt-2 d-flex align-items-center justify-content-center">
