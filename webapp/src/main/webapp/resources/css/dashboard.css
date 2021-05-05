@@ -4,12 +4,13 @@
     color: var(--tertiary-color) !important;
 }
 
-a {
+.accordion a {
     color: black;
+    font-weight: 500;
     transition: hover 1s;
 }
 
-a:hover {
+.accordion a:hover {
     color: rgb(0,104,192);
     text-decoration: none;
 }

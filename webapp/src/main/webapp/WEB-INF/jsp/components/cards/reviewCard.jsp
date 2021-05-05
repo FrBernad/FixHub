@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div class="container-fluid p-0">
+<div class="container-fluid p-0 reviewCard">
     <div class="row">
         <div class="col-10 col-lg-8 d-flex justify-content-between align-items-center">
             <div>

@@ -17,6 +17,16 @@
     width: 100%;
 }
 
+.accordion a {
+    color: black;
+    font-weight: 500;
+    transition: hover 1s;
+}
+
+.accordion a:hover {
+    color: rgb(0,104,192);
+    text-decoration: none;
+}
 .backgroundImage {
     object-fit: cover;
     width: 100%;

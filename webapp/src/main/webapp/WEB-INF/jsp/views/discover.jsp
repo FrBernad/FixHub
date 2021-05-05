@@ -51,6 +51,7 @@
                 <div class="container-fluid px-0">
                     <div class="row justify-content-around align-items-center">
 
+                        <spring:message var="allString" code="discover.all"/>
                         <%--CATEGORY--%>
                         <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
                             <div class="dropdown w-100">
@@ -63,14 +64,16 @@
                                             <spring:message code="home.categories.${results.category}"/>
                                         </c:if>
                                         <c:if test="${results.category!=null && results.category.isEmpty()}">
-                                            -
+                                            ${allString}
                                         </c:if>
                                     </span>
                                 </button>
                                 <div class="dropdown-menu limitSizeDropdown" id="categoryDropdownMenu"
                                      aria-labelledby="categoryDropdown">
                                     <div class="input-group">
-                                        <button id="emptyCategoryButton" data-category="" class="dropdown-item">-
+                                        <button id="emptyCategoryButton" data-category=""
+                                                class="dropdown-item">
+                                            ${allString}
                                         </button>
                                     </div>
                                     <c:forEach var="category" items="${categories}">
@@ -96,13 +99,13 @@
                                             <c:out value="${results.state}"/>
                                         </c:if>
                                          <c:if test="${results.state!=null && results.state.isEmpty()}">
-                                             -
+                                             <spring:message code="discover.all"/>
                                          </c:if>
                                    </span>
                                 </button>
                                 <div class="dropdown-menu limitSizeDropdown" aria-labelledby="orderDropdown">
                                     <div class="input-group">
-                                        <button id="emptyStateButton" data-state="" class="dropdown-item">-</button>
+                                        <button id="emptyStateButton" data-state="" class="dropdown-item">${allString}</button>
                                     </div>
                                     <c:forEach var="state" items="${states}">
                                         <div class="input-group">
@@ -127,13 +130,13 @@
                                              <c:out value="${results.city}"/>
                                          </c:if>
                                          <c:if test="${results.city!=null && results.city.isEmpty()}">
-                                             -
+                                             <spring:message code="discover.all"/>
                                          </c:if>
                                     </span>
                                 </button>
                                 <div class="dropdown-menu limitSizeDropdown" aria-labelledby="orderDropdown">
                                     <div class="input-group">
-                                        <button id="emptyCityButton" data-city="" class="dropdown-item">-</button>
+                                        <button id="emptyCityButton" data-city="" class="dropdown-item">${allString}</button>
                                     </div>
                                     <c:forEach var="city" items="${cities}">
                                         <div class="input-group">

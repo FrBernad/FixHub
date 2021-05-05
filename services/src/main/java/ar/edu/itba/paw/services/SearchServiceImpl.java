@@ -30,6 +30,8 @@ public class SearchServiceImpl implements SearchService {
 
     private final int DEFAULT_ITEMS_PER_PAGE = 6;
 
+    private final int SEACH_MAX_LENGTH = 50;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     @Override
@@ -55,7 +57,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         String querySearchBy;
-        if (searchBy != null && searchBy.equals("")) {
+        if (searchBy != null && (searchBy.equals("") || searchBy.length() > SEACH_MAX_LENGTH)) {
             LOGGER.debug("Search query is empty, setting state to none");
             querySearchBy = null;
             searchBy = "";
@@ -148,7 +150,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         String querySearchBy;
-        if (searchBy != null && searchBy.equals("")) {
+        if (searchBy != null && (searchBy.equals("") || searchBy.length() > SEACH_MAX_LENGTH)) {
             LOGGER.debug("Search query is empty, setting searchQuery to none");
             querySearchBy = null;
             searchBy = "";

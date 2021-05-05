@@ -57,8 +57,8 @@ public class JobController {
         mav.addObject("job", job);
         mav.addObject("error", error);
         mav.addObject("location", userService.getLocationByProviderId(job.getProvider().getId()));
-        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 5);
-        PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJobId(job.getId(), 0, 5);
+        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 4);
+        PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJobId(job.getId(), 0, 4);
         mav.addObject("results", results);
         mav.addObject("firstResults", firstResults);
         mav.addObject("paginationModal", paginationModal);

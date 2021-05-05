@@ -46,9 +46,9 @@
     width: 100%;
     border-radius: 8px !important;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 600;
     background-color: white;
-    color: rgba(0, 59, 109, 1);
+    color: black;
     border: none;
     padding: 8px 16px;
 }

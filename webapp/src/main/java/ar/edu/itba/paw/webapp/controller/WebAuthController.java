@@ -72,7 +72,6 @@ public class WebAuthController {
             return register(form);
         }
 
-
         if (!form.getPassword().equals(form.getConfirmPassword())) {
             //Global error, that's why it has "".
             LOGGER.warn("Error in form RegisterForm, passwords dont match");

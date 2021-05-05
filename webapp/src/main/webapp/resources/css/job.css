@@ -5,6 +5,17 @@
     color: black;
 }
 
+a {
+    font-weight: 500;
+    color: black;
+    transition: hover 1s;
+}
+
+a:hover {
+    color: rgb(0, 104, 192);
+    text-decoration: none;
+}
+
 .jobTitle {
     font-size: 22px;
     line-height: 1;
@@ -40,7 +51,7 @@
 
 .contactInfo {
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.25;
 }
 

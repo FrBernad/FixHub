@@ -235,7 +235,7 @@
                                                     <c:otherwise>
                                                         <spring:message code="profilePage.subtitle.inactive"/>
                                                         <i class="ml-1 fas fa-times" style="color: darkred"></i>
-                                                        <a class="ml-2" href="<c:url value="/user/join"/>">
+                                                        <a class="ml-2" href="<c:url value="/user/join"/>" style="font-weight: 500">
                                                             <spring:message code="profilePage.subtitle.join"/>
                                                         </a>
                                                     </c:otherwise>
