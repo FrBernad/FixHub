@@ -1,20 +1,56 @@
 package ar.edu.itba.paw.models;
 
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
 
+@Entity
 public class Job {
-    private String description, jobProvided;
-    private int averageRating;
-    private JobCategory category;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobs_j_id_seq")
+    @SequenceGenerator(sequenceName = "jobs_j_id_seq", name = "jobs_j_id_seq", allocationSize = 1)
+    @Column(name = "j_id")
     private long id;
+
+    @Column(name = "j_description", length = 300, nullable = false)
+    private String description;
+
+    @Column(name = "j_category", length = 50, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private JobCategory category;
+
+    @Column(name = "j_job_provided", length = 50, nullable = false)
+    private String jobProvided;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinTable(name = "users",
+        joinColumns = @JoinColumn(name = "u_u_id")
+    )
     private User provider;
+
+    private int averageRating;
+
+    @Column(name = "j_price", nullable = false)
     private BigDecimal price;
-    private long totalRatings;
-    private Collection<Long> imagesId;
+
+    @Column(name = "j_paused", nullable = false)
     private boolean paused;
-    public static final int MAX_IMAGES_PER_JOB=6;
+
+    private long totalRatings;
+
+    //JOB --- IMG
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "job_image",
+        joinColumns = @JoinColumn(name = "ji_job_id"))
+    private Collection<Long> imagesId;
+
+    public static final int MAX_IMAGES_PER_JOB = 6;
+
+    /* default */ Job() {
+        // Just for Hibernate
+    }
 
     public Job(String description, String jobProvided, int averageRating, long totalRatings, JobCategory category, long id, BigDecimal price, boolean paused, User provider, Collection<Long> imagesId) {
         this.description = description;
@@ -47,7 +83,7 @@ public class Job {
         imagesId.add(imageId);
     }
 
-    public Long getJobThumbnailId(){
+    public Long getJobThumbnailId() {
         return imagesId.stream().findFirst().orElse(0L);
     }
 

@@ -12,12 +12,17 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Repository
 public class UserDaoImpl implements UserDao {
+
+    @PersistenceContext
+    private EntityManager em;
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert userSimpleJdbcInsert;

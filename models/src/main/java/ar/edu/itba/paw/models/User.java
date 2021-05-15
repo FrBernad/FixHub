@@ -1,17 +1,69 @@
 package ar.edu.itba.paw.models;
 
+import javax.management.relation.Role;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "users")
 public class User {
-    private String name, password, surname, city, state, phoneNumber, email;
-    private Long id, profileImageId, coverImageId;
-    private Collection<Roles> roles;
-    private int followers;
-    private int following;
 
-    public User(Long id, String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles, Long profileImageId, Long coverImageId) {
-        this.id = id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_u_id_seq")
+    @SequenceGenerator(sequenceName = "users_u_id_seq", name = "users_u_id_seq", allocationSize = 1)
+    @Column(name = "u_id")
+    private Long id;
+
+    @Column(name = "u_password", length = 128, nullable = false)
+    private String password;
+
+    @Column(name = "u_name", length = 50, nullable = false)
+    private String name;
+
+    @Column(name = "u_surname", length = 50, nullable = false)
+    private String surname;
+
+    @Column(name = "u_email", length = 200, nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "u_phone_number", length = 15, nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "u_profile_picture")
+    private Long profileImageId;
+
+    @Column(name = "u_cover_picture")
+    private Long coverImageId;
+
+    @Column(name = "u_state", length = 50, nullable = false)
+    private String state;
+
+    @Column(name = "u_city", length = 50, nullable = false)
+    private String city;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "r_user_id"))
+    @Column(name = "r_role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Collection<Roles> roles;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "follows",
+        joinColumns = @JoinColumn(name = "f_user_id"),
+        inverseJoinColumns = @JoinColumn(name = "f_followed_user_id")
+    )
+    private Set<User> following;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "following")
+    private Set<User> followers;
+
+    /* default */ User() {
+        // Just for Hibernate
+    }
+
+    public User(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles, Long profileImageId, Long coverImageId) {
         this.password = password;
         this.name = name;
         this.surname = surname;
@@ -120,23 +172,23 @@ public class User {
         roles.add(role);
     }
 
-    public int getFollowers() {
+    public Set<User> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(int followers) {
+    public void setFollowers(Set<User> followers) {
         this.followers = followers;
     }
 
-    public int getFollowing() {
+    public Set<User> getFollowing() {
         return following;
     }
 
-    public void setFollowing(int following) {
+    public void setFollowing(Set<User> following) {
         this.following = following;
     }
 
-    public boolean getIsProvider(){
+    public boolean getIsProvider() {
         return roles.stream().anyMatch(p -> p.name().equals(Roles.PROVIDER.name()));
     }
 
