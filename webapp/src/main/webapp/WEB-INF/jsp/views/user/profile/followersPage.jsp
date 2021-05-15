@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <c:url value="/user/${user.id}/${following ? 'following' : 'followers'}/search" var="postPath"/>
+            <c:url value="/user/${user.id}/${flag ? 'following' : 'followers'}/search" var="postPath"/>
             <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
                        id="searchForm">
                 <form:input path="page" type="hidden" id="pageInput"/>

@@ -132,7 +132,7 @@ public class UserController {
         final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
-        mav.addObject("following", true);
+        mav.addObject("flag", true);
         mav.addObject("results", following);
         mav.addObject("user", user);
 
@@ -149,6 +149,7 @@ public class UserController {
         final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), form.getPage(), 4);
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", following);
+        mav.addObject("flag", true);
         mav.addObject("user", user);
 
         return mav;

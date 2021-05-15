@@ -53,12 +53,12 @@
                                     <i class="fas ml-2 fa-chevron-down navbarText" id="navBarArrow"></i>
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <p class="mb-0 pl-3 dropdownItem">
+                                    <a href="<c:url value='/user/account'/>" class="dropdown-item pl-3">
                                         <spring:message code="navBar.signInAs"/>
                                         <span class="username names">
                                             <c:out value="${loggedUser.name}"/>
                                         </span>
-                                    </p>
+                                    </a>
                                     <div class="dropdown-divider"></div>
                                     <a href="<c:url value='/user/account'/>" class="dropdown-item pl-3">
                                         <spring:message code="navBar.profile"/>
