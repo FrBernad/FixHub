@@ -4,14 +4,14 @@ package ar.edu.itba.paw.models;
 import java.time.LocalDate;
 
 public class Review {
-    private Number id;
+    private Long id;
     private String description;
-    private Number jobId;
+    private Long jobId;
     private int rating;
     private LocalDate creationDate;
     private User reviewer;
 
-    public Review(Number id, String description, Number jobId, int rating, LocalDate creationDate, User reviewer) {
+    public Review(Long id, String description, Long jobId, int rating, LocalDate creationDate, User reviewer) {
         this.id = id;
         this.description = description;
         this.jobId = jobId;
@@ -20,11 +20,11 @@ public class Review {
         this.reviewer = reviewer;
     }
 
-    public Number getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Number id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,11 +36,11 @@ public class Review {
         this.description = description;
     }
 
-    public Number getJobId() {
+    public Long getJobId() {
         return jobId;
     }
 
-    public void setJobId(Number jobId) {
+    public void setJobId(Long jobId) {
         this.jobId = jobId;
     }
 

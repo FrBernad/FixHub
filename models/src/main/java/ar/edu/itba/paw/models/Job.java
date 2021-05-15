@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 @Entity
+@Table(name = "jobs")
 public class Job {
 
     @Id
@@ -26,7 +27,7 @@ public class Job {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinTable(name = "users",
-        joinColumns = @JoinColumn(name = "u_u_id")
+        joinColumns = @JoinColumn(name = "u_id")
     )
     private User provider;
 
@@ -48,7 +49,8 @@ public class Job {
 
     public static final int MAX_IMAGES_PER_JOB = 6;
 
-    /* default */ Job() {
+    /* default */
+    protected Job() {
         // Just for Hibernate
     }
 

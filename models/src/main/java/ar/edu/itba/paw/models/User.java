@@ -59,7 +59,8 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "following")
     private Set<User> followers;
 
-    /* default */ User() {
+    /* default */
+    protected User() {
         // Just for Hibernate
     }
 
