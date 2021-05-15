@@ -155,8 +155,8 @@
                                         <div class="container-fluid p-0">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <p class="text-left contactInfo">
-                                                        <span class="font-weight-bold names"><spring:message
+                                                    <p class="text-left contactInfo names">
+                                                        <span class="font-weight-bold"><spring:message
                                                                 code="job.information.name&surname"/></span> <c:out
                                                             value="${job.provider.name}"/> <c:out
                                                             value="${job.provider.surname}"/>
