@@ -2,6 +2,13 @@ package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.user.Roles;
+import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Location;
+import ar.edu.itba.paw.models.user.provider.Schedule;
+import ar.edu.itba.paw.models.user.provider.Stats;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -16,13 +23,11 @@ public interface UserDao {
 
     User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) throws DuplicateUserException;
 
-    Collection<Roles> getUserRoles();
-
     Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
 
     Optional<User> updatePassword(long userId, String password);
 
-    Optional<UserStats> getUserStatsById(long id);
+    Optional<Stats> getUserStatsById(long id);
 
     void updateUserInfo(UserInfo userInfo, User user);
 
@@ -48,13 +53,13 @@ public interface UserDao {
 
     void addLocation(Long userId, List<Long> citiesId);
 
-    ProviderLocation getLocationByProviderId(Long providerId);
+    Location getLocationByProviderId(Long providerId);
 
     void updateCoverImage(Long imageId, User user);
 
     void updateProfileImage(Long imageId, User user);
 
-    Optional<UserSchedule> getScheduleByUserId(long userId);
+    Optional<Schedule> getScheduleByUserId(long userId);
 
     boolean hasContactJobProvided(Job job, User user);
 

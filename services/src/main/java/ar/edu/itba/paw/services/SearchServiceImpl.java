@@ -5,6 +5,10 @@ import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,18 +127,18 @@ public class SearchServiceImpl implements SearchService {
             itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
         }
 
-        LOGGER.debug("Retrieving total jobs count");
-        final int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter, queryState, queryCity);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
-
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
-        }
+//        LOGGER.debug("Retrieving total jobs count");
+//        final int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter, queryState, queryCity);
+//        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+//
+//        if (page >= totalPages) {
+//            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
+//            page = totalPages - 1;
+//        }
 
         LOGGER.debug("Retrieving page {} for jobs by category {}", page, category);
         final Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, queryState, queryCity, page, itemsPerPage);
-        return new PaginatedSearchResult<>(orderBy, category, searchBy, state, city, cities, page, itemsPerPage, totalJobs, jobs);
+        return new PaginatedSearchResult<>(orderBy, category, searchBy, state, city, cities, page, itemsPerPage, 5, jobs);
     }
 
     @Override

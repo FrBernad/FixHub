@@ -9,6 +9,9 @@ import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-import static ar.edu.itba.paw.models.Job.MAX_IMAGES_PER_JOB;
+import static ar.edu.itba.paw.models.job.Job.MAX_IMAGES_PER_JOB;
 
 @org.springframework.stereotype.Service
 public class JobServiceImpl implements JobService {
@@ -87,35 +90,35 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
-        final Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
-
-        final Collection<Long> oldImagesId = job.getImagesId();
-
-        //If a user tries to delete images that are not from the job to update
-        if (!oldImagesId.containsAll(imagesIdDeleted)) {
-            LOGGER.warn("error: tried to delete image not corresponding to job");
-            throw new IllegalOperationException();
-        }
-        //If a job reaches the limit of images
-        if (oldImagesId.size() - imagesIdDeleted.size() + images.size() > MAX_IMAGES_PER_JOB) {
-            LOGGER.warn("error: tried to add more images than permitted");
-            throw new MaxImagesPerJobException();
-        }
-
-        final List<Image> jobImages;
-
-        if (!images.isEmpty())
-            jobImages = imageService.createImages(images);
-        else
-            jobImages = new LinkedList<>();
-
-        LOGGER.debug("Updating job");
-        jobDao.updateJob(jobProvided, description, price, paused, jobImages, jobId, imagesIdDeleted);
-
-        if (!imagesIdDeleted.isEmpty()) {
-            LOGGER.debug("Deleting job images");
-            imageService.deleteImagesById(imagesIdDeleted);
-        }
+//        final Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
+//
+//        final Collection<Long> oldImagesId = job.getImagesId();
+//
+//        //If a user tries to delete images that are not from the job to update
+//        if (!oldImagesId.containsAll(imagesIdDeleted)) {
+//            LOGGER.warn("error: tried to delete image not corresponding to job");
+//            throw new IllegalOperationException();
+//        }
+//        //If a job reaches the limit of images
+//        if (oldImagesId.size() - imagesIdDeleted.size() + images.size() > MAX_IMAGES_PER_JOB) {
+//            LOGGER.warn("error: tried to add more images than permitted");
+//            throw new MaxImagesPerJobException();
+//        }
+//
+//        final List<Image> jobImages;
+//
+//        if (!images.isEmpty())
+//            jobImages = imageService.createImages(images);
+//        else
+//            jobImages = new LinkedList<>();
+//
+//        LOGGER.debug("Updating job");
+//        jobDao.updateJob(jobProvided, description, price, paused, jobImages, jobId, imagesIdDeleted);
+//
+//        if (!imagesIdDeleted.isEmpty()) {
+//            LOGGER.debug("Deleting job images");
+//            imageService.deleteImagesById(imagesIdDeleted);
+//        }
     }
 
     private void sendNewJobNotificationMail(User user, Job job) {

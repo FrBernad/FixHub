@@ -1,5 +1,7 @@
-package ar.edu.itba.paw.models;
+package ar.edu.itba.paw.models.job;
 
+import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,7 +15,7 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobs_j_id_seq")
     @SequenceGenerator(sequenceName = "jobs_j_id_seq", name = "jobs_j_id_seq", allocationSize = 1)
     @Column(name = "j_id")
-    private long id;
+    private Long id;
 
     @Column(name = "j_description", length = 300, nullable = false)
     private String description;
@@ -26,12 +28,8 @@ public class Job {
     private String jobProvided;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
-    @JoinTable(name = "users",
-        joinColumns = @JoinColumn(name = "u_id")
-    )
+    @JoinColumn(name = "j_provider_id")
     private User provider;
-
-    private int averageRating;
 
     @Column(name = "j_price", nullable = false)
     private BigDecimal price;
@@ -39,22 +37,26 @@ public class Job {
     @Column(name = "j_paused", nullable = false)
     private boolean paused;
 
-    private long totalRatings;
+    @Transient
+    private Integer averageRating;
 
-    //JOB --- IMG
-    @OneToMany(fetch = FetchType.EAGER)
+    @Transient
+    private Long totalRatings;
+
+    @OneToMany
     @JoinTable(name = "job_image",
-        joinColumns = @JoinColumn(name = "ji_job_id"))
-    private Collection<Long> imagesId;
+        joinColumns = @JoinColumn(name = "ji_job_id"),
+        inverseJoinColumns = @JoinColumn(name = "ji_image_id"))
+    private Collection<Image> images;
 
-    public static final int MAX_IMAGES_PER_JOB = 6;
+    public static final Integer MAX_IMAGES_PER_JOB = 6;
 
     /* default */
     protected Job() {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, int averageRating, long totalRatings, JobCategory category, long id, BigDecimal price, boolean paused, User provider, Collection<Long> imagesId) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, Long id, BigDecimal price, boolean paused, User provider, Collection<Image> images) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -64,7 +66,7 @@ public class Job {
         this.provider = provider;
         this.price = price;
         this.paused = paused;
-        this.imagesId = imagesId;
+        this.images = images;
     }
 
     @Override
@@ -81,12 +83,12 @@ public class Job {
             '}';
     }
 
-    public void addImageId(long imageId) {
-        imagesId.add(imageId);
+    public void addImage(Image image) {
+        images.add(image);
     }
 
     public Long getJobThumbnailId() {
-        return imagesId.stream().findFirst().orElse(0L);
+        return images.stream().findFirst().orElse(null).getImageId();
     }
 
     public BigDecimal getPrice() {
@@ -121,19 +123,19 @@ public class Job {
         this.jobProvided = jobProvided;
     }
 
-    public int getAverageRating() {
+    public Integer getAverageRating() {
         return averageRating;
     }
 
-    public long getTotalRatings() {
+    public Long getTotalRatings() {
         return totalRatings;
     }
 
-    public void setTotalRatings(long totalRatings) {
+    public void setTotalRatings(Long totalRatings) {
         this.totalRatings = totalRatings;
     }
 
-    public void setAverageRating(int averageRating) {
+    public void setAverageRating(Integer averageRating) {
         this.averageRating = averageRating;
     }
 
@@ -146,11 +148,11 @@ public class Job {
         this.category = category;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -162,11 +164,11 @@ public class Job {
         this.provider = provider;
     }
 
-    public Collection<Long> getImagesId() {
-        return imagesId;
+    public Collection<Image> getImagesId() {
+        return images;
     }
 
-    public void setImagesId(Collection<Long> imagesId) {
-        this.imagesId = imagesId;
+    public void setImagesId(Collection<Image> images) {
+        this.images = images;
     }
 }

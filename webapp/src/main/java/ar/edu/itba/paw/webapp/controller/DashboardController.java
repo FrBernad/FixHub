@@ -4,6 +4,10 @@ import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Stats;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +43,7 @@ public class DashboardController {
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 4);
 
-        final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
+        final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 4);
 
@@ -62,7 +66,7 @@ public class DashboardController {
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(form.getQuery(), form.getOrder(), user.getId(), form.getPage(), 4);
 
-        final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
+        final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 4);
@@ -86,7 +90,7 @@ public class DashboardController {
 
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), form.getPage(), 4);
 
-        final UserStats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
+        final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 4);

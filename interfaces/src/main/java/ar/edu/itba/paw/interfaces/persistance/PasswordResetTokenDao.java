@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
-import ar.edu.itba.paw.models.PasswordResetToken;
+import ar.edu.itba.paw.models.token.PasswordResetToken;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

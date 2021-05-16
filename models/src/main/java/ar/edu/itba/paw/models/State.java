@@ -1,23 +1,32 @@
 package ar.edu.itba.paw.models;
 
+import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
+@Table(name = "states")
 public class State {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "states_s_id_seq")
+    @SequenceGenerator(sequenceName = "states_s_id_seq", name = "states_s_id_seq", allocationSize = 1)
+    @Column(name = "s_id")
     private long id;
+
+    @Column(name = "s_name", nullable = false)
     private String name;
-    private Collection<City> cities;
 
-
-    public State(long id, String name) {
-        this.id = id;
+    public State(String name) {
         this.name = name;
     }
 
-    public State(long id, String name, Collection<City> cities) {
-        this.id = id;
+    /* default */
+    protected State() {
+        // Just for Hibernate
+    }
+
+    public State(String name, Collection<City> cities) {
         this.name = name;
-        this.cities = cities;
     }
 
     public long getId() {
@@ -34,14 +43,6 @@ public class State {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Collection<City> getCities() {
-        return cities;
-    }
-
-    public void setCities(Collection<City> cities) {
-        this.cities = cities;
     }
 
 }

@@ -7,6 +7,8 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContentTypeException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.form.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +42,8 @@ public class UserController {
         LOGGER.info("Accessed /user/account GET controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        user.setFollowers(userService.getFollowersCount(user.getId()));
-        user.setFollowing(userService.getFollowingCount(user.getId()));
+//        user.setFollowers(userService.getFollowersCount(user.getId()));
+//        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
@@ -95,8 +97,8 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/followers GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        user.setFollowers(userService.getFollowersCount(user.getId()));
-        user.setFollowing(userService.getFollowingCount(user.getId()));
+//        user.setFollowers(userService.getFollowersCount(user.getId()));
+//        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
@@ -111,8 +113,8 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/followers/search GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        user.setFollowers(userService.getFollowersCount(user.getId()));
-        user.setFollowing(userService.getFollowingCount(user.getId()));
+//        user.setFollowers(userService.getFollowersCount(user.getId()));
+//        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user.getId(), form.getPage(), 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
@@ -127,8 +129,8 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/following GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        user.setFollowers(userService.getFollowersCount(user.getId()));
-        user.setFollowing(userService.getFollowingCount(user.getId()));
+//        user.setFollowers(userService.getFollowersCount(user.getId()));
+//        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
@@ -144,8 +146,8 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/following/search GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        user.setFollowers(userService.getFollowersCount(user.getId()));
-        user.setFollowing(userService.getFollowingCount(user.getId()));
+//        user.setFollowers(userService.getFollowersCount(user.getId()));
+//        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), form.getPage(), 4);
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", following);
@@ -171,8 +173,8 @@ public class UserController {
             mav.addObject("followed", followed);
         }
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        user.setFollowers(userService.getFollowersCount(user.getId()));
-        user.setFollowing(userService.getFollowingCount(user.getId()));
+//        user.setFollowers(userService.getFollowersCount(user.getId()));
+//        user.setFollowing(userService.getFollowingCount(user.getId()));
         mav.addObject("user", user);
         return mav;
     }

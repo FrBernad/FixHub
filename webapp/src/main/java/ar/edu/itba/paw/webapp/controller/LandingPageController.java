@@ -2,8 +2,8 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
-import ar.edu.itba.paw.models.Job;
-import ar.edu.itba.paw.models.JobCategory;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.PaginatedSearchResult;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;

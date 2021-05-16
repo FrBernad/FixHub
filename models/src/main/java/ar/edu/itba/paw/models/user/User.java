@@ -1,14 +1,17 @@
-package ar.edu.itba.paw.models;
+package ar.edu.itba.paw.models.user;
 
-import javax.management.relation.Role;
+import ar.edu.itba.paw.models.Image;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "users")
-public class User {
+@DiscriminatorColumn(name = "user_type")
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_u_id_seq")
@@ -31,11 +34,13 @@ public class User {
     @Column(name = "u_phone_number", length = 15, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "u_profile_picture")
-    private Long profileImageId;
+    @OneToOne
+    @JoinColumn(name = "u_profile_picture")
+    private Image profileImage;
 
-    @Column(name = "u_cover_picture")
-    private Long coverImageId;
+    @OneToOne
+    @JoinColumn(name = "u_cover_picture")
+    private Image coverImage;
 
     @Column(name = "u_state", length = 50, nullable = false)
     private String state;
@@ -43,7 +48,7 @@ public class User {
     @Column(name = "u_city", length = 50, nullable = false)
     private String city;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "r_user_id"))
     @Column(name = "r_role", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -64,7 +69,7 @@ public class User {
         // Just for Hibernate
     }
 
-    public User(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles, Long profileImageId, Long coverImageId) {
+    public User(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles, Image profileImage, Image coverImage) {
         this.password = password;
         this.name = name;
         this.surname = surname;
@@ -73,24 +78,24 @@ public class User {
         this.state = state;
         this.city = city;
         this.roles = roles;
-        this.coverImageId = coverImageId;
-        this.profileImageId = profileImageId;
+        this.coverImage = coverImage;
+        this.profileImage = profileImage;
     }
 
-    public Long getProfileImageId() {
-        return profileImageId;
+    public Image getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfileImageId(Long profileImageId) {
-        this.profileImageId = profileImageId;
+    public void setProfileImage(Image profileImage) {
+        this.profileImage = profileImage;
     }
 
-    public Long getCoverImageId() {
-        return coverImageId;
+    public Image getCoverImage() {
+        return coverImage;
     }
 
-    public void setCoverImageId(Long coverImageId) {
-        this.coverImageId = coverImageId;
+    public void setCoverImage(Image coverImage) {
+        this.coverImage = coverImage;
     }
 
     public boolean hasRole(String role) {
@@ -173,6 +178,10 @@ public class User {
         roles.add(role);
     }
 
+    public void removeRole(Roles role) {
+        roles.remove(role);
+    }
+
     public Set<User> getFollowers() {
         return followers;
     }
@@ -198,7 +207,7 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return name.equals(user.name) && password.equals(user.password) && surname.equals(user.surname) && city.equals(user.city) && state.equals(user.state) && phoneNumber.equals(user.phoneNumber) && email.equals(user.email) && id.equals(user.id) && Objects.equals(profileImageId, user.profileImageId) && Objects.equals(coverImageId, user.coverImageId) && roles.containsAll(user.roles);
+        return name.equals(user.name) && password.equals(user.password) && surname.equals(user.surname) && city.equals(user.city) && state.equals(user.state) && phoneNumber.equals(user.phoneNumber) && email.equals(user.email) && id.equals(user.id) && Objects.equals(profileImage, user.profileImage) && Objects.equals(coverImage, user.coverImage) && roles.containsAll(user.roles);
     }
 
     @Override

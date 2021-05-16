@@ -3,6 +3,11 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.job.Review;
+import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.EditJobForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
@@ -48,7 +53,7 @@ public class JobController {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        final UserSchedule userSchedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
+        final Schedule schedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
@@ -67,8 +72,8 @@ public class JobController {
 
         mav.addObject("canReview", canReview);
 
-        mav.addObject("startTime", userSchedule.getStartTime());
-        mav.addObject("endTime", userSchedule.getEndTime());
+        mav.addObject("startTime", schedule.getStartTime());
+        mav.addObject("endTime", schedule.getEndTime());
         return mav;
     }
 

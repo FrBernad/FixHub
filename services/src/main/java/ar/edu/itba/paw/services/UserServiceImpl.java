@@ -11,6 +11,14 @@ import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.token.PasswordResetToken;
+import ar.edu.itba.paw.models.token.VerificationToken;
+import ar.edu.itba.paw.models.user.Roles;
+import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Location;
+import ar.edu.itba.paw.models.user.provider.Schedule;
+import ar.edu.itba.paw.models.user.provider.Stats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,33 +86,34 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Creating user with email {}", email);
         final User user = userDao.createUser(passwordEncoder.encode(password), name, surname, email, phoneNumber, state, city, DEFAULT_ROLES);
         LOGGER.debug("Created user with id {}", user.getId());
-        final VerificationToken token = generateVerificationToken(user.getId());
-        LOGGER.debug("Created verification token with id {}", token.getId());
-        sendVerificationToken(user, token);
+//        final VerificationToken token = generateVerificationToken(user.getId());
+//        LOGGER.debug("Created verification token with id {}", token.getId());
+//        sendVerificationToken(user, token);
         return user;
     }
 
     @Transactional
     @Override
     public Optional<User> verifyAccount(String token) {
-        final Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
-
-        if (!vtokenOpt.isPresent()) {
-            LOGGER.warn("No verification token with value {}", token);
-            return Optional.empty();
-        }
-
-        final VerificationToken vtoken = vtokenOpt.get();
-        verificationTokenDao.removeTokenById(vtoken.getId());//remove always, either token is valid or not
-        LOGGER.debug("Removed token with id {}", vtoken.getId());
-
-        if (!vtoken.isValid()) {
-            LOGGER.warn("Token with value {} is invalid", token);
-            return Optional.empty();
-        }
-
-        LOGGER.debug("Validating user with id {}", vtoken.getUserId());
-        return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VERIFIED, Roles.VERIFIED);
+//        final Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
+//
+//        if (!vtokenOpt.isPresent()) {
+//            LOGGER.warn("No verification token with value {}", token);
+//            return Optional.empty();
+//        }
+//
+//        final VerificationToken vtoken = vtokenOpt.get();
+//        verificationTokenDao.removeTokenById(vtoken.getId());//remove always, either token is valid or not
+//        LOGGER.debug("Removed token with id {}", vtoken.getId());
+//
+//        if (!vtoken.isValid()) {
+//            LOGGER.warn("Token with value {} is invalid", token);
+//            return Optional.empty();
+//        }
+//
+//        LOGGER.debug("Validating user with id {}", vtoken.getUserId());
+//        return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VERIFIED, Roles.VERIFIED);
+        return Optional.empty();
     }
 
     @Transactional
@@ -144,27 +153,28 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<User> updatePassword(String token, String password) {
-        final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
-
-        if (!prtokenOpt.isPresent()) {
-            LOGGER.warn("Token {} is not valid", token);
-            return Optional.empty();
-        }
-
-        final PasswordResetToken prtoken = prtokenOpt.get();
-        LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
-        passwordResetTokenDao.removeTokenById(prtoken.getId()); //remove always, either token is valid or not
-        if (!prtoken.isValid()) {
-            LOGGER.warn("Token {} has expired", token);
-            return Optional.empty();
-        }
-
-        LOGGER.debug("Updating user password for user {}", prtoken.getUserId());
-        return userDao.updatePassword(prtoken.getUserId(), passwordEncoder.encode(password));
+//        final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
+//
+//        if (!prtokenOpt.isPresent()) {
+//            LOGGER.warn("Token {} is not valid", token);
+//            return Optional.empty();
+//        }
+//
+//        final PasswordResetToken prtoken = prtokenOpt.get();
+//        LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
+//        passwordResetTokenDao.removeTokenById(prtoken.getId()); //remove always, either token is valid or not
+//        if (!prtoken.isValid()) {
+//            LOGGER.warn("Token {} has expired", token);
+//            return Optional.empty();
+//        }
+//
+//        LOGGER.debug("Updating user password for user {}", prtoken.getUserId());
+//        return userDao.updatePassword(prtoken.getUserId(), passwordEncoder.encode(password));
+        return Optional.empty();
     }
 
     @Override
-    public Optional<UserStats> getUserStatsById(long id) {
+    public Optional<Stats> getUserStatsById(long id) {
         return userDao.getUserStatsById(id);
     }
 
@@ -176,24 +186,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateCoverImage(ImageDto imageDto, User user) {
-        Long imageId = user.getCoverImageId();
-        LOGGER.debug("Updating user {} cover image", user.getEmail());
-        if (imageId == 0) {
-            imageId = imageService.createImage(imageDto).getImageId();
-            userDao.updateCoverImage(imageId, user);
-        } else
-            imageService.updateImage(imageDto, imageId);
+//        Long imageId = user.getCoverImageId();
+//        LOGGER.debug("Updating user {} cover image", user.getEmail());
+//        if (imageId == 0) {
+//            imageId = imageService.createImage(imageDto).getImageId();
+//            userDao.updateCoverImage(imageId, user);
+//        } else
+//            imageService.updateImage(imageDto, imageId);
     }
 
     @Override
     public void updateProfileImage(ImageDto imageDto, User user) {
-        Long imageId = user.getProfileImageId();
-        LOGGER.debug("Updating user {} profile image", user.getEmail());
-        if (imageId == 0) {
-            imageId = imageService.createImage(imageDto).getImageId();
-            userDao.updateProfileImage(imageId, user);
-        } else
-            imageService.updateImage(imageDto, imageId);
+//        Long imageId = user.getProfileImageId();
+//        LOGGER.debug("Updating user {} profile image", user.getEmail());
+//        if (imageId == 0) {
+//            imageId = imageService.createImage(imageDto).getImageId();
+//            userDao.updateProfileImage(imageId, user);
+//        } else
+//            imageService.updateImage(imageDto, imageId);
     }
 
     @Transactional
@@ -233,7 +243,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ProviderLocation getLocationByProviderId(Long providerId) {
+    public Location getLocationByProviderId(Long providerId) {
         return userDao.getLocationByProviderId(providerId);
     }
 
@@ -273,7 +283,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserSchedule> getScheduleByUserId(long userId) {
+    public Optional<Schedule> getScheduleByUserId(long userId) {
         return userDao.getScheduleByUserId(userId);
     }
 

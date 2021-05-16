@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.user.User;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -11,7 +14,7 @@ public interface JobDao {
 
     Optional<Job> getJobById(long id);
 
-    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused,User user, List<Image> images);
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User user, List<Image> images);
 
     Collection<JobCategory> getJobsCategories();
 

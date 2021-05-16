@@ -1,12 +1,31 @@
 package ar.edu.itba.paw.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "cities")
 public class City {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cities_c_id_seq")
+    @SequenceGenerator(sequenceName = "cities_c_id_seq", name = "cities_c_id_seq", allocationSize = 1)
+    @Column(name = "c_id")
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "c_state_id")
+    private State state;
+
+    @Column(name = "c_name", nullable = false)
     private String name;
 
-    public City(long id, String name) {
-        this.id = id;
+    /* default */
+    protected City() {
+        // Just for Hibernate
+    }
+
+    public City(State state, String name) {
+        this.state = state;
         this.name = name;
     }
 
@@ -16,6 +35,14 @@ public class City {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public String getName() {

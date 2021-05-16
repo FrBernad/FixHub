@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS VERIFICATION_TOKENS
 (
     vt_id              SERIAL,
     vt_user_id         BIGINT    NOT NULL,
-    vt_token           TEXT,
+    vt_token           TEXT      NOT NULL,
     vt_expiration_date TIMESTAMP NOT NULL,
     FOREIGN KEY (vt_user_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
     PRIMARY KEY (vt_id)
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS PASSWORD_RESET_TOKENS
 (
     prt_id              SERIAL,
     prt_user_id         BIGINT    NOT NULL,
-    prt_token           TEXT,
+    prt_token           TEXT      NOT NULL,
     prt_expiration_date TIMESTAMP NOT NULL,
     FOREIGN KEY (prt_user_id) REFERENCES USERS (u_id) ON DELETE CASCADE,
     PRIMARY KEY (prt_id)

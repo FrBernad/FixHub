@@ -3,7 +3,7 @@ package ar.edu.itba.paw.models;
 public class UserInfo {
     private String name, surname, city, state, phoneNumber;
 
-   public UserInfo(String name, String surname, String city, String state, String phoneNumber) {
+    public UserInfo(String name, String surname, String city, String state, String phoneNumber) {
         this.name = name;
         this.surname = surname;
         this.city = city;

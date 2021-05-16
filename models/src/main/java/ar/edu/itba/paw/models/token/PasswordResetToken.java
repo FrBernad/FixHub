@@ -1,24 +1,44 @@
-package ar.edu.itba.paw.models;
+package ar.edu.itba.paw.models.token;
 
+import ar.edu.itba.paw.models.user.User;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "password_reset_tokens")
 public class PasswordResetToken {
 
-    private String value;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "password_reset_tokens_prt_id_seq")
+    @SequenceGenerator(sequenceName = "password_reset_tokens_prt_id_seq", name = "password_reset_tokens_prt_id_seq", allocationSize = 1)
+    @Column(name = "prt_id")
     private long id;
-    private long userId;
+
+    @OneToOne
+    @JoinColumn(name = "prt_user_id")
+    private User user;
+
+    @Column(name = "prt_token", nullable = false)
+    private String value;
+
+    @Column(name = "prt_expiration_date", nullable = false)
     private LocalDateTime expirationDate;
 
     private static final int TOKEN_DURATION_DAYS = 1;
+
+    /* default */
+    protected PasswordResetToken() {
+        // Just for Hibernate
+    }
 
     public static LocalDateTime generateTokenExpirationDate() {
         return LocalDateTime.now().plusDays(TOKEN_DURATION_DAYS);
     }
 
-    public PasswordResetToken(long id, String value, long userId, LocalDateTime expirationDate) {
+    public PasswordResetToken(String value, User user, LocalDateTime expirationDate) {
         this.value = value;
-        this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.expirationDate = expirationDate;
     }
 
@@ -42,12 +62,12 @@ public class PasswordResetToken {
         this.id = id;
     }
 
-    public long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getExpirationDate() {

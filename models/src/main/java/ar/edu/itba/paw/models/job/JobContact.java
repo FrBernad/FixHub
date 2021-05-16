@@ -1,4 +1,7 @@
-package ar.edu.itba.paw.models;
+package ar.edu.itba.paw.models.job;
+
+import ar.edu.itba.paw.models.ContactInfo;
+import ar.edu.itba.paw.models.ContactUser;
 
 import java.time.Instant;
 import java.time.LocalDate;

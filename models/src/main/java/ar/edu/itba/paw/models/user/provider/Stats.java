@@ -1,11 +1,11 @@
-package ar.edu.itba.paw.models;
+package ar.edu.itba.paw.models.user.provider;
 
-public class UserStats {
+public class Stats {
     private long jobsCount;
     private long avgRating;
     private long reviewCount;
 
-    public UserStats(long jobsCount, long avgRating, long reviewCount) {
+    public Stats(long jobsCount, long avgRating, long reviewCount) {
         this.jobsCount = jobsCount;
         this.avgRating = avgRating;
         this.reviewCount = reviewCount;
@@ -39,8 +39,8 @@ public class UserStats {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserStats userStats = (UserStats) o;
-        return jobsCount == userStats.jobsCount && avgRating == userStats.avgRating && reviewCount == userStats.reviewCount;
+        Stats stats = (Stats) o;
+        return jobsCount == stats.jobsCount && avgRating == stats.avgRating && reviewCount == stats.reviewCount;
     }
 
 }
