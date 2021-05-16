@@ -86,34 +86,39 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Creating user with email {}", email);
         final User user = userDao.createUser(passwordEncoder.encode(password), name, surname, email, phoneNumber, state, city, DEFAULT_ROLES);
         LOGGER.debug("Created user with id {}", user.getId());
-//        final VerificationToken token = generateVerificationToken(user.getId());
-//        LOGGER.debug("Created verification token with id {}", token.getId());
-//        sendVerificationToken(user, token);
+        final VerificationToken token = generateVerificationToken(user);
+        LOGGER.debug("Created verification token with id {}", token.getId());
+        sendVerificationToken(user, token);
         return user;
     }
 
     @Transactional
     @Override
     public Optional<User> verifyAccount(String token) {
-//        final Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
-//
-//        if (!vtokenOpt.isPresent()) {
-//            LOGGER.warn("No verification token with value {}", token);
-//            return Optional.empty();
-//        }
-//
-//        final VerificationToken vtoken = vtokenOpt.get();
-//        verificationTokenDao.removeTokenById(vtoken.getId());//remove always, either token is valid or not
-//        LOGGER.debug("Removed token with id {}", vtoken.getId());
-//
-//        if (!vtoken.isValid()) {
-//            LOGGER.warn("Token with value {} is invalid", token);
-//            return Optional.empty();
-//        }
-//
-//        LOGGER.debug("Validating user with id {}", vtoken.getUserId());
-//        return userDao.updateRoles(vtoken.getUserId(), Roles.NOT_VERIFIED, Roles.VERIFIED);
-        return Optional.empty();
+        final Optional<VerificationToken> vtokenOpt = verificationTokenDao.getTokenByValue(token);
+
+        if (!vtokenOpt.isPresent()) {
+            LOGGER.warn("No verification token with value {}", token);
+            return Optional.empty();
+        }
+
+        final VerificationToken vtoken = vtokenOpt.get();
+        verificationTokenDao.removeToken(vtoken);//remove always, either token is valid or not
+        LOGGER.debug("Removed token with id {}", vtoken.getId());
+
+        if (!vtoken.isValid()) {
+            LOGGER.warn("Token with value {} is invalid", token);
+            return Optional.empty();
+        }
+
+        LOGGER.debug("Validating user with id {}", vtoken.getUser().getId());
+
+        final User user = vtoken.getUser();
+
+        user.removeRole(Roles.NOT_VERIFIED);
+        user.addRole(Roles.VERIFIED);
+
+        return Optional.of(user);
     }
 
     @Transactional
@@ -121,7 +126,7 @@ public class UserServiceImpl implements UserService {
     public void resendVerificationToken(User user) {
         LOGGER.debug("Removing token for user with id {}", user.getId());
         verificationTokenDao.removeTokenByUserId(user.getId());
-        final VerificationToken token = generateVerificationToken(user.getId());
+        final VerificationToken token = generateVerificationToken(user);
         LOGGER.debug("Created token with id {}", token.getId());
         sendVerificationToken(user, token);
     }
@@ -162,7 +167,7 @@ public class UserServiceImpl implements UserService {
 //
 //        final PasswordResetToken prtoken = prtokenOpt.get();
 //        LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
-//        passwordResetTokenDao.removeTokenById(prtoken.getId()); //remove always, either token is valid or not
+//        passwordResetTokenDao.removeToken(prtoken.getId()); //remove always, either token is valid or not
 //        if (!prtoken.isValid()) {
 //            LOGGER.warn("Token {} has expired", token);
 //            return Optional.empty();
@@ -372,9 +377,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private VerificationToken generateVerificationToken(long userId) {
+    private VerificationToken generateVerificationToken(User user) {
         final String token = UUID.randomUUID().toString();
-        return verificationTokenDao.createVerificationToken(userId, token, VerificationToken.generateTokenExpirationDate());
+        return verificationTokenDao.createVerificationToken(user, token, VerificationToken.generateTokenExpirationDate());
     }
 
 }

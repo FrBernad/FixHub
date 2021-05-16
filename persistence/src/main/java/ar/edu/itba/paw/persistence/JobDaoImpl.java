@@ -17,9 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class JobDaoImpl implements JobDao {
@@ -31,6 +34,13 @@ public class JobDaoImpl implements JobDao {
 
     private static final Map<OrderOptions, String> ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
 
+    static {
+        ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, j_id desc");
+        ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, j_id desc");
+        ORDER_OPTIONS.put(OrderOptions.HIGHER_PRICE, "j_price desc, total_ratings desc, j_id desc");
+        ORDER_OPTIONS.put(OrderOptions.LOWER_PRICE, "j_price asc, total_ratings desc, j_id desc");
+    }
+
     @Override
     public Optional<Job> getJobById(long id) {
         return Optional.empty();
@@ -41,9 +51,8 @@ public class JobDaoImpl implements JobDao {
         return null;
     }
 
-    @Override
     public Collection<JobCategory> getJobsCategories() {
-        return null;
+        return categories;
     }
 
     @Override
@@ -53,12 +62,68 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, String state, String city, int page, int itemsPerPage) {
-        return Collections.emptyList();
+
+        final List<Object> variables = new LinkedList<>();
+
+        final String filterQuery = getCategoryFilterQuery(category, variables);
+
+        final String orderQuery = getOrderQuery(orderOption);
+
+        final String stateAndCityQuery = getStateAndCityQuery(state, city, variables);
+
+        final String searchQuery = getSearchQuery(searchBy, variables);
+
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery = String.format(
+            " select j_id from " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
+                " JOIN " +
+                " (SELECT distinct pc_provider_id from cities join provider_cities on c_id = pc_city_id %s ) as w1 " +
+                " ON w0.j_provider_id=w1.pc_provider_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
+                " on job_id=j_id %s %s %s ",
+            filterQuery, stateAndCityQuery, searchQuery, orderQuery, offsetAndLimitQuery);
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked")
+        final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from Job where id IN :filteredIds", Job.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
     }
 
     @Override
     public Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city) {
-        return null;
+        List<Object> variables = new LinkedList<>();
+
+        final String filterQuery = getCategoryFilterQuery(category, variables);
+
+        final String stateAndCityQuery = getStateAndCityQuery(state, city, variables);
+
+        final String searchQuery = getSearchQuery(searchBy, variables);
+
+        final String query = String.format("select count(distinct j_id) total from " +
+                "(select * from ( ( select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
+                " JOIN (SELECT distinct pc_provider_id from " +
+                " cities join provider_cities on c_id = pc_city_id %s) " +
+                " as aux1 ON aux0.j_provider_id=aux1.pc_provider_id ) as aux2 %s) as aux3 ",
+            filterQuery, stateAndCityQuery, searchQuery);
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        setQueryVariables(nativeQuery, variables);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
@@ -70,7 +135,69 @@ public class JobDaoImpl implements JobDao {
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<Image> images, long jobId, List<Long> imagesIdDeleted) {
 
     }
-//
+
+
+    private String getOrderQuery(OrderOptions orderOption) {
+        return String.format(" ORDER BY %s ", ORDER_OPTIONS.get(orderOption));
+    }
+
+    private String getCategoryFilterQuery(JobCategory category, List<Object> variables) {
+        final StringBuilder filterQuery = new StringBuilder();
+        if (category != null) {
+            variables.add(category.name());
+            filterQuery.append(" WHERE j_category = ? ");
+        }
+        return filterQuery.toString();
+    }
+
+    private String getStateAndCityQuery(String state, String city, List<Object> variables) {
+        final StringBuilder stateAndCityQuery = new StringBuilder();
+        if (state != null) {
+            stateAndCityQuery.append(" WHERE c_state_id = ? ");
+            variables.add(Integer.valueOf(state));
+        }
+        if (city != null) {
+            stateAndCityQuery.append(" AND c_id = ? ");
+            variables.add(Integer.valueOf(city));
+        }
+        return stateAndCityQuery.toString();
+    }
+
+    private String getSearchQuery(String searchBy, List<Object> variables) {
+        final StringBuilder searchQuery = new StringBuilder();
+        if (searchBy != null) {
+            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
+            variables.add(searchBy);
+            variables.add(searchBy);
+            variables.add(searchBy);
+            searchQuery.append(" WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ? ");
+        }
+        return searchQuery.toString();
+    }
+
+    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
+        final StringBuilder offsetAndLimitQuery = new StringBuilder();
+        if (page > 0) {
+            offsetAndLimitQuery.append(" OFFSET ? ");
+            variables.add(page * itemsPerPage);
+        }
+        if (itemsPerPage > 0) {
+            offsetAndLimitQuery.append(" LIMIT ? ");
+            variables.add(itemsPerPage);
+        }
+        return offsetAndLimitQuery.toString();
+    }
+
+    private void setQueryVariables(Query query, Collection<Object> variables) {
+        int i = 1;
+        for (Object variable : variables) {
+            query.setParameter(i, variable);
+            i++;
+        }
+    }
+
+
+    //
 //    static {
 //        ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, j_id desc");
 //        ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, j_id desc");
@@ -183,8 +310,8 @@ public class JobDaoImpl implements JobDao {
 //                " select j_id from " +
 //                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
 //                " JOIN " +
-//                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id %s ) as w1 " +
-//                " ON w0.j_provider_id=w1.ul_user_id " +
+//                " (SELECT distinct pl_user_id from cities join provider_location on c_id = pl_city_id %s ) as w1 " +
+//                " ON w0.j_provider_id=w1.pl_user_id " +
 //                " JOIN " +
 //                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
 //                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
@@ -224,9 +351,9 @@ public class JobDaoImpl implements JobDao {
 //
 //        final String query = String.format("select count(distinct j_id) total from " +
 //            "(select * from ( (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
-//            "JOIN (SELECT distinct ul_user_id from " +
-//            " cities join user_location on c_id = user_location.ul_city_id %s) " +
-//            " as aux1 ON aux0.j_provider_id=aux1.ul_user_id ) as aux2 %s) as aux3", filterQuery, stateAndCityQuery, searchQuery);
+//            "JOIN (SELECT distinct pl_user_id from " +
+//            " cities join provider_location on c_id = provider_location.pl_city_id %s) " +
+//            " as aux1 ON aux0.j_provider_id=aux1.pl_user_id ) as aux2 %s) as aux3", filterQuery, stateAndCityQuery, searchQuery);
 //        LOGGER.debug("Executing query: {}", query);
 //
 //        return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
@@ -286,8 +413,8 @@ public class JobDaoImpl implements JobDao {
 //                " select j_id from " +
 //                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
 //                " JOIN " +
-//                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id ) as w1 " +
-//                " ON w0.j_provider_id=w1.ul_user_id " +
+//                " (SELECT distinct pl_user_id from cities join provider_location on c_id = pl_city_id ) as w1 " +
+//                " ON w0.j_provider_id=w1.pl_user_id " +
 //                " JOIN " +
 //                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
 //                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
@@ -314,9 +441,7 @@ public class JobDaoImpl implements JobDao {
 //        return executeQuery(query, variables).stream().findFirst();
 //    }
 //
-//    public Collection<JobCategory> getJobsCategories() {
-//        return categories;
-//    }
+
 //
 //    @Override
 //    public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage) {
@@ -336,8 +461,8 @@ public class JobDaoImpl implements JobDao {
 //                " select j_id from " +
 //                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
 //                " JOIN " +
-//                " (SELECT distinct ul_user_id from cities join user_location on c_id = ul_city_id ) as w1 " +
-//                " ON w0.j_provider_id=w1.ul_user_id " +
+//                " (SELECT distinct pl_user_id from cities join provider_location on c_id = pl_city_id ) as w1 " +
+//                " ON w0.j_provider_id=w1.pl_user_id " +
 //                " JOIN " +
 //                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
 //                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
@@ -362,7 +487,7 @@ public class JobDaoImpl implements JobDao {
 //
 //        return executeQuery(query, variables);
 //    }
-//
+
 //    private Collection<Job> executeQuery(String query, List<Object> variables) {
 //        LOGGER.debug("Executing query: {}", query);
 //
@@ -371,57 +496,6 @@ public class JobDaoImpl implements JobDao {
 //        }
 //
 //        return jdbcTemplate.query(query, JOB_RS_EXTRACTOR);
-//    }
-//
-//    private String getOrderQuery(OrderOptions orderOption) {
-//        return String.format(" ORDER BY %s ", ORDER_OPTIONS.get(orderOption));
-//    }
-//
-//    private String getCategoryFilterQuery(JobCategory category, List<Object> variables) {
-//        final StringBuilder filterQuery = new StringBuilder();
-//        if (category != null) {
-//            variables.add(category.name());
-//            filterQuery.append(" WHERE j_category = ? ");
-//        }
-//        return filterQuery.toString();
-//    }
-//
-//    private String getStateAndCityQuery(String state, String city, List<Object> variables) {
-//        final StringBuilder stateAndCityQuery = new StringBuilder();
-//        if (state != null) {
-//            stateAndCityQuery.append(" WHERE c_state_id = ? ");
-//            variables.add(Integer.valueOf(state));
-//        }
-//        if (city != null) {
-//            stateAndCityQuery.append(" AND c_id = ? ");
-//            variables.add(Integer.valueOf(city));
-//        }
-//        return stateAndCityQuery.toString();
-//    }
-//
-//    private String getSearchQuery(String searchBy, List<Object> variables) {
-//        final StringBuilder searchQuery = new StringBuilder();
-//        if (searchBy != null) {
-//            searchBy = String.format("%%%s%%", searchBy.replace("%", "\\%").replace("_", "\\_").toLowerCase());
-//            variables.add(searchBy);
-//            variables.add(searchBy);
-//            variables.add(searchBy);
-//            searchQuery.append(" WHERE LOWER(j_description) LIKE ? OR LOWER(j_job_provided) LIKE ? OR LOWER(u_name) LIKE ? ");
-//        }
-//        return searchQuery.toString();
-//    }
-//
-//    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
-//        final StringBuilder offsetAndLimitQuery = new StringBuilder();
-//        if (page > 0) {
-//            offsetAndLimitQuery.append(" OFFSET ? ");
-//            variables.add(page * itemsPerPage);
-//        }
-//        if (itemsPerPage > 0) {
-//            offsetAndLimitQuery.append(" LIMIT ? ");
-//            variables.add(itemsPerPage);
-//        }
-//        return offsetAndLimitQuery.toString();
 //    }
 
 }

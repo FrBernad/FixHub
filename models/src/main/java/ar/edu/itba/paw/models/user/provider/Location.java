@@ -27,7 +27,8 @@ public class Location {
     @ManyToMany
     @JoinTable(name = "provider_cities",
         joinColumns = @JoinColumn(name = "pc_provider_id"),
-        foreignKey = @ForeignKey(name = "pl_provider_id")
+        foreignKey = @ForeignKey(name = "pl_provider_id"),
+        inverseJoinColumns = @JoinColumn(name = "pc_city_id")
     )
     private Collection<City> cities;
 

@@ -46,7 +46,6 @@ public class UserDaoImpl implements UserDao {
         Root<User> c = q.from(User.class);
 
         q.select(c);
-
         q.where(cb.equal(c.get("email"), email));
 
         return em.createQuery(q).getResultList().stream().findFirst();

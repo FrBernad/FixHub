@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.models.token.VerificationToken;
+import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -18,24 +24,39 @@ import java.util.Optional;
 
 @Repository
 public class VerificationTokenDaoImpl implements VerificationTokenDao {
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public Optional<VerificationToken> getVerificationToken(long id) {
         return Optional.empty();
     }
 
     @Override
-    public VerificationToken createVerificationToken(long userId, String token, LocalDateTime expirationDate) {
-        return null;
+    public VerificationToken createVerificationToken(User user, String token, LocalDateTime expirationDate) {
+        final VerificationToken verificationToken = new VerificationToken(token, user, expirationDate);
+
+        em.persist(verificationToken);
+
+        return verificationToken;
     }
 
     @Override
     public Optional<VerificationToken> getTokenByValue(String token) {
-        return Optional.empty();
+        return em.
+            createQuery("from VerificationToken where value = :token",
+                VerificationToken.class)
+            .setParameter("token",token)
+            .getResultList()
+            .stream()
+            .findFirst();
     }
 
-    @Override
-    public void removeTokenById(long id) {
 
+    @Override
+    public void removeToken(VerificationToken verificationToken) {
+        em.remove(verificationToken);
     }
 
     @Override
@@ -47,6 +68,7 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
     public Optional<VerificationToken> getTokenByUserId(long userId) {
         return Optional.empty();
     }
+
 //
 //    private static final RowMapper<VerificationToken> VERIFICATION_TOKEN_ROW_MAPPER = (rs, rowNum) ->
 //        new VerificationToken(rs.getLong("vt_id"),

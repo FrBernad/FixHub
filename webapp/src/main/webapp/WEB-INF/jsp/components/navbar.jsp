@@ -39,13 +39,13 @@
                             <div class="userContainer pr-0 nav-link">
                                 <div id="moreOptions" class="dropdown" data-toggle="dropdown">
                                     <c:choose>
-                                        <c:when test="${loggedUser.profileImageId == 0}">
+                                        <c:when test="${loggedUser.profileImage == null}">
                                             <img src="<c:url value='/resources/images/userProfile.png'/>"
                                                  class="avatar"
                                                  alt="profileImg"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <img src="<c:url value='/user/images/profile/${loggedUser.profileImageId}'/>"
+                                            <img src="<c:url value='/user/images/profile/${loggedUser.profileImage.id}'/>"
                                                  alt="profileImg"
                                                  class="avatar"/>
                                         </c:otherwise>
