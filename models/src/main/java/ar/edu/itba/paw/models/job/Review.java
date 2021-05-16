@@ -3,23 +3,47 @@ package ar.edu.itba.paw.models.job;
 
 import ar.edu.itba.paw.models.user.User;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "reviews")
 public class Review {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviews_u_id_seq")
+    @SequenceGenerator(sequenceName = "reviews_u_id_seq", name = "reviews_u_id_seq", allocationSize = 1)
+    @Column(name = "r_id")
     private Long id;
+
+    @Column(name="r_description", length = 300,nullable = false)
     private String description;
-    private Long jobId;
+
+    @Column(name="r_rating",nullable = false)
     private int rating;
+
+    @Column(name="r_creation_date")
     private LocalDate creationDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="r_job_id")
+    private Job job;
+
+    @OneToOne
+    @JoinColumn(name="r_reviewer_id")
     private User reviewer;
 
-    public Review(Long id, String description, Long jobId, int rating, LocalDate creationDate, User reviewer) {
+    public Review(Long id, String description, Job job, int rating, LocalDate creationDate, User reviewer) {
         this.id = id;
         this.description = description;
-        this.jobId = jobId;
+        this.job = job;
         this.rating = rating;
         this.creationDate = creationDate;
         this.reviewer = reviewer;
+    }
+
+    protected Review() {
+
     }
 
     public Long getId() {
@@ -38,12 +62,12 @@ public class Review {
         this.description = description;
     }
 
-    public Long getJobId() {
-        return jobId;
+    public Job getJob() {
+        return job;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     public int getRating() {
@@ -75,7 +99,7 @@ public class Review {
         return "Review{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
-                ", jobId=" + jobId +
+                ", job=" + job +
                 ", rating=" + rating +
                 ", creationDate=" + creationDate +
                 '}';

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.user.User;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "jobs")
@@ -49,14 +50,19 @@ public class Job {
         inverseJoinColumns = @JoinColumn(name = "ji_image_id"))
     private Collection<Image> images;
 
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "job")
+    private List<Review> reviews;
+
     public static final Integer MAX_IMAGES_PER_JOB = 6;
+
 
     /* default */
     protected Job() {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, Long id, BigDecimal price, boolean paused, User provider, Collection<Image> images) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, Long id, BigDecimal price, boolean paused, User provider, Collection<Image> images, List<Review> reviews) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -67,6 +73,7 @@ public class Job {
         this.price = price;
         this.paused = paused;
         this.images = images;
+        this.reviews = reviews;
     }
 
     @Override
@@ -170,5 +177,13 @@ public class Job {
 
     public void setImagesId(Collection<Image> images) {
         this.images = images;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

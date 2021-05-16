@@ -63,7 +63,7 @@ public class UserDaoImpl implements UserDao {
             throw new DuplicateUserException();
         }
 
-        final User user = new SimpleUser(password, name, surname, email, phoneNumber, state, city, roles, null, null);
+        final User user = new SimpleUser(password, name, surname, email, phoneNumber, state, city, roles);
 
         em.persist(user);
 

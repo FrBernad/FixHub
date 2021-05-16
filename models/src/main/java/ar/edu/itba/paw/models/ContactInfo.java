@@ -1,16 +1,48 @@
 package ar.edu.itba.paw.models;
 
+import ar.edu.itba.paw.models.user.User;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "contact_info")
 public class ContactInfo {
 
-    private Long contactInfoId, userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_info_id_seq")
+    @SequenceGenerator(sequenceName = "contact_info_id_seq", name = "contact_info_id_seq", allocationSize = 1)
+    @Column(name = "ci_id",nullable = false)
+    private Long contactInfoId;
 
-    private String state, city, street, addressNumber, floor, departmentNumber;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ci_user_id")
+    private User user;
 
-    public ContactInfo(Long contactInfoId, long userId, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
-        this.contactInfoId = contactInfoId;
-        this.userId = userId;
+    @Column(name = "ci_state",length = 50,nullable = false)
+    private String state;
+
+    @Column(name = "ci_city",length = 50,nullable = false)
+    private String city;
+
+    @Column(name = "ci_street",length = 50,nullable = false)
+    private String street;
+
+    @Column(name = "ci_address_number",length = 50,nullable = false)
+    private String addressNumber;
+
+    @Column(name = "ci_floor",length = 5)
+    private String floor;
+
+    @Column(name = "ci_department_number",length = 50)
+    private String departmentNumber;
+
+    protected ContactInfo() {
+
+    }
+
+    public ContactInfo(User user, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+        this.user = user;
         this.state = state;
         this.city = city;
         this.street = street;
@@ -19,12 +51,12 @@ public class ContactInfo {
         this.departmentNumber = departmentNumber;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(User user) {
+        this.user = user;
     }
 
     public Long getContactInfoId() {
@@ -88,11 +120,11 @@ public class ContactInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactInfo that = (ContactInfo) o;
-        return contactInfoId.equals(that.contactInfoId) && userId.equals(that.userId) && state.equals(that.state) && city.equals(that.city) && street.equals(that.street) && addressNumber.equals(that.addressNumber) && Objects.equals(floor, that.floor) && Objects.equals(departmentNumber, that.departmentNumber);
+        return contactInfoId.equals(that.contactInfoId) && user.equals(that.user) && state.equals(that.state) && city.equals(that.city) && street.equals(that.street) && addressNumber.equals(that.addressNumber) && Objects.equals(floor, that.floor) && Objects.equals(departmentNumber, that.departmentNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactInfoId, userId, state, city, street, addressNumber, floor, departmentNumber);
+        return Objects.hash(contactInfoId, user, state, city, street, addressNumber, floor, departmentNumber);
     }
 }

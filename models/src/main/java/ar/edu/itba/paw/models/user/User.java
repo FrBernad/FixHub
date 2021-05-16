@@ -1,9 +1,12 @@
 package ar.edu.itba.paw.models.user;
 
+import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.job.JobContact;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -64,12 +67,26 @@ public abstract class User {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "following")
     private Set<User> followers;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<ContactInfo> contactInfo;
+
+    @OneToMany(mappedBy = "user")
+    private List<JobContact> providersContacted;
+
+
     /* default */
     protected User() {
         // Just for Hibernate
     }
 
-    public User(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles, Image profileImage, Image coverImage) {
+    public User(final String password,
+                final String name,
+                final String surname,
+                final String email,
+                final String phoneNumber,
+                final String state,
+                final String city,
+                final Collection<Roles> roles) {
         this.password = password;
         this.name = name;
         this.surname = surname;
@@ -78,8 +95,54 @@ public abstract class User {
         this.state = state;
         this.city = city;
         this.roles = roles;
-        this.coverImage = coverImage;
-        this.profileImage = profileImage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Image getProfileImage() {
@@ -98,32 +161,12 @@ public abstract class User {
         this.coverImage = coverImage;
     }
 
-    public boolean hasRole(String role) {
-        return roles.stream().anyMatch(p -> p.name().equals(role));
+    public String getState() {
+        return state;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getCity() {
@@ -134,36 +177,8 @@ public abstract class User {
         this.city = city;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public boolean hasRole(String role) {
+        return roles.stream().anyMatch(p -> p.name().equals(role));
     }
 
     public Collection<Roles> getRoles() {
@@ -182,12 +197,8 @@ public abstract class User {
         roles.remove(role);
     }
 
-    public Set<User> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(Set<User> followers) {
-        this.followers = followers;
+    public boolean getIsProvider() {
+        return roles.stream().anyMatch(p -> p.name().equals(Roles.PROVIDER.name()));
     }
 
     public Set<User> getFollowing() {
@@ -198,8 +209,28 @@ public abstract class User {
         this.following = following;
     }
 
-    public boolean getIsProvider() {
-        return roles.stream().anyMatch(p -> p.name().equals(Roles.PROVIDER.name()));
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<User> followers) {
+        this.followers = followers;
+    }
+
+    public List<ContactInfo> getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(List<ContactInfo> contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public List<JobContact> getProvidersContacted() {
+        return providersContacted;
+    }
+
+    public void setProvidersContacted(List<JobContact> providersContacted) {
+        this.providersContacted = providersContacted;
     }
 
     @Override
@@ -207,11 +238,11 @@ public abstract class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return name.equals(user.name) && password.equals(user.password) && surname.equals(user.surname) && city.equals(user.city) && state.equals(user.state) && phoneNumber.equals(user.phoneNumber) && email.equals(user.email) && id.equals(user.id) && Objects.equals(profileImage, user.profileImage) && Objects.equals(coverImage, user.coverImage) && roles.containsAll(user.roles);
+        return Objects.equals(id, user.id) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(profileImage, user.profileImage) && Objects.equals(coverImage, user.coverImage) && Objects.equals(state, user.state) && Objects.equals(city, user.city) && Objects.equals(roles, user.roles) && Objects.equals(following, user.following) && Objects.equals(followers, user.followers) && Objects.equals(contactInfo, user.contactInfo) && Objects.equals(providersContacted, user.providersContacted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, id);
+        return Objects.hash(id, password, name, surname, email, phoneNumber, profileImage, coverImage, state, city, roles, following, followers, contactInfo, providersContacted);
     }
 }

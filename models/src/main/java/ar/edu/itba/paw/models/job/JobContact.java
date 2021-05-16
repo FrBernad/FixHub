@@ -1,48 +1,69 @@
 package ar.edu.itba.paw.models.job;
 
-import ar.edu.itba.paw.models.ContactInfo;
-import ar.edu.itba.paw.models.ContactUser;
+import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Provider;
 
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
+@Entity
+@Table(name = "contact")
 public class JobContact {
-    private ContactInfo contactInfo;
-    private ContactUser user;
-    private String message,jobProvided;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_id_seq")
+    @SequenceGenerator(sequenceName = "contact_id_seq", name = "contact_id_seq", allocationSize = 1)
+    @Column(name = "c_id")
+    private Long contactId;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "c_user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "c_provider_id")
+    private Provider provider;
+
+    @Column(name = "c_message", length = 300, nullable = false)
+    private String message;
+
+    @Column(name = "c_date", nullable = false)
     private LocalDateTime date;
-    private Long jobId;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "c_job_id")
+    private Job job;
+
     private JobCategory category;
 
-    public JobContact(ContactInfo contactInfo, ContactUser user, String message, LocalDateTime date,Long jobId, String jobProvided,JobCategory category) {
-        this.contactInfo = contactInfo;
+    public JobContact(User user, Provider provider, String message, LocalDateTime date, Job job, JobCategory category) {
         this.user = user;
+        this.provider = provider;
         this.message = message;
         this.date = date;
-        this.jobId = jobId;
-        this.jobProvided=jobProvided;
+        this.job = job;
         this.category = category;
     }
 
-    public Date getContactDate(){
+    protected JobContact() {
+    }
+
+    public Date getContactDate() {
         return Date.from(Instant.from(date));
     }
 
-    public ContactInfo getContactInfo() {
-        return contactInfo;
-    }
 
-    public void setContactInfo(ContactInfo contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-
-    public ContactUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(ContactUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -54,14 +75,6 @@ public class JobContact {
         this.message = message;
     }
 
-    public String getJobProvided() {
-        return jobProvided;
-    }
-
-    public void setJobProvided(String jobProvided) {
-        this.jobProvided = jobProvided;
-    }
-
     public LocalDate getDate() {
         return date.toLocalDate();
     }
@@ -70,12 +83,12 @@ public class JobContact {
         this.date = date;
     }
 
-    public Long getJobId() {
-        return jobId;
+    public Job getJobId() {
+        return job;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setJobId(Job job) {
+        this.job = job;
     }
 
     public JobCategory getCategory() {
@@ -85,4 +98,53 @@ public class JobContact {
     public void setCategory(JobCategory category) {
         this.category = category;
     }
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JobContact)) return false;
+        JobContact that = (JobContact) o;
+        return Objects.equals(contactId, that.contactId)
+            && Objects.equals(user, that.user)
+            && Objects.equals(provider, that.provider)
+            && Objects.equals(message, that.message)
+            && Objects.equals(date, that.date)
+            && Objects.equals(job, that.job)
+            && category == that.category;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactId, user, provider, message, date, job, category);
+    }
+
+    @Override
+    public String toString() {
+        return "JobContact{" +
+            "contactId=" + contactId +
+            ", user=" + user +
+            ", provider=" + provider +
+            ", message='" + message + '\'' +
+            ", date=" + date +
+            ", job=" + job +
+            ", category=" + category +
+            '}';
+    }
 }
+
