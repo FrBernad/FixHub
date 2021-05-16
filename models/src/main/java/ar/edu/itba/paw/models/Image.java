@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table(name = "images")
@@ -52,4 +54,30 @@ public class Image {
     public void setData(byte[] data) {
         this.data = data;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Image)) return false;
+        Image image = (Image) o;
+        return Objects.equals(imageId, image.imageId) && Arrays.equals(data, image.data) && Objects.equals(mimeType, image.mimeType);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(imageId, mimeType);
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+            "imageId=" + imageId +
+            ", data=" + Arrays.toString(data) +
+            ", mimeType='" + mimeType + '\'' +
+            '}';
+    }
 }
+
+

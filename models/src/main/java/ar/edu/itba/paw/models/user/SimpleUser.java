@@ -7,12 +7,13 @@ import ar.edu.itba.paw.models.job.JobContact;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "SimpleUser")
 @DiscriminatorValue("simple")
 public class SimpleUser extends User {
 
-    public SimpleUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) {
+    public SimpleUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Set<Roles> roles) {
         super(password, name, surname, email, phoneNumber, state, city, roles);
     }
 
@@ -20,5 +21,9 @@ public class SimpleUser extends User {
     protected SimpleUser() {
         // Just for Hibernate
     }
+
+
+
+
 
 }

@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.State;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "provider_location")
@@ -30,9 +31,9 @@ public class Location {
         foreignKey = @ForeignKey(name = "pl_provider_id"),
         inverseJoinColumns = @JoinColumn(name = "pc_city_id")
     )
-    private Collection<City> cities;
+    private Set<City> cities;
 
-    public Location(Provider provider, Collection<City> cities, State state) {
+    public Location(Provider provider, Set<City> cities, State state) {
         this.provider = provider;
         this.cities = cities;
         this.state = state;
@@ -43,6 +44,14 @@ public class Location {
         // Just for Hibernate
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Provider getProvider() {
         return provider;
     }
@@ -51,11 +60,11 @@ public class Location {
         this.provider = provider;
     }
 
-    public Collection<City> getCities() {
+    public Set<City> getCities() {
         return cities;
     }
 
-    public void setCities(Collection<City> cities) {
+    public void setCities(Set<City> cities) {
         this.cities = cities;
     }
 

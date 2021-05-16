@@ -55,7 +55,7 @@ public abstract class User {
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "r_user_id"))
     @Column(name = "r_role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Collection<Roles> roles;
+    private Set<Roles> roles;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "follows",
@@ -68,10 +68,10 @@ public abstract class User {
     private Set<User> followers;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<ContactInfo> contactInfo;
+    private Set<ContactInfo> contactInfo;
 
     @OneToMany(mappedBy = "user")
-    private List<JobContact> providersContacted;
+    private Set<JobContact> providersContacted;
 
 
     /* default */
@@ -86,7 +86,7 @@ public abstract class User {
                 final String phoneNumber,
                 final String state,
                 final String city,
-                final Collection<Roles> roles) {
+                final Set<Roles> roles) {
         this.password = password;
         this.name = name;
         this.surname = surname;
@@ -181,11 +181,11 @@ public abstract class User {
         return roles.stream().anyMatch(p -> p.name().equals(role));
     }
 
-    public Collection<Roles> getRoles() {
+    public Set<Roles> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Roles> roles) {
+    public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
 
@@ -217,19 +217,19 @@ public abstract class User {
         this.followers = followers;
     }
 
-    public List<ContactInfo> getContactInfo() {
+    public Set<ContactInfo> getContactInfo() {
         return contactInfo;
     }
 
-    public void setContactInfo(List<ContactInfo> contactInfo) {
+    public void setContactInfo(Set<ContactInfo> contactInfo) {
         this.contactInfo = contactInfo;
     }
 
-    public List<JobContact> getProvidersContacted() {
+    public Set<JobContact> getProvidersContacted() {
         return providersContacted;
     }
 
-    public void setProvidersContacted(List<JobContact> providersContacted) {
+    public void setProvidersContacted(Set<JobContact> providersContacted) {
         this.providersContacted = providersContacted;
     }
 
@@ -244,5 +244,26 @@ public abstract class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, password, name, surname, email, phoneNumber, profileImage, coverImage, state, city, roles, following, followers, contactInfo, providersContacted);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", password='" + password + '\'' +
+            ", name='" + name + '\'' +
+            ", surname='" + surname + '\'' +
+            ", email='" + email + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", profileImage=" + profileImage +
+            ", coverImage=" + coverImage +
+            ", state='" + state + '\'' +
+            ", city='" + city + '\'' +
+            ", roles=" + roles +
+            ", following=" + following +
+            ", followers=" + followers +
+            ", contactInfo=" + contactInfo +
+            ", providersContacted=" + providersContacted +
+            '}';
     }
 }

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cities")
@@ -51,5 +52,27 @@ public class City {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof City)) return false;
+        City city = (City) o;
+        return id == city.id && Objects.equals(state, city.state) && Objects.equals(name, city.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, state, name);
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+            "id=" + id +
+            ", state=" + state +
+            ", name='" + name + '\'' +
+            '}';
     }
 }

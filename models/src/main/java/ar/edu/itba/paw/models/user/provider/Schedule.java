@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.user.provider;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "provider_schedule")
@@ -63,5 +64,28 @@ public class Schedule {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Schedule)) return false;
+        Schedule schedule = (Schedule) o;
+        return Objects.equals(id, schedule.id) && Objects.equals(provider, schedule.provider) && Objects.equals(startTime, schedule.startTime) && Objects.equals(endTime, schedule.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, provider, startTime, endTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+            "id=" + id +
+            ", provider=" + provider +
+            ", startTime='" + startTime + '\'' +
+            ", endTime='" + endTime + '\'' +
+            '}';
     }
 }

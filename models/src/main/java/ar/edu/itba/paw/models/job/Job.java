@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "jobs")
@@ -48,11 +50,11 @@ public class Job {
     @JoinTable(name = "job_image",
         joinColumns = @JoinColumn(name = "ji_job_id"),
         inverseJoinColumns = @JoinColumn(name = "ji_image_id"))
-    private Collection<Image> images;
+    private Set<Image> images;
 
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "job")
-    private List<Review> reviews;
+    private Set<Review> reviews;
 
     public static final Integer MAX_IMAGES_PER_JOB = 6;
 
@@ -62,7 +64,7 @@ public class Job {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, Long id, BigDecimal price, boolean paused, User provider, Collection<Image> images, List<Review> reviews) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, Long id, BigDecimal price, boolean paused, User provider, Set<Image> images, Set<Review> reviews) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -74,20 +76,6 @@ public class Job {
         this.paused = paused;
         this.images = images;
         this.reviews = reviews;
-    }
-
-    @Override
-    public String toString() {
-        return "Job{" +
-            "description='" + description + '\'' +
-            ", jobProvided='" + jobProvided + '\'' +
-            ", averageRating=" + averageRating +
-            ", category=" + category +
-            ", id=" + id +
-            ", provider=" + provider +
-            ", price=" + price +
-            ", totalRatings=" + totalRatings +
-            '}';
     }
 
     public void addImage(Image image) {
@@ -171,19 +159,49 @@ public class Job {
         this.provider = provider;
     }
 
-    public Collection<Image> getImagesId() {
+    public Set<Image> getImagesId() {
         return images;
     }
 
-    public void setImagesId(Collection<Image> images) {
+    public void setImagesId(Set<Image> images) {
         this.images = images;
     }
 
-    public List<Review> getReviews() {
+    public Set<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Job)) return false;
+        Job job = (Job) o;
+        return paused == job.paused && Objects.equals(id, job.id) && Objects.equals(description, job.description) && category == job.category && Objects.equals(jobProvided, job.jobProvided) && Objects.equals(provider, job.provider) && Objects.equals(price, job.price) && Objects.equals(averageRating, job.averageRating) && Objects.equals(totalRatings, job.totalRatings) && Objects.equals(images, job.images) && Objects.equals(reviews, job.reviews);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, category, jobProvided, provider, price, paused, averageRating, totalRatings, images, reviews);
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+            "id=" + id +
+            ", description='" + description + '\'' +
+            ", category=" + category +
+            ", jobProvided='" + jobProvided + '\'' +
+            ", provider=" + provider +
+            ", price=" + price +
+            ", paused=" + paused +
+            ", averageRating=" + averageRating +
+            ", totalRatings=" + totalRatings +
+            ", images=" + images +
+            ", reviews=" + reviews +
+            '}';
     }
 }

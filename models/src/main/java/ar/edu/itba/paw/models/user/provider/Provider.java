@@ -1,16 +1,14 @@
 package ar.edu.itba.paw.models.user.provider;
 
-import ar.edu.itba.paw.models.ContactInfo;
-import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "Provider")
 @DiscriminatorValue("provider")
@@ -18,7 +16,7 @@ public class Provider extends User {
 
     @OneToMany
     @JoinColumn(name = "j_provider_id")
-    private Collection<Job> jobs;
+    private Set<Job> jobs;
 
     @OneToOne
     @JoinColumn(name = "u_location_id")
@@ -29,9 +27,9 @@ public class Provider extends User {
     private Schedule schedule;
 
     @OneToMany(mappedBy = "provider")
-    private List<JobContact> contacts;
+    private Set<JobContact> contacts;
 
-    public Provider(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles,Location location, Schedule schedule) {
+    public Provider(String password, String name, String surname, String email, String phoneNumber, String state, String city, Set<Roles> roles,Location location, Schedule schedule) {
         super(password, name, surname, email, phoneNumber, state, city, roles);
         this.location = location;
         this.schedule = schedule;
@@ -42,11 +40,11 @@ public class Provider extends User {
         // Just for Hibernate
     }
 
-    public Collection<Job> getJobs() {
+    public Set<Job> getJobs() {
         return jobs;
     }
 
-    public void setJobs(Collection<Job> jobs) {
+    public void setJobs(Set<Job> jobs) {
         this.jobs = jobs;
     }
 
@@ -66,11 +64,11 @@ public class Provider extends User {
         this.schedule = schedule;
     }
 
-    public List<JobContact> getContacts() {
+    public Set<JobContact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<JobContact> contacts) {
+    public void setContacts(Set<JobContact> contacts) {
         this.contacts = contacts;
     }
 
@@ -78,16 +76,14 @@ public class Provider extends User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Provider)) return false;
+        if (!super.equals(o)) return false;
         Provider provider = (Provider) o;
-        return Objects.equals(jobs, provider.jobs) &&
-            Objects.equals(location, provider.location) &&
-            Objects.equals(schedule, provider.schedule) &&
-            Objects.equals(contacts, provider.contacts);
+        return Objects.equals(jobs, provider.jobs) && Objects.equals(location, provider.location) && Objects.equals(schedule, provider.schedule) && Objects.equals(contacts, provider.contacts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobs, location, schedule, contacts);
+        return Objects.hash(super.hashCode(), jobs, location, schedule, contacts);
     }
 
     @Override

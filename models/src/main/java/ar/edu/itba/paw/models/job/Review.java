@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "reviews")
@@ -22,15 +23,15 @@ public class Review {
     @Column(name="r_rating",nullable = false)
     private int rating;
 
-    @Column(name="r_creation_date")
+    @Column(name="r_creation_date",nullable = false)
     private LocalDate creationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="r_job_id")
+    @JoinColumn(name="r_job_id",nullable = false)
     private Job job;
 
     @OneToOne
-    @JoinColumn(name="r_reviewer_id")
+    @JoinColumn(name="r_reviewer_id",nullable = false)
     private User reviewer;
 
     public Review(Long id, String description, Job job, int rating, LocalDate creationDate, User reviewer) {
@@ -92,6 +93,19 @@ public class Review {
 
     public void setReviewer(User reviewer) {
         this.reviewer = reviewer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review)) return false;
+        Review review = (Review) o;
+        return rating == review.rating && Objects.equals(id, review.id) && Objects.equals(description, review.description) && Objects.equals(creationDate, review.creationDate) && Objects.equals(job, review.job) && Objects.equals(reviewer, review.reviewer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, rating, creationDate, job, reviewer);
     }
 
     @Override
