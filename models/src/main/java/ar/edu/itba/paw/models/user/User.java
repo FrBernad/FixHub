@@ -3,6 +3,7 @@ package ar.edu.itba.paw.models.user;
 import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.job.JobContact;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Collection;

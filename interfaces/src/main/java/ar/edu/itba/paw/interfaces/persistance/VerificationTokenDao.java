@@ -16,8 +16,6 @@ public interface VerificationTokenDao {
 
     void removeToken(VerificationToken verificationToken);
 
-    void removeTokenByUserId(long userId);
-
-    Optional<VerificationToken> getTokenByUserId(long userId);
+    Optional<VerificationToken> getTokenByUser(User user);
 
 }

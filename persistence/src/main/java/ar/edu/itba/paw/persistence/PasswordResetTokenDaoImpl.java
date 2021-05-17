@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
+import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -18,34 +21,49 @@ import java.util.Optional;
 
 @Repository
 public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public Optional<PasswordResetToken> getToken(long id) {
         return Optional.empty();
     }
 
     @Override
-    public PasswordResetToken createToken(long userId, String token, LocalDateTime expirationDate) {
-        return null;
+    public PasswordResetToken createToken(User user, String token, LocalDateTime expirationDate) {
+        final PasswordResetToken resetToken = new PasswordResetToken(token, user, expirationDate);
+
+        em.persist(resetToken);
+
+        return resetToken;
     }
 
     @Override
     public Optional<PasswordResetToken> getTokenByValue(String token) {
-        return Optional.empty();
+        return em.
+            createQuery("from PasswordResetToken where value = :token",
+                PasswordResetToken.class)
+            .setParameter("token", token)
+            .getResultList()
+            .stream()
+            .findFirst();
     }
 
     @Override
-    public void removeTokenById(long id) {
-
+    public void removeToken(PasswordResetToken token) {
+        em.remove(token);
     }
 
     @Override
-    public void removeTokenByUserId(long userId) {
+    public Optional<PasswordResetToken> getTokenByUser(User user) {
+        return em.createQuery(
+            "FROM PasswordResetToken prt where prt.user.id = :userId", PasswordResetToken.class)
+            .setParameter("userId", user.getId())
+            .getResultList()
+            .stream()
+            .findFirst();
 
-    }
-
-    @Override
-    public Optional<PasswordResetToken> getTokenByUserId(long userId) {
-        return Optional.empty();
     }
 
 //    private static final RowMapper<PasswordResetToken> PASSWORD_RESET_TOKEN_ROW_MAPPER = (rs, rowNum) ->

@@ -13,16 +13,21 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
-    @Override
-    public Collection<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage) {
-        return null;
-    }
+
+    @PersistenceContext
+    private EntityManager em;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewDaoImpl.class);
 
     @Override
     public Review createReview(String description, Job job, int rating, Timestamp creationDate, User user) {
@@ -30,8 +35,58 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int getReviewsCountByJobId(long jobId) {
+    public Collection<Review> getReviewsByJob(Job job, int page, int itemsPerPage) {
+        final List<Object> variables = new LinkedList<>();
+        variables.add(job.getId());
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery =
+            " select r_id FROM " +
+                " REVIEWS r where r_job_id = ? " +
+                " order by r.r_creation_date desc, r_id desc " + offsetAndLimitQuery;
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked")
+        final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList())
+            .stream()
+            .map(Number::longValue)
+            .collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from Review where id IN :filteredIds", Review.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
+    }
+
+    @Override
+    public int getReviewsCountByJob(Job job) {
         return 0;
+    }
+
+    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
+        final StringBuilder offsetAndLimitQuery = new StringBuilder();
+        if (page > 0) {
+            offsetAndLimitQuery.append(" OFFSET ? ");
+            variables.add(page * itemsPerPage);
+        }
+        if (itemsPerPage > 0) {
+            offsetAndLimitQuery.append(" LIMIT ? ");
+            variables.add(itemsPerPage);
+        }
+        return offsetAndLimitQuery.toString();
+    }
+
+    private void setQueryVariables(Query query, Collection<Object> variables) {
+        int i = 1;
+        for (Object variable : variables) {
+            query.setParameter(i, variable);
+            i++;
+        }
     }
 
 //    private final JdbcTemplate jdbcTemplate;
@@ -135,16 +190,5 @@ public class ReviewDaoImpl implements ReviewDao {
 //        ).stream().findFirst().orElse(0);
 //    }
 //
-//    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
-//        final StringBuilder offsetAndLimitQuery = new StringBuilder();
-//        if (page > 0) {
-//            offsetAndLimitQuery.append(" OFFSET ? ");
-//            variables.add(page * itemsPerPage);
-//        }
-//        if (itemsPerPage > 0) {
-//            offsetAndLimitQuery.append(" LIMIT ? ");
-//            variables.add(itemsPerPage);
-//        }
-//        return offsetAndLimitQuery.toString();
-//    }
+
 }

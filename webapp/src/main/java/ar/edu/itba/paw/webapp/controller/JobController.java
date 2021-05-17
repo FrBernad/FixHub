@@ -58,8 +58,8 @@ public class JobController {
         mav.addObject("job", job);
         mav.addObject("error", error);
         mav.addObject("location", userService.getLocationByProviderId(job.getProvider().getId()));
-        PaginatedSearchResult<Review> results = reviewService.getReviewsByJobId(job.getId(), page, 4);
-        PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJobId(job.getId(), 0, 4);
+        PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, 4);
+        PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJob(job, 0, 4);
         mav.addObject("results", results);
         mav.addObject("firstResults", firstResults);
         mav.addObject("paginationModal", paginationModal);
@@ -99,32 +99,32 @@ public class JobController {
     }
 
     @RequestMapping("/jobs/{jobId}/edit")
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("editJobForm") final EditJobForm form){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @ModelAttribute("editJobForm") final EditJobForm form) {
         ModelAndView mav = new ModelAndView("views/jobs/editJob");
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
         LOGGER.info("Accessed /jobs/{}/edit GET controller", jobId);
         mav.addObject("maxImagesPerJob", Job.MAX_IMAGES_PER_JOB);
-        mav.addObject("job",job);
+        mav.addObject("job", job);
         return mav;
     }
 
     @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
-    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form,BindingResult errors,Principal principal){
+    public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form, BindingResult errors, Principal principal) {
 
         LOGGER.info("Accessed /jobs/{}/edit POST controller", jobId);
 
-        if (errors.hasErrors() ){
+        if (errors.hasErrors()) {
             LOGGER.warn("The form has errors");
-            return updateJob(jobId,form);
+            return updateJob(jobId, form);
         }
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
 
-        if(!job.getProvider().getId().equals(user.getId())){
-            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",user.getId(),jobId,job.getProvider().getId());
+        if (!job.getProvider().getId().equals(user.getId())) {
+            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}", user.getId(), jobId, job.getProvider().getId());
             throw new IllegalOperationException();
         }
 
@@ -135,10 +135,10 @@ public class JobController {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
-                    if(!imageService.getContentTypesNoGIF().contains(contentType)){
+                    if (!imageService.getContentTypesNoGIF().contains(contentType)) {
                         LOGGER.error("Error updating job while creating image, content type is not valid");
-                        errors.rejectValue("images","errors.IllegalContentTypeException");
-                        return updateJob(jobId,form);
+                        errors.rejectValue("images", "errors.IllegalContentTypeException");
+                        return updateJob(jobId, form);
                     }
 
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));
@@ -149,20 +149,20 @@ public class JobController {
             }
         }
 
-        List <Long> imagesIdDeleted;
-        if(form.getImagesIdDeleted() == null){
+        List<Long> imagesIdDeleted;
+        if (form.getImagesIdDeleted() == null) {
             imagesIdDeleted = new LinkedList<>();
-        }else{
+        } else {
             imagesIdDeleted = form.getImagesIdDeleted();
         }
 
 
-        try{
-            jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,job,imagesIdDeleted);
-        }catch (MaxImagesPerJobException e){
+        try {
+            jobService.updateJob(form.getJobProvided(), form.getDescription(), form.getPrice(), form.isPaused(), imagesDto, job, imagesIdDeleted);
+        } catch (MaxImagesPerJobException e) {
             LOGGER.warn("Error max Images per job reached");
-            errors.rejectValue("images","validation.job.ImagesMax");
-            return updateJob(jobId,form);
+            errors.rejectValue("images", "validation.job.ImagesMax");
+            return updateJob(jobId, form);
         }
 
         LOGGER.info("The job with id {} has been updated successfully", jobId);
@@ -216,8 +216,6 @@ public class JobController {
     }
 
 
-
-
     @RequestMapping(path = "/jobs/new")
     public ModelAndView newJob(@ModelAttribute("jobForm") final JobForm form) {
 
@@ -227,7 +225,7 @@ public class JobController {
 
         mav = new ModelAndView("/views/jobs/newJob");
         final Collection<JobCategory> categories = jobService.getJobsCategories();
-        mav.addObject("maxImagesPerJob",Job.MAX_IMAGES_PER_JOB);
+        mav.addObject("maxImagesPerJob", Job.MAX_IMAGES_PER_JOB);
         mav.addObject("categories", categories);
 
         return mav;
@@ -248,13 +246,13 @@ public class JobController {
         List<ImageDto> imagesDto = new LinkedList<>();
         String contentType;
 
-        if (!form.getImages().get(0).isEmpty()){
+        if (!form.getImages().get(0).isEmpty()) {
             for (final MultipartFile image : form.getImages()) {
                 try {
                     contentType = image.getContentType();
                     if (!imageService.getContentTypesNoGIF().contains(contentType)) {
                         LOGGER.error("Error creating job while creating image, content type is not valid");
-                        errors.rejectValue("images","errors.IllegalContentTypeException");
+                        errors.rejectValue("images", "errors.IllegalContentTypeException");
                         return newJob(form);
                     }
                     imagesDto.add(new ImageDto(image.getBytes(), contentType));

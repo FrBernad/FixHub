@@ -121,8 +121,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void resendVerificationToken(User user) {
         LOGGER.debug("Removing token for user with id {}", user.getId());
-        verificationTokenDao.removeTokenByUserId(user.getId());
-        final VerificationToken token = generateVerificationToken(user);
+        final Optional<VerificationToken> vttokenOpt = verificationTokenDao.getTokenByUser(user);
+        if (!vttokenOpt.isPresent()) {
+            return;
+        }
+        VerificationToken token = vttokenOpt.get();
+        verificationTokenDao.removeToken(token);
+        token = generateVerificationToken(user);
         LOGGER.debug("Created token with id {}", token.getId());
         sendVerificationToken(user, token);
     }
@@ -145,8 +150,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void generateNewPassword(User user) {
         LOGGER.debug("Removing password reset token for user {}", user.getId());
-        passwordResetTokenDao.removeTokenByUserId(user.getId());
-        final PasswordResetToken token = generatePasswordResetToken(user.getId());
+        final Optional<PasswordResetToken> tokenOpt = passwordResetTokenDao.getTokenByUser(user);
+        if (!tokenOpt.isPresent()) {
+            return;
+        }
+        PasswordResetToken token = tokenOpt.get();
+
+        passwordResetTokenDao.removeToken(token);
+
+        token = generatePasswordResetToken(user);
         LOGGER.info("created password reset token for user {}", user.getId());
         sendPasswordResetToken(user, token);
     }
@@ -154,24 +166,26 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<User> updatePassword(String token, String password) {
-//        final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
-//
-//        if (!prtokenOpt.isPresent()) {
-//            LOGGER.warn("Token {} is not valid", token);
-//            return Optional.empty();
-//        }
-//
-//        final PasswordResetToken prtoken = prtokenOpt.get();
-//        LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
-//        passwordResetTokenDao.removeToken(prtoken.getId()); //remove always, either token is valid or not
-//        if (!prtoken.isValid()) {
-//            LOGGER.warn("Token {} has expired", token);
-//            return Optional.empty();
-//        }
-//
-//        LOGGER.debug("Updating user password for user {}", prtoken.getUserId());
-//        return userDao.updatePassword(prtoken.getUserId(), passwordEncoder.encode(password));
-        return Optional.empty();
+        final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
+
+        if (!prtokenOpt.isPresent()) {
+            LOGGER.warn("Token {} is not valid", token);
+            return Optional.empty();
+        }
+
+        final PasswordResetToken prtoken = prtokenOpt.get();
+        LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
+        passwordResetTokenDao.removeToken(prtoken); //remove always, either token is valid or not
+        if (!prtoken.isValid()) {
+            LOGGER.warn("Token {} has expired", token);
+            return Optional.empty();
+        }
+
+        final User user = prtoken.getUser();
+        LOGGER.debug("Updating user password for user {}", user.getId());
+
+        user.setPassword(passwordEncoder.encode(password));
+        return Optional.of(user);
     }
 
     @Override
@@ -344,9 +358,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private PasswordResetToken generatePasswordResetToken(long userId) {
+    private PasswordResetToken generatePasswordResetToken(User user) {
         final String token = UUID.randomUUID().toString();
-        return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
+        return passwordResetTokenDao.createToken(user, token, VerificationToken.generateTokenExpirationDate());
     }
 
     private void sendVerificationToken(User user, VerificationToken token) {

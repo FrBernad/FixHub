@@ -7,7 +7,7 @@ import ar.edu.itba.paw.models.user.User;
 
 public interface ReviewService {
 
-    PaginatedSearchResult<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage);
+    PaginatedSearchResult<Review> getReviewsByJob(Job job, int page, int itemsPerPage);
 
     Review createReview(String description, Job job, int rating, User user);
 }
