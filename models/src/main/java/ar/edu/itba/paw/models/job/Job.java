@@ -53,7 +53,7 @@ public class Job {
     private Set<Image> images;
 
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "job")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "job")
     private Set<Review> reviews;
 
     public static final Integer MAX_IMAGES_PER_JOB = 6;
@@ -160,6 +160,17 @@ public class Job {
     public Set<Image> getImages() {
         return images;
     }
+
+    public Long getThumbnailId() {
+        Long id = -1L;
+        for (Image image : images) {
+            if (id == -1 || id < image.getImageId()) {
+                id = image.getImageId();
+            }
+        }
+        return id;
+    }
+
 
     public void setImages(Set<Image> images) {
         this.images = images;

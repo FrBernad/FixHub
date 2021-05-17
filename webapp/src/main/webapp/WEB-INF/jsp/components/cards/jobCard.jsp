@@ -5,7 +5,7 @@
     <div class="jobCardImgContainer" style="position:relative;">
         <c:choose>
             <c:when test="${fn:length(job.images) > 0}">
-                <img src="<c:url value='/jobs/images/${job.getJobThumbnailId()}'/>"
+                <img src="<c:url value='/jobs/images/${job.thumbnailId}'/>"
                      alt="${job.category}" class="card-img jobCardImg">
             </c:when>
             <c:otherwise>
