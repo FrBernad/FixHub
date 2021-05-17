@@ -12,7 +12,7 @@ public interface LocationDao {
 
     Optional<State> getStateById(long stateId);
 
-    Collection<City> getCitiesByStateId(long stateId);
+    Collection<City> getCitiesByState(State stateId);
 
-    Optional<City> getCityByCityAndStateId(long cityId, long stateId);
+    Optional<City> getCityByCityAndStateId(long cityId, State state);
 }

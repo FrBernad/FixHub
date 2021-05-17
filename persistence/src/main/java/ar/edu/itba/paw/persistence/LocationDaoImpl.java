@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -18,24 +20,37 @@ import java.util.Optional;
 
 @Repository
 public class LocationDaoImpl implements LocationDao {
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public Collection<State> getStates() {
-        return null;
+        return em.createQuery("FROM State", State.class).getResultList();
     }
 
     @Override
     public Optional<State> getStateById(long stateId) {
-        return Optional.empty();
+        return Optional.ofNullable(em.find(State.class, stateId));
     }
 
     @Override
-    public Collection<City> getCitiesByStateId(long stateId) {
-        return null;
+    public Collection<City> getCitiesByState(State state) {
+        return em
+            .createQuery("FROM City WHERE state = :state", City.class)
+            .setParameter("state", state)
+            .getResultList();
     }
 
     @Override
-    public Optional<City> getCityByCityAndStateId(long cityId, long stateId) {
-        return Optional.empty();
+    public Optional<City> getCityByCityAndStateId(long cityId, State state) {
+        return em
+            .createQuery("FROM City WHERE id = :cityId AND state = :state", City.class)
+            .setParameter("state", state)
+            .setParameter("cityId", cityId)
+            .getResultList()
+            .stream()
+            .findFirst();
     }
 
 //    private final JdbcTemplate jdbcTemplate;

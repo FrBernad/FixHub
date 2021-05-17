@@ -102,11 +102,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<ContactInfo> getContactInfo(User user) {
-        return null;
-    }
-
-    @Override
     public Optional<ContactInfo> getContactInfoById(Long contactInfoId) {
         return Optional.empty();
     }
@@ -209,16 +204,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Location getLocationByProviderId(Long providerId) {
         return null;
-    }
-
-    @Override
-    public void updateCoverImage(Long imageId, User user) {
-
-    }
-
-    @Override
-    public void updateProfileImage(Long imageId, User user) {
-
     }
 
     @Override

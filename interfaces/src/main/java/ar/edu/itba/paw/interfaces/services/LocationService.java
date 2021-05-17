@@ -12,5 +12,5 @@ public interface LocationService {
 
     Optional<State> getStateById(long stateId);
 
-    Collection<City> getCitiesByStateId(long stateId);
+    Collection<City> getCitiesByState(State state);
 }

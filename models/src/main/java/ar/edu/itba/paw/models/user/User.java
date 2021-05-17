@@ -238,12 +238,12 @@ public abstract class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(profileImage, user.profileImage) && Objects.equals(coverImage, user.coverImage) && Objects.equals(state, user.state) && Objects.equals(city, user.city) && Objects.equals(roles, user.roles) && Objects.equals(following, user.following) && Objects.equals(followers, user.followers) && Objects.equals(contactInfo, user.contactInfo) && Objects.equals(providersContacted, user.providersContacted);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, name, surname, email, phoneNumber, profileImage, coverImage, state, city, roles, following, followers, contactInfo, providersContacted);
+        return Objects.hash(id);
     }
 
     @Override

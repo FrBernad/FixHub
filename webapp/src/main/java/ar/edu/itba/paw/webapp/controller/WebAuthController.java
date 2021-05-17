@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
+import ar.edu.itba.paw.models.State;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -263,7 +265,8 @@ public class WebAuthController {
         ra.addFlashAttribute("state", form.getState());
         ra.addFlashAttribute("startTime", form.getStartTime());
         ra.addFlashAttribute("endTime", form.getEndTime());
-        ra.addFlashAttribute("cities", locationService.getCitiesByStateId(form.getState()));
+        final State state = locationService.getStateById(form.getState()).orElseThrow(StateNotFoundException::new);
+        ra.addFlashAttribute("cities", locationService.getCitiesByState(state));
 
         LOGGER.debug("Added redirect attributes to /user/join/chooseCity");
 
@@ -294,7 +297,8 @@ public class WebAuthController {
 
         if (form != null && form.getState() != 0) {
             LOGGER.debug("Adding state cities again due to error in chooseCity form");
-            mav.addObject("cities", locationService.getCitiesByStateId(form.getState()));
+            final State state = locationService.getStateById(form.getState()).orElseThrow(StateNotFoundException::new);
+            mav.addObject("cities", locationService.getCitiesByState(state));
         }
 
 

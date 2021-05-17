@@ -256,6 +256,7 @@ public class UserServiceImpl implements UserService {
         return userDao.hasContactJobProvided(job, user);
     }
 
+    @Transactional
     @Override
     public void followUser(User user, User follower) {
         LOGGER.debug("Adding user {} to user {} followers", follower, user);
@@ -263,6 +264,7 @@ public class UserServiceImpl implements UserService {
         follower.getFollowers().add(user);
     }
 
+    @Transactional
     @Override
     public void unfollowUser(User user, User follower) {
         LOGGER.debug("Removing user {} to user {} followers", follower, user);

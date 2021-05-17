@@ -32,8 +32,8 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Collection<City> getCitiesByStateId(long stateId) {
-        LOGGER.debug("Retrieving cities with state id {}", stateId);
-        return locationDao.getCitiesByStateId(stateId);
+    public Collection<City> getCitiesByState(State state) {
+        LOGGER.debug("Retrieving cities with state id {}", state);
+        return locationDao.getCitiesByState(state);
     }
 }

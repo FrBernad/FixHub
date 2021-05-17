@@ -81,15 +81,18 @@ public class SearchServiceImpl implements SearchService {
             state = "";
         } else {
             long stateId = -1;
+            State stateObj;
             try {
                 stateId = Long.parseLong(state);
             } catch (NumberFormatException ignored) {
             } finally {
                 state = "";
+                stateObj = null;
                 Optional<State> stateOpt = locationDao.getStateById(stateId);
                 if (stateOpt.isPresent()) {
-                    cities = locationDao.getCitiesByStateId(stateId);
-                    state = stateOpt.get().getName();
+                    stateObj = stateOpt.get();
+                    cities = locationDao.getCitiesByState(stateObj);
+                    state = stateObj.getName();
                     queryState = String.valueOf(stateId);
                 } else {
                     queryState = null;
@@ -106,7 +109,7 @@ public class SearchServiceImpl implements SearchService {
                 } catch (NumberFormatException ignored) {
                 } finally {
                     city = "";
-                    Optional<City> cityOtp = locationDao.getCityByCityAndStateId(cityId, stateId);
+                    Optional<City> cityOtp = locationDao.getCityByCityAndStateId(cityId, stateObj);
                     if (cityOtp.isPresent()) {
                         city = cityOtp.get().getName();
                         queryCity = String.valueOf(cityId);
