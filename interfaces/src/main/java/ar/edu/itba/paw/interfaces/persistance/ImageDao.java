@@ -15,8 +15,6 @@ public interface ImageDao {
     Image createImage(ImageDto image);
     Optional<Image> getImageById(Long imageId);
     Collection<Image> getImagesById(Collection<Long> imagesId);
-    Collection<Image> getImagesByJobId(long jobId);
-    void updateImage(ImageDto image,long imageId);
     int deleteImageById(long imageId);
     int deleteImagesById(List<Long> imagesId);
 }

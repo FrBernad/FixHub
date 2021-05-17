@@ -44,15 +44,20 @@ public class ImageServiceImpl implements ImageService {
         return img;
     }
 
-    public Collection<Image> getImagesByJobId(long jobId) {
-        LOGGER.debug("Retrieving images for job {}", jobId);
-        return imageDao.getImagesByJobId(jobId);
-    }
 
     @Override
     public void updateImage(ImageDto image, long imageId) {
-        LOGGER.debug("Updating image with id {}", imageId);
-        imageDao.updateImage(image, imageId);
+        LOGGER.info("Trying to update image with id {}", imageId);
+        Optional<Image> img = imageDao.getImageById(imageId);
+        if(img.isPresent()){
+            img.get().setData(image.getData());
+            img.get().setMimeType(image.getMimeType());
+            LOGGER.info("Image with id {} updated succesfully ", imageId);
+
+        }else
+            LOGGER.warn("Image not updated because id {} does not exist",imageId);
+
+
     }
 
     @Override
