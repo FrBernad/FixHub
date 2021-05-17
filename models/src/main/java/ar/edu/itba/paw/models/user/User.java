@@ -234,6 +234,15 @@ public abstract class User {
         this.providersContacted = providersContacted;
     }
 
+    public ContactInfo getContactInfoById(Long id) {
+        for (ContactInfo contactInfo : this.contactInfo) {
+            if(contactInfo.getContactInfoId().equals(id)) {
+                return contactInfo;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

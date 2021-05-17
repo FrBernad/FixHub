@@ -6,7 +6,9 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
+import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Provider;
 import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.EditJobForm;
@@ -53,11 +55,12 @@ public class JobController {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        final Schedule schedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
+//        FIXME: should be job.getProvider().getSchedule()
+//        final Schedule schedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
-        mav.addObject("location", userService.getLocationByProviderId(job.getProvider().getId()));
+        mav.addObject("location", job.getProvider().getLocation());
         PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, 4);
         PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJob(job, 0, 4);
         mav.addObject("results", results);
@@ -67,13 +70,13 @@ public class JobController {
         boolean canReview = false;
         if (principal != null) {
             final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-            canReview = userService.hasContactJobProvided(job, user);
+            canReview = userService.hasContactJobProvided(job.getProvider(), user);
         }
 
         mav.addObject("canReview", canReview);
-
-        mav.addObject("startTime", schedule.getStartTime());
-        mav.addObject("endTime", schedule.getEndTime());
+//        FIXME: should be job.getProvider().getSchedule()
+//        mav.addObject("startTime", schedule.getStartTime());
+//        mav.addObject("endTime", schedule.getEndTime());
         return mav;
     }
 
@@ -184,7 +187,7 @@ public class JobController {
         mav.addObject("provider", provider);
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        Collection<ContactInfo> contactInfoCollection = userService.getContactInfo(user);
+        Collection<ContactInfo> contactInfoCollection = user.getContactInfo();
         LOGGER.info("Retrieved user {} contactInfo", user.getId());
         mav.addObject("contactInfoCollection", contactInfoCollection);
 
@@ -210,7 +213,7 @@ public class JobController {
 
         ContactDto contactDto = new ContactDto(job, Long.valueOf(form.getContactInfoId()), user, form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
 
-        userService.contact(contactDto);
+        userService.contact(contactDto, user, job.getProvider());
 
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }
@@ -262,7 +265,7 @@ public class JobController {
                 }
             }
         }
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, (Provider) user);
         LOGGER.info("Created job with id {}", job.getId());
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }

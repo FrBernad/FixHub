@@ -102,11 +102,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<ContactInfo> getContactInfoById(Long contactInfoId) {
-        return Optional.empty();
-    }
-
-    @Override
     public void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time) {
 
     }
@@ -199,21 +194,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void addLocation(Long userId, List<Long> citiesId) {
 
-    }
-
-    @Override
-    public Location getLocationByProviderId(Long providerId) {
-        return null;
-    }
-
-    @Override
-    public Optional<Schedule> getScheduleByUserId(long userId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean hasContactJobProvided(Job job, User user) {
-        return false;
     }
 
     @Override

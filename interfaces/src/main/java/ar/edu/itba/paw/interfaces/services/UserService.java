@@ -4,8 +4,10 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
+import ar.edu.itba.paw.models.user.provider.Provider;
 import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.models.user.provider.Stats;
 
@@ -33,13 +35,9 @@ public interface UserService {
 
     Optional<Stats> getUserStatsById(long id);
 
-    Collection<ContactInfo> getContactInfo(User user);
-
     void updateUserInfo(UserInfo userInfo, User user);
 
-    void contact(ContactDto contactDto) throws IllegalContactException;
-
-    Location getLocationByProviderId(Long providerId);
+    void contact(ContactDto contactDto, User user, Provider provider) throws IllegalContactException;
 
     void makeProvider(User user, List<Long> citiesId, String startTime, String endTime);
 
@@ -47,9 +45,7 @@ public interface UserService {
 
     void updateProfileImage(ImageDto imageDto, User user);
 
-    Optional<Schedule> getScheduleByUserId(long userId);
-
-    boolean hasContactJobProvided(Job job, User user);
+    boolean hasContactJobProvided(Provider provider, User user);
 
     void followUser(User user, User follower);
 

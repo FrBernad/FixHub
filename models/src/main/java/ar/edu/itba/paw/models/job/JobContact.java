@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.models.job;
 
+import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Provider;
 
@@ -39,9 +40,14 @@ public class JobContact {
     @JoinColumn(name = "c_job_id")
     private Job job;
 
-    public JobContact(User user, Provider provider, String message, LocalDateTime date, Job job) {
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "c_contact_info")
+    private ContactInfo contactInfo;
+
+    public JobContact(User user, Provider provider, ContactInfo contactInfo, String message, LocalDateTime date, Job job) {
         this.user = user;
         this.provider = provider;
+        this.contactInfo = contactInfo;
         this.message = message;
         this.date = date;
         this.job = job;
@@ -103,22 +109,36 @@ public class JobContact {
         this.provider = provider;
     }
 
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(ContactInfo contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof JobContact)) return false;
         JobContact that = (JobContact) o;
-        return Objects.equals(contactId, that.contactId)
-            && Objects.equals(user, that.user)
-            && Objects.equals(provider, that.provider)
-            && Objects.equals(message, that.message)
-            && Objects.equals(date, that.date)
-            && Objects.equals(job, that.job);
+        return Objects.equals(contactId, that.contactId) && Objects.equals(user, that.user)
+            && Objects.equals(provider, that.provider) && Objects.equals(message, that.message)
+            && Objects.equals(date, that.date) && Objects.equals(job, that.job)
+            && Objects.equals(contactInfo, that.contactInfo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactId, user, provider, message, date, job);
+        return Objects.hash(contactId, user, provider, message, date, job, contactInfo);
     }
 
     @Override
@@ -130,6 +150,7 @@ public class JobContact {
             ", message='" + message + '\'' +
             ", date=" + date +
             ", job=" + job +
+            ", contactInfo=" + contactInfo +
             '}';
     }
 }

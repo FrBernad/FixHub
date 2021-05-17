@@ -2,6 +2,7 @@ package ar.edu.itba.paw.models.job;
 
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Provider;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -32,7 +33,7 @@ public class Job {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "j_provider_id")
-    private User provider;
+    private Provider provider;
 
     @Column(name = "j_price", nullable = false)
     private BigDecimal price;
@@ -64,7 +65,7 @@ public class Job {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, User provider, Set<Image> images) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, Provider provider, Set<Image> images) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -149,11 +150,11 @@ public class Job {
         this.id = id;
     }
 
-    public User getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(User provider) {
+    public void setProvider(Provider provider) {
         this.provider = provider;
     }
 

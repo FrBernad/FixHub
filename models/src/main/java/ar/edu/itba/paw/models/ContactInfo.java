@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.models;
 
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "contact_info")
@@ -36,6 +38,9 @@ public class ContactInfo {
 
     @Column(name = "ci_department_number",length = 50)
     private String departmentNumber;
+
+    @OneToMany(mappedBy = "contactInfo")
+    private Set<JobContact> jobContact;
 
     protected ContactInfo() {
 

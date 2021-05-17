@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, List<ImageDto> images, User user) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, List<ImageDto> images, Provider provider) {
 
         Set<Image> jobImages = null;
         if (!images.isEmpty()) {
@@ -61,10 +62,10 @@ public class JobServiceImpl implements JobService {
             LOGGER.debug("Job {} has no images", jobProvided);
         }
 
-        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, user, jobImages);
+        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider, jobImages);
         LOGGER.info("Created job {} with id {}", job.getJobProvided(), job.getId());
 
-        final Collection<User> providerFollowers = user.getFollowers();
+        final Collection<User> providerFollowers = provider.getFollowers();
 
         for (User follower : providerFollowers) {
             sendNewJobNotificationMail(follower, job);

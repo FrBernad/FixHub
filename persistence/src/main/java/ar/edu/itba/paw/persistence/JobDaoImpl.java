@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -39,7 +40,7 @@ public class JobDaoImpl implements JobDao {
     }
 
    @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, Set<Image> images) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, Provider provider, Set<Image> images) {
         final int averageRating = 0;
         final Long totalRatings = 0L;
         Job job = new Job(description,jobProvided,averageRating,totalRatings,category,price,paused,provider,images);

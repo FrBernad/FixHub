@@ -46,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review createReview(String description, Job job, int rating, User user) {
-        if (!userService.hasContactJobProvided(job, user))
+        if (!userService.hasContactJobProvided(job.getProvider(), user))
             throw new NoContactFoundException();
         else {
             final Review review = reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()), user);

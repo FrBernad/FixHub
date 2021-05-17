@@ -34,8 +34,6 @@ public interface UserDao {
 
     ContactInfo addContactInfo(ContactDto contactDto);
 
-    Optional<ContactInfo> getContactInfoById(Long contactInfoId);
-
     void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time);
 
     Collection<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage);
@@ -49,12 +47,6 @@ public interface UserDao {
     void addSchedule(Long userId, String startTime, String endTime);
 
     void addLocation(Long userId, List<Long> citiesId);
-
-    Location getLocationByProviderId(Long providerId);
-
-    Optional<Schedule> getScheduleByUserId(long userId);
-
-    boolean hasContactJobProvided(Job job, User user);
 
     Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
 

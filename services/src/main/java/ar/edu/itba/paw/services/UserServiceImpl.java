@@ -11,11 +11,14 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.Roles;
+import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
+import ar.edu.itba.paw.models.user.provider.Provider;
 import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.models.user.provider.Stats;
 import org.slf4j.Logger;
@@ -238,39 +241,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<ContactInfo> getContactInfo(User user) {
-        return user.getContactInfo();
-    }
-
-    @Override
-    public void contact(ContactDto contactDto) throws IllegalContactException {
+    public void contact(ContactDto contactDto, User user, Provider provider) throws IllegalContactException {
         ContactInfo contactInfo;
 
         if (contactDto.getContactInfoId() == -1) {
             LOGGER.debug("Adding new contact info");
-            contactInfo = userDao.addContactInfo(contactDto);
+            contactInfo = new ContactInfo(contactDto.getUser(), contactDto.getState(),
+                contactDto.getCity(), contactDto.getStreet(),
+                contactDto.getAddressNumber(), contactDto.getFloor(),
+                contactDto.getDepartmentNumber());
+            user.getContactInfo().add(contactInfo);
+
         } else {
             LOGGER.debug("Retrieving used contact info");
-            contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
+            contactInfo = user.getContactInfoById(contactDto.getContactInfoId());
+            if (contactInfo == null)
+                throw new ContactInfoNotFoundException();
         }
-        if (contactDto.getJob().getProvider().getId().equals(contactDto.getUser().getId()))
+        if (provider.getId().equals(user.getId()))
             throw new IllegalContactException();
 
         sendJobRequestEmail(contactDto);
         sendJobRequestConfirmationEmail(contactDto);
 
-        LOGGER.debug("Adding new client to provider {}", contactDto.getJob().getProvider().getId());
-        userDao.addClient(contactDto, contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
+        LOGGER.debug("Adding new client to provider {}", provider.getId());
+        provider.getContacts().add(new JobContact(user, provider, contactInfo, contactDto.getMessage(), LocalDateTime.now(), contactDto.getJob()));
     }
 
     @Override
-    public Location getLocationByProviderId(Long providerId) {
-        return userDao.getLocationByProviderId(providerId);
-    }
-
-    @Override
-    public boolean hasContactJobProvided(Job job, User user) {
-        return userDao.hasContactJobProvided(job, user);
+    public boolean hasContactJobProvided(Provider provider, User user) {
+        for(JobContact jobContact : provider.getContacts()) {
+            if(jobContact.getUser().equals(user)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional
@@ -287,11 +292,6 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Removing user {} to user {} followers", follower, user);
         user.getFollowing().remove(follower);
         follower.getFollowers().remove(user);
-    }
-
-    @Override
-    public Optional<Schedule> getScheduleByUserId(long userId) {
-        return userDao.getScheduleByUserId(userId);
     }
 
 
