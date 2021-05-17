@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserDao {
 
@@ -21,7 +22,7 @@ public interface UserDao {
 
     Optional<User> getUserByEmail(String email);
 
-    User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Collection<Roles> roles) throws DuplicateUserException;
+    User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Set<Roles> roles) throws DuplicateUserException;
 
     Optional<User> updateRoles(long userId, Roles oldVal, Roles newVal);
 

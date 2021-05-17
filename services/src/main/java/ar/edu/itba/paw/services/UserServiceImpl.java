@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MessageSource messageSource;
 
-    public final static Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
+    public final static Set<Roles> DEFAULT_ROLES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED)));
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
