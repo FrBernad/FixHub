@@ -20,14 +20,14 @@
             <div class="col-12 px-0">
                 <div class="container-fluid px-0 position-relative backgroundImageContainer">
                     <c:choose>
-                        <c:when test="${loggedUser.coverImageId == 0}">
+                        <c:when test="${loggedUser.coverImage == null}">
                             <img alt="profile cover picture"
                                  src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
                                  class="backgroundImage">
                         </c:when>
                         <c:otherwise>
                             <img alt="profile cover picture"
-                                 src="<c:url value='/user/images/profile/${loggedUser.coverImageId}'/>"
+                                 src="<c:url value='/user/images/profile/${loggedUser.coverImage.id}'/>"
                                  class="backgroundImage">
                         </c:otherwise>
                     </c:choose>
@@ -56,14 +56,14 @@
                         <div class="profilePictureContainer">
                             <div class="picContainer">
                                 <c:choose>
-                                    <c:when test="${loggedUser.profileImageId == 0}">
+                                    <c:when test="${loggedUser.profileImage == null}">
                                         <img alt="profile picture"
                                              src="<c:url value='/resources/images/userProfile.png'/>"
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
                                         <img alt="profile picture"
-                                             src="<c:url value='/user/images/profile/${loggedUser.profileImageId}'/>"
+                                             src="<c:url value='/user/images/profile/${loggedUser.profileImage.id}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>
@@ -172,7 +172,7 @@
                                                     <a class="extraInfo"
                                                        href="<c:url value="/user/${loggedUser.id}/followers"/>">
                                                             <span class="detailField">
-                                                                <c:out value="${loggedUser.followers}"/>
+                                                                <c:out value="${loggedUser.followers.size()}"/>
                                                             </span>
                                                         ${followers}
                                                     </a>
@@ -180,7 +180,7 @@
                                                     <a class="extraInfo"
                                                        href="<c:url value="/user/${loggedUser.id}/following"/>">
                                                         <span class="detailField">
-                                                            <c:out value="${loggedUser.following}"/>
+                                                            <c:out value="${loggedUser.following.size()}"/>
                                                         </span>
                                                         ${following}
                                                     </a>

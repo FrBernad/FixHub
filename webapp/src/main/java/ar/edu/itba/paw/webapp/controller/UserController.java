@@ -70,8 +70,9 @@ public class UserController {
         LOGGER.info("Accessed /user/follow POST controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        final User followUser = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
         if (user.getId() != userId) {
-            userService.followUserById(user.getId(), userId);
+            userService.followUser(user, followUser);
         }
         final ModelAndView mav = new ModelAndView("redirect:/user/" + userId);
         mav.addObject("loggedUser", user);
@@ -83,8 +84,10 @@ public class UserController {
         LOGGER.info("Accessed /user/unfollow POST controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        final User followUser = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
+
         if (user.getId() != userId) {
-            userService.unfollowUserById(user.getId(), userId);
+            userService.unfollowUser(user, followUser);
         }
         final ModelAndView mav = new ModelAndView("redirect:/user/" + userId);
         mav.addObject("loggedUser", user);
@@ -168,13 +171,11 @@ public class UserController {
                 LOGGER.debug("Redirecting to /user/account");
                 return new ModelAndView("redirect:/user/account");
             }
-            boolean followed = userService.getAllUserFollowingsIds(loggedUser.getId()).stream().anyMatch(id -> id == userId);
+            boolean followed = loggedUser.getFollowing().stream().anyMatch(user -> user.getId() == userId);
             mav.addObject("loggedUser", loggedUser);
             mav.addObject("followed", followed);
         }
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        user.setFollowers(userService.getFollowersCount(user.getId()));
-//        user.setFollowing(userService.getFollowingCount(user.getId()));
         mav.addObject("user", user);
         return mav;
     }

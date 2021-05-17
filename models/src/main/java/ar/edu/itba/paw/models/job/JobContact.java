@@ -35,7 +35,6 @@ public class JobContact {
     @Column(name = "c_date", nullable = false)
     private LocalDateTime date;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_job_id")
     private Job job;

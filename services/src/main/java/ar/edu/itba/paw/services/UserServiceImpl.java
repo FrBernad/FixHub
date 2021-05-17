@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
-import ar.edu.itba.paw.interfaces.persistance.FollowsDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -45,9 +44,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordResetTokenDao passwordResetTokenDao;
-
-    @Autowired
-    private FollowsDao followsDao;
 
     @Autowired
     private EmailService emailService;
@@ -258,33 +254,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getFollowersCount(Long userId) {
-        LOGGER.debug("Getting user followers count");
-        return userDao.getUserFollowersCount(userId);
+    public void followUser(User user, User follower) {
+        LOGGER.debug("Adding user {} to user {} followers", follower, user);
     }
 
     @Override
-    public int getFollowingCount(Long userId) {
-        LOGGER.debug("Getting user following count");
-        return userDao.getUserFollowingCount(userId);
-    }
-
-    @Override
-    public Collection<Integer> getAllUserFollowingsIds(Long userId) {
-        LOGGER.debug("Getting all user following ids");
-        return userDao.getAllUserFollowingsIds(userId);
-    }
-
-    @Override
-    public void followUserById(Long userId, Long followerId) {
-        LOGGER.debug("Adding user {} to user {} followers", followerId, userId);
-        followsDao.followUser(userId, followerId);
-    }
-
-    @Override
-    public void unfollowUserById(Long userId, Long followerId) {
-        LOGGER.debug("Removing user {} to user {} followers", followerId, userId);
-        followsDao.unfollowUser(userId, followerId);
+    public void unfollowUser(User user, User follower) {
+        LOGGER.debug("Removing user {} to user {} followers", follower, user);
     }
 
     @Override
@@ -356,12 +332,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     private PasswordResetToken generatePasswordResetToken(long userId) {
         final String token = UUID.randomUUID().toString();
         return passwordResetTokenDao.createToken(userId, token, VerificationToken.generateTokenExpirationDate());
     }
-
 
     private void sendVerificationToken(User user, VerificationToken token) {
         try {

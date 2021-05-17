@@ -18,11 +18,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -120,22 +123,82 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage) {
-        return null;
+        final List<Object> variables = new LinkedList<>();
+
+        variables.add(providerId);
+
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery =
+            " SELECT c_id " +
+                " FROM CONTACT " +
+                " WHERE c_provider_id = ? " +
+                " ORDER BY c_date DESC " + offsetAndLimitQuery;
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from JobContact where id IN :filteredIds", JobContact.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
     }
 
     @Override
     public int getClientsCountByProviderId(Long providerId) {
-        return 0;
+        final String query = "SELECT count(c_id) total FROM CONTACT WHERE c_provider_id = ?";
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        nativeQuery.setParameter(1, providerId);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
     public Collection<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
-        return null;
+
+        final List<Object> variables = new LinkedList<>();
+
+        variables.add(clientId);
+
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery =
+            " SELECT c_id " +
+                " FROM CONTACT " +
+                " WHERE c_user_id = ? " +
+                " ORDER BY c_date DESC " + offsetAndLimitQuery;
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from JobContact where id IN :filteredIds", JobContact.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
+
     }
 
     @Override
     public int getProvidersCountByClientId(Long clientId) {
-        return 0;
+        final String query = "SELECT count(c_id) total FROM CONTACT WHERE c_user_id = ?";
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        nativeQuery.setParameter(1, clientId);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
@@ -175,37 +238,94 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage) {
-        return null;
+        final List<Object> variables = new LinkedList<>();
+
+        variables.add(userId);
+
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery =
+            " select u_id " +
+                " from USERS " +
+                " JOIN " +
+                " (SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?) followedIds " +
+                " on f_followed_user_id = users.u_id " +
+                " order by u_id desc " + offsetAndLimitQuery;
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from User where id IN :filteredIds", User.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
     }
 
     @Override
     public Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage) {
-        return null;
-    }
 
-    @Override
-    public Collection<User> getAllUserFollowers(Long userId) {
-        return null;
-    }
+        final List<Object> variables = new LinkedList<>();
 
-    @Override
-    public Collection<Integer> getAllUserFollowingsIds(Long userId) {
-        return null;
-    }
+        variables.add(userId);
 
-    @Override
-    public Collection<Integer> getAllUserFollowersIds(Long userId) {
-        return null;
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery =
+            " select u_id " +
+                " from USERS " +
+                " JOIN " +
+                " (SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?) followedIds " +
+                " on f_followed_user_id = users.u_id " +
+                " order by u_id desc " + offsetAndLimitQuery;
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from User where id IN :filteredIds", User.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
+
     }
 
     @Override
     public Integer getUserFollowersCount(Long userId) {
-        return null;
+        final String query = "SELECT count(f_user_id) total FROM FOLLOWS WHERE f_followed_user_id = ?";
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        nativeQuery.setParameter(1, userId);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
     public Integer getUserFollowingCount(Long userId) {
-        return null;
+        final String query = "SELECT count(f_followed_user_id) total FROM FOLLOWS WHERE f_user_id = ?";
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        nativeQuery.setParameter(1, userId);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
+    }
+
+    private void setQueryVariables(Query query, Collection<Object> variables) {
+        int i = 1;
+        for (Object variable : variables) {
+            query.setParameter(i, variable);
+            i++;
+        }
     }
 //
 //    private final JdbcTemplate jdbcTemplate;
@@ -716,19 +836,19 @@ public class UserDaoImpl implements UserDao {
 //            (rs, rowNum) -> rs.getInt("total"),
 //            new Object[]{userId}).stream().findFirst().orElse(0);
 //    }
-//
-//    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
-//        final StringBuilder offsetAndLimitQuery = new StringBuilder();
-//        if (page > 0) {
-//            offsetAndLimitQuery.append(" OFFSET ? ");
-//            variables.add(page * itemsPerPage);
-//        }
-//        if (itemsPerPage > 0) {
-//            offsetAndLimitQuery.append(" LIMIT ? ");
-//            variables.add(itemsPerPage);
-//        }
-//        return offsetAndLimitQuery.toString();
-//    }
+
+    private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {
+        final StringBuilder offsetAndLimitQuery = new StringBuilder();
+        if (page > 0) {
+            offsetAndLimitQuery.append(" OFFSET ? ");
+            variables.add(page * itemsPerPage);
+        }
+        if (itemsPerPage > 0) {
+            offsetAndLimitQuery.append(" LIMIT ? ");
+            variables.add(itemsPerPage);
+        }
+        return offsetAndLimitQuery.toString();
+    }
 
 
 }

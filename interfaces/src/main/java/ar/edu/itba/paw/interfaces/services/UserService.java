@@ -51,14 +51,8 @@ public interface UserService {
 
     boolean hasContactJobProvided(Job job, User user);
 
-    int getFollowersCount(Long userId);
+    void followUser(User user, User follower);
 
-    int getFollowingCount(Long userId);
-
-    Collection<Integer> getAllUserFollowingsIds(Long userId);
-
-    void followUserById(Long userId, Long followerId);
-
-    void unfollowUserById(Long userId, Long followerId);
+    void unfollowUser(User user, User follower);
 
 }

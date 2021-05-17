@@ -1,8 +1,5 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
-import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -66,7 +63,7 @@ public class JobServiceImpl implements JobService {
         final Job job = jobDao.createJob(jobProvided, category, description, price, paused, user, jobImages);
         LOGGER.info("Created job {} with id {}", job.getJobProvided(), job.getId());
 
-        final Collection<User> providerFollowers = userDao.getAllUserFollowers(user.getId());
+        final Collection<User> providerFollowers = user.getFollowers();
 
         for (User follower : providerFollowers) {
             sendNewJobNotificationMail(follower, job);
