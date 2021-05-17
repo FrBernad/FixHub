@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <div class="card jobCard">
     <div class="jobCardImgContainer" style="position:relative;">
         <c:choose>
-            <c:when test="${job.imagesId.size() > 0}">
+            <c:when test="${fn:length(job.images) > 0}">
                 <img src="<c:url value='/jobs/images/${job.getJobThumbnailId()}'/>"
                      alt="${job.category}" class="card-img jobCardImg">
             </c:when>

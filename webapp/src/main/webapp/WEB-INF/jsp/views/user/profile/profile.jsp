@@ -27,7 +27,7 @@
                         </c:when>
                         <c:otherwise>
                             <img alt="profile cover picture"
-                                 src="<c:url value='/user/images/profile/${loggedUser.coverImage.id}'/>"
+                                 src="<c:url value='/user/images/profile/${loggedUser.coverImage.imageId}'/>"
                                  class="backgroundImage">
                         </c:otherwise>
                     </c:choose>
@@ -63,7 +63,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <img alt="profile picture"
-                                             src="<c:url value='/user/images/profile/${loggedUser.profileImage.id}'/>"
+                                             src="<c:url value='/user/images/profile/${loggedUser.profileImage.imageId}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>

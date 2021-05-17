@@ -33,17 +33,17 @@
                                     <div>
                                         <div style="height: 400px; width:400px;">
                                             <c:choose>
-                                                <c:when test="${fn:length(job.imagesId) gt 0}">
+                                                <c:when test="${fn:length(job.images) gt 0}">
                                                     <div id="carouselExampleControls" class="carousel slide"
                                                          data-ride="carousel">
                                                         <div id="carousel" class="carousel-inner">
-                                                            <c:forEach var="imageId" items="${job.imagesId}">
-                                                                <div class="carousel-item" id="${imageId}">
-                                                                    <img src="<c:url value='/jobs/images/${imageId}'/>"
+                                                            <c:forEach var="image" items="${job.images}">
+                                                                <div class="carousel-item" id="${image.imageId}">
+                                                                    <img src="<c:url value='/jobs/images/${image.imageId}'/>"
                                                                          alt="${job.category}" class="rounded jobImages"
                                                                          style="object-fit: cover; height: 100%; width: 100%">
                                                                     <span class="imageDelete" style="cursor: pointer;"
-                                                                          data-image-id="${imageId}">
+                                                                          data-image-id="${image.imageId}">
 
                                                                         <button class="deleteButton">
                                                                             <i class="fas fa-trash fa-lg trashIcon"></i></button>
@@ -59,7 +59,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <c:if test="${fn:length(job.imagesId) gt 1}">
+                                                        <c:if test="${fn:length(job.images) gt 1}">
 
                                                             <a class="carousel-control-prev"
                                                                href="#carouselExampleControls"
@@ -99,8 +99,8 @@
                                         <div>
 
                                             <span id="imagesQuantity" data-max="${maxImagesPerJob}"
-                                                  data-quantity="${fn:length(job.imagesId)}"><c:out
-                                                    value="${fn:length(job.imagesId)}"/></span>
+                                                  data-quantity="${fn:length(job.images)}"><c:out
+                                                    value="${fn:length(job.images)}"/></span>
                                             <span>/ <c:out value="${maxImagesPerJob}"/></span>
                                         </div>
 

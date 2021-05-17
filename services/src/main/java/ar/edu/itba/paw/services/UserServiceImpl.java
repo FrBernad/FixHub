@@ -180,6 +180,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUserInfo(UserInfo userInfo, User user) {
         LOGGER.debug("Updating user info for user {}", user.getEmail());
         user.setName(userInfo.getName());
@@ -189,6 +190,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(userInfo.getPhoneNumber());
     }
 
+    @Transactional
     @Override
     public void updateCoverImage(ImageDto imageDto, User user) {
         Image image = user.getCoverImage();
@@ -201,6 +203,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateProfileImage(ImageDto imageDto, User user) {
         Image image = user.getProfileImage();
         LOGGER.debug("Updating user {} profile image", user.getEmail());

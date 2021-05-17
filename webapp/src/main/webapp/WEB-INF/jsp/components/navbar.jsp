@@ -45,7 +45,7 @@
                                                  alt="profileImg"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <img src="<c:url value='/user/images/profile/${loggedUser.profileImage.id}'/>"
+                                            <img src="<c:url value='/user/images/profile/${loggedUser.profileImage.imageId}'/>"
                                                  alt="profileImg"
                                                  class="avatar"/>
                                         </c:otherwise>

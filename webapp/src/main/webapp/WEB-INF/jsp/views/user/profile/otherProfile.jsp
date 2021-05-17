@@ -24,7 +24,7 @@
                                  class="backgroundImage">
                         </c:when>
                         <c:otherwise>
-                            <img alt="profile cover picture" src="<c:url value='/user/images/profile/${user.coverImage.id}'/>"
+                            <img alt="profile cover picture" src="<c:url value='/user/images/profile/${user.coverImage.imageId}'/>"
                                  class="backgroundImage">
                         </c:otherwise>
                     </c:choose>
@@ -41,7 +41,7 @@
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
-                                        <img alt="profile picture" src="<c:url value='/user/images/profile/${user.profileImage.id}'/>"
+                                        <img alt="profile picture" src="<c:url value='/user/images/profile/${user.profileImage.imageId}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>

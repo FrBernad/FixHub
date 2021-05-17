@@ -24,18 +24,18 @@
                     <div>
                         <div style="position: relative;height: 400px; width:400px;">
                             <c:choose>
-                                <c:when test="${fn:length(job.imagesId) gt 0}">
+                                <c:when test="${fn:length(job.images) gt 0}">
                                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                         <div id="carousel" class="carousel-inner">
-                                            <c:forEach var="imageId" items="${job.imagesId}">
+                                            <c:forEach var="image" items="${job.images}">
                                                 <div class="carousel-item">
-                                                    <img src="<c:url value='/jobs/images/${imageId}'/>"
+                                                    <img src="<c:url value='/jobs/images/${image.imageId}'/>"
                                                          alt="${job.category}" class="rounded"
                                                          style="object-fit: cover; height: 100%; width: 100%">
                                                 </div>
                                             </c:forEach>
                                         </div>
-                                        <c:if test="${fn:length(job.imagesId) gt 1}">
+                                        <c:if test="${fn:length(job.images) gt 1}">
                                             <a class="carousel-control-prev" href="#carouselExampleControls"
                                                role="button"
                                                data-slide="prev">
