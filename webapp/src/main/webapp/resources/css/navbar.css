@@ -85,6 +85,10 @@
     font-size: 14px;
 }
 
+.dropdownItem:hover{
+    color: black;
+}
+
 .dropdown-item:active{
     background-color: var(--primary-color);
     color: white;

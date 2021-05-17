@@ -53,7 +53,7 @@
                                     <i class="fas ml-2 fa-chevron-down navbarText" id="navBarArrow"></i>
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="<c:url value='/user/account'/>" class="dropdown-item pl-3">
+                                    <a href="<c:url value='/user/account'/>" class="dropdownItem pl-3">
                                         <spring:message code="navBar.signInAs"/>
                                         <span class="username names">
                                             <c:out value="${loggedUser.name}"/>
@@ -69,10 +69,10 @@
                                         </a>
                                     </c:if>
                                     <div class="dropdown-divider"></div>
-                                    <form id="logoutForm" class="mb-0 dropdown-item pl-3"
+                                    <form id="logoutForm" class="mb-0 dropdown-item px-0"
                                           action="<c:url value='/logout'/>"
                                           method="post">
-                                        <button type="submit" id="logoutInput" class="px-0 btn-block text-left">
+                                        <button type="submit" id="logoutInput" class="pl-3 btn-block text-left">
                                             <spring:message code="navBar.logout"/>
                                         </button>
                                     </form>
