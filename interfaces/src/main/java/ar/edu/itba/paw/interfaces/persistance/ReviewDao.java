@@ -9,9 +9,9 @@ import java.util.Collection;
 
 public interface ReviewDao {
 
-    Collection<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage);
+    Collection<Review> getReviewsByJob(Job job, int page, int itemsPerPage);
 
     Review createReview(String description, Job job, int rating, Timestamp creationDate, User user);
 
-    int getReviewsCountByJobId(long jobId);
+    int getReviewsCountByJob(Job job);
 }

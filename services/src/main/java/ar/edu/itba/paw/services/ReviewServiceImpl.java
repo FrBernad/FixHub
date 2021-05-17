@@ -29,10 +29,10 @@ public class ReviewServiceImpl implements ReviewService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReviewService.class);
 
     @Override
-    public PaginatedSearchResult<Review> getReviewsByJobId(long jobId, int page, int itemsPerPage) {
+    public PaginatedSearchResult<Review> getReviewsByJob(Job job, int page, int itemsPerPage) {
 
-        LOGGER.debug("Retrieving total reviews count for job {}", jobId);
-        final int totalReviews = reviewDao.getReviewsCountByJobId(jobId);
+        LOGGER.debug("Retrieving total reviews count for job {}", job.getId());
+        final int totalReviews = reviewDao.getReviewsCountByJob(job);
 
         if (itemsPerPage <= 0) {
             LOGGER.debug("Assigning default items per page");
@@ -41,7 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         LOGGER.debug("Retrieving paginated reviews");
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalReviews,
-            reviewDao.getReviewsByJobId(jobId, page, itemsPerPage));
+            reviewDao.getReviewsByJob(job, page, itemsPerPage));
     }
 
     @Override
