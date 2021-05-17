@@ -145,7 +145,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PaginatedSearchResult<Job> getJobsByProviderId(String searchBy, String orderBy, Long providerId, int page, int itemsPerPage) {
+    public PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int itemsPerPage) {
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
             LOGGER.debug("Order option {} not valid, setting default order", orderBy);
@@ -177,7 +177,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total jobs count");
-        final int totalJobs = jobDao.getJobsCountByProviderId(querySearchBy, providerId);
+        final int totalJobs = jobDao.getJobsCountByProvider(provider,querySearchBy);
         final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -185,13 +185,13 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
-        LOGGER.debug("Retrieving page {} for jobs by provider id {}", page, providerId);
-        final Collection<Job> jobs = jobDao.getJobsByProviderId(querySearchBy, queryOrderOption, providerId, page, itemsPerPage);
-        return new PaginatedSearchResult<>(orderBy, providerId.toString(), searchBy, page, itemsPerPage, totalJobs, jobs);
+        LOGGER.debug("Retrieving page {} for jobs by provider id {}", page, provider.getId());
+        final Collection<Job> jobs = jobDao.getJobsByProvider(querySearchBy, queryOrderOption, provider, page, itemsPerPage);
+        return new PaginatedSearchResult<>(orderBy, provider.getId().toString(), searchBy, page, itemsPerPage, totalJobs, jobs);
     }
 
     @Override
-    public PaginatedSearchResult<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage) {
+    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage) {
 
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
@@ -204,7 +204,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total clients count");
-        final int totalJobs = userDao.getClientsCountByProviderId(providerId);
+        final int totalJobs = userDao.getClientsCountByProvider(provider);
         final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -212,14 +212,14 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
-        LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, providerId);
-        final Collection<JobContact> contacts = userDao.getClientsByProviderId(providerId, page, itemsPerPage);
+        LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, provider.getId());
+        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
     }
 
 
     @Override
-    public PaginatedSearchResult<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
+    public PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int itemsPerPage) {
 
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
@@ -232,7 +232,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total providers count");
-        final int totalJobs = userDao.getProvidersCountByClientId(clientId);
+        final int totalJobs = userDao.getProvidersCountByClient(client);
         final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -240,8 +240,8 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
-        LOGGER.debug("Retrieving page {} for providers by client id {}", page, clientId);
-        final Collection<JobContact> contacts = userDao.getProvidersByClientId(clientId, page, itemsPerPage);
+        LOGGER.debug("Retrieving page {} for providers by client id {}", page, client.getId());
+        final Collection<JobContact> contacts = userDao.getProvidersByClient(client, page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
     }
 

@@ -10,11 +10,11 @@ import java.util.Collection;
 public interface SearchService {
     PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String category, String state, String city, int page, int itemsPerPage);
 
-    PaginatedSearchResult<Job> getJobsByProviderId(String searchBy, String orderBy, Long providerId, int page, int itemsPerPage);
+    PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int itemsPerPage);
 
-    PaginatedSearchResult<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage);
+    PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage);
 
-    PaginatedSearchResult<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage);
+    PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int itemsPerPage);
 
     Collection<OrderOptions> getOrderOptions();
 

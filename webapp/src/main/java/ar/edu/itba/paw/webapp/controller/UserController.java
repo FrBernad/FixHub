@@ -44,7 +44,7 @@ public class UserController {
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 //        user.setFollowers(userService.getFollowersCount(user.getId()));
 //        user.setFollowing(userService.getFollowingCount(user.getId()));
-        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), 0, 4);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClient(user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
         mav.addObject("loggedUser", user);
@@ -58,7 +58,7 @@ public class UserController {
         LOGGER.info("Accessed /user/account/search GET controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClientId(user.getId(), form.getPage(), 4);
+        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClient(user, form.getPage(), 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");
         mav.addObject("results", providersContacted);

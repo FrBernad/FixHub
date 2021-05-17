@@ -41,11 +41,11 @@ public class DashboardController {
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 4);
+        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProvider(null, null, user, 0, 4);
 
         final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 4);
+        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, 0, 4);
 
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
@@ -64,12 +64,12 @@ public class DashboardController {
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(form.getQuery(), form.getOrder(), user.getId(), form.getPage(), 4);
+        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProvider(form.getQuery(), form.getOrder(), user, form.getPage(), 4);
 
         final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
-        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), 0, 4);
+        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
         mav.addObject("orderOptions", orderOptions);
@@ -88,12 +88,12 @@ public class DashboardController {
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProviderId(user.getId(), form.getPage(), 4);
+        final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, form.getPage(), 4);
 
         final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
-        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProviderId(null, null, user.getId(), 0, 4);
+        final PaginatedSearchResult<Job> jobs = searchService.getJobsByProvider(null, null, user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
         mav.addObject("orderOptions", orderOptions);

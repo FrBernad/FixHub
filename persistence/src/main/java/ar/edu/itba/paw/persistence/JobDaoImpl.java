@@ -29,15 +29,14 @@ public class JobDaoImpl implements JobDao {
 
     private static final Map<OrderOptions, String> ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
+
     static {
         ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, j_id desc");
         ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, j_id desc");
         ORDER_OPTIONS.put(OrderOptions.HIGHER_PRICE, "j_price desc, total_ratings desc, j_id desc");
         ORDER_OPTIONS.put(OrderOptions.LOWER_PRICE, "j_price asc, total_ratings desc, j_id desc");
     }
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
-
 
    @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, Set<Image> images) {
@@ -48,7 +47,6 @@ public class JobDaoImpl implements JobDao {
         LOGGER.debug("Created job with id {}", job.getId());
         return job;
     }
-
 
     @Override
     public Optional<Job> getJobById(long id) {
@@ -62,8 +60,67 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage) {
-        return null;
+    public Collection<Job> getJobsByProvider(String searchBy, OrderOptions orderOption, User provider, int page, int itemsPerPage) {
+        final List<Object> variables = new LinkedList<>();
+
+        final String filterQuery = " WHERE j_provider_id = ? ";
+        variables.add(provider.getId());
+
+        final String searchQuery = getSearchQuery(searchBy, variables);
+
+        final String orderQuery = getOrderQuery(orderOption);
+
+        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
+
+        final String filteredIdsSelectQuery = String.format(
+            " select j_id from " +
+                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
+                " JOIN " +
+                " (SELECT distinct pc_provider_id from cities join provider_cities on c_id = pc_city_id ) as w1 " +
+                " ON w0.j_provider_id=w1.pl_user_id " +
+                " JOIN " +
+                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
+                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
+                " on job_id=j_id %s %s %s "
+            , filterQuery, searchQuery, orderQuery, offsetAndLimitQuery);
+
+        Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
+
+        setQueryVariables(filteredIdsSelectNativeQuery, variables);
+
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+
+        if (filteredIds.isEmpty())
+            return Collections.emptyList();
+
+        return em.createQuery("from Job where id IN :filteredIds", Job.class)
+            .setParameter("filteredIds", filteredIds)
+            .getResultList();
+
+    }
+
+
+    @Override
+    public Integer getJobsCountByProvider(User provider, String searchBy) {
+
+        final List<Object> variables = new LinkedList<>();
+
+        final String filterQuery = " WHERE j_provider_id = ? ";
+        variables.add(provider.getId());
+
+        final String searchQuery = getSearchQuery(searchBy, variables);
+
+        final String query =
+            " select count(*) total " +
+                " from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id" + filterQuery + " ) as aux" + searchQuery;
+
+        LOGGER.debug("Executing query: {}", query);
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        setQueryVariables(nativeQuery, variables);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
@@ -97,8 +154,7 @@ public class JobDaoImpl implements JobDao {
 
         setQueryVariables(filteredIdsSelectNativeQuery, variables);
 
-        @SuppressWarnings("unchecked")
-        final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
 
         if (filteredIds.isEmpty())
             return Collections.emptyList();
@@ -130,11 +186,6 @@ public class JobDaoImpl implements JobDao {
         setQueryVariables(nativeQuery, variables);
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
-    }
-
-    @Override
-    public Integer getJobsCountByProviderId(String searchBy, Long providerId) {
-        return null;
     }
 
     private String getOrderQuery(OrderOptions orderOption) {

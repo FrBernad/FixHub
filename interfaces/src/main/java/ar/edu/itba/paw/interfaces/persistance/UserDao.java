@@ -38,13 +38,13 @@ public interface UserDao {
 
     void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time);
 
-    Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage);
+    Collection<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage);
 
-    int getClientsCountByProviderId(Long providerId);
+    int getClientsCountByProvider(User provider);
 
-    Collection<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage);
+    Collection<JobContact> getProvidersByClient(User client, int page, int itemsPerPage);
 
-    int getProvidersCountByClientId(Long clientId);
+    int getProvidersCountByClient(User client);
 
     void addSchedule(Long userId, String startTime, String endTime);
 

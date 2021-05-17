@@ -112,10 +112,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<JobContact> getClientsByProviderId(Long providerId, int page, int itemsPerPage) {
+    public Collection<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage) {
         final List<Object> variables = new LinkedList<>();
 
-        variables.add(providerId);
+        variables.add(provider.getId());
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
@@ -140,22 +140,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int getClientsCountByProviderId(Long providerId) {
+    public int getClientsCountByProvider(User provider) {
         final String query = "SELECT count(c_id) total FROM CONTACT WHERE c_provider_id = ?";
 
         Query nativeQuery = em.createNativeQuery(query);
 
-        nativeQuery.setParameter(1, providerId);
+        nativeQuery.setParameter(1, provider.getId());
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
-    public Collection<JobContact> getProvidersByClientId(Long clientId, int page, int itemsPerPage) {
+    public Collection<JobContact> getProvidersByClient(User client, int page, int itemsPerPage) {
 
         final List<Object> variables = new LinkedList<>();
 
-        variables.add(clientId);
+        variables.add(client.getId());
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
@@ -181,12 +181,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int getProvidersCountByClientId(Long clientId) {
+    public int getProvidersCountByClient(User client) {
         final String query = "SELECT count(c_id) total FROM CONTACT WHERE c_user_id = ?";
 
         Query nativeQuery = em.createNativeQuery(query);
 
-        nativeQuery.setParameter(1, clientId);
+        nativeQuery.setParameter(1, client.getId());
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
