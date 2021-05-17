@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
+import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -51,13 +53,12 @@ public class JobServiceImpl implements JobService {
     @Override
     public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, List<ImageDto> images, User user) {
 
-        final List<Image> jobImages;
+        Set<Image> jobImages = null;
         if (!images.isEmpty()) {
             LOGGER.debug("Job {} has images", jobProvided);
             jobImages = imageService.createImages(images);
         } else {
             LOGGER.debug("Job {} has no images", jobProvided);
-            jobImages = new LinkedList<>();
         }
 
         final Job job = jobDao.createJob(jobProvided, category, description, price, paused, user, jobImages);
@@ -86,36 +87,42 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, long jobId, List<Long> imagesIdDeleted) {
-//        final Job job = getJobById(jobId).orElseThrow(JobNotFoundException::new);
-//
-//        final Collection<Long> oldImagesId = job.getImagesId();
-//
-//        //If a user tries to delete images that are not from the job to update
-//        if (!oldImagesId.containsAll(imagesIdDeleted)) {
-//            LOGGER.warn("error: tried to delete image not corresponding to job");
-//            throw new IllegalOperationException();
-//        }
-//        //If a job reaches the limit of images
-//        if (oldImagesId.size() - imagesIdDeleted.size() + images.size() > MAX_IMAGES_PER_JOB) {
-//            LOGGER.warn("error: tried to add more images than permitted");
-//            throw new MaxImagesPerJobException();
-//        }
-//
-//        final List<Image> jobImages;
-//
-//        if (!images.isEmpty())
-//            jobImages = imageService.createImages(images);
-//        else
-//            jobImages = new LinkedList<>();
-//
-//        LOGGER.debug("Updating job");
-//        jobDao.updateJob(jobProvided, description, price, paused, jobImages, jobId, imagesIdDeleted);
-//
-//        if (!imagesIdDeleted.isEmpty()) {
-//            LOGGER.debug("Deleting job images");
-//            imageService.deleteImagesById(imagesIdDeleted);
-//        }
+    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> imagesToUpload, Job job, List<Long> imagesIdDeleted) {
+        //LOGGER.debug("Updating job");
+        job.setJobProvided(jobProvided);
+        job.setDescription(description);
+        job.setPrice(price);
+        job.setPaused(paused);
+
+        Collection<Image> imagesToDelete = imageService.getImagesById(imagesIdDeleted);
+        Set<Image> jobImages = job.getImages();
+
+        //If a user tries to delete images that are not from the job to update
+        if (!jobImages.containsAll(imagesToDelete)) {
+            LOGGER.warn("error: tried to delete image not corresponding to job");
+            throw new IllegalOperationException();
+        }
+
+        //If a job reaches the limit of images
+        if (jobImages.size() - imagesIdDeleted.size() + imagesToUpload.size() > MAX_IMAGES_PER_JOB) {
+            LOGGER.warn("error: tried to add more images than permitted");
+            throw new MaxImagesPerJobException();
+        }
+
+        //LOGGER.debug("Deleting job images");
+        jobImages.removeAll(imagesToDelete);
+
+        Set<Image> images;
+        if (!imagesToUpload.isEmpty()) {
+            LOGGER.debug("Job {} has images", jobProvided);
+            images = imageService.createImages(imagesToUpload);
+        } else {
+            images = new LinkedHashSet<>();
+            LOGGER.debug("Job {} has no images", jobProvided);
+        }
+
+        jobImages.addAll(images);
+
     }
 
     private void sendNewJobNotificationMail(User user, Job job) {

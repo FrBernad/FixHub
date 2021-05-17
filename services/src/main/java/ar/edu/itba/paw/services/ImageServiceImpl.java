@@ -27,7 +27,13 @@ public class ImageServiceImpl implements ImageService {
         return imageDao.getImageById(imageId);
     }
 
-    public List<Image> createImages(List<ImageDto> images) {
+    public Collection<Image> getImagesById(Collection<Long> imagesId){
+        LOGGER.debug("Looking for {} image by id", imagesId.size());
+        return imageDao.getImagesById(imagesId);
+    }
+
+
+    public Set<Image> createImages(List<ImageDto> images) {
         LOGGER.debug("Creating {} images", images.size());
         return imageDao.createImages(images);
     }

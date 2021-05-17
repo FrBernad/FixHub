@@ -7,13 +7,15 @@ import java.util.*;
 
 public interface ImageService {
 
-    List<Image> createImages(List<ImageDto> images);
+    Set<Image> createImages(List<ImageDto> images);
     Image createImage(ImageDto image);
 
     Collection<String> getContentTypesGIF();
     Collection<String> getContentTypesNoGIF();
 
     Optional<Image> getImageById(Long imageId);
+    Collection<Image> getImagesById(Collection<Long> imagesId);
+
     Collection<Image> getImagesByJobId(long jobId);
 
 

@@ -64,18 +64,16 @@ public class Job {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, Long id, BigDecimal price, boolean paused, User provider, Set<Image> images, Set<Review> reviews) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, User provider, Set<Image> images) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
         this.category = category;
         this.totalRatings = totalRatings;
-        this.id = id;
         this.provider = provider;
         this.price = price;
         this.paused = paused;
         this.images = images;
-        this.reviews = reviews;
     }
 
     public void addImage(Image image) {
@@ -159,11 +157,11 @@ public class Job {
         this.provider = provider;
     }
 
-    public Set<Image> getImagesId() {
+    public Set<Image> getImages() {
         return images;
     }
 
-    public void setImagesId(Set<Image> images) {
+    public void setImages(Set<Image> images) {
         this.images = images;
     }
 

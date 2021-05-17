@@ -17,7 +17,7 @@ public interface JobService {
 
     Collection<JobCategory> getJobsCategories();
 
-    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<ImageDto> images, long jobId,List<Long> imagesIdDeleted);
+    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<ImageDto> images, Job job,List<Long> imagesIdDeleted);
 
 }
 

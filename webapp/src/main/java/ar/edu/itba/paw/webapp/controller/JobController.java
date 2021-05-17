@@ -156,8 +156,9 @@ public class JobController {
             imagesIdDeleted = form.getImagesIdDeleted();
         }
 
+
         try{
-            jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,jobId,imagesIdDeleted);
+            jobService.updateJob(form.getJobProvided(),form.getDescription(),form.getPrice(), form.isPaused(),imagesDto,job,imagesIdDeleted);
         }catch (MaxImagesPerJobException e){
             LOGGER.warn("Error max Images per job reached");
             errors.rejectValue("images","validation.job.ImagesMax");

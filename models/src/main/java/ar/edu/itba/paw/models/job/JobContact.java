@@ -39,15 +39,12 @@ public class JobContact {
     @JoinColumn(name = "c_job_id")
     private Job job;
 
-    private JobCategory category;
-
-    public JobContact(User user, Provider provider, String message, LocalDateTime date, Job job, JobCategory category) {
+    public JobContact(User user, Provider provider, String message, LocalDateTime date, Job job) {
         this.user = user;
         this.provider = provider;
         this.message = message;
         this.date = date;
         this.job = job;
-        this.category = category;
     }
 
     protected JobContact() {
@@ -90,14 +87,6 @@ public class JobContact {
         this.job = job;
     }
 
-    public JobCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(JobCategory category) {
-        this.category = category;
-    }
-
     public Long getContactId() {
         return contactId;
     }
@@ -124,13 +113,12 @@ public class JobContact {
             && Objects.equals(provider, that.provider)
             && Objects.equals(message, that.message)
             && Objects.equals(date, that.date)
-            && Objects.equals(job, that.job)
-            && category == that.category;
+            && Objects.equals(job, that.job);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactId, user, provider, message, date, job, category);
+        return Objects.hash(contactId, user, provider, message, date, job);
     }
 
     @Override
@@ -142,7 +130,6 @@ public class JobContact {
             ", message='" + message + '\'' +
             ", date=" + date +
             ", job=" + job +
-            ", category=" + category +
             '}';
     }
 }
