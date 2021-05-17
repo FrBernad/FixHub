@@ -182,29 +182,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
         LOGGER.debug("Updating user info for user {}", user.getEmail());
-        userDao.updateUserInfo(userInfo, user);
+        user.setName(userInfo.getName());
+        user.setSurname(userInfo.getSurname());
+        user.setCity(userInfo.getCity());
+        user.setState(userInfo.getState());
+        user.setPhoneNumber(userInfo.getPhoneNumber());
     }
 
     @Override
     public void updateCoverImage(ImageDto imageDto, User user) {
-//        Long imageId = user.getCoverImageId();
-//        LOGGER.debug("Updating user {} cover image", user.getEmail());
-//        if (imageId == 0) {
-//            imageId = imageService.createImage(imageDto).getImageId();
-//            userDao.updateCoverImage(imageId, user);
-//        } else
-//            imageService.updateImage(imageDto, imageId);
+        Image image = user.getCoverImage();
+        LOGGER.debug("Updating user {} cover image", user.getEmail());
+        if (image == null) {
+            user.setCoverImage(imageService.createImage(imageDto));
+        } else
+            user.getCoverImage().setData(imageDto.getData());
+
     }
 
     @Override
     public void updateProfileImage(ImageDto imageDto, User user) {
-//        Long imageId = user.getProfileImageId();
-//        LOGGER.debug("Updating user {} profile image", user.getEmail());
-//        if (imageId == 0) {
-//            imageId = imageService.createImage(imageDto).getImageId();
-//            userDao.updateProfileImage(imageId, user);
-//        } else
-//            imageService.updateImage(imageDto, imageId);
+        Image image = user.getProfileImage();
+        LOGGER.debug("Updating user {} profile image", user.getEmail());
+        if (image == null) {
+            user.setProfileImage(imageService.createImage(imageDto));
+        } else
+            user.getProfileImage().setData(imageDto.getData());
     }
 
     @Transactional
@@ -219,7 +222,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Collection<ContactInfo> getContactInfo(User user) {
-        return userDao.getContactInfo(user);
+        return user.getContactInfo();
     }
 
     @Override
@@ -256,11 +259,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void followUser(User user, User follower) {
         LOGGER.debug("Adding user {} to user {} followers", follower, user);
+        user.getFollowing().add(follower);
+        follower.getFollowers().add(user);
     }
 
     @Override
     public void unfollowUser(User user, User follower) {
         LOGGER.debug("Removing user {} to user {} followers", follower, user);
+        user.getFollowing().remove(follower);
+        follower.getFollowers().remove(user);
     }
 
     @Override

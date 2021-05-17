@@ -92,11 +92,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUserInfo(UserInfo userInfo, User user) {
-
-    }
-
-    @Override
     public void addRole(long userId, Roles newRole) {
 
     }
@@ -482,20 +477,6 @@ public class UserDaoImpl implements UserDao {
 //        }
 //        LOGGER.debug("Password not updated");
 //        return Optional.empty();
-//    }
-//
-//    @Override
-//    public void updateUserInfo(UserInfo userInfo, User user) {
-//        final String query = "UPDATE users SET u_name = ?, " +
-//            "u_surname = ?, u_city = ?, u_phone_number = ?,u_state = ? " +
-//            " where u_id = ?";
-//        LOGGER.debug("Executing query: {}", query);
-//        if (jdbcTemplate.update(query, userInfo.getName(), userInfo.getSurname(),
-//            userInfo.getCity(), userInfo.getPhoneNumber(), userInfo.getState(), user.getId()) == 1)
-//            LOGGER.debug("user info updated");
-//        else
-//            LOGGER.debug("user info not updated");
-//
 //    }
 //
 //    @Override

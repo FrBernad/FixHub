@@ -30,13 +30,9 @@ public interface UserDao {
 
     Optional<Stats> getUserStatsById(long id);
 
-    void updateUserInfo(UserInfo userInfo, User user);
-
     void addRole(long userId, Roles newRole);
 
     ContactInfo addContactInfo(ContactDto contactDto);
-
-    Collection<ContactInfo> getContactInfo(User user);
 
     Optional<ContactInfo> getContactInfoById(Long contactInfoId);
 
@@ -55,10 +51,6 @@ public interface UserDao {
     void addLocation(Long userId, List<Long> citiesId);
 
     Location getLocationByProviderId(Long providerId);
-
-    void updateCoverImage(Long imageId, User user);
-
-    void updateProfileImage(Long imageId, User user);
 
     Optional<Schedule> getScheduleByUserId(long userId);
 
