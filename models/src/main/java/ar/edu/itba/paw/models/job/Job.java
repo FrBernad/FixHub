@@ -2,7 +2,6 @@ package ar.edu.itba.paw.models.job;
 
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.provider.Provider;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -33,7 +32,7 @@ public class Job {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "j_provider_id")
-    private Provider provider;
+    private User provider;
 
     @Column(name = "j_price", nullable = false)
     private BigDecimal price;
@@ -63,7 +62,7 @@ public class Job {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, Provider provider, Set<Image> images) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, User provider, Set<Image> images) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -148,11 +147,11 @@ public class Job {
         this.id = id;
     }
 
-    public Provider getProvider() {
+    public User getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(User provider) {
         this.provider = provider;
     }
 
@@ -188,12 +187,12 @@ public class Job {
         if (this == o) return true;
         if (!(o instanceof Job)) return false;
         Job job = (Job) o;
-        return paused == job.paused && Objects.equals(id, job.id) && Objects.equals(description, job.description) && category == job.category && Objects.equals(jobProvided, job.jobProvided) && Objects.equals(provider, job.provider) && Objects.equals(price, job.price) && Objects.equals(averageRating, job.averageRating) && Objects.equals(totalRatings, job.totalRatings) && Objects.equals(images, job.images) && Objects.equals(reviews, job.reviews);
+        return Objects.equals(id, job.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, category, jobProvided, provider, price, paused, averageRating, totalRatings, images, reviews);
+        return Objects.hash(id);
     }
 
     @Override

@@ -11,12 +11,10 @@ import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.Roles;
-import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
@@ -239,7 +237,7 @@ public class UserServiceImpl implements UserService {
         final State state = cities.stream().findFirst().get().getState();
         final Location location = new Location(user, new HashSet<>(cities), state);
         final Schedule schedule = new Schedule(user, startTime, endTime);
-        userDao.persistProviderDetails(location,schedule);
+        userDao.persistProviderDetails(location, schedule);
 
         final ProviderDetails providerDetails = new ProviderDetails(location, schedule);
 
@@ -252,50 +250,33 @@ public class UserServiceImpl implements UserService {
         sendProviderNotificationEmail(user);
     }
 
+    @Transactional
     @Override
-    public void contact(ContactDto contactDto, User user, Provider provider) throws IllegalContactException {
+    public void contact(ContactDto contactDto, User user, User provider) throws IllegalContactException {
         ContactInfo contactInfo;
 
         if (contactDto.getContactInfoId() == -1) {
             LOGGER.debug("Adding new contact info");
-            contactInfo = new ContactInfo(contactDto.getUser(), contactDto.getState(),
-                contactDto.getCity(), contactDto.getStreet(),
-                contactDto.getAddressNumber(), contactDto.getFloor(),
-                contactDto.getDepartmentNumber());
-            user.getContactInfo().add(contactInfo);
-
+            contactInfo = userDao.addContactInfo(contactDto);
         } else {
             LOGGER.debug("Retrieving used contact info");
-            contactInfo = user.getContactInfoById(contactDto.getContactInfoId());
-            if (contactInfo == null)
-                throw new ContactInfoNotFoundException();
+            contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
         }
         if (provider.getId().equals(user.getId()))
             throw new IllegalContactException();
 
-        LOGGER.debug("Adding new client to provider {}", contactDto.getJob().getProvider().getId());
-
-        final ContactInfo
-
-        userDao.addClient(contactDto, contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
-        user
-
+        LOGGER.debug("Adding new client to provider {}", provider.getId());
+        final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, contactDto.getMessage(), LocalDateTime.now(), contactDto.getJob());
+        provider.getProviderDetails().getContacts().add(jobContact);
 
         sendJobRequestEmail(contactDto);
         sendJobRequestConfirmationEmail(contactDto);
 
-        LOGGER.debug("Adding new client to provider {}", provider.getId());
-        provider.getContacts().add(new JobContact(user, provider, contactInfo, contactDto.getMessage(), LocalDateTime.now(), contactDto.getJob()));
     }
 
     @Override
-    public boolean hasContactJobProvided(Provider provider, User user) {
-        for(JobContact jobContact : provider.getContacts()) {
-            if(jobContact.getUser().equals(user)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean hasContactJobProvided(User provider, User user) {
+        return true;
     }
 
     @Transactional

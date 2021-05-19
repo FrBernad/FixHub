@@ -12,19 +12,19 @@ import java.util.Set;
 @Embeddable
 public class ProviderDetails {
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "j_provider_id")
     private Set<Job> jobs;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_location_id")
     private Location location;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_schedule_id")
     private Schedule schedule;
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     private Set<JobContact> contacts;
 
     @Transient

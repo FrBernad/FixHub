@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -44,13 +45,15 @@ public class ReviewServiceImpl implements ReviewService {
             reviewDao.getReviewsByJob(job, page, itemsPerPage));
     }
 
+    @Transactional
     @Override
     public Review createReview(String description, Job job, int rating, User user) {
         if (!userService.hasContactJobProvided(job.getProvider(), user))
             throw new NoContactFoundException();
         else {
             final Review review = reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()), user);
-            LOGGER.debug("Created review for job {} with id {} by user with id {}", job.getJobProvided(), job.getId(),user.getId());
+            LOGGER.debug("Created review for job {} with id {} by user with id {}", job.getJobProvided(), job.getId(), user.getId());
+            job.getReviews().add(review);
             return review;
         }
     }

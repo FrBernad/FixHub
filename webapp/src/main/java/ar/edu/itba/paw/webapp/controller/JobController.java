@@ -6,10 +6,7 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
-import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.provider.Provider;
-import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.EditJobForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
@@ -260,7 +257,7 @@ public class JobController {
                 }
             }
         }
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, (Provider) user);
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
         LOGGER.info("Created job with id {}", job.getId());
         return new ModelAndView("redirect:/jobs/" + job.getId());
     }

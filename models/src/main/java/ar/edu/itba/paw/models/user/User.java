@@ -70,9 +70,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<ContactInfo> contactInfo;
 
-    @OneToMany(mappedBy = "user")
-    private Set<JobContact> providersContacted;
-
     @Embedded
     private ProviderDetails providerDetails;
 
@@ -227,14 +224,6 @@ public class User {
         this.contactInfo = contactInfo;
     }
 
-    public Set<JobContact> getProvidersContacted() {
-        return providersContacted;
-    }
-
-    public void setProvidersContacted(Set<JobContact> providersContacted) {
-        this.providersContacted = providersContacted;
-    }
-
     public ProviderDetails getProviderDetails() {
         return providerDetails;
     }
@@ -273,7 +262,6 @@ public class User {
             ", following=" + following +
             ", followers=" + followers +
             ", contactInfo=" + contactInfo +
-            ", providersContacted=" + providersContacted +
             '}';
     }
 }

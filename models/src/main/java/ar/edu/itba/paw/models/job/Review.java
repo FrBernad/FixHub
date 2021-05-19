@@ -34,7 +34,7 @@ public class Review {
     @JoinColumn(name="r_reviewer_id",nullable = false)
     private User reviewer;
 
-    public Review(Long id, String description, Job job, int rating, LocalDate creationDate, User reviewer) {
+    public Review(String description, Job job, int rating, LocalDate creationDate, User reviewer) {
         this.id = id;
         this.description = description;
         this.job = job;
@@ -100,12 +100,12 @@ public class Review {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review = (Review) o;
-        return rating == review.rating && Objects.equals(id, review.id) && Objects.equals(description, review.description) && Objects.equals(creationDate, review.creationDate) && Objects.equals(job, review.job) && Objects.equals(reviewer, review.reviewer);
+        return Objects.equals(id, review.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, rating, creationDate, job, reviewer);
+        return Objects.hash(id);
     }
 
     @Override

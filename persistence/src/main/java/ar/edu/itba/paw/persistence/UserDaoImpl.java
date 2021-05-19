@@ -23,6 +23,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,12 +93,32 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public ContactInfo addContactInfo(ContactDto contactDto) {
-        return null;
+
+        final ContactInfo contactInfo = new ContactInfo(contactDto.getUser(), contactDto.getState(),
+            contactDto.getCity(), contactDto.getStreet(),
+            contactDto.getAddressNumber(), contactDto.getFloor(),
+            contactDto.getDepartmentNumber());
+
+        em.persist(contactInfo);
+
+        return contactInfo;
     }
 
     @Override
     public void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time) {
 
+    }
+
+    @Override
+    public JobContact createJobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime creationTime, Job job) {
+        final JobContact jobContact = new JobContact(user, provider, contactInfo, message, creationTime, job);
+        em.persist(jobContact);
+        return jobContact;
+    }
+
+    @Override
+    public Optional<ContactInfo> getContactInfoById(Long id) {
+        return Optional.ofNullable(em.find(ContactInfo.class, id));
     }
 
     @Override

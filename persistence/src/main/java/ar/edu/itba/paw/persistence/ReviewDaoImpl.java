@@ -31,7 +31,9 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public Review createReview(String description, Job job, int rating, Timestamp creationDate, User user) {
-        return null;
+        final Review review = new Review(description, job, rating, creationDate.toLocalDateTime().toLocalDate(), user);
+        em.persist(review);
+        return review;
     }
 
     @Override
@@ -49,8 +51,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
         setQueryVariables(filteredIdsSelectNativeQuery, variables);
 
-        @SuppressWarnings("unchecked")
-        final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList())
+        @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList())
             .stream()
             .map(Number::longValue)
             .collect(Collectors.toList());

@@ -42,8 +42,6 @@ public class UserController {
         LOGGER.info("Accessed /user/account GET controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        user.setFollowers(userService.getFollowersCount(user.getId()));
-//        user.setFollowing(userService.getFollowingCount(user.getId()));
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClient(user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/profile");

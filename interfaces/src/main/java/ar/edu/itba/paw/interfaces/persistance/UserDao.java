@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.models.user.provider.Stats;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,10 @@ public interface UserDao {
     ContactInfo addContactInfo(ContactDto contactDto);
 
     void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time);
+
+    JobContact createJobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime creationTime, Job job);
+
+    Optional<ContactInfo> getContactInfoById(Long Id);
 
     Collection<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage);
 

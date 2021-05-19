@@ -20,7 +20,6 @@ public class JobContact {
     @Column(name = "c_id")
     private Long contactId;
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "c_user_id")
     private User user;
@@ -43,7 +42,7 @@ public class JobContact {
     @JoinColumn(name = "c_contact_info")
     private ContactInfo contactInfo;
 
-    public JobContact(User user, Provider provider, ContactInfo contactInfo, String message, LocalDateTime date, Job job) {
+    public JobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime date, Job job) {
         this.user = user;
         this.provider = provider;
         this.contactInfo = contactInfo;
