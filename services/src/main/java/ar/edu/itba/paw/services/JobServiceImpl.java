@@ -98,7 +98,7 @@ public class JobServiceImpl implements JobService {
         Collection<Image> imagesToDelete = imageService.getImagesById(imagesIdToDelete);
         Set<Image> jobImages = job.getImages();
 
-        boolean contains = !imagesIdDeleted.isEmpty() && jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdDeleted);
+        boolean contains = !imagesIdToDelete.isEmpty() && jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdToDelete);
 
         //If a user tries to delete images that are not from the job to update
         if (!contains) {
@@ -115,7 +115,7 @@ public class JobServiceImpl implements JobService {
 
         //FIXME: DELETE IMAGES. NO SE BORRAN DE LA TABLA IMAGENES
         LOGGER.debug("Deleting job images");
-        jobImages.removeAll(imagesToDelete);
+        jobImages.removeIf(imagesToDelete::contains);
 
 //        LOGGER.debug("Deleting images");
 //        imageService.deleteImagesById(imagesIdToDelete);
