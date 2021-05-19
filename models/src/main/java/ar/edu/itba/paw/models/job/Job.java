@@ -195,20 +195,4 @@ public class Job {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Job{" +
-            "id=" + id +
-            ", description='" + description + '\'' +
-            ", category=" + category +
-            ", jobProvided='" + jobProvided + '\'' +
-            ", provider=" + provider +
-            ", price=" + price +
-            ", paused=" + paused +
-            ", averageRating=" + averageRating +
-            ", totalRatings=" + totalRatings +
-            ", images=" + images +
-            ", reviews=" + reviews +
-            '}';
-    }
 }

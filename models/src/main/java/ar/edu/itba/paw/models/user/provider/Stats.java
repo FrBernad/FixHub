@@ -50,12 +50,4 @@ public class Stats {
         return Objects.hash(jobsCount, avgRating, reviewCount);
     }
 
-    @Override
-    public String toString() {
-        return "Stats{" +
-            "jobsCount=" + jobsCount +
-            ", avgRating=" + avgRating +
-            ", reviewCount=" + reviewCount +
-            '}';
-    }
 }

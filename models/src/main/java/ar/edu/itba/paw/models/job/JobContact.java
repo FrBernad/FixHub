@@ -139,17 +139,5 @@ public class JobContact {
         return Objects.hash(contactId, user, provider, message, date, job, contactInfo);
     }
 
-    @Override
-    public String toString() {
-        return "JobContact{" +
-            "contactId=" + contactId +
-            ", user=" + user +
-            ", provider=" + provider +
-            ", message='" + message + '\'' +
-            ", date=" + date +
-            ", job=" + job +
-            ", contactInfo=" + contactInfo +
-            '}';
-    }
 }
 

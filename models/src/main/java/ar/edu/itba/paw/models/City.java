@@ -67,12 +67,4 @@ public class City {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "City{" +
-            "id=" + id +
-            ", state=" + state +
-            ", name='" + name + '\'' +
-            '}';
-    }
 }

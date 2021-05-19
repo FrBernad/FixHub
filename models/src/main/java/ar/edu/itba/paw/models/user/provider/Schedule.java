@@ -81,13 +81,5 @@ public class Schedule {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Schedule{" +
-            "id=" + id +
-            ", provider=" + provider +
-            ", startTime='" + startTime + '\'' +
-            ", endTime='" + endTime + '\'' +
-            '}';
-    }
+
 }

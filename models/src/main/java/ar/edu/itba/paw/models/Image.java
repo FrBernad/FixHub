@@ -68,14 +68,7 @@ public class Image {
         return Objects.hash(imageId);
     }
 
-    @Override
-    public String toString() {
-        return "Image{" +
-            "imageId=" + imageId +
-            ", data=" + Arrays.toString(data) +
-            ", mimeType='" + mimeType + '\'' +
-            '}';
-    }
+
 }
 
 

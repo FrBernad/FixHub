@@ -108,14 +108,4 @@ public class Review {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Review{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", job=" + job +
-                ", rating=" + rating +
-                ", creationDate=" + creationDate +
-                '}';
-    }
 }
