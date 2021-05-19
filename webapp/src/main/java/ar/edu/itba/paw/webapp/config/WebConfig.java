@@ -35,10 +35,6 @@ import java.util.Properties;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 
-//    FIXME:BORRAR
-//    @Value("classpath:schema.sql")
-//    private Resource schemaSql;
-
     private static final int MAX_SIZE_PER_FILE = 3000000;
 
     @Bean
@@ -80,21 +76,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return ds;
     }
     
-//    FIXME: borrar
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
-//        final DataSourceInitializer dsi = new DataSourceInitializer();
-//        dsi.setDataSource(ds);
-//        dsi.setDatabasePopulator(databasePopulator());
-//        return dsi;
-//    }
-//
-//    private DatabasePopulator databasePopulator() {
-//        final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-//        dbp.addScript(schemaSql);
-//        return dbp;
-//    }
-
     @Bean
     public MultipartResolver multipartResolver() {
         final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

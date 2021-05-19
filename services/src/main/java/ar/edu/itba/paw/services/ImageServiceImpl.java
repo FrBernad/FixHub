@@ -40,7 +40,7 @@ public class ImageServiceImpl implements ImageService {
 
     public Image createImage(ImageDto image) {
         final Image img = imageDao.createImage(image);
-        LOGGER.info("Created image with id {}", img.getImageId());
+        LOGGER.info("Created image with id {}", img.getId());
         return img;
     }
 

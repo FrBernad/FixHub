@@ -87,6 +87,7 @@
 
 .dropdownItem:hover{
     color: black;
+    text-decoration: none;
 }
 
 .dropdown-item:active{

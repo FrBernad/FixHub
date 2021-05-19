@@ -98,7 +98,7 @@ public class JobServiceImpl implements JobService {
         Set<Image> jobImages = job.getImages();
 
         if (!imagesIdToDelete.isEmpty()) {
-            boolean contains = jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdToDelete);
+            boolean contains = jobImages.stream().map(Image::getId).collect(Collectors.toSet()).containsAll(imagesIdToDelete);
 
             //If a user tries to delete images that are not from the job to update
             if (!contains) {
@@ -115,15 +115,13 @@ public class JobServiceImpl implements JobService {
         }
 
         LOGGER.debug("Deleting job images");
-        jobImages.removeIf(ji -> imagesIdToDelete.contains(ji.getImageId()));
+        jobImages.removeIf(ji -> imagesIdToDelete.contains(ji.getId()));
 
         if (!imagesToUpload.isEmpty()) {
             LOGGER.debug("Job {} has images", jobProvided);
             Set<Image> images = imageService.createImages(imagesToUpload);
             jobImages.addAll(images);
         }
-
-
     }
 
     private void sendNewJobNotificationMail(User user, Job job) {

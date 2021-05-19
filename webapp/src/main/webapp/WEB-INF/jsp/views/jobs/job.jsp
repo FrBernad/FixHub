@@ -29,7 +29,7 @@
                                         <div id="carousel" class="carousel-inner">
                                             <c:forEach var="image" items="${job.images}">
                                                 <div class="carousel-item">
-                                                    <img src="<c:url value='/jobs/images/${image.imageId}'/>"
+                                                    <img src="<c:url value='/jobs/images/${image.id}'/>"
                                                          alt="${job.category}" class="rounded"
                                                          style="object-fit: cover; height: 100%; width: 100%">
                                                 </div>
@@ -70,7 +70,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-7">
-                                <div class="container-fluid p-0">
+                                <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-12 pl-0">
                                             <h1 class="jobTitle"><c:out value="${job.jobProvided}"/></h1>
@@ -141,8 +141,8 @@
                         </div>
 
                         <hr class="text-left ml-0 my-4" style="width: 100%;">
-                        <div class="col-12 mt-2 px-0">
-                            <div class="container-fluid p-0">
+                        <div class="col-12 mt-2">
+                            <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                                         <h2 class="sectionTitle mb-3">

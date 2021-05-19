@@ -46,7 +46,7 @@ public class Job {
     @Transient
     private Long totalRatings;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "job_image",
         joinColumns = @JoinColumn(name = "ji_job_id"),
         inverseJoinColumns = @JoinColumn(name = "ji_image_id"))
@@ -79,7 +79,7 @@ public class Job {
     }
 
     public Long getJobThumbnailId() {
-        return images.stream().findFirst().orElse(null).getImageId();
+        return images.stream().findFirst().orElse(null).getId();
     }
 
     public BigDecimal getPrice() {
@@ -162,8 +162,8 @@ public class Job {
     public Long getThumbnailId() {
         Long id = -1L;
         for (Image image : images) {
-            if (id == -1 || id < image.getImageId()) {
-                id = image.getImageId();
+            if (id == -1 || id < image.getId()) {
+                id = image.getId();
             }
         }
         return id;

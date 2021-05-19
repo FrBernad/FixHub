@@ -12,7 +12,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "images_i_id_seq")
     @SequenceGenerator(sequenceName = "images_i_id_seq", name = "images_i_id_seq", allocationSize = 1)
     @Column(name = "i_id", nullable = false)
-    private Long imageId;
+    private Long id;
 
     @Column(name = "i_data", nullable = false, length = 30000000)
     @Basic(fetch = FetchType.LAZY, optional = false)
@@ -39,12 +39,12 @@ public class Image {
         this.mimeType = mimeType;
     }
 
-    public Long getImageId() {
-        return imageId;
+    public Long getId() {
+        return id;
     }
 
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public byte[] getData() {
@@ -60,12 +60,12 @@ public class Image {
         if (this == o) return true;
         if (!(o instanceof Image)) return false;
         Image image = (Image) o;
-        return Objects.equals(imageId, image.imageId);
+        return Objects.equals(id, image.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(imageId);
+        return Objects.hash(id);
     }
 
 

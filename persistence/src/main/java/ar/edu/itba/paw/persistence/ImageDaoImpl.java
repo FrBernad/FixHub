@@ -27,7 +27,7 @@ public class ImageDaoImpl implements ImageDao {
         Image aux;
         for(ImageDto image: imageDtoList){
             aux = createImage(image);
-            LOGGER.info("Image with id {} has been created succesfully",aux.getImageId());
+            LOGGER.info("Image with id {} has been created succesfully",aux.getId());
             images.add(aux);
         }
         return images;
@@ -43,7 +43,7 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public Optional<Image> getImageById(Long imageId) {
-        final TypedQuery<Image> query = em.createQuery("from Image as i where i.imageId = :imageId",Image.class);
+        final TypedQuery<Image> query = em.createQuery("from Image as i where i.id = :imageId",Image.class);
         query.setParameter("imageId",imageId);
         return query.getResultList().stream().findFirst();
     }
@@ -63,7 +63,7 @@ public class ImageDaoImpl implements ImageDao {
 
         LOGGER.info("Trying to deleted the image with id {}",imageId);
 
-        final Query query = em.createQuery("delete from Image as i where i.imageId = :imageId");
+        final Query query = em.createQuery("delete from Image as i where i.id = :imageId");
         query.setParameter("imageId",imageId);
         int aux = query.executeUpdate();
 

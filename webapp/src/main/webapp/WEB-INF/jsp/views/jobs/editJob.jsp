@@ -38,14 +38,14 @@
                                                          data-ride="carousel">
                                                         <div id="carousel" class="carousel-inner">
                                                             <c:forEach var="image" items="${job.images}">
-                                                                <div class="carousel-item" id="${image.imageId}">
-                                                                    <img src="<c:url value='/jobs/images/${image.imageId}'/>"
+                                                                <div class="carousel-item" id="${image.id}">
+                                                                    <img src="<c:url value='/jobs/images/${image.id}'/>"
                                                                          alt="${job.category}" class="rounded jobImages"
                                                                          style="object-fit: cover; height: 100%; width: 100%">
                                                                     <span class="imageDelete" style="cursor: pointer;"
-                                                                          data-image-id="${image.imageId}">
+                                                                          data-image-id="${image.id}">
 
-                                                                        <button class="deleteButton">
+                                                                        <button class="deleteButton" type="button">
                                                                             <i class="fas fa-trash fa-lg trashIcon"></i></button>
 
                                                                 </span>
