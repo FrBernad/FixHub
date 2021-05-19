@@ -89,22 +89,24 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> imagesToUpload, Job job, List<Long> imagesIdToDelete) {
-        //LOGGER.debug("Updating job");
+        LOGGER.debug("Updating job");
         job.setJobProvided(jobProvided);
         job.setDescription(description);
         job.setPrice(price);
         job.setPaused(paused);
 
-        Collection<Image> imagesToDelete = imageService.getImagesById(imagesIdToDelete);
         Set<Image> jobImages = job.getImages();
 
-        boolean contains = !imagesIdToDelete.isEmpty() && jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdToDelete);
+        if (!imagesIdToDelete.isEmpty()) {
+            boolean contains = jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdToDelete);
 
-        //If a user tries to delete images that are not from the job to update
-        if (!contains) {
-            LOGGER.warn("error: tried to delete image not corresponding to job");
-            throw new IllegalOperationException();
+            //If a user tries to delete images that are not from the job to update
+            if (!contains) {
+                LOGGER.warn("error: tried to delete image not corresponding to job");
+                throw new IllegalOperationException();
+            }
         }
+
 
         //If a job reaches the limit of images
         if (jobImages.size() - imagesIdToDelete.size() + imagesToUpload.size() > MAX_IMAGES_PER_JOB) {
@@ -112,21 +114,15 @@ public class JobServiceImpl implements JobService {
             throw new MaxImagesPerJobException();
         }
 
-
-        //FIXME: DELETE IMAGES. NO SE BORRAN DE LA TABLA IMAGENES
         LOGGER.debug("Deleting job images");
-        jobImages.removeIf(imagesToDelete::contains);
+        jobImages.removeIf(ji -> imagesIdToDelete.contains(ji.getImageId()));
 
-        Set<Image> images;
         if (!imagesToUpload.isEmpty()) {
             LOGGER.debug("Job {} has images", jobProvided);
-            images = imageService.createImages(imagesToUpload);
-        } else {
-            images = new LinkedHashSet<>();
-            LOGGER.debug("Job {} has no images", jobProvided);
+            Set<Image> images = imageService.createImages(imagesToUpload);
+            jobImages.addAll(images);
         }
 
-        jobImages.addAll(images);
 
     }
 
