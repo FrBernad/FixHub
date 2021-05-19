@@ -13,7 +13,7 @@ public class City {
     @Column(name = "c_id")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_state_id")
     private State state;
 

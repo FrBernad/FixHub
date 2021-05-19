@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
+import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
@@ -30,9 +31,10 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VerificationTokenDaoImpl.class);
 
+    //FIXME:
     @Override
     public Optional<VerificationToken> getVerificationToken(long id) {
-        return Optional.empty();
+        return Optional.ofNullable(em.find(VerificationToken.class, id));
     }
 
     @Override

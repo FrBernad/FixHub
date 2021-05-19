@@ -46,21 +46,6 @@ public class ImageServiceImpl implements ImageService {
 
 
     @Override
-    public void updateImage(ImageDto image, long imageId) {
-        LOGGER.info("Trying to update image with id {}", imageId);
-        Optional<Image> img = imageDao.getImageById(imageId);
-        if(img.isPresent()){
-            img.get().setData(image.getData());
-            img.get().setMimeType(image.getMimeType());
-            LOGGER.info("Image with id {} updated succesfully ", imageId);
-
-        }else
-            LOGGER.warn("Image not updated because id {} does not exist",imageId);
-
-
-    }
-
-    @Override
     public Collection<String> getContentTypesGIF() {
         LOGGER.debug("Retrieving content types with gif");
         return CONTENT_TYPE_GIF;

@@ -28,8 +28,6 @@ public interface UserService {
 
     Optional<User> updatePassword(String token, String password);
 
-    Optional<Stats> getUserStatsById(long id);
-
     void updateUserInfo(UserInfo userInfo, User user);
 
     void contact(ContactDto contactDto, User user, User provider) throws IllegalContactException;

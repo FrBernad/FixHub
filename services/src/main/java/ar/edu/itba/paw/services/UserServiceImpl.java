@@ -5,12 +5,12 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
+import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
-import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
@@ -19,7 +19,6 @@ import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import ar.edu.itba.paw.models.user.provider.Schedule;
-import ar.edu.itba.paw.models.user.provider.Stats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -190,10 +188,6 @@ public class UserServiceImpl implements UserService {
         return Optional.of(user);
     }
 
-    @Override
-    public Optional<Stats> getUserStatsById(long id) {
-        return userDao.getUserStatsById(id);
-    }
 
     @Override
     @Transactional
@@ -245,8 +239,6 @@ public class UserServiceImpl implements UserService {
         user.setProviderDetails(providerDetails);
 
         LOGGER.info("User {} is now provider", user.getId());
-        userDao.addSchedule(user.getId(), startTime, endTime);
-        userDao.addLocation(user.getId(), citiesId);
         sendProviderNotificationEmail(user);
     }
 
@@ -276,7 +268,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasContactJobProvided(User provider, User user) {
-        return true;
+        return userDao.hasContactJobProvided(provider,user);
     }
 
     @Transactional

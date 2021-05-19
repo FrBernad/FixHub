@@ -15,7 +15,7 @@ public class VerificationToken {
     @Column(name = "vt_id")
     private long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vt_user_id")
     private User user;
 

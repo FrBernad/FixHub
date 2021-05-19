@@ -181,6 +181,7 @@ public class JobDaoImpl implements JobDao {
             .getResultList();
     }
 
+//FIXME: ES NECESARIO HACER ESTO?
     @Override
     public Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city) {
         List<Object> variables = new LinkedList<>();
@@ -268,122 +269,5 @@ public class JobDaoImpl implements JobDao {
         }
     }
 
-
-//
-//    @Override
-//    public Integer getJobsCountByProviderId(String searchBy, Long providerId) {
-//        final List<Object> variables = new LinkedList<>();
-//
-//        final String filterQuery = " WHERE j_provider_id = ? ";
-//        variables.add(providerId);
-//
-//        final String searchQuery = getSearchQuery(searchBy, variables);
-//
-//        final String query = " select count(*) total from (select * from JOBS j JOIN USERS u ON j_provider_id = u_id" + filterQuery + " ) as aux" + searchQuery;
-//        LOGGER.debug("Executing query: {}", query);
-//
-//        return jdbcTemplate.query(query, variables.toArray(), (rs, rowNum) -> rs.getInt("total")).stream().findFirst().orElse(0);
-//
-//    }
-//
-
-//
-//
-//    @Override
-//    public Optional<Job> getJobById(long id) {
-//        final List<Object> variables = new LinkedList<>();
-//        variables.add(id);
-//
-//        final String filterQuery = " WHERE j_id = ? ";
-//
-//        final String JOBS_WHERE_ID_QUERY = String.format(
-//            " where j_id in ( " +
-//                " select j_id from " +
-//                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
-//                " JOIN " +
-//                " (SELECT distinct pl_user_id from cities join provider_location on c_id = pl_city_id ) as w1 " +
-//                " ON w0.j_provider_id=w1.pl_user_id " +
-//                " JOIN " +
-//                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-//                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
-//                " on job_id=j_id ) ",
-//            filterQuery
-//        );
-//
-//        final String query = String.format(
-//            " select * from " +
-//                " (select * from JOBS %s ) selectedJobs " +
-//                " JOIN " +
-//                " USERS on selectedJobs.j_provider_id=users.u_id " +
-//                " JOIN " +
-//                " ROLES on users.u_id = roles.r_user_id " +
-//                " JOIN " +
-//                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-//                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) as jobsStats " +
-//                " on j_id = jobsStats.job_id " +
-//                " LEFT OUTER JOIN " +
-//                " (select ji_job_id, ji_image_id from job_image) jobImages " +
-//                " on j_id = jobImages.ji_job_id ", JOBS_WHERE_ID_QUERY
-//        );
-//
-//        return executeQuery(query, variables).stream().findFirst();
-//    }
-//
-
-//
-//    @Override
-//    public Collection<Job> getJobsByProviderId(String searchBy, OrderOptions orderOption, Long providerId, int page, int itemsPerPage) {
-//        final List<Object> variables = new LinkedList<>();
-//
-//        final String filterQuery = " WHERE j_provider_id = ? ";
-//        variables.add(providerId);
-//
-//        final String searchQuery = getSearchQuery(searchBy, variables);
-//
-//        final String orderQuery = getOrderQuery(orderOption);
-//
-//        final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
-//
-//        final String JOBS_WHERE_ID_QUERY = String.format(
-//            " where j_id in ( " +
-//                " select j_id from " +
-//                " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
-//                " JOIN " +
-//                " (SELECT distinct pl_user_id from cities join provider_location on c_id = pl_city_id ) as w1 " +
-//                " ON w0.j_provider_id=w1.pl_user_id " +
-//                " JOIN " +
-//                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-//                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
-//                " on job_id=j_id %s %s %s ) "
-//            , filterQuery, searchQuery, orderQuery, offsetAndLimitQuery);
-//
-//        final String query = String.format(
-//            " select * from " +
-//                " (select * from JOBS %s ) selectedJobs " +
-//                " JOIN " +
-//                " USERS on selectedJobs.j_provider_id=users.u_id " +
-//                " JOIN " +
-//                " ROLES on users.u_id = roles.r_user_id " +
-//                " JOIN " +
-//                " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
-//                " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) as jobsStats " +
-//                " on j_id = jobsStats.job_id " +
-//                " LEFT OUTER JOIN " +
-//                " (select ji_job_id, ji_image_id from job_image) jobImages " +
-//                " on j_id = jobImages.ji_job_id %s "
-//                ,JOBS_WHERE_ID_QUERY,orderQuery);
-//
-//        return executeQuery(query, variables);
-//    }
-
-//    private Collection<Job> executeQuery(String query, List<Object> variables) {
-//        LOGGER.debug("Executing query: {}", query);
-//
-//        if (variables != null) {
-//            return jdbcTemplate.query(query, variables.toArray(), JOB_RS_EXTRACTOR);
-//        }
-//
-//        return jdbcTemplate.query(query, JOB_RS_EXTRACTOR);
-//    }
 
 }

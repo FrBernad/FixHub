@@ -18,15 +18,15 @@ public class Location {
     @Column(name = "pl_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pl_provider_id")
     private User provider;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pl_state_id")
     private State state;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "provider_cities",
         joinColumns = @JoinColumn(name = "pc_provider_id"),
         foreignKey = @ForeignKey(name = "pl_provider_id"),

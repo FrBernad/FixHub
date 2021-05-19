@@ -30,7 +30,7 @@ public class Review {
     @JoinColumn(name="r_job_id",nullable = false)
     private Job job;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="r_reviewer_id",nullable = false)
     private User reviewer;
 

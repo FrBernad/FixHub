@@ -15,7 +15,7 @@ public class Schedule {
     @Column(name = "sch_id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sch_provider_id")
     private User provider;
 

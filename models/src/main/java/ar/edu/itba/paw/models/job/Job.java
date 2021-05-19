@@ -46,7 +46,7 @@ public class Job {
     @Transient
     private Long totalRatings = 0L;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name = "job_image",
         joinColumns = @JoinColumn(name = "ji_job_id"),
         inverseJoinColumns = @JoinColumn(name = "ji_image_id"))

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.*;
 
@@ -61,15 +62,16 @@ public class ImageDaoImpl implements ImageDao {
     public int deleteImageById(long imageId) {
         LOGGER.info("Trying to deleted the image with id {}",imageId);
 
-        final TypedQuery<Image> query = em.createQuery("delete from Image as i where i.imageId = :imageId",Image.class);
+        final Query query = em.createQuery("delete from Image as i where i.imageId = :imageId");
         query.setParameter("imageId",imageId);
         int aux = query.executeUpdate();
+
         if(aux == 0 )
             LOGGER.warn("Error trying to delete an image with non-existent id {}",imageId);
         else
             LOGGER.info("The image with id {} has been deleted successfully",imageId);
 
-        return query.executeUpdate();
+        return aux;
     }
 
     @Override

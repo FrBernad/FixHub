@@ -88,14 +88,14 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> imagesToUpload, Job job, List<Long> imagesIdDeleted) {
+    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> imagesToUpload, Job job, List<Long> imagesIdToDelete) {
         //LOGGER.debug("Updating job");
         job.setJobProvided(jobProvided);
         job.setDescription(description);
         job.setPrice(price);
         job.setPaused(paused);
 
-        Collection<Image> imagesToDelete = imageService.getImagesById(imagesIdDeleted);
+        Collection<Image> imagesToDelete = imageService.getImagesById(imagesIdToDelete);
         Set<Image> jobImages = job.getImages();
 
         boolean contains = !imagesIdDeleted.isEmpty() && jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdDeleted);
@@ -107,13 +107,19 @@ public class JobServiceImpl implements JobService {
         }
 
         //If a job reaches the limit of images
-        if (jobImages.size() - imagesIdDeleted.size() + imagesToUpload.size() > MAX_IMAGES_PER_JOB) {
+        if (jobImages.size() - imagesIdToDelete.size() + imagesToUpload.size() > MAX_IMAGES_PER_JOB) {
             LOGGER.warn("error: tried to add more images than permitted");
             throw new MaxImagesPerJobException();
         }
 
-        //LOGGER.debug("Deleting job images");
+
+        //FIXME: DELETE IMAGES. NO SE BORRAN DE LA TABLA IMAGENES
+        LOGGER.debug("Deleting job images");
         jobImages.removeAll(imagesToDelete);
+
+//        LOGGER.debug("Deleting images");
+//        imageService.deleteImagesById(imagesIdToDelete);
+
 
         Set<Image> images;
         if (!imagesToUpload.isEmpty()) {
