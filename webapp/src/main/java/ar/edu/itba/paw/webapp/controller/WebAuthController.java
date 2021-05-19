@@ -227,7 +227,7 @@ public class WebAuthController {
         LOGGER.info("Accessed /user/join GET controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (user.hasRole("PROVIDER")) {
+        if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User {} is already provider", user.getId());
             return new ModelAndView("redirect:/user/dashboard");
         }
@@ -244,7 +244,7 @@ public class WebAuthController {
         LOGGER.info("Accessed /user/join POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (user.hasRole("PROVIDER")) {
+        if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User {} is already provider", user.getId());
             return new ModelAndView("redirect:/user/dashboard");
         }
@@ -279,7 +279,7 @@ public class WebAuthController {
         LOGGER.info("Accessed /user/join/chooseCity GET controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (user.hasRole("PROVIDER")) {
+        if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User {} is already provider", user.getId());
             return new ModelAndView("redirect:/user/dashboard");
         }
@@ -313,7 +313,7 @@ public class WebAuthController {
         LOGGER.info("Accessed /user/join/chooseCity POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (user.hasRole("PROVIDER")) {
+        if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User {} is already provider", user.getId());
             return new ModelAndView("redirect:/user/dashboard");
         }

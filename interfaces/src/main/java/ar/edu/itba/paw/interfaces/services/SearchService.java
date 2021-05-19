@@ -18,8 +18,8 @@ public interface SearchService {
 
     Collection<OrderOptions> getOrderOptions();
 
-    PaginatedSearchResult<User> getUserFollowers(Long userId, Integer page, Integer itemsPerPage);
+    PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer itemsPerPage);
 
-    PaginatedSearchResult<User> getUserFollowing(Long userId, Integer page, Integer itemsPerPage);
+    PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer itemsPerPage);
 
 }

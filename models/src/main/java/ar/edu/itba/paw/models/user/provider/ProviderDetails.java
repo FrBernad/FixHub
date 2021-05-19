@@ -28,13 +28,13 @@ public class ProviderDetails {
     private Set<JobContact> contacts;
 
     @Transient
-    private long jobsCount = 0;
+    private Long jobsCount;
 
     @Transient
-    private long avgRating = 0;
+    private Long avgRating;
 
     @Transient
-    private long reviewCount = 0;
+    private Long reviewCount;
 
     public ProviderDetails(Location location, Schedule schedule) {
         this.location = location;
@@ -48,6 +48,13 @@ public class ProviderDetails {
         return jobsCount;
     }
 
+    public long getAvgRating() {
+        return avgRating;
+    }
+
+    public long getReviewCount() {
+        return reviewCount;
+    }
 
     public Set<Job> getJobs() {
         return jobs;
@@ -85,16 +92,8 @@ public class ProviderDetails {
         this.jobsCount = jobsCount;
     }
 
-    public long getAvgRating() {
-        return avgRating;
-    }
-
     public void setAvgRating(long avgRating) {
         this.avgRating = avgRating;
-    }
-
-    public long getReviewCount() {
-        return reviewCount;
     }
 
     public void setReviewCount(long reviewCount) {

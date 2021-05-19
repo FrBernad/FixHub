@@ -33,7 +33,7 @@
                     <a href="#works" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${work}" id="tabWorks">
                         <i class="fas fa-wrench mr-2"></i><span class="text">${work}</span><span
-                            class="badge badge-pill badge-secondary"><c:out value="${stats.jobsCount}"/></span>
+                            class="badge badge-pill badge-secondary"><c:out value="${loggedUser.providerDetails.jobsCount}"/></span>
                     </a>
                     <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${contacts}" id="tabContacts">
@@ -65,14 +65,14 @@
                                                     <div class="col">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-wrench mr-2"></i><c:out
-                                                                    value="${stats.jobsCount}"/></h2>
+                                                                    value="${loggedUser.providerDetails.jobsCount}"/></h2>
                                                             <h4><spring:message code="dashboard.Works"/></h4>
                                                         </div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-star mr-2"></i><c:out
-                                                                    value="${stats.avgRating}"/>
+                                                                    value="${loggedUser.providerDetails.avgRating}"/>
                                                             </h2>
                                                             <h4><spring:message code="dashboard.Rating"/></h4>
                                                         </div>
@@ -80,7 +80,7 @@
                                                     <div class="col">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-comment mr-2"></i><c:out
-                                                                    value="${stats.reviewCount}"/></h2>
+                                                                    value="${loggedUser.providerDetails.reviewCount}"/></h2>
                                                             <h4><spring:message code="dashboard.Reviews"/></h4>
                                                         </div>
                                                     </div>

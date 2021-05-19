@@ -246,7 +246,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PaginatedSearchResult<User> getUserFollowers(Long userId, Integer page, Integer itemsPerPage) {
+    public PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer itemsPerPage) {
 
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
@@ -259,7 +259,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total followers count");
-        final int totalJobs = userDao.getUserFollowersCount(userId);
+        final int totalJobs = userDao.getUserFollowersCount(user.getId());
         final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -267,14 +267,14 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
-        LOGGER.debug("Retrieving page {} for user followers with id {}", page, userId);
-        final Collection<User> users = userDao.getUserFollowers(userId, page, itemsPerPage);
+        LOGGER.debug("Retrieving page {} for user followers with id {}", page, user.getId());
+        final Collection<User> users = userDao.getUserFollowers(user.getId(), page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
 
     }
 
     @Override
-    public PaginatedSearchResult<User> getUserFollowing(Long userId, Integer page, Integer itemsPerPage) {
+    public PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer itemsPerPage) {
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
             page = 0;
@@ -286,7 +286,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total following count");
-        final int totalJobs = userDao.getUserFollowingCount(userId);
+        final int totalJobs = userDao.getUserFollowingCount(user.getId());
         final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
 
         if (page >= totalPages) {
@@ -294,8 +294,8 @@ public class SearchServiceImpl implements SearchService {
             page = totalPages - 1;
         }
 
-        LOGGER.debug("Retrieving page {} for user following with id {}", page, userId);
-        final Collection<User> users = userDao.getUserFollowings(userId, page, itemsPerPage);
+        LOGGER.debug("Retrieving page {} for user following with id {}", page, user.getId());
+        final Collection<User> users = userDao.getUserFollowings(user.getId(), page, itemsPerPage);
         return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
     }
 

@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -57,9 +54,25 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<Job> getJobById(long id) {
-        final TypedQuery<Job> query = em.createQuery("from Job as j where j.id = :id", Job.class);
-        query.setParameter("id", id);
-        return query.getResultList().stream().findFirst();
+        final String hqlQuery =
+            " SELECT job, count(reviews) as total_ratings, coalesce(avg(reviews.rating),0) as avg_rating " +
+                " FROM Job job " +
+                " LEFT OUTER JOIN " +
+                " job.reviews reviews WHERE job.id = :id " +
+                " GROUP BY job.id ";
+
+        final Collection<Object[]> hqlQueryResult = em.createQuery(hqlQuery, Object[].class)
+            .setParameter("id", id)
+            .getResultList();
+
+        return hqlQueryResult
+            .stream()
+            .map(objArray -> {
+                final Job job = (Job) objArray[0];
+                job.setTotalRatings((Long) objArray[1]);
+                job.setAverageRating(((Double) objArray[2]).intValue());
+                return job;
+            }).findFirst();
     }
 
     public Collection<JobCategory> getJobsCategories() {
@@ -103,16 +116,24 @@ public class JobDaoImpl implements JobDao {
         final String hqlOrderQuery = getHQLOrderQuery(orderOption);
 
         final String hqlQuery = String.format(
-            " SELECT job, count(reviews) total_reviews, avg(reviews.rating) avg_rating " +
+            " SELECT job, count(reviews) as total_ratings, coalesce(avg(reviews.rating),0) as avg_rating " +
                 " FROM Job job " +
                 " LEFT OUTER JOIN " +
                 " job.reviews reviews WHERE job.id IN :filteredIds " +
-                " "
-        );
+                " GROUP BY job.id %s ", hqlOrderQuery);
 
-        return em.createQuery(" FROM Job job where job.id IN :filteredIds ", Job.class)
+        final Collection<Object[]> hqlQueryResult = em.createQuery(hqlQuery, Object[].class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
+
+        return hqlQueryResult
+            .stream()
+            .map(objArray -> {
+                final Job job = (Job) objArray[0];
+                job.setTotalRatings((Long) objArray[1]);
+                job.setAverageRating(((Double) objArray[2]).intValue());
+                return job;
+            }).collect(Collectors.toList());
 
     }
 
@@ -176,9 +197,26 @@ public class JobDaoImpl implements JobDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from Job where id IN :filteredIds", Job.class)
+        final String hqlOrderQuery = getHQLOrderQuery(orderOption);
+        final String hqlQuery = String.format(
+            " SELECT job, count(reviews) as total_ratings, coalesce(avg(reviews.rating),0) as avg_rating " +
+                " FROM Job job " +
+                " LEFT OUTER JOIN " +
+                " job.reviews reviews WHERE job.id IN :filteredIds " +
+                " GROUP BY job.id %s ", hqlOrderQuery);
+
+        final Collection<Object[]> hqlQueryResult = em.createQuery(hqlQuery, Object[].class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
+
+        return hqlQueryResult
+            .stream()
+            .map(objArray -> {
+                final Job job = (Job) objArray[0];
+                job.setTotalRatings((Long) objArray[1]);
+                job.setAverageRating(((Double) objArray[2]).intValue());
+                return job;
+            }).collect(Collectors.toList());
     }
 
 

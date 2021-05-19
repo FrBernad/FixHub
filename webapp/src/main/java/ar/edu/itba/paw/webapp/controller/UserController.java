@@ -99,9 +99,7 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/followers GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        user.setFollowers(userService.getFollowersCount(user.getId()));
-//        user.setFollowing(userService.getFollowingCount(user.getId()));
-        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user.getId(), 0, 4);
+        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", followers);
@@ -115,9 +113,9 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/followers/search GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        user.setFollowers(userService.getFollowersCount(user.getId()));
-//        user.setFollowing(userService.getFollowingCount(user.getId()));
-        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user.getId(), form.getPage(), 4);
+//        user.setFollowers(userService.getFollowersCount(user));
+//        user.setFollowing(userService.getFollowingCount(user));
+        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user, form.getPage(), 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", followers);
@@ -131,9 +129,9 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/following GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        user.setFollowers(userService.getFollowersCount(user.getId()));
-//        user.setFollowing(userService.getFollowingCount(user.getId()));
-        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), 0, 4);
+//        user.setFollowers(userService.getFollowersCount(user));
+//        user.setFollowing(userService.getFollowingCount(user));
+        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("flag", true);
@@ -148,9 +146,9 @@ public class UserController {
         LOGGER.info("Accessed /user/profile/following/search GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        user.setFollowers(userService.getFollowersCount(user.getId()));
-//        user.setFollowing(userService.getFollowingCount(user.getId()));
-        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user.getId(), form.getPage(), 4);
+//        user.setFollowers(userService.getFollowersCount(user));
+//        user.setFollowing(userService.getFollowingCount(user));
+        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user, form.getPage(), 4);
         final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
         mav.addObject("results", following);
         mav.addObject("flag", true);

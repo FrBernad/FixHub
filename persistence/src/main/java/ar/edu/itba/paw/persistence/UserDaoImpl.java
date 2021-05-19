@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
+import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import ar.edu.itba.paw.models.user.provider.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,16 +45,32 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        final String hqlQuery =
+            " SELECT u, count(DISTINCT j.id) AS total_jobs, count(r.rating) AS total_reviews, coalesce(avg(r.rating),0) as avg_rating " +
+                " FROM User u " +
+                " LEFT OUTER JOIN " +
+                " u.providerDetails.jobs j" +
+                " LEFT OUTER JOIN " +
+                " j.reviews r " +
+                " WHERE u.email = :email " +
+                " group by u.id";
 
-        CriteriaQuery<User> q = cb.createQuery(User.class);
+        final Collection<Object[]> hqlQueryResult = em.createQuery(hqlQuery, Object[].class)
+            .setParameter("email", email)
+            .getResultList();
 
-        Root<User> c = q.from(User.class);
-
-        q.select(c);
-        q.where(cb.equal(c.get("email"), email));
-
-        return em.createQuery(q).getResultList().stream().findFirst();
+        return hqlQueryResult
+            .stream()
+            .map(objArray -> {
+                final User user = (User) objArray[0];
+                if (user.hasRole(Roles.PROVIDER)) {
+                    final ProviderDetails providerDetails = user.getProviderDetails();
+                    providerDetails.setJobsCount((Long) objArray[1]);
+                    providerDetails.setReviewCount((Long) objArray[2]);
+                    providerDetails.setAvgRating(Math.round((Double) objArray[3]));
+                }
+                return user;
+            }).findFirst();
     }
 
     @Override
@@ -132,7 +149,7 @@ public class UserDaoImpl implements UserDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from JobContact where id IN :filteredIds", JobContact.class)
+        return em.createQuery("from JobContact jb where id IN :filteredIds order by jb.date DESC", JobContact.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
     }
@@ -172,7 +189,7 @@ public class UserDaoImpl implements UserDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from JobContact where id IN :filteredIds", JobContact.class)
+        return em.createQuery("from JobContact jb where id IN :filteredIds order by jb.date DESC", JobContact.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 
@@ -201,8 +218,8 @@ public class UserDaoImpl implements UserDao {
             " select u_id " +
                 " from USERS " +
                 " JOIN " +
-                " (SELECT f_followed_user_id FROM FOLLOWS WHERE f_user_id = ?) followedIds " +
-                " on f_followed_user_id = users.u_id " +
+                " (SELECT f_user_id FROM FOLLOWS WHERE f_followed_user_id = ?) followedIds " +
+                " on f_user_id = users.u_id " +
                 " order by u_id desc " + offsetAndLimitQuery;
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
@@ -214,7 +231,7 @@ public class UserDaoImpl implements UserDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from User where id IN :filteredIds", User.class)
+        return em.createQuery("from User u where id IN :filteredIds order by u.id desc", User.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
     }
@@ -245,7 +262,7 @@ public class UserDaoImpl implements UserDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from User where id IN :filteredIds", User.class)
+        return em.createQuery("from User u where id IN :filteredIds order by u.id desc", User.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 

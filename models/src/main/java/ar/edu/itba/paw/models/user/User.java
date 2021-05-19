@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import org.hibernate.annotations.Formula;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
@@ -176,8 +177,8 @@ public class User {
         this.city = city;
     }
 
-    public boolean hasRole(String role) {
-        return roles.stream().anyMatch(p -> p.name().equals(role));
+    public boolean hasRole(Roles role) {
+        return roles.stream().anyMatch(p -> p.equals(role));
     }
 
     public Set<Roles> getRoles() {

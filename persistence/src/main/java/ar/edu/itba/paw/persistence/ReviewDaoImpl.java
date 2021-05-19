@@ -60,7 +60,7 @@ public class ReviewDaoImpl implements ReviewDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from Review where id IN :filteredIds", Review.class)
+        return em.createQuery("from Review r where id IN :filteredIds order by creationDate desc, r.id desc", Review.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
     }

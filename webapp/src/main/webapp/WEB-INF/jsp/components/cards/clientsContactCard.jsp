@@ -4,10 +4,10 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-8">
-                        <a href="<c:url value="/jobs/${contact.jobId}"/>">
-                            <c:out value="${contact.jobProvided}"/></a>
+                        <a href="<c:url value="/jobs/${contact.job.id}"/>">
+                            <c:out value="${contact.job.jobProvided}"/></a>
                         |
-                        <a class="names" href="<c:url value="/user/${contact.user.userId}"/>">
+                        <a class="names" href="<c:url value="/user/${contact.user.id}"/>">
                             <c:out value="${contact.user.name} ${contact.user.surname}"/>
                         </a>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-12">
                             <span class="client-label"><spring:message code="dashboard.client"/>:</span>
-                            <a class="names" href="<c:url value="/user/${contact.user.userId}"/>">
+                            <a class="names" href="<c:url value="/user/${contact.user.id}"/>">
                                 <c:out value="${contact.user.name} ${contact.user.surname}"/>
                             </a>
                         </div>

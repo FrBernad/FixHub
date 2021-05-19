@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title><spring:message code="productName"/> | <spring:message code="profilePage.${following ? 'following' : 'followers'}"/></title>
+    <title><spring:message code="productName"/> | <spring:message code="profilePage.${flag ? 'following' : 'followers'}"/></title>
     <%@ include file="../../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/followers.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
@@ -23,12 +23,12 @@
                         <div class="profilePictureContainer">
                             <div class="picContainer">
                                 <c:choose>
-                                    <c:when test="${user.profileImage == 0}">
+                                    <c:when test="${user.profileImage == null}">
                                         <img alt="profile picture" src="<c:url value='/resources/images/userProfile.png'/>"
                                              class="profilePicture">
                                     </c:when>
                                     <c:otherwise>
-                                        <img alt="profile picture" src="<c:url value='/user/images/profile/${user.profileImage.imageId}'/>"
+                                        <img alt="profile picture" src="<c:url value='/user/images/profile/${user.profileImage.id}'/>"
                                              class="profilePicture">
                                     </c:otherwise>
                                 </c:choose>
@@ -105,7 +105,7 @@
                                                 <a class="extraInfo"
                                                    href="<c:url value="/user/${user.id}/followers"/>">
                                                             <span class="detailField">
-                                                                <c:out value="${user.followers}"/>
+                                                                <c:out value="${user.followers.size()}"/>
                                                             </span>
                                                     ${followers}
                                                 </a>
@@ -113,7 +113,7 @@
                                                 <a class="extraInfo"
                                                    href="<c:url value="/user/${user.id}/following"/>">
                                                         <span class="detailField">
-                                                            <c:out value="${user.following}"/>
+                                                            <c:out value="${user.following.size()}"/>
                                                         </span>
                                                     ${following}
                                                 </a>

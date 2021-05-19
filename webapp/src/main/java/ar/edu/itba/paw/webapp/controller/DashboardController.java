@@ -47,6 +47,7 @@ public class DashboardController {
 
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
+        mav.addObject("loggedUser", user);
         mav.addObject("orderOptions", orderOptions);
         mav.addObject("results", jobs);
         mav.addObject("contactsResults", contacts);
@@ -68,6 +69,7 @@ public class DashboardController {
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
+        mav.addObject("loggedUser", user);
         mav.addObject("orderOptions", orderOptions);
         mav.addObject("searched", true);
         mav.addObject("results", jobs);
@@ -85,18 +87,15 @@ public class DashboardController {
 
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, form.getPage(), 4);
 
-        //FIXME: ESTO NO VA MAS
-//        final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProvider(null, null, user, 0, 4);
 
         final ModelAndView mav = new ModelAndView("views/user/dashboard");
+        mav.addObject("loggedUser", user);
         mav.addObject("orderOptions", orderOptions);
         mav.addObject("contactTab", true);
         mav.addObject("contactsResults", contacts);
-//       FIXME: ESTO NO VA MAS
-//        mav.addObject("stats", stats);
         mav.addObject("results", jobs);
 
         return mav;

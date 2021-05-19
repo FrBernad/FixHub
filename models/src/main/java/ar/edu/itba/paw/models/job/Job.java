@@ -41,10 +41,10 @@ public class Job {
     private boolean paused;
 
     @Transient
-    private Integer averageRating = 0;
+    private Integer averageRating;
 
     @Transient
-    private Long totalRatings = 0L;
+    private Long totalRatings;
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinTable(name = "job_image",

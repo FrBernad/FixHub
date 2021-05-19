@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-2 p-0 d-flex justify-content-center align-items-center">
             <c:choose>
-                <c:when test="${follower.profileImageId == 0}">
+                <c:when test="${follower.profileImage == null}">
                     <img alt="profile picture" src="<c:url value='/resources/images/userProfile.png'/>"
                          class="avatarPicture">
                 </c:when>
                 <c:otherwise>
-                    <img alt="profile picture" src="<c:url value='/user/images/profile/${follower.profileImageId}'/>"
+                    <img alt="profile picture" src="<c:url value='/user/images/profile/${follower.profileImage.id}'/>"
                          class="avatarPicture">
                 </c:otherwise>
             </c:choose>
@@ -39,18 +39,6 @@
                 </div>
             </div>
         </div>
-        <%--        <c:if test="${loggedUser != null && loggedUser.id==user.id}">--%>
-        <%--            <div class="col-3 p-0 d-flex justify-content-center align-items-center">--%>
-        <%--                <c:choose>--%>
-        <%--                    <c:when test="${results.results.stream().anyMatch(u-> u.getId()==user.id)}">--%>
-        <%--                        <button class="contactBtn"><spring:message code="profilePage.unfollow"/></button>--%>
-        <%--                    </c:when>--%>
-        <%--                    <c:otherwise>--%>
-        <%--                        <button class="contactBtn"><spring:message code="profilePage.unfollow"/></button>--%>
-        <%--                    </c:otherwise>--%>
-        <%--                </c:choose>--%>
-        <%--            </div>--%>
-        <%--        </c:if>--%>
     </div>
 
 </div>
