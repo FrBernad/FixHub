@@ -87,10 +87,9 @@ public class JobController {
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         //Se que el job existe porque ya pedí el job en la base de datos
-        final Review review = reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()), user);
+        reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()), user);
 
-        final ModelAndView mav = new ModelAndView("redirect:/jobs/" + job.getId());
-        return mav;
+        return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
     @RequestMapping("/jobs/{jobId}/edit")

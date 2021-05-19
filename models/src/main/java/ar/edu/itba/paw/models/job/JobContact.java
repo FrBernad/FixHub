@@ -18,7 +18,7 @@ public class JobContact {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_id_seq")
     @SequenceGenerator(sequenceName = "contact_id_seq", name = "contact_id_seq", allocationSize = 1)
     @Column(name = "c_id")
-    private Long contactId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "c_user_id")
@@ -92,11 +92,11 @@ public class JobContact {
     }
 
     public Long getContactId() {
-        return contactId;
+        return id;
     }
 
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
+    public void setContactId(Long id) {
+        this.id = id;
     }
 
     public User getProvider() {
@@ -128,15 +128,12 @@ public class JobContact {
         if (this == o) return true;
         if (!(o instanceof JobContact)) return false;
         JobContact that = (JobContact) o;
-        return Objects.equals(contactId, that.contactId) && Objects.equals(user, that.user)
-            && Objects.equals(provider, that.provider) && Objects.equals(message, that.message)
-            && Objects.equals(date, that.date) && Objects.equals(job, that.job)
-            && Objects.equals(contactInfo, that.contactInfo);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactId, user, provider, message, date, job, contactInfo);
+        return Objects.hash(id);
     }
 
 }

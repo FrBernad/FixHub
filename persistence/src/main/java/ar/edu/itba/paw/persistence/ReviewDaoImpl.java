@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.sql.DataSource;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -66,7 +67,17 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public int getReviewsCountByJob(Job job) {
-        return 0;
+        List<Object> variables = new LinkedList<>();
+
+        variables.add(job.getId());
+
+        final String query = "SELECT count(*) as total FROM REVIEWS r WHERE r_job_id = ?";
+
+        Query nativeQuery = em.createNativeQuery(query);
+
+        setQueryVariables(nativeQuery, variables);
+
+        return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     private String getOffsetAndLimitQuery(int page, int itemsPerPage, List<Object> variables) {

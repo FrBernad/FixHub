@@ -4,9 +4,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-11">
-                        <a href="<c:url value="/jobs/${contact.jobId}"/>"><c:out value="${contact.jobProvided}"/></a> |
-                        <a class="names" href="<c:url value="/user/${contact.user.userId}"/>"><c:out
-                                value="${contact.user.name} ${contact.user.surname}"/></a>
+                        <a href="<c:url value="/jobs/${contact.job.id}"/>"><c:out value="${contact.job.jobProvided}"/></a> |
+                        <a class="names" href="<c:url value="/user/${contact.provider.id}"/>"><c:out
+                                value="${contact.provider.name} ${contact.provider.surname}"/></a>
                     </div>
                     <div class="col-1 d-flex align-items-center justify-content-end">
                         <i type="button" data-toggle="collapse"
@@ -28,8 +28,8 @@
                     <div class="row">
                         <div class="col-12">
                             <span class="client-label"><spring:message code="dashboard.provider"/>:</span>
-                            <a class="names" href="<c:url value="/user/${contact.user.userId}"/>">
-                                <c:out value="${contact.user.name} ${contact.user.surname}"/>
+                            <a class="names" href="<c:url value="/user/${contact.provider.id}"/>">
+                                <c:out value="${contact.provider.name} ${contact.provider.surname}"/>
                             </a>
                         </div>
                         <div class="col-12">

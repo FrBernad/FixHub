@@ -15,7 +15,7 @@ public class ContactInfo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_info_id_seq")
     @SequenceGenerator(sequenceName = "contact_info_id_seq", name = "contact_info_id_seq", allocationSize = 1)
     @Column(name = "ci_id",nullable = false)
-    private Long contactInfoId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ci_user_id")
@@ -39,7 +39,7 @@ public class ContactInfo {
     @Column(name = "ci_department_number",length = 50)
     private String departmentNumber;
 
-    @OneToMany(mappedBy = "contactInfo")
+    @OneToMany(mappedBy = "contactInfo", fetch = FetchType.LAZY)
     private Set<JobContact> jobContact;
 
     protected ContactInfo() {
@@ -56,6 +56,8 @@ public class ContactInfo {
         this.departmentNumber = departmentNumber;
     }
 
+
+
     public User getUserId() {
         return user;
     }
@@ -65,11 +67,11 @@ public class ContactInfo {
     }
 
     public Long getContactInfoId() {
-        return contactInfoId;
+        return id;
     }
 
-    public void setContactInfoId(Long contactInfoId) {
-        this.contactInfoId = contactInfoId;
+    public void setContactInfoId(Long id) {
+        this.id = id;
     }
 
     public String getState() {
@@ -125,11 +127,11 @@ public class ContactInfo {
         if (this == o) return true;
         if (!(o instanceof ContactInfo)) return false;
         ContactInfo that = (ContactInfo) o;
-        return Objects.equals(contactInfoId, that.contactInfoId);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactInfoId);
+        return Objects.hash(id);
     }
 }
