@@ -59,12 +59,12 @@ public class City {
         if (this == o) return true;
         if (!(o instanceof City)) return false;
         City city = (City) o;
-        return id == city.id && Objects.equals(state, city.state) && Objects.equals(name, city.name);
+        return id == city.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, state, name);
+        return Objects.hash(id);
     }
 
     @Override

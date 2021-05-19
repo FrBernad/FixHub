@@ -73,12 +73,12 @@ public class Schedule {
         if (this == o) return true;
         if (!(o instanceof Schedule)) return false;
         Schedule schedule = (Schedule) o;
-        return Objects.equals(id, schedule.id) && Objects.equals(provider, schedule.provider) && Objects.equals(startTime, schedule.startTime) && Objects.equals(endTime, schedule.endTime);
+        return Objects.equals(id, schedule.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, provider, startTime, endTime);
+        return Objects.hash(id);
     }
 
     @Override

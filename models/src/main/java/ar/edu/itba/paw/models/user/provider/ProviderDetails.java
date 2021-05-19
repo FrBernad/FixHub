@@ -101,16 +101,4 @@ public class ProviderDetails {
         this.reviewCount = reviewCount;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProviderDetails that = (ProviderDetails) o;
-        return Objects.equals(jobs, that.jobs) && location.equals(that.location) && schedule.equals(that.schedule) && Objects.equals(contacts, that.contacts);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(jobs, location, schedule, contacts);
-    }
 }

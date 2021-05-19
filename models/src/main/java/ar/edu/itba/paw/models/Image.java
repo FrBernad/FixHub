@@ -60,14 +60,12 @@ public class Image {
         if (this == o) return true;
         if (!(o instanceof Image)) return false;
         Image image = (Image) o;
-        return Objects.equals(imageId, image.imageId) && Arrays.equals(data, image.data) && Objects.equals(mimeType, image.mimeType);
+        return Objects.equals(imageId, image.imageId);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(imageId, mimeType);
-        result = 31 * result + Arrays.hashCode(data);
-        return result;
+        return Objects.hash(imageId);
     }
 
     @Override

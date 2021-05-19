@@ -123,13 +123,13 @@ public class ContactInfo {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof ContactInfo)) return false;
         ContactInfo that = (ContactInfo) o;
-        return contactInfoId.equals(that.contactInfoId) && user.equals(that.user) && state.equals(that.state) && city.equals(that.city) && street.equals(that.street) && addressNumber.equals(that.addressNumber) && Objects.equals(floor, that.floor) && Objects.equals(departmentNumber, that.departmentNumber);
+        return Objects.equals(contactInfoId, that.contactInfoId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contactInfoId, user, state, city, street, addressNumber, floor, departmentNumber);
+        return Objects.hash(contactInfoId);
     }
 }
