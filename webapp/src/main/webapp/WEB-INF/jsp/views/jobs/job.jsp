@@ -180,14 +180,14 @@
                                                     <p class="text-left">
                                                         <span class="font-weight-bold"><spring:message
                                                                 code="job.information.state"/></span> <c:out
-                                                            value="${location.state}"/>
+                                                            value="${job.provider.providerDetails.location.state.name}"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="text-left">
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.city"/></span>
-                                                        <c:forEach var="city" items="${location.cities}">
+                                                        <c:forEach var="city" items="${job.provider.providerDetails.location.cities}">
                                                                 <span class="badge badge-pill badge-secondary p-2 mt-2"><c:out
                                                                         value="${city.name}"/></span>
                                                         </c:forEach>
@@ -198,10 +198,10 @@
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.time"/></span>
                                                         <spring:message
-                                                                code="job.information.from" arguments="${startTime}"
+                                                                code="job.information.from" arguments="${job.provider.providerDetails.schedule.startTime}"
                                                                 javaScriptEscape="true" htmlEscape="true"/>
                                                         <spring:message
-                                                                code="job.information.to" arguments="${endTime}"
+                                                                code="job.information.to" arguments="${job.provider.providerDetails.schedule.endTime}"
                                                                 javaScriptEscape="true" htmlEscape="true"/>
                                                     </p>
                                                 </div>

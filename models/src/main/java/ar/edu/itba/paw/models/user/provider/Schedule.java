@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models.user.provider;
 
+import ar.edu.itba.paw.models.user.User;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,7 +17,7 @@ public class Schedule {
 
     @OneToOne
     @JoinColumn(name = "sch_provider_id")
-    private Provider provider;
+    private User provider;
 
     @Column(name = "sch_start_time", length = 5, nullable = false)
     private String startTime;
@@ -28,7 +30,7 @@ public class Schedule {
         // Just for Hibernate
     }
 
-    public Schedule(Provider provider, String startTime, String endTime) {
+    public Schedule(User provider, String startTime, String endTime) {
         this.provider = provider;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -42,11 +44,11 @@ public class Schedule {
         this.id = id;
     }
 
-    public Provider getProvider() {
+    public User getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(User provider) {
         this.provider = provider;
     }
 

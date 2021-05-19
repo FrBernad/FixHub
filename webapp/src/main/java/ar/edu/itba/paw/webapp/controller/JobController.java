@@ -55,12 +55,9 @@ public class JobController {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-//        FIXME: should be job.getProvider().getSchedule()
-//        final Schedule schedule = userService.getScheduleByUserId(job.getProvider().getId()).orElseThrow(ScheduleNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
         mav.addObject("job", job);
         mav.addObject("error", error);
-        mav.addObject("location", job.getProvider().getLocation());
         PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, 4);
         PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJob(job, 0, 4);
         mav.addObject("results", results);
@@ -74,9 +71,7 @@ public class JobController {
         }
 
         mav.addObject("canReview", canReview);
-//        FIXME: should be job.getProvider().getSchedule()
-//        mav.addObject("startTime", schedule.getStartTime());
-//        mav.addObject("endTime", schedule.getEndTime());
+
         return mav;
     }
 

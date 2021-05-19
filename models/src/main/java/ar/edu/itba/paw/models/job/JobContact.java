@@ -2,7 +2,6 @@ package ar.edu.itba.paw.models.job;
 
 import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.provider.Provider;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -28,7 +27,7 @@ public class JobContact {
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "c_provider_id")
-    private Provider provider;
+    private User provider;
 
     @Column(name = "c_message", length = 300, nullable = false)
     private String message;
@@ -101,11 +100,11 @@ public class JobContact {
         this.contactId = contactId;
     }
 
-    public Provider getProvider() {
+    public User getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(User provider) {
         this.provider = provider;
     }
 

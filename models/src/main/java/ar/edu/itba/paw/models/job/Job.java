@@ -42,10 +42,10 @@ public class Job {
     private boolean paused;
 
     @Transient
-    private Integer averageRating;
+    private Integer averageRating = 0;
 
     @Transient
-    private Long totalRatings;
+    private Long totalRatings = 0L;
 
     @OneToMany
     @JoinTable(name = "job_image",
@@ -53,12 +53,10 @@ public class Job {
         inverseJoinColumns = @JoinColumn(name = "ji_image_id"))
     private Set<Image> images;
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "job")
     private Set<Review> reviews;
 
     public static final Integer MAX_IMAGES_PER_JOB = 6;
-
 
     /* default */
     protected Job() {

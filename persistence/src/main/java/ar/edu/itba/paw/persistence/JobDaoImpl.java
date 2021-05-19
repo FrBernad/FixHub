@@ -28,22 +28,30 @@ public class JobDaoImpl implements JobDao {
 
     private static final Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
 
-    private static final Map<OrderOptions, String> ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
+    private static final Map<OrderOptions, String> SQL_ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
+    private static final Map<OrderOptions, String> HQL_ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobDaoImpl.class);
 
     static {
-        ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, j_id desc");
-        ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, j_id desc");
-        ORDER_OPTIONS.put(OrderOptions.HIGHER_PRICE, "j_price desc, total_ratings desc, j_id desc");
-        ORDER_OPTIONS.put(OrderOptions.LOWER_PRICE, "j_price asc, total_ratings desc, j_id desc");
+        SQL_ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, j_id desc");
+        SQL_ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, j_id desc");
+        SQL_ORDER_OPTIONS.put(OrderOptions.HIGHER_PRICE, "j_price desc, total_ratings desc, j_id desc");
+        SQL_ORDER_OPTIONS.put(OrderOptions.LOWER_PRICE, "j_price asc, total_ratings desc, j_id desc");
     }
 
-   @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, Provider provider, Set<Image> images) {
+    static {
+        HQL_ORDER_OPTIONS.put(OrderOptions.MOST_POPULAR, "avg_rating desc, total_ratings desc, job.id desc");
+        HQL_ORDER_OPTIONS.put(OrderOptions.LESS_POPULAR, "avg_rating asc, total_ratings desc, job.id desc");
+        HQL_ORDER_OPTIONS.put(OrderOptions.HIGHER_PRICE, "job.price desc, total_ratings desc, job.id desc");
+        HQL_ORDER_OPTIONS.put(OrderOptions.LOWER_PRICE, "job.price asc, total_ratings desc, job.id desc");
+    }
+
+    @Override
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, Set<Image> images) {
         final int averageRating = 0;
         final Long totalRatings = 0L;
-        Job job = new Job(description,jobProvided,averageRating,totalRatings,category,price,paused,provider,images);
+        Job job = new Job(description, jobProvided, averageRating, totalRatings, category, price, paused, provider, images);
         em.persist(job);
         LOGGER.debug("Created job with id {}", job.getId());
         return job;
@@ -51,8 +59,8 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<Job> getJobById(long id) {
-        final TypedQuery<Job> query = em.createQuery("from Job as j where j.id = :id",Job.class);
-        query.setParameter("id",id);
+        final TypedQuery<Job> query = em.createQuery("from Job as j where j.id = :id", Job.class);
+        query.setParameter("id", id);
         return query.getResultList().stream().findFirst();
     }
 
@@ -78,7 +86,7 @@ public class JobDaoImpl implements JobDao {
                 " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
                 " JOIN " +
                 " (SELECT distinct pc_provider_id from cities join provider_cities on c_id = pc_city_id ) as w1 " +
-                " ON w0.j_provider_id=w1.pl_user_id " +
+                " ON w0.j_provider_id=w1.pc_provider_id " +
                 " JOIN " +
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
@@ -94,7 +102,17 @@ public class JobDaoImpl implements JobDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from Job where id IN :filteredIds", Job.class)
+        final String hqlOrderQuery = getHQLOrderQuery(orderOption);
+
+        final String hqlQuery = String.format(
+            " SELECT job, count(reviews) total_reviews, avg(reviews.rating) avg_rating " +
+                " FROM Job job " +
+                " LEFT OUTER JOIN " +
+                " job.reviews reviews WHERE job.id IN :filteredIds " +
+                " "
+        );
+
+        return em.createQuery(" FROM Job job where job.id IN :filteredIds ", Job.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 
@@ -190,7 +208,11 @@ public class JobDaoImpl implements JobDao {
     }
 
     private String getOrderQuery(OrderOptions orderOption) {
-        return String.format(" ORDER BY %s ", ORDER_OPTIONS.get(orderOption));
+        return String.format(" ORDER BY %s ", SQL_ORDER_OPTIONS.get(orderOption));
+    }
+
+    private String getHQLOrderQuery(OrderOptions orderOption) {
+        return String.format(" ORDER BY %s ", HQL_ORDER_OPTIONS.get(orderOption));
     }
 
     private String getCategoryFilterQuery(JobCategory category, List<Object> variables) {

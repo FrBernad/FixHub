@@ -30,8 +30,6 @@ public interface UserDao {
 
     Optional<Stats> getUserStatsById(long id);
 
-    void addRole(long userId, Roles newRole);
-
     ContactInfo addContactInfo(ContactDto contactDto);
 
     void addClient(ContactDto contactDto, Long contactInfoId, Timestamp time);
@@ -56,5 +54,6 @@ public interface UserDao {
 
     Integer getUserFollowingCount(Long userId);
 
+    void persistProviderDetails(Location location, Schedule schedule);
 
 }

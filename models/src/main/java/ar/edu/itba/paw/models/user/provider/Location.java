@@ -2,6 +2,7 @@ package ar.edu.itba.paw.models.user.provider;
 
 import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.State;
+import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -19,7 +20,7 @@ public class Location {
 
     @OneToOne
     @JoinColumn(name = "pl_provider_id")
-    private Provider provider;
+    private User provider;
 
     @ManyToOne
     @JoinColumn(name = "pl_state_id")
@@ -33,7 +34,7 @@ public class Location {
     )
     private Set<City> cities;
 
-    public Location(Provider provider, Set<City> cities, State state) {
+    public Location(User provider, Set<City> cities, State state) {
         this.provider = provider;
         this.cities = cities;
         this.state = state;
@@ -52,11 +53,11 @@ public class Location {
         this.id = id;
     }
 
-    public Provider getProvider() {
+    public User getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(User provider) {
         this.provider = provider;
     }
 

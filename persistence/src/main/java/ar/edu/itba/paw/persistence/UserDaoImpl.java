@@ -7,7 +7,6 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.Roles;
-import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
 import ar.edu.itba.paw.models.user.provider.Schedule;
@@ -65,7 +64,7 @@ public class UserDaoImpl implements UserDao {
             throw new DuplicateUserException();
         }
 
-        final User user = new SimpleUser(password, name, surname, email, phoneNumber, state, city, roles);
+        final User user = new User(password, name, surname, email, phoneNumber, state, city, roles);
 
         em.persist(user);
 
@@ -89,11 +88,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<Stats> getUserStatsById(long id) {
         return Optional.empty();
-    }
-
-    @Override
-    public void addRole(long userId, Roles newRole) {
-
     }
 
     @Override
@@ -278,6 +272,12 @@ public class UserDaoImpl implements UserDao {
         nativeQuery.setParameter(1, userId);
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
+    }
+
+    @Override
+    public void persistProviderDetails(Location location, Schedule schedule) {
+        em.persist(location);
+        em.persist(schedule);
     }
 
     private void setQueryVariables(Query query, Collection<Object> variables) {

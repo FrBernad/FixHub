@@ -43,8 +43,6 @@ public class DashboardController {
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProvider(null, null, user, 0, 4);
 
-        final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
-
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, 0, 4);
 
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
@@ -52,7 +50,6 @@ public class DashboardController {
         mav.addObject("orderOptions", orderOptions);
         mav.addObject("results", jobs);
         mav.addObject("contactsResults", contacts);
-        mav.addObject("stats", stats);
 
         return mav;
     }
@@ -66,7 +63,6 @@ public class DashboardController {
 
         final PaginatedSearchResult<Job> jobs = searchService.getJobsByProvider(form.getQuery(), form.getOrder(), user, form.getPage(), 4);
 
-        final Stats stats = userService.getUserStatsById(user.getId()).orElseThrow(UserNotFoundException::new);
         Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
 
         final PaginatedSearchResult<JobContact> contacts = searchService.getClientsByProvider(user, 0, 4);
@@ -75,7 +71,6 @@ public class DashboardController {
         mav.addObject("orderOptions", orderOptions);
         mav.addObject("searched", true);
         mav.addObject("results", jobs);
-        mav.addObject("stats", stats);
         mav.addObject("contactsResults", contacts);
 
         return mav;

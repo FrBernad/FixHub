@@ -4,11 +4,9 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.provider.Provider;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 

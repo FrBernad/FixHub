@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
+import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
@@ -18,7 +19,7 @@ import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.SimpleUser;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
-import ar.edu.itba.paw.models.user.provider.Provider;
+import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.models.user.provider.Stats;
 import org.slf4j.Logger;
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private LocationDao locationDao;
 
     @Autowired
     private VerificationTokenDao verificationTokenDao;
@@ -76,6 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserByEmail(String email) {
         LOGGER.debug("Retrieving user with email {}", email);
+
         return userDao.getUserByEmail(email);
     }
 
@@ -125,13 +130,12 @@ public class UserServiceImpl implements UserService {
     public void resendVerificationToken(User user) {
         LOGGER.debug("Removing token for user with id {}", user.getId());
         final Optional<VerificationToken> vttokenOpt = verificationTokenDao.getTokenByUser(user);
-        if (!vttokenOpt.isPresent()) {
-            return;
-        }
-        VerificationToken token = vttokenOpt.get();
-        verificationTokenDao.removeToken(token);
-        token = generateVerificationToken(user);
+
+        vttokenOpt.ifPresent(verificationToken -> verificationTokenDao.removeToken(verificationToken));
+
+        final VerificationToken token = generateVerificationToken(user);
         LOGGER.debug("Created token with id {}", token.getId());
+
         sendVerificationToken(user, token);
     }
 
@@ -154,15 +158,12 @@ public class UserServiceImpl implements UserService {
     public void generateNewPassword(User user) {
         LOGGER.debug("Removing password reset token for user {}", user.getId());
         final Optional<PasswordResetToken> tokenOpt = passwordResetTokenDao.getTokenByUser(user);
-        if (!tokenOpt.isPresent()) {
-            return;
-        }
-        PasswordResetToken token = tokenOpt.get();
 
-        passwordResetTokenDao.removeToken(token);
+        tokenOpt.ifPresent(passwordResetToken -> passwordResetTokenDao.removeToken(passwordResetToken));
 
-        token = generatePasswordResetToken(user);
+        final PasswordResetToken token = generatePasswordResetToken(user);
         LOGGER.info("created password reset token for user {}", user.getId());
+
         sendPasswordResetToken(user, token);
     }
 
@@ -233,7 +234,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void makeProvider(User user, List<Long> citiesId, String startTime, String endTime) {
-        userDao.addRole(user.getId(), Roles.PROVIDER);
+
+        final Collection<City> cities = locationDao.getCitiesById(citiesId);
+        final State state = cities.stream().findFirst().get().getState();
+        final Location location = new Location(user, new HashSet<>(cities), state);
+        final Schedule schedule = new Schedule(user, startTime, endTime);
+        userDao.persistProviderDetails(location,schedule);
+
+        final ProviderDetails providerDetails = new ProviderDetails(location, schedule);
+
+        user.addRole(Roles.PROVIDER);
+        user.setProviderDetails(providerDetails);
+
         LOGGER.info("User {} is now provider", user.getId());
         userDao.addSchedule(user.getId(), startTime, endTime);
         userDao.addLocation(user.getId(), citiesId);
@@ -260,6 +272,14 @@ public class UserServiceImpl implements UserService {
         }
         if (provider.getId().equals(user.getId()))
             throw new IllegalContactException();
+
+        LOGGER.debug("Adding new client to provider {}", contactDto.getJob().getProvider().getId());
+
+        final ContactInfo
+
+        userDao.addClient(contactDto, contactInfo.getContactInfoId(), Timestamp.valueOf(LocalDateTime.now()));
+        user
+
 
         sendJobRequestEmail(contactDto);
         sendJobRequestConfirmationEmail(contactDto);

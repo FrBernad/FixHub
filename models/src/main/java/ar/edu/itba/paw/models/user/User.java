@@ -3,6 +3,7 @@ package ar.edu.itba.paw.models.user;
 import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -12,10 +13,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "users")
-@DiscriminatorColumn(name = "user_type")
-public abstract class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_u_id_seq")
@@ -74,6 +73,8 @@ public abstract class User {
     @OneToMany(mappedBy = "user")
     private Set<JobContact> providersContacted;
 
+    @Embedded
+    private ProviderDetails providerDetails;
 
     /* default */
     protected User() {
@@ -234,13 +235,12 @@ public abstract class User {
         this.providersContacted = providersContacted;
     }
 
-    public ContactInfo getContactInfoById(Long id) {
-        for (ContactInfo contactInfo : this.contactInfo) {
-            if(contactInfo.getContactInfoId().equals(id)) {
-                return contactInfo;
-            }
-        }
-        return null;
+    public ProviderDetails getProviderDetails() {
+        return providerDetails;
+    }
+
+    public void setProviderDetails(ProviderDetails providerDetails) {
+        this.providerDetails = providerDetails;
     }
 
     @Override

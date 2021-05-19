@@ -57,6 +57,7 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
     @Override
     public Optional<PasswordResetToken> getTokenByUser(User user) {
+
         return em.createQuery(
             "FROM PasswordResetToken prt where prt.user.id = :userId", PasswordResetToken.class)
             .setParameter("userId", user.getId())
