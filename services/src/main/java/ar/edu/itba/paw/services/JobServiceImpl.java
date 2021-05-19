@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.models.job.Job.MAX_IMAGES_PER_JOB;
 
@@ -97,8 +98,10 @@ public class JobServiceImpl implements JobService {
         Collection<Image> imagesToDelete = imageService.getImagesById(imagesIdDeleted);
         Set<Image> jobImages = job.getImages();
 
+        boolean contains = !imagesIdDeleted.isEmpty() && jobImages.stream().map(Image::getImageId).collect(Collectors.toSet()).containsAll(imagesIdDeleted);
+
         //If a user tries to delete images that are not from the job to update
-        if (!jobImages.containsAll(imagesToDelete)) {
+        if (!contains) {
             LOGGER.warn("error: tried to delete image not corresponding to job");
             throw new IllegalOperationException();
         }
