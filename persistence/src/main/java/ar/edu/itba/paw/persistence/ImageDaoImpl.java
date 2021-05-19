@@ -60,6 +60,7 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public int deleteImageById(long imageId) {
+
         LOGGER.info("Trying to deleted the image with id {}",imageId);
 
         final Query query = em.createQuery("delete from Image as i where i.imageId = :imageId");

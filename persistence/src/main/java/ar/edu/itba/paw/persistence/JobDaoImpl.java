@@ -181,7 +181,7 @@ public class JobDaoImpl implements JobDao {
             .getResultList();
     }
 
-//FIXME: ES NECESARIO HACER ESTO?
+
     @Override
     public Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city) {
         List<Object> variables = new LinkedList<>();

@@ -117,10 +117,6 @@ public class JobServiceImpl implements JobService {
         LOGGER.debug("Deleting job images");
         jobImages.removeIf(imagesToDelete::contains);
 
-//        LOGGER.debug("Deleting images");
-//        imageService.deleteImagesById(imagesIdToDelete);
-
-
         Set<Image> images;
         if (!imagesToUpload.isEmpty()) {
             LOGGER.debug("Job {} has images", jobProvided);
