@@ -38,7 +38,10 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(path = "/user/account")
-    public ModelAndView profile(@ModelAttribute("searchForm") final SearchForm form, Principal principal) {
+    public ModelAndView profile(@ModelAttribute("searchForm") SearchForm searchForm,
+                                @ModelAttribute("coverImageForm") CoverImageForm coverImageForm,
+                                @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
+                                Principal principal) {
         LOGGER.info("Accessed /user/account GET controller");
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
@@ -109,7 +112,9 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/{userId}/followers/search")
-    public ModelAndView followersSearch(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form, BindingResult errors) {
+    public ModelAndView followersSearch(@PathVariable("userId") long userId,
+                                        @ModelAttribute("searchForm") SearchForm form,
+                                        BindingResult errors) {
         LOGGER.info("Accessed /user/profile/followers/search GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
@@ -142,7 +147,9 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/{userId}/following/search")
-    public ModelAndView followingSearch(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form, BindingResult errors) {
+    public ModelAndView followingSearch(@PathVariable("userId") long userId,
+                                        @ModelAttribute("searchForm") SearchForm form,
+                                        BindingResult errors) {
         LOGGER.info("Accessed /user/profile/following/search GET controller");
 
         final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
@@ -204,17 +211,21 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/account/updateCoverImage", method = RequestMethod.POST)
-    public ModelAndView updateCoverImage(@RequestParam("image") MultipartFile file,
+    public ModelAndView updateCoverImage( @ModelAttribute("searchForm") SearchForm searchForm,
+                                          @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
+                                          @ModelAttribute("coverImageForm") CoverImageForm coverImageForm,
+                                          BindingResult errors,
                                          Principal principal) {
         LOGGER.info("Accessed /user/account/updateCoverImage POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (!imageService.getContentTypesNoGIF().contains(file.getContentType())) {
+        if (!imageService.getContentTypesNoGIF().contains(coverImageForm.getCoverImage().getContentType())) {
             LOGGER.warn("Image content type is not valid");
-            throw new IllegalContentTypeException();
+            errors.rejectValue("coverImage","errors.IllegalContentTypeException");
+            return profile(searchForm,coverImageForm,profileImageForm,principal);
         }
         try {
-            userService.updateCoverImage(new ImageDto(file.getBytes(), file.getContentType()), user);
+            userService.updateCoverImage(new ImageDto(coverImageForm.getCoverImage().getBytes(), coverImageForm.getCoverImage().getContentType()), user);
         } catch (IOException e) {
             LOGGER.warn("Error accessing file bytes");
             throw new ServerInternalException();
@@ -224,17 +235,18 @@ public class UserController {
 
 
     @RequestMapping(value = "/user/account/updateProfileImage", method = RequestMethod.POST)
-    public ModelAndView updateProfileImage(@RequestParam("image") MultipartFile file,
-                                           Principal principal) {
+    public ModelAndView updateProfileImage( @ModelAttribute("searchForm") SearchForm searchForm, @ModelAttribute("coverImageForm") CoverImageForm coverImageForm, @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,BindingResult errors,
+                                            Principal principal) {
         LOGGER.info("Accessed /user/account/updateProfileImage POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (!imageService.getContentTypesGIF().contains(file.getContentType())) {
+        if (!imageService.getContentTypesGIF().contains(profileImageForm.getProfileImage().getContentType())) {
             LOGGER.warn("Image content type is not valid");
-            throw new IllegalContentTypeException();
+            errors.rejectValue("profileImage","errors.IllegalContentTypeExceptionGIF");
+            return profile(searchForm,coverImageForm,profileImageForm,principal);
         }
         try {
-            userService.updateProfileImage(new ImageDto(file.getBytes(), file.getContentType()), user);
+            userService.updateProfileImage(new ImageDto(profileImageForm.getProfileImage().getBytes(), profileImageForm.getProfileImage().getContentType()), user);
         } catch (IOException e) {
             LOGGER.warn("Error accessing file bytes");
             throw new ServerInternalException();

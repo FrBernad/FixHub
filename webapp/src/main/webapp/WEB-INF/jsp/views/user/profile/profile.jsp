@@ -33,10 +33,11 @@
                     </c:choose>
                     <span class="profileBackgroundPic">
                         <c:url value="/user/account/updateCoverImage" var="postCoverImage"/>
-                        <form:form id="changeCoverForm" type="hidden" action="${postCoverImage}" method="POST"
+                        <form:form modelAttribute="coverImageForm" id="changeCoverForm" type="hidden"
+                                   action="${postCoverImage}" method="POST"
                                    enctype="multipart/form-data">
-                            <input type="file" id="coverInputFile" name="image" hidden accept=".png,.jpg,.jpeg"/>
-                        </form:form>
+                            <input type="file" id="coverInputFile" name="coverImage" hidden accept=".png,.jpg,.jpeg"/>
+
                         <button type="button" class="d-flex align-items-center justify-content-center"
                                 id="changeCoverImageButton"
                                 style="width: 224px">
@@ -48,6 +49,10 @@
                                   class="spinner-border spinner-border-sm" hidden
                             ></span>
                         </button>
+                                <form:errors path="coverImage" cssClass="formError" element="p"/>
+                        </form:form>
+
+
                 </div>
             </div>
             <div class="col-12 mt-4">
@@ -68,21 +73,28 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
+                            <div>
+
+                            </div>
                             <div class="profilePicEditBtn">
                                 <c:url value="/user/account/updateProfileImage" var="postProfileImage"/>
-                                <form:form id="changeProfileForm" type="hidden" action="${postProfileImage}"
+                                <form:form modelAttribute="profileImageForm" id="changeProfileForm" type="hidden"
+                                           action="${postProfileImage}"
                                            method="POST" enctype="multipart/form-data">
-                                    <input type="file" id="profileInputFile" name="image" hidden
+                                    <input type="file" id="profileInputFile" name="profileImage" hidden
                                            accept=".png,.jpg,.jpeg,.gif"/>
+
+                                    <button type="button" id="changeProfileImageButton"
+                                            class="d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-camera" id="profileCamaraIcon"></i>
+                                        <span id="profileLoadingSpinner"
+                                              class="spinner-border spinner-border-sm" hidden
+                                        ></span>
+                                    </button>
+                                    <form:errors path="profileImage" cssClass="formError" element="p"/>
+
                                 </form:form>
 
-                                <button type="button" id="changeProfileImageButton"
-                                        class="d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-camera" id="profileCamaraIcon"></i>
-                                    <span id="profileLoadingSpinner"
-                                          class="spinner-border spinner-border-sm" hidden
-                                    ></span>
-                                </button>
                             </div>
                         </div>
                         <div class="col-8 mt-5">
