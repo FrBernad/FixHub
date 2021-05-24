@@ -31,28 +31,29 @@
                                  class="backgroundImage">
                         </c:otherwise>
                     </c:choose>
-                    <span class="profileBackgroundPic">
+                    <div class="profileBackgroundPic">
                         <c:url value="/user/account/updateCoverImage" var="postCoverImage"/>
                         <form:form modelAttribute="coverImageForm" id="changeCoverForm" type="hidden"
                                    action="${postCoverImage}" method="POST"
                                    enctype="multipart/form-data">
                             <input type="file" id="coverInputFile" name="coverImage" hidden accept=".png,.jpg,.jpeg"/>
 
-                        <button type="button" class="d-flex align-items-center justify-content-center"
-                                id="changeCoverImageButton"
-                                style="width: 224px">
+                            <button type="button" class="d-flex align-items-center justify-content-center"
+                                    id="changeCoverImageButton"
+                                    style="width: 224px">
                             <span id="coverCamaraIcon">
                                 <i class="fas fa-camera mr-2"></i>
                                 <span><spring:message code="profilePage.picture.changeBg"/></span>
                             </span>
-                            <span id="coverLoadingSpinner"
-                                  class="spinner-border spinner-border-sm" hidden
-                            ></span>
-                        </button>
-                                <form:errors path="coverImage" cssClass="formError" element="p"/>
+                                <span id="coverLoadingSpinner"
+                                      class="spinner-border spinner-border-sm" hidden
+                                ></span>
+                            </button>
+                            <form:errors path="coverImage" cssClass="formError mt-2"
+                                         cssStyle="font-size: 14px;position: absolute;width: 250px;"
+                                         element="p"/>
                         </form:form>
-
-
+                    </div>
                 </div>
             </div>
             <div class="col-12 mt-4">
@@ -91,7 +92,9 @@
                                               class="spinner-border spinner-border-sm" hidden
                                         ></span>
                                     </button>
-                                    <form:errors path="profileImage" cssClass="formError" element="p"/>
+                                    <form:errors path="profileImage" cssClass="formError mt-2"
+                                                 cssStyle="position: absolute; width: 350px; font-size: 14px"
+                                                 element="p"/>
 
                                 </form:form>
 

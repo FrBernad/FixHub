@@ -171,11 +171,9 @@ public class JobController {
         LOGGER.info("Accessed /jobs/{}/contact GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        final User provider = job.getProvider();
         final ModelAndView mav;
         mav = new ModelAndView("views/contact");
         mav.addObject("job", job);
-        mav.addObject("provider", provider);
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         Collection<ContactInfo> contactInfoCollection = user.getContactInfo();

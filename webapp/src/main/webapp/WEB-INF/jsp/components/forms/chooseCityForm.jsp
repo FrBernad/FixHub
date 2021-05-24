@@ -4,7 +4,8 @@
 <c:url value="/user/join/chooseCity" var="postPath"/>
 <form:form modelAttribute="chooseCityForm" action="${postPath}" id="chooseCityForm" method="POST">
     <div class="form-group">
-        <form:label class="label text font-weight-bold" path="city"><spring:message code="joinForm.availableCities"/></form:label>
+        <form:label class="label text font-weight-bold" path="city"><spring:message
+                code="joinForm.availableCities"/></form:label>
         <form:input path="state" type="hidden" id="state" value="${state}"/>
         <form:input path="startTime" type="hidden" id="state" value="${startTime}"/>
         <form:input path="endTime" type="hidden" id="state" value="${endTime}"/>
@@ -12,15 +13,15 @@
             <div class="col d-flex align-items-center justify-content-center">
                 <div class="dropdown">
                     <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            data-toggle="dropdown">
                         <spring:message code="cityForm.city"/>
-                        <span class="state" id="cityName">
-                        </span>
+                        <span class="state" id="cityName">-</span>
                     </button>
                     <div class="dropdown-menu dropdown-size">
                         <c:forEach var="city" items="${cities}">
                             <div class="input-group">
-                                <button class="dropdown-item cityButton" type="button" data-id="${city.id}" data-name="${city.name}">
+                                <button class="dropdown-item cityButton" type="button" data-id="${city.id}"
+                                        data-name="${city.name}">
                                         ${city.name}
                                 </button>
                             </div>

@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let contactFormButton = document.getElementById("contactFormButton");
     let userContact = document.getElementsByClassName("userContact");
     let newUserContact = document.getElementById("newUserContact");
-    let state = document.getElementById("state");
     let city = document.getElementById("city");
     let street = document.getElementById("street");
     let addressNumber = document.getElementById("addressNumber");
@@ -12,13 +11,34 @@ document.addEventListener("DOMContentLoaded", () => {
     let departmentNumber = document.getElementById("departmentNumber");
     let contactId = document.getElementById("contactInfoId");
 
+    let cityOptions = document.getElementsByClassName("cityBtn");
+    let cityError = document.getElementById("cityError");
+    let cityNames = [];
+    let cityToogle = document.getElementById("cityDropdownBtn");
+
+    for (const cityBtn of cityOptions) {
+        let cityname = cityBtn.dataset.name;
+        cityNames.push(cityname);
+        cityBtn.addEventListener("click", () => {
+            cityError.classList.add("invisible");
+            city.value = cityname;
+        })
+    }
+
+    city.addEventListener("change", () => {
+        if (!cityNames.includes(city.value) && city.value !== '')
+            cityError.classList.remove("invisible");
+        else
+            cityError.classList.add("invisible");
+    });
 
     contactFormButton.addEventListener("click", () => {
         if (processing) {
             return;
         }
-        if(document.getElementById("dropdownMenuButton") === null)
-            contactId.setAttribute("value","-1");
+
+        if (document.getElementById("dropdownMenuButton") === null)
+            contactId.setAttribute("value", "-1");
 
         processing = true;
         contactFormButton.disabled = true;
@@ -26,70 +46,73 @@ document.addEventListener("DOMContentLoaded", () => {
         processing = false;
     })
 
-    if(newUserContact !== null){
-        newUserContact.addEventListener("click",()=>{
-            state.textContent = '';
-            state.setAttribute("value", '');
-            state.readOnly = false;
+    if (newUserContact !== null) {
+        newUserContact.addEventListener("click", () => {
 
             city.textContent = '';
             city.setAttribute("value", '');
+            city.value = '';
             city.readOnly = false;
+            cityError.classList.add("invisible");
 
-            street.textContent = '';
             street.setAttribute("value", '');
+            street.value = '';
             street.readOnly = false;
 
-            addressNumber.textContent = '';
             addressNumber.setAttribute("value", '');
+            addressNumber.value = '';
             addressNumber.readOnly = false;
 
-            floor.textContent = '';
             floor.setAttribute("value", '');
+            floor.value = '';
             floor.readOnly = false;
 
-            departmentNumber.textContent = '';
             departmentNumber.setAttribute("value", '');
+            departmentNumber.value = '';
             departmentNumber.readOnly = false;
 
             contactId.setAttribute("value", "-1");
+
+            cityToogle.removeAttribute("disabled");
 
         })
     }
 
 
-    for (const contact of userContact){
-        contact.addEventListener("click", ()=>{
+    for (const contact of userContact) {
+        contact.addEventListener("click", () => {
             let info = contact.dataset;
-            state.textContent = info.state;
-            state.setAttribute("value", info.state.toString());
-            state.readOnly = true;
 
-            city.textContent = info.city;
+            city.value = info.city;
             city.setAttribute("value", info.city.toString());
             city.readOnly = true;
 
-            street.textContent = info.street;
+            if (!cityNames.includes(city.value) && city.value !== '')
+                cityError.classList.remove("invisible");
+            else
+                cityError.classList.add("invisible");
+
+            street.value = info.street;
             street.setAttribute("value", info.street.toString());
             street.readOnly = true;
 
-            addressNumber.textContent = info.addressNumber;
+            addressNumber.value = info.addressNumber;
             addressNumber.setAttribute("value", info.addressNumber.toString());
             addressNumber.readOnly = true;
 
-            floor.textContent = info.floor;
+            floor.value = info.floor;
             floor.setAttribute("value", info.floor.toString());
             floor.readOnly = true;
 
-            departmentNumber.textContent = info.departmentNumber;
+            departmentNumber.value = info.departmentNumber;
             departmentNumber.setAttribute("value", info.departmentNumber.toString());
             departmentNumber.readOnly = true;
 
             contactId.setAttribute("value", info.infoId.toString());
 
+            cityToogle.setAttribute("disabled", "true");
         })
     }
-
 
 
 })

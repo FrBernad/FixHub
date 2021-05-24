@@ -77,8 +77,9 @@
                                         </div>
                                         <div class="col-12 pl-0">
                                             <a href="<c:url value="/user/${job.provider.id}"/>">
-                                                <h1 class="contactInfo names"><c:out value="${job.provider.name}"/> <c:out
-                                                        value="${job.provider.surname}"/></h1>
+                                                <h1 class="contactInfo names"><c:out value="${job.provider.name}"/>
+                                                    <c:out
+                                                            value="${job.provider.surname}"/></h1>
                                             </a>
                                         </div>
                                         <div class="col-12 pl-0 mt-2">
@@ -139,78 +140,82 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="text-left ml-0 my-4" style="width: 100%;">
-                        <div class="col-12 mt-2">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-12 px-0 d-flex justify-content-start align-items-center">
-                                        <h2 class="sectionTitle mb-3">
-                                            <spring:message code="job.information.title"/>
-                                        </h2>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12 px-0 d-flex justify-content-start align-items-center">
+                                            <h2 class="sectionTitle mb-3">
+                                                <spring:message code="job.information.title"/>
+                                            </h2>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 px-0">
-                                        <div class="container-fluid p-0">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <p class="text-left contactInfo names">
+                                    <div class="row">
+                                        <div class="col-12 px-0">
+                                            <div class="container-fluid p-0">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <p class="text-left contactInfo names">
                                                         <span class="font-weight-bold"><spring:message
                                                                 code="job.information.name&surname"/></span> <c:out
-                                                            value="${job.provider.name}"/> <c:out
-                                                            value="${job.provider.surname}"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="text-left">
+                                                                value="${job.provider.name}"/> <c:out
+                                                                value="${job.provider.surname}"/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="text-left">
                                                         <span class="font-weight-bold"><spring:message
                                                                 code="job.information.email"/></span> <c:out
-                                                            value="${job.provider.email}"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="text-left">
+                                                                value="${job.provider.email}"/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="text-left">
                                                         <span class="font-weight-bold"><spring:message
                                                                 code="job.information.phone"/></span> <c:out
-                                                            value="${job.provider.phoneNumber}"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="text-left">
+                                                                value="${job.provider.phoneNumber}"/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="text-left">
                                                         <span class="font-weight-bold"><spring:message
                                                                 code="job.information.state"/></span> <c:out
-                                                            value="${job.provider.providerDetails.location.state.name}"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="text-left">
+                                                                value="${job.provider.providerDetails.location.state.name}"/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="text-left">
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.city"/></span>
-                                                        <c:forEach var="city" items="${job.provider.providerDetails.location.cities}">
+                                                            <c:forEach var="city"
+                                                                       items="${job.provider.providerDetails.location.cities}">
                                                                 <span class="badge badge-pill badge-secondary p-2 mt-2"><c:out
                                                                         value="${city.name}"/></span>
-                                                        </c:forEach>
-                                                    </p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="text-left">
+                                                            </c:forEach>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="text-left">
                                                             <span class="font-weight-bold"><spring:message
                                                                     code="job.information.time"/></span>
-                                                        <spring:message
-                                                                code="job.information.from" arguments="${job.provider.providerDetails.schedule.startTime}"
-                                                                javaScriptEscape="true" htmlEscape="true"/>
-                                                        <spring:message
-                                                                code="job.information.to" arguments="${job.provider.providerDetails.schedule.endTime}"
-                                                                javaScriptEscape="true" htmlEscape="true"/>
-                                                    </p>
+                                                            <spring:message
+                                                                    code="job.information.from"
+                                                                    arguments="${job.provider.providerDetails.schedule.startTime}"
+                                                                    javaScriptEscape="true" htmlEscape="true"/>
+                                                            <spring:message
+                                                                    code="job.information.to"
+                                                                    arguments="${job.provider.providerDetails.schedule.endTime}"
+                                                                    javaScriptEscape="true" htmlEscape="true"/>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
