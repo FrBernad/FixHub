@@ -223,6 +223,23 @@ public class UserServiceImpl implements UserService {
             user.getProfileImage().setData(imageDto.getData());
     }
 
+    @Override
+    @Transactional
+    public void updateProviderInfo(User user,List<Long> citiesId,String startTime,String endTime){
+        final Collection<City> cities = locationDao.getCitiesById(citiesId);
+        final State state = cities.stream().findFirst().get().getState();
+        final Location location = user.getProviderDetails().getLocation();
+        location.setCities(new HashSet<>(cities));
+        location.setState(state);
+
+        final Schedule schedule = user.getProviderDetails().getSchedule();
+        schedule.setStartTime(startTime);
+        schedule.setEndTime(endTime);
+
+        LOGGER.info("Update provider info with id {}", user.getId());
+    }
+
+
     @Transactional
     @Override
     public void makeProvider(User user, List<Long> citiesId, String startTime, String endTime) {
