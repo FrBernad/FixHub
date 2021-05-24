@@ -97,7 +97,7 @@ public class JobDaoImpl implements JobDao {
                 " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
                 " JOIN " +
                 " (SELECT distinct pc_provider_id from cities join provider_cities on c_id = pc_city_id ) as w1 " +
-                " ON w0.j_provider_id=w1.pc_provider_id " +
+                " ON w0.u_location_id=w1.pc_provider_id " +
                 " JOIN " +
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
@@ -181,7 +181,7 @@ public class JobDaoImpl implements JobDao {
                 " (select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) w0 " +
                 " JOIN " +
                 " (SELECT distinct pc_provider_id from cities join provider_cities on c_id = pc_city_id %s ) as w1 " +
-                " ON w0.j_provider_id=w1.pc_provider_id " +
+                " ON w0.u_location_id=w1.pc_provider_id " +
                 " JOIN " +
                 " (select j_id as job_id, count(r_job_id) as total_ratings,coalesce(avg(r_rating), 0) as avg_rating " +
                 " FROM jobs LEFT OUTER JOIN reviews on j_id = r_job_id group by j_id) jobsStats " +
@@ -234,7 +234,7 @@ public class JobDaoImpl implements JobDao {
                 "(select * from ( ( select * from JOBS j JOIN USERS u ON j_provider_id = u_id %s ) as aux0 " +
                 " JOIN (SELECT distinct pc_provider_id from " +
                 " cities join provider_cities on c_id = pc_city_id %s) " +
-                " as aux1 ON aux0.j_provider_id=aux1.pc_provider_id ) as aux2 %s) as aux3 ",
+                " as aux1 ON aux0.u_location_id=aux1.pc_provider_id ) as aux2 %s) as aux3 ",
             filterQuery, stateAndCityQuery, searchQuery);
 
         Query nativeQuery = em.createNativeQuery(query);
