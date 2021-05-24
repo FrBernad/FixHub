@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<c:url value="/user/join/chooseCity" var="postPath"/>
-<form:form modelAttribute="chooseCityForm" action="${postPath}" id="chooseCityForm" method="POST">
+<c:url value="/user/account/updateProviderCity" var="postPath"/>
+<form:form modelAttribute="providerInfoSecondForm" action="${postPath}" id="providerInfoSecondForm" method="POST">
     <div class="form-group">
         <form:label class="label text-center font-weight-bold" path="city" cssStyle="display: block;"><spring:message code="joinForm.availableCities"/></form:label>
         <form:input path="state" type="hidden" id="state" value="${state}"/>
@@ -12,15 +12,15 @@
             <div class="col d-flex align-items-center justify-content-center">
                 <div class="dropdown">
                     <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
-                            data-toggle="dropdown">
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <spring:message code="cityForm.city"/>
-                        <span class="state" id="cityName">-</span>
+                        <span class="state" id="cityName">
+                        </span>
                     </button>
                     <div class="dropdown-menu dropdown-size">
                         <c:forEach var="city" items="${cities}">
                             <div class="input-group">
-                                <button class="dropdown-item cityButton" type="button" data-id="${city.id}"
-                                        data-name="${city.name}">
+                                <button class="dropdown-item cityButton" type="button" data-id="${city.id}" data-name="${city.name}">
                                         ${city.name}
                                 </button>
                             </div>
@@ -34,6 +34,11 @@
     <div class="form-group">
         <div class="row">
             <div class="col">
+                <c:if test="${!newState}">
+                <c:forEach var="city" items="${loggedUser.providerDetails.location.cities}">
+                        <span class="d-none previousCities cityButton" data-id="${city.id}" data-name="${city.name}"></span>
+                </c:forEach>
+                </c:if>
                 <div class="container-fluid" id="citiesHolder" style="width: 418px;">
 
                 </div>

@@ -61,4 +61,23 @@ a .badge {
     font-weight: bolder;
 }
 
+.detailsSection {
+    background-color: white;
+    border-radius: 8px;
+}
+
+.editBtn {
+    height: 40px;
+    border: none;
+    width: 40px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.sectionTitle {
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 400;
+}
+
 

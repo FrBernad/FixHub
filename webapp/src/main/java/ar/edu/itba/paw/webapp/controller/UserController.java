@@ -1,13 +1,16 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.ServerInternalException;
+import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ImageService;
+import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContentTypeException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.form.*;
 import org.slf4j.Logger;
@@ -25,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -38,6 +43,9 @@ public class UserController {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private LocationService locationService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -169,6 +177,114 @@ public class UserController {
         User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
         mav.addObject("user", user);
         return mav;
+    }
+
+    @RequestMapping(path = "/user/account/updateProviderStateAndTime")
+    public ModelAndView firstUpdateProvider(@ModelAttribute("providerInfoFirstForm") SecondJoinForm form, Principal principal) {
+        LOGGER.info("Accessed /user/account/updateProviderInfo GET controller");
+        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        if(!user.hasRole(Roles.PROVIDER)) {
+            LOGGER.warn("User {} is not a provider", user.getId());
+            return new ModelAndView("redirect:/user/account");
+        }
+        ModelAndView mav = new ModelAndView("views/user/editProviderInfo");
+        mav.addObject("states", locationService.getStates());
+        return mav;
+    }
+
+    @RequestMapping(value = "/user/account/updateProviderStateAndTime", method = RequestMethod.POST)
+    public ModelAndView firstUpdateProviderPost(@ModelAttribute("providerInfoFirstForm") SecondJoinForm form, BindingResult errors, RedirectAttributes ra, Principal principal) {
+        LOGGER.info("Accessed /user/account/updateProviderInfo POST controller");
+
+        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        if(!user.hasRole(Roles.PROVIDER)) {
+            LOGGER.warn("User {} is not a provider", user.getId());
+            return new ModelAndView("redirect:/user/account");
+        }
+        if(errors.hasErrors()) {
+            LOGGER.warn("Error in form providerInfoForm data");
+            return firstUpdateProvider(form, principal);
+        }
+
+        LocalTime start = LocalTime.parse(form.getStartTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime stop = LocalTime.parse(form.getEndTime(), DateTimeFormatter.ofPattern("HH:mm"));
+
+        if (start.compareTo(stop) == 0) {
+            LOGGER.warn("Error in form FirstJoinForm data, times are invalid");
+            errors.rejectValue("", "validation.join.equalTime");
+            return firstUpdateProvider(form, principal);
+        }
+
+        ra.addFlashAttribute("state", form.getState());
+        ra.addFlashAttribute("startTime", form.getStartTime());
+        ra.addFlashAttribute("endTime", form.getEndTime());
+        final State state = locationService.getStateById(form.getState()).orElseThrow(StateNotFoundException::new);
+        ra.addFlashAttribute("cities", locationService.getCitiesByState(state));
+
+        LOGGER.debug("Added redirect attributes to /user/account/updateProviderCity");
+
+        return new ModelAndView("redirect:/user/account/updateProviderCity");
+
+    }
+
+    @RequestMapping(path = "/user/account/updateProviderCity")
+    public ModelAndView secondUpdateProvider(@ModelAttribute("providerInfoSecondForm") SecondJoinForm form, HttpServletRequest request, Principal principal) {
+        LOGGER.info("Accessed /user/account/updateProviderCity GET controller");
+
+        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        if(!user.hasRole(Roles.PROVIDER)) {
+            LOGGER.warn("User {} is not a provider", user.getId());
+            return new ModelAndView("redirect:/user/account");
+        }
+
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap == null && form.getState() == 0) {
+            LOGGER.warn("Flashmap and form are null redirecting to first step");
+            return new ModelAndView("redirect:/user/account/updateProviderStateAndTime");
+        }
+
+        ModelAndView mav = new ModelAndView("views/user/editProviderCity");
+
+        boolean newState = false;
+
+        if (flashMap != null) {
+            mav.addAllObjects(flashMap);
+            newState = user.getProviderDetails().getLocation().getState().getId() != (Long)flashMap.get("state");
+        }
+
+        if (form != null && form.getState() != 0) {
+            LOGGER.debug("Adding state cities again due to error in firstUpdateProvider form");
+            final State state = locationService.getStateById(form.getState()).orElseThrow(StateNotFoundException::new);
+            mav.addObject("cities", locationService.getCitiesByState(state));
+            newState = user.getProviderDetails().getLocation().getState().getId() != form.getState();
+        }
+
+        mav.addObject("newState", newState);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/user/account/updateProviderCity", method = RequestMethod.POST)
+    public ModelAndView secondUpdateProviderPost(@Valid @ModelAttribute("providerInfoSecondForm") final SecondJoinForm form,
+                                                 final BindingResult errors,
+                                                 HttpServletRequest request,
+                                                 Principal principal) {
+        LOGGER.info("Accessed /user/account/updateProviderCity POST controller");
+
+        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        if (!user.hasRole(Roles.PROVIDER)) {
+            LOGGER.warn("User {} is not a provider", user.getId());
+            return new ModelAndView("redirect:/user/account");
+        }
+
+        if (errors.hasErrors()) {
+            LOGGER.warn("Error in form SecondJoinForm data");
+            return secondUpdateProvider(form, request, principal);
+        }
+
+        userService.updateProviderInfo(user, form.getCity(), form.getStartTime(), form.getEndTime());
+
+        return new ModelAndView("redirect:/user/dashboard");
     }
 
     @RequestMapping(path = "/user/account")

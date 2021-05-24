@@ -33,7 +33,8 @@
                     <a href="#works" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${work}" id="tabWorks">
                         <i class="fas fa-wrench mr-2"></i><span class="text">${work}</span><span
-                            class="badge badge-pill badge-secondary"><c:out value="${loggedUser.providerDetails.jobsCount}"/></span>
+                            class="badge badge-pill badge-secondary"><c:out
+                            value="${loggedUser.providerDetails.jobsCount}"/></span>
                     </a>
                     <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list"
                        role="tab" data-name="${contacts}" id="tabContacts">
@@ -57,19 +58,20 @@
 
 
                                     <%--Dashboard--%>
-
-                                    <div class="tab-pane fade ${!contactTab && !searched ? 'show active': ""}" role="tabpanel" id="dashboard">
-                                        <div class="col">
+                                    <div class="tab-pane fade ${!contactTab && !searched ? 'show active': ""}"
+                                         role="tabpanel" id="dashboard">
+                                        <div class="col-12">
                                             <div class="container-fluid p-0">
                                                 <div class="row align-items-center justify-content-between">
-                                                    <div class="col">
+                                                    <div class="col-4">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-wrench mr-2"></i><c:out
-                                                                    value="${loggedUser.providerDetails.jobsCount}"/></h2>
+                                                                    value="${loggedUser.providerDetails.jobsCount}"/>
+                                                            </h2>
                                                             <h4><spring:message code="dashboard.Works"/></h4>
                                                         </div>
                                                     </div>
-                                                    <div class="col">
+                                                    <div class="col-4">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-star mr-2"></i><c:out
                                                                     value="${loggedUser.providerDetails.avgRating}"/>
@@ -77,19 +79,102 @@
                                                             <h4><spring:message code="dashboard.Rating"/></h4>
                                                         </div>
                                                     </div>
-                                                    <div class="col">
+                                                    <div class="col-4">
                                                         <div class="card card-body info-box">
                                                             <h2><i class="fas fa-comment mr-2"></i><c:out
-                                                                    value="${loggedUser.providerDetails.reviewCount}"/></h2>
+                                                                    value="${loggedUser.providerDetails.reviewCount}"/>
+                                                            </h2>
                                                             <h4><spring:message code="dashboard.Reviews"/></h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 px-0 my-2">
+                                                        <div class="container-lg px-4">
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <div class="container">
+                                                        <div class="row align-items-center justify-content-start">
+                                                            <div class="col-12 d-flex">
+                                                                <div class="container-lg">
+                                                                    <div class="row py-1 px-2">
+                                                                        <div class="col-11 my-2">
+                                                                            <h3 class="sectionTitle text-left">
+                                                                                <spring:message
+                                                                                        code="dashboard.providerDetails"/>
+                                                                            </h3>
+                                                                        </div>
+                                                                        <div class="col-1 d-flex align-items-center justify-content-end">
+                                                                            <a href="<c:url value="/user/account/updateProviderStateAndTime"/>">
+                                                                                <button class="editBtn">
+                                                                                    <i class="fas fa-pen"></i>
+                                                                                </button>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="container-fluid px-0">
+                                                                                <div class="row">
+                                                                                    <div class="col-1 d-flex align-items-center justify-content-center">
+                                                                                        <i class="fas fa-map-marker-alt"></i>
+                                                                                    </div>
+                                                                                    <div class="col-11">
+                                                                                        <span class="font-weight-bold"><spring:message
+                                                                                                code="contactForm.state"/>:</span>
+                                                                                        <span>
+                                                                                          <c:out value="${loggedUser.providerDetails.location.state.name}"/>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-11 offset-1">
+                                                                                        <p class="text-left">
+                                                                                            <span class="font-weight-bold"><spring:message
+                                                                                                    code="job.information.city"/></span>
+                                                                                            <c:forEach var="city"
+                                                                                                       items="${loggedUser.providerDetails.location.cities}" varStatus="loop">
+                                                                                                <c:out value="${city.name}"/>
+                                                                                                <c:if test="${!loop.last}">,</c:if>
+                                                                                            </c:forEach>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="container-fluid px-0">
+                                                                                <div class="row">
+                                                                                    <div class="col-1 d-flex align-items-center justify-content-center">
+                                                                                        <i class="fas fa-clock"></i>
+                                                                                    </div>
+                                                                                    <div class="col-11">
+                                                                                        <p class="text-left m-0">
+                                                                                            <span class="font-weight-bold"><spring:message
+                                                                                                    code="job.information.time"/></span>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-11 offset-1">
+                                                                                        <p class="text-left m-0">
+                                                                                            <spring:message
+                                                                                                    code="job.information.from"
+                                                                                                    arguments="${loggedUser.providerDetails.schedule.startTime}"
+                                                                                                    javaScriptEscape="true"
+                                                                                                    htmlEscape="true"/>
+                                                                                            <spring:message
+                                                                                                    code="job.information.to"
+                                                                                                    arguments="${loggedUser.providerDetails.schedule.endTime}"
+                                                                                                    javaScriptEscape="true"
+                                                                                                    htmlEscape="true"/>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-
                                     <%--Tus Trabajos--%>
                                     <c:url value="/user/dashboard/jobs/search" var="postPath"/>
                                     <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
