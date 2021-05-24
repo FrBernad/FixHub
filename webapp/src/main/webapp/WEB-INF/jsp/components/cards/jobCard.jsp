@@ -27,7 +27,7 @@
                 <h5 class="card-title m-0 jobCardName"><c:out value="${job.jobProvided}"/></h5>
             </div>
             <div class="col-6 col-md-7 my-2">
-                <p class="card-text m-0 names"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
+                <p class="card-text m-0 names" style="font-size: 14px"><c:out value="${job.provider.name} ${job.provider.surname}"/></p>
             </div>
             <div class="col-6 my-2 pl-0 col-md-5 d-flex align-items-center justify-content-end">
                 <div>
