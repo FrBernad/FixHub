@@ -261,7 +261,6 @@ public class WebAuthController {
             errors.rejectValue("", "validation.join.equalTime");
             return join(form, principal);
         }
-
         ra.addFlashAttribute("state", form.getState());
         ra.addFlashAttribute("startTime", form.getStartTime());
         ra.addFlashAttribute("endTime", form.getEndTime());

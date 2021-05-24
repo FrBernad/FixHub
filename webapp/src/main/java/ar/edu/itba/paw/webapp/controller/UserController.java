@@ -18,10 +18,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -44,13 +48,15 @@ public class UserController {
                                 Principal principal) {
         LOGGER.info("Accessed /user/account GET controller");
 
+        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
+
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClient(user, 0, 4);
 
-        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
         mav.addObject("loggedUser", user);
         mav.addObject("results", providersContacted);
+
         return mav;
     }
 
@@ -211,18 +217,24 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/account/updateCoverImage", method = RequestMethod.POST)
-    public ModelAndView updateCoverImage( @ModelAttribute("searchForm") SearchForm searchForm,
-                                          @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
-                                          @ModelAttribute("coverImageForm") CoverImageForm coverImageForm,
-                                          BindingResult errors,
-                                         Principal principal) {
+    public ModelAndView updateCoverImage(@ModelAttribute("searchForm") SearchForm searchForm,
+                                         @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
+                                         @ModelAttribute("coverImageForm") CoverImageForm coverImageForm,
+                                         BindingResult errors,
+                                         Principal principal,
+                                         RedirectAttributes ra) {
+
         LOGGER.info("Accessed /user/account/updateCoverImage POST controller");
+        ModelAndView mav = new ModelAndView("redirect:/user/account");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         if (!imageService.getContentTypesNoGIF().contains(coverImageForm.getCoverImage().getContentType())) {
             LOGGER.warn("Image content type is not valid");
-            errors.rejectValue("coverImage","errors.IllegalContentTypeException");
-            return profile(searchForm,coverImageForm,profileImageForm,principal);
+            errors.rejectValue("coverImage", "errors.IllegalContentTypeException");
+            ra.addFlashAttribute("searchForm", searchForm);
+            ra.addFlashAttribute("coverImageForm", coverImageForm);
+            ra.addFlashAttribute("profileImageForm", profileImageForm);
+            return mav;
         }
         try {
             userService.updateCoverImage(new ImageDto(coverImageForm.getCoverImage().getBytes(), coverImageForm.getCoverImage().getContentType()), user);
@@ -230,20 +242,28 @@ public class UserController {
             LOGGER.warn("Error accessing file bytes");
             throw new ServerInternalException();
         }
-        return new ModelAndView("redirect:/user/account");
+        return mav;
     }
 
 
     @RequestMapping(value = "/user/account/updateProfileImage", method = RequestMethod.POST)
-    public ModelAndView updateProfileImage( @ModelAttribute("searchForm") SearchForm searchForm, @ModelAttribute("coverImageForm") CoverImageForm coverImageForm, @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,BindingResult errors,
-                                            Principal principal) {
+    public ModelAndView updateProfileImage(@ModelAttribute("searchForm") SearchForm searchForm,
+                                           @ModelAttribute("coverImageForm") CoverImageForm coverImageForm,
+                                           @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
+                                           BindingResult errors,
+                                           Principal principal,
+                                           RedirectAttributes ra) {
         LOGGER.info("Accessed /user/account/updateProfileImage POST controller");
+        ModelAndView mav = new ModelAndView("redirect:/user/account");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         if (!imageService.getContentTypesGIF().contains(profileImageForm.getProfileImage().getContentType())) {
             LOGGER.warn("Image content type is not valid");
-            errors.rejectValue("profileImage","errors.IllegalContentTypeExceptionGIF");
-            return profile(searchForm,coverImageForm,profileImageForm,principal);
+            errors.rejectValue("profileImage", "errors.IllegalContentTypeExceptionGIF");
+            ra.addFlashAttribute("searchForm", searchForm);
+            ra.addFlashAttribute("coverImageForm", coverImageForm);
+            ra.addFlashAttribute("profileImageForm", profileImageForm);
+            return mav;
         }
         try {
             userService.updateProfileImage(new ImageDto(profileImageForm.getProfileImage().getBytes(), profileImageForm.getProfileImage().getContentType()), user);
@@ -251,7 +271,7 @@ public class UserController {
             LOGGER.warn("Error accessing file bytes");
             throw new ServerInternalException();
         }
-        return new ModelAndView("redirect:/user/account");
+        return mav;
     }
 
 }
