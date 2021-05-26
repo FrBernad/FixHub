@@ -1,14 +1,18 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
+import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobState;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.form.SearchForm;
+import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +20,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.Optional;
 
 @Controller
 public class DashboardController {
@@ -29,6 +36,9 @@ public class DashboardController {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private JobService jobService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardController.class);
 
@@ -100,4 +110,43 @@ public class DashboardController {
 
         return mav;
     }
+
+    @RequestMapping(value = "/user/dashboard/contacts/acceptJob", method = RequestMethod.POST)
+    public ModelAndView acceptJob(@RequestParam("contactId") final long contactId) {
+
+        LOGGER.info("Accessed /user/dashboard/contacts/acceptJob POST controller");
+
+        final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        jobService.updateJobState(jb, JobState.EN_PROGRESO);
+
+        return new ModelAndView( "redirect:/user/dashboard");
+
+
+    }
+
+    @RequestMapping(value = "/user/dashboard/contacts/rejectJob", method = RequestMethod.POST)
+    public ModelAndView rejectJob(@RequestParam("contactId") final long contactId) {
+
+        LOGGER.info("Accessed /user/dashboard/contacts/rejectJob POST controller");
+
+        final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        jobService.updateJobState(jb,JobState.RECHAZADO);
+
+        return new ModelAndView( "redirect:/user/dashboard");
+
+    }
+
+    @RequestMapping(value = "/user/dashboard/contacts/completedJob", method = RequestMethod.POST)
+    public ModelAndView completedJob(@RequestParam("contactId") final long contactId) {
+
+        LOGGER.info("Accessed /user/dashboard/contacts/completedJob POST controller");
+
+        final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        jobService.updateJobState(jb, JobState.REALIZADO);
+
+        return new ModelAndView( "redirect:/user/dashboard");
+
+    }
+
+
 }

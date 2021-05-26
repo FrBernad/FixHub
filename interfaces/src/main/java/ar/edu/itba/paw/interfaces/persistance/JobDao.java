@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces.persistance;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.user.User;
 
@@ -14,6 +15,8 @@ import java.util.Set;
 public interface JobDao {
 
     Optional<Job> getJobById(long id);
+
+    Optional<JobContact> getContactById(long id);
 
     Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, Set<Image> images);
 

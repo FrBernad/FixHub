@@ -31,6 +31,10 @@ public class JobContact {
     @Column(name = "c_message", length = 300, nullable = false)
     private String message;
 
+    @Column(name = "c_state", length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private JobState state;
+
     @Column(name = "c_date", nullable = false)
     private LocalDateTime date;
 
@@ -49,6 +53,7 @@ public class JobContact {
         this.message = message;
         this.date = date;
         this.job = job;
+        this.state=JobState.PENDIENTE;
     }
 
     protected JobContact() {
@@ -64,6 +69,29 @@ public class JobContact {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public JobState getState() {
+        return state;
+    }
+
+    public void setState(JobState state) {
+        this.state = state;
+    }
+
+    public boolean isWorkPending(){
+        return this.state == JobState.PENDIENTE;
+    }
+
+    public boolean isWorkDone(){
+        return this.state == JobState.REALIZADO;
+    }
+    public boolean isWorkRejected(){
+        return this.state == JobState.RECHAZADO;
+    }
+
+    public boolean isWorkInProgress(){
+        return this.state == JobState.EN_PROGRESO;
     }
 
     public User getUser() {
