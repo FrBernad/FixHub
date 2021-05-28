@@ -12,21 +12,21 @@
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col">
+            <div class="col-6">
                 <form:label class="label" path="startTime"><spring:message code="joinForm.startTime"/></form:label>
             </div>
-            <div class="col align-items-center justify-content-end">
-                <form:input path="startTime" cssClass="timepicker" id="startTime"/>
+            <div class="col-md-3 col-6 align-items-center justify-content-end">
+                <form:input path="startTime" cssClass="timepicker px-2 w-100" id="startTime"/>
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col">
+            <div class="col-6">
                 <form:label class="label" path="endTime"><spring:message code="joinForm.endTime"/></form:label>
             </div>
-            <div class="col align-items-center justify-content-end">
-                <form:input path="endTime" cssClass="timepicker" id="endTime"/>
+            <div class="col-md-3 col-6 align-items-center justify-content-end">
+                <form:input path="endTime" cssClass="timepicker px-2 w-100" id="endTime"/>
             </div>
         </div>
     </div>
