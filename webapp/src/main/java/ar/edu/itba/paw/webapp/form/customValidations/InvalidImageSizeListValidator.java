@@ -20,9 +20,11 @@ public class InvalidImageSizeListValidator implements ConstraintValidator<ImageS
 
     @Override
     public boolean isValid(List<MultipartFile> files, ConstraintValidatorContext context) {
-        for (MultipartFile file: files){
-            if(file.getSize()> size)
-                return false;
+        if (!files.get(0).isEmpty()) {
+            for (MultipartFile file : files) {
+                if (file.getSize() > size)
+                    return false;
+            }
         }
         return true;
     }

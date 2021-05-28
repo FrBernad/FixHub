@@ -25,9 +25,11 @@ public class InvalidImageTypeListValidator implements ConstraintValidator<ImageT
 
     @Override
     public boolean isValid(List<MultipartFile> files, ConstraintValidatorContext context) {
-        for (MultipartFile file: files){
-            if(!validTypes.contains(file.getContentType()))
-                return false;
+        if (!files.get(0).isEmpty()) {
+            for (MultipartFile file : files) {
+                if (!validTypes.contains(file.getContentType()))
+                    return false;
+            }
         }
         return true;
     }
