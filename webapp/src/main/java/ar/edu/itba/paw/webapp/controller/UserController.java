@@ -313,13 +313,20 @@ public class UserController {
         ModelAndView mav = new ModelAndView("redirect:/user/account");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (!imageService.getContentTypesNoGIF().contains(coverImageForm.getCoverImage().getContentType())) {
-            LOGGER.warn("Image content type is not valid");
-            errors.rejectValue("coverImage", "errors.IllegalContentTypeException");
+
+        if(errors.hasErrors()){
+            LOGGER.warn("Update cover image form is not valid");
             ra.addFlashAttribute("coverImageForm", coverImageForm);
             ra.addFlashAttribute("org.springframework.validation.BindingResult.coverImageForm", errors);
             return mav;
         }
+//        if (!imageService.getContentTypesNoGIF().contains(coverImageForm.getCoverImage().getContentType())) {
+//            LOGGER.warn("Image content type is not valid");
+//            errors.rejectValue("coverImage", "errors.IllegalContentTypeException");
+//            ra.addFlashAttribute("coverImageForm", coverImageForm);
+//            ra.addFlashAttribute("org.springframework.validation.BindingResult.coverImageForm", errors);
+//            return mav;
+//        }
         try {
             userService.updateCoverImage(new ImageDto(coverImageForm.getCoverImage().getBytes(), coverImageForm.getCoverImage().getContentType()), user);
         } catch (IOException e) {
@@ -339,13 +346,20 @@ public class UserController {
         ModelAndView mav = new ModelAndView("redirect:/user/account");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-        if (!imageService.getContentTypesGIF().contains(profileImageForm.getProfileImage().getContentType())) {
-            LOGGER.warn("Image content type is not valid");
-            errors.rejectValue("profileImage", "errors.IllegalContentTypeExceptionGIF");
+
+        if(errors.hasErrors()){
+            LOGGER.warn("Update profile image form is not valid");
             ra.addFlashAttribute("org.springframework.validation.BindingResult.profileImageForm", errors);
             ra.addFlashAttribute("profileImageForm", profileImageForm);
             return mav;
         }
+//        if (!imageService.getContentTypesGIF().contains(profileImageForm.getProfileImage().getContentType())) {
+//            LOGGER.warn("Image content type is not valid");
+//            errors.rejectValue("profileImage", "errors.IllegalContentTypeExceptionGIF");
+//            ra.addFlashAttribute("org.springframework.validation.BindingResult.profileImageForm", errors);
+//            ra.addFlashAttribute("profileImageForm", profileImageForm);
+//            return mav;
+//        }
         try {
             userService.updateProfileImage(new ImageDto(profileImageForm.getProfileImage().getBytes(), profileImageForm.getProfileImage().getContentType()), user);
         } catch (IOException e) {

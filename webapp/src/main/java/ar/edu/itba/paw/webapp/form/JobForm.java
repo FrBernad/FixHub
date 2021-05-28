@@ -28,6 +28,8 @@ public class JobForm {
     private BigDecimal price;
 
     @Size(max = 6)
+    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
+    @ImageSizeConstraint(size=3000000)
     private List<MultipartFile> images;
 
     private boolean paused;

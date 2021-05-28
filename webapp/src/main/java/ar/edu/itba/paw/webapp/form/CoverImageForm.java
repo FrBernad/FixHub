@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class CoverImageForm {
 
+    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
+    @ImageSizeConstraint(size=3000000)
     private MultipartFile coverImage;
 
     public MultipartFile getCoverImage() {

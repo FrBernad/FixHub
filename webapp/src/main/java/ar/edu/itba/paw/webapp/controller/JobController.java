@@ -123,19 +123,17 @@ public class JobController {
         }
 
         List<ImageDto> imagesDto = new LinkedList<>();
-        String contentType;
 
         if (!form.getImages().get(0).isEmpty()) {
             for (final MultipartFile image : form.getImages()) {
                 try {
-                    contentType = image.getContentType();
-                    if (!imageService.getContentTypesNoGIF().contains(contentType)) {
-                        LOGGER.error("Error updating job while creating image, content type is not valid");
-                        errors.rejectValue("images", "errors.IllegalContentTypeException");
-                        return updateJob(jobId, form);
-                    }
-
-                    imagesDto.add(new ImageDto(image.getBytes(), contentType));
+//                    contentType = image.getContentType();
+//                    if (!imageService.getContentTypesNoGIF().contains(contentType)) {
+//                        LOGGER.error("Error updating job while creating image, content type is not valid");
+//                        errors.rejectValue("images", "errors.IllegalContentTypeException");
+//                        return updateJob(jobId, form);
+//                    }
+                    imagesDto.add(new ImageDto(image.getBytes(),image.getContentType()));
                 } catch (IOException e) {
                     LOGGER.error("Error getting bytes from images");
                     throw new ServerInternalException();
@@ -236,18 +234,18 @@ public class JobController {
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
         List<ImageDto> imagesDto = new LinkedList<>();
-        String contentType;
+//        String contentType;
 
         if (!form.getImages().get(0).isEmpty()) {
             for (final MultipartFile image : form.getImages()) {
                 try {
-                    contentType = image.getContentType();
-                    if (!imageService.getContentTypesNoGIF().contains(contentType)) {
-                        LOGGER.error("Error creating job while creating image, content type is not valid");
-                        errors.rejectValue("images", "errors.IllegalContentTypeException");
-                        return newJob(form);
-                    }
-                    imagesDto.add(new ImageDto(image.getBytes(), contentType));
+//                    contentType = image.getContentType();
+//                    if (!imageService.getContentTypesNoGIF().contains(contentType)) {
+//                        LOGGER.error("Error creating job while creating image, content type is not valid");
+//                        errors.rejectValue("images", "errors.IllegalContentTypeException");
+//                        return newJob(form);
+//                    }
+                    imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
                 } catch (IOException e) {
                     LOGGER.error("Error getting bytes from images");
                     throw new ServerInternalException();

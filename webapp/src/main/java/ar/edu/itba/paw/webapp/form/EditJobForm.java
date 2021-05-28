@@ -5,10 +5,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class EditJobForm {
@@ -27,6 +31,9 @@ public class EditJobForm {
     private BigDecimal price;
 
     @Size(max = 6)
+
+    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
+    @ImageSizeConstraint(size=3000000)
     private List<MultipartFile> images;
 
     private List<Long> imagesIdDeleted;
