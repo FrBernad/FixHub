@@ -304,7 +304,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/account/updateCoverImage", method = RequestMethod.POST)
-    public ModelAndView updateCoverImage(@ModelAttribute("coverImageForm")CoverImageForm coverImageForm,
+    public ModelAndView updateCoverImage(@Valid @ModelAttribute("coverImageForm")CoverImageForm coverImageForm,
                                          BindingResult errors,
                                          Principal principal,
                                          RedirectAttributes ra) {
@@ -320,13 +320,6 @@ public class UserController {
             ra.addFlashAttribute("org.springframework.validation.BindingResult.coverImageForm", errors);
             return mav;
         }
-//        if (!imageService.getContentTypesNoGIF().contains(coverImageForm.getCoverImage().getContentType())) {
-//            LOGGER.warn("Image content type is not valid");
-//            errors.rejectValue("coverImage", "errors.IllegalContentTypeException");
-//            ra.addFlashAttribute("coverImageForm", coverImageForm);
-//            ra.addFlashAttribute("org.springframework.validation.BindingResult.coverImageForm", errors);
-//            return mav;
-//        }
         try {
             userService.updateCoverImage(new ImageDto(coverImageForm.getCoverImage().getBytes(), coverImageForm.getCoverImage().getContentType()), user);
         } catch (IOException e) {
@@ -338,7 +331,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/user/account/updateProfileImage", method = RequestMethod.POST)
-    public ModelAndView updateProfileImage(@ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
+    public ModelAndView updateProfileImage(@Valid @ModelAttribute("profileImageForm") ProfileImageForm profileImageForm,
                                            BindingResult errors,
                                            Principal principal,
                                            RedirectAttributes ra) {
@@ -353,13 +346,6 @@ public class UserController {
             ra.addFlashAttribute("profileImageForm", profileImageForm);
             return mav;
         }
-//        if (!imageService.getContentTypesGIF().contains(profileImageForm.getProfileImage().getContentType())) {
-//            LOGGER.warn("Image content type is not valid");
-//            errors.rejectValue("profileImage", "errors.IllegalContentTypeExceptionGIF");
-//            ra.addFlashAttribute("org.springframework.validation.BindingResult.profileImageForm", errors);
-//            ra.addFlashAttribute("profileImageForm", profileImageForm);
-//            return mav;
-//        }
         try {
             userService.updateProfileImage(new ImageDto(profileImageForm.getProfileImage().getBytes(), profileImageForm.getProfileImage().getContentType()), user);
         } catch (IOException e) {

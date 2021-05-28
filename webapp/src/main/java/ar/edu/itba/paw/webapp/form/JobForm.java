@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.webapp.form.customValidations.ImageSizeConstraint;
+import ar.edu.itba.paw.webapp.form.customValidations.ImageTypeConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;

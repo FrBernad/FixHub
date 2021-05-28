@@ -1,9 +1,15 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.form.customValidations.FieldsValueMatch;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Size;
 
+
+@FieldsValueMatch(
+      field = "password",
+      fieldMatch = "confirmPassword"
+    )
 public class ResetPasswordForm {
 
     @NotEmpty

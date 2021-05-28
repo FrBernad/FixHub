@@ -226,7 +226,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <h1 class="sectionTitle"><spring:message code="job.description.title"/></h1>
+                        <h1 class="sectionTitle">
+                            <spring:message code="job.description.title"/>
+                        </h1>
                     </div>
                     <div class="col-12">
                         <p class="text-left contactInfo" style="font-weight: normal">

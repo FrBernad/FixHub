@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.form.customValidations;
 
 
 import javax.validation.Constraint;
@@ -8,12 +8,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = {InvalidImageSizeValidator.class,InvalidImageSizeListValidator.class})
-@Target( { ElementType.FIELD})
+@Constraint(validatedBy = { InvalidImageTypeValidator.class, InvalidImageTypeListValidator.class })
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ImageSizeConstraint {
-    String message() default "Image size is too big";
-    int size();
+public @interface ImageTypeConstraint {
+
+    String message() default "Invalid image type";
+    String[] contentType();
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
 }

@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.form.customValidations.ImageSizeConstraint;
+import ar.edu.itba.paw.webapp.form.customValidations.ImageTypeConstraint;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProfileImageForm {

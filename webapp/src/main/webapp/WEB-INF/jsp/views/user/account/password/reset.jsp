@@ -66,6 +66,7 @@
                                         </div>
                                     </div>
                                     <form:errors path="confirmPassword" cssClass="formError" element="p"/>
+                                    <form:errors path="" cssClass="formError" element="p"/>
                                 </form:form>
                             </div>
                             <div class="col-12 mt-2 d-flex align-items-center justify-content-center">

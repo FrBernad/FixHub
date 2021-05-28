@@ -59,6 +59,7 @@
             </div>
         </div>
         <form:errors path="confirmPassword" cssClass="formError" element="p"/>
+        <form:errors path="" cssClass="formError" element="p"/>
     </div>
 
     <div class="form-group">

@@ -65,12 +65,6 @@ public class JobServiceImpl implements JobService {
         final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider, jobImages);
         LOGGER.info("Created job {} with id {}", job.getJobProvided(), job.getId());
 
-        final Collection<User> providerFollowers = provider.getFollowers();
-
-        for (User follower : providerFollowers) {
-            sendNewJobNotificationMail(follower, job);
-        }
-
         return job;
     }
 

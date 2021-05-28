@@ -63,13 +63,6 @@ public class WebAuthController {
             return register(form);
         }
 
-        if (!form.getPassword().equals(form.getConfirmPassword())) {
-            //Global error, that's why it has "".
-            LOGGER.warn("Error in form RegisterForm, passwords dont match");
-            errors.rejectValue("confirmPassword", "validation.user.passwordsDontMatch");
-            return register(form);
-        }
-
         User user;
         final ModelAndView mav = new ModelAndView("redirect:/user/account");
         try {
@@ -194,13 +187,6 @@ public class WebAuthController {
 
         if (errors.hasErrors()) {
             LOGGER.warn("Error in form resetPasswordForm data");
-            return new ModelAndView("views/user/account/password/reset");
-        }
-
-        if (!form.getPassword().equals(form.getConfirmPassword())) {
-            LOGGER.warn("Error in form resetPasswordForm data, form passwords dont match");
-
-            errors.rejectValue("confirmPassword", "validation.user.passwordsDontMatch");
             return new ModelAndView("views/user/account/password/reset");
         }
 

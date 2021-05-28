@@ -1,5 +1,6 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.form.customValidations;
 
+import ar.edu.itba.paw.webapp.form.customValidations.ImageTypeConstraint;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;
@@ -19,7 +20,7 @@ public class InvalidImageTypeListValidator implements ConstraintValidator<ImageT
     @Override
     public void initialize(ImageTypeConstraint imageTypeConstraint) {
         this.imageTypeConstraint = imageTypeConstraint;
-        validTypes = Collections.unmodifiableCollection(Arrays.asList(this.imageTypeConstraint.contentType()));
+        this.validTypes = Collections.unmodifiableCollection(Arrays.asList(this.imageTypeConstraint.contentType()));
     }
 
     @Override
