@@ -122,26 +122,11 @@ public class JobController {
             throw new IllegalOperationException();
         }
 
+
         List<ImageDto> imagesDto = new LinkedList<>();
+        getImagesFromJob(imagesDto, form.getImages());
 
-        if (!form.getImages().get(0).isEmpty()) {
-            for (final MultipartFile image : form.getImages()) {
-                try {
-                    imagesDto.add(new ImageDto(image.getBytes(),image.getContentType()));
-                } catch (IOException e) {
-                    LOGGER.error("Error getting bytes from images");
-                    throw new ServerInternalException();
-                }
-            }
-        }
-
-        List<Long> imagesIdDeleted;
-        if (form.getImagesIdDeleted() == null) {
-            imagesIdDeleted = new LinkedList<>();
-        } else {
-            imagesIdDeleted = form.getImagesIdDeleted();
-        }
-
+        List<Long> imagesIdDeleted = form.getImagesIdDeleted() == null ? new LinkedList<>(): form.getImagesIdDeleted();
 
         try {
             jobService.updateJob(form.getJobProvided(), form.getDescription(), form.getPrice(), form.isPaused(), imagesDto, job, imagesIdDeleted);
@@ -227,21 +212,26 @@ public class JobController {
 
         final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
 
-        List<ImageDto> imagesDto = new LinkedList<>();
 
-        if (!form.getImages().get(0).isEmpty()) {
-            for (final MultipartFile image : form.getImages()) {
+        List<ImageDto> imagesDto = new LinkedList<>();
+        getImagesFromJob(imagesDto, form.getImages());
+
+        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
+        LOGGER.info("Created job with id {}", job.getId());
+        return new ModelAndView("redirect:/jobs/" + job.getId());
+    }
+
+    private void getImagesFromJob(List<ImageDto> imagesDto,List<MultipartFile> images ){
+        if (!images.get(0).isEmpty()) {
+            for (final MultipartFile image : images) {
                 try {
-                    imagesDto.add(new ImageDto(image.getBytes(), image.getContentType()));
+                    imagesDto.add(new ImageDto(image.getBytes(),image.getContentType()));
                 } catch (IOException e) {
                     LOGGER.error("Error getting bytes from images");
                     throw new ServerInternalException();
                 }
             }
         }
-        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
-        LOGGER.info("Created job with id {}", job.getId());
-        return new ModelAndView("redirect:/jobs/" + job.getId());
     }
 
 }
