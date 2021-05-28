@@ -10,9 +10,6 @@ public interface ImageService {
     Set<Image> createImages(List<ImageDto> images);
     Image createImage(ImageDto image);
 
-    Collection<String> getContentTypesGIF();
-    Collection<String> getContentTypesNoGIF();
-
     Optional<Image> getImageById(Long imageId);
     Collection<Image> getImagesById(Collection<Long> imagesId);
 

@@ -31,6 +31,12 @@ public class Image {
         this.mimeType = mimeType;
     }
 
+    public Image(Long id,byte[] data, String mimeType) {
+        this.id = id;
+        this.data = data;
+        this.mimeType = mimeType;
+    }
+
     public String getMimeType() {
         return mimeType;
     }
