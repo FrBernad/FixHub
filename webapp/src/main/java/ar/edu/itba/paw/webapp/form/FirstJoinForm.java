@@ -1,7 +1,13 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.form.customValidations.FieldsValueNotMatch;
+
 import javax.validation.constraints.Min;
 
+@FieldsValueNotMatch(
+    field = "startTime",
+    fieldNotMatch = "endTime"
+)
 public class FirstJoinForm {
 
     @Min(1)

@@ -153,7 +153,6 @@ public class WebAuthController {
         final Optional<User> user = userService.getUserByEmail(form.getEmail());
         if (!user.isPresent()) {
             LOGGER.warn("Error in form ResetPasswordForm, user under email {} not found", form.getEmail());
-
             errors.rejectValue("email", "errors.invalidEmail");
             return resetPasswordRequest(form);
         }
@@ -239,14 +238,6 @@ public class WebAuthController {
             return join(form, principal);
         }
 
-        LocalTime start = LocalTime.parse(form.getStartTime(), DateTimeFormatter.ofPattern("HH:mm"));
-        LocalTime stop = LocalTime.parse(form.getEndTime(), DateTimeFormatter.ofPattern("HH:mm"));
-
-        if (start.compareTo(stop) == 0) {
-            LOGGER.warn("Error in form FirstJoinForm data, times are invalid");
-            errors.rejectValue("", "validation.join.equalTime");
-            return join(form, principal);
-        }
         ra.addFlashAttribute("state", form.getState());
         ra.addFlashAttribute("startTime", form.getStartTime());
         ra.addFlashAttribute("endTime", form.getEndTime());

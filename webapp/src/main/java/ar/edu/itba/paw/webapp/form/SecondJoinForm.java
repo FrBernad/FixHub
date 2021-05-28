@@ -1,12 +1,15 @@
 package ar.edu.itba.paw.webapp.form;
 
 
-
+import ar.edu.itba.paw.webapp.form.customValidations.FieldsValueNotMatch;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
 import java.util.List;
-
+@FieldsValueNotMatch(
+    field = "startTime",
+    fieldNotMatch = "endTime"
+)
 public class SecondJoinForm {
 
     @Min(1)

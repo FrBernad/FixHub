@@ -30,6 +30,10 @@
                 <form:input path="endTime" cssClass="endTimepicker px-2 w-100" id="endTime"
                             value="${loggedUser.providerDetails.schedule.endTime}"/>
             </div>
+            <div class="col-12">
+                <form:errors path="" cssClass="formError text-center mt-2" element="p"/>
+            </div>
+
         </div>
     </div>
     <div class="form-group">

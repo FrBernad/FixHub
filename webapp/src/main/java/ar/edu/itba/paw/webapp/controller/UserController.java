@@ -180,7 +180,7 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/account/updateProviderStateAndTime")
-    public ModelAndView firstUpdateProvider(@ModelAttribute("providerInfoFirstForm") SecondJoinForm form, Principal principal) {
+    public ModelAndView firstUpdateProvider(@ModelAttribute("providerInfoFirstForm") FirstJoinForm form, Principal principal) {
         LOGGER.info("Accessed /user/account/updateProviderInfo GET controller");
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
         if(!user.hasRole(Roles.PROVIDER)) {
@@ -193,7 +193,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/account/updateProviderStateAndTime", method = RequestMethod.POST)
-    public ModelAndView firstUpdateProviderPost(@ModelAttribute("providerInfoFirstForm") SecondJoinForm form, BindingResult errors, RedirectAttributes ra, Principal principal) {
+    public ModelAndView firstUpdateProviderPost(@Valid @ModelAttribute("providerInfoFirstForm") FirstJoinForm form, BindingResult errors, RedirectAttributes ra, Principal principal) {
         LOGGER.info("Accessed /user/account/updateProviderInfo POST controller");
 
         User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
@@ -206,14 +206,6 @@ public class UserController {
             return firstUpdateProvider(form, principal);
         }
 
-        LocalTime start = LocalTime.parse(form.getStartTime(), DateTimeFormatter.ofPattern("HH:mm"));
-        LocalTime stop = LocalTime.parse(form.getEndTime(), DateTimeFormatter.ofPattern("HH:mm"));
-
-        if (start.compareTo(stop) == 0) {
-            LOGGER.warn("Error in form FirstJoinForm data, times are invalid");
-            errors.rejectValue("", "validation.join.equalTime");
-            return firstUpdateProvider(form, principal);
-        }
 
         ra.addFlashAttribute("state", form.getState());
         ra.addFlashAttribute("startTime", form.getStartTime());

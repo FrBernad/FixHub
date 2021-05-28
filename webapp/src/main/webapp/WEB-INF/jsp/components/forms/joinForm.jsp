@@ -28,14 +28,10 @@
             <div class="col-md-3 col-6 align-items-center justify-content-end">
                 <form:input path="endTime" cssClass="timepicker px-2 w-100" id="endTime"/>
             </div>
+            <div class="col-12">
+                <form:errors path="" cssClass="formError text-center mt-2" element="p"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <spring:hasBindErrors name="joinForm">
-            <c:if test="${errors.globalErrorCount > 0}">
-                <div class="alert alert-danger"><form:errors/></div>
-            </c:if>
-        </spring:hasBindErrors>
     </div>
     <div class="form-group">
         <form:label class="label font-weight-bold" path="state"><spring:message code="joinForm.availableZones"/>*</form:label>
