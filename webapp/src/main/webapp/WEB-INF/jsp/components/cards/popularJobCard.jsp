@@ -39,6 +39,6 @@
     </div>
     <a href="<c:url value='/jobs/${job.id}'/>" class="stretched-link"></a>
     <div class="jobPrice">
-        <p class="text-left mb-0"><spring:message code="popularJobCard.priceText"/><c:out value="${job.price}"/></p>
+        <p class="text-left mb-0"><spring:message arguments="${job.price}" code="popularJobCard.priceText"/></p>
     </div>
 </div>

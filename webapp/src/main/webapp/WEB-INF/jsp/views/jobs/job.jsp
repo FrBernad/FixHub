@@ -60,8 +60,7 @@
                             <span class="badge badge-pill badge-secondary jobCategory">
                             <spring:message code="home.categories.${job.category}"/></span>
                             <div class="jobPrice">
-                                <p class="text-left mb-0"><spring:message code="job.priceText"/><c:out
-                                        value="${job.price}"/></p>
+                                <p class="text-left mb-0"><spring:message code="job.priceText" arguments="${job.price}"/></p>
                             </div>
                         </div>
                     </div>
@@ -243,7 +242,7 @@
                 <div class="row">
                     <div class="col-12 d-flex justify-content-start align-items-center">
                         <h2 class="sectionTitle">
-                            <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
+                            <spring:message code="job.review.title" arguments="${job.jobProvided}"/>
                         </h2>
                     </div>
                     <c:if test="${canReview == true && !job.paused}">

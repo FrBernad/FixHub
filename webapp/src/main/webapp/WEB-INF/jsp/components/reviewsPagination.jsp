@@ -15,7 +15,7 @@
                     </form>
                     <div class="col-12 d-flex justify-content-start align-items-center">
                         <h2 class="sectionTitle">
-                            <spring:message code="job.review.title"/><c:out value="${job.jobProvided}"/>
+                            <spring:message code="job.review.title" arguments="${job.jobProvided}"/>
                         </h2>
                     </div>
                     <c:forEach var="review" items="${results.results}">

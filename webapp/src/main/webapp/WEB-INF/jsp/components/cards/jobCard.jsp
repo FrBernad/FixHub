@@ -15,7 +15,7 @@
             </c:otherwise>
         </c:choose>
         <div class="jobPrice">
-            <p class="text-left mb-0"><spring:message code="jobCard.priceText"/><c:out value="${job.price}"/></p>
+            <p class="text-left mb-0"><spring:message arguments="${job.price}" code="jobCard.priceText"/></p>
         </div>
         <span class="badge badge-pill badge-secondary category jobCategory">
                   <spring:message code="home.categories.${job.category}"/>
