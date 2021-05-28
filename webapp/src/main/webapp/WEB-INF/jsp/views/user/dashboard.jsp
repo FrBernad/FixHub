@@ -8,6 +8,7 @@
 <head>
     <%@ include file="../../components/includes/headers.jsp" %>
     <link href='<c:url value="/resources/css/dashboard.css"/>' rel="stylesheet">
+    <link href='<c:url value="/resources/css/clientsContactCard.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/jobCard.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
     <script src='<c:url value="/resources/js/dashboard.js"/>'></script>
