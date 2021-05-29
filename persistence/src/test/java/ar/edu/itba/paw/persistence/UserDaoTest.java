@@ -164,24 +164,18 @@ public class UserDaoTest {
         assertEquals(contactInfo.getUser().getId().longValue(), 3L);
     }
 
-
+    //GET CLIENTS AND PROVIDERS
     @Test
     public void getClientsByProvider() {
         Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_PROVIDER, 0, 4);
         assertEquals(1, jobContacts.size());
         assertTrue(jobContacts.size() <= 4);
-
-        jobContacts = userDao.getClientsByProvider(MOCKED_CLIENT, 0, 4);
-        assertEquals(0, jobContacts.size());
     }
 
     @Test
-    public void getClientsCountByProvider() {
-        int count = userDao.getClientsCountByProvider(MOCKED_PROVIDER);
-        assertEquals(1, count);
-
-        count = userDao.getClientsCountByProvider(MOCKED_CLIENT);
-        assertEquals(0, count);
+    public void getClientsByProviderNoClients() {
+        Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_CLIENT, 0, 4);
+        assertEquals(0, jobContacts.size());
     }
 
     @Test
@@ -195,6 +189,25 @@ public class UserDaoTest {
     }
 
     @Test
+    public void getProvidersByClientNoProviders() {
+        Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_PROVIDER, 0, 10);
+        assertEquals(0, providers.size());
+    }
+
+    //GET CLIENTS AND PROVIDERS COUNTS
+    @Test
+    public void getClientsCountByProvider() {
+        int count = userDao.getClientsCountByProvider(MOCKED_PROVIDER);
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void getClientsCountByProviderNoClients() {
+        int count = userDao.getClientsCountByProvider(MOCKED_CLIENT);
+        assertEquals(0, count);
+    }
+
+    @Test
     public void getProvidersCountByClient() {
         int count = userDao.getProvidersCountByClient(MOCKED_CLIENT);
         assertEquals(1, count);
@@ -204,29 +217,71 @@ public class UserDaoTest {
     }
 
     @Test
+    public void getProvidersCountByClientNoProviders() {
+        int count = userDao.getProvidersCountByClient(MOCKED_PROVIDER);
+        assertEquals(0, count);
+    }
+
+    //GET FOLLOW
+    @Test
     public void getUserFollowers() {
-        Collection<User> followers = userDao.getUserFollowers(MOCKED_PROVIDER,);
-        //Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
+        final Long[] followersIds = {3L, 2L};
+
+        Collection<User> followers = userDao.getUserFollowers(MOCKED_PROVIDER, 0, 4);
+        assertEquals(2, followers.size());
+        assertTrue(followers.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (User follower : followers) {
+            resultIds.add(follower.getId());
+        }
+
+        assertArrayEquals(followersIds, resultIds.toArray());
+    }
+
+    @Test
+    public void getUserFollowersNoFollowers() {
+        Collection<User> followers = userDao.getUserFollowers(MOCKED_CLIENT, 0, 4);
+        assertEquals(0, followers.size());
+        assertTrue(followers.size() <= 4);
     }
 
     @Test
     public void getUserFollowings() {
+        final Long[] followingIds = {2L};
 
-        //Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
+        Collection<User> following = userDao.getUserFollowings(MOCKED_PROVIDER, 0, 4);
+        assertEquals(1, following.size());
+        assertTrue(following.size() <= 4);
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (User user : following) {
+            resultIds.add(user.getId());
+        }
+
+        assertArrayEquals(followingIds, resultIds.toArray());
     }
+
+    //GET FOLLOW COUNTS
 
     @Test
     public void getUserFollowersCount() {
-
-        //Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
+        int count = userDao.getUserFollowersCount(MOCKED_PROVIDER);
+        assertEquals(2, count);
     }
 
+    @Test
+    public void getUserFollowersCountNoFollowers() {
+        int count = userDao.getUserFollowersCount(MOCKED_CLIENT);
+        assertEquals(0, count);
+    }
 
     @Test
     public void getUserFollowingsCount() {
-
-        //Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
+        int count = userDao.getUserFollowingCount(MOCKED_PROVIDER);
+        assertEquals(1, count);
     }
+
 
     @Test
     public void persistProviderDetails() {
