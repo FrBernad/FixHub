@@ -82,7 +82,6 @@ public class ImageDaoTest {
         Set<Image> dtos2 = imageDao.createImages(dtos1);
 
         assertNotNull(dtos2);
-//        assertEquals(dtos1.size(), JdbcTestUtils.countRowsInTable(jdbcTemplate,"images"));
 
         Image[] dtos2Vec= dtos2.toArray(new Image[0]);
 

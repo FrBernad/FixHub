@@ -48,6 +48,7 @@ public class UserDaoTest {
     private static final Collection<Roles> CLIENT_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.VERIFIED, Roles.USER));
 
     private static final User MOCKED_CLIENT = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(3L).getMock();
+    private static final User MOCKED_CLIENT_NO_CONTACT = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(2L).getMock();
     private static final User MOCKED_PROVIDER = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();
     private static final Job MOCKED_JOB = Mockito.when(Mockito.mock(Job.class).getId()).thenReturn(1L).getMock();
     private static final ContactInfo MOCKED_CONTACT_INFO = Mockito.when(Mockito.mock(ContactInfo.class).getId()).thenReturn(1L).getMock();
@@ -126,12 +127,9 @@ public class UserDaoTest {
 
     @Test(expected = DuplicateUserException.class)
     public void testCreateDuplicateUser() throws DuplicateUserException {
-
-
         userDao.createUser("password", "Ignacio", "Lopez", "ignacio@yopmail.com",
             "5491112345678", "CABA", "Caballito",
             new HashSet<>(PROVIDER_VERIFIED_ROLES));
-
     }
 
     @Test
@@ -155,7 +153,6 @@ public class UserDaoTest {
         em.flush();
 
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "contact_info", query));
-
     }
 
     @Test
@@ -169,10 +166,6 @@ public class UserDaoTest {
 
         JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, "Te necesito rápido",
             LocalDateTime.of(2021, 5, 29, 12, 30), job);
-
-//        String query = String.format("c_id = %s and c_date = '%s' and c_message = '%s' and c_contact_info = %s and c_job_id = %s and c_provider_id = %s and c_user_id = %s ",
-//            jobContact.getId(),jobContact.getDate(),jobContact.getMessage(),jobContact.getContactInfo().getId()
-//            ,jobContact.getJob().getId(),jobContact.getProvider().getId(),jobContact.getUser().getId());
 
         String query = String.format("c_id = %s and c_message = '%s' and c_contact_info = %s and c_job_id = %s and c_provider_id = %s and c_user_id = %s ",
             jobContact.getId(),jobContact.getMessage(),jobContact.getContactInfo().getId()
@@ -308,18 +301,14 @@ public class UserDaoTest {
         assertEquals(1, count);
     }
 
-
     @Test
-    public void testPersistProviderDetails() {
-//        void persistProviderDetails(Location location, Schedule schedule);
-
+    public void testHasContactJobProvided() {
+        assertTrue(userDao.hasContactJobProvided(MOCKED_PROVIDER,MOCKED_CLIENT));
     }
 
-
     @Test
-    public void hasContactJobProvided() {
-//        boolean hasContactJobProvided(User provider, User user);
-
+    public void testHasContactJobProvidedFalse() {
+        assertFalse(userDao.hasContactJobProvided(MOCKED_CLIENT_NO_CONTACT,MOCKED_PROVIDER));
     }
 
 

@@ -31,6 +31,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.mail.MessagingException;
+import javax.mail.Provider;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -134,7 +135,7 @@ public class UserServiceImplTest {
         when(mockMessageSource.getMessage(anyString(), any(), eq(LocaleContextHolder.getLocale()))).
             thenReturn(VERIFICATION_SUBJECT);
         when(mockVerificationTokenDao.createVerificationToken(eq(DEFAULT_USER), anyString(), any(LocalDateTime.class)))
-            .thenReturn(new VerificationToken( TOKEN, DEFAULT_USER, DEFAULT_TIME));
+            .thenReturn(new VerificationToken(TOKEN, DEFAULT_USER, DEFAULT_TIME));
         when(mockEncoder.encode(PASSWORD)).thenReturn(PASSWORD);
         when(mockUserDao.createUser(Mockito.eq(PASSWORD), Mockito.eq(NAME), Mockito.eq(SURNAME),
             Mockito.eq(EMAIL), Mockito.eq(PHONENUMBER), Mockito.eq(STATE), Mockito.eq(CITY), Mockito.eq(DEFAULT_ROLES))).
@@ -241,36 +242,44 @@ public class UserServiceImplTest {
         verify(mockProfileImage).setData(PROFILE_IMAGE.getData());
     }
 
-//    @Test
-//    public void testUpdateProviderInfo() {
-//        Location mockLocation = new Location(mockUser, null, null);
-//        Schedule mockSchedule = new Schedule(mockUser, START_TIME, END_TIME);
-//
-//        when(mockLocationDao.getCitiesById(null)).thenReturn(null);
-//        when(mockUser.getProviderDetails().getLocation()).thenReturn(null);
-//        when(mockUser.getProviderDetails().getSchedule()).thenReturn(null);
-//        when(mockUser.getId()).thenReturn(1L);
-//        userService.updateProviderInfo(mockUser, null, START_TIME, END_TIME);
-//        verify(mockLocation).setCities(null);
-//        verify(mockLocation).setState(null);
-//
-//        verify(mockSchedule).setStartTime(START_TIME);
-//        verify(mockSchedule).setEndTime(END_TIME);
-//
-//    }
-//
-//    @Test
-//    public void testMakeProvider() {
-//        when(mockLocationDao.getCitiesById(null)).thenReturn(null);
-//        when(mockUser.getId()).thenReturn(1L);
-//        Location location = new Location(mockUser, null, null);
-//        Schedule schedule = new Schedule(mockUser, START_TIME, END_TIME);
-//
-//        userService.makeProvider(mockUser, null, START_TIME, END_TIME);
-//
-//        verify(mockUser).addRole(Roles.PROVIDER);
-//        verify(mockUser).setProviderDetails(new ProviderDetails(location, schedule));
-//    }
+    @Test
+    public void testUpdateProviderInfo() {
+        Location location = Mockito.mock(Location.class);
+        Schedule schedule = Mockito.mock(Schedule.class);
+        ProviderDetails providerDetails = Mockito.mock(ProviderDetails.class);
+        City city = Mockito.mock(City.class);
+
+        when(city.getState()).thenReturn(null);
+
+        when(mockLocationDao.getCitiesById(null)).thenReturn(Collections.singletonList(city));
+        when(mockUser.getProviderDetails()).thenReturn(providerDetails);
+        when(providerDetails.getLocation()).thenReturn(location);
+        when(providerDetails.getSchedule()).thenReturn(schedule);
+        when(mockUser.getId()).thenReturn(1L);
+
+        userService.updateProviderInfo(mockUser, null, START_TIME, END_TIME);
+
+        verify(location).setCities(any());
+        verify(location).setState(any());
+
+        verify(schedule).setStartTime(START_TIME);
+        verify(schedule).setEndTime(END_TIME);
+
+    }
+
+    @Test
+    public void testMakeProvider() {
+        City city = Mockito.mock(City.class);
+
+        when(city.getState()).thenReturn(null);
+        when(mockLocationDao.getCitiesById(null)).thenReturn(Collections.singletonList(city));
+        when(mockUser.getId()).thenReturn(1L);
+
+        userService.makeProvider(mockUser, null, START_TIME, END_TIME);
+
+        verify(mockUser).addRole(Roles.PROVIDER);
+        verify(mockUser).setProviderDetails(any());
+    }
 
     @Test
     public void testGetUserByEmail() {

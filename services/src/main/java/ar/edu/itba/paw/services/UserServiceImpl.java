@@ -248,6 +248,7 @@ public class UserServiceImpl implements UserService {
         final State state = cities.stream().findFirst().get().getState();
         final Location location = new Location(user, new HashSet<>(cities), state);
         final Schedule schedule = new Schedule(user, startTime, endTime);
+
         userDao.persistProviderDetails(location, schedule);
 
         final ProviderDetails providerDetails = new ProviderDetails(location, schedule);
