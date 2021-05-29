@@ -4,20 +4,15 @@ import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.user.User;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 import java.util.*;
 
 import static ar.edu.itba.paw.models.job.JobCategory.*;
@@ -31,19 +26,9 @@ import static org.junit.Assert.*;
 public class JobDaoTest {
 
     @Autowired
-    private DataSource ds;
-
-    @Autowired
     private JobDao jobDao;
 
-    private JdbcTemplate jdbcTemplate;
-
     static User provider = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();;
-
-    @Before
-    public void setUp() {
-        jdbcTemplate = new JdbcTemplate(ds);
-    }
 
     //GET JOBS BY CATEGORY
 

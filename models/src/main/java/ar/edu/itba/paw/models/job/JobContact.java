@@ -91,11 +91,11 @@ public class JobContact {
         this.job = job;
     }
 
-    public Long getContactId() {
+    public Long getId() {
         return id;
     }
 
-    public void setContactId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

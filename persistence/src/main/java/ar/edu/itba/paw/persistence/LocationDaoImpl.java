@@ -58,7 +58,7 @@ public class LocationDaoImpl implements LocationDao {
     }
 
     @Override
-    public Optional<City> getCityByCityAndStateId(long cityId, State state) {
+    public Optional<City> getCityByCityIdAndState(long cityId, State state) {
         LOGGER.debug("Getting city with id {} of the state  {}", cityId,state.getName());
 
         return em

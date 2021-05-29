@@ -109,7 +109,7 @@ public class SearchServiceImpl implements SearchService {
                 } catch (NumberFormatException ignored) {
                 } finally {
                     city = "";
-                    Optional<City> cityOtp = locationDao.getCityByCityAndStateId(cityId, stateObj);
+                    Optional<City> cityOtp = locationDao.getCityByCityIdAndState(cityId, stateObj);
                     if (cityOtp.isPresent()) {
                         city = cityOtp.get().getName();
                         queryCity = String.valueOf(cityId);
