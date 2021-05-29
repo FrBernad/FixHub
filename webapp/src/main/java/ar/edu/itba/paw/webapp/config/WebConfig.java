@@ -75,7 +75,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //        ds.setPassword("QroE40tsz");
         return ds;
     }
-    
+
     @Bean
     public MultipartResolver multipartResolver() {
         final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
@@ -103,7 +103,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
         properties.setProperty("hibernate.show_sql", "true");// FIXME:Si ponen esto en prod, hay tabla!!!
         properties.setProperty("format_sql", "true");
+
         factoryBean.setJpaProperties(properties);
+
         return factoryBean;
     }
 
