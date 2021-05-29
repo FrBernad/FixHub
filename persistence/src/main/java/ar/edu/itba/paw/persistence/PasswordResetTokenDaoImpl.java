@@ -68,12 +68,4 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
     }
 
-    //FIXME:
-//    @Override
-//    public void removeTokenByUserId(long userId) {
-//        final String query = "DELETE from password_reset_tokens where prt_user_id = ?";
-//        LOGGER.debug("Executing query: {}", query);
-//        jdbcTemplate.update(query, userId);
-//    }
-//
 }
