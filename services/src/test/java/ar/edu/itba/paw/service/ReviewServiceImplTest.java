@@ -3,6 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.PaginatedSearchResult;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;
@@ -15,10 +16,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static ar.edu.itba.paw.services.UserServiceImpl.DEFAULT_ROLES;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReviewServiceImplTest {
@@ -32,7 +36,6 @@ public class ReviewServiceImplTest {
     private static final String STATE = "state";
     private static final String CITY = "city";
 
-
     //Review Info
     private static final String REVIEW_DESCRIPTION = "Excelente Servicio";
     private static final int RATING = 4;
@@ -40,37 +43,66 @@ public class ReviewServiceImplTest {
 
     private static final User USER = new User(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
 
+    private static final Review REVIEW = new Review("", null, 5, CREATIONDATE.toLocalDateTime().toLocalDate(), USER);
+    private static final Collection<Review> REVIEW_COLLECTION = Collections.singletonList(REVIEW);
+
+    private static final int DEFAULT_ITEMS_PER_PAGE = 6;
+
     @InjectMocks
     private final ReviewService reviewService = new ReviewServiceImpl();
 
     @Mock
-    private ReviewDao reviewDao;
+    private ReviewDao mockReviewDao;
 
     @Mock
-    private User user;
+    private User mockUser;
 
     @Mock
-    private Job job;
+    private Job mockJob;
 
     @Mock
-    private UserService userService;
+    private UserService mockUserService;
 
     @Test
-    public void createReviewTest() {
-        when(user.getId()).thenReturn(1L);
-        when(job.getJobProvided()).thenReturn("");
-        when(job.getId()).thenReturn(1L);
-        when(job.getReviews()).thenReturn(new HashSet<>());
-        when(userService.hasContactJobProvided(Mockito.eq(job.getProvider()), Mockito.eq(USER))).thenReturn(Boolean.TRUE);
+    public void testCreateReview() {
+        lenient().when(mockUser.getId()).thenReturn(1L);
+        lenient().when(mockJob.getJobProvided()).thenReturn("");
+        lenient().when(mockJob.getId()).thenReturn(1L);
+        lenient().when(mockJob.getReviews()).thenReturn(new HashSet<>());
+        lenient().when(mockUserService.hasContactJobProvided(Mockito.eq(mockJob.getProvider()), Mockito.eq(USER))).thenReturn(Boolean.TRUE);
 
-        when(reviewDao.createReview(Mockito.eq(REVIEW_DESCRIPTION), Mockito.eq(job), Mockito.eq(RATING)
+        lenient().when(mockReviewDao.createReview(Mockito.eq(REVIEW_DESCRIPTION), Mockito.eq(mockJob), Mockito.eq(RATING)
             , Mockito.any(), Mockito.eq(USER))).thenReturn(
-            new Review(REVIEW_DESCRIPTION, job, RATING, CREATIONDATE.toLocalDateTime().toLocalDate(), USER));
+            new Review(REVIEW_DESCRIPTION, mockJob, RATING, CREATIONDATE.toLocalDateTime().toLocalDate(), USER));
 
-        reviewService.createReview(REVIEW_DESCRIPTION, job, RATING, USER);
-        Mockito.verify(reviewDao).createReview(Mockito.eq(REVIEW_DESCRIPTION), Mockito.eq(job), Mockito.eq(RATING),
+        reviewService.createReview(REVIEW_DESCRIPTION, mockJob, RATING, USER);
+        Mockito.verify(mockReviewDao).createReview(Mockito.eq(REVIEW_DESCRIPTION), Mockito.eq(mockJob), Mockito.eq(RATING),
             Mockito.any(), Mockito.eq(USER));
-
     }
+
+    @Test
+    public void testGetReviewsByJobInvalidPage() {
+        lenient().when(mockReviewDao.getReviewsCountByJob(any())).thenReturn(10);
+
+        lenient().when(mockReviewDao.getReviewsByJob(any(), eq(0), eq(6))).thenReturn(REVIEW_COLLECTION);
+
+        final PaginatedSearchResult<Review> result = reviewService.getReviewsByJob(mockJob, -10, 6);
+
+        assertEquals(0, result.getPage());
+    }
+
+    @Test
+    public void testGetReviewsByJobInvalidItemsPerPage() {
+        lenient().when(mockReviewDao.getReviewsCountByJob(any())).thenReturn(10);
+
+        lenient().when(mockReviewDao.getReviewsByJob(any(), eq(0), eq(6))).thenReturn(REVIEW_COLLECTION);
+
+        final PaginatedSearchResult<Review> result = reviewService.getReviewsByJob(mockJob, 0, -10);
+
+        assertEquals(0, result.getPage());
+
+        assertEquals(DEFAULT_ITEMS_PER_PAGE, result.getItemsPerPage());
+    }
+
 
 }

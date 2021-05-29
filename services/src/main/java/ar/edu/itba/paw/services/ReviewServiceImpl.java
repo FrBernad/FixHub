@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @org.springframework.stereotype.Service
 public class ReviewServiceImpl implements ReviewService {
@@ -32,17 +33,29 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public PaginatedSearchResult<Review> getReviewsByJob(Job job, int page, int itemsPerPage) {
 
-        LOGGER.debug("Retrieving total reviews count for job {}", job.getId());
-        final int totalReviews = reviewDao.getReviewsCountByJob(job);
+        if (page < 0) {
+            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
+            page = 0;
+        }
 
         if (itemsPerPage <= 0) {
-            LOGGER.debug("Assigning default items per page");
+            LOGGER.debug("Items per page {} is invalid, assigning default", itemsPerPage);
             itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
         }
 
-        LOGGER.debug("Retrieving paginated reviews");
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalReviews,
-            reviewDao.getReviewsByJob(job, page, itemsPerPage));
+        LOGGER.debug("Retrieving total reviews count for job {}", job.getId());
+        final int totalReviews = reviewDao.getReviewsCountByJob(job);
+        final int totalPages = (int) Math.ceil((float) totalReviews / itemsPerPage);
+
+        if (page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
+            page = totalPages - 1;
+        }
+
+        LOGGER.debug("Retrieving page {} for reviews", page);
+        final Collection<Review> reviews = reviewDao.getReviewsByJob(job, page, itemsPerPage);
+
+        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalReviews, reviews);
     }
 
     @Transactional
