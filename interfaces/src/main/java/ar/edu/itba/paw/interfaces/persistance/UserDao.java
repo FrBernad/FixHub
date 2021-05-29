@@ -37,13 +37,13 @@ public interface UserDao {
 
     int getProvidersCountByClient(User client);
 
-    Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
+    Collection<User> getUserFollowers(User user, int page, int itemsPerPage);
 
-    Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage);
+    Collection<User> getUserFollowings(User user, int page, int itemsPerPage);
 
-    Integer getUserFollowersCount(Long userId);
+    Integer getUserFollowersCount(User user);
 
-    Integer getUserFollowingCount(Long userId);
+    Integer getUserFollowingCount(User user);
 
     void persistProviderDetails(Location location, Schedule schedule);
 

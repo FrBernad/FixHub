@@ -57,7 +57,6 @@ public class JobDaoTest {
         assertEquals(1, count);
     }
 
-
     //GET JOBS
     @Test
     public void testGetJobsByCategoryIdSeachQuery() {

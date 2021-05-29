@@ -207,10 +207,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage) {
+    public Collection<User> getUserFollowers(User user, int page, int itemsPerPage) {
         final List<Object> variables = new LinkedList<>();
 
-        variables.add(userId);
+        variables.add(user.getId());
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
@@ -237,11 +237,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<User> getUserFollowings(Long userId, int page, int itemsPerPage) {
+    public Collection<User> getUserFollowings(User user, int page, int itemsPerPage) {
 
         final List<Object> variables = new LinkedList<>();
 
-        variables.add(userId);
+        variables.add(user.getId());
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
@@ -269,23 +269,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Integer getUserFollowersCount(Long userId) {
+    public Integer getUserFollowersCount(User user) {
         final String query = "SELECT count(f_user_id) total FROM FOLLOWS WHERE f_followed_user_id = ?";
 
         Query nativeQuery = em.createNativeQuery(query);
 
-        nativeQuery.setParameter(1, userId);
+        nativeQuery.setParameter(1, user.getId());
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
 
     @Override
-    public Integer getUserFollowingCount(Long userId) {
+    public Integer getUserFollowingCount(User user) {
         final String query = "SELECT count(f_followed_user_id) total FROM FOLLOWS WHERE f_user_id = ?";
 
         Query nativeQuery = em.createNativeQuery(query);
 
-        nativeQuery.setParameter(1, userId);
+        nativeQuery.setParameter(1, user.getId());
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }

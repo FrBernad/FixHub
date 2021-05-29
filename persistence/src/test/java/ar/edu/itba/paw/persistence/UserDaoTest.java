@@ -55,6 +55,9 @@ public class UserDaoTest {
     private static final UserInfo USER_INFO = new UserInfo("Gonzalo", "Martinez", "Burzaco", "Buenos Aires", "5491143218765");
 
     private static final User CLIENT = new User("password", "Pedro", "Romero", "pedro@yopmail.com", "5491109876543", "Once", "CABA", new HashSet<>(CLIENT_VERIFIED_ROLES));
+    private static final User MOCKED_CLIENT = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(3L).getMock();
+    private static final User MOCKED_PROVIDER = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();
+
     private static final ContactDto CONTACT_DTO = new ContactDto(JOB, -1L, CLIENT, "message", "Adrogue", "Buenos Aires", "Nother", "123", "21", "A");
 
     @Autowired
@@ -63,18 +66,13 @@ public class UserDaoTest {
     @Autowired
     private UserDao userDao;
 
-    @PersistenceContext
-    private EntityManager em;
-
     private JdbcTemplate jdbcTemplate;
 
     private static final Collection<Roles> DEFAULT_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
-//    private static User provider = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();;
-
     @Before
-    public void setUp(){
-        jdbcTemplate=new JdbcTemplate(ds);
+    public void setUp() {
+        jdbcTemplate = new JdbcTemplate(ds);
     }
 
     @Test
@@ -169,46 +167,45 @@ public class UserDaoTest {
 
     @Test
     public void getClientsByProvider() {
-        Collection<JobContact> jobContacts = userDao.getClientsByProvider(USER, 0, 4);
+        Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_PROVIDER, 0, 4);
         assertEquals(1, jobContacts.size());
         assertTrue(jobContacts.size() <= 4);
 
-        jobContacts = userDao.getClientsByProvider(CLIENT, 0, 4);
+        jobContacts = userDao.getClientsByProvider(MOCKED_CLIENT, 0, 4);
         assertEquals(0, jobContacts.size());
     }
 
     @Test
     public void getClientsCountByProvider() {
-        int count = userDao.getClientsCountByProvider(USER);
+        int count = userDao.getClientsCountByProvider(MOCKED_PROVIDER);
         assertEquals(1, count);
 
-        count = userDao.getClientsCountByProvider(CLIENT);
+        count = userDao.getClientsCountByProvider(MOCKED_CLIENT);
         assertEquals(0, count);
     }
 
     @Test
     public void getProvidersByClient() {
-        Collection<JobContact> providers = userDao.getProvidersByClient(CLIENT, 0, 10);
+        Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_CLIENT, 0, 10);
         assertEquals(1, providers.size());
         assertTrue(providers.size() <= 10);
 
-        providers = userDao.getProvidersByClient(USER, 0, 10);
+        providers = userDao.getProvidersByClient(MOCKED_PROVIDER, 0, 10);
         assertEquals(0, providers.size());
     }
 
     @Test
     public void getProvidersCountByClient() {
-        int count = userDao.getProvidersCountByClient(CLIENT);
+        int count = userDao.getProvidersCountByClient(MOCKED_CLIENT);
         assertEquals(1, count);
 
-        count = userDao.getProvidersCountByClient(USER);
+        count = userDao.getProvidersCountByClient(MOCKED_PROVIDER);
         assertEquals(0, count);
-
     }
 
     @Test
     public void getUserFollowers() {
-
+        Collection<User> followers = userDao.getUserFollowers(MOCKED_PROVIDER,);
         //Collection<User> getUserFollowers(Long userId, int page, int itemsPerPage);
     }
 
@@ -243,9 +240,6 @@ public class UserDaoTest {
 //        boolean hasContactJobProvided(User provider, User user);
 
     }
-
-
-
 
 
 }

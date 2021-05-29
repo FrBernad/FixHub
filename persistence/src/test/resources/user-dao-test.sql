@@ -44,6 +44,9 @@ VALUES ('USER', 3);
 insert into ROLES(r_role, r_user_id)
 VALUES ('VERIFIED', 3);
 
+insert into follows(f_user_id, f_followed_user_id) values(1, 2);
+insert into follows(f_user_id, f_followed_user_id) values(2, 1);
+insert into follows(f_user_id, f_followed_user_id) values(3, 1);
 
 INSERT INTO JOBS(j_id, j_description, j_category, j_job_provided, j_provider_id, j_price, j_paused)
 VALUES (1, 'Limpieza total', 'MECANICO', 'Limpieza de filtros', 1, 300, false);
@@ -80,14 +83,11 @@ VALUES (1, 1, 3, 1, 1, 'Te necesito rápido!', '2021-04-05 20:26:02');
 -- INSERT INTO CONTACT(c_provider_id, c_user_id, c_job_id, c_info_id, c_message, c_date)
 -- VALUES (1,3,1,1,'Te necesito rápido!','2021-04-05 20:26:02');
 
-
-
 INSERT INTO states(s_id, s_name) VALUES (2,'Buenos Aires');
 
 INSERT INTO cities(c_id, c_name, c_state_id) VALUES (1,'25 de mayo',2);
 INSERT INTO cities(c_id, c_name, c_state_id) VALUES (2,'3 de febrero',2);
 INSERT INTO cities(c_id, c_name, c_state_id) VALUES (3,'A. Alsina',2);
-
 
 INSERT INTO provider_location(pl_id, pl_provider_id, pl_state_id) VALUES (1,1,2);
 
