@@ -58,12 +58,11 @@ public class JobServiceImpl implements JobService {
         if (!images.isEmpty()) {
             LOGGER.debug("Job {} has images", jobProvided);
             jobImages = imageService.createImages(images);
-        } else {
+        } else
             LOGGER.debug("Job {} has no images", jobProvided);
-        }
 
         final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider, jobImages);
-        LOGGER.info("Created job {} with id {}", job.getJobProvided(), job.getId());
+        LOGGER.info("Created job {} with id {}",job.getId(), job.getJobProvided() );
 
         return job;
     }
