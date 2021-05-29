@@ -217,9 +217,9 @@ public class UserServiceImpl implements UserService {
     public void updateProfileImage(ImageDto imageDto, User user) {
         Image image = user.getProfileImage();
         LOGGER.debug("Updating user {} profile image", user.getEmail());
-        if (image == null) {
+        if (image == null)
             user.setProfileImage(imageService.createImage(imageDto));
-        } else
+        else
             user.getProfileImage().setData(imageDto.getData());
     }
 

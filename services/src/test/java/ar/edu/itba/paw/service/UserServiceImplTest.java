@@ -2,10 +2,12 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
+import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
@@ -13,6 +15,9 @@ import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.provider.Location;
+import ar.edu.itba.paw.models.user.provider.ProviderDetails;
+import ar.edu.itba.paw.models.user.provider.Schedule;
 import ar.edu.itba.paw.services.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +56,8 @@ public class UserServiceImplTest {
     private static final String TOKEN = "12345";
     private static final String URL = "http:/paw-2021a-06/user/verifyAccount?token=" + TOKEN;
     private static final String VERIFICATION_SUBJECT = "Verify your account";
+    private static final String START_TIME = "11:00";
+    private static final String END_TIME = "13:00";
 
     private static final User DEFAULT_USER = new User(PASSWORD, NAME, SURNAME, EMAIL,
         PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
@@ -78,6 +85,15 @@ public class UserServiceImplTest {
         {"to", DEFAULT_USER.getEmail()},
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
+    private static final ImageDto COVER_IMAGE = new ImageDto(
+        new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9}, "image/jpeg");
+
+    private static final ImageDto PROFILE_IMAGE = new ImageDto(
+        new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9}, "image/jpeg");
+
+    private static final Image coverImage = new Image(4L, COVER_IMAGE.getData(), COVER_IMAGE.getMimeType());
+    private static final Image profileImage = new Image(5L, PROFILE_IMAGE.getData(), PROFILE_IMAGE.getMimeType());
+
     @InjectMocks
     private final UserServiceImpl userService = new UserServiceImpl();
 
@@ -101,6 +117,12 @@ public class UserServiceImplTest {
 
     @Mock
     private PasswordResetTokenDao mockPasswordResetTokenDao;
+
+    @Mock
+    private ImageService mockImageService;
+
+    @Mock
+    private LocationDao mockLocationDao;
 
     @Before
     public void setTest() {
@@ -143,21 +165,6 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testGetUserByEmail() {
-
-        when(mockUserDao.getUserByEmail(Mockito.eq(DEFAULT_USER.getEmail()))).thenReturn(Optional.of(DEFAULT_USER));
-
-        Optional<User> opUser = userService.getUserByEmail(DEFAULT_USER.getEmail());
-
-        verify(mockUserDao).getUserByEmail(EMAIL);
-
-        assertNotNull(opUser);
-        assertTrue(opUser.isPresent());
-        assertEquals(DEFAULT_USER, opUser.get());
-
-    }
-
-    @Test
     public void testVerifyAccount() {
         VerificationToken vToken = new VerificationToken(TOKEN, mockUser, LocalDateTime.now().plusDays(4L));
         when(mockVerificationTokenDao.getTokenByValue(Mockito.eq(TOKEN))).thenReturn(Optional.of(vToken));
@@ -167,7 +174,6 @@ public class UserServiceImplTest {
         verify(mockUser).removeRole(Roles.NOT_VERIFIED);
         verify(mockUser).addRole(Roles.VERIFIED);
     }
-
 
     @Test
     public void testUpdatePassword() {
@@ -188,6 +194,99 @@ public class UserServiceImplTest {
         assertNotEquals(opUser.get(), DEFAULT_USER);
 
     }
+
+    @Test
+    public void testUpdateUserInfo() {
+        when(mockUser.getEmail()).thenReturn(EMAIL);
+
+        userService.updateUserInfo(new UserInfo(NAME, SURNAME, CITY, STATE, PHONENUMBER), mockUser);
+
+        verify(mockUser).setName(NAME);
+        verify(mockUser).setSurname(SURNAME);
+        verify(mockUser).setCity(CITY);
+        verify(mockUser).setState(STATE);
+        verify(mockUser).setPhoneNumber(PHONENUMBER);
+
+    }
+
+    @Test
+    public void testUpdateCoverImageNull() {
+        when(mockUser.getCoverImage()).thenReturn(null);
+        when(mockImageService.createImage(COVER_IMAGE)).thenReturn(coverImage);
+        userService.updateCoverImage(COVER_IMAGE, mockUser);
+        verify(mockUser).setCoverImage(coverImage);
+    }
+
+    @Test
+    public void testUpdateCoverImageNotNull() {
+        Image mockCoverImage = Mockito.mock(Image.class);
+        when(mockUser.getCoverImage()).thenReturn(mockCoverImage);
+        userService.updateCoverImage(COVER_IMAGE, mockUser);
+        verify(mockCoverImage).setData(COVER_IMAGE.getData());
+    }
+
+    @Test
+    public void testUpdateProfileImageNull() {
+        when(mockUser.getProfileImage()).thenReturn(null);
+        when(mockImageService.createImage(PROFILE_IMAGE)).thenReturn(profileImage);
+        userService.updateProfileImage(PROFILE_IMAGE, mockUser);
+        verify(mockUser).setProfileImage(profileImage);
+    }
+
+    @Test
+    public void testUpdateProfileImageNotNull() {
+        Image mockProfileImage = Mockito.mock(Image.class);
+        when(mockUser.getProfileImage()).thenReturn(mockProfileImage);
+        userService.updateProfileImage(PROFILE_IMAGE, mockUser);
+        verify(mockProfileImage).setData(PROFILE_IMAGE.getData());
+    }
+
+//    @Test
+//    public void testUpdateProviderInfo() {
+//        Location mockLocation = new Location(mockUser, null, null);
+//        Schedule mockSchedule = new Schedule(mockUser, START_TIME, END_TIME);
+//
+//        when(mockLocationDao.getCitiesById(null)).thenReturn(null);
+//        when(mockUser.getProviderDetails().getLocation()).thenReturn(null);
+//        when(mockUser.getProviderDetails().getSchedule()).thenReturn(null);
+//        when(mockUser.getId()).thenReturn(1L);
+//        userService.updateProviderInfo(mockUser, null, START_TIME, END_TIME);
+//        verify(mockLocation).setCities(null);
+//        verify(mockLocation).setState(null);
+//
+//        verify(mockSchedule).setStartTime(START_TIME);
+//        verify(mockSchedule).setEndTime(END_TIME);
+//
+//    }
+//
+//    @Test
+//    public void testMakeProvider() {
+//        when(mockLocationDao.getCitiesById(null)).thenReturn(null);
+//        when(mockUser.getId()).thenReturn(1L);
+//        Location location = new Location(mockUser, null, null);
+//        Schedule schedule = new Schedule(mockUser, START_TIME, END_TIME);
+//
+//        userService.makeProvider(mockUser, null, START_TIME, END_TIME);
+//
+//        verify(mockUser).addRole(Roles.PROVIDER);
+//        verify(mockUser).setProviderDetails(new ProviderDetails(location, schedule));
+//    }
+
+    @Test
+    public void testGetUserByEmail() {
+
+        when(mockUserDao.getUserByEmail(Mockito.eq(DEFAULT_USER.getEmail()))).thenReturn(Optional.of(DEFAULT_USER));
+
+        Optional<User> opUser = userService.getUserByEmail(DEFAULT_USER.getEmail());
+
+        verify(mockUserDao).getUserByEmail(EMAIL);
+
+        assertNotNull(opUser);
+        assertTrue(opUser.isPresent());
+        assertEquals(DEFAULT_USER, opUser.get());
+
+    }
+
 
     @Test(expected = IllegalContactException.class)
     public void testIllegalContact() {
