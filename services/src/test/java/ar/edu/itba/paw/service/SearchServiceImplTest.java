@@ -14,12 +14,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+import static ar.edu.itba.paw.models.user.Roles.PROVIDER;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -27,7 +29,7 @@ import static org.mockito.Mockito.*;
 public class SearchServiceImplTest {
 
     @InjectMocks
-    private SearchService searchService = new SearchServiceImpl();
+    private final SearchService searchService = new SearchServiceImpl();
 
     @Mock
     private JobDao mockJobDao;
@@ -38,30 +40,32 @@ public class SearchServiceImplTest {
     @Mock
     private LocationDao mockLocationDao;
 
-    private static final Job JOB = Mockito.lenient().when(Mockito.mock(Job.class).getId()).thenReturn(1L).getMock();
+    @Mock
+    private User user;
+
+    private static final State STATE = new State("STATE");
+    private static final City CITY = new City(STATE,"CITY");
+    private static final User USER = new User("", "", "", "", "", "", CITY.getName(), Collections.singleton(PROVIDER));
+
+    private static final Job JOB = new Job("", "", 5, 5L, JobCategory.MECANICO, BigDecimal.valueOf(13), false, USER, null);
     private static final Collection<Job> JOB_COLLECTION = Collections.singletonList(JOB);
 
-    private static final JobContact JOB_CONTACT = Mockito.lenient().when(Mockito.mock(JobContact.class).getId()).thenReturn(1L).getMock();
+    private static final JobContact JOB_CONTACT = new JobContact(USER, null, null, null, null, null);
     private static final Collection<JobContact> JOB_CONTACT_COLLECTION = Collections.singletonList(JOB_CONTACT);
-
-    private static final User USER = Mockito.lenient().when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();
 
     private static final Collection<User> USER_COLLECTION = Collections.singletonList(USER);
 
-    private static final int DEFAULT_ITEMS_PER_PAGE = 6;
-
-    private static final State STATE = Mockito.lenient().when(Mockito.mock(State.class).getId()).thenReturn(1L).getMock();
-    private static final City CITY = Mockito.lenient().when(Mockito.mock(City.class).getId()).thenReturn(2L).getMock();
+    private final int DEFAULT_ITEMS_PER_PAGE = 6;
 
     //GET JOBS BY CATEGORY
 
     @Test
     public void testGetJobsByCategoryInvalidOrder() {
-        when(mockJobDao.getJobsCountByCategory(any(), any(), any(), any())).
+            when(mockJobDao.getJobsCountByCategory(any(), any(), any(), any())).
             thenReturn(10);
 
         lenient().when(mockLocationDao.getStateById(anyInt())).thenReturn(Optional.of(STATE));
-        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), eq(STATE))).thenReturn(Optional.of(CITY));
+        lenient().when(mockLocationDao.getCityByCityIdAndState(anyLong(), any(State.class))).thenReturn(Optional.of(CITY));
 
         when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), any(), any(), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
@@ -78,9 +82,9 @@ public class SearchServiceImplTest {
             thenReturn(10);
 
         lenient().when(mockLocationDao.getStateById(anyInt())).thenReturn(Optional.of(STATE));
-        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), eq(STATE))).thenReturn(Optional.of(CITY));
+        lenient().when(mockLocationDao.getCityByCityIdAndState(anyLong(), any(State.class))).thenReturn(Optional.of(CITY));
 
-        when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), any(), any(), eq(0), eq(6)))
+         when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), any(), any(), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
 
         final PaginatedSearchResult<Job> result = searchService.getJobsByCategory("", "asdad",
@@ -91,13 +95,13 @@ public class SearchServiceImplTest {
 
     @Test
     public void testGetJobsByCategoryInvalidItemsPerPage() {
-        when(mockJobDao.getJobsCountByCategory(any(), any(), any(), any())).
+         lenient().when(mockJobDao.getJobsCountByCategory(any(String.class), any(JobCategory.class), any(String.class), any(String.class))).
             thenReturn(10);
 
         lenient().when(mockLocationDao.getStateById(anyInt())).thenReturn(Optional.of(STATE));
-        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), eq(STATE))).thenReturn(Optional.of(CITY));
+        lenient().when(mockLocationDao.getCityByCityIdAndState(anyLong(), any(State.class))).thenReturn(Optional.of(CITY));
 
-        when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), any(), any(), eq(0), eq(6)))
+         lenient().when(mockJobDao.getJobsByCategory(any(String.class), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), any(String.class), any(String.class), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
 
         final PaginatedSearchResult<Job> result = searchService.getJobsByCategory("", "asdad",
@@ -112,7 +116,7 @@ public class SearchServiceImplTest {
             thenReturn(10);
 
         lenient().when(mockLocationDao.getStateById(-1)).thenReturn(Optional.empty());
-        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), any())).thenReturn(Optional.of(CITY));
+        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), any(State.class))).thenReturn(Optional.of(CITY));
 
         when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), eq(null), eq(null), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
@@ -126,11 +130,11 @@ public class SearchServiceImplTest {
 
     @Test
     public void testGetJobsByCategoryInvalidCity() {
-        when(mockJobDao.getJobsCountByCategory(any(), any(), any(), any())).thenReturn(10);
+        when(mockJobDao.getJobsCountByCategory(any(), any(), any(), any())).
+            thenReturn(10);
 
         lenient().when(mockLocationDao.getStateById(1)).thenReturn(Optional.of(STATE));
         lenient().when(mockLocationDao.getCityByCityIdAndState(eq(-1), eq(STATE))).thenReturn(Optional.empty());
-        lenient().when(STATE.getName()).thenReturn("valid");
 
         when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO),
             eq("1"), eq(null), eq(0), eq(6)))
@@ -140,7 +144,7 @@ public class SearchServiceImplTest {
             "MECANICO", "1", "invalid", 0, -10);
 
         assertEquals("", result.getCity());
-        assertEquals("valid", result.getState());
+        assertEquals(STATE.getName(), result.getState());
         assertEquals(JOB_COLLECTION, result.getResults());
     }
 
@@ -150,7 +154,7 @@ public class SearchServiceImplTest {
             thenReturn(10);
 
         lenient().when(mockLocationDao.getStateById(-1)).thenReturn(Optional.empty());
-        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), any())).thenReturn(Optional.of(CITY));
+        lenient().when(mockLocationDao.getCityByCityIdAndState(anyInt(), any())).thenReturn(Optional.of(new City(STATE, "")));
 
         when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO), eq(null), eq(null), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
@@ -167,9 +171,7 @@ public class SearchServiceImplTest {
     public void testGetJobsByCategoryValidStateInvalidCity() {
         when(mockJobDao.getJobsCountByCategory(any(), any(), any(), any())).
             thenReturn(10);
-
         lenient().when(mockLocationDao.getStateById(2)).thenReturn(Optional.of(STATE));
-        lenient().when(STATE.getName()).thenReturn("valid");
         lenient().when(mockLocationDao.getCityByCityIdAndState(eq(-1), eq(STATE))).thenReturn(Optional.empty());
 
         when(mockJobDao.getJobsByCategory(any(), eq(OrderOptions.MOST_POPULAR), eq(JobCategory.MECANICO),
@@ -180,7 +182,7 @@ public class SearchServiceImplTest {
             "MECANICO", "2", "invalid", 0, 6);
 
         assertEquals(result.getCity(), "");
-        assertEquals(result.getState(), "valid");
+        assertEquals(result.getState(), STATE.getName());
         assertEquals(result.getResults(), JOB_COLLECTION);
     }
 
@@ -191,39 +193,41 @@ public class SearchServiceImplTest {
     public void testGetJobsByProviderInvalidOrder() {
         when(mockJobDao.getJobsCountByProvider(any(), any())).
             thenReturn(10);
+        when(user.getId()).thenReturn(new Long(1));
 
-        when(mockJobDao.getJobsByProvider(any(), eq(OrderOptions.MOST_POPULAR), any(), eq(0), eq(6)))
+        when(mockJobDao.getJobsByProvider(any(), eq(OrderOptions.MOST_POPULAR), eq(user), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
         final PaginatedSearchResult<Job> result = searchService.getJobsByProvider("", "asdad",
-            USER, 0, 6);
+            user, 0, 6);
 
         assertEquals(JOB_COLLECTION, result.getResults());
         assertEquals("MOST_POPULAR", result.getOrder());
     }
 
     @Test
-    public void testGetJobsByProviderInvalidPage() {
+    public void testGetJobsByProviderIdInvalidPage() {
         when(mockJobDao.getJobsCountByProvider(any(), any())).
             thenReturn(10);
 
         when(mockJobDao.getJobsByProvider(any(), eq(OrderOptions.MOST_POPULAR), any(), eq(0), eq(6)))
             .thenReturn(JOB_COLLECTION);
         final PaginatedSearchResult<Job> result = searchService.getJobsByProvider("", "asdad",
-            USER, -10, 6);
+            user, -10, 6);
 
         assertEquals(JOB_COLLECTION, result.getResults());
         assertEquals(0, result.getPage());
     }
 
     @Test
-    public void testGetJobsByProviderInvalidItemsPerPage() {
+    public void testGetJobsByProviderIdInvalidItemsPerPage() {
         when(mockJobDao.getJobsCountByProvider(any(), any())).
             thenReturn(10);
+        when(user.getId()).thenReturn(new Long(1));
 
         when(mockJobDao.getJobsByProvider(any(), eq(OrderOptions.MOST_POPULAR), any(), eq(0), eq(DEFAULT_ITEMS_PER_PAGE)))
             .thenReturn(JOB_COLLECTION);
         final PaginatedSearchResult<Job> result = searchService.getJobsByProvider("", "asdad",
-            USER, 0, -20);
+            user, 0, -20);
 
         assertEquals(JOB_COLLECTION, result.getResults());
         assertEquals(DEFAULT_ITEMS_PER_PAGE, result.getItemsPerPage());
@@ -232,7 +236,7 @@ public class SearchServiceImplTest {
     //GET CLIENTS BY PROVIDER ID
 
     @Test
-    public void testGetClientsByProviderInvalidPage() {
+    public void testGetClientsByProviderIdInvalidPage() {
         when(mockUserDao.getClientsCountByProvider(any())).
             thenReturn(10);
 
@@ -246,7 +250,7 @@ public class SearchServiceImplTest {
     }
 
     @Test
-    public void testGetClientsByProviderInvalidItemsPerPage() {
+    public void testGetClientsByProviderIdInvalidItemsPerPage() {
         when(mockUserDao.getClientsCountByProvider(any())).
             thenReturn(10);
 
@@ -259,10 +263,10 @@ public class SearchServiceImplTest {
         assertEquals(DEFAULT_ITEMS_PER_PAGE, result.getItemsPerPage());
     }
 
-    //GET PROVIDERS BY CLIENT ID
+//    //GET PROVIDERS BY CLIENT ID
 
     @Test
-    public void testGetProvidersByClientInvalidPage() {
+    public void testGetProvidersByClientIdInvalidPage() {
         when(mockUserDao.getProvidersCountByClient(any())).
             thenReturn(10);
 
@@ -276,7 +280,7 @@ public class SearchServiceImplTest {
     }
 
     @Test
-    public void testGetProvidersByClientInvalidItemsPerPage() {
+    public void testGetProvidersByClientIdInvalidItemsPerPage() {
         when(mockUserDao.getProvidersCountByClient(any())).
             thenReturn(10);
 
@@ -289,9 +293,9 @@ public class SearchServiceImplTest {
         assertEquals(DEFAULT_ITEMS_PER_PAGE, result.getItemsPerPage());
     }
 
-
-    //GET USER FOLLOWERS
-
+//
+//    //GET USER FOLLOWERS
+//
     @Test
     public void testGetUserFollowersInvalidPage() {
         when(mockUserDao.getUserFollowersCount(any())).
@@ -311,7 +315,7 @@ public class SearchServiceImplTest {
         when(mockUserDao.getUserFollowersCount(any())).
             thenReturn(10);
 
-        when(mockUserDao.getUserFollowers(eq(1L), eq(0), eq(DEFAULT_ITEMS_PER_PAGE)))
+        when(mockUserDao.getUserFollowers(any(), eq(0), eq(DEFAULT_ITEMS_PER_PAGE)))
             .thenReturn(USER_COLLECTION);
 
         final PaginatedSearchResult<User> result = searchService.getUserFollowers(USER, 0, -10);
@@ -342,7 +346,7 @@ public class SearchServiceImplTest {
         when(mockUserDao.getUserFollowingCount(any())).
             thenReturn(10);
 
-        when(mockUserDao.getUserFollowings(eq(1L), eq(0), eq(DEFAULT_ITEMS_PER_PAGE)))
+        when(mockUserDao.getUserFollowings(any(), eq(0), eq(DEFAULT_ITEMS_PER_PAGE)))
             .thenReturn(USER_COLLECTION);
 
         final PaginatedSearchResult<User> result = searchService.getUserFollowing(USER, 0, -10);
