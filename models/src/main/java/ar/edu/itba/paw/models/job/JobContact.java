@@ -58,6 +58,13 @@ public class JobContact {
         return Date.from(Instant.from(date));
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;
@@ -89,14 +96,6 @@ public class JobContact {
 
     public void setJobId(Job job) {
         this.job = job;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public User getProvider() {

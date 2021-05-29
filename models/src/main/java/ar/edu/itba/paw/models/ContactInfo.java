@@ -66,11 +66,11 @@ public class ContactInfo {
         this.user = user;
     }
 
-    public Long getContactInfoId() {
+    public Long getId() {
         return id;
     }
 
-    public void setContactInfoId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

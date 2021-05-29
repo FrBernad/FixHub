@@ -3,20 +3,18 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.ContactDto;
+import ar.edu.itba.paw.models.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
-import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.provider.Stats;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -49,22 +47,20 @@ public class UserDaoTest {
     private static final Collection<Roles> PROVIDER_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.PROVIDER, Roles.VERIFIED, Roles.USER));
     private static final Collection<Roles> CLIENT_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.VERIFIED, Roles.USER));
 
-    private static final User USER = new User("password", "Ignacio", "Lopez", "ignacio@yopmail.com", "5491112345678", "CABA", "Caballito", new HashSet<>(PROVIDER_VERIFIED_ROLES));
-    private static final Job JOB = new Job("Limpieza total", "Limpieza de filtros", 0, 0L, JobCategory.MECANICO, BigDecimal.valueOf(300), false, USER, new HashSet<>());
-    private static final Stats USER_STATS = new Stats(6, 3, 4);
-    private static final UserInfo USER_INFO = new UserInfo("Gonzalo", "Martinez", "Burzaco", "Buenos Aires", "5491143218765");
-
-    private static final User CLIENT = new User("password", "Pedro", "Romero", "pedro@yopmail.com", "5491109876543", "Once", "CABA", new HashSet<>(CLIENT_VERIFIED_ROLES));
     private static final User MOCKED_CLIENT = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(3L).getMock();
     private static final User MOCKED_PROVIDER = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();
+    private static final Job MOCKED_JOB = Mockito.when(Mockito.mock(Job.class).getId()).thenReturn(1L).getMock();
+    private static final ContactInfo MOCKED_CONTACT_INFO = Mockito.when(Mockito.mock(ContactInfo.class).getId()).thenReturn(1L).getMock();
 
-    private static final ContactDto CONTACT_DTO = new ContactDto(JOB, -1L, CLIENT, "message", "Adrogue", "Buenos Aires", "Nother", "123", "21", "A");
 
     @Autowired
     private DataSource ds;
 
     @Autowired
     private UserDao userDao;
+
+    @PersistenceContext
+    private EntityManager em;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -130,23 +126,33 @@ public class UserDaoTest {
 
     @Test(expected = DuplicateUserException.class)
     public void testCreateDuplicateUser() throws DuplicateUserException {
-        userDao.createUser(USER.getPassword(), USER.getName(), USER.getSurname(),
-            USER.getEmail(), USER.getPhoneNumber(), USER.getState(), USER.getCity(), new HashSet<>(DEFAULT_ROLES));
+
+
+        userDao.createUser("password", "Ignacio", "Lopez", "ignacio@yopmail.com",
+            "5491112345678", "CABA", "Caballito",
+            new HashSet<>(PROVIDER_VERIFIED_ROLES));
+
     }
 
     @Test
     public void addContactInfo() {
-        userDao.addContactInfo(CONTACT_DTO);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact_info");
+
+        final User user = em.find(User.class, MOCKED_CLIENT.getId());
+        final Job job = em.find(Job.class, MOCKED_JOB.getId());
+
+        final ContactDto contactDto = new ContactDto(job, -1L, user, "message",
+            "Adrogue", "Buenos Aires", "Nother", "123",
+            "21", "A");
+        ContactInfo contactInfo = userDao.addContactInfo(contactDto);
 
         String query = String.format("ci_user_id = %s and ci_city = '%s' and ci_state = '%s' and ci_street = '%s' and " +
                 "ci_address_number = '%s' and ci_floor = '%s' and ci_department_number = '%s' ",
-            CLIENT.getId(),
-            CONTACT_DTO.getCity(),
-            CONTACT_DTO.getState(),
-            CONTACT_DTO.getStreet(),
-            CONTACT_DTO.getAddressNumber(),
-            CONTACT_DTO.getFloor(),
-            CONTACT_DTO.getDepartmentNumber());
+            MOCKED_CLIENT.getId(), contactInfo.getCity(), contactInfo.getState(), contactInfo.getStreet(),
+            contactInfo.getAddressNumber(), contactInfo.getFloor(), contactInfo.getDepartmentNumber());
+
+        em.flush();
 
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "contact_info", query));
 
@@ -154,7 +160,27 @@ public class UserDaoTest {
 
     @Test
     public void createJobContact() {
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact");
 
+        final User user = em.find(User.class, MOCKED_CLIENT.getId());
+        final User provider = em.find(User.class, MOCKED_PROVIDER.getId());
+        final Job job = em.find(Job.class, MOCKED_JOB.getId());
+        final ContactInfo contactInfo = em.find(ContactInfo.class, MOCKED_CONTACT_INFO.getId());
+
+        JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, "Te necesito rápido",
+            LocalDateTime.of(2021, 5, 29, 12, 30), job);
+
+//        String query = String.format("c_id = %s and c_date = '%s' and c_message = '%s' and c_contact_info = %s and c_job_id = %s and c_provider_id = %s and c_user_id = %s ",
+//            jobContact.getId(),jobContact.getDate(),jobContact.getMessage(),jobContact.getContactInfo().getId()
+//            ,jobContact.getJob().getId(),jobContact.getProvider().getId(),jobContact.getUser().getId());
+
+        String query = String.format("c_id = %s and c_message = '%s' and c_contact_info = %s and c_job_id = %s and c_provider_id = %s and c_user_id = %s ",
+            jobContact.getId(),jobContact.getMessage(),jobContact.getContactInfo().getId()
+            ,jobContact.getJob().getId(),jobContact.getProvider().getId(),jobContact.getUser().getId());
+
+        em.flush();
+
+        assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "contact", query));
 
     }
 
