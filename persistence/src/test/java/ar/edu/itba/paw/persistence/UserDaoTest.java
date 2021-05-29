@@ -135,7 +135,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void addContactInfo() {
+    public void testAddContactInfo() {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact");
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact_info");
 
@@ -159,7 +159,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void createJobContact() {
+    public void testCreateJobContact() {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "contact");
 
         final User user = em.find(User.class, MOCKED_CLIENT.getId());
@@ -185,27 +185,27 @@ public class UserDaoTest {
     }
 
     @Test
-    public void getContactInfoById() {
+    public void testGetContactInfoById() {
         ContactInfo contactInfo = userDao.getContactInfoById(1L).orElseThrow(ContactInfoNotFoundException::new);
         assertEquals(contactInfo.getUser().getId().longValue(), 3L);
     }
 
     //GET CLIENTS AND PROVIDERS
     @Test
-    public void getClientsByProvider() {
+    public void testGetClientsByProvider() {
         Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_PROVIDER, 0, 4);
         assertEquals(1, jobContacts.size());
         assertTrue(jobContacts.size() <= 4);
     }
 
     @Test
-    public void getClientsByProviderNoClients() {
+    public void testGetClientsByProviderNoClients() {
         Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_CLIENT, 0, 4);
         assertEquals(0, jobContacts.size());
     }
 
     @Test
-    public void getProvidersByClient() {
+    public void testGetProvidersByClient() {
         Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_CLIENT, 0, 10);
         assertEquals(1, providers.size());
         assertTrue(providers.size() <= 10);
@@ -215,26 +215,26 @@ public class UserDaoTest {
     }
 
     @Test
-    public void getProvidersByClientNoProviders() {
+    public void testGetProvidersByClientNoProviders() {
         Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_PROVIDER, 0, 10);
         assertEquals(0, providers.size());
     }
 
     //GET CLIENTS AND PROVIDERS COUNTS
     @Test
-    public void getClientsCountByProvider() {
+    public void testGetClientsCountByProvider() {
         int count = userDao.getClientsCountByProvider(MOCKED_PROVIDER);
         assertEquals(1, count);
     }
 
     @Test
-    public void getClientsCountByProviderNoClients() {
+    public void testGetClientsCountByProviderNoClients() {
         int count = userDao.getClientsCountByProvider(MOCKED_CLIENT);
         assertEquals(0, count);
     }
 
     @Test
-    public void getProvidersCountByClient() {
+    public void testGetProvidersCountByClient() {
         int count = userDao.getProvidersCountByClient(MOCKED_CLIENT);
         assertEquals(1, count);
 
@@ -243,14 +243,14 @@ public class UserDaoTest {
     }
 
     @Test
-    public void getProvidersCountByClientNoProviders() {
+    public void testGetProvidersCountByClientNoProviders() {
         int count = userDao.getProvidersCountByClient(MOCKED_PROVIDER);
         assertEquals(0, count);
     }
 
     //GET FOLLOW
     @Test
-    public void getUserFollowers() {
+    public void testGetUserFollowers() {
         final Long[] followersIds = {3L, 2L};
 
         Collection<User> followers = userDao.getUserFollowers(MOCKED_PROVIDER, 0, 4);
@@ -266,14 +266,14 @@ public class UserDaoTest {
     }
 
     @Test
-    public void getUserFollowersNoFollowers() {
+    public void testGetUserFollowersNoFollowers() {
         Collection<User> followers = userDao.getUserFollowers(MOCKED_CLIENT, 0, 4);
         assertEquals(0, followers.size());
         assertTrue(followers.size() <= 4);
     }
 
     @Test
-    public void getUserFollowings() {
+    public void testGetUserFollowings() {
         final Long[] followingIds = {2L};
 
         Collection<User> following = userDao.getUserFollowings(MOCKED_PROVIDER, 0, 4);
@@ -291,26 +291,26 @@ public class UserDaoTest {
     //GET FOLLOW COUNTS
 
     @Test
-    public void getUserFollowersCount() {
+    public void testGetUserFollowersCount() {
         int count = userDao.getUserFollowersCount(MOCKED_PROVIDER);
         assertEquals(2, count);
     }
 
     @Test
-    public void getUserFollowersCountNoFollowers() {
+    public void testGetUserFollowersCountNoFollowers() {
         int count = userDao.getUserFollowersCount(MOCKED_CLIENT);
         assertEquals(0, count);
     }
 
     @Test
-    public void getUserFollowingsCount() {
+    public void testGetUserFollowingsCount() {
         int count = userDao.getUserFollowingCount(MOCKED_PROVIDER);
         assertEquals(1, count);
     }
 
 
     @Test
-    public void persistProviderDetails() {
+    public void testPersistProviderDetails() {
 //        void persistProviderDetails(Location location, Schedule schedule);
 
     }

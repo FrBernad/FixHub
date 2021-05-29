@@ -59,7 +59,7 @@ public class ImageDaoTest {
     }
 
     @Test
-    public void createImageTest() {
+    public void testCreateImage() {
 
         final ImageDto imgDto = new ImageDto(imgInfo1, imgType);
         final Image img = imageDao.createImage(imgDto);
@@ -71,7 +71,7 @@ public class ImageDaoTest {
     }
 
     @Test
-    public void createImagesTest(){
+    public void testCreateImages(){
 
         List<ImageDto> dtos1 = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class ImageDaoTest {
 
 
     @Test
-    public void getImageByIdTest(){
+    public void testGetImageById(){
 
         JdbcTestUtils.deleteFromTables(jdbcTemplate,"images");
 
@@ -114,9 +114,9 @@ public class ImageDaoTest {
 
 
     }
-    @Transactional
+
     @Test
-    public void deleteImagesById(){
+    public void testDeleteImagesById(){
 
         List<ImageDto> imageDtos = new LinkedList<>();
         imageDtos.add(IMAGEDTO1);
@@ -151,7 +151,7 @@ public class ImageDaoTest {
     }
 
     @Test
-    public void getImagesByIdTest(){
+    public void testGetImagesById(){
 
         List<ImageDto> imageDtos = new LinkedList<>();
         imageDtos.add(IMAGEDTO1);
