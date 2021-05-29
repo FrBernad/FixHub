@@ -166,7 +166,6 @@ public class UserServiceImplTest {
         userService.verifyAccount(TOKEN);
         verify(mockUser).removeRole(Roles.NOT_VERIFIED);
         verify(mockUser).addRole(Roles.VERIFIED);
-
     }
 
 

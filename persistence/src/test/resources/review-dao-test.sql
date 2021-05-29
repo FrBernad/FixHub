@@ -21,9 +21,11 @@ VALUES (2,'USER');
 insert into ROLES(r_user_id,r_role)
 VALUES (2,'VERIFIED');
 
-
 insert into JOBS(j_id,j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
 VALUES (1,'El mejor cambio de aceite', 'MECANICO', 'Cambio de aceite', 1,3500,false);
+
+insert into JOBS(j_id,j_description, j_category, j_job_provided, j_provider_id, j_price,j_paused)
+VALUES (2,'El mejor cambio de aceite2', 'MECANICO', 'Cambio de aceite2', 1,3500,false);
 
 insert into REVIEWS(r_id,r_description, r_job_id, r_rating, r_creation_date,r_reviewer_id)
 VALUES(1,'Muy buen trabajo, gracias por todo', 1, 4, '2021-04-05',2);

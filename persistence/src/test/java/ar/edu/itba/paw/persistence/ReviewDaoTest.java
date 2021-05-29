@@ -30,21 +30,19 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = TestConfig.class)
 public class ReviewDaoTest {
 
-    //PROVIDER data
-    private static final Long ID = 1L;
+    //Provider data
+    private static final Long U_ID = 1L;
 
-    //REVIEWER data
-    private static final Long ID_R = 2L;
+    //Reviewer data
+    private static final Long R_ID = 2L;
 
-    //JOB date
+    //JOB data
     private static final Long JOB_ID = 1L;
 
     //Review data
     private static final int RATING = 4;
     private static final String REVIEW_DESCRIPTION = "Muy buen trabajo, gracias por todo";
     private static final Timestamp CREATION_DATE = Timestamp.valueOf("2021-04-05 20:26:02");
-
-    private static final int REVIEWS_AMOUNT = 5;
 
     @Autowired
     private DataSource ds;
@@ -57,7 +55,8 @@ public class ReviewDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    private static final Job MOCKJOB = Mockito.when(Mockito.mock(Job.class).getId()).thenReturn(ID).getMock();
+    private static final Job MOCK_JOB = Mockito.when(Mockito.mock(Job.class).getId()).thenReturn(1L).getMock();
+    private static final Job MOCK_JOB_NO_REVIEWS = Mockito.when(Mockito.mock(Job.class).getId()).thenReturn(2L).getMock();
 
     @Before
     public void setUp() {
@@ -67,10 +66,10 @@ public class ReviewDaoTest {
     @Test
     public void testCreate() {
 
-        JdbcTestUtils.deleteFromTables(jdbcTemplate,"reviews");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "reviews");
 
-        Job j = em.find(Job.class,JOB_ID);
-        User u = em.find(User.class,ID_R);
+        Job j = em.find(Job.class, JOB_ID);
+        User u = em.find(User.class, U_ID);
 
         final Review review = reviewDao.createReview(REVIEW_DESCRIPTION, j, RATING, CREATION_DATE, u);
 
@@ -86,20 +85,40 @@ public class ReviewDaoTest {
 
     @Test
     public void testGetReviewsCountByJob() {
+        final int reviewsCount = reviewDao.getReviewsCountByJob(MOCK_JOB);
+        assertEquals(5, reviewsCount);
+    }
 
-        final int reviewsCount = reviewDao.getReviewsCountByJob(MOCKJOB);
-        assertEquals(REVIEWS_AMOUNT, reviewsCount);
+    @Test
+    public void testGetReviewsCountByJobNoReviews() {
+        final int reviewsCount = reviewDao.getReviewsCountByJob(MOCK_JOB_NO_REVIEWS);
+        assertEquals(0, reviewsCount);
     }
 
     @Test
     public void testGetReviewsByJob() {
-        final Collection<Review> reviews = reviewDao.getReviewsByJob(MOCKJOB, 0, 5);
+        final Long[] reviewsIds = {5L, 4L, 3L, 2L, 1L};
 
-        for(Review review : reviews) {
-            assertEquals(ID, review.getJob().getId());
-            assertEquals(ID_R,review.getReviewer().getId());
+        final Collection<Review> reviews = reviewDao.getReviewsByJob(MOCK_JOB, 0, 5);
+        assertTrue(reviews.size() <= 5);
+        assertEquals(5, reviews.size());
+
+        final Collection<Long> resultIds = new LinkedList<>();
+        for (Review review : reviews) {
+            resultIds.add(review.getId());
+            assertEquals(JOB_ID, review.getJob().getId());
+            assertEquals(R_ID, review.getReviewer().getId());
         }
-        assertEquals(REVIEWS_AMOUNT, reviews.size());
+
+        assertArrayEquals(reviewsIds, resultIds.toArray());
+    }
+
+
+    @Test
+    public void testGetReviewsByJobNoReviews() {
+        final Collection<Review> reviews = reviewDao.getReviewsByJob(MOCK_JOB_NO_REVIEWS, 0, 5);
+        assertTrue(reviews.size() <= 5);
+        assertEquals(0, reviews.size());
     }
 
 }

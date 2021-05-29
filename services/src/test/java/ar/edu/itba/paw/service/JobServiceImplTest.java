@@ -165,8 +165,6 @@ public class JobServiceImplTest {
         Mockito.verify(job).setDescription(DESCRIPTION);
         Mockito.verify(job).setPrice(PRICE);
         Mockito.verify(job).setPaused(false);
-
-
     }
 
     @Test
