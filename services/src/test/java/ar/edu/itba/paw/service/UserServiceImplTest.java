@@ -143,7 +143,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void getUserByEmailTest() {
+    public void testGetUserByEmail() {
 
         when(mockUserDao.getUserByEmail(Mockito.eq(DEFAULT_USER.getEmail()))).thenReturn(Optional.of(DEFAULT_USER));
 
@@ -158,7 +158,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void verifyAccountTest() {
+    public void testVerifyAccount() {
         VerificationToken vToken = new VerificationToken(TOKEN, mockUser, LocalDateTime.now().plusDays(4L));
         when(mockVerificationTokenDao.getTokenByValue(Mockito.eq(TOKEN))).thenReturn(Optional.of(vToken));
         Mockito.doNothing().when(mockVerificationTokenDao).removeToken(Mockito.eq(vToken));
@@ -171,7 +171,7 @@ public class UserServiceImplTest {
 
 
     @Test
-    public void updatePasswordTest() {
+    public void testUpdatePassword() {
 
         PasswordResetToken passwordResetToken = new PasswordResetToken(TOKEN, mockUser, LocalDateTime.now().plusDays(4L));
 
@@ -191,12 +191,11 @@ public class UserServiceImplTest {
     }
 
     @Test(expected = IllegalContactException.class)
-    public void illegalContactTest() {
+    public void testIllegalContact() {
 
         when(mockUserDao.getContactInfoById(Mockito.eq(CONTACT_DTO.getContactInfoId()))).thenReturn(Optional.of(CONTACT_INFO));
 
         userService.contact(CONTACT_DTO, mockUser, mockUser);
-
     }
 
 }
