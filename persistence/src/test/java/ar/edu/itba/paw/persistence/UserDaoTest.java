@@ -45,7 +45,6 @@ public class UserDaoTest {
     private static final String CITY = "CABA";
 
     private static final Collection<Roles> PROVIDER_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.PROVIDER, Roles.VERIFIED, Roles.USER));
-    private static final Collection<Roles> CLIENT_VERIFIED_ROLES = Collections.unmodifiableCollection(Arrays.asList(Roles.VERIFIED, Roles.USER));
 
     private static final User MOCKED_CLIENT = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(3L).getMock();
     private static final User MOCKED_CLIENT_NO_CONTACT = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(2L).getMock();

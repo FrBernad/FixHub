@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateProviderInfo(User user,List<Long> citiesId,String startTime,String endTime){
+    public void updateProviderInfo(User user, List<Long> citiesId, String startTime, String endTime) {
         final Collection<City> cities = locationDao.getCitiesById(citiesId);
         final State state = cities.stream().findFirst().get().getState();
         final Location location = user.getProviderDetails().getLocation();
@@ -286,7 +286,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasContactJobProvided(User provider, User user) {
-        return userDao.hasContactJobProvided(provider,user);
+        return userDao.hasContactJobProvided(provider, user);
     }
 
     @Transactional
@@ -376,6 +376,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendVerificationToken(User user, VerificationToken token) {
         try {
+            LOGGER.debug("Sending user {} verification token", user.getId());
             final Locale locale = LocaleContextHolder.getLocale();
             final String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
             final Map<String, Object> mailAttrs = new HashMap<>();

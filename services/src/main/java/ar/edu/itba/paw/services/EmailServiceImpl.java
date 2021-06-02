@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
 
-    private static final String FIXHUB_EMAIL = "fixhubcompany@gmail.com";
+    private static final String FIXHUB_EMAIL = "fixhubcomp@gmail.com";
 
     @Async
     @Override

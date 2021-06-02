@@ -61,7 +61,9 @@ public class MailConfig implements ApplicationContextAware, EnvironmentAware {
         // Basic mail sender configuration, based on emailconfig.properties
         mailSender.setHost(this.environment.getProperty(HOST));
         mailSender.setPort(Integer.parseInt(this.environment.getProperty(PORT)));
+
         mailSender.setProtocol(this.environment.getProperty(PROTOCOL));
+
         mailSender.setUsername(this.environment.getProperty(USERNAME));
         mailSender.setPassword(this.environment.getProperty(PASSWORD));
 

@@ -57,7 +57,6 @@ public class ContactInfo {
     }
 
 
-
     public User getUser() {
         return user;
     }

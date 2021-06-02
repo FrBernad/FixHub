@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.User;
