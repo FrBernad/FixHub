@@ -92,22 +92,22 @@
                                             </div>
                                             <div class="row justify-content-end align-content-end px-2">
                                                 <div class="cols-6 m-1">
-                                                    <form id="acceptJobForm"
+                                                    <form id="acceptJobForm${contact.id}"
                                                           action="<c:url value='/user/dashboard/contacts/acceptJob'/>"
                                                           method="POST">
                                                         <input type="hidden" name="contactId" value="${contact.id}">
                                                     </form>
-                                                    <button class="acceptJobBtn" id="acceptJobBtn">
+                                                    <button class="acceptJobBtn" type="submit" form="acceptJobForm${contact.id}" id="acceptJobBtn${contact.id}">
                                                         <spring:message code="clientContactCard.acceptJobBtn"/>
                                                     </button>
                                                 </div>
                                                 <div class="cols-6 m-1">
-                                                    <form id="rejectJobForm"
+                                                    <form id="rejectJobForm${contact.id}"
                                                           action="<c:url value='/user/dashboard/contacts/rejectJob'/>"
                                                           method="POST">
                                                         <input type="hidden" name="contactId" value="${contact.id}">
                                                     </form>
-                                                    <button class="rejectJobBtn " id="rejectJobBtn${contact.id}">
+                                                    <button class="rejectJobBtn"  type="submit" form="rejectJobForm${contact.id}" id="rejectJobBtn${contact.id}">
                                                         <spring:message code="clientContactCard.rejectJobBtn"/>
                                                     </button>
                                                 </div>
@@ -129,12 +129,12 @@
                                                     <spring:message code="clientContactCard.jobCompletedIntroInfo"/></p>
                                             </div>
                                             <div class="row justify-content-end align-content-end px-2">
-                                                <form id="completedJobForm"
+                                                <form id="completedJobForm${contact.id}"
                                                       action="<c:url value='/user/dashboard/contacts/completedJob'/>"
                                                       method="POST">
                                                     <input type="hidden" name="contactId" value="${contact.id}">
                                                 </form>
-                                                <button class="completedJobBtn m-1" id="completedJobBtn">
+                                                <button class="completedJobBtn m-1" type="submit" form="completedJobForm${contact.id}" id="completedJobBtn${contact.id}">
                                                     <spring:message code="clientContactCard.completedJobBtn"/>
                                                 </button>
                                             </div>
@@ -150,4 +150,3 @@
         </div>
     </div>
 </div>
-<script src='<c:url value="/resources/js/contactCard.js"/>'></script>
