@@ -7,12 +7,11 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
-import ar.edu.itba.paw.models.job.JobState;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.form.SearchForm;
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.Collection;
-import java.util.Optional;
 
 @Controller
 public class DashboardController {
@@ -117,7 +115,7 @@ public class DashboardController {
         LOGGER.info("Accessed /user/dashboard/contacts/acceptJob POST controller");
 
         final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-        jobService.updateJobState(jb, JobState.EN_PROGRESO);
+        jobService.updateJobState(jb, JobStatus.IN_PROGRESS);
 
         return new ModelAndView( "redirect:/user/dashboard");
 
@@ -130,7 +128,7 @@ public class DashboardController {
         LOGGER.info("Accessed /user/dashboard/contacts/rejectJob POST controller");
 
         final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-        jobService.updateJobState(jb,JobState.RECHAZADO);
+        jobService.updateJobState(jb, JobStatus.REJECTED);
 
         return new ModelAndView( "redirect:/user/dashboard");
 
@@ -142,7 +140,7 @@ public class DashboardController {
         LOGGER.info("Accessed /user/dashboard/contacts/completedJob POST controller");
 
         final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-        jobService.updateJobState(jb, JobState.REALIZADO);
+        jobService.updateJobState(jb, JobStatus.FINISHED);
 
         return new ModelAndView( "redirect:/user/dashboard");
 

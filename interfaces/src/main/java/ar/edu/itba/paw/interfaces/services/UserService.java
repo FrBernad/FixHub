@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.models.contact.ContactDto;
 import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 
@@ -41,7 +42,7 @@ public interface UserService {
 
     void updateProfileImage(ImageDto imageDto, User user);
 
-    boolean hasContactJobProvided(User provider, User user);
+    boolean hasContactJobProvided(User provider, User user, Job job);
 
     void followUser(User user, User follower);
 

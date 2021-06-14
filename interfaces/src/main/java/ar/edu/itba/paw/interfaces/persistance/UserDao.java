@@ -47,6 +47,6 @@ public interface UserDao {
 
     void persistProviderDetails(Location location, Schedule schedule);
 
-    boolean hasContactJobProvided(User provider, User user);
+    boolean hasContactJobProvided(User provider, User user,Job job);
 
 }

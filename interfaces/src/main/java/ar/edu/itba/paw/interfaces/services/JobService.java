@@ -4,7 +4,7 @@ import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
-import ar.edu.itba.paw.models.job.JobState;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.user.User;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ public interface JobService {
 
     Collection<JobCategory> getJobsCategories();
 
-    void updateJobState(JobContact jc, JobState state);
+    void updateJobState(JobContact jc, JobStatus state);
 
     void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<ImageDto> images, Job job,List<Long> imagesIdDeleted);
 

@@ -59,7 +59,7 @@
                             </p>
                         </div>
                         <div class="col-12">
-                            <span class="client-label"><spring:message code="clientContactCard.state"/>:</span>
+                            <span class="client-label"><spring:message code="clientContactCard.status"/>:</span>
                             <c:choose>
 
                                 <c:when test="${contact.isWorkPending()}">

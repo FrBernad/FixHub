@@ -300,15 +300,15 @@ public class UserDaoTest {
         assertEquals(1, count);
     }
 
-    @Test
-    public void testHasContactJobProvided() {
-        assertTrue(userDao.hasContactJobProvided(MOCKED_PROVIDER,MOCKED_CLIENT));
-    }
-
-    @Test
-    public void testHasContactJobProvidedFalse() {
-        assertFalse(userDao.hasContactJobProvided(MOCKED_CLIENT_NO_CONTACT,MOCKED_PROVIDER));
-    }
+//    @Test
+//    public void testHasContactJobProvided() {
+//        assertTrue(userDao.hasContactJobProvided(MOCKED_PROVIDER,MOCKED_CLIENT));
+//    }
+//
+//    @Test
+//    public void testHasContactJobProvidedFalse() {
+//        assertFalse(userDao.hasContactJobProvided(MOCKED_CLIENT_NO_CONTACT,MOCKED_PROVIDER));
+//    }
 
 
 }
