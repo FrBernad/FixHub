@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.contact.ContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
@@ -100,17 +101,18 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public boolean hasContactJobProvided(User provider, User user) {
-        final Query query = em.createQuery("FROM JobContact as c where c.provider.id = :providerId and c.user.id = :userId");
+    public boolean hasContactJobProvided(User provider, User user,Job job) {
+        final Query query = em.createQuery("FROM JobContact as c where c.provider.id = :providerId and c.user.id = :userId and c.job.id = :jobId");
         query.setParameter("providerId",provider.getId());
         query.setParameter("userId",user.getId());
+        query.setParameter("jobId",job.getId());
         return query.getResultList().size()>0;
 
     }
 
     @Override
     public JobContact createJobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime creationTime, Job job) {
-        final JobContact jobContact = new JobContact(user, provider, contactInfo, message, creationTime, job);
+        final JobContact jobContact = new JobContact(user, provider, contactInfo, message, creationTime, job, JobStatus.PENDING);
         em.persist(jobContact);
         return jobContact;
     }

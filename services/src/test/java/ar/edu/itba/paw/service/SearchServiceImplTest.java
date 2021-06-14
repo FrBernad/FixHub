@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.Job;
@@ -53,7 +54,7 @@ public class SearchServiceImplTest {
     private static final Job JOB = new Job("", "", 5, 5L, JobCategory.MECANICO, BigDecimal.valueOf(13), false, USER, null);
     private static final Collection<Job> JOB_COLLECTION = Collections.singletonList(JOB);
 
-    private static final JobContact JOB_CONTACT = new JobContact(USER, null, null, null, null, null);
+    private static final JobContact JOB_CONTACT = new JobContact(USER, null, null, null, null, null, JobStatus.IN_PROGRESS);
     private static final Collection<JobContact> JOB_CONTACT_COLLECTION = Collections.singletonList(JOB_CONTACT);
 
     private static final Collection<User> USER_COLLECTION = Collections.singletonList(USER);

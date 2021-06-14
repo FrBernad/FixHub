@@ -3,11 +3,13 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.services.ReviewServiceImpl;
+import jdk.nashorn.internal.scripts.JO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,7 +44,10 @@ public class ReviewServiceImplTest {
     private static final int RATING = 4;
     private static final Timestamp CREATIONDATE = Timestamp.valueOf("2021-04-05 20:26:02");
 
+    private static final BigDecimal PRICE = new BigDecimal(1000);
     private static final User USER = new User(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
+
+    private static final Job JOB = new Job("desc","Job",4,4L, JobCategory.CARPINTERO,PRICE,false,USER,null);
 
     private static final Review REVIEW = new Review("", null, 5, CREATIONDATE.toLocalDateTime().toLocalDate(), USER);
     private static final Collection<Review> REVIEW_COLLECTION = Collections.singletonList(REVIEW);
@@ -69,7 +75,7 @@ public class ReviewServiceImplTest {
         lenient().when(mockJob.getJobProvided()).thenReturn("");
         lenient().when(mockJob.getId()).thenReturn(1L);
         lenient().when(mockJob.getReviews()).thenReturn(new HashSet<>());
-        lenient().when(mockUserService.hasContactJobProvided(Mockito.eq(mockJob.getProvider()), Mockito.eq(USER))).thenReturn(Boolean.TRUE);
+        lenient().when(mockUserService.hasContactJobProvided(Mockito.eq(mockJob.getProvider()), Mockito.eq(USER),Mockito.eq(JOB))).thenReturn(Boolean.TRUE);
 
         lenient().when(mockReviewDao.createReview(Mockito.eq(REVIEW_DESCRIPTION), Mockito.eq(mockJob), Mockito.eq(RATING)
             , Mockito.any(), Mockito.eq(USER))).thenReturn(

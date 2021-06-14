@@ -67,7 +67,7 @@ public class JobController {
         boolean canReview = false;
         if (principal != null) {
             final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-            canReview = userService.hasContactJobProvided(job.getProvider(), user);
+            canReview = userService.hasContactJobProvided(job.getProvider(), user,job);
         }
 
         mav.addObject("canReview", canReview);

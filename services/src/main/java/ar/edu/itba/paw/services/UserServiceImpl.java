@@ -14,6 +14,7 @@ import ar.edu.itba.paw.models.contact.ContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.JobContact;
@@ -300,8 +301,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean hasContactJobProvided(User provider, User user) {
-        return userDao.hasContactJobProvided(provider, user);
+    public boolean hasContactJobProvided(User provider, User user, Job job) {
+        return userDao.hasContactJobProvided(provider, user, job);
     }
 
     @Transactional

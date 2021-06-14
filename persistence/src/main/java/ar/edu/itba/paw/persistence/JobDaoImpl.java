@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +75,11 @@ public class JobDaoImpl implements JobDao {
                 job.setAverageRating(((Double) objArray[2]).intValue());
                 return job;
             }).findFirst();
+    }
+
+    @Override
+    public Optional<JobContact> getContactById(long id) {
+          return Optional.ofNullable(em.find(JobContact.class,id));
     }
 
     public Collection<JobCategory> getJobsCategories() {

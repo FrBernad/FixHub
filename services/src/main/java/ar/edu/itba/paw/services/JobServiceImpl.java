@@ -9,6 +9,8 @@ import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,9 +58,20 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public Optional<JobContact> getContactById(long id) {
+        return jobDao.getContactById(id);
+    }
+
+    @Override
     public Collection<JobCategory> getJobsCategories() {
         LOGGER.debug("Retrieving jobs categories");
         return jobDao.getJobsCategories();
+    }
+
+    @Transactional
+    @Override
+    public void updateJobState(JobContact jc, JobStatus state) {
+        jc.setStatus(state);
     }
 
     @Transactional

@@ -31,6 +31,10 @@ public class JobContact {
     @Column(name = "c_message", length = 300, nullable = false)
     private String message;
 
+    @Column(name = "c_status", length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private JobStatus status;
+
     @Column(name = "c_date", nullable = false)
     private LocalDateTime date;
 
@@ -42,13 +46,14 @@ public class JobContact {
     @JoinColumn(name = "c_contact_info")
     private ContactInfo contactInfo;
 
-    public JobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime date, Job job) {
+    public JobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime date, Job job, JobStatus status) {
         this.user = user;
         this.provider = provider;
         this.contactInfo = contactInfo;
         this.message = message;
         this.date = date;
         this.job = job;
+        this.status=status;
     }
 
     protected JobContact() {
@@ -64,6 +69,29 @@ public class JobContact {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public JobStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(JobStatus status) {
+        this.status = status;
+    }
+
+    public boolean isWorkPending(){
+        return this.status == JobStatus.PENDING;
+    }
+
+    public boolean isWorkDone(){
+        return this.status == JobStatus.FINISHED;
+    }
+    public boolean isWorkRejected(){
+        return this.status == JobStatus.REJECTED;
+    }
+
+    public boolean isWorkInProgress(){
+        return this.status == JobStatus.IN_PROGRESS;
     }
 
     public User getUser() {
