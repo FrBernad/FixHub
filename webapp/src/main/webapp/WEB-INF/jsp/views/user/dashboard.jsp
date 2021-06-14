@@ -180,6 +180,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <%--Tus Trabajos--%>
                                     <c:url value="/user/dashboard/jobs/search" var="postPath"/>
                                     <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"

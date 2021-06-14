@@ -24,5 +24,8 @@ public interface EmailService {
 
     void sendJobRequestEmail(ContactDto contactDto);
 
+    void sendJobCancellationEmail(ContactDto contactDto);
+
+    void sendJobConfirmationEmail(ContactDto contactDto);
 
 }
