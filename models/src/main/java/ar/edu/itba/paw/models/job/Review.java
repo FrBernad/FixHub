@@ -35,7 +35,6 @@ public class Review {
     private User reviewer;
 
     public Review(String description, Job job, int rating, LocalDate creationDate, User reviewer) {
-        this.id = id;
         this.description = description;
         this.job = job;
         this.rating = rating;

@@ -17,7 +17,7 @@ public class ContactInfo {
     @Column(name = "ci_id",nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="ci_user_id")
     private User user;
 
@@ -39,8 +39,9 @@ public class ContactInfo {
     @Column(name = "ci_department_number",length = 50)
     private String departmentNumber;
 
-    @OneToMany(mappedBy = "contactInfo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contactInfo", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<JobContact> jobContact;
+
 
     protected ContactInfo() {
 
@@ -120,6 +121,15 @@ public class ContactInfo {
     public void setDepartmentNumber(String departmentNumber) {
         this.departmentNumber = departmentNumber;
     }
+
+    public Set<JobContact> getJobContact() {
+        return jobContact;
+    }
+
+    public void setJobContact(Set<JobContact> jobContact) {
+        this.jobContact = jobContact;
+    }
+
 
     @Override
     public boolean equals(Object o) {

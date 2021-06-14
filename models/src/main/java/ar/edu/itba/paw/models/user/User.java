@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.models.user;
 
 import ar.edu.itba.paw.models.contact.ContactInfo;
-import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 
 import javax.persistence.*;
@@ -63,7 +62,7 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "following")
     private Set<User> followers;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<ContactInfo> contactInfo;
 
     @Embedded

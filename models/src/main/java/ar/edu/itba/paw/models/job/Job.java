@@ -28,7 +28,7 @@ public class Job {
     @Column(name = "j_job_provided", length = 50, nullable = false)
     private String jobProvided;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "j_provider_id")
     private User provider;
 
@@ -50,7 +50,7 @@ public class Job {
         inverseJoinColumns = @JoinColumn(name = "ji_image_id"))
     private Set<Image> images;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "job")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "job",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Review> reviews;
 
     public static final Integer MAX_IMAGES_PER_JOB = 6;

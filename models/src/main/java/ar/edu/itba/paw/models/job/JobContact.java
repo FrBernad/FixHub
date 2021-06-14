@@ -20,11 +20,11 @@ public class JobContact {
     @Column(name = "c_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_provider_id")
     private User provider;
 
@@ -38,7 +38,7 @@ public class JobContact {
     @JoinColumn(name = "c_job_id")
     private Job job;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_contact_info")
     private ContactInfo contactInfo;
 
