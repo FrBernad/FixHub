@@ -2,11 +2,11 @@ package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.provider.Stats;
+import ar.edu.itba.paw.models.user.UserInfo;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
