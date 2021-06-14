@@ -2,8 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.services.LocationService;
-import ar.edu.itba.paw.models.City;
-import ar.edu.itba.paw.models.State;
+import ar.edu.itba.paw.models.location.City;
+import ar.edu.itba.paw.models.location.State;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

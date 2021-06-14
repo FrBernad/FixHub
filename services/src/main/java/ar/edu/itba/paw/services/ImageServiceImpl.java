@@ -2,8 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistance.ImageDao;
 import ar.edu.itba.paw.interfaces.services.ImageService;
-import ar.edu.itba.paw.models.Image;
-import ar.edu.itba.paw.models.ImageDto;
+import ar.edu.itba.paw.models.image.Image;
+import ar.edu.itba.paw.models.image.ImageDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

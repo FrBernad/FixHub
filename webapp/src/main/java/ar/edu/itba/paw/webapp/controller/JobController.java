@@ -2,10 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.ContactInfo;
+import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
+import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.EditJobForm;

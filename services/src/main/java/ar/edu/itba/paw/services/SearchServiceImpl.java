@@ -4,10 +4,13 @@ import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.location.City;
+import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.pagination.OrderOptions;
+import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static ar.edu.itba.paw.models.OrderOptions.*;
+import static ar.edu.itba.paw.models.pagination.OrderOptions.*;
 
 @Service
 public class SearchServiceImpl implements SearchService {

@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.models.job;
 
-import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 

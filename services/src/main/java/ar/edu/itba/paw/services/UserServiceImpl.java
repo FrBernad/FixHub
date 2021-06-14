@@ -10,26 +10,27 @@ import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.ContactInfo;
+import ar.edu.itba.paw.models.image.Image;
+import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.location.City;
+import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.models.user.provider.Location;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import ar.edu.itba.paw.models.user.provider.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -57,12 +58,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private String appBaseUrl;
-
-    @Autowired
-    private MessageSource messageSource;
-
     public final static Set<Roles> DEFAULT_ROLES = new HashSet<>(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -88,7 +83,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Created user with id {}", user.getId());
         final VerificationToken token = generateVerificationToken(user);
         LOGGER.debug("Created verification token with id {}", token.getId());
-        sendVerificationToken(user, token);
+        emailService.sendVerificationEmail(user, token);
         return user;
     }
 
@@ -132,7 +127,7 @@ public class UserServiceImpl implements UserService {
         final VerificationToken token = generateVerificationToken(user);
         LOGGER.debug("Created token with id {}", token.getId());
 
-        sendVerificationToken(user, token);
+        emailService.sendVerificationEmail(user, token);
     }
 
     @Override
@@ -160,7 +155,7 @@ public class UserServiceImpl implements UserService {
         final PasswordResetToken token = generatePasswordResetToken(user);
         LOGGER.info("created password reset token for user {}", user.getId());
 
-        sendPasswordResetToken(user, token);
+        emailService.sendPasswordResetEmail(user, token);
     }
 
     @Transactional
@@ -257,7 +252,7 @@ public class UserServiceImpl implements UserService {
         user.setProviderDetails(providerDetails);
 
         LOGGER.info("User {} is now provider", user.getId());
-        sendProviderNotificationEmail(user);
+        emailService.sendProviderNotificationEmail(user);
     }
 
     @Transactional
@@ -279,8 +274,8 @@ public class UserServiceImpl implements UserService {
         final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, contactDto.getMessage(), LocalDateTime.now(), contactDto.getJob());
         provider.getProviderDetails().getContacts().add(jobContact);
 
-        sendJobRequestEmail(contactDto);
-        sendJobRequestConfirmationEmail(contactDto);
+        emailService.sendJobRequestEmail(contactDto);
+        emailService.sendJobRequestConfirmationEmail(contactDto);
 
     }
 
@@ -306,87 +301,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void sendJobRequestEmail(ContactDto contactDto) {
-        final Map<String, Object> mailAttrs = new HashMap<>();
-
-        final String address = String.format("%s, %s, %s %s, %s %s", contactDto.getState(), contactDto.getCity(),
-            contactDto.getStreet(), contactDto.getAddressNumber(), contactDto.getFloor(), contactDto.getDepartmentNumber());
-
-        mailAttrs.put("to", contactDto.getJob().getProvider().getEmail());
-        mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
-        mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
-        mailAttrs.put("name", contactDto.getUser().getName());
-        mailAttrs.put("surname", contactDto.getUser().getSurname());
-        mailAttrs.put("email", contactDto.getUser().getEmail());
-        mailAttrs.put("address", address);
-        mailAttrs.put("phoneNumber", contactDto.getUser().getPhoneNumber());
-        mailAttrs.put("message", contactDto.getMessage());
-
-        try {
-            emailService.sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
-        } catch (MessagingException e) {
-            LOGGER.warn("Error, Job request mail not sent");
-        }
-    }
-
-    private void sendJobRequestConfirmationEmail(ContactDto contactDto) {
-        final Map<String, Object> mailAttrs = new HashMap<>();
-
-        mailAttrs.put("to", contactDto.getUser().getEmail());
-        mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
-        mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
-        mailAttrs.put("name", contactDto.getUser().getName());
-
-        try {
-            emailService.sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
-        } catch (MessagingException e) {
-            LOGGER.warn("Error, Job request confirmation mail not sent");
-        }
-    }
-
-    private void sendProviderNotificationEmail(User user) {
-        try {
-            final Locale locale = LocaleContextHolder.getLocale();
-            final Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("to", user.getEmail());
-            mailAttrs.put("name", user.getName());
-            emailService.sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException e) {
-            LOGGER.warn("Error, provider notification mail not sent");
-        }
-    }
-
-    private void sendPasswordResetToken(User user, PasswordResetToken token) {
-        try {
-            final Locale locale = LocaleContextHolder.getLocale();
-            final String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/resetPassword?token=" + token.getValue()).toString();
-            Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("confirmationURL", url);
-            mailAttrs.put("to", user.getEmail());
-            emailService.sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
-            LOGGER.warn("Error, user password reset mail not sent");
-        }
-    }
-
     private PasswordResetToken generatePasswordResetToken(User user) {
         final String token = UUID.randomUUID().toString();
         return passwordResetTokenDao.createToken(user, token, VerificationToken.generateTokenExpirationDate());
-    }
-
-    private void sendVerificationToken(User user, VerificationToken token) {
-        try {
-            LOGGER.debug("Sending user {} verification token", user.getId());
-            final Locale locale = LocaleContextHolder.getLocale();
-            final String url = new URL("http", appBaseUrl, "/paw-2021a-06/user/verifyAccount?token=" + token.getValue()).toString();
-            final Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("confirmationURL", url);
-            mailAttrs.put("to", user.getEmail());
-
-            emailService.sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
-            LOGGER.warn("Error, user verification mail not sent");
-        }
     }
 
     private VerificationToken generateVerificationToken(User user) {

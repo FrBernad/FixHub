@@ -3,7 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.PaginatedSearchResult;
+import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;

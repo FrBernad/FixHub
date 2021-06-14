@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.City;
-import ar.edu.itba.paw.models.State;
+import ar.edu.itba.paw.models.location.City;
+import ar.edu.itba.paw.models.location.State;
 
 import java.util.Collection;
 import java.util.Optional;

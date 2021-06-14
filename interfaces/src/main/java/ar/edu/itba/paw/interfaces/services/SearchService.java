@@ -1,8 +1,9 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.pagination.OrderOptions;
+import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
 
 import java.util.Collection;

@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.models.ContactDto;
-import ar.edu.itba.paw.models.ContactInfo;
+import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.Roles;
@@ -19,11 +18,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.awt.*;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.*;

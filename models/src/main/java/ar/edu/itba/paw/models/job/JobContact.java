@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models.job;
 
-import ar.edu.itba.paw.models.ContactInfo;
+import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;

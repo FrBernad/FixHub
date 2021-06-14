@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models;
+package ar.edu.itba.paw.models.contact;
 
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.User;

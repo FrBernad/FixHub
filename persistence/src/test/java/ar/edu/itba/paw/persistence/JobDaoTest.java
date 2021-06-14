@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static ar.edu.itba.paw.models.job.JobCategory.*;
-import static ar.edu.itba.paw.models.OrderOptions.*;
+import static ar.edu.itba.paw.models.pagination.OrderOptions.*;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)

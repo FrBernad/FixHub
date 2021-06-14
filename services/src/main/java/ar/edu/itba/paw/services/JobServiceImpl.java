@@ -3,25 +3,19 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
 import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
-import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.JobService;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.image.Image;
+import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,19 +28,7 @@ public class JobServiceImpl implements JobService {
     private JobDao jobDao;
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
     private ImageService imageService;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private String appBaseUrl;
-
-    @Autowired
-    private MessageSource messageSource;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobServiceImpl.class);
 
@@ -114,25 +96,6 @@ public class JobServiceImpl implements JobService {
             LOGGER.debug("Job {} has images", jobProvided);
             Set<Image> images = imageService.createImages(imagesToUpload);
             jobImages.addAll(images);
-        }
-    }
-
-    private void sendNewJobNotificationMail(User user, Job job) {
-        try {
-            final Locale locale = LocaleContextHolder.getLocale();
-            final String url = new URL("http", appBaseUrl, "/paw-2021a-06/job/" + job.getId()).toString();
-            final User provider = job.getProvider();
-
-            final Map<String, Object> mailAttrs = new HashMap<>();
-            mailAttrs.put("newJobUrl", url);
-            mailAttrs.put("to", user.getEmail());
-            mailAttrs.put("providerName", String.format("%s %s", provider.getName(), provider.getSurname()));
-            mailAttrs.put("followerName", user.getName());
-            mailAttrs.put("jobName", job.getJobProvided());
-
-            emailService.sendMail("newJobNotification", messageSource.getMessage("email.newJobNotification", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
-            LOGGER.warn("Error, new job notification mail not sent");
         }
     }
 

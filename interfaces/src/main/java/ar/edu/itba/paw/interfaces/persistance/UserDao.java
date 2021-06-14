@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.models.ContactDto;
-import ar.edu.itba.paw.models.ContactInfo;
+import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.Roles;

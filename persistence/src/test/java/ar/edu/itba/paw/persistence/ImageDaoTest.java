@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.ImageDao;
-import ar.edu.itba.paw.models.Image;
-import ar.edu.itba.paw.models.ImageDto;
+import ar.edu.itba.paw.models.image.Image;
+import ar.edu.itba.paw.models.image.ImageDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

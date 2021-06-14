@@ -1,15 +1,10 @@
 package ar.edu.itba.paw.models.user;
 
-import ar.edu.itba.paw.models.ContactInfo;
-import ar.edu.itba.paw.models.Image;
-import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.contact.ContactInfo;
+import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
-import org.hibernate.annotations.Formula;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
