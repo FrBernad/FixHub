@@ -37,6 +37,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.mail.MessagingException;
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -266,8 +269,26 @@ public class UserServiceImplTest {
         verify(location).setCities(any());
         verify(location).setState(any());
 
-        verify(schedule).setStartTime(START_TIME);
-        verify(schedule).setEndTime(END_TIME);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String startTimeString = "11:00";
+        String endTimeString = "13:00";
+        long startTimeInMs;
+        long endTimeInMs;
+
+        try{
+            startTimeInMs = sdf.parse(startTimeString).getTime();
+        }catch (ParseException e) {
+            return;
+        }
+
+        try{
+            endTimeInMs = sdf.parse(endTimeString).getTime();
+        }catch (ParseException e) {
+            return;
+        }
+
+        verify(schedule).setStartTime(new Time(startTimeInMs));
+        verify(schedule).setEndTime(new Time(endTimeInMs));
 
     }
 
