@@ -11,6 +11,17 @@ a {
     transition: hover 1s;
 }
 
+#jobReviewLink {
+    font-weight: 500;
+    color: rgb(0, 104, 192);
+    transition: hover 1s;
+}
+
+#jobReviewLink:hover {
+    text-decoration: underline;
+    color: rgb(0, 104, 192);
+}
+
 a:hover {
     color: rgb(0, 104, 192);
     text-decoration: none;
@@ -23,7 +34,7 @@ a:hover {
     color: black;
 }
 
-.roundedBorder{
+.roundedBorder {
     border-radius: 8px;
 }
 
@@ -34,7 +45,7 @@ a:hover {
     font-weight: 600;
 }
 
-.reviewerImage{
+.reviewerImage {
     border-radius: 50%;
 }
 
@@ -96,7 +107,7 @@ a:hover {
 }
 
 .contactBtn {
-    font-size: 1.3em;
+    font-size: 1em;
     background-color: #003359;
     color: #fff;
     border: none;
@@ -104,8 +115,8 @@ a:hover {
     border-radius: 8px;
     padding: 12px 16px;
     font-weight: bold;
-    height: auto;
     width: auto;
+    height: auto;
 }
 
 .closeBtn {

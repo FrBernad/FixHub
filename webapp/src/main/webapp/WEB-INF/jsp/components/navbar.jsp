@@ -24,17 +24,22 @@
                             <spring:message code="navBar.dashboard"/>
                         </a>
                     </li>
-                    <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
-                        <a href="<c:url value='/jobs/new'/>" class="nav-link navbarText">
-                            <spring:message code="navBar.newJob"/>
-                        </a>
-                    </li>
                 </c:if>
 
             </ul>
             <ul class="navbar-nav ml-auto">
                 <c:choose>
                     <c:when test="${loggedUser!=null}">
+
+                        <c:if test="${loggedUser.isProvider}">
+                            <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+                                <a href="<c:url value='/jobs/new'/>" class="nav-link navbarText">
+                                    <i class="fas fa-plus mr-2 navbarText" id="navBarPlus"></i>
+                                    <spring:message code="navBar.newJob"/>
+                                </a>
+                            </li>
+                        </c:if>
+
                         <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
                             <div class="userContainer pr-0 nav-link">
                                 <div id="moreOptions" class="dropdown" data-toggle="dropdown">
@@ -88,7 +93,6 @@
                         </li>
                     </c:otherwise>
                 </c:choose>
-                </li>
             </ul>
         </div>
     </nav>

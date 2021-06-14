@@ -102,7 +102,7 @@
                                             <div class="col-12 d-flex justify-content-center align-items-center">
                                                 <a href="<c:url value='/jobs/${job.id}/edit'/>"
                                                    style="text-decoration: none">
-                                                    <button class="contactBtn" style="width: 72px"><spring:message
+                                                    <button class="contactBtn"><spring:message
                                                             code="job.editTitle"/></button>
                                                 </a>
                                             </div>
@@ -249,7 +249,7 @@
                     </div>
                     <c:if test="${canReview == true && !job.paused}">
                         <div class="col-12 d-flex justify-content-start align-items-center">
-                            <a href="#" type="button" data-toggle="modal" data-target="#newReview">
+                            <a href="#" type="button" data-toggle="modal" id="jobReviewLink" data-target="#newReview">
                                 <spring:message code="job.review.hyperlink"/>
                             </a>
                             <%@ include file="../../components/forms/reviewForm.jsp" %>

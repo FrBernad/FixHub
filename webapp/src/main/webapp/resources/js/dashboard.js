@@ -93,6 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //CONTACTS
+    let contactsCallsToAction = document.getElementsByClassName("preventParent");
+
+    for (const element of contactsCallsToAction) {
+        element.addEventListener("click", (event) => {
+            event.stopPropagation();
+        })
+    }
+
     let pagination2 = document.getElementById("pagination2");
     if (pagination2 !== null) {
 
