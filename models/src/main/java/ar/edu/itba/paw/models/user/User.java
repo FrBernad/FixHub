@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.user;
 
 import ar.edu.itba.paw.models.contact.ContactInfo;
+import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 
 import javax.persistence.*;
