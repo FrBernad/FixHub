@@ -12,8 +12,6 @@ import java.util.Map;
 
 public interface EmailService {
 
-    void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws MessagingException;
-
     void sendVerificationEmail(User user, VerificationToken token);
 
     void sendPasswordResetEmail(User user, PasswordResetToken token);

@@ -53,9 +53,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private String appRootPath;
 
-    @Async
-    @Override
-    public void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws
+    private void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws
         MessagingException {
         // Prepare the evaluation context
         final Context ctx = new Context(locale);
@@ -78,6 +76,7 @@ public class EmailServiceImpl implements EmailService {
         LOGGER.info("Sent email with subject {} from {} to {} using template {}", subject, FIXHUB_EMAIL, to, template);
     }
 
+    @Async
     @Override
     public void sendVerificationEmail(User user, VerificationToken token) {
         try {
@@ -94,6 +93,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Async
     @Override
     public void sendPasswordResetEmail(User user, PasswordResetToken token) {
         try {
@@ -109,6 +109,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Async
     @Override
     public void sendProviderNotificationEmail(User user) {
         try {
@@ -122,6 +123,8 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+
+    @Async
     @Override
     public void sendJobRequestConfirmationEmail(ContactDto contactDto) {
         final Map<String, Object> mailAttrs = new HashMap<>();
@@ -144,6 +147,8 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+
+    @Async
     @Override
     public void sendJobCancellationEmail(ContactDto contactDto) {
         Map<String, Object> mailAttrs = new HashMap<>();
@@ -165,6 +170,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Async
     @Override
     public void sendJobConfirmationEmail(ContactDto contactDto) {
         Map<String, Object> mailAttrs = new HashMap<>();
@@ -186,6 +192,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Async
     @Override
     public void sendJobRequestEmail(ContactDto contactDto) {
         final Map<String, Object> mailAttrs = new HashMap<>();

@@ -144,14 +144,14 @@
                             <div class="col-12">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-12 px-0 d-flex justify-content-start align-items-center">
+                                        <div class="col-12 d-flex justify-content-start align-items-center">
                                             <h2 class="sectionTitle mb-3">
                                                 <spring:message code="job.information.title"/>
                                             </h2>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 px-0">
+                                        <div class="col-12">
                                             <div class="container-fluid p-0">
                                                 <div class="row">
                                                     <div class="col-12">

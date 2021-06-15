@@ -242,11 +242,8 @@
                                                             style="font-size: 18px; line-height: 25.2px;"
                                                             th:text="#{jobConfirmation.greeting}"></span></span>
                                                         <span
-                                                                style="color: #666666; font-size: 14px; line-height: 19.6px;">
-                                                             <a style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #000000;"
-                                                                th:text="${name}"
-                                                                th:href="${providerURL}">
-                                                             </a>
+                                                                style="font-size: 18px; font-weight: bold; line-height: 19.6px; color: #000000;"
+                                                                th:text="${name}">
                                                         </span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
@@ -260,9 +257,11 @@
                                                         <span
                                                                 style="font-size: 18px; line-height: 25.2px; color: #666666;"
                                                                 th:text="#{jobConfirmation.communication2}"></span>
-                                                        <span
-                                                                style="font-size: 18px; line-height: 25.2px; color: #000000;"
-                                                                th:text="${providerName}"></span>
+                                                        <a
+                                                                style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #000000;"
+                                                                th:text="${name}"
+                                                                th:href="${providerURL}">
+                                                        </a>
                                                         <span
                                                                 style="font-size: 18px; line-height: 25.2px; color: #666666;"
                                                                 th:text="#{jobConfirmation.communication3}"></span>

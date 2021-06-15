@@ -243,9 +243,12 @@
                                                             style="font-size: 18px; line-height: 25.2px;"
                                                             th:text="#{jobRequest.greeting}"></span></span>
                                                         <span
-                                                                style="color: #666666; font-size: 14px; line-height: 19.6px;"><span
+                                                                style="color: #666666; font-size: 18px;font-weight: bold ;line-height: 19.6px;">
+                                                            <span
                                                                 style="font-size: 18px; line-height: 25.2px;"
-                                                                th:text="${providerName}"></span></span>
+                                                                th:text="${providerName}">
+                                                            </span>
+                                                        </span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">
                                                         <span
@@ -254,8 +257,9 @@
                                                         </span>
                                                         <a
                                                                 th:href="${jobURL}"
-                                                                style="font-size: 18px; line-height: 25.2px; color: #666666;"
-                                                                th:text="#{providerJob}">
+                                                                th:text="${providerJob}"
+                                                                style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #666666;"
+                                                                >
                                                         </a>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
@@ -291,7 +295,7 @@
                                                             th:text="#{jobRequest.info.profile}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;">
                                                    </span>
-                                                        <a style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #000000;"
+                                                        <a style="font-size: 14px; font-weight: bold; line-height: 25.2px; color: #000000;"
                                                            th:text="${name}"
                                                            th:href="${userURL}">
                                                         </a>
