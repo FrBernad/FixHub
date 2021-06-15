@@ -122,12 +122,20 @@
         <form:errors path="message" cssClass="formError" element="p"/>
     </div>
     <form:input type="hidden" path="contactInfoId" value="-1"/>
-    <div class="row align-items-center justify-content-center">
-        <div class="col-12 px-0 d-flex align-items-center justify-content-center">
-            <button type="button" id="contactFormButton" class="contactBtn w-50">
+    <div class="row">
+        <div class="col-6 d-flex align-items-center justify-content-center px-3">
+            <a href="<c:url value="/jobs/${job.id}"/>" style="width: 100%;">
+                <button class="w-100 closeBtn" type="button">
+                    <spring:message code="contactForm.cancel"/>
+                </button>
+            </a>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-center px-3 " >
+            <button type="button" id="contactFormButton" class="contactBtn w-100">
                 <spring:message code="contactForm.submit"/>
             </button>
         </div>
+
     </div>
 
 

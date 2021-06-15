@@ -75,7 +75,7 @@
     <div class="row">
         <div class="col-6 d-flex align-items-center justify-content-center px-3">
             <a href="<c:url value="/user/dashboard"/>" style="width: 100%;">
-                <button class="w-100 continueBtn my-1" type="button">
+                <button class="w-100 closeBtn my-1" type="button">
                     <spring:message code="providerUpdate.cancel"/>
                 </button>
             </a>
