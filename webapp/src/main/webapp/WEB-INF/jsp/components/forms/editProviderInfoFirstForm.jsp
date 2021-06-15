@@ -15,7 +15,7 @@
             <div class="col-6">
                 <form:label class="label" path="startTime"><spring:message code="joinForm.startTime"/></form:label>
             </div>
-            <div class="col-md-3 col-6 align-items-center justify-content-end">
+            <div class="col-md-4 col-6 align-items-center justify-content-end">
                 <form:input path="startTime" cssClass="startTimepicker px-2 w-100" id="startTime"
                             value="${loggedUser.providerDetails.schedule.startTime}"/>
             </div>
@@ -26,7 +26,7 @@
             <div class="col-6">
                 <form:label class="label" path="endTime"><spring:message code="joinForm.endTime"/></form:label>
             </div>
-            <div class="col-md-3 col-6 align-items-center justify-content-end">
+            <div class="col-md-4 col-6 align-items-center justify-content-end">
                 <form:input path="endTime" cssClass="endTimepicker px-2 w-100" id="endTime"
                             value="${loggedUser.providerDetails.schedule.endTime}"/>
             </div>
