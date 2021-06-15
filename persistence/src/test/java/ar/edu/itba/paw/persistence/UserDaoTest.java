@@ -309,7 +309,7 @@ public class UserDaoTest {
 //    public void testHasContactJobProvidedFalse() {
 //        assertFalse(userDao.hasContactJobProvided(MOCKED_CLIENT_NO_CONTACT,MOCKED_PROVIDER));
 //    }
-
+//
 
 }
 

@@ -77,8 +77,8 @@ INSERT INTO CONTACT_INFO(ci_id, ci_user_id, ci_city, ci_state, ci_street, ci_add
                          ci_department_number)
 VALUES (2, 3, 'Retiro', 'Buenos Aires', 'Independencia', '15', '29', 'A');
 
-INSERT INTO CONTACT(c_id, c_provider_id, c_user_id, c_job_id, c_contact_info, c_message, c_date)
-VALUES (1, 1, 3, 1, 1, 'Te necesito rápido!', '2021-04-05 20:26:02');
+INSERT INTO CONTACT(c_id, c_provider_id, c_user_id, c_job_id, c_contact_info, c_message, c_date,c_status)
+VALUES (1, 1, 3, 1, 1, 'Te necesito rápido!', '2021-04-05 20:26:02','IN_PROGRESS');
 
 -- INSERT INTO CONTACT(c_provider_id, c_user_id, c_job_id, c_info_id, c_message, c_date)
 -- VALUES (1,3,1,1,'Te necesito rápido!','2021-04-05 20:26:02');
@@ -98,6 +98,6 @@ INSERT INTO provider_cities(pc_provider_id, pc_city_id) VALUES (1,3);
 UPDATE USERS SET u_location_id = 1 WHERE u_id=1;
 
 INSERT INTO PROVIDER_SCHEDULE(sch_id,sch_end_time,sch_start_time,sch_provider_id)
-VALUES (1, '11:00', '18:00',1);
+VALUES (1, '11:00:00', '18:00:00',1);
 
 

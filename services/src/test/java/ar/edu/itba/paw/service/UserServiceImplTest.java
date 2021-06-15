@@ -139,10 +139,11 @@ public class UserServiceImplTest {
 
     @Test
     public void testCreate() throws DuplicateUserException, MessagingException {
-        when(mockMessageSource.getMessage(anyString(), any(), eq(LocaleContextHolder.getLocale()))).
+        VerificationToken token = new VerificationToken(TOKEN,DEFAULT_USER,DEFAULT_TIME);
+        lenient().when(mockMessageSource.getMessage(anyString(), any(), eq(LocaleContextHolder.getLocale()))).
             thenReturn(VERIFICATION_SUBJECT);
         when(mockVerificationTokenDao.createVerificationToken(eq(DEFAULT_USER), anyString(), any(LocalDateTime.class)))
-            .thenReturn(new VerificationToken(TOKEN, DEFAULT_USER, DEFAULT_TIME));
+            .thenReturn(token);
         when(mockEncoder.encode(PASSWORD)).thenReturn(PASSWORD);
         when(mockUserDao.createUser(Mockito.eq(PASSWORD), Mockito.eq(NAME), Mockito.eq(SURNAME),
             Mockito.eq(EMAIL), Mockito.eq(PHONENUMBER), Mockito.eq(STATE), Mockito.eq(CITY), Mockito.eq(DEFAULT_ROLES))).
@@ -155,9 +156,8 @@ public class UserServiceImplTest {
         assertEquals(DEFAULT_USER, maybeUser);
         verify(mockUserDao).createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
 
-//        verify(mockEmailService, times(1)).sendVerificationEmail("verification", VERIFICATION_SUBJECT,
-//            DEFAULT_MAIL_ATTRS, LocaleContextHolder.getLocale());
-// FIXME: DESCOMENTAS
+        verify(mockEmailService, times(1)).sendVerificationEmail(maybeUser,token);
+
     }
 
     @Test(expected = DuplicateUserException.class)
