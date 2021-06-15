@@ -3,6 +3,12 @@
     margin: auto;
 }
 
+.title {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 1em;;
+}
+
 .contactBtn {
     font-size: 0.8em;
     background-color: #003359;
