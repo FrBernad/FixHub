@@ -52,7 +52,7 @@
                 <form:errors path="city" cssClass="formError" element="p"/>
             </div>
         </div>
-        <div class="col-10 col-md-6 px-0 d-flex align-items-center justify-content-around">
+        <div class="col-10 col-md-8 px-0 d-flex align-items-center justify-content-around">
             <a href="<c:url value="/user/account"/>">
                 <button class="closeBtn my-2 d-flex align-items-center justify-content-center"
                         type="button">

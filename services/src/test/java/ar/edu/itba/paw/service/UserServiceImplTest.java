@@ -138,7 +138,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testCreate() throws DuplicateUserException, MessagingException {
+    public void testCreate() throws DuplicateUserException {
         VerificationToken token = new VerificationToken(TOKEN,DEFAULT_USER,DEFAULT_TIME);
         lenient().when(mockMessageSource.getMessage(anyString(), any(), eq(LocaleContextHolder.getLocale()))).
             thenReturn(VERIFICATION_SUBJECT);
@@ -156,7 +156,7 @@ public class UserServiceImplTest {
         assertEquals(DEFAULT_USER, maybeUser);
         verify(mockUserDao).createUser(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
 
-        verify(mockEmailService, times(1)).sendVerificationEmail(maybeUser,token);
+        verify(mockEmailService, times(1)).sendVerificationEmail(maybeUser,token, LocaleContextHolder.getLocale());
 
     }
 

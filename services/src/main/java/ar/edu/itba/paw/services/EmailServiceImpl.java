@@ -79,10 +79,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendVerificationEmail(User user, VerificationToken token) {
+    public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
-            final Locale locale = LocaleContextHolder.getLocale();
             final String url = new URL(appScheme, appHost, appRootPath + "user/verifyAccount?token=" + token.getValue()).toString();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
@@ -96,9 +95,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendPasswordResetEmail(User user, PasswordResetToken token) {
+    public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
-            final Locale locale = LocaleContextHolder.getLocale();
             final String url = new URL(appScheme, appHost, appPort, appRootPath + "user/resetPassword?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
@@ -112,9 +110,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendProviderNotificationEmail(User user) {
+    public void sendProviderNotificationEmail(User user, Locale locale) {
         try {
-            final Locale locale = LocaleContextHolder.getLocale();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("to", user.getEmail());
             mailAttrs.put("name", user.getName());
@@ -127,7 +124,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobRequestConfirmationEmail(ContactDto contactDto) {
+    public void sendJobRequestConfirmationEmail(ContactDto contactDto, Locale locale) {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
@@ -142,7 +139,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
             mailAttrs.put("name", contactDto.getUser().getName());
 
-            sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+            sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, Job request sent confirmation mail not sent");
         }
@@ -151,7 +148,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobCancellationEmail(JobContact jobContact) {
+    public void sendJobCancellationEmail(JobContact jobContact, Locale locale) {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
@@ -165,7 +162,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
 
-            sendMail("jobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+            sendMail("jobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, Job cancellation mail not sent");
         }
@@ -173,7 +170,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobConfirmationEmail(JobContact jobContact) {
+    public void sendJobConfirmationEmail(JobContact jobContact, Locale locale) {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
@@ -187,7 +184,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
 
-            sendMail("jobConfirmation", messageSource.getMessage("email.jobConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+            sendMail("jobConfirmation", messageSource.getMessage("email.jobConfirmation", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, Job confirmation mail not sent");
         }
@@ -195,7 +192,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobFinishedEmail(JobContact jobContact) {
+    public void sendJobFinishedEmail(JobContact jobContact, Locale locale) {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
@@ -209,7 +206,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
 
-            sendMail("jobFinished", messageSource.getMessage("email.jobFinished", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+            sendMail("jobFinished", messageSource.getMessage("email.jobFinished", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, Job confirmation mail not sent");
         }
@@ -217,7 +214,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobRequestEmail(ContactDto contactDto) {
+    public void sendJobRequestEmail(ContactDto contactDto, Locale locale) {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
@@ -239,7 +236,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("phoneNumber", contactDto.getUser().getPhoneNumber());
             mailAttrs.put("message", contactDto.getMessage());
 
-            sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+            sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, Job request mail not sent");
         }

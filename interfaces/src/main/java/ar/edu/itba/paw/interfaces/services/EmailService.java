@@ -13,20 +13,20 @@ import java.util.Map;
 
 public interface EmailService {
 
-    void sendVerificationEmail(User user, VerificationToken token);
+    void sendVerificationEmail(User user, VerificationToken token, Locale locale);
 
-    void sendPasswordResetEmail(User user, PasswordResetToken token);
+    void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale);
 
-    void sendProviderNotificationEmail(User user);
+    void sendProviderNotificationEmail(User user, Locale locale);
 
-    void sendJobRequestConfirmationEmail(ContactDto contactDto);
+    void sendJobRequestConfirmationEmail(ContactDto contactDto, Locale locale);
 
-    void sendJobRequestEmail(ContactDto contactDto);
+    void sendJobRequestEmail(ContactDto contactDto, Locale locale);
 
-    void sendJobCancellationEmail(JobContact jobContact);
+    void sendJobCancellationEmail(JobContact jobContact, Locale locale);
 
-    void sendJobConfirmationEmail(JobContact jobContact);
+    void sendJobConfirmationEmail(JobContact jobContact, Locale locale);
 
-    void sendJobFinishedEmail(JobContact jobContact);
+    void sendJobFinishedEmail(JobContact jobContact, Locale locale);
 
 }

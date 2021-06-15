@@ -29,6 +29,7 @@ import ar.edu.itba.paw.models.user.provider.Schedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Created user with id {}", user.getId());
         final VerificationToken token = generateVerificationToken(user);
         LOGGER.debug("Created verification token with id {}", token.getId());
-        emailService.sendVerificationEmail(user, token);
+        emailService.sendVerificationEmail(user, token, LocaleContextHolder.getLocale());
         return user;
     }
 
@@ -131,7 +132,7 @@ public class UserServiceImpl implements UserService {
         final VerificationToken token = generateVerificationToken(user);
         LOGGER.debug("Created token with id {}", token.getId());
 
-        emailService.sendVerificationEmail(user, token);
+        emailService.sendVerificationEmail(user, token, LocaleContextHolder.getLocale());
     }
 
     @Override
@@ -159,7 +160,7 @@ public class UserServiceImpl implements UserService {
         final PasswordResetToken token = generatePasswordResetToken(user);
         LOGGER.info("created password reset token for user {}", user.getId());
 
-        emailService.sendPasswordResetEmail(user, token);
+        emailService.sendPasswordResetEmail(user, token, LocaleContextHolder.getLocale());
     }
 
     @Transactional
@@ -234,10 +235,10 @@ public class UserServiceImpl implements UserService {
         final Schedule schedule = user.getProviderDetails().getSchedule();
         final Time sqlStartTime;
         final Time sqlEndTime;
-        if((sqlStartTime = stringToSqlTime(startTime)) == null)
+        if ((sqlStartTime = stringToSqlTime(startTime)) == null)
             return;
 
-        if((sqlEndTime = stringToSqlTime(endTime)) == null)
+        if ((sqlEndTime = stringToSqlTime(endTime)) == null)
             return;
         schedule.setStartTime(sqlStartTime);
         schedule.setEndTime(sqlEndTime);
@@ -256,10 +257,10 @@ public class UserServiceImpl implements UserService {
         final Time sqlStartTime;
         final Time sqlEndTime;
 
-        if((sqlStartTime = stringToSqlTime(startTime)) == null)
-           return;
+        if ((sqlStartTime = stringToSqlTime(startTime)) == null)
+            return;
 
-        if((sqlEndTime = stringToSqlTime(endTime)) == null)
+        if ((sqlEndTime = stringToSqlTime(endTime)) == null)
             return;
 
 
@@ -273,7 +274,7 @@ public class UserServiceImpl implements UserService {
         user.setProviderDetails(providerDetails);
 
         LOGGER.info("User {} is now provider", user.getId());
-        emailService.sendProviderNotificationEmail(user);
+        emailService.sendProviderNotificationEmail(user, LocaleContextHolder.getLocale());
     }
 
     @Transactional
@@ -295,8 +296,8 @@ public class UserServiceImpl implements UserService {
         final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, contactDto.getMessage(), LocalDateTime.now(), contactDto.getJob());
         provider.getProviderDetails().getContacts().add(jobContact);
 
-        emailService.sendJobRequestEmail(contactDto);
-        emailService.sendJobRequestConfirmationEmail(contactDto);
+        emailService.sendJobRequestEmail(contactDto, LocaleContextHolder.getLocale());
+        emailService.sendJobRequestConfirmationEmail(contactDto, LocaleContextHolder.getLocale());
 
     }
 
@@ -336,9 +337,9 @@ public class UserServiceImpl implements UserService {
         final long timeInMs;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
 
-        try{
+        try {
             timeInMs = simpleDateFormat.parse(time).getTime();
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             LOGGER.warn("Error parsing startTime");
             return null;
         }

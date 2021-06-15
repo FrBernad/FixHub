@@ -16,6 +16,7 @@ import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -76,21 +77,21 @@ public class JobServiceImpl implements JobService {
     @Override
     public void acceptJob(JobContact jc) {
         jc.setStatus(JobStatus.IN_PROGRESS);
-        emailService.sendJobConfirmationEmail(jc);
+        emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
     }
 
     @Transactional
     @Override
     public void rejectJob(JobContact jc) {
         jc.setStatus(JobStatus.REJECTED);
-        emailService.sendJobCancellationEmail(jc);
+        emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
     }
 
     @Transactional
     @Override
     public void finishJob(JobContact jc) {
         jc.setStatus(JobStatus.FINISHED);
-        emailService.sendJobFinishedEmail(jc);
+        emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
     }
 
     @Transactional
