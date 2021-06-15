@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
 import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.models.image.Image;
@@ -32,6 +33,9 @@ public class JobServiceImpl implements JobService {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private EmailService emailService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobServiceImpl.class);
 
     @Transactional
@@ -46,7 +50,7 @@ public class JobServiceImpl implements JobService {
             LOGGER.debug("Job {} has no images", jobProvided);
 
         final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider, jobImages);
-        LOGGER.info("Created job {} with id {}",job.getId(), job.getJobProvided() );
+        LOGGER.info("Created job {} with id {}", job.getId(), job.getJobProvided());
 
         return job;
     }
@@ -70,8 +74,23 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public void updateJobState(JobContact jc, JobStatus state) {
-        jc.setStatus(state);
+    public void acceptJob(JobContact jc) {
+        jc.setStatus(JobStatus.IN_PROGRESS);
+        emailService.sendJobConfirmationEmail(jc);
+    }
+
+    @Transactional
+    @Override
+    public void rejectJob(JobContact jc) {
+        jc.setStatus(JobStatus.REJECTED);
+        emailService.sendJobCancellationEmail(jc);
+    }
+
+    @Transactional
+    @Override
+    public void finishJob(JobContact jc) {
+        jc.setStatus(JobStatus.FINISHED);
+        emailService.sendJobFinishedEmail(jc);
     }
 
     @Transactional

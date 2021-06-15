@@ -21,9 +21,13 @@ public interface JobService {
 
     Collection<JobCategory> getJobsCategories();
 
-    void updateJobState(JobContact jc, JobStatus state);
+    void acceptJob(JobContact jc);
 
-    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused,List<ImageDto> images, Job job,List<Long> imagesIdDeleted);
+    void rejectJob(JobContact jc);
+
+    void finishJob(JobContact jc);
+
+    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> images, Job job, List<Long> imagesIdDeleted);
 
 }
 

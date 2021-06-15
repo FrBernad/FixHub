@@ -2,6 +2,7 @@ package ar.edu.itba.paw.interfaces.services;
 
 
 import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.User;
@@ -22,8 +23,10 @@ public interface EmailService {
 
     void sendJobRequestEmail(ContactDto contactDto);
 
-    void sendJobCancellationEmail(ContactDto contactDto);
+    void sendJobCancellationEmail(JobContact jobContact);
 
-    void sendJobConfirmationEmail(ContactDto contactDto);
+    void sendJobConfirmationEmail(JobContact jobContact);
+
+    void sendJobFinishedEmail(JobContact jobContact);
 
 }

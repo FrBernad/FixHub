@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.User;
@@ -150,19 +151,19 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobCancellationEmail(ContactDto contactDto) {
+    public void sendJobCancellationEmail(JobContact jobContact) {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + contactDto.getJob().getId()).toString();
-            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + contactDto.getJob().getProvider().getId()).toString();
+            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();
+            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + jobContact.getJob().getProvider().getId()).toString();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
-            mailAttrs.put("to", contactDto.getUser().getEmail());
-            mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
-            mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
-            mailAttrs.put("name", contactDto.getUser().getName());
+            mailAttrs.put("to", jobContact.getUser().getEmail());
+            mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
+            mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
+            mailAttrs.put("name", jobContact.getUser().getName());
 
             sendMail("jobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException | MalformedURLException e) {
@@ -172,21 +173,42 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobConfirmationEmail(ContactDto contactDto) {
+    public void sendJobConfirmationEmail(JobContact jobContact) {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + contactDto.getJob().getId()).toString();
-            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + contactDto.getJob().getProvider().getId()).toString();
+            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();
+            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + jobContact.getJob().getProvider().getId()).toString();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
-            mailAttrs.put("to", contactDto.getUser().getEmail());
-            mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
-            mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
-            mailAttrs.put("name", contactDto.getUser().getName());
+            mailAttrs.put("to", jobContact.getUser().getEmail());
+            mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
+            mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
+            mailAttrs.put("name", jobContact.getUser().getName());
 
             sendMail("jobConfirmation", messageSource.getMessage("email.jobConfirmation", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
+        } catch (MessagingException | MalformedURLException e) {
+            LOGGER.warn("Error, Job confirmation mail not sent");
+        }
+    }
+
+    @Override
+    public void sendJobFinishedEmail(JobContact jobContact) {
+         Map<String, Object> mailAttrs = new HashMap<>();
+
+        try {
+            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();
+            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + jobContact.getJob().getProvider().getId()).toString();
+
+            mailAttrs.put("jobURL", jobURL);
+            mailAttrs.put("providerURL", providerURL);
+            mailAttrs.put("to", jobContact.getUser().getEmail());
+            mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
+            mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
+            mailAttrs.put("name", jobContact.getUser().getName());
+
+            sendMail("jobFinished", messageSource.getMessage("email.jobFinished", new Object[]{}, LocaleContextHolder.getLocale()), mailAttrs, LocaleContextHolder.getLocale());
         } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, Job confirmation mail not sent");
         }

@@ -16,6 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    let contactsCallsToAction = document.getElementsByClassName("preventParent");
+
+    for (const element of contactsCallsToAction) {
+        element.addEventListener("click", (event) => {
+            event.stopPropagation();
+        })
+    }
+
     let pagination = document.getElementById("pagination");
     if (pagination !== null) {
 

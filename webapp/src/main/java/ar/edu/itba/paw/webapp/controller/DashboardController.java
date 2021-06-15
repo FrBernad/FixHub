@@ -114,11 +114,10 @@ public class DashboardController {
 
         LOGGER.info("Accessed /user/dashboard/contacts/acceptJob POST controller");
 
-        final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-        jobService.updateJobState(jb, JobStatus.IN_PROGRESS);
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        jobService.acceptJob(jobContact);
 
         return new ModelAndView( "redirect:/user/dashboard");
-
 
     }
 
@@ -127,8 +126,8 @@ public class DashboardController {
 
         LOGGER.info("Accessed /user/dashboard/contacts/rejectJob POST controller");
 
-        final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-        jobService.updateJobState(jb, JobStatus.REJECTED);
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        jobService.rejectJob(jobContact);
 
         return new ModelAndView( "redirect:/user/dashboard");
 
@@ -139,8 +138,8 @@ public class DashboardController {
 
         LOGGER.info("Accessed /user/dashboard/contacts/completedJob POST controller");
 
-        final JobContact jb = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-        jobService.updateJobState(jb, JobStatus.FINISHED);
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        jobService.finishJob(jobContact);
 
         return new ModelAndView( "redirect:/user/dashboard");
 
