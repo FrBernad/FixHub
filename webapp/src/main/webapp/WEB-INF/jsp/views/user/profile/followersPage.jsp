@@ -11,9 +11,9 @@
     <link href='<c:url value="/resources/css/pagination.css"/>' rel="stylesheet">
 </head>
 <body>
-<div class="outerContainer pb-4">
+<div class="outerContainer">
     <%@ include file="../../../components/navbar.jsp" %>
-    <div class="container-lg userContainerProfile pb-4">.
+    <div class="container-lg userContainerProfile py-4">
         <div class="row">
 
             <div class="col-12 col-md-4 d-flex justify-content-center pt-1">

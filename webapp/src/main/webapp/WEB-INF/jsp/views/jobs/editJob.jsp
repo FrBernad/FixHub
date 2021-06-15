@@ -21,7 +21,7 @@
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
-        <div class="container-lg p-5 pb-2 bigContentContainer">
+        <div class="container-lg pb-2 pt-5 px-5 bigContentContainer">
             <form:form modelAttribute="editJobForm" action="${postPath}" name="editJobForm"
                        enctype="multipart/form-data" id="editJobForm"
                        class="jobForm" method="POST">
@@ -152,7 +152,7 @@
                                                 class="form-control"/>
                                     <form:errors path="price" cssClass="formError" element="p"/>
                                 </div>
-                                <div class="col-12 px-0 form-group">
+                                <div class="col-12 pl-0 form-group">
                                     <form:label class="label" path="description"><spring:message
                                             code="jobForm.jobDescriptionTitle"/><span
                                             class="required-field"> *</span></form:label>
@@ -171,7 +171,7 @@
 
                                     <form:errors path="description" cssClass="formError" element="p"/>
                                 </div>
-                                <div class="col-12 px-0">
+                                <div class="col-12 pl-0">
                                     <div class="form-group">
                                         <form:input path="paused" type="hidden" id="paused"
                                                     value="${job.paused}"/>
@@ -192,15 +192,16 @@
                     </div>
 
 
-                    <div class="col-12 col-md-8 px-0 d-flex justify-content-around align-items-center">
+                    <div class="col-10 col-md-6 px-0 d-flex justify-content-around align-items-center">
 
-                        <a href="<c:url value="/jobs/${job.id}"/>" style="width: 100%;">
-                            <button class="w-25 closeBtn my-2 d-flex align-items-center justify-content-center" type="button">
+                        <a href="<c:url value="/jobs/${job.id}"/>">
+                            <button class="closeBtn my-2 d-flex align-items-center justify-content-center"
+                                    type="button">
                                 <spring:message code="job.cancel"/>
                             </button>
                         </a>
                         <button type="button" id="editFormButton" form="editJobForm"
-                                class="w-25 rateBtn my-2 d-flex align-items-center justify-content-center">
+                                class="rateBtn my-2 d-flex align-items-center justify-content-center">
                         <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
                               aria-hidden="true"></span>
                             <span id="senBtnText">
