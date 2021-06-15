@@ -142,7 +142,7 @@
                         <hr class="text-left ml-0 my-4" style="width: 100%;">
                         <div class="row">
                             <div class="col-12">
-                                <div class="container-fluid">
+                                <div class="container-fluid px-0">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-start align-items-center">
                                             <h2 class="sectionTitle mb-3">

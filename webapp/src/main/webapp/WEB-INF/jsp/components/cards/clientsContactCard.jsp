@@ -1,6 +1,7 @@
 <div class="accordion" id="accordion${status.index}">
     <div class="card accordionCard">
-        <div class="card-header px-0" data-toggle="collapse" data-target="#collapse${status.index}" style="cursor: pointer">
+        <div class="card-header px-0" data-toggle="collapse" data-target="#collapse${status.index}"
+             style="cursor: pointer">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-8">
@@ -63,74 +64,90 @@
                             <spring:message code="contact.status.${contact.status}"/>
                         </div>
 
-                        <div class="col-12 p-2">
-                            <c:choose>
-
-                                <c:when test="${contact.isWorkPending()}">
+                        <c:choose>
+                            <c:when test="${contact.isWorkPending()}">
+                                <div class="col-12 p-2">
                                     <div class="container p-2"
                                          style="background-color: aliceblue;border-radius: 8px;">
-                                        <div class="cols-12">
-
-                                            <div class="row px-2">
-                                                <p class="m-2"><b><spring:message
-                                                        code="clientContactCard.jobDecision"/></b>
-                                                </p>
-                                            </div>
-                                            <div class="row justify-content-end align-content-end px-2">
-                                                <div class="cols-6 m-1">
-                                                    <form id="acceptJobForm${contact.id}"
-                                                          action="<c:url value='/user/dashboard/contacts/acceptJob'/>"
-                                                          method="POST">
-                                                        <input type="hidden" name="contactId" value="${contact.id}">
-                                                    </form>
-                                                    <button class="acceptJobBtn" type="submit" form="acceptJobForm${contact.id}" id="acceptJobBtn${contact.id}">
-                                                        <spring:message code="clientContactCard.acceptJobBtn"/>
-                                                    </button>
-                                                </div>
-                                                <div class="cols-6 m-1">
-                                                    <form id="rejectJobForm${contact.id}"
-                                                          action="<c:url value='/user/dashboard/contacts/rejectJob'/>"
-                                                          method="POST">
-                                                        <input type="hidden" name="contactId" value="${contact.id}">
-                                                    </form>
-                                                    <button class="rejectJobBtn"  type="submit" form="rejectJobForm${contact.id}" id="rejectJobBtn${contact.id}">
-                                                        <spring:message code="clientContactCard.rejectJobBtn"/>
-                                                    </button>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <p class="m-2"><b><spring:message
+                                                                code="clientContactCard.jobDecision"/></b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12 pl-4 my-2 d-flex align-items-center justify-content-start">
+                                                        <form id="acceptJobForm${contact.id}"
+                                                              action="<c:url value='/user/dashboard/contacts/acceptJob'/>"
+                                                              method="POST">
+                                                            <input type="hidden" name="contactId" value="${contact.id}">
+                                                        </form>
+                                                        <button class="mr-4 btn btn-outline-success statusBtn"
+                                                                type="submit"
+                                                                form="acceptJobForm${contact.id}"
+                                                                id="acceptJobBtn${contact.id}">
+                                                            <spring:message code="clientContactCard.acceptJobBtn"/>
+                                                            <i class="fas fa-check ml-2"></i>
+                                                        </button>
+                                                        <form id="rejectJobForm${contact.id}"
+                                                              action="<c:url value='/user/dashboard/contacts/rejectJob'/>"
+                                                              method="POST">
+                                                            <input type="hidden" name="contactId" value="${contact.id}">
+                                                        </form>
+                                                        <button class="btn btn-outline-danger statusBtn" type="submit"
+                                                                form="rejectJobForm${contact.id}"
+                                                                id="rejectJobBtn${contact.id}">
+                                                            <spring:message code="clientContactCard.rejectJobBtn"/>
+                                                            <i class="fas fa-times ml-2"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </c:when>
-                                <c:when test="${contact.isWorkInProgress()}">
+                                </div>
+                            </c:when>
+                            <c:when test="${contact.isWorkInProgress()}">
+                                <div class="col-12 p-2">
                                     <div class="container p-2"
                                          style="background-color: aliceblue;border-radius: 8px;">
-                                        <div class="cols-12">
-                                            <div class="row px-2">
-                                                <p class="ml-2 mb-1"><b>
-                                                    <spring:message
-                                                            code="clientContactCard.jobCompletedIntro"/> </b></p>
-                                            </div>
-                                            <div class="row px-2">
-                                                <p class="ml-2 mb-2" style="font-size: small; color: #666666">
-                                                    <spring:message code="clientContactCard.jobCompletedIntroInfo"/></p>
-                                            </div>
-                                            <div class="row justify-content-end align-content-end px-2">
-                                                <form id="completedJobForm${contact.id}"
-                                                      action="<c:url value='/user/dashboard/contacts/completedJob'/>"
-                                                      method="POST">
-                                                    <input type="hidden" name="contactId" value="${contact.id}">
-                                                </form>
-                                                <button class="completedJobBtn m-1" type="submit" form="completedJobForm${contact.id}" id="completedJobBtn${contact.id}">
-                                                    <spring:message code="clientContactCard.completedJobBtn"/>
-                                                </button>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12 pl-4 mt-2">
+                                                        <p class="font-weight-bold mb-1">
+                                                            <spring:message
+                                                                    code="clientContactCard.jobCompletedIntro"/>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-12 pl-4">
+                                                        <p class="mb-0" style="font-size: 14px; color: #666666">
+                                                            <spring:message
+                                                                    code="clientContactCard.jobCompletedIntroInfo"/></p>
+                                                    </div>
+                                                    <div class="col-12 pl-4 mb-2 justify-content-start align-items-center">
+                                                        <form id="completedJobForm${contact.id}"
+                                                              action="<c:url value='/user/dashboard/contacts/completedJob'/>"
+                                                              method="POST">
+                                                            <input type="hidden" name="contactId" value="${contact.id}">
+                                                        </form>
+                                                        <button class="btn btn-outline-success statusBtn" type="submit"
+                                                                form="completedJobForm${contact.id}"
+                                                                id="completedJobBtn${contact.id}">
+                                                            <spring:message code="clientContactCard.completedJobBtn"/>
+                                                            <i class="fas fa-check ml-2"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </c:when>
-                            </c:choose>
-
-                        </div>
+                                </div>
+                            </c:when>
+                        </c:choose>
                     </div>
+
                 </div>
             </div>
         </div>

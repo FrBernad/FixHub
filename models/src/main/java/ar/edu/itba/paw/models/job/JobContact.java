@@ -53,7 +53,7 @@ public class JobContact {
         this.message = message;
         this.date = date;
         this.job = job;
-        this.status=status;
+        this.status = status;
     }
 
     protected JobContact() {
@@ -79,18 +79,19 @@ public class JobContact {
         this.status = status;
     }
 
-    public boolean isWorkPending(){
+    public boolean isWorkPending() {
         return this.status == JobStatus.PENDING;
     }
 
-    public boolean isWorkDone(){
+    public boolean isWorkDone() {
         return this.status == JobStatus.FINISHED;
     }
-    public boolean isWorkRejected(){
+
+    public boolean isWorkRejected() {
         return this.status == JobStatus.REJECTED;
     }
 
-    public boolean isWorkInProgress(){
+    public boolean isWorkInProgress() {
         return this.status == JobStatus.IN_PROGRESS;
     }
 
