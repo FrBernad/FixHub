@@ -60,21 +60,7 @@
                         </div>
                         <div class="col-12">
                             <span class="client-label"><spring:message code="clientContactCard.status"/>:</span>
-                            <c:choose>
-
-                                <c:when test="${contact.isWorkPending()}">
-                                    <spring:message code="clientContactCard.pendingJob"/>
-                                </c:when>
-                                <c:when test="${contact.isWorkInProgress()}">
-                                    <spring:message code="clientContactCard.workInProgress"/>
-                                </c:when>
-                                <c:when test="${contact.isWorkDone()}">
-                                    <spring:message code="clientContactCard.completedJob"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <spring:message code="clientContactCard.rejectedJob"/>
-                                </c:otherwise>
-                            </c:choose>
+                            <spring:message code="contact.status.${contact.status}"/>
                         </div>
 
                         <div class="col-12 p-2">

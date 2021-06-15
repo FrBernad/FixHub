@@ -46,6 +46,12 @@
                                 ${contact.contactInfo.floor} "/>
                             </p>
                         </div>
+                        <div class="col-12">
+                            <p class="mb-0">
+                                <span class="client-label"><spring:message code="clientContactCard.status"/>:</span>
+                                <spring:message code="contact.status.${contact.status}"/>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
