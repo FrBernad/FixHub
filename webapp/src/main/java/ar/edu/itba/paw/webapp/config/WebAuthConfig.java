@@ -65,20 +65,23 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/user/account").hasRole("USER")
             .antMatchers("/user/account/search", "/user/account/update",
                 "/user/account/updateCoverImage", "/user/account/updateInfo",
-                "/user/account/updateProfileImage","/user/account/edit").hasRole("VERIFIED")
-            .antMatchers(HttpMethod.POST,"/user/follow","/user/unfollow").hasRole("VERIFIED")
+                "/user/account/updateProfileImage", "/user/account/edit").hasRole("VERIFIED")
+            .antMatchers(HttpMethod.POST, "/user/follow", "/user/unfollow").hasRole("VERIFIED")
 
             //jobs routes
             .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
             .antMatchers("/jobs/new").hasRole("PROVIDER")
             .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
-            .antMatchers( "/jobs/{id:[\\d]+}/edit").hasRole("PROVIDER")
+            .antMatchers("/jobs/{id:[\\d]+}/edit").hasRole("PROVIDER")
 
             //provider routes
-            .antMatchers("/user/dashboard", "/user/dashboard/search").hasRole("PROVIDER")
+            .antMatchers("/user/dashboard", "/user/dashboard/search",
+                "/user/dashboard/contacts/acceptJob",
+                "/user/dashboard/contacts/rejectJob",
+                "/user/dashboard/contacts/completedJob").hasRole("PROVIDER")
             .antMatchers("/user/join", "/user/join/chooseCity").hasRole("VERIFIED")
 
-            //else
+        //else
             .antMatchers("/**").permitAll()
 
             .and().formLogin()

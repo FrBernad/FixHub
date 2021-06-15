@@ -110,38 +110,62 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "/user/dashboard/contacts/acceptJob", method = RequestMethod.POST)
-    public ModelAndView acceptJob(@RequestParam("contactId") final long contactId) {
+    public ModelAndView acceptJob(@RequestParam("contactId") final long contactId, Principal principal) {
 
         LOGGER.info("Accessed /user/dashboard/contacts/acceptJob POST controller");
 
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+
+        if (!user.getId().equals(jobContact.getProvider().getId())) {
+            LOGGER.debug("Provider tried to change a job status it does not own");
+            throw new NoContactFoundException();
+        }
+
         jobService.acceptJob(jobContact);
 
-        return new ModelAndView( "redirect:/user/dashboard");
+        return new ModelAndView("redirect:/user/dashboard");
 
     }
 
     @RequestMapping(value = "/user/dashboard/contacts/rejectJob", method = RequestMethod.POST)
-    public ModelAndView rejectJob(@RequestParam("contactId") final long contactId) {
+    public ModelAndView rejectJob(@RequestParam("contactId") final long contactId, Principal principal) {
 
         LOGGER.info("Accessed /user/dashboard/contacts/rejectJob POST controller");
 
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+
+        if (!user.getId().equals(jobContact.getProvider().getId())) {
+            LOGGER.debug("Provider tried to change a job status it does not own");
+            throw new NoContactFoundException();
+        }
+
         jobService.rejectJob(jobContact);
 
-        return new ModelAndView( "redirect:/user/dashboard");
+        return new ModelAndView("redirect:/user/dashboard");
 
     }
 
     @RequestMapping(value = "/user/dashboard/contacts/completedJob", method = RequestMethod.POST)
-    public ModelAndView completedJob(@RequestParam("contactId") final long contactId) {
+    public ModelAndView completedJob(@RequestParam("contactId") final long contactId, Principal principal) {
 
         LOGGER.info("Accessed /user/dashboard/contacts/completedJob POST controller");
 
+        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+
+        if (!user.getId().equals(jobContact.getProvider().getId())) {
+            LOGGER.debug("Provider tried to change a job status it does not own");
+            throw new NoContactFoundException();
+        }
+
         jobService.finishJob(jobContact);
 
-        return new ModelAndView( "redirect:/user/dashboard");
+        return new ModelAndView("redirect:/user/dashboard");
 
     }
 

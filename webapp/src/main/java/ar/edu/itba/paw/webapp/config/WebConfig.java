@@ -111,7 +111,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "appHost")
     public String appHost() {
-//        return "localhost";
         return "pawserver.it.itba.edu.ar";
     }
 

@@ -193,9 +193,10 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Async
     @Override
     public void sendJobFinishedEmail(JobContact jobContact) {
-         Map<String, Object> mailAttrs = new HashMap<>();
+        Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
             final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();

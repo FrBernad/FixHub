@@ -76,7 +76,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = NoContactFoundException.class)
     public ModelAndView noContactFoundException() {
-        LOGGER.error("Error encountered, the user who wants to make the review has not contacted the user ");
+        LOGGER.error("Error encountered, there is no contact between the users");
         Locale locale = LocaleContextHolder.getLocale();
         String error = messageSource.getMessage("errors.NoContactFoundException", null, locale);
         String code = HttpStatus.BAD_REQUEST.toString();
