@@ -45,7 +45,7 @@
     </div>
     <div class="form-group">
         <form:label class="label font-weight-bold" path="state"><spring:message
-                code="joinForm.availableZones"/>*</form:label>
+                code="joinForm.availableZones"/><span class="required-field">*</span></form:label>
         <form:input path="state" type="hidden" id="state" value="${loggedUser.providerDetails.location.state.id}"/>
         <div class="row">
             <div class="col d-flex align-items-center justify-content-center">

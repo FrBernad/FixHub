@@ -21,11 +21,11 @@
 <div class="container-fluid px-0 outerContainer">
     <%@ include file="../../components/navbar.jsp" %>
     <div class="container-fluid py-4 px-0">
-        <div class="container-lg p-5 bigContentContainer">
+        <div class="container-lg p-5 pb-2 bigContentContainer">
             <form:form modelAttribute="editJobForm" action="${postPath}" name="editJobForm"
                        enctype="multipart/form-data" id="editJobForm"
                        class="jobForm" method="POST">
-                <div class="row mt-3">
+                <div class="row mt-3 justify-content-center">
                     <div class="col-12 col-lg-6 d-flex align-content-center">
                         <div class="container-fluid">
                             <div class="row">
@@ -187,18 +187,28 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr class="text-left ml-0 my-3" style="width: 100%;">
+                    <div class="col-12 px-0">
+                        <hr class="text-left ml-0 my-3" style="width: 100%;">
+                    </div>
 
-                <div class="col-12 px-0 d-flex justify-content-center align-items-center">
-                    <button type="button" id="editFormButton" form="editJobForm"
-                            class="w-25 continueBtn my-2 d-flex align-items-center justify-content-center">
+
+                    <div class="col-12 col-md-8 px-0 d-flex justify-content-around align-items-center">
+
+                        <a href="<c:url value="/jobs/${job.id}"/>" style="width: 100%;">
+                            <button class="w-25 closeBtn my-2 d-flex align-items-center justify-content-center" type="button">
+                                <spring:message code="job.cancel"/>
+                            </button>
+                        </a>
+                        <button type="button" id="editFormButton" form="editJobForm"
+                                class="w-25 rateBtn my-2 d-flex align-items-center justify-content-center">
                         <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
                               aria-hidden="true"></span>
-                        <span id="senBtnText">
+                            <span id="senBtnText">
                             <spring:message code="job.submit"/>
                         </span>
-                    </button>
+                        </button>
+
+                    </div>
                 </div>
 
                 <div id="imageIdDeletedContainer" class="d-none">
