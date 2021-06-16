@@ -67,12 +67,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 
         ds.setDriverClass(org.postgresql.Driver.class);
-//        ds.setUrl("jdbc:postgresql://localhost/paw");
-//        ds.setUsername("root");
-//        ds.setPassword("root");
-        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2021a-06");
-        ds.setUsername("paw-2021a-06");
-        ds.setPassword("QroE40tsz");
+        ds.setUrl("jdbc:postgresql://localhost/paw");
+        ds.setUsername("root");
+        ds.setPassword("root");
+//        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2021a-06");
+//        ds.setUsername("paw-2021a-06");
+//        ds.setPassword("QroE40tsz");
         return ds;
     }
 
@@ -114,16 +114,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return "pawserver.it.itba.edu.ar";
     }
 
-    @Bean(name = "appScheme")
-    public String appScheme() {
+    @Bean(name = "appProtocol")
+    public String appProtocol() {
         return "http";
     }
 
-    @Bean(name = "appRootPath")
-    public String appRootPath() {
+    @Bean(name = "appWebContext")
+    public String appWebContext() {
         return "/paw-2021a-06/";
     }
-
 
     @Bean(name = "appPort")
     public int appPort() {

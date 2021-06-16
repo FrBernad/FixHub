@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
     private MessageSource messageSource;
 
     @Autowired
-    private String appScheme;
+    private String appProtocol;
 
     @Autowired
     private String appHost;
@@ -52,7 +52,7 @@ public class EmailServiceImpl implements EmailService {
     private int appPort;
 
     @Autowired
-    private String appRootPath;
+    private String appWebContext;
 
     private void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws
         MessagingException {
@@ -82,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
-            final String url = new URL(appScheme, appHost, appRootPath + "user/verifyAccount?token=" + token.getValue()).toString();
+            final String url = new URL(appProtocol, appHost, appWebContext + "user/verifyAccount?token=" + token.getValue()).toString();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -97,7 +97,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
-            final String url = new URL(appScheme, appHost, appPort, appRootPath + "user/resetPassword?token=" + token.getValue()).toString();
+            final String url = new URL(appProtocol, appHost, appPort, appWebContext + "user/resetPassword?token=" + token.getValue()).toString();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -128,8 +128,8 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + contactDto.getJob().getId()).toString();
-            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + contactDto.getJob().getProvider().getId()).toString();
+            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + contactDto.getJob().getId()).toString();
+            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + contactDto.getJob().getProvider().getId()).toString();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -152,8 +152,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();
-            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + jobContact.getJob().getProvider().getId()).toString();
+            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + jobContact.getJob().getId()).toString();
+            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + jobContact.getJob().getProvider().getId()).toString();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -174,8 +174,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();
-            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + jobContact.getJob().getProvider().getId()).toString();
+            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + jobContact.getJob().getId()).toString();
+            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + jobContact.getJob().getProvider().getId()).toString();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -196,8 +196,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + jobContact.getJob().getId()).toString();
-            final String providerURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + jobContact.getJob().getProvider().getId()).toString();
+            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + jobContact.getJob().getId()).toString();
+            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + jobContact.getJob().getProvider().getId()).toString();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -218,8 +218,8 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appScheme, appHost, appPort, appRootPath + "jobs/" + contactDto.getJob().getId()).toString();
-            final String userURL = new URL(appScheme, appHost, appPort, appRootPath + "user/" + contactDto.getUser().getId()).toString();
+            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + contactDto.getJob().getId()).toString();
+            final String userURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + contactDto.getUser().getId()).toString();
 
             final String address = String.format("%s, %s, %s %s, %s %s", contactDto.getState(), contactDto.getCity(),
                 contactDto.getStreet(), contactDto.getAddressNumber(), contactDto.getFloor(), contactDto.getDepartmentNumber());

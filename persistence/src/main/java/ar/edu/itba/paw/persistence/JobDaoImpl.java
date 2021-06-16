@@ -79,7 +79,7 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<JobContact> getContactById(long id) {
-          return Optional.ofNullable(em.find(JobContact.class,id));
+        return Optional.ofNullable(em.find(JobContact.class, id));
     }
 
     public Collection<JobCategory> getJobsCategories() {
@@ -117,8 +117,9 @@ public class JobDaoImpl implements JobDao {
 
         @SuppressWarnings("unchecked") final List<Long> filteredIds = ((List<Number>) filteredIdsSelectNativeQuery.getResultList()).stream().map(Number::longValue).collect(Collectors.toList());
 
-        if (filteredIds.isEmpty())
+        if (filteredIds.isEmpty()) {
             return Collections.emptyList();
+        }
 
         final String hqlOrderQuery = getHQLOrderQuery(orderOption);
 
