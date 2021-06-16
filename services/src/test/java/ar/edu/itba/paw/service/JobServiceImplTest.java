@@ -4,11 +4,14 @@ import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
 import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.services.JobServiceImpl;
 import org.junit.Test;
@@ -17,6 +20,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -42,7 +47,6 @@ public class JobServiceImplTest {
     private static final JobCategory CATEGORY = JobCategory.TECHISTA;
     private static final BigDecimal PRICE = BigDecimal.valueOf(3000);
     private static final boolean PAUSED = false;
-
 
 
     private static final User DEFAULT_USER = new User(PASSWORD, NAME, SURNAME, EMAIL,
@@ -101,6 +105,12 @@ public class JobServiceImplTest {
     @Mock
     private Job job;
 
+    @Mock
+    private EmailService emailService;
+
+    @Mock
+    private JobContact jobContact;
+
 
     @Test
     public void testCreate() {
@@ -109,7 +119,7 @@ public class JobServiceImplTest {
         List<ImageDto> imagesToUpload = new LinkedList<>(IMAGES_TO_UPLOAD);
 
         Job defaultJob = new Job(DESCRIPTION, JOB_PROVIDED, 0, 0L, CATEGORY,
-            PRICE, PAUSED, DEFAULT_USER,images);
+            PRICE, PAUSED, DEFAULT_USER, images);
 
 
         when(mockJobDao.createJob(Mockito.eq(JOB_PROVIDED), Mockito.eq(CATEGORY),
@@ -186,6 +196,24 @@ public class JobServiceImplTest {
         Mockito.verify(job).setPrice(PRICE);
         Mockito.verify(job).setPaused(false);
 
+    }
+
+    @Test
+    public void testAcceptJob() {
+        jobService.acceptJob(jobContact);
+        Mockito.verify(jobContact).setStatus(JobStatus.IN_PROGRESS);
+    }
+
+    @Test
+    public void testRejectJob() {
+        jobService.rejectJob(jobContact);
+        Mockito.verify(jobContact).setStatus(JobStatus.REJECTED);
+    }
+
+    @Test
+    public void testFinishJob() {
+        jobService.finishJob(jobContact);
+        Mockito.verify(jobContact).setStatus(JobStatus.FINISHED);
     }
 
 }

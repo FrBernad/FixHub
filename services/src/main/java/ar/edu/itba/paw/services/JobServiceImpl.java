@@ -77,6 +77,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public void acceptJob(JobContact jc) {
         jc.setStatus(JobStatus.IN_PROGRESS);
+
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
     }
 
