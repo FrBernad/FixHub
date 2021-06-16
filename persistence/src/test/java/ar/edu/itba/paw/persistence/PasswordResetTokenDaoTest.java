@@ -1,17 +1,14 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
-import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.user.User;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

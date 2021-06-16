@@ -7,9 +7,7 @@ import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.User;
 
-import javax.mail.MessagingException;
 import java.util.Locale;
-import java.util.Map;
 
 public interface EmailService {
 

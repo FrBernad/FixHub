@@ -35,7 +35,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.mail.MessagingException;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.ParseException;

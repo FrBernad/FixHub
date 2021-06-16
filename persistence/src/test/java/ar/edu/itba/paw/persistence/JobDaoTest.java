@@ -28,7 +28,7 @@ public class JobDaoTest {
     @Autowired
     private JobDao jobDao;
 
-    static User provider = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();;
+    static User provider = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();
 
     //GET JOBS BY CATEGORY
 

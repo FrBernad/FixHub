@@ -2,11 +2,8 @@ package ar.edu.itba.paw.models.user.provider;
 
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
-import ar.edu.itba.paw.models.user.User;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Embeddable

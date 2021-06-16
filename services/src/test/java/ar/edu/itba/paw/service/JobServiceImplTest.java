@@ -87,7 +87,7 @@ public class JobServiceImplTest {
     }};
 
     @InjectMocks
-    private JobServiceImpl jobService = new JobServiceImpl();
+    private final JobServiceImpl jobService = new JobServiceImpl();
 
     @Mock
     private JobDao mockJobDao;

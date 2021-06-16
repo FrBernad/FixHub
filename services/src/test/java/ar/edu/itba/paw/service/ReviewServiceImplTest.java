@@ -9,7 +9,6 @@ import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.services.ReviewServiceImpl;
-import jdk.nashorn.internal.scripts.JO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

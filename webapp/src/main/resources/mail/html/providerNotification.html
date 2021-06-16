@@ -252,9 +252,16 @@
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
 
-                                                    <p style="font-size: 14px; line-height: 140%;"><span
-                                                            th:text="#{providerNotification.advice}"
-                                                            style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
+                                                    <p style="font-size: 14px; line-height: 140%;">
+                                                         <a
+                                                                style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #000000;"
+                                                                th:text="#{providerNotification.advice1}"
+                                                                th:href="${newJobURL}">
+                                                        </a>
+                                                        <span
+                                                                th:text="#{providerNotification.advice2}"
+                                                                style="font-size: 18px; line-height: 25.2px; color: #666666;">
+                                                        </span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                 </div>

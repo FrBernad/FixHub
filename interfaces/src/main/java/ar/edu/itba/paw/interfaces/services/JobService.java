@@ -4,7 +4,6 @@ import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
-import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.user.User;
 
 import java.math.BigDecimal;

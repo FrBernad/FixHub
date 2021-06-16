@@ -83,7 +83,7 @@
                                                               method="POST">
                                                             <input type="hidden" name="contactId" value="${contact.id}">
                                                         </form>
-                                                        <button class="mr-4 btn btn-outline-success statusBtn"
+                                                        <button class="mr-4 finishBtn"
                                                                 type="submit"
                                                                 form="acceptJobForm${contact.id}"
                                                                 id="acceptJobBtn${contact.id}">
@@ -95,7 +95,7 @@
                                                               method="POST">
                                                             <input type="hidden" name="contactId" value="${contact.id}">
                                                         </form>
-                                                        <button class="btn btn-outline-danger statusBtn" type="submit"
+                                                        <button class="closeBtn" type="submit"
                                                                 form="rejectJobForm${contact.id}"
                                                                 id="rejectJobBtn${contact.id}">
                                                             <spring:message code="clientContactCard.rejectJobBtn"/>
@@ -127,7 +127,7 @@
                                                               method="POST">
                                                             <input type="hidden" name="contactId" value="${contact.id}">
                                                         </form>
-                                                        <button class="btn btn-outline-success statusBtn" type="submit"
+                                                        <button class="finishBtn" type="submit"
                                                                 form="completedJobForm${contact.id}"
                                                                 id="completedJobBtn${contact.id}">
                                                             <spring:message code="clientContactCard.completedJobBtn"/>

@@ -7,7 +7,6 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
-import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;

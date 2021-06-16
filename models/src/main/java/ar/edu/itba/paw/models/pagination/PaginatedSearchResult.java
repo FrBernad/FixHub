@@ -9,7 +9,10 @@ public class PaginatedSearchResult<T> {
     private String order, category, query, state, city;
     private Collection<City> cities;
     private final boolean isLast, isFirst;
-    private int page, itemsPerPage, totalItems, totalPages;
+    private int page;
+    private int itemsPerPage;
+    private int totalItems;
+    private final int totalPages;
 
     private Collection<T> results;
 

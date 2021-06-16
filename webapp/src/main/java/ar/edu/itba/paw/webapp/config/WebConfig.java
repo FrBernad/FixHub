@@ -67,12 +67,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 
         ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl("jdbc:postgresql://localhost/paw");
-        ds.setUsername("root");
-        ds.setPassword("root");
-//        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2021a-06");
-//        ds.setUsername("paw-2021a-06");
-//        ds.setPassword("QroE40tsz");
+//        ds.setUrl("jdbc:postgresql://localhost/paw");
+//        ds.setUsername("root");
+//        ds.setPassword("root");
+        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2021a-06");
+        ds.setUsername("paw-2021a-06");
+        ds.setPassword("QroE40tsz");
         return ds;
     }
 
@@ -101,9 +101,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
-//        properties.setProperty("hibernate.show_sql", "true");// FIXME:Si ponen esto en prod, hay tabla!!! SACAR EN DEPLOY!!!
-//        properties.setProperty("format_sql", "true");
-
+/*
+          properties.setProperty("hibernate.show_sql", "true");// NO VA EN PROD
+          properties.setProperty("format_sql", "true");
+*/
         factoryBean.setJpaProperties(properties);
 
         return factoryBean;

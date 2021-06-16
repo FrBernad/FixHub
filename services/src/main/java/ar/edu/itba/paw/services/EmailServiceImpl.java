@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -112,11 +111,15 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendProviderNotificationEmail(User user, Locale locale) {
         try {
+            final String newJobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/new").toString();
+
             final Map<String, Object> mailAttrs = new HashMap<>();
+            mailAttrs.put("newJobURL", newJobURL);
+
             mailAttrs.put("to", user.getEmail());
             mailAttrs.put("name", user.getName());
             sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException e) {
+        } catch (MessagingException | MalformedURLException e) {
             LOGGER.warn("Error, provider notification mail not sent");
         }
     }
