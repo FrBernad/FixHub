@@ -16,7 +16,6 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
     @PersistenceContext
     private EntityManager em;
 
-    //FIXME:
     @Override
     public Optional<PasswordResetToken> getToken(long id) {
         return Optional.ofNullable(em.find(PasswordResetToken.class, id));

@@ -20,7 +20,6 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VerificationTokenDaoImpl.class);
 
-    //FIXME:
     @Override
     public Optional<VerificationToken> getVerificationToken(long id) {
         return Optional.ofNullable(em.find(VerificationToken.class, id));
