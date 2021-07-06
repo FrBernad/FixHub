@@ -8,6 +8,9 @@ import { HomeComponent } from './home/home.component';
 import { DiscoverComponent } from './discover/discover.component';
 import { ProfileComponent } from './profile/profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { JobComponent } from './job/job.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HomeComponent,
     DiscoverComponent,
     ProfileComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent,
+    RegisterComponent,
+    JobComponent
   ],
   imports: [
     BrowserModule,
