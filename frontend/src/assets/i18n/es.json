@@ -377,5 +377,5 @@
     "NotEmpty.providerInfoSecondForm.city": "Por favor seleccione al menos una ciudad",
     "editProvider.header": "Edit\u00E1 tu informaci\u00F3n de proveedor",
     "FieldsValueNotMatch.providerInfoFirstForm": "Los horarios no pueden ser iguales",
-    "FieldsValueNotMatch.joinForm": "Los horarios no pueden ser iguales",
+    "FieldsValueNotMatch.joinForm": "Los horarios no pueden ser iguales"
 }
