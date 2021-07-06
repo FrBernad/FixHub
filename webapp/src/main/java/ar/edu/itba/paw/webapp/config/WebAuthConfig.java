@@ -50,36 +50,37 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
+//    FIXME: volver a habilitar security
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.sessionManagement()
             .and().authorizeRequests()
-            //session routes
-            .antMatchers("/login", "/register").anonymous()
-            .antMatchers(HttpMethod.POST, "/user/verifyAccount/resend").hasRole("NOT_VERIFIED")
-            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
-            .antMatchers("/user/verifyAccount").hasRole("USER")
-            .antMatchers("/logout").authenticated()
-
-            //profile routes
-            .antMatchers("/user/account").hasRole("USER")
-            .antMatchers("/user/account/search", "/user/account/update",
-                "/user/account/updateCoverImage", "/user/account/updateInfo",
-                "/user/account/updateProfileImage", "/user/account/edit").hasRole("VERIFIED")
-            .antMatchers(HttpMethod.POST, "/user/follow", "/user/unfollow").hasRole("VERIFIED")
-
-            //jobs routes
-            .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
-            .antMatchers("/jobs/new").hasRole("PROVIDER")
-            .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
-            .antMatchers("/jobs/{id:[\\d]+}/edit").hasRole("PROVIDER")
-
-            //provider routes
-            .antMatchers("/user/dashboard", "/user/dashboard/search",
-                "/user/dashboard/contacts/acceptJob",
-                "/user/dashboard/contacts/rejectJob",
-                "/user/dashboard/contacts/completedJob").hasRole("PROVIDER")
-            .antMatchers("/user/join", "/user/join/chooseCity").hasRole("VERIFIED")
+//            //session routes
+//            .antMatchers("/login", "/register").anonymous()
+//            .antMatchers(HttpMethod.POST, "/user/verifyAccount/resend").hasRole("NOT_VERIFIED")
+//            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
+//            .antMatchers("/user/verifyAccount").hasRole("USER")
+//            .antMatchers("/logout").authenticated()
+//
+//            //profile routes
+//            .antMatchers("/user/account").hasRole("USER")
+//            .antMatchers("/user/account/search", "/user/account/update",
+//                "/user/account/updateCoverImage", "/user/account/updateInfo",
+//                "/user/account/updateProfileImage", "/user/account/edit").hasRole("VERIFIED")
+//            .antMatchers(HttpMethod.POST, "/user/follow", "/user/unfollow").hasRole("VERIFIED")
+//
+//            //jobs routes
+//            .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
+//            .antMatchers("/jobs/new").hasRole("PROVIDER")
+//            .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
+//            .antMatchers("/jobs/{id:[\\d]+}/edit").hasRole("PROVIDER")
+//
+//            //provider routes
+//            .antMatchers("/user/dashboard", "/user/dashboard/search",
+//                "/user/dashboard/contacts/acceptJob",
+//                "/user/dashboard/contacts/rejectJob",
+//                "/user/dashboard/contacts/completedJob").hasRole("PROVIDER")
+//            .antMatchers("/user/join", "/user/join/chooseCity").hasRole("VERIFIED")
 
         //else
             .antMatchers("/**").permitAll()
