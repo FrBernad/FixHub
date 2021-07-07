@@ -4,7 +4,6 @@ import {Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewE
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
 export class NavbarComponent implements OnInit {
 

@@ -1,20 +1,20 @@
 <!--SEARCH SECTION-->
 <div class="container-fluid p-0 vh-100 bgImg d-flex flex-column">
   <app-navbar></app-navbar>
-  <div class="container-lg flex-grow-1">
+  <div class="container-lg flex-grow-1" [@fadeIn]>
     <div class="row w-100 h-100 align-items-center justify-content-center">
       <div class="col-12 px-0">
         <div class="container-lg">
           <div class="row w-100">
-            <div class="col-10 col-md-8 d-flex justify-content-start align-items-center">
-              <h2 class="text-start photoText xyz-in" xyz="fade duration-5 left-5">
+            <div class="col-10 col-md-8 d-flex justify-content-start align-items-center slogan">
+              <h2 class="text-start photoText">
                 {{'landingPage.titleP1' | translate}}
                 <br>
                 {{'landingPage.titleP2' | translate}}
               </h2>
             </div>
-            <div class="col-10 col-md-8 mt-2 d-flex justify-content-center align-items-center">
-              <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
+            <div class="col-10 col-md-8 mt-2 d-flex justify-content-center align-items-center searchBar">
+              <div class="input-group">
                 <input class="inputRadius form-control px-4"
                        id="searchFormInput"
                        [placeholder]="'landingPage.searchbarPlaceholder' | translate">
@@ -30,8 +30,18 @@
                 {{'landingPage.searchInvalidLength' | translate}}
               </small>
             </div>
-            <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center"
-                 xyz="fade small left-5 stagger delay-10">
+
+            <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center">
+              <form
+                class="mb-0 categoryBtn"
+                *ngFor="let category of categories">
+                <input type="hidden" name="category" value="${category}">
+                <div class="input-group-prepend">
+                  <button class="btn-sm suggestionBtn me-4">
+                    {{category}}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
