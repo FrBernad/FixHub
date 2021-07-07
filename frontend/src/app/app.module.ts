@@ -51,6 +51,7 @@ import { JobCardComponent } from './discover/job-card/job-card.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {

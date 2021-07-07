@@ -10,6 +10,7 @@ import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {DefaultLayoutComponent} from "./layouts/default-layout/default-layout.component";
 import { ContactComponent } from './contact/contact.component';
 import {JobComponent} from "./job/job.component";
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -31,11 +32,11 @@ const routes: Routes = [
       {path: 'user/dashboard', component: DashboardComponent},
       {path: 'login', component: LoginComponent, data:{title:"login.title"}},
       {path: 'register', component: RegisterComponent},
-      {path: 'jobs/:jobId/contact', component: ContactComponent},
+      {path: 'jobs/contact', component: ContactComponent},
     {path: "job", component:JobComponent}
     ]
   },
- 
+
   // {path:"**",}
 ];
 

@@ -32,3 +32,11 @@
   font-weight: bold;
 }
 
+.errorMessage{
+  color: red;
+}
+
+textarea.ng-invalid.ng-touched{
+  border:1px solid red;
+}
+
