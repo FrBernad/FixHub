@@ -43,7 +43,7 @@
   "account.resendConfirmation.success": "Your verification link was sent successfully",
   "account.resendConfirmation.checkEmail": "Check your mail box and verify your account.",
   "account.password.resetRequest.title": "Recover password",
-  "account.password.resetRequest.instruction": "Enter to email to receive your password recovery link",
+  "account.password.resetRequest.instruction": "Enter email to receive your password recovery link",
   "account.password.resetRequest.submitBtn": "Send",
   "account.password.resetRequest.emailLabel": "Email",
   "account.password.resetEmailConfirmation.title": "Link sent",

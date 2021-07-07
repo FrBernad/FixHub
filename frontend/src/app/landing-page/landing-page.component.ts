@@ -4,7 +4,8 @@ import {animate, group, query, stagger, state, style, transition, trigger} from 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './lading-page.component.html',
-  styleUrls: ['./landing-page.component.scss'], animations: [
+  styleUrls: ['./landing-page.component.scss'],
+  animations: [
     trigger('fadeIn', [
       transition('void => *', [
         state('in', style({

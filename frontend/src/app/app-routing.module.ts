@@ -29,7 +29,8 @@ const routes: Routes = [
       {path: 'discover', component: DiscoverComponent},
       {path: 'user/profile', component: ProfileComponent},
       {path: 'user/dashboard', component: DashboardComponent},
-      {path: 'login', component: LoginComponent},
+      {path: 'login', component: LoginComponent, data:{title:"login.title"}},
+      {path: 'register', component: RegisterComponent},
       {path: 'jobs/:jobId/contact', component: ContactComponent},
     {path: "job", component:JobComponent}
     ]

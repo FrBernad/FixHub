@@ -1,1 +1,123 @@
-<p>register works!</p>
+<div class="container-fluid py-4 px-0">
+  <div class="container-lg w-100 p-5 smallContentContainer">
+    <div class="row w-100 m-0 align-items-center justify-content-center">
+      <div class="col-12">
+        <h1 class="text-center title">
+          {{'register.title' | translate}}
+        </h1>
+        <p class="subtitle text-center mb-4">
+          <span class="fw-bold">
+            {{'register.description.boldText' | translate}}
+          </span>
+          {{'register.description.normalText' | translate}}
+        </p>
+      </div>
+      <div class="col-12 px-0">
+        <div class="container-lg">
+          <div class="row">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+              <form class="registerForm">
+                <div class="form-group">
+                  <label class="mb-2">
+                    {{'registerForm.userNameTitle' | translate}}
+                    <span class="required-field">*</span>
+                  </label>
+                  <input type="text" cssErrorClass="form-control is-invalid"
+                         class="form-control"
+                         placeholder="{{'registerForm.namePlaceholder' | translate}}"/>
+                </div>
+                <div class="form-group">
+                  <label class="mb-2">
+                    {{'registerForm.userSurnameTitle' | translate}}
+                    <span class="required-field">*</span>
+                  </label>
+                  <input type="text" cssErrorClass="form-control is-invalid"
+                         class="form-control" placeholder="{{'registerForm.surnamePlaceholder' | translate}}"/>
+                </div>
+                <div class="form-group">
+                  <label class="mb-2">
+                    {{'registerForm.userEmailTitle' | translate}}
+                    <span class="required-field">*</span></label>
+                  <input type="email" cssErrorClass="form-control is-invalid"
+                         class="form-control"
+                         placeholder="{{'registerForm.emailPlaceholder' | translate}}"/>
+                </div>
+                <div class="form-group">
+                  <label class="mb-2">
+                    {{'registerForm.password' | translate}}
+                    <span class="required-field">*</span>
+                  </label>
+                  <div class="input-group d-flex justify-content-start align-items-center">
+                    <input type="password" class="form-control"
+                           name="password"
+                           placeholder="{{'registerForm.passwordPlaceHolder' | translate}}"
+                           cssErrorClass="form-control is-invalid"/>
+                    <div class="input-group-append">
+                      <button type="button" tabindex="-1"
+                              (click)="toogleEye1()"
+                              class="form-control input-group-text passwordInput">
+                        <fa-icon [icon]="['far',showPass1 ? 'eye-slash' : 'eye']"></fa-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="mb-2">
+                    {{'registerForm.confirmPassword' | translate}}
+                    <span class="required-field">*</span>
+                  </label>
+                  <div class="input-group d-flex justify-content-start align-items-center">
+                    <input type="password" class="form-control"
+                           name="confirmPassword"
+                           aria-describedby="password input" cssErrorClass="form-control is-invalid"/>
+                    <div class="input-group-append">
+                      <button type="button" tabindex="-1"
+                              (click)="toogleEye2()"
+                              class="form-control passwordInput input-group-text">
+                        <fa-icon [icon]="['far',showPass2 ? 'eye-slash' : 'eye']"></fa-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="mb-2">
+                    {{'registerForm.userPhoneTitle' | translate}}
+                    <span class="required-field">*</span></label>
+                  <input type="text" cssErrorClass="form-control is-invalid"
+                         class="form-control" placeholder="{{'registerForm.phoneNumberPlaceholder' | translate}}"/>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="mb-2">
+                        {{'registerForm.userStateTitle' | translate}}
+                        <span class="required-field">*</span></label>
+                      <input type="text" cssErrorClass="form-control is-invalid"
+                             class="form-control" placeholder="{{'registerForm.userStatePlaceholder' | translate}}"/>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="mb-2">
+                        {{'registerForm.userCityTitle' | translate}}
+                        <span class="required-field">*</span></label>
+                      <input type="text" cssErrorClass="form-control is-invalid"
+                             class="form-control"
+                             placeholder="{{'registerForm.userCityTitlePlaceholder' | translate}}"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 px-0 d-flex align-items-center justify-content-center">
+                  <button type="button" class="w-100 continueBtn my-2">
+                    {{'registerForm.buttonText' | translate}}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

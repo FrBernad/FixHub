@@ -20,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { ContactComponent } from './contact/contact.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { RecoverEmailPopupComponent } from './login/recover-email-popup/recover-email-popup.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     LandingPageLayoutComponent,
     DefaultLayoutComponent,
     ContactComponent,
+    RecoverEmailPopupComponent
   ],
   imports: [
     BrowserModule,

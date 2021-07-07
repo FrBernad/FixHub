@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor() { }
+  showPass1 = true;
+  showPass2 = true;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
+
+  toogleEye1() {
+    this.showPass1 = !this.showPass1;
+  }
+
+  toogleEye2() {
+    this.showPass2 = !this.showPass2;
+  }
+
 
 }

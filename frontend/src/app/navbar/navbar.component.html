@@ -35,21 +35,28 @@
         <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
           <div class="userContainer pr-0 nav-link">
             <div id="moreOptions" class="dropdown" data-toggle="dropdown">
+              <img src="../../assets/images/userProfile.png"
+                   class="avatar"
+                   alt="profileImg"/>
               <i class="fas ms-2 fa-chevron-down navbarText" id="navBarArrow"></i>
             </div>
             <div class="dropdown-menu dropdown-menu-right">
               <a href="<c:url value='/user/account'/>" class="dropdownItem pl-3">
+                {{'navBar.signInAs' |translate}}
                 <span class="username names">
                 </span>
               </a>
               <div class="dropdown-divider"></div>
               <a href="<c:url value='/user/account'/>" class="dropdown-item pl-3">
+                {{'navBar.profile' | translate}}
               </a>
               <a href="<c:url value='/user/dashboard'/>" class="dropdown-item pl-3">
+                {{'navBar.dashboardItem'| translate}}
               </a>
               <div class="dropdown-divider"></div>
               <form id="logoutForm" class="mb-0 dropdown-item px-0" action="<c:url value='/logout'/>" method="post">
                 <button type="submit" id="logoutInput" class="pl-3 btn-block text-start">
+                  {{'navBar.logout' | translate }}
                 </button>
               </form>
             </div>

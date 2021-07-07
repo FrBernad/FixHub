@@ -1,0 +1,29 @@
+<div class="backdrop" (click)="onClose()"></div>
+<div class="container-lg p-5 smallContentContainer recoverPopup">
+  <div class="row w-100 h-100 m-0 align-items-center justify-content-center">
+    <div class="col-12">
+      <h1 class="text-center instruction">
+        {{'account.password.resetRequest.instruction' | translate }}
+      </h1>
+    </div>
+    <div class="col-12">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 mt-4">
+            <form id="passResetRequest">
+              <label for="email">
+                {{'account.password.resetRequest.emailLabel' | translate }}
+              </label>
+              <input type="text" class="form-control input" id="email" name="email">
+            </form>
+          </div>
+          <div class="col-12 mt-2 d-flex align-items-center justify-content-center">
+            <button form="passResetRequest" type="submit" class="w-100 continueBtn my-2">
+              {{'account.password.resetRequest.submitBtn' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
