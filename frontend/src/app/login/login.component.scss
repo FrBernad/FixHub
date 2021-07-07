@@ -1,33 +1,47 @@
 .jobForm {
-    width: 500px;
-    margin: auto;
+  width: 500px;
+  margin: auto;
 }
 
 #description {
-    resize: none;
-    height: 100px;
+  resize: none;
+  height: 100px;
 }
 
 .title {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 1em;;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 1em;;
 }
 
 .subtitle {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .label {
-    font-weight: 700;
-    font-size: 15px;
+  font-weight: 700;
+  font-size: 15px;
 }
 
 .input {
-    font-weight: 500;
-    font-size: 16px;
-    color: #282827;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #282827;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#passwordEye {
+  color: #676767;
+}
+
+#passwordEye:hover {
+  color: black;
+}
+
+#passwordEye:focus {
+  border: 1px solid #ced4da;
+  background-color: #e9ecef;;
+  box-shadow: none;
 }
 

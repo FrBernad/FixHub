@@ -6,50 +6,50 @@
           {{ 'login.header' | translate }}
         </h1>
         <p class="subtitle text-center mb-4">
-                        <span class="font-weight-bold">
-                            {{'login.description.boldText' | translate }}
-
-                        </span>
+            <span class="fw-bold">
+                {{'login.description.boldText' | translate }}
+            </span>
           {{ 'login.description.normalText' | translate }}
+        </p>
       </div>
-      <div class="col-12">
+      <div class="col-12 mb-3">
         <div class="container-fluid px-0">
-
           <form id="loginForm">
             <div class="row">
               <div class="col-12">
-                <label for="email">
+                <label for="email" class="mb-2">
                   {{ 'login.EmailText' | translate }}
                 </label>
                 <input type="email" class="form-control mb-2"
                        id="email" name="email"
                        aria-describedby="email input"/>
               </div>
-              <div class="col-12 mt-2">
+              <div class="col-12 mt-2 px-0">
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col-6 px-0">
-                      <label>
+                      <label class="mb-2">
                         {{'login.password' | translate }}
                       </label>
                     </div>
                     <div class="col-6 px-0 d-flex justify-content-end">
                       <a href="#" tabindex="-1">
-                                                    <span class="text-right"
-                                                          style="font-size: 0.9rem; margin-bottom: .5rem">
-                                                       {{ 'login.forgotPassword' | translate }}
-                                                    </span>
+                          <span class="text-right"
+                                style="font-size: 0.9rem; margin-bottom: .5rem">
+                             {{ 'login.forgotPassword' | translate }}
+                          </span>
                       </a>
                     </div>
                     <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                       <div class="input-group d-flex justify-content-start align-items-center">
-                        <input type="password" class="form-control"
+                        <input [type]="showPass ? 'password' : 'text'" class="form-control"
                                id="password" name="password"
                                aria-describedby="password input"/>
                         <div class="input-group-append">
                           <button id="passwordEye" type="button" tabindex="-1"
-                                  class="btn btn-lg form-control inputBtn input-group-text">
-                            <i id="eye" class="far fa-eye-slash"></i>
+                                  (click)="toogleEye()"
+                                  class="form-control input-group-text">
+                            <fa-icon [icon]="['far',showPass ? 'eye-slash' : 'eye']" id="eye"></fa-icon>
                           </button>
                         </div>
                       </div>
@@ -64,7 +64,7 @@
               </div>
               <div class="col-12 mt-3 d-flex justify-content-start align-items-center">
                 <input type="checkbox" name="rememberMe" id="rememberMe"/>
-                <label for="rememberMe" class="mb-0 ml-2">
+                <label for="rememberMe" class="mb-0 ms-2">
                   {{'login.rememberme' | translate }}
                 </label>
               </div>
