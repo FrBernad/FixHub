@@ -20,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { ContactComponent } from './contact/contact.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { ReviewFormComponent } from './job/review-form/review-form.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     LandingPageLayoutComponent,
     DefaultLayoutComponent,
     ContactComponent
+    ReviewFormComponent
   ],
   imports: [
     BrowserModule,

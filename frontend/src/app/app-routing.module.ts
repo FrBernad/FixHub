@@ -9,6 +9,7 @@ import {LandingPageLayoutComponent} from "./layouts/landing-page-layout/landing-
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {DefaultLayoutComponent} from "./layouts/default-layout/default-layout.component";
 import { ContactComponent } from './contact/contact.component';
+import {JobComponent} from "./job/job.component";
 
 const routes: Routes = [
   {
@@ -29,10 +30,11 @@ const routes: Routes = [
       {path: 'user/profile', component: ProfileComponent},
       {path: 'user/dashboard', component: DashboardComponent},
       {path: 'login', component: LoginComponent},
-      {path: 'register', component: RegisterComponent},
       {path: 'jobs/:jobId/contact', component: ContactComponent},
+    {path: "job", component:JobComponent}
     ]
   },
+ 
   // {path:"**",}
 ];
 
