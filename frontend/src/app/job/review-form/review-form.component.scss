@@ -1,0 +1,35 @@
+.roundedBorder {
+  border-radius: 8px;
+}
+.closeBtn {
+  color: #FFFeFF;
+  font-size:0.8em;
+  background-color: #6c757d;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  width: 118px;
+  padding: 12px 16px;
+  font-weight: bold;
+}
+
+.rateBtn {
+  font-size:0.8em;
+  background-color: #003359;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  width: 118px;
+  height: auto;
+}
+
+textarea.ng-invalid.ng-touched{
+  border:1px solid red;
+}
+
+.errorMessage{
+  color: red;
+}

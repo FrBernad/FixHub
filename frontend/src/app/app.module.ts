@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
+import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
@@ -21,6 +21,7 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
 import { ContactComponent } from './contact/contact.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { RecoverEmailPopupComponent } from './login/recover-email-popup/recover-email-popup.component';
+import { ReviewFormComponent } from './job/review-form/review-form.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { RecoverEmailPopupComponent } from './login/recover-email-popup/recover-
     LandingPageLayoutComponent,
     DefaultLayoutComponent,
     ContactComponent,
-    RecoverEmailPopupComponent
+    RecoverEmailPopupComponent,
+    ReviewFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ import { RecoverEmailPopupComponent } from './login/recover-email-popup/recover-
         deps: [HttpClient]
       }
     }),
-    FontAwesomeModule
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

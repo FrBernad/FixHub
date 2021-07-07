@@ -35,7 +35,7 @@
 
 
             <span class="badge badge-pill badge-secondary jobCategory">
-              {{ 'home.categories.'+job.category | translate }}
+              {{ 'home.categories.' + job.category | translate }}
             </span>
             <div class="jobPrice">
               <p class="text-left mb-0">
@@ -239,14 +239,16 @@
             </h2>
           </div>
 
-          <div *ngIf="canReview == true && !job.paused"
-               class="col-12 d-flex justify-content-start align-items-center">
+          <!--        <div *ngIf="canReview == true && !job.paused"-->
+          <div
+            class="col-12 d-flex justify-content-start align-items-center">
             <a href="#" type="button" data-toggle="modal" id="jobReviewLink" data-target="#newReview">
               {{ 'job.review.hyperlink' | translate }}
 
             </a>
-            <!--<app-review-form></app-review-form>-->
+
           </div>
+          <app-review-form></app-review-form>
 
         </div>
         <div class="row mt-2">
