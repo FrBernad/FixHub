@@ -1,36 +1,41 @@
+<div #backNavbar class="container-fluid px-0 d-none" id="navFix" style="height: 82px"></div>
 <div class="container-fluid p-0">
-  <nav class="navbar navbar-expand navbar-light navbarTop" id="navbar">
+  <nav #navbar class="navbar navbar-expand navbar-light navbarTop" id="navbar">
     <div class="container-lg">
-      <a href="<c:url value='/'/>" class="navbar-brand mr-4">
-        <img src='<c:url value="/resources/images/navbrand.png"/>' alt="FixHub brand logo" height="56px" width="160px"
-          type="image/png">
+      <a routerLink="/" class="navbar-brand me-4">
+        <img src='../../assets/images/navbrand.png' alt="FixHub brand logo" height="56px" width="160px"
+             type="image/png">
       </a>
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
-          <a href="<c:url value='/'/>" class="nav-link navbarText">
+          <a routerLink="/" class="nav-link navbarText">
+            {{'navBar.home' | translate }}
           </a>
         </li>
         <li class="nav-item navOption mx-1 d-flex justify-content-center align-items-center">
-          <a href="<c:url value='/discover'/>" class="nav-link navbarText">
+          <a routerLink="/discover" class="nav-link navbarText">
+            {{'navBar.discover'| translate}}
           </a>
         </li>
         <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
-          <a href="<c:url value='/user/dashboard'/>" class="nav-link navbarText">
+          <a routerLink="/user/dashboard" class="nav-link navbarText">
+            {{'navBar.dashboard'| translate}}
           </a>
         </li>
-
       </ul>
-      <ul class="navbar-nav ml-auto">
+
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
           <a href="<c:url value='/jobs/new'/>" class="nav-link navbarText">
-            <i class="fas fa-plus mr-2 navbarText" id="navBarPlus"></i>
+            <fa-icon class="me-2 navbarText" [icon]="['fas','plus']" id="navBarPlus"></fa-icon>
+            {{'navBar.newJob'| translate}}
           </a>
         </li>
 
         <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
           <div class="userContainer pr-0 nav-link">
             <div id="moreOptions" class="dropdown" data-toggle="dropdown">
-              <i class="fas ml-2 fa-chevron-down navbarText" id="navBarArrow"></i>
+              <i class="fas ms-2 fa-chevron-down navbarText" id="navBarArrow"></i>
             </div>
             <div class="dropdown-menu dropdown-menu-right">
               <a href="<c:url value='/user/account'/>" class="dropdownItem pl-3">
@@ -44,13 +49,15 @@
               </a>
               <div class="dropdown-divider"></div>
               <form id="logoutForm" class="mb-0 dropdown-item px-0" action="<c:url value='/logout'/>" method="post">
-                <button type="submit" id="logoutInput" class="pl-3 btn-block text-left">
+                <button type="submit" id="logoutInput" class="pl-3 btn-block text-start">
                 </button>
               </form>
             </div>
           </div>
         </li>
       </ul>
+
     </div>
+
   </nav>
 </div>

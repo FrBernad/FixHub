@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import {Component} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {FaIconLibrary} from "@fortawesome/angular-fontawesome";
+import {faPlus as fasPlus, faStar as fasStar, faSearch as fasSearch, faHandshake as fasHandshake} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +11,11 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent {
   title = 'frontend';
 
-  constructor(public translateService: TranslateService) {
+  constructor(public translateService: TranslateService, public library: FaIconLibrary) {
     translateService.addLangs(['en', 'es']);
     translateService.setDefaultLang('en');
+
+    library.addIcons(fasPlus, fasSearch, fasStar, fasHandshake);
   }
 
   translateSite(language: string) {

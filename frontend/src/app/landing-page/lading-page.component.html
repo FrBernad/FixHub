@@ -1,0 +1,155 @@
+<!--SEARCH SECTION-->
+<div class="container-fluid p-0 vh-100 bgImg d-flex flex-column">
+  <app-navbar></app-navbar>
+  <div class="container-lg flex-grow-1">
+    <div class="row w-100 h-100 align-items-center justify-content-center">
+      <div class="col-12 px-0">
+        <div class="container-lg">
+          <div class="row w-100">
+            <div class="col-10 col-md-8 d-flex justify-content-start align-items-center">
+              <h2 class="text-start photoText xyz-in" xyz="fade duration-5 left-5">
+                {{'landingPage.titleP1' | translate}}
+                <br>
+                {{'landingPage.titleP2' | translate}}
+              </h2>
+            </div>
+            <div class="col-10 col-md-8 mt-2 d-flex justify-content-center align-items-center">
+              <div class="input-group xyz-in" xyz="fade left-3 duration-5 left-5 delay-6">
+                <input class="inputRadius form-control px-4"
+                       id="searchFormInput"
+                       [placeholder]="'landingPage.searchbarPlaceholder' | translate">
+                <div class="input-group-prepend me-0">
+                  <button id="searchFormButton" class="btn btn-lg inputBtn" type="button">
+                    {{'landingPage.searchButtonText' | translate}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 justify-content-start align-items-center">
+              <small class="text-danger" style="display: none;" id="searchInvalidLength">
+                {{'landingPage.searchInvalidLength' | translate}}
+              </small>
+            </div>
+            <div class="col-8 col-lg-9 mt-3 d-flex justify-content-start align-items-center"
+                 xyz="fade small left-5 stagger delay-10">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--HOW IT WORKS SECTION-->
+<div class="container-fluid py-5" style="background-color: rgb(255,255,255)">
+  <div class="container-lg d-flex align-items-center py-5">
+    <div class="row align-items-start">
+      <div class="col-12">
+        <h1 class="py-3 stepSectionTitle">
+          {{'landingPage.howItWorks.title' | translate}}
+        </h1>
+      </div>
+      <div class="col-4 d-flex justify-content-center align-items-start">
+        <div class="row">
+          <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+            <fa-icon [icon]="['fas','search']" size="2x" class="iconsColor"></fa-icon>
+          </div>
+          <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+            <p class="text-start stepHeader">
+              {{'landingPage.howItWorks.firstSection.title' | translate}}
+            </p>
+          </div>
+          <div class="col-12 my-3 d-flex justify-content-center align-items-center">
+            <p class="text-start stepBody howItWorksText">
+              {{'landingPage.howItWorks.firstSection.text' | translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 d-flex justify-content-center align-items-start">
+        <div class="row">
+          <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+            <fa-icon [icon]="['fas','star']" size="2x" class="iconsColor"></fa-icon>
+          </div>
+          <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+            <p class="text-start stepHeader">
+              {{'landingPage.howItWorks.secondSection.title' | translate}}
+            </p>
+          </div>
+          <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
+            <p class="text-start howItWorksText">
+              {{'landingPage.howItWorks.secondSection.text' | translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 d-flex justify-content-center align-items-start">
+        <div class="row">
+          <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+            <fa-icon [icon]="['fas','handshake']" size="2x" class="iconsColor"></fa-icon>
+          </div>
+          <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+            <p class="text-start stepHeader">
+              {{'landingPage.howItWorks.thirdSection.title' | translate}}
+            </p>
+          </div>
+          <div class="col-12 my-3 d-flex justify-content-center stepBody align-items-center">
+            <p class="text-start howItWorksText">
+              {{'landingPage.howItWorks.thirdSection.text' | translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--POPULAR JOBS SECTION-->
+<div class="container-fluid py-5" style="background-color: var(--tertiary-color);">
+  <div class="container-lg py-5 d-flex align-items-center w-100">
+    <div class="row align-items-center justify-content-center w-100">
+      <div class="col-12">
+        <h1 class="py-3 stepSectionTitle mb-0">
+          {{'landingPage.mostPopularJobs.title' | translate}}
+        </h1>
+      </div>
+      <div class="col-12 p-0">
+        <div class="container-fluid p-0">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--JOIN SECTION-->
+<div class="container-fluid py-5" style="background-color: var(--primary-color);">
+  <div class="container-lg d-flex align-items-center py-5">
+    <div class="row align-items-center justify-content-between w-100">
+      <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
+        <div class="container-fluid ps-0">
+          <div class="row">
+            <div class="col-12 mb-4 d-flex pe-5 justify-content-start align-items-center">
+              <h2 class="py-0 text-start joinUsTitle">
+                {{'landingPage.joinUs.descriptionTitle' | translate}}
+              </h2>
+            </div>
+            <div class="col-12 d-flex justify-content-start align-items-center">
+              <a href="<c:url value='/user/join'/>">
+                <button class="learnMoreBtn">
+                  {{'landingPage.joinUs.buttonText' | translate}}
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 d-flex justify-content-end align-items-center">
+        <img class="jobProvideImg" src='../../assets/images/manWorking.jpg'
+             alt="Hombre trabajando">
+      </div>
+    </div>
+  </div>
+</div>
