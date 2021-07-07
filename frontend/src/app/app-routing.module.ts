@@ -7,9 +7,11 @@ import {ProfileComponent} from './profile/profile.component';
 import {RegisterComponent} from './register/register.component';
 import {LandingPageLayoutComponent} from "./layouts/landing-page-layout/landing-page-layout.component";
 import {LandingPageComponent} from "./landing-page/landing-page.component";
+import {DefaultLayoutComponent} from "./layouts/default-layout/default-layout.component";
 
 const routes: Routes = [
-  {path:'',
+  {
+    path: '',
     component: LandingPageLayoutComponent,
     children: [
       {
@@ -18,11 +20,17 @@ const routes: Routes = [
       }
     ]
   },
-  {path: 'discover', component: DiscoverComponent},
-  {path: 'user/profile', component: ProfileComponent},
-  {path: 'user/dashboard', component: DashboardComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    children: [
+      {path: 'discover', component: DiscoverComponent},
+      {path: 'user/profile', component: ProfileComponent},
+      {path: 'user/dashboard', component: DashboardComponent},
+      {path: 'login', component: LoginComponent},
+      {path: 'register', component: RegisterComponent},
+    ]
+  },
   // {path:"**",}
 ];
 
