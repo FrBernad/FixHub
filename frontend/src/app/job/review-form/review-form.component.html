@@ -1,19 +1,20 @@
-<!--<div class="modal fade" id="newReview" data-show="true" data-error="${error}" tabindex="-1"
-     aria-labelledby="newReviewLabel" aria-hidden="true">
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">-->
-<div class="container-lg roundedBorder p-4" style="background-color: #FAFAFA; border-radius: 8px">
-  <div class="row">
-    <div class="col-12">
-      <form [formGroup]="reviewForm" id="reviewForm"
-            class="reviewForm px-0" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label>
-            {{ 'reviewForm.descriptionTitle' | translate }} <span class="required-field">*</span>
-          </label>
-          <textarea formControlName="description" id="reviewFormTextArea"
-                    class="form-control"></textarea>
-          <span *ngIf="!reviewForm.get('description').valid && reviewForm.get('description').touched">
+    <div class="modal-content">
+      <div class="container-lg roundedBorder p-4" style="background-color: #FAFAFA; border-radius: 8px">
+        <div class="row">
+          <div class="col-12">
+            <form [formGroup]="reviewForm" id="reviewForm"
+                  class="reviewForm px-0" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label>
+                  {{ 'reviewForm.descriptionTitle' | translate }} <span class="required-field">*</span>
+                </label>
+                <textarea formControlName="description" id="reviewFormTextArea"
+                          class="form-control"></textarea>
+                <span *ngIf="!reviewForm.get('description').valid && reviewForm.get('description').touched">
             <span *ngIf="reviewForm.get('description').errors['required']" class="errorMessage">
               {{'NotEmpty.reviewForm.description' | translate }}<br>
             </span>
@@ -26,21 +27,17 @@
             </span>
           </span>
 
-        </div>
-        <div class="form-group">
-          <label>
-            {{ 'reviewForm.qualificationTitle' | translate }}
-            <span class="required-field">*</span>
-          </label>
-          <select class="form-control" formControlName="rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+              </div>
+              <div class="form-group">
+                <label>
+                  {{ 'reviewForm.qualificationTitle' | translate }}
+                  <span class="required-field">*</span>
+                </label>
+                <select class="form-control"  formControlName="rating">
+                  <option *ngFor="let rate of rates" value="rate">{{rate}}</option>
+                </select>
 
-          <span *ngIf="!reviewForm.get('rating').valid">
+                <span *ngIf="!reviewForm.get('rating').valid">
             <span *ngIf="reviewForm.get('rating').errors['required']" class="errorMessage">
               {{'NotEmpty.reviewForm.rating' | translate }}<br>
             </span>
@@ -52,20 +49,20 @@
               {{'Pattern.reviewForm.rating' | translate: {min: minRate, max: maxRate} }}
             </span>
           </span>
-        </div>
+              </div>
 
-        <div class="col-12 d-flex justify-content-start align-items-center py-4">
-          <button id="reviewFormButton" class="rateBtn me-4">
-            {{ 'reviewForm.submitButtonText' | translate }}
-          </button>
-          <button type="button" id="reviewFormCloseButton" class="closeBtn" data-dismiss="modal">
-            {{ 'reviewForm.cancelButtonText' | translate }}
-          </button>
+              <div class="col-12 d-flex justify-content-start align-items-center py-4">
+                <button id="reviewFormButton" type="submit"  class="rateBtn me-4">
+                  {{ 'reviewForm.submitButtonText' | translate }}
+                </button>
+                <button type="button" data-bs-dismiss="modal" id="reviewFormCloseButton" class="closeBtn" data-dismiss="modal">
+                  {{ 'reviewForm.cancelButtonText' | translate }}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
-<!--    </div>
-  </div>
-</div>-->

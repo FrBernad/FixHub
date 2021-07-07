@@ -242,13 +242,16 @@
           <!--        <div *ngIf="canReview == true && !job.paused"-->
           <div
             class="col-12 d-flex justify-content-start align-items-center">
-            <a href="#" type="button" data-toggle="modal" id="jobReviewLink" data-target="#newReview">
-              {{ 'job.review.hyperlink' | translate }}
 
+            <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="jobReviewLink"
+               data-target="#newReview">
+              {{ 'job.review.hyperlink' | translate }}
             </a>
 
+            <app-review-form></app-review-form>
+
           </div>
-          <app-review-form></app-review-form>
+
 
         </div>
         <div class="row mt-2">
