@@ -18,6 +18,7 @@ import { JobComponent } from './job/job.component';
 import { LandingPageLayoutComponent } from './layouts/landing-page-layout/landing-page-layout.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
     RegisterComponent,
     JobComponent,
     LandingPageLayoutComponent,
-    DefaultLayoutComponent
+    DefaultLayoutComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

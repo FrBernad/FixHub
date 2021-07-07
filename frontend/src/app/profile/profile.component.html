@@ -1,1 +1,299 @@
-<p>profile works!</p>
+<div class="container-lg userContainerProfile pb-4">
+  <div class="row">
+
+    <!-- USER PICTURES -->
+      <div class="col-12 px-0">
+        <div class="container-fluid px-0 position-relative backgroundImageContainer">
+          <!-- <c:choose>
+            <c:when test="${loggedUser.coverImage == null}">
+              <img alt="profile cover picture" src="<c:url value='/resources/images/defaultCoverImage.jpg'/>"
+                class="backgroundImage">
+            </c:when>
+            <c:otherwise>
+              <img alt="profile cover picture" src="<c:url value='/user/images/profile/${loggedUser.coverImage.id}'/>"
+                class="backgroundImage">
+            </c:otherwise>
+          </c:choose> -->
+          <div class="profileBackgroundPic">
+            <!-- <c:url value="/user/account/updateCoverImage" var="postCoverImage" />
+            <form:form modelAttribute="coverImageForm" id="changeCoverForm" type="hidden" action="${postCoverImage}"
+              method="POST" enctype="multipart/form-data">
+              <input type="file" id="coverInputFile" name="coverImage" hidden accept=".png,.jpg,.jpeg" />
+
+              <button type="button" class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
+                style="width: 224px">
+                <span id="coverCamaraIcon">
+                  <i class="fas fa-camera me-2"></i>
+                  <span>
+                    {{'profilePage.picture.changeBg' | translate}}
+                  </span>
+                </span>
+                <span id="coverLoadingSpinner" class="spinner-border spinner-border-sm" hidden></span>
+              </button>
+              <form:errors path="coverImage" cssClass="formError mt-2"
+                cssStyle="font-size: 14px;position: absolute;width: 250px;" element="p" />
+            </form:form> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <div class="container-fluid px-0">
+          <div class="row align-items-center  position-relative justify-content-center">
+            <div class="profilePictureContainer">
+              <div class="picContainer">
+                <!-- <c:choose>
+                  <c:when test="${loggedUser.profileImage == null}">
+                    <img alt="profile picture" src="<c:url value='/resources/images/userProfile.png'/>"
+                      class="profilePicture">
+                  </c:when>
+                  <c:otherwise>
+                    <img alt="profile picture" src="<c:url value='/user/images/profile/${loggedUser.profileImage.id}'/>"
+                      class="profilePicture">
+                  </c:otherwise>
+                </c:choose> -->
+              </div>
+              <div>
+
+              </div>
+              <div class="profilePicEditBtn">
+                <!-- <c:url value="/user/account/updateProfileImage" var="postProfileImage" />
+                <form:form modelAttribute="profileImageForm" id="changeProfileForm" type="hidden"
+                  action="${postProfileImage}" method="POST" enctype="multipart/form-data">
+                  <input type="file" id="profileInputFile" name="profileImage" hidden accept=".png,.jpg,.jpeg,.gif" />
+
+                  <button type="button" id="changeProfileImageButton"
+                    class="d-flex align-items-center justify-content-center">
+                    <i class="fas fa-camera" id="profileCamaraIcon"></i>
+                    <span id="profileLoadingSpinner" class="spinner-border spinner-border-sm" hidden></span>
+                  </button>
+                  <form:errors path="profileImage" cssClass="formError mt-2"
+                    cssStyle="position: absolute; width: 350px; font-size: 14px" element="p" />
+
+                </form:form> -->
+
+              </div>
+            </div>
+            <div class="col-8 mt-5">
+              <h1 class="userSectionTitles text-center names">
+                <!-- <c:out value="${loggedUser.name} ${loggedUser.surname}" /> -->
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 px-0 my-2">
+        <div class="container-lg px-5">
+          <hr>
+        </div>
+      </div>
+
+      <!-- USER INFO -->
+        <div class="col-12 col-md-6 ps-md-0 ps-md-5">
+          <div class="container-lg detailsSection">
+            <div class="row py-2">
+              <div class="col-6 my-2">
+                <h3 class="sectionTitle text-left">
+                  {{'profilePage.subtitle.contact' | translate}}
+                </h3>
+              </div>
+              <div class="col-6 d-flex align-items-center justify-content-end">
+                <!-- <a href="<c:url value=" /user/account/updateInfo" />">
+                <button class="editBtn">
+                  <i class="fas fa-pen"></i>
+                </button>
+                </a> -->
+              </div>
+              <div class="col-12">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="container-fluid px-0">
+                        <div class="row">
+                          <div class="col-1 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-map-marker-alt"></i>
+                          </div>
+                          <div class="col-10">
+                            <span>
+                              <!-- <c:out value="${loggedUser.state}, ${loggedUser.city}." /> -->
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                      <div class="container-fluid px-0">
+                        <div class="row">
+                          <div class="col-1 d-flex align-items-center justify-content-center">
+                            <i class="far fa-envelope"></i>
+                          </div>
+                          <div class="col-10">
+                            <span>
+                              <!-- <c:out value="${loggedUser.email}." /> -->
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mt-2">
+                      <div class="container-fluid px-0">
+                        <div class="row">
+                          <div class="col-1 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-phone-alt"></i>
+                          </div>
+                          <div class="col-10">
+                            <span>
+                              <!-- <c:out value="${loggedUser.phoneNumber}." /> -->
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 mt-2 mb-2">
+                      <div class="container-fluid px-0">
+                        <div class="row">
+                          <div class="col-1 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-user-friends"></i>
+                          </div>
+                          <div class="col-10">
+                            {{'profilePage.subtitle.contact' | translate}}
+                            <!-- <a class="extraInfo" href="<c:url value=" /user/${loggedUser.id}/followers" />">
+                            <span class="detailField">
+                              <c:out value="${loggedUser.followers.size()}" />
+                            </span>
+                            {{'profilePage.info.followers' | translate}}
+                            </a>
+                            ·
+                            <a class="extraInfo" href="<c:url value=" /user/${loggedUser.id}/following" />">
+                            <span class="detailField">
+                              <c:out value="${loggedUser.following.size()}" />
+                            </span>
+                            {{'profilePage.info.following' | translate}}
+                            </a> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="container-lg detailsSection my-4">
+            <div class="row py-2 pb-3">
+              <div class="col-6 my-2">
+                <h3 class="sectionTitle text-left">
+                  {{'profilePage.subtitle.account' | translate}}
+                </h3>
+              </div>
+              <div class="col-12">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-12 ps-0">
+                      <h1 class="extraInfo mb-0">
+                        <span class="detailField">
+                          {{'profilePage.subtitle.state' | translate}}
+                        </span>
+                        <span>
+                          <!-- <c:choose>
+                            <c:when test="${loggedUser.hasRole('VERIFIED')}">
+                              {{'profilePage.subtitle.verified' | translate}}
+                              <i class="ms-1 fas fa-check" style="color: green"></i>
+                            </c:when>
+                            <c:otherwise>
+                              {{'profilePage.subtitle.notVerified' | translate}}
+                              <i class="ms-1 fas fa-times" style="color: darkred"></i>
+                            </c:otherwise>
+                          </c:choose> -->
+                        </span>
+                      </h1>
+                    </div>
+                    <div class="col-12 ps-0 mt-2">
+                      <h1 class="extraInfo mb-0">
+                        <span class="detailField">
+                          {{'profilePage.subtitle.provider' | translate}}
+                        </span>
+                        <span>
+                          <!-- <c:choose>
+                            <c:when test="${loggedUser.hasRole('PROVIDER')}">
+                              {{'profilePage.subtitle.active' | translate}}
+                              <i class="ms-1 fas fa-check" style="color: green"></i>
+                            </c:when>
+                            <c:otherwise>
+                              {{'profilePage.subtitle.inactive' | translate}}
+                              <i class="ms-1 fas fa-times" style="color: darkred"></i>
+                              <a class="ms-2" href="<c:url value=" /user/join" />"
+                              style="font-weight: 500">
+                              {{'profilePage.subtitle.join' | translate}}
+                              </a>
+                            </c:otherwise>
+                          </c:choose> -->
+                        </span>
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT CONTACTS -->
+          <div class="col-12 col-md-6 pe-md-5">
+            <div class="container-lg d-flex flex-column recentContacts">
+              <div class="row py-2">
+                <div class="col-12 mt-2">
+                  <h1 class="text-left mb-0 sectionTitle">
+                    {{'profilePage.contacts.recents' | translate}}
+                  </h1>
+                </div>
+              </div>
+              <div class="row pb-2 align-items-start flex-grow-1 align-content-between">
+                <!-- <c:url value="/user/account/search" var="postPath" />
+                <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
+                  id="searchForm">ø
+                  <form:input path="page" type="hidden" id="pageInput" />
+                </form:form> -->
+                <div class="col-12">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <!-- <c:choose>
+                        <c:when test="${results.totalPages > 0}">
+                          <c:forEach var="contact" items="${results.results}" varStatus="status">
+                            <div class="col-12 mt-2">
+                              <%@ include file="../../../components/cards/accordionContact.jsp" %>
+                            </div>
+                          </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                          <div class="col-12 d-flex align-items-center justify-content-center">
+                            <div class="container mt-2 d-flex align-items-center justify-content-center">
+                              <p class="m-0 text-center p-4" style="font-size: 16px">
+                                {{'profilePage.contacts.noContacts' | translate}}
+                              </p>
+                            </div>
+                          </div>
+                        </c:otherwise>
+                      </c:choose> -->
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-12 mb-2 d-flex align-self-end align-items-center justify-content-center ${results.totalPages<=1 ? 'd-none':''}">
+                  <div class="row">
+                    pagination
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  </div>
+</div>

@@ -4,16 +4,16 @@
       <div class="list-group" role="tablist" id="tabList">
         <a href="#dashboard" class="list-group-item list-group-item-action active" data-toggle="list" role="tab"
            data-name="${dashboard}" id="tabDashboard">
-          <i class="fas fa-chart-line mr-2"></i><span class="text">{{'navBar.dashboard' | translate}}</span>
+          <i class="fas fa-chart-line me-2"></i><span class="text">{{'navBar.dashboard' | translate}}</span>
         </a>
         <a href="#works" class="list-group-item list-group-item-action inactive" data-toggle="list" role="tab"
            data-name="${work}" id="tabWorks">
-          <i class="fas fa-wrench mr-2"></i><span class="text">{{'dashboard.Work' | translate}}</span><span
+          <i class="fas fa-wrench me-2"></i><span class="text">{{'dashboard.Work' | translate}}</span><span
           class="badge badge-pill badge-secondary">jobsCount</span>
         </a>
         <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list" role="tab"
            data-name="${contacts}" id="tabContacts">
-          <i class="fas fa-address-book mr-2"></i>
+          <i class="fas fa-address-book me-2"></i>
           <span class="text">{{'dashboard.Contacts' | translate}}</span>
           <span class="badge badge-pill badge-secondary">
               contactsCount
@@ -39,7 +39,7 @@
                       <div class="row align-items-center justify-content-between">
                         <div class="col-4">
                           <div class="card card-body info-box">
-                            <h2><i class="fas fa-wrench mr-2"></i>
+                            <h2><i class="fas fa-wrench me-2"></i>
                               jobsCount
                             </h2>
                             <h4>{{'dashboard.Works' | translate}}</h4>
@@ -47,14 +47,14 @@
                         </div>
                         <div class="col-4">
                           <div class="card card-body info-box">
-                            <h2><i class="fas fa-star mr-2"></i>avgRating
+                            <h2><i class="fas fa-star me-2"></i>avgRating
                             </h2>
                             <h4>{{'dashboard.Rating' | translate}}</h4>
                           </div>
                         </div>
                         <div class="col-4">
                           <div class="card card-body info-box">
-                            <h2><i class="fas fa-comment mr-2"></i>
+                            <h2><i class="fas fa-comment me-2"></i>
                               reviewCount
                             </h2>
                             <h4>dashboard.Reviews</h4>
@@ -124,8 +124,8 @@
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left m-0">
-                                              {{'job.information.from' | translate}}
-                                              {{'job.information.to' | translate}}
+                                              <!-- {{'job.information.from' | translate: {value: loggedUser.providerDetails.schedule.startTime}}} -->
+                                              <!-- {{'job.information.to' | translate: {value: loggedUser.providerDetails.schedule.endTime}}} -->
                                               <!-- <spring:message
                                                                                                       code="job.information.from"
                                                                                                       arguments="${loggedUser.providerDetails.schedule.startTime}"

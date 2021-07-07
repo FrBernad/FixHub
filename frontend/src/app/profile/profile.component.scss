@@ -1,0 +1,261 @@
+.userContainerProfile {
+  min-height: 75%;
+  background-color: rgba(250, 250, 250, 0.95);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.editProfileContainer {
+  min-height: 75%;
+  background-color: rgba(250, 250, 250, 0.95);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.backgroundImageContainer {
+  height: 200px;
+  width: 100%;
+}
+
+.accordion a {
+  color: black;
+  font-weight: 500;
+  transition: hover 1s;
+}
+
+.accordion a:hover {
+  color: rgb(0,104,192);
+  text-decoration: none;
+}
+.backgroundImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.imageContainer {
+  min-height: 200px;
+  position: relative;
+}
+
+.profilePictureContainer {
+  height: 170px;
+  width: 170px;
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+}
+
+.followBtnContainer {
+  position: absolute;
+  margin: 0 auto;
+  right: 10%;
+}
+
+#resendBtn{
+  background-color: transparent;
+  border:none;
+}
+
+.picContainer {
+  height: 170px;
+  width: 170px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: solid white 4px;
+}
+
+.profilePicture {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.detailsSection {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.followBtn {
+  padding: 5px 9px;
+  width: 150px;
+  border: none;
+  border-radius: 8px !important;
+  background-color: #013866;
+  color: white;
+}
+
+.followBtn:hover {
+  transition: 150ms linear;
+  color: rgba(255, 255, 255, .9);
+}
+
+.recentContacts {
+  background-color: white;
+  border-radius: 8px;
+  min-height: 163px;
+}
+
+.userSectionTitles {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+#resendBtn {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+#resendBtn:hover {
+  color: rgba(4, 54, 96, 0.8);
+}
+
+.info {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.extraInfo {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+
+.client-label {
+  font-weight: bolder;
+}
+
+
+.editBtn {
+  height: 40px;
+  border: none;
+  width: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.profilePicEditBtn button {
+  border: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #E4E6EB;
+}
+
+.profilePicEditBtn button:hover {
+  background-color: rgba(228, 230, 235, 0.9);
+}
+
+.profilePicEditBtn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.profileBackgroundPic button:hover {
+  background-color: rgb(228, 230, 235);
+}
+
+.profileBackgroundPic button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background-color: #FFFFFF;
+  font-size: .9375rem;
+}
+
+.profileBackgroundPic {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+}
+
+
+.editBtn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.sectionTitle {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  color: black;
+}
+
+.infoField {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.userNameProfile {
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+a {
+  color: black;
+  transition: hover 1s;
+}
+
+a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.continueBtn {
+  font-size: 0.8em;
+  background-color: #003359;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  width: 118px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 1em;;
+}
+
+.closeBtn {
+  color: #FFFeFF;
+  font-size:0.8em;
+  background-color: #6c757d;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  width: 118px;
+  padding: 12px 16px;
+  font-weight: bold;
+}
+
+.detailField {
+  font-weight: 600;
+}
+
+.dropDownArrow:hover {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.dropDownArrow {
+  color: black;
+}
+
+.accordionCard {
+  border: none;
+  background-color: transparent;
+}
