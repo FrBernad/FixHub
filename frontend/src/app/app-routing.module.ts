@@ -8,9 +8,9 @@ import {RegisterComponent} from './register/register.component';
 import {LandingPageLayoutComponent} from "./layouts/landing-page-layout/landing-page-layout.component";
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {DefaultLayoutComponent} from "./layouts/default-layout/default-layout.component";
-import { ContactComponent } from './contact/contact.component';
+import {ContactComponent} from './job/contact/contact.component';
 import {JobComponent} from "./job/job.component";
-import { ReactiveFormsModule } from '@angular/forms';
+import {EditJobComponent} from "./job/edit-job/edit-job.component";
 
 const routes: Routes = [
   {
@@ -32,8 +32,10 @@ const routes: Routes = [
       {path: 'user/dashboard', component: DashboardComponent},
       {path: 'login', component: LoginComponent, data:{title:"login.title"}},
       {path: 'register', component: RegisterComponent},
-      {path: 'jobs/contact', component: ContactComponent},
-    {path: "job", component:JobComponent}
+      {path: "jobs/:jobId", component: JobComponent},
+      {path: 'jobs/:jobId/contact', component: ContactComponent},
+      {path: 'jobs/:jobId/edit', component: EditJobComponent},
+
     ]
   },
 

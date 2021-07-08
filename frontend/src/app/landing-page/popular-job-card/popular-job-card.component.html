@@ -42,11 +42,14 @@
       {{ 'home.categories.' + job.category | translate }}
     </span>
   </div>
-  <a href="#" class="stretched-link"></a>
+
+  <a [routerLink]="['jobs',job.id]" class="stretched-link"></a>
+
 
   <div class="jobPrice">
     <p class="text-left mb-0">
       {{ 'popularJobCard.priceText' | translate: {price: job.price} }}
     </p>
+
   </div>
 </div>

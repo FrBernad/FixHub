@@ -82,7 +82,7 @@
                   <div class="row">
                     <div *ngIf="loggedUser!=null && loggedUser.id==job.provider.id ; else notLoggedUser">
                       <div class="col-12 d-flex justify-content-center align-items-center">
-                        <a href="#" style="text-decoration: none">
+                        <a href="#" style="text-decoration: none" [routerLink]="['/jobs',job.id,'edit']">
                           <!-- <a href="<c:url value='/jobs/${job.id}/edit'/>" -->
 
                           <button class="contactBtn">
@@ -105,7 +105,7 @@
                            class="col-12 d-flex align-items-center justify-content-center">
                         <!-- <a href="<c:url value='/jobs/${job.id}/contact'/>"> -->
 
-                        <a href="#">
+                        <a  [routerLink]="['contact']">
 
                           <button class="contactBtn">
                             {{ 'job.contact' | translate }}

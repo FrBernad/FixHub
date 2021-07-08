@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faAirFreshener } from '@fortawesome/free-solid-svg-icons';
-import { Job } from '../models/Job';
-import { User } from '../models/User';
+import { Job } from '../../models/Job';
+import { User } from '../../models/User';
 import { Contact } from './contact.model';
 
 @Component({
@@ -46,6 +46,7 @@ export class ContactComponent implements OnInit {
     price: 121,
     totalRatings: 0,
     averageRating: 0,
+    thumbnailId:1,
     images: [],
     reviews: [],
     provider: this.provider,
