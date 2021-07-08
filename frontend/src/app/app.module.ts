@@ -23,6 +23,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { RecoverEmailPopupComponent } from './login/recover-email-popup/recover-email-popup.component';
 import { ReviewFormComponent } from './job/review-form/review-form.component';
 import { PopularJobCardComponent } from './landing-page/popular-job-card/popular-job-card.component';
+import { JobCardComponent } from './discover/job-card/job-card.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { PopularJobCardComponent } from './landing-page/popular-job-card/popular
     RecoverEmailPopupComponent,
     ReviewFormComponent,
     PopularJobCardComponent,
+    JobCardComponent,
   ],
   imports: [
     BrowserModule,

@@ -25,13 +25,16 @@
     </div>
   </div>
   <div class="jobCardImgContainer">
-<!--<img src="jobs/images/${job.thumbnailId}"-->
-    <img *ngIf="job.images.length >0;else noImages" src="#"
-         alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
+    <!--<img src="jobs/images/${job.thumbnailId}"-->
+    <ng-template [ngIf]="job.images.length >0" [ngIfElse]="noImages">
+
+      <img src="#" alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
+    </ng-template>
+
     <ng-template #noImages>
-<!--      src="<c:url value='/resources/images/${job.category}.jpg'/>"-->
+      <!--      src="<c:url value='/resources/images/${job.category}.jpg'/>"-->
       <img class="card-img jobCardImg"
-          src="#"
+           src="#"
            alt="${{ 'home.categories.' + job.category | translate }}">
     </ng-template>
 
@@ -39,7 +42,7 @@
       {{ 'home.categories.' + job.category | translate }}
     </span>
   </div>
-    <a href="#" class="stretched-link"></a>
+  <a href="#" class="stretched-link"></a>
 
   <div class="jobPrice">
     <p class="text-left mb-0">

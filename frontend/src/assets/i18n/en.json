@@ -250,7 +250,7 @@
   "clientContactCard.jobCompletedIntroInfo": "Mark the job as finished and allow your client to leave their opinion.",
   "footer.description": "Copyright \u00A9 2021 ",
   "popularJobCard.priceText": "Starting at ${{price}}",
-  "jobCard.priceText": "Starting at ${0}",
+  "jobCard.priceText": "Starting at ${{price}}",
   "Size.editJobForm.images": "The maximum number of selectable images is {1}",
   "NotEmpty.editJobForm.jobProvided": "Enter the name of your service",
   "Pattern.editJobForm.jobProvided": "The service name you entered is invalid",
