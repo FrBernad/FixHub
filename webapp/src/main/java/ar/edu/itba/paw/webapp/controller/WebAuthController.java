@@ -4,13 +4,25 @@ import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.webapp.auth.JwtUtil;
+import ar.edu.itba.paw.webapp.auth.UserDetailService;
+import ar.edu.itba.paw.webapp.dto.AuthenticationTokenDto;
+import ar.edu.itba.paw.webapp.dto.UserAuthDto;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
@@ -29,28 +41,71 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Controller
+@Path("")
+@Component
 public class WebAuthController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private LocationService locationService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthController.class);
 
-    @RequestMapping(path = "/register")
+    @POST
+    @Path("/session")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response newSession(UserAuthDto userAuthDto) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userAuthDto.getEmail(), userAuthDto.getPassword())
+            );
+
+            final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
+
+            final String jwt = jwtUtil.generateToken(user);
+
+            return Response.ok(new AuthenticationTokenDto(jwt,jwtUtil.getTokenExpirationTime())).build();
+
+        } catch (AuthenticationException e) {
+            return Response.noContent().status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    @POST
+    @Path("/signup")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response registerUser(@PathParam("id") final long id) {
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        return Response.ok(null).build();
+    }
+
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
         LOGGER.info("Accessed /register GET controller");
 
         return new ModelAndView("views/register");
     }
+
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {

@@ -42,16 +42,7 @@ public class EmailServiceImpl implements EmailService {
     private MessageSource messageSource;
 
     @Autowired
-    private String appProtocol;
-
-    @Autowired
-    private String appHost;
-
-    @Autowired
-    private int appPort;
-
-    @Autowired
-    private String appWebContext;
+    private URL appBaseUrl;
 
     private void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws
         MessagingException {
@@ -81,13 +72,13 @@ public class EmailServiceImpl implements EmailService {
     public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
-            final String url = new URL(appProtocol, appHost, appWebContext + "user/verifyAccount?token=" + token.getValue()).toString();
+            final String url = appBaseUrl.toString() + "user/verifyAccount?token=" + token.getValue();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
 
             sendMail("verification", messageSource.getMessage("email.verifyAccount", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, user verification mail not sent");
         }
     }
@@ -96,13 +87,13 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
-            final String url = new URL(appProtocol, appHost, appPort, appWebContext + "user/resetPassword?token=" + token.getValue()).toString();
+            final String url = appBaseUrl.toString() + "user/resetPassword?token=" + token.getValue();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
 
             sendMail("passwordReset", messageSource.getMessage("email.resetPassword", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, user password reset mail not sent");
         }
     }
@@ -111,7 +102,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendProviderNotificationEmail(User user, Locale locale) {
         try {
-            final String newJobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/new").toString();
+            final String newJobURL = appBaseUrl.toString() + "jobs/new";
 
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("newJobURL", newJobURL);
@@ -119,7 +110,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("to", user.getEmail());
             mailAttrs.put("name", user.getName());
             sendMail("providerNotification", messageSource.getMessage("email.providerNotification", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, provider notification mail not sent");
         }
     }
@@ -131,8 +122,8 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + contactDto.getJob().getId()).toString();
-            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + contactDto.getJob().getProvider().getId()).toString();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + contactDto.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + contactDto.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -143,7 +134,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("name", contactDto.getUser().getName());
 
             sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, Job request sent confirmation mail not sent");
         }
     }
@@ -155,8 +146,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + jobContact.getJob().getId()).toString();
-            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + jobContact.getJob().getProvider().getId()).toString();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -166,7 +157,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("name", jobContact.getUser().getName());
 
             sendMail("jobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, Job cancellation mail not sent");
         }
     }
@@ -177,8 +168,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + jobContact.getJob().getId()).toString();
-            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + jobContact.getJob().getProvider().getId()).toString();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -188,7 +179,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("name", jobContact.getUser().getName());
 
             sendMail("jobConfirmation", messageSource.getMessage("email.jobConfirmation", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, Job confirmation mail not sent");
         }
     }
@@ -199,8 +190,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + jobContact.getJob().getId()).toString();
-            final String providerURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + jobContact.getJob().getProvider().getId()).toString();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -210,7 +201,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("name", jobContact.getUser().getName());
 
             sendMail("jobFinished", messageSource.getMessage("email.jobFinished", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, Job confirmation mail not sent");
         }
     }
@@ -221,8 +212,8 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = new URL(appProtocol, appHost, appPort, appWebContext + "jobs/" + contactDto.getJob().getId()).toString();
-            final String userURL = new URL(appProtocol, appHost, appPort, appWebContext + "user/" + contactDto.getUser().getId()).toString();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + contactDto.getJob().getId();
+            final String userURL = appBaseUrl.toString() + "user/" + contactDto.getUser().getId();
 
             final String address = String.format("%s, %s, %s %s, %s %s", contactDto.getState(), contactDto.getCity(),
                 contactDto.getStreet(), contactDto.getAddressNumber(), contactDto.getFloor(), contactDto.getDepartmentNumber());
@@ -240,7 +231,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("message", contactDto.getMessage());
 
             sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, locale), mailAttrs, locale);
-        } catch (MessagingException | MalformedURLException e) {
+        } catch (MessagingException e) {
             LOGGER.warn("Error, Job request mail not sent");
         }
     }

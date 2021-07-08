@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.webapp.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -24,16 +28,17 @@ import org.springframework.web.servlet.view.JstlView;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @EnableTransactionManagement
 @EnableAsync
 @EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence",})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.config"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
-
 
     private static final int MAX_SIZE_PER_FILE = 3000000;
 
@@ -110,25 +115,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return factoryBean;
     }
 
-    @Bean(name = "appHost")
-    public String appHost() {
-        return "pawserver.it.itba.edu.ar";
-    }
+    @Autowired
+    private String appHost;
 
-    @Bean(name = "appProtocol")
-    public String appProtocol() {
-        return "http";
-    }
+    @Autowired
+    private String appProtocol;
 
-    @Bean(name = "appWebContext")
-    public String appWebContext() {
-        return "/paw-2021a-06/";
-    }
+    @Autowired
+    private String appWebContext;
 
-    @Bean(name = "appPort")
-    public int appPort() {
-        return 80;
-    }
+    @Autowired
+    private int appPort;
 
+    @Bean(name = "appBaseUrl")
+    public URL appBaseUrl() throws MalformedURLException {
+        return new URL(appProtocol, appHost, appPort, appWebContext);
+    }
 
 }

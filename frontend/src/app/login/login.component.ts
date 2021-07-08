@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {TranslateService} from "@ngx-translate/core";
 import {Subscription} from "rxjs";
 import {AppComponent} from "../app.component";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {AuthService} from "../auth/auth.service";
+import {NgForm} from "@angular/forms";
+import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -18,8 +21,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   error=false;
 
-
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
   }
 
   ngOnInit(): void {
@@ -31,8 +36,26 @@ export class LoginComponent implements OnInit {
 
   }
 
-  onSubmit() {
+  onSubmitLogin() {
+    // if (!form.valid) {
+    //   return;
+    // }
+    // const email = form.value.email;
+    // const password = form.value.password;
 
+    const authObs = this.authService.login("pepe@yopmail.com", "123456");
+
+    authObs.subscribe(
+      resData => {
+        console.log(resData);
+        this.router.navigate(['/user/profile']);
+      },
+      errorMessage => {
+        console.log(errorMessage);
+      }
+    );
+
+    // form.reset();
   }
 
   toogleEye() {

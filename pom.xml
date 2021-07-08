@@ -33,6 +33,7 @@
         <org.hibernate.version>5.1.0.Final</org.hibernate.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <jersey.version>3.0-SNAPSHOT</jersey.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <modules>
@@ -321,6 +322,14 @@
                 <artifactId>jersey-media-jaxb</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
+
+            <!--JWT-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
 
         </dependencies>
 

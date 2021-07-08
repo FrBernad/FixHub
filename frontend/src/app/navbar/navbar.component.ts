@@ -1,4 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AuthService} from "../auth/auth.service";
+import {Subscription} from "rxjs";
+import {User} from "../models/User";
 
 @Component({
   selector: 'app-navbar',
@@ -10,10 +13,19 @@ export class NavbarComponent implements OnInit {
   @ViewChild('backNavbar') backNavbar: ElementRef;
   @ViewChild('navbar') navbar: ElementRef;
 
-  constructor(private renderer: Renderer2) {
+  private userSub: Subscription;
+  user: User;
+
+  constructor(
+    private authService: AuthService,
+    private renderer: Renderer2
+  ) {
   }
 
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+      this.user = null;
+    });
   }
 
   @HostListener('window:scroll') onScrollHost(): void {

@@ -6,11 +6,18 @@ import {
   faStar as fasStar,
   faSearch as fasSearch,
   faHandshake as fasHandshake,
+  faChevronDown as fasChevronDown,
+  faCamera as fasCamera,
+  faPhoneAlt as fasPhoneAlt,
+  faUserFriends as fasUserFriends,
+  faTimes as fasTimes,
+  faCheck as fasCheck
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
   faEyeSlash as farEyeSlash,
-  faEye as farEye
+  faEye as farEye,
+  faEnvelope as farEnvelope
 } from '@fortawesome/free-regular-svg-icons';
 import {ActivatedRoute, Data, NavigationEnd, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
@@ -40,7 +47,13 @@ export class AppComponent implements OnInit {
     this.translateService.addLangs(['en', 'es']);
     this.translateService.setDefaultLang('en');
 
-    this.library.addIcons(fasPlus, fasSearch, fasStar, fasHandshake, farEyeSlash, farEye);
+    this.library.addIcons(fasPlus, fasSearch,
+      fasStar, fasHandshake,
+      farEyeSlash, farEye,
+      fasChevronDown, fasCamera,
+      farEnvelope, fasPhoneAlt,
+      fasUserFriends, fasTimes,
+      fasCheck);
     // this.router.events
     //   .pipe(
     //     filter((event) => event instanceof NavigationEnd),

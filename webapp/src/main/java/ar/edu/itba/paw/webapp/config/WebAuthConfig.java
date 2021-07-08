@@ -1,28 +1,27 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.auth.CustomAccessDeniedHandler;
-import ar.edu.itba.paw.webapp.auth.RefererRedirectionAuthenticationSuccessHandler;
-import ar.edu.itba.paw.webapp.auth.UserDetailService;
+import ar.edu.itba.paw.webapp.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.InputStreamReader;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -32,8 +31,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailService userDetailService;
 
-    @Value("classpath:auth/auth_key.pem")
-    private Resource authKey;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
@@ -41,8 +40,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new RefererRedirectionAuthenticationSuccessHandler();
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationErrorHandler();
+    }
+
+    @Bean
+    public JwtUtil jwtUtil(@Value("classpath:auth/auth_key.pem") Resource authKey) throws IOException {
+        return new JwtUtil(authKey);
     }
 
     @Override
@@ -50,10 +54,20 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
-//    FIXME: volver a habilitar security
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    //    FIXME: volver a habilitar security
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().exceptionHandling()
+            .authenticationEntryPoint(authenticationEntryPoint())
+            .accessDeniedHandler(accessDeniedHandler())
             .and().authorizeRequests()
 //            //session routes
 //            .antMatchers("/login", "/register").anonymous()
@@ -61,7 +75,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount").hasRole("USER")
 //            .antMatchers("/logout").authenticated()
-//
+            .antMatchers("/users/{id:[\\d]+}").authenticated()
 //            //profile routes
 //            .antMatchers("/user/account").hasRole("USER")
 //            .antMatchers("/user/account/search", "/user/account/update",
@@ -82,29 +96,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //                "/user/dashboard/contacts/completedJob").hasRole("PROVIDER")
 //            .antMatchers("/user/join", "/user/join/chooseCity").hasRole("VERIFIED")
 
-        //else
+            //else
             .antMatchers("/**").permitAll()
 
-            .and().formLogin()
-            .loginPage("/login")
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/user/account", false)
-            .failureUrl("/login?error=true")
+            .and().csrf().disable()
 
-            .and().rememberMe()
-            .rememberMeParameter("rememberMe")
-            .userDetailsService(userDetailService)
-            .key(FileCopyUtils.copyToString(new InputStreamReader(authKey.getInputStream())))
-            .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-            .and().logout()
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/login")
-
-            .and().exceptionHandling()
-            .accessDeniedHandler(accessDeniedHandler())
-            .and().csrf().disable();
     }
 
     @Override

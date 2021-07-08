@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 
 public class UserDto {
 
@@ -34,4 +33,5 @@ public class UserDto {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

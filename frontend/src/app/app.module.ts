@@ -21,6 +21,7 @@ import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.
 import { ContactComponent } from './contact/contact.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { RecoverEmailPopupComponent } from './login/recover-email-popup/recover-email-popup.component';
+import { AuthComponent } from './auth/auth.component';
 import { ReviewFormComponent } from './job/review-form/review-form.component';
 import { PopularJobCardComponent } from './landing-page/popular-job-card/popular-job-card.component';
 import { JobCardComponent } from './discover/job-card/job-card.component';
@@ -43,6 +44,7 @@ import { JobCardComponent } from './discover/job-card/job-card.component';
     ReviewFormComponent,
     PopularJobCardComponent,
     JobCardComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
