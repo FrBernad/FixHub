@@ -294,6 +294,8 @@
     "registerForm.showPassword": "Mostrar contrase\u0148a",
     "validation.user.passwordsDontMatch": "Las contrase\u0148as no coinciden",
     "validation.job.ImagesMax": "Alcanzaste el maximo numero de fotos por trabajo",
+    "NotEmpty.loginForm.email": "Por favor ingresa tu email",
+    "NotEmpty.loginForm.password": "Por favor ingresa tu contrase\u0148a",
     "NotEmpty.emailForm.email": "Ingrese un email",
     "Size.emailForm.email": "El email debe tener un maximo de {1} caracteres",
     "Pattern.emailForm.email": "El email que ingres\u00F3 no es v\u00E1lido",

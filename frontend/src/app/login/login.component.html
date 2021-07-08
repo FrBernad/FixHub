@@ -14,15 +14,21 @@
       </div>
       <div class="col-12 mb-3">
         <div class="container-fluid px-0">
-          <form id="loginForm">
+          <form [formGroup]="loginForm" id="loginForm" (ngSubmit)="onSubmit()">
             <div class="row">
               <div class="col-12">
                 <label for="email" class="mb-2">
                   {{ 'login.EmailText' | translate }}
                 </label>
-                <input type="email" class="form-control mb-2"
+                <input formControlName="email" type="email" class="form-control mb-2"
                        id="email" name="email"
                        aria-describedby="email input"/>
+                <span *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">
+                  <span *ngIf="loginForm.get('email').errors['required']" class="errorMessage">
+                    {{'NotEmpty.loginForm.email' | translate }}<br>
+                  </span>
+                </span>
+
               </div>
               <div class="col-12 mt-2 px-0">
                 <div class="container-fluid">
@@ -33,38 +39,48 @@
                       </label>
                     </div>
                     <div class="col-6 px-0 d-flex justify-content-end">
-                      <a  class="link" (click)="recoverPass=true" tabindex="-1">
+                      <a class="link" (click)="recoverPass=true" tabindex="-1">
                           <span class="text-right"
                                 style="font-size: 0.9rem; margin-bottom: .5rem">
                              {{ 'login.forgotPassword' | translate }}
                           </span>
                       </a>
-                      <app-recover-email-popup *ngIf="recoverPass" (close)="recoverPass=false"></app-recover-email-popup>
+                      <app-recover-email-popup *ngIf="recoverPass"
+                                               (close)="recoverPass=false"></app-recover-email-popup>
                     </div>
                     <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                       <div class="input-group d-flex justify-content-start align-items-center">
-                        <input [type]="showPass ? 'password' : 'text'" class="form-control"
+                        <input formControlName="password" [type]="showPass ? 'password' : 'text'" class="form-control"
                                id="password" name="password"
                                aria-describedby="password input"/>
-                        <div class="input-group-append">
+                       <div class="input-group-append">
                           <button id="passwordEye" type="button" tabindex="-1"
                                   (click)="toogleEye()"
                                   class="form-control input-group-text">
                             <fa-icon [icon]="['far',showPass ? 'eye-slash' : 'eye']"></fa-icon>
                           </button>
                         </div>
+
                       </div>
+
                     </div>
                     <div class="col-12 mt-2 px-0 d-flex justify-content-start align-items-center">
-                      <p class="mb-0 formError">
-                        {{'login.error' | translate }}
-                      </p>
+                      <span *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched">
+                          <span *ngIf="loginForm.get('password').errors['required']" class="errorMessage">
+                             {{'NotEmpty.loginForm.password' | translate }}<br>
+                          </span>
+
+                          <span *ngIf="error" class="mb-0 formError">
+                            {{'login.error' | translate }}
+                          </span>
+                        </span>
+
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-12 mt-3 d-flex justify-content-start align-items-center">
-                <input type="checkbox" name="rememberMe" id="rememberMe"/>
+                <input type="checkbox" formControlName="rememberMe" name="rememberMe" id="rememberMe"/>
                 <label for="rememberMe" class="mb-0 ms-2">
                   {{'login.rememberme' | translate }}
                 </label>

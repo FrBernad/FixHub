@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -33,7 +32,7 @@
                   {{ 'reviewForm.qualificationTitle' | translate }}
                   <span class="required-field">*</span>
                 </label>
-                <select class="form-control"  formControlName="rating">
+                <select class="form-control" formControlName="rating">
                   <option *ngFor="let rate of rates" value="rate">{{rate}}</option>
                 </select>
 
@@ -52,10 +51,11 @@
               </div>
 
               <div class="col-12 d-flex justify-content-start align-items-center py-4">
-                <button id="reviewFormButton" type="submit"  class="rateBtn me-4">
+                <button id="reviewFormButton" type="submit" class="rateBtn me-4">
                   {{ 'reviewForm.submitButtonText' | translate }}
                 </button>
-                <button type="button" data-bs-dismiss="modal" id="reviewFormCloseButton" class="closeBtn" data-dismiss="modal">
+                <button type="button" data-bs-dismiss="modal" id="reviewFormCloseButton" class="closeBtn"
+                        data-dismiss="modal">
                   {{ 'reviewForm.cancelButtonText' | translate }}
                 </button>
               </div>

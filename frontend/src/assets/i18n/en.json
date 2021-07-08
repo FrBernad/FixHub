@@ -299,6 +299,8 @@
   "NotEmpty.registerForm.city": "Please enter the city where you live in",
   "Size.registerForm.city": "City must be less than {1} characters",
   "Pattern.registerForm.city": "The city is not valid",
+  "NotEmpty.loginForm.email": "Please enter your email",
+  "NotEmpty.loginForm.password": "Please enter your password",
   "NotEmpty.userInfoForm.name": "Please enter your name",
   "Size.userInfoForm.name": "Your name must be less than {1} characters",
   "Pattern.userInfoForm.name": "The name entered is not valid",
