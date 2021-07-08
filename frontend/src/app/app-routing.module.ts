@@ -12,6 +12,7 @@ import {ContactComponent} from './job/contact/contact.component';
 import {JobComponent} from "./job/job.component";
 import {EditJobComponent} from "./job/edit-job/edit-job.component";
 import {NewJobComponent} from "./job/new-job/new-job.component";
+import {ErrorsComponent} from "./errors/errors.component";
 
 const routes: Routes = [
   {
@@ -31,12 +32,13 @@ const routes: Routes = [
       {path: 'discover', component: DiscoverComponent},
       {path: 'user/profile', component: ProfileComponent},
       {path: 'user/dashboard', component: DashboardComponent},
-      {path: 'login', component: LoginComponent, data:{title:"login.title"}},
+      {path: 'login', component: LoginComponent, data: {title: "login.title"}},
       {path: 'register', component: RegisterComponent},
       {path: "jobs/new", component: NewJobComponent},
       {path: "jobs/:jobId", component: JobComponent},
       {path: 'jobs/:jobId/contact', component: ContactComponent},
       {path: 'jobs/:jobId/edit', component: EditJobComponent},
+      {path: '**', component: ErrorsComponent}
 
     ]
   },

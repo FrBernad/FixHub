@@ -27,6 +27,7 @@ import {ReviewFormComponent} from './job/review-form/review-form.component';
 import {PopularJobCardComponent} from './landing-page/popular-job-card/popular-job-card.component';
 import {JobCardComponent} from './discover/job-card/job-card.component';
 import { EditJobComponent } from './job/edit-job/edit-job.component';
+import { ErrorsComponent } from './errors/errors.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { EditJobComponent } from './job/edit-job/edit-job.component';
     JobCardComponent,
     AuthComponent,
     EditJobComponent,
-    NewJobComponent
+    NewJobComponent,
+    ErrorsComponent
   ],
   imports: [
     BrowserModule,

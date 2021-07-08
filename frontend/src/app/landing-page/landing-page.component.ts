@@ -31,7 +31,7 @@ import {Job} from "../models/Job";
 })
 export class LandingPageComponent implements OnInit {
 
-  categories = ['herrero', 'ayudante', 'ayudante', 'ayudante'];
+  categories = ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA','ENTREGA'];
 
   //FIXME: BORRAR TODA ESTA PARTE DE JOB Y USER
   provider: User = {
