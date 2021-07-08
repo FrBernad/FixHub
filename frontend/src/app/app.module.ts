@@ -1,4 +1,4 @@
-import { NewJobComponent } from './new-job/new-job.component';
+import { NewJobComponent } from './job/new-job/new-job.component';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
