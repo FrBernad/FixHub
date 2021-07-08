@@ -31,6 +31,7 @@ import { ErrorsComponent } from './errors/errors.component';
 import { JoinComponent } from './join/join.component';
 import { ChooseCityComponent } from './join/choose-city/choose-city.component';
 import { ChooseStateComponent } from './join/choose-state/choose-state.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ChooseStateComponent } from './join/choose-state/choose-state.component
     ErrorsComponent,
     JoinComponent,
     ChooseCityComponent,
-    ChooseStateComponent
+    ChooseStateComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
