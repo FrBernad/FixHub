@@ -1,3 +1,4 @@
+import { NewJobComponent } from './new-job/new-job.component';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -47,6 +48,7 @@ import { EditJobComponent } from './job/edit-job/edit-job.component';
     JobCardComponent,
     AuthComponent,
     EditJobComponent
+    NewJobComponent
   ],
   imports: [
     BrowserModule,
