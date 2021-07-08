@@ -1,0 +1,56 @@
+<div class="col-12">
+  <div class="container-fluid px-0">
+    <div class="row">
+      <div class="col-12 d-flex align-items-center justify-content-center">
+        <form formGroupName="chooseCityForm" id="chooseCityForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label class="label text-center font-weight-bold" style="display:block;">
+              {{ 'joinForm.availableCities' | translate }}
+            </label>
+            <input type="hidden" id="state" value="${state}"/>
+            <input type="hidden" id="startTime" value="${startTime}"/>
+            <input type="hidden" id="endTime" value="${endTime}"/>
+            <div class="row">
+              <div class="col d-flex align-items-center justify-content-center">
+                <div class="dropdown">
+                  <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
+                          data-toggle="dropdown">
+                    {{ 'cityForm.city' | translate }}
+                    <span class="state" id="cityName">-</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-size">
+                    <ng-template ngFor let-city [ngForOf]="cities">
+
+                      <div class="input-group">
+                        <button class="dropdown-item cityButton" type="button">
+                          {{ city.name}}
+                        </button>
+                      </div>
+                    </ng-template>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p>errors</p>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <div class="container-fluid" id="citiesHolder" style="width: 418px;">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 px-0 d-flex align-items-center justify-content-center">
+            <button class="w-100 continueBtn my-2" type="button" id="submitButton">
+              {{ 'joinForm.Finish' | translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

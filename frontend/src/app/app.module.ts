@@ -28,6 +28,9 @@ import {PopularJobCardComponent} from './landing-page/popular-job-card/popular-j
 import {JobCardComponent} from './discover/job-card/job-card.component';
 import { EditJobComponent } from './job/edit-job/edit-job.component';
 import { ErrorsComponent } from './errors/errors.component';
+import { JoinComponent } from './join/join.component';
+import { ChooseCityComponent } from './join/choose-city/choose-city.component';
+import { ChooseStateComponent } from './join/choose-state/choose-state.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,10 @@ import { ErrorsComponent } from './errors/errors.component';
     AuthComponent,
     EditJobComponent,
     NewJobComponent,
-    ErrorsComponent
+    ErrorsComponent,
+    JoinComponent,
+    ChooseCityComponent,
+    ChooseStateComponent
   ],
   imports: [
     BrowserModule,

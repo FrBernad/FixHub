@@ -13,6 +13,9 @@ import {JobComponent} from "./job/job.component";
 import {EditJobComponent} from "./job/edit-job/edit-job.component";
 import {NewJobComponent} from "./job/new-job/new-job.component";
 import {ErrorsComponent} from "./errors/errors.component";
+import {JoinComponent} from "./join/join.component";
+import {ChooseStateComponent} from "./join/choose-state/choose-state.component";
+import {ChooseCityComponent} from "./join/choose-city/choose-city.component";
 
 const routes: Routes = [
   {
@@ -38,6 +41,8 @@ const routes: Routes = [
       {path: "jobs/:jobId", component: JobComponent},
       {path: 'jobs/:jobId/contact', component: ContactComponent},
       {path: 'jobs/:jobId/edit', component: EditJobComponent},
+      {path: 'user/join', component: JoinComponent},
+
       {path: '**', component: ErrorsComponent}
 
     ]
