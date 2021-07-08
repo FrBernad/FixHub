@@ -9,6 +9,7 @@ export class Job{
   totalRatings: number;
   averageRating: number;
   images :  [];
+  thumbnailId: number;
   reviews : [];
   provider: User;
   paused: boolean;

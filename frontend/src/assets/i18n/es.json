@@ -244,7 +244,7 @@
     "clientContactCard.jobCompletedIntro": "¿Terminaste el trabajo?",
     "clientContactCard.jobCompletedIntroInfo": "Informa que terminaste con el trabajo y permite que tu cliente deje una opinión.",
     "footer.description": "Copyright \u00A9 2021",
-    "popularJobCard.priceText": "A partir de $",
+    "popularJobCard.priceText": "A partir de ${{price}}",
     "jobCard.priceText": "A partir de ${0}",
     "Size.editJobForm.images": "El maximo de im\u00E1genes seleccionables es {1}",
     "NotEmpty.editJobForm.jobProvided": "Ingrese el nombre de su servicio",

@@ -1,0 +1,49 @@
+<div class="card jobCard" style="position: relative">
+  <div style="padding: 1.25rem">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="card-title jobCardName">
+          {{job.jobProvided}}
+        </h5>
+      </div>
+      <div class="col-7">
+        <p class="card-text m-0 names">
+          {{job.provider.name}} {{job.provider.surname}}
+        </p>
+      </div>
+      <div class="col-5 d-flex justify-content-end align-items-center">
+        <div style="height: 23px">
+          <i class="fas iconsColor fa-star fa-1x me-2"></i>
+          <span class="jobCardAvgRating">
+            {{job.averageRating}}
+          </span>
+          <span class="jobCardAvgRatingCount">
+            ({{job.totalRatings}})
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="jobCardImgContainer">
+<!--<img src="jobs/images/${job.thumbnailId}"-->
+    <img *ngIf="job.images.length >0;else noImages" src="#"
+         alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
+    <ng-template #noImages>
+<!--      src="<c:url value='/resources/images/${job.category}.jpg'/>"-->
+      <img class="card-img jobCardImg"
+          src="#"
+           alt="${{ 'home.categories.' + job.category | translate }}">
+    </ng-template>
+
+    <span class="badge rounded-pill bg-secondary category" style="position: absolute; top: 10px; left: 10px">
+      {{ 'home.categories.' + job.category | translate }}
+    </span>
+  </div>
+    <a href="#" class="stretched-link"></a>
+
+  <div class="jobPrice">
+    <p class="text-left mb-0">
+      {{ 'popularJobCard.priceText' | translate: {price: job.price} }}
+    </p>
+  </div>
+</div>

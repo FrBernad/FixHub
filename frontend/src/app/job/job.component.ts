@@ -38,7 +38,8 @@ export class JobComponent implements OnInit {
     category: 'CARPINTERO', price: 121, totalRatings: 0,
     averageRating: 0, images: [], reviews: [],
     provider: this.provider,
-    paused: false
+    paused: false,
+    thumbnailId: 1
   };
   loggedUser: User;
   canReview: boolean;
