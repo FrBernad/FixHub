@@ -124,21 +124,22 @@
                         </label>
                       </div>
                       <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
-                        <button class="buttonCustom buttonEnabled d-flex align-items-center justify-content-center"
-                          type="button" id="addFileButton">
+                        <button class="buttonCustom d-flex align-items-center justify-content-center"
+                          type="button" id="addFileButton" (click)="fileInput.click()" [disabled]="imagesArray.length >= maxImagesPerJob"
+                          [ngClass] = "imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
                           <i class="fas fa-upload mr-1"></i>
                           {{'jobForm.ImagesButton' | translate}}
                         </button>
                       </div>
                       <div class="col-2 mt-3 d-flex px-0 align-items-center justify-content-start">
                         <div>
-                          <span id="imagesQuantity" data-max="${maxImagesPerJob}">0</span>
+                          <span id="imagesQuantity" data-max="${maxImagesPerJob}">{{imagesArray.length}}</span>
                           <span> / {{maxImagesPerJob}}</span>
                         </div>
                       </div>
                       <div class="col-12">
                         <!-- <form:errors path="images" cssClass="formError" element="p" /> -->
-                        <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden />
+                        <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden (change)="onFileChanged($event)" #fileInput/>
                       </div>
                     </div>
                   </div>
@@ -150,12 +151,19 @@
 
                 <div class="container-fluid p-0" id="imagesHolder">
                   <div class="row">
-                    <div class="col-12"></div>
+                    <div class="col-12">
+                      <button type="button" class="imgFile m-2" *ngFor="let control of imagesArray.controls; let i = index" (click)="deleteImage(i)">
+                        {{control.value.name}}
+                        <i class="fas fa-times ml-1"></i>
+                      </button>
+                      <span *ngIf="!allowedImageType" class="errorMessage"><br>{{'ImageTypeConstraint.jobForm.images' | translate}}</span>
+                      <span *ngIf="!allowedImageSize" class="errorMessage"><br>{{'errors.MaxUploadSizeException' | translate}}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-12 px-0 hide d-flex align-items-center justify-content-center">
-                  <button type="button" id="jobFormButton" class="w-100 continueBtn my-2">
+                  <button type="submit" id="jobFormButton" class="w-100 continueBtn my-2">
                     <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
                       aria-hidden="true"></span>
                     <span id="jobFormBtnText">
