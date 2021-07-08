@@ -47,7 +47,7 @@ import { EditJobComponent } from './job/edit-job/edit-job.component';
     PopularJobCardComponent,
     JobCardComponent,
     AuthComponent,
-    EditJobComponent
+    EditJobComponent,
     NewJobComponent
   ],
   imports: [
