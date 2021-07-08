@@ -53,11 +53,12 @@
                           <span>
                             {{'newJob.category' | translate}}
                           </span>
-                          <span class="category" id="categoryName">-</span>
+                          <span *ngIf="jobCategory.value == null" class="category" id="categoryName">-</span>
+                          <span *ngIf="jobCategory.value != null" class="category" id="categoryName">{{'home.categories.'+jobCategory.value | translate}}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-size w-100">
                           <li *ngFor="let category of categories" class="dropdown-item categoryButton " type="button"
-                            data-name="${category}" data-i18name="${categoryName}">
+                            data-name="${category}" data-i18name="${categoryName}" (click)="dropdownClick(category)">
                             {{'home.categories.'+category | translate}}
                           </li>
                         </ul>

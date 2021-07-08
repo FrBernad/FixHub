@@ -47,6 +47,7 @@ export class NewJobComponent implements OnInit {
   allowedImageSize: boolean = true;
 
   imagesArray = new FormArray([]);
+  jobCategory = new FormControl(null, [Validators.required]);
 
   constructor() {}
 
@@ -59,7 +60,7 @@ export class NewJobComponent implements OnInit {
           "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
         ),
       ]),
-      jobCategory: new FormControl(null, [Validators.required]),
+      jobCategory: this.jobCategory,
       price: new FormControl(null, [
         Validators.required,
         Validators.min(this.minPrice),
@@ -105,6 +106,10 @@ export class NewJobComponent implements OnInit {
       console.log(this.imagesArray[index]);
       this.imagesArray.removeAt(index);
     }
+  }
+
+  dropdownClick(category: string) {
+    this.jobCategory.setValue(category);
   }
 
 }
