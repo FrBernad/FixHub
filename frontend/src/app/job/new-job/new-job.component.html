@@ -22,7 +22,7 @@
                     {{'jobForm.jobNameTitle' | translate}}
                     <span class="required-field">*</span>
                   </label>
-                  <input type="text" id="jobProvided" class="form-control" cssErrorClass="form-control is-invalid"
+                  <input type="text" id="jobProvided" class="form-control"
                     formControlName="jobProvided" />
                   <span *ngIf="!jobForm.get('jobProvided').valid && jobForm.get('jobProvided').touched">
                     <span *ngIf="jobForm.get('jobProvided').errors['required']" class="errorMessage">
