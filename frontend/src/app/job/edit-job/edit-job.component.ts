@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../models/User";
 import {Job} from "../../models/Job";
 
@@ -17,6 +17,15 @@ export class EditJobComponent implements OnInit {
   maxPrice: number = 999999;
 
   editJobForm: FormGroup;
+
+  allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
+  allowedImageType: boolean = true;
+
+  maxImagesReached: boolean = false;
+
+  allowedImageSize: boolean = true;
+
+  imagesArray = new FormArray([]);
 
   provider: User = {
     id: 2,
@@ -58,12 +67,43 @@ export class EditJobComponent implements OnInit {
       'jobProvided': new FormControl(null,[Validators.required, Validators.maxLength(this.maxJobProvidedLength), Validators.pattern("^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
       'jobCategory': new FormControl(null, [Validators.required]),
       'price': new FormControl(null, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]),
-      'description': new FormControl(null, [Validators.required, Validators.maxLength(this.maxDescriptionLength)])
+      'description': new FormControl(null, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]),
+      images: this.imagesArray
     })
   }
 
   onSubmit(){
+    console.log(this.editJobForm);
+  }
 
+  onFileChanged(event) {
+    const file = event.target.files[0];
+    this.allowedImageType = true;
+    this.allowedImageSize = true;
+
+    if(!this.allowedImageTypes.includes(file.type)) {
+      this.allowedImageType = false;
+      return;
+    }
+
+    if(file.size > 3000000) {
+      this.allowedImageSize = false;
+      return
+    }
+
+    if (this.imagesArray.length < this.maxImagesPerJob) {
+      (<FormArray>this.editJobForm.get('images')).push(
+        new FormControl(file)
+      );
+      console.log(this.imagesArray);
+    }
+  }
+
+  deleteImage(index: number) {
+    if (index >= 0) {
+      console.log(this.imagesArray[index]);
+      this.imagesArray.removeAt(index);
+    }
   }
 
 }
