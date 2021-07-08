@@ -2,7 +2,7 @@ import { NewJobComponent } from './job/new-job/new-job.component';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
@@ -32,6 +32,7 @@ import { JoinComponent } from './join/join.component';
 import { ChooseCityComponent } from './join/choose-city/choose-city.component';
 import { ChooseStateComponent } from './join/choose-state/choose-state.component';
 import { FooterComponent } from './footer/footer.component';
+import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -77,7 +78,13 @@ import { FooterComponent } from './footer/footer.component';
     FontAwesomeModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

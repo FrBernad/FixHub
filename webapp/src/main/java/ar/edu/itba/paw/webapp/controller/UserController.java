@@ -68,7 +68,7 @@ public class UserController {
     public Response getById(@PathParam("id") final long id) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
-        return Response.ok(new UserDto(user,uriInfo)).build();
+        return Response.ok(new UserDto(user)).build();
     }
 
 //    @RequestMapping(path = "/user/account/search")

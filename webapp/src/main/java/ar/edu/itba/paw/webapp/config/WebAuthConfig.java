@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -75,7 +76,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount").hasRole("USER")
 //            .antMatchers("/logout").authenticated()
-            .antMatchers("/users/{id:[\\d]+}").authenticated()
+            .antMatchers("/api/users/{id:[\\d]+}").authenticated()
+            .antMatchers(HttpMethod.GET,"/api/user").authenticated()
 //            //profile routes
 //            .antMatchers("/user/account").hasRole("USER")
 //            .antMatchers("/user/account/search", "/user/account/update",
@@ -97,7 +99,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/user/join", "/user/join/chooseCity").hasRole("VERIFIED")
 
             //else
-            .antMatchers("/**").permitAll()
+            .antMatchers("api/**").permitAll()
 
             .and().csrf().disable()
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../models/User";
-import {Job} from "../../models/Job";
+import {User} from "../../models/user.model";
+import {Job} from "../../models/job.model";
 
 @Component({
   selector: 'app-edit-job',

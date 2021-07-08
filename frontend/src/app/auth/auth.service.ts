@@ -1,21 +1,21 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {catchError, tap} from 'rxjs/operators';
 import {throwError, BehaviorSubject} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {User} from '../models/user.model';
+import {Session} from '../models/session.model';
+import jwtDecode from "jwt-decode";
 
-export interface AuthResponseData {
-  idToken: string;
-  email: string;
-  expiresIn: string;
-  registered?: boolean;
+interface jwt {
+  exp: number,
+  iat: number,
+  sub: string,
 }
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
+  session = new BehaviorSubject<Session>(null);
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -23,7 +23,7 @@ export class AuthService {
 
   signup(email: string, password: string) {
     return this.http
-      .post<AuthResponseData>(
+      .post<Session>(
         environment.apiBaseUrl + 'signUp',
         {
           email: email,
@@ -34,29 +34,34 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.idToken,
-            +resData.expiresIn
-          );
+          // this.handleAuthentication(
+          //   resData.email,
+          //   resData.idToken,
+          //   +resData.expiresIn
+          // );
         })
       );
   }
 
   login(email: string, password: string) {
     return this.http
-      .post<AuthResponseData>(
-        environment.apiBaseUrl + 'session',
+      .post(
+        environment.apiBaseUrl + '/user',
         {
           email: email,
           password: password,
           returnSecureToken: true
         },
+        {
+          observe: "response"
+        }
       )
       .pipe(
         catchError(this.handleError),
-        tap(resData => {
-          console.log(resData);
+        tap(res => {
+          const authHeader = res.headers.get("Authorization");
+          const token = authHeader.split(" ")[1];
+          this.handleAuthentication(token);
         })
       );
   }
@@ -72,14 +77,14 @@ export class AuthService {
       return;
     }
     //
-    // const loadedUser = new User(
+    // const loadedUser = new UserModel(
     //   userData.email,
     //   userData.id,
     //   userData._token,
     //   new Date(userData._tokenExpirationDate)
     // );
 
-    this.user.next(null);
+    this.session.next(null);
     const expirationDuration =
       new Date(userData._tokenExpirationDate).getTime() -
       new Date().getTime();
@@ -87,7 +92,7 @@ export class AuthService {
   }
 
   logout() {
-    this.user.next(null);
+    this.session.next(null);
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
@@ -103,15 +108,13 @@ export class AuthService {
   }
 
   private handleAuthentication(
-    email: string,
     token: string,
-    expiresIn: number
   ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    // const user = new User(email, "2", token, expirationDate);
-    this.user.next(null);
-    this.autoLogout(expiresIn * 1000);
-    // localStorage.setItem('userData', JSON.stringify(user));
+    const jwt = this.decodeToken(token);
+    const expirationDate = new Date(new Date().getTime() + jwt.exp);
+    this.autoLogout(jwt.exp);
+    const newSession = new Session(token, expirationDate);
+    this.session.next(newSession);
   }
 
   private handleError(errorRes: HttpErrorResponse) {
@@ -131,6 +134,10 @@ export class AuthService {
         break;
     }
     return throwError(errorMessage);
+  }
+
+  private decodeToken(token: string): jwt {
+    return jwtDecode(token);
   }
 
 }

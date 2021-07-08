@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.auth.UserDetailService;
 import ar.edu.itba.paw.webapp.dto.AuthenticationTokenDto;
 import ar.edu.itba.paw.webapp.dto.UserAuthDto;
+import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,10 +42,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.Principal;
@@ -72,9 +72,9 @@ public class WebAuthController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthController.class);
 
     @POST
-    @Path("/session")
+    @Path("/user")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response newSession(UserAuthDto userAuthDto) {
+    public Response loginUser(UserAuthDto userAuthDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userAuthDto.getEmail(), userAuthDto.getPassword())
@@ -82,13 +82,28 @@ public class WebAuthController {
 
             final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
 
-            final String jwt = jwtUtil.generateToken(user);
+            final Response.ResponseBuilder responseBuilder = Response.noContent();
 
-            return Response.ok(new AuthenticationTokenDto(jwt,jwtUtil.getTokenExpirationTime())).build();
+            addAuthorizationHeader(responseBuilder, user);
+
+            return responseBuilder.build();
 
         } catch (AuthenticationException e) {
-            return Response.noContent().status(Response.Status.UNAUTHORIZED).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
+    }
+
+    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
+        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
+    }
+
+    @GET
+    @Path("/user")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response getUser() {
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+
+        return Response.ok(new UserDto(user)).build();
     }
 
     @POST

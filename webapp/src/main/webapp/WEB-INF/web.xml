@@ -42,7 +42,7 @@
 
     <servlet-mapping>
         <servlet-name>jersey-servlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
     <listener>
@@ -70,7 +70,7 @@
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -80,7 +80,7 @@
 
     <filter-mapping>
         <filter-name>openEntityManagerInViewFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
 </web-app>

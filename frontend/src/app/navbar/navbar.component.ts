@@ -1,14 +1,24 @@
-import {Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {Subscription} from "rxjs";
-import {User} from "../models/User";
+import {User} from "../models/user.model";
+import {UserService} from "../auth/user.service";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   @ViewChild('backNavbar') backNavbar: ElementRef;
   @ViewChild('navbar') navbar: ElementRef;
@@ -17,14 +27,14 @@ export class NavbarComponent implements OnInit {
   user: User;
 
   constructor(
-    private authService: AuthService,
+    private userService: UserService,
     private renderer: Renderer2
   ) {
   }
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe(user => {
-      this.user = null;
+    this.userSub = this.userService.user.subscribe(user => {
+      this.user = user;
     });
   }
 
@@ -43,5 +53,8 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe()
+  }
 
 }

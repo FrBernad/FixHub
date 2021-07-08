@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Job} from "../../models/Job";
+import {Job} from "../../models/job.model";
 
 @Component({
   selector: 'app-popular-job-card',

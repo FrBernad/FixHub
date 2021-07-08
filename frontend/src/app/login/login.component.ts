@@ -8,6 +8,7 @@ import {AuthService} from "../auth/auth.service";
 import {NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../auth/user.service";
 
 @Component({
   selector: 'app-login',
@@ -19,16 +20,17 @@ export class LoginComponent implements OnInit {
   showPass = true;
   recoverPass = false;
   loginForm: FormGroup;
-  error=false;
+  error = false;
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private router: Router,
   ) {
   }
 
   ngOnInit(): void {
-    this.loginForm= new FormGroup({
+    this.loginForm = new FormGroup({
       'email': new FormControl(null, [Validators.required]),
       'password': new FormControl(null, [Validators.required]),
       'rememberMe': new FormControl(false)
@@ -46,9 +48,12 @@ export class LoginComponent implements OnInit {
     const authObs = this.authService.login("pepe@yopmail.com", "123456");
 
     authObs.subscribe(
-      resData => {
-        console.log(resData);
-        this.router.navigate(['/user/profile']);
+      () => {
+        this.userService
+          .populateUserData()
+          .subscribe(() => {
+            this.router.navigate(['/user/profile']);
+          });
       },
       errorMessage => {
         console.log(errorMessage);

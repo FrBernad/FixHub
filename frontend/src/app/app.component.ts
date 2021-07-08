@@ -11,7 +11,8 @@ import {
   faPhoneAlt as fasPhoneAlt,
   faUserFriends as fasUserFriends,
   faTimes as fasTimes,
-  faCheck as fasCheck
+  faCheck as fasCheck,
+  faMapMarkerAlt as fasMapMarkerAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -53,7 +54,8 @@ export class AppComponent implements OnInit {
       fasChevronDown, fasCamera,
       farEnvelope, fasPhoneAlt,
       fasUserFriends, fasTimes,
-      fasCheck);
+      fasCheck,fasMapMarkerAlt,
+    );
     // this.router.events
     //   .pipe(
     //     filter((event) => event instanceof NavigationEnd),
@@ -74,10 +76,7 @@ export class AppComponent implements OnInit {
     // })
   }
 
-  translateSite(language
-                  :
-                  string
-  ) {
+  translateSite(language: string) {
     this.translateService.use(language);
   }
 

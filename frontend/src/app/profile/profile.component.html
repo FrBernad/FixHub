@@ -69,8 +69,7 @@
           </div>
           <div class="col-8 mt-5">
             <h1 class="userSectionTitles text-center names">
-              PEPE
-              <!-- <c:out value="${loggedUser.name} ${loggedUser.surname}" /> -->
+              {{user.name}} {{user.surname}}
             </h1>
           </div>
         </div>
@@ -106,12 +105,12 @@
                   <div class="container-fluid px-0">
                     <div class="row">
                       <div class="col-1 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <fa-icon [icon]="['fas', 'map-marker-alt']"></fa-icon>
                       </div>
                       <div class="col-10">
-                            <span>
-                              <!-- <c:out value="${loggedUser.state}, ${loggedUser.city}." /> -->
-                            </span>
+                          <span>
+                            {{user.state}}, {{user.city}}.
+                          </span>
                       </div>
                     </div>
                   </div>
@@ -125,7 +124,7 @@
                       </div>
                       <div class="col-10">
                             <span>
-                              <!-- <c:out value="${loggedUser.email}." /> -->
+                              {{user.email}}.
                             </span>
                       </div>
                     </div>
@@ -140,7 +139,7 @@
                       </div>
                       <div class="col-10">
                             <span>
-                              <!-- <c:out value="${loggedUser.phoneNumber}." /> -->
+                              {{user.phoneNumber}}.
                             </span>
                       </div>
                     </div>
