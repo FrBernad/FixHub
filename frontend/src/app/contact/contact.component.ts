@@ -47,6 +47,7 @@ export class ContactComponent implements OnInit {
     totalRatings: 0,
     averageRating: 0,
     images: [],
+    thumbnailId: 1,
     reviews: [],
     provider: this.provider,
     paused: false,

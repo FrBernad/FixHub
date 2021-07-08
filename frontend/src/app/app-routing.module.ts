@@ -1,3 +1,4 @@
+import { NewJobComponent } from './new-job/new-job.component';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './dashboard/dashboard.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
       {path: 'login', component: LoginComponent, data:{title:"login.title"}},
       {path: 'register', component: RegisterComponent},
       {path: 'jobs/contact', component: ContactComponent},
+      {path: 'jobs/new', component: NewJobComponent},
     {path: "job", component:JobComponent}
     ]
   },
