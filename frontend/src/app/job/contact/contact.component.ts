@@ -61,13 +61,15 @@ export class ContactComponent implements OnInit {
   maxAddressNumber: number = 9;
   maxDepartmentLength: number = 30;
 
+  city = new FormControl(null, [Validators.required, Validators.maxLength(this.maxCityLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]);
+
 
   constructor() {}
 
   ngOnInit(): void {
     this.contactForm = new FormGroup({
     state: new FormControl(this.job.provider.providerDetails.location.state.name, [Validators.required, Validators.maxLength(this.maxStateLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
-      city: new FormControl(null, [Validators.required, Validators.maxLength(this.maxCityLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
+      city: this.city,
       street: new FormControl(null, [Validators.required, Validators.maxLength(this.maxStreetLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
       addressNumber: new FormControl(null, [Validators.required, Validators.pattern("[0-9]{0,9}")]),
       floor: new FormControl(null, Validators.pattern("[0-9]{0,9}")),
@@ -79,5 +81,9 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     console.log(this.contactForm);
+  }
+
+  dropdownClick(city) {
+    this.city.setValue(city.name);
   }
 }

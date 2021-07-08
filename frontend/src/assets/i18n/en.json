@@ -259,7 +259,7 @@
   "Size.editJobForm.jobProvided": "The service name must be less than {1} characters",
   "Range.editJobForm.price": "Price must be between ${2} and ${1}",
   "NotNull.editJobForm.price": "Enter a price for the service you are offering",
-  "Size.jobForm.images": "The maximum number of selectable images is {1}",
+  "Size.jobForm.images": "The maximum number of selectable images is {{max}}",
   "NotEmpty.jobForm.jobProvided": "Enter the name of your service",
   "Pattern.jobForm.jobProvided": "The service name you entered is invalid",
   "NotEmpty.jobForm.description": "Enter a description for the service you offer",

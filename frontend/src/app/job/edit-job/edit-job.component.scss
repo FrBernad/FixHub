@@ -9,3 +9,298 @@
   padding: 12px 16px;
   font-weight: bold;
 }
+
+.sectionTitle {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+  color: black;
+}
+
+a {
+  font-weight: 500;
+  color: black;
+  transition: hover 1s;
+}
+
+#jobReviewLink {
+  font-weight: 500;
+  color: rgb(0, 104, 192);
+  transition: hover 1s;
+}
+
+#jobReviewLink:hover {
+  text-decoration: underline;
+  color: rgb(0, 104, 192);
+}
+
+a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}
+
+.jobTitle {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: bold;
+  color: black;
+}
+
+.roundedBorder {
+  border-radius: 8px;
+}
+
+.reviewTitle {
+  color: rgba(0, 0, 0, .8);
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.reviewerImage {
+  border-radius: 50%;
+}
+
+.iconsColor {
+  color: #003B6D;
+}
+
+.reviewBody {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.contactInfo {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.top-left {
+  line-height: 1;
+  color: black;
+  position: absolute;
+  top: 1em;
+  left: 3em;
+  font-weight: 400;
+  font-size: 16px;
+  padding: 12px 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  z-index: 10;
+}
+
+
+.jobPrice {
+  font-weight: 400;
+  font-size: 14px;
+  padding: 10px 18px;
+  background-color: #fff;
+  border-radius: 20px;
+  z-index: 10;
+  right: 15px;
+  bottom: 15px;
+  position: absolute;
+}
+
+
+.jobCategory {
+  font-weight: bold;
+  background-color: #BDBDBD !important;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 20px;
+  z-index: 10;
+  left: 15px;
+  top: 15px;
+  position: absolute;
+}
+
+.contactBtn {
+  font-size: 1em;
+  background-color: #003359;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  width: 118px;
+  height: auto;
+}
+
+.rateBtn {
+  font-size:0.8em;
+  background-color: #003359;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  width: 118px;
+  height: auto;
+}
+
+.page-item {
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: var(--primary-color);
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.inputBtn {
+  border-radius: 0 8px 8px 0 !important;
+  background-color: rgba(0, 59, 109, 1);
+  color: white;
+}
+
+.inputBtn:hover {
+  transition: 150ms linear;
+  color: rgba(255, 255, 255, .9);
+}
+
+.noJobsFound {
+  height: 300px;
+  width: auto;
+  background-color: white
+}
+
+.dropdown-custom {
+  width: 100%;
+  border-radius: 8px !important;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+}
+
+.resultQuery {
+  font-size: 12px;
+}
+
+.resultHeader {
+  max-height: 70px;
+}
+
+.resultHeader p span {
+  color: rgb(196, 85, 0);
+}
+
+.inputRadius::placeholder {
+  color: black !important;
+}
+
+.inputRadius {
+  padding: 8px 16px!important;
+  color: black !important;
+  border-radius: 8px 0 0 8px !important;
+}
+
+.buttonCustom {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px !important;
+  border: none;
+  padding: 5px;
+  font-size: 0.8rem;
+  height: 35px;
+}
+
+.buttonEnabled {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.buttonDisabled {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(19, 1, 1, 0.3);
+  border: 1px solid rgba(19, 1, 1, 0.3);
+}
+
+.imgFile {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px !important;
+  border: none;
+  padding: 5px;
+  font-size: 12px;
+  height: 30px;
+}
+
+.trashIcon {
+  color: var(--primary-color);
+}
+
+.deleteButton{
+  border-radius: 50%;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  background-color: rgba(189, 189, 189, 1);
+  transition:hover 1s;
+  border:none;
+  width:40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+}
+
+.deleteButton:hover{
+  background-color: rgba(189, 189, 189, 0.8);
+}
+
+.dropdown-custom {
+  border-radius: 8px !important;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: var(--quaternary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+}
+
+.dropdown-size {
+  height: 200px !important;
+  overflow-y: auto !important;
+}
+
+#description {
+  resize: none;
+  height: 100px;
+}
+
+.errorMessage{
+  color: red;
+}
+
+input.ng-invalid.ng-touched{
+  border:1px solid red;
+}
+
+textarea.ng-invalid.ng-touched{
+  border:1px solid red;
+}

@@ -73,9 +73,10 @@
                           <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
                             id="cityDropdownBtn" data-bs-toggle="dropdown" data-reference="parent"
                             style="border-radius: 0 .25rem .25rem 0; height: 38px">
+                            <span *ngIf="city.value != null">{{city.value.name}}</span>
                           </button>
                           <ul class="dropdown-menu dropdown-menu-end w-100" data-reference="parent">
-                            <li *ngFor="let city of job.provider.providerDetails.location.cities" data-name="city.name">
+                            <li *ngFor="let city of job.provider.providerDetails.location.cities" data-name="city.name" (click)="dropdownClick(city)">
                               <a class="dropdown-item">{{city.name}}</a>
                             </li>
                           </ul>
