@@ -1,6 +1,6 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { User } from '../models/user.model';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {User} from '../models/user.model';
 
 @Component({
   selector: 'app-update-info',
@@ -17,10 +17,11 @@ export class UpdateInfoComponent implements OnInit {
     phoneNumber: '+5491112345678',
     state: 'Buenos Aires',
     city: 'Adrogue',
-    profileImage: 1,
-    coverImage: 2,
+    profileImage: "",
+    coverImage: "",
     following: [],
     followers: [],
+    roles: [],
     providerDetails: {
       location: {
         cities: [{id: 1, name: 'Burzaco'}],
@@ -41,7 +42,8 @@ export class UpdateInfoComponent implements OnInit {
   maxStateLength: number = 50;
   maxCityLength: number = 50;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.userInfoForm = new FormGroup({
@@ -54,12 +56,11 @@ export class UpdateInfoComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.userInfoForm.valid){
+    if (!this.userInfoForm.valid) {
       this.userInfoForm.markAllAsTouched();
       return;
     }
   }
-
 
 
 }

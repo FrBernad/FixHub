@@ -23,14 +23,15 @@ export class ContactComponent implements OnInit {
     phoneNumber: '+5491112345678',
     state: 'Buenos Aires',
     city: 'Adrogue',
-    profileImage: 1,
-    coverImage: 2,
+    roles: [],
+    profileImage: "",
+    coverImage: "",
     following: [],
     followers: [],
     providerDetails: {
       location: {
-        cities: [{ id: 1, name: 'Burzaco' }],
-        state: { id: 1, name: 'Buenos Aires' },
+        cities: [{id: 1, name: 'Burzaco'}],
+        state: {id: 1, name: 'Buenos Aires'},
       },
       schedule: {
         startTime: new Date(),
@@ -46,7 +47,7 @@ export class ContactComponent implements OnInit {
     price: 121,
     totalRatings: 0,
     averageRating: 0,
-    thumbnailId:1,
+    thumbnailId: 1,
     images: [],
     reviews: [],
     provider: this.provider,
@@ -64,11 +65,12 @@ export class ContactComponent implements OnInit {
   city = new FormControl(null, [Validators.required, Validators.maxLength(this.maxCityLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]);
 
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.contactForm = new FormGroup({
-    state: new FormControl(this.job.provider.providerDetails.location.state.name, [Validators.required, Validators.maxLength(this.maxStateLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
+      state: new FormControl(this.job.provider.providerDetails.location.state.name, [Validators.required, Validators.maxLength(this.maxStateLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
       city: this.city,
       street: new FormControl(null, [Validators.required, Validators.maxLength(this.maxStreetLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
       addressNumber: new FormControl(null, [Validators.required, Validators.pattern("[0-9]{0,9}")]),
@@ -80,7 +82,7 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.contactForm.valid){
+    if (!this.contactForm.valid) {
       this.contactForm.markAllAsTouched();
       return;
     }

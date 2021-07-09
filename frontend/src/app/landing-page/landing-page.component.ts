@@ -32,7 +32,7 @@ import {JobCategoryModel} from "../models/jobCategory.model";
 })
 export class LandingPageComponent implements OnInit {
 
-  categories = ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA','ENTREGA'];
+  categories = ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA', 'ENTREGA'];
 
   //FIXME: BORRAR TODA ESTA PARTE DE JOB Y USER
   provider: User = {
@@ -43,10 +43,11 @@ export class LandingPageComponent implements OnInit {
     phoneNumber: '+5491112345678',
     state: 'Buenos Aires',
     city: 'Adrogue',
-    profileImage: 1,
-    coverImage: 2,
+    profileImage: "",
+    coverImage: "",
     following: [],
     followers: [],
+    roles: [],
     providerDetails: {
       location: {
         cities: [{id: 1, name: 'Burzaco'}],
@@ -69,8 +70,9 @@ export class LandingPageComponent implements OnInit {
   };
 
   jobs = [
-    this.job,this.job,this.job,this.job
+    this.job, this.job, this.job, this.job
   ];
+
   constructor() {
   }
 

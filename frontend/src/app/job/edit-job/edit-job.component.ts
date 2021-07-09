@@ -7,7 +7,7 @@ import {JobCategoryModel} from "../../models/jobCategory.model";
 @Component({
   selector: 'app-edit-job',
   templateUrl: './edit-job.component.html',
-  styleUrls: ['./edit-job.component.scss','../new-job/new-job.component.scss','../job.component.scss']
+  styleUrls: ['./edit-job.component.scss', '../new-job/new-job.component.scss', '../job.component.scss']
 })
 export class EditJobComponent implements OnInit {
 
@@ -36,9 +36,10 @@ export class EditJobComponent implements OnInit {
     phoneNumber: '+5491112345678',
     state: 'Buenos Aires',
     city: 'Adrogue',
-    profileImage: 1,
-    coverImage: 2,
+    profileImage: "",
+    coverImage: "",
     following: [],
+    roles: [],
     followers: [],
     providerDetails: {
       location: {
@@ -61,11 +62,12 @@ export class EditJobComponent implements OnInit {
     thumbnailId: 1
   };
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.editJobForm = new FormGroup({
-      'jobProvided': new FormControl(null,[Validators.required, Validators.maxLength(this.maxJobProvidedLength), Validators.pattern("^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
+      'jobProvided': new FormControl(null, [Validators.required, Validators.maxLength(this.maxJobProvidedLength), Validators.pattern("^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
       'jobCategory': new FormControl(null, [Validators.required]),
       'price': new FormControl(null, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]),
       'description': new FormControl(null, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]),
@@ -73,8 +75,8 @@ export class EditJobComponent implements OnInit {
     })
   }
 
-  onSubmit(){
-    if(!this.editJobForm.valid){
+  onSubmit() {
+    if (!this.editJobForm.valid) {
       this.editJobForm.markAllAsTouched();
       return;
     }
@@ -86,12 +88,12 @@ export class EditJobComponent implements OnInit {
     this.allowedImageType = true;
     this.allowedImageSize = true;
 
-    if(!this.allowedImageTypes.includes(file.type)) {
+    if (!this.allowedImageTypes.includes(file.type)) {
       this.allowedImageType = false;
       return;
     }
 
-    if(file.size > 3000000) {
+    if (file.size > 3000000) {
       this.allowedImageSize = false;
       return
     }

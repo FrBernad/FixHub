@@ -3,7 +3,7 @@
     <!-- USER PICTURES -->
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
-        <img alt="profile cover picture" src="../../assets/images/defaultCoverImage.jpg"
+        <img alt="profile cover picture" [src]="user.coverImage"
              class="backgroundImage">
         <!-- <c:choose>
           <c:when test="${loggedUser.coverImage == null}">
@@ -40,7 +40,7 @@
         <div class="row align-items-center position-relative justify-content-center">
           <div class="profilePictureContainer px-0">
             <div class="picContainer">
-              <img alt="profile picture" src="../../assets/images/userProfile.png"
+              <img alt="profile picture" [src]="user.profileImage"
                    class="profilePicture">
               <!-- <c:choose>
                 <c:when test="${loggedUser.profileImage == null}">

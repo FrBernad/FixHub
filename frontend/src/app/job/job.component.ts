@@ -18,10 +18,11 @@ export class JobComponent implements OnInit {
     phoneNumber: '+5491112345678',
     state: 'Buenos Aires',
     city: 'Adrogue',
-    profileImage: 1,
-    coverImage: 2,
+    profileImage: "",
+    coverImage: "",
     following: [],
     followers: [],
+    roles: [],
     providerDetails: {
       location: {
         cities: [{id: 1, name: 'Burzaco'}],

@@ -8,11 +8,11 @@ import {OrderOptionModel} from "../models/orderOption.model";
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html',
-  styleUrls: ['./discover.component.scss', '/job-card/job-card.component.scss','../join/join.component.scss','../landing-page/landing-page.component.scss']
+  styleUrls: ['./discover.component.scss', '/job-card/job-card.component.scss', '../join/join.component.scss', '../landing-page/landing-page.component.scss']
 })
 export class DiscoverComponent implements OnInit {
 
-   provider: User = {
+  provider: User = {
     id: 2,
     name: 'Agus',
     surname: 'Manfredi',
@@ -20,8 +20,9 @@ export class DiscoverComponent implements OnInit {
     phoneNumber: '+5491112345678',
     state: 'Buenos Aires',
     city: 'Adrogue',
-    profileImage: 1,
-    coverImage: 2,
+    profileImage: "",
+    coverImage: "",
+    roles: [],
     following: [],
     followers: [],
     providerDetails: {
@@ -36,14 +37,16 @@ export class DiscoverComponent implements OnInit {
     },
   }
 
-    orderOptions = Object.keys(OrderOptionModel).filter((item) => {
-    return isNaN(Number(item));});
+  orderOptions = Object.keys(OrderOptionModel).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-    categories = Object.keys(JobCategoryModel).filter((item) => {
-    return isNaN(Number(item));});
+  categories = Object.keys(JobCategoryModel).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-    states= ['Mendoza','Buenos Aires','Salta'];
-    cities = ['Buenos Aires', 'La Plata', 'Rosario'];
+  states = ['Mendoza', 'Buenos Aires', 'Salta'];
+  cities = ['Buenos Aires', 'La Plata', 'Rosario'];
 
 
   job: Job = {
@@ -56,18 +59,18 @@ export class DiscoverComponent implements OnInit {
   };
 
 
-
-  results= {
-    results: [this.job,this.job,this.job],
-    query:null,
-    order:OrderOptionModel.MOST_POPULAR,
-    category:JobCategoryModel.CARPINTERO,
-    state:this.states[0],
+  results = {
+    results: [this.job, this.job, this.job],
+    query: null,
+    order: OrderOptionModel.MOST_POPULAR,
+    category: JobCategoryModel.CARPINTERO,
+    state: this.states[0],
     city: this.cities[0]
   }
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

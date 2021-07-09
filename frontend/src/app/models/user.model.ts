@@ -29,8 +29,6 @@
 // }
 
 export class User {
-  profileImage: number;
-  coverImage: number;
   following: User[];
   followers: User[];
   providerDetails: {
@@ -51,7 +49,10 @@ export class User {
     public email: string,
     public phoneNumber: string,
     public state: string,
-    public city: string
+    public city: string,
+    public profileImage: string,
+    public coverImage: string,
+    public roles: string[]
   ) {
   }
 
