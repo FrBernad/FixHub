@@ -70,11 +70,35 @@ public class UserController {
     @GET
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getById(@PathParam("id") final long id) {
+    public Response getUser(@PathParam("id") final long id) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
-        return Response.ok(new UserDto(user)).build();
+        return Response.ok(new UserDto(user, uriInfo)).build();
     }
+
+    @GET
+    @Path("/{id}/profileImage")
+    @Produces({"image/*", MediaType.APPLICATION_JSON})
+    public Response getUserProfileImage(@PathParam("id") final long id) {
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        final byte[] profileImage = user.getProfileImage().getData();
+
+        return Response.ok(profileImage).type(user.getProfileImage().getMimeType()).build();
+    }
+
+
+    @GET
+    @Path("/{id}/coverImage")
+    @Produces({"image/*", MediaType.APPLICATION_JSON})
+    public Response getUserCoverImage(@PathParam("id") final long id) {
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        final byte[] coverImage = user.getCoverImage().getData();
+
+        return Response.ok(coverImage).type(user.getCoverImage().getMimeType()).build();
+    }
+
 
 //    @RequestMapping(path = "/user/account/search")
 //    public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form,

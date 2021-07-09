@@ -43,6 +43,9 @@ public class UserSessionController {
     @Autowired
     private LocationService locationService;
 
+    @Context
+    private UriInfo uriInfo;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserSessionController.class);
 
     @POST
@@ -85,7 +88,7 @@ public class UserSessionController {
     public Response getUser() {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        return Response.ok(new UserDto(user)).build();
+        return Response.ok(new UserDto(user, uriInfo)).build();
     }
 
     @GET
@@ -105,7 +108,7 @@ public class UserSessionController {
     public Response updateUserCoverImage() {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        return Response.ok(new UserDto(user)).build();
+        return Response.ok().build();
     }
 
     @GET
@@ -124,7 +127,7 @@ public class UserSessionController {
     public Response updateUserProfileImage() {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        return Response.ok(new UserDto(user)).build();
+        return Response.ok().build();
     }
 
     public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {

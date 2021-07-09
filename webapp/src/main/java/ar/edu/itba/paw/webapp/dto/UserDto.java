@@ -1,10 +1,18 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import java.util.Collection;
+import java.util.Collections;
 
 public class UserDto {
+
+    public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {
+        return uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(user.getId()));
+    }
 
     private long id;
     private String name;
@@ -14,11 +22,20 @@ public class UserDto {
     private String state;
     private String city;
 
+    private Collection<Roles> roles;
+
+    private String url;
+    private String coverImage;
+    private String profileImage;
+
     public UserDto() {
         // Used by Jersey
     }
 
-    public UserDto(User user) {
+    public UserDto(User user, UriInfo uriInfo) {
+
+        final UriBuilder uriBuilder = getUserUriBuilder(user, uriInfo);
+
         this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
@@ -26,6 +43,12 @@ public class UserDto {
         this.phoneNumber = user.getPhoneNumber();
         this.state = user.getState();
         this.city = user.getCity();
+        this.roles = user.getRoles();
+
+        this.url = uriBuilder.build().toString();
+        this.profileImage = uriBuilder.path("profileImage").build().toString();
+        this.coverImage = uriBuilder.path("coverImage").build().toString();
+
     }
 
     public long getId() {
@@ -82,5 +105,37 @@ public class UserDto {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public Collection<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Roles> roles) {
+        this.roles = roles;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
