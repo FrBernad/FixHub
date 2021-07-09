@@ -2,44 +2,50 @@
   <div class="container-fluid px-0">
     <div class="row">
       <div class="col-12 d-flex align-items-center justify-content-center">
-        <form formGroupName="chooseCityForm" id="chooseCityForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="chooseCityForm" id="chooseCityForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label class="label text-center font-weight-bold" style="display:block;">
               {{ 'joinForm.availableCities' | translate }}
             </label>
-            <input type="hidden" id="state" value="${state}"/>
-            <input type="hidden" id="startTime" value="${startTime}"/>
-            <input type="hidden" id="endTime" value="${endTime}"/>
+
             <div class="row">
               <div class="col d-flex align-items-center justify-content-center">
                 <div class="dropdown">
                   <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
-                          data-toggle="dropdown">
-                    {{ 'cityForm.city' | translate }}
-                    <span class="state" id="cityName">-</span>
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="state" id="cityName">
+                       {{ 'cityForm.city' | translate }}
+                    </span>
+                    {{ citySelected.name }}
                   </button>
-                  <div class="dropdown-menu dropdown-size">
+                  <ul class="dropdown-menu dropdown-size" aria-labelledby="cityDropdown">
                     <ng-template ngFor let-city [ngForOf]="cities">
-
-                      <div class="input-group">
-                        <button class="dropdown-item cityButton" type="button">
+                      <li>
+                        <button class="dropdown-item cityButton" (click)="selectCity(city)" type="button">
                           {{ city.name}}
                         </button>
-                      </div>
+                      </li>
                     </ng-template>
 
-                  </div>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          <p>errors</p>
+<!--      <span *ngIf="!chooseCityForm.get('city').valid && chooseCityForm.get('city').touched">
+                  <span *ngIf="chooseCityForm.get('city').errors['required']" class="errorMessage">
+                    {{'NotEmpty.chooseCityForm.city' | translate }}<br>
+                  </span>
+          </span>-->
 
           <div class="form-group">
             <div class="row">
               <div class="col">
                 <div class="container-fluid" id="citiesHolder" style="width: 418px;">
-
+                  <button *ngFor="let citySel of citiesSelected; let i = index" (click)="deleteCity(i)" type="button" class="cityTag m-2">
+                    {{ citySel.name }}
+                    <fa-icon [icon]="['fas','times']" class="ms-1"></fa-icon>
+                  </button>
                 </div>
               </div>
             </div>

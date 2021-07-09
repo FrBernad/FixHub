@@ -13,8 +13,8 @@
             {{  'join.description.normalText' | translate}}
           </p>
         </div>
-        <ng-template [ngIf]="chooseState" [ngIfElse]="chooseCity">
-            <app-choose-state></app-choose-state>
+        <ng-template [ngIf]="chooseState" [ngIfElse]="chooseCity" >
+            <app-choose-state (stateChosen)="chooseState = false"></app-choose-state>
         </ng-template>
         <ng-template #chooseCity>
             <app-choose-city></app-choose-city>
