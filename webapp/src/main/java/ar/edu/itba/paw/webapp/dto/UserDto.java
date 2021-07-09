@@ -6,13 +6,13 @@ import ar.edu.itba.paw.models.user.User;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
-import java.util.Collections;
 
 public class UserDto {
 
     public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {
-        return uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(user.getId()));
+        return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
     }
+
 
     private long id;
     private String name;

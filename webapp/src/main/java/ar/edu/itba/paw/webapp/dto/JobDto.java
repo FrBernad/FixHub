@@ -3,14 +3,21 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
-import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;
 
-import javax.persistence.*;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.util.HashSet;
 import java.util.Set;
 
 public class JobDto {
+
+    public static UriBuilder getJobUriBuilder(Job job, UriInfo uriInfo) {
+        return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId()));
+    }
+
 
     private Long id;
 
@@ -20,50 +27,64 @@ public class JobDto {
 
     private String jobProvided;
 
-    private UserDto provider;
+    private URI provider;
+
+    private String url;
 
     private BigDecimal price;
 
     private boolean paused;
 
-//    private Integer averageRating;
-//
-//    private Long totalRatings;
-    private Set<Image> images;
+    private Integer averageRating;
+
+    private Long totalRatings;
+
+    private Set<URI> images;
 
 //    private Set<Review> reviews;
 
-//    public static final Integer MAX_IMAGES_PER_JOB = 6;
+   private int maxImagesPerJob;
 
 
     public JobDto() {
         //use by Jersey
     }
 
-    public JobDto(Job job) {
+    public JobDto(Job job, UriInfo uriInfo) {
+
+        final UriBuilder uriBuilder = getJobUriBuilder(job, uriInfo);
+        this.url = uriBuilder.build().toString();
+
         this.id = job.getId();
         this.description = job.getDescription();
         this.category = job.getCategory();
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = new UserDto(job.getProvider());
-        this.images = job.getImages();
+        this.provider = UserDto.getUserUriBuilder(job.getProvider(),uriInfo).build();
+        this.images = new HashSet<>();
+        for (Image image : job.getImages()) {
+            this.images.add(ImageDto.getImageUriBuilder(image,uriInfo).build());
+        }
+        this.averageRating = job.getAverageRating();
+        this.totalRatings = job.getTotalRatings();
+        this.maxImagesPerJob = Job.MAX_IMAGES_PER_JOB;
+
     }
 
-    public UserDto getProvider() {
+    public URI getProvider() {
         return provider;
     }
 
-    public void setProvider(UserDto provider) {
+    public void setProvider(URI provider) {
         this.provider = provider;
     }
 
-    public Set<Image> getImages() {
+    public Set<URI> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(Set<URI> images) {
         this.images = images;
     }
 
@@ -113,5 +134,37 @@ public class JobDto {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Integer averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Long getTotalRatings() {
+        return totalRatings;
+    }
+
+    public void setTotalRatings(Long totalRatings) {
+        this.totalRatings = totalRatings;
+    }
+
+    public int getMaxImagesPerJob() {
+        return maxImagesPerJob;
+    }
+
+    public void setMaxImagesPerJob(int maxImagesPerJob) {
+        this.maxImagesPerJob = maxImagesPerJob;
     }
 }

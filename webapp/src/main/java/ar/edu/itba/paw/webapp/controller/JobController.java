@@ -26,13 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
+import java.net.URI;
 import java.security.Principal;
 import java.util.*;
 
@@ -48,6 +48,9 @@ public class JobController {
 
     @Autowired
     private UserService userService;
+
+    @Context
+    private UriInfo uriInfo;
 
     @Autowired
     private ImageService imageService;
@@ -66,9 +69,14 @@ public class JobController {
 */
     public Response job(@PathParam("jobId") final Long jobId) {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
-        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
-        return Response.ok(new JobDto(job)).build();
+        final Optional<Job> job = jobService.getJobById(jobId);
+        if(!job.isPresent()){
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+        }
+        JobDto jobDto = new JobDto(job.get(),uriInfo);
+        return Response.ok(jobDto).build();
     }
+
 
         /*LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
@@ -91,7 +99,7 @@ public class JobController {
         mav.addObject("canReview", canReview);
 
         return mav;*/
-
+    
 /*
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
@@ -124,6 +132,7 @@ public class JobController {
         mav.addObject("job", job);
         return mav;
     }
+
 
     @RequestMapping(value = "/jobs/{jobId}/edit", method = RequestMethod.POST)
     public ModelAndView updateJob(@PathVariable("jobId") final long jobId, @Valid @ModelAttribute("editJobForm") final EditJobForm form, BindingResult errors, Principal principal) {
