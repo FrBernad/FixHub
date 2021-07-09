@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class UserInfoForm {
+public class UserInfoDto {
 
     @NotEmpty
     @Size(max = 50)

@@ -78,6 +78,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/logout").authenticated()
             .antMatchers("/api/users/{id:[\\d]+}").authenticated()
             .antMatchers(HttpMethod.GET,"/api/user").authenticated()
+            .antMatchers(HttpMethod.PUT,"/api/user").authenticated()
 //            //profile routes
 //            .antMatchers("/user/account").hasRole("USER")
 //            .antMatchers("/user/account/search", "/user/account/update",

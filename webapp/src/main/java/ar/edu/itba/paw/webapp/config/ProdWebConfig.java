@@ -1,9 +1,11 @@
 package ar.edu.itba.paw.webapp.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Profile("!dev")
+@Configuration
 public class ProdWebConfig {
 
     @Bean(name = "appHost")

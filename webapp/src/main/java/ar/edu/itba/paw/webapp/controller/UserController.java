@@ -29,10 +29,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -61,6 +58,14 @@ public class UserController {
     private UriInfo uriInfo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+    @POST
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response registerUser(@PathParam("id") final long id) {
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        return Response.ok(null).build();
+    }
 
     @GET
     @Path("/{id}")
@@ -370,18 +375,18 @@ public class UserController {
 //    }
 //
 //    @RequestMapping(path = "/user/account/updateInfo")
-//    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoForm form) {
+//    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoDto form) {
 //        LOGGER.info("Accessed /user/account/updateInfo GET controller");
 //        return new ModelAndView("views/user/profile/editProfile");
 //    }
 //
 //    @RequestMapping(value = "/user/account/updateInfo", method = RequestMethod.POST)
-//    public ModelAndView updateProfileInfo(@Valid @ModelAttribute("userInfoForm") final UserInfoForm form,
+//    public ModelAndView updateProfileInfo(@Valid @ModelAttribute("userInfoForm") final UserInfoDto form,
 //                                          BindingResult errors, Principal principal) {
 //        LOGGER.info("Accessed /user/account/updateInfo POST controller");
 //
 //        if (errors.hasErrors()) {
-//            LOGGER.warn("Error in form UserInfoForm data");
+//            LOGGER.warn("Error in form UserInfoDto data");
 //            return updateProfile(form);
 //        }
 //
