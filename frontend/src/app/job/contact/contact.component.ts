@@ -15,30 +15,7 @@ export class ContactComponent implements OnInit {
   contactInfoCollection: Contact[] = [
     new Contact('State', 'City', 'Street', 120, 1, 'C', 'I need the job'),
   ];
-  provider: User = {
-    id: 2,
-    name: 'Agus',
-    surname: 'Manfredi',
-    email: 'agus@yopmail.com',
-    phoneNumber: '+5491112345678',
-    state: 'Buenos Aires',
-    city: 'Adrogue',
-    roles: [],
-    profileImage: "",
-    coverImage: "",
-    following: [],
-    followers: [],
-    providerDetails: {
-      location: {
-        cities: [{id: 1, name: 'Burzaco'}],
-        state: {id: 1, name: 'Buenos Aires'},
-      },
-      schedule: {
-        startTime: new Date(),
-        endTime: new Date(),
-      },
-    },
-  };
+  provider: User = new User(1, "","","","","","","","",[]);
   job: Job = {
     id: 1,
     description: 'Fotos de 15 o Casamientos',

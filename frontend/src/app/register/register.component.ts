@@ -1,5 +1,9 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
+import {UserService} from "../auth/user.service";
+import {AuthService} from "../auth/auth.service";
+import {PreviousRouteService} from "../auth/previous-route.service";
 
 @Component({
   selector: 'app-register',
@@ -22,7 +26,12 @@ export class RegisterComponent implements OnInit {
   maxStateLength: number = 50;
   maxCityLength: number = 50;
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private previousRouteService: PreviousRouteService,
+    private router: Router
+  ) {
   }
 
   ngOnInit(): void {
@@ -46,12 +55,52 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if(!this.registerForm.valid){
+    console.log("hola")
+
+    if (!this.registerForm.valid) {
       this.registerForm.markAllAsTouched();
       return;
     }
-    console.log(this.registerForm);
+
+    const registerData = {
+      name: this.registerForm.value.name,
+      surname: this.registerForm.value.surname,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      phoneNumber: this.registerForm.value.phoneNumber,
+      state: this.registerForm.value.state,
+      city: this.registerForm.value.city
+    }
+
+    console.log(registerData)
+
+    const authObs = this.authService.signup(registerData);
+
+    authObs.subscribe(
+      () => {
+        console.log("registered!")
+        this.authService.login(registerData.email, registerData.password)
+          .subscribe(() => {
+              this.userService
+                .populateUserData()
+                .subscribe(() => {
+                  let url = '/user/profile';
+                  if (this.previousRouteService.getAuthRedirect()) {
+                    let prevUrl = this.previousRouteService.getPreviousUrl();
+                    url = !!prevUrl ? prevUrl : url;
+                    this.previousRouteService.setAuthRedirect(false);
+                  }
+                  this.router.navigate([url]);
+                });
+            },
+            errorMessage => {
+              console.log(errorMessage);
+            }
+          );
+      },
+      errorMessage => {
+        console.log(errorMessage);
+      })
   }
-
-
 }
+

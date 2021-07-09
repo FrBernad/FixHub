@@ -10,30 +10,8 @@ import {JobCategoryModel} from "../models/jobCategory.model";
 })
 export class JobComponent implements OnInit {
 
-  provider: User = {
-    id: 2,
-    name: 'Agus',
-    surname: 'Manfredi',
-    email: 'agus@yopmail.com',
-    phoneNumber: '+5491112345678',
-    state: 'Buenos Aires',
-    city: 'Adrogue',
-    profileImage: "",
-    coverImage: "",
-    following: [],
-    followers: [],
-    roles: [],
-    providerDetails: {
-      location: {
-        cities: [{id: 1, name: 'Burzaco'}],
-        state: {id: 1, name: 'Buenos Aires'}
-      },
-      schedule: {
-        startTime: new Date(),
-        endTime: new Date()
-      }
-    },
-  }
+  provider: User = new User(1, "","","","","","","","",[]);
+
 
   job: Job = {
     id: 1, description: 'Armo sillas', jobProvided: 'Sillas de Roble',

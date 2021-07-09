@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.ServerInternalException;
 import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ImageService;
@@ -14,6 +15,7 @@ import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
+import ar.edu.itba.paw.webapp.dto.RegisterDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,10 +62,19 @@ public class UserController {
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response registerUser(@PathParam("id") final long id) {
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+    public Response registerUser(@Valid final RegisterDto registerDto) {
+        User user;
+        try {
+            user = userService.createUser(registerDto.getPassword(),
+                registerDto.getName(), registerDto.getSurname(),
+                registerDto.getEmail(), registerDto.getPhoneNumber(),
+                registerDto.getState(), registerDto.getCity());
+        } catch (DuplicateUserException e) {
+            LOGGER.warn("Error in registerDto RegisterForm, email is already in used");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
-        return Response.ok(null).build();
+        return Response.created(UserDto.getUserUriBuilder(user,uriInfo).build()).build();
     }
 
     @GET

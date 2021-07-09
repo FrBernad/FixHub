@@ -17,6 +17,7 @@ import {NewJobComponent} from "./job/new-job/new-job.component";
 import {ErrorsComponent} from "./errors/errors.component";
 import {JoinComponent} from "./join/join.component";
 import {UnauthGuard} from "./auth/unauth.guard";
+import {ProviderGuard} from "./auth/provider.guard";
 
 const routes: Routes = [
   {
@@ -45,7 +46,7 @@ const routes: Routes = [
       {
         path: 'user/dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, ProviderGuard]
       },
       {
         path: 'login',

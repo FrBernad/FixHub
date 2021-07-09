@@ -2,14 +2,11 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.webapp.dto.customValidations.FieldsValueMatch;
 import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
-@FieldsValueMatch(
-      field = "password",
-      fieldMatch = "confirmPassword"
-    )
 public class RegisterDto {
 
     @NotEmpty
@@ -28,12 +25,8 @@ public class RegisterDto {
     private String email;
 
     @NotEmpty
-    @Size(min=6,max=20)
+    @Size(min = 6, max = 20)
     private String password;
-
-    @NotEmpty
-    @Size(min=6,max=20)
-    private String confirmPassword;
 
     @NotEmpty
     @Size(max = 15)
@@ -84,14 +77,6 @@ public class RegisterDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public String getPhoneNumber() {

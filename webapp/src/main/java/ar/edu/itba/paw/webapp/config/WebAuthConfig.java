@@ -76,7 +76,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount").hasRole("USER")
 //            .antMatchers("/logout").authenticated()
-            .antMatchers("/api/users/{id:[\\d]+}").authenticated()
             .antMatchers(HttpMethod.GET,"/api/user").authenticated()
             .antMatchers(HttpMethod.PUT,"/api/user").authenticated()
 //            //profile routes

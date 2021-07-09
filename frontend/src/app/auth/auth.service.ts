@@ -8,11 +8,21 @@ import {Session} from '../models/session.model';
 import jwtDecode from "jwt-decode";
 import {UserService} from "./user.service";
 
-interface jwt {
+interface Jwt {
   exp: number,
   iat: number,
   roles: string,
   sub: string,
+}
+
+export interface RegisterData {
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  phoneNumber: string,
+  state: string,
+  city: string
 }
 
 @Injectable({providedIn: 'root'})
@@ -29,25 +39,16 @@ export class AuthService {
   ) {
   }
 
-  signup(email: string, password: string) {
+  signup(registerData: RegisterData) {
     return this.http
       .post<Session>(
-        environment.apiBaseUrl + 'signUp',
+        environment.apiBaseUrl + '/users',
         {
-          email: email,
-          password: password,
-          returnSecureToken: true
+          ...registerData
         }
       )
       .pipe(
         catchError(this.handleError),
-        tap(resData => {
-          // this.handleAuthentication(
-          //   resData.email,
-          //   resData.idToken,
-          //   +resData.expiresIn
-          // );
-        })
       );
   }
 
@@ -149,7 +150,7 @@ export class AuthService {
     return throwError(errorMessage);
   }
 
-  private decodeToken(token: string): jwt {
+  private decodeToken(token: string): Jwt {
     return jwtDecode(token);
   }
 
