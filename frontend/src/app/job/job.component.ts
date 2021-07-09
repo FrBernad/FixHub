@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Job} from "../models/job.model";
 import {User} from "../models/user.model";
-import {JobCategoryModel} from "../models/jobCategory.model";
+import {ActivatedRoute, Params} from "@angular/router";
+import {JobService} from "./job.service";
 
 @Component({
   selector: 'app-job',
@@ -13,16 +14,11 @@ export class JobComponent implements OnInit {
   provider: User = new User(1, "","","","","","","","",[]);
 
 
-  job: Job = {
-    id: 1, description: 'Armo sillas', jobProvided: 'Sillas de Roble',
-    category: JobCategoryModel.CARPINTERO, price: 121, totalRatings: 0,
-    averageRating: 0, images: [], reviews: [],
-    provider: this.provider,
-    paused: false,
-    thumbnailId: 1
-  };
+  job: Job = new Job();
+
   loggedUser: User;
   canReview: boolean;
+
 
   results = {
     totalPages: 0
@@ -31,8 +27,9 @@ export class JobComponent implements OnInit {
     results: []
   };
 
-  constructor() {
+  constructor(private route: ActivatedRoute, private jobService: JobService) {
   }
+
 
   getStartTime() {
     let startTime = this.job.provider.providerDetails.schedule.startTime;
@@ -45,6 +42,33 @@ export class JobComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.job.id = params['jobId'];
+      }
+    );
+
+    this.jobService.getJob(+this.job.id).subscribe(
+      responseData => {
+        console.log(responseData.id);
+        this.job.jobProvided = responseData.jobProvided;
+        this.job.description = responseData.description;
+        this.job.category = responseData.category;
+        this.job.price = responseData.price;
+        this.job.provider = this.provider;
+        this.job.totalRatings = responseData.totalRatings;
+        this.job.averageRating = responseData.averageRating;
+        this.job.images = responseData.images;
+        this.job.provider = this.provider;
+        this.job.reviews = [];
+        this.job.paused = responseData.paused;
+        this.job.thumbnailId = 1;
+      }
+    );
   }
+
+  /*{
+
+  };*/
 
 }

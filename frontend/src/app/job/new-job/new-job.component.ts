@@ -1,5 +1,6 @@
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import {JobService} from "../job.service";
 
 @Component({
   selector: 'app-new-job',
@@ -49,7 +50,7 @@ export class NewJobComponent implements OnInit {
   imagesArray = new FormArray([]);
   jobCategory = new FormControl(null, [Validators.required]);
 
-  constructor() {}
+  constructor(private jobService:JobService) {}
 
   ngOnInit(): void {
     this.jobForm = new FormGroup({
@@ -79,7 +80,15 @@ export class NewJobComponent implements OnInit {
       this.jobForm.markAllAsTouched();
       return;
     }
-    console.log(this.jobForm);
+
+
+    console.log(this.jobForm.value);
+
+    this.jobService.createJob(this.jobForm.value).subscribe(
+       response => {
+         console.log(response);
+       }
+    );
   }
 
   onFileChanged(event) {

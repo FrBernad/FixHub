@@ -264,6 +264,7 @@
   "NotEmpty.jobForm.jobProvided": "Enter the name of your service",
   "Pattern.jobForm.jobProvided": "The service name you entered is invalid",
   "NotEmpty.jobForm.description": "Enter a description for the service you offer",
+  "NotEmpty.jobForm.jobCategory" : "Enter the category of your service",
   "Size.jobForm.description": "Description must be less than {{max}} characters",
   "Size.jobForm.jobProvided": "The service name must be less than {{max}} characters",
   "Min.jobForm.price": "Price must be greater than ${{min}}",
