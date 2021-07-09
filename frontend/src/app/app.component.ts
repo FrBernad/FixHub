@@ -20,9 +20,12 @@ import {
   faEye as farEye,
   faEnvelope as farEnvelope
 } from '@fortawesome/free-regular-svg-icons';
-import {ActivatedRoute, Data, NavigationEnd, Router} from "@angular/router";
+
+import {Router, RoutesRecognized} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {filter, map, take, tap} from "rxjs/operators";
+import {AuthService} from "./auth/auth.service";
+import {filter, pairwise} from "rxjs/operators";
+import {PreviousRouteService} from "./auth/previous-route.service";
 
 @Component({
   selector: 'app-root',
@@ -40,8 +43,10 @@ export class AppComponent implements OnInit {
   constructor(public translateService: TranslateService,
               public library: FaIconLibrary,
               private router: Router,
-              private titleService: Title) {
-
+              private authService: AuthService,
+              private previousRouteService: PreviousRouteService,
+              private titleService: Title
+  ) {
   }
 
   ngOnInit(): void {
@@ -54,8 +59,10 @@ export class AppComponent implements OnInit {
       fasChevronDown, fasCamera,
       farEnvelope, fasPhoneAlt,
       fasUserFriends, fasTimes,
-      fasCheck,fasMapMarkerAlt,
+      fasCheck, fasMapMarkerAlt,
     );
+
+    this.authService.autoLogin();
     // this.router.events
     //   .pipe(
     //     filter((event) => event instanceof NavigationEnd),

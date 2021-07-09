@@ -13,30 +13,33 @@ import {AuthService} from './auth.service';
 import {PreviousRouteService} from "./previous-route.service";
 
 @Injectable({providedIn: 'root'})
-export class AuthGuard implements CanActivate {
+export class UnauthGuard implements CanActivate {
+
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private previousRouteService: PreviousRouteService
+    private previousRouteService: PreviousRouteService,
   ) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot,
-              router: RouterStateSnapshot,
-  ): |
-    boolean
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    router: RouterStateSnapshot
+  ):
+    | boolean
     | UrlTree
     | Promise<boolean | UrlTree>
     | Observable<boolean | UrlTree> {
     return this.authService.session.pipe(
       take(1),
       map(session => {
-        if (!!session) {
+        if (!session) {
           return true;
         }
-        this.previousRouteService.setAuthRedirect(true);
-        return this.router.createUrlTree(['/login']);
+        let previousRoute = this.previousRouteService.getPreviousUrl();
+        previousRoute = !!previousRoute ? previousRoute : "/user/profile"
+        return this.router.createUrlTree([previousRoute]);
       })
     );
   }

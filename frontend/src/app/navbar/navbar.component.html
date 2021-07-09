@@ -1,8 +1,7 @@
-<script src="navbar.component.ts"></script>
 <div #backNavbar class="container-fluid px-0 d-none" id="navFix" style="height: 82px"></div>
 <div class="container-fluid p-0">
   <nav #navbar class="navbar navbar-expand navbar-light navbarTop" id="navbar">
-    <div class="container-lg">
+    <div class="container-lg px-0">
       <a routerLink="/" class="navbar-brand me-4">
         <img src='../../assets/images/navbrand.png' alt="FixHub brand logo" height="56px" width="160px"
              type="image/png">
@@ -59,11 +58,11 @@
                   {{'navBar.dashboardItem'| translate}}
                 </a>
                 <div class="dropdown-divider"></div>
-                <form id="logoutForm" class="mb-0 dropdown-item px-0" action="<c:url value='/logout'/>" method="post">
-                  <button type="submit" id="logoutInput" class="ps-3 btn-block text-start">
+                <div class="mb-0 dropdown-item px-0" (click)="onLogout()">
+                  <button type="button" id="logoutInput" class="ps-3 btn-block text-start">
                     {{'navBar.logout' | translate }}
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           </li>

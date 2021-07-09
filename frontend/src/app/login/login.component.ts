@@ -1,14 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
-import {Subscription} from "rxjs";
-import {AppComponent} from "../app.component";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {AuthService} from "../auth/auth.service";
-import {NgForm} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../auth/user.service";
+import {AuthService} from "../auth/auth.service";
+import {PreviousRouteService} from "../auth/previous-route.service";
 
 @Component({
   selector: 'app-login',
@@ -26,6 +21,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
+    private previousRouteService: PreviousRouteService
   ) {
   }
 
@@ -42,17 +38,23 @@ export class LoginComponent implements OnInit {
     // if (!form.valid) {
     //   return;
     // }
-    // const email = form.value.email;
-    // const password = form.value.password;
+    const email = this.loginForm.value.email;
+    const password = this.loginForm.value.password;
 
-    const authObs = this.authService.login("pepe@yopmail.com", "123456");
+    const authObs = this.authService.login(email, password);
 
     authObs.subscribe(
       () => {
         this.userService
           .populateUserData()
           .subscribe(() => {
-            this.router.navigate(['/user/profile']);
+            let url = '/user/profile';
+            if (this.previousRouteService.getAuthRedirect()) {
+              let prevUrl = this.previousRouteService.getPreviousUrl();
+              url = !!prevUrl ? prevUrl : url;
+              this.previousRouteService.setAuthRedirect(false);
+            }
+            this.router.navigate([url]);
           });
       },
       errorMessage => {

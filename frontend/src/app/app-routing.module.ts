@@ -15,6 +15,7 @@ import {EditJobComponent} from "./job/edit-job/edit-job.component";
 import {NewJobComponent} from "./job/new-job/new-job.component";
 import {ErrorsComponent} from "./errors/errors.component";
 import {JoinComponent} from "./join/join.component";
+import {UnauthGuard} from "./auth/unauth.guard";
 
 const routes: Routes = [
   {
@@ -48,6 +49,7 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+        canActivate: [UnauthGuard],
         data: {title: "login.title"}
       },
       {

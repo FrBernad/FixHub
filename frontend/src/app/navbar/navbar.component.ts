@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private renderer: Renderer2
   ) {
   }
@@ -51,6 +52,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.renderer.removeClass(this.navbar.nativeElement, "navbarScrolled");
       this.renderer.addClass(this.navbar.nativeElement, "navbarTop");
     }
+  }
+
+  onLogout(){
+    this.authService.logout();
   }
 
   ngOnDestroy(): void {

@@ -6,19 +6,27 @@ import {throwError, BehaviorSubject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Session} from '../models/session.model';
 import jwtDecode from "jwt-decode";
+import {UserService} from "./user.service";
 
 interface jwt {
   exp: number,
   iat: number,
+  roles: string,
   sub: string,
 }
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+
   session = new BehaviorSubject<Session>(null);
+
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private router: Router
+  ) {
   }
 
   signup(email: string, password: string) {
@@ -67,34 +75,34 @@ export class AuthService {
   }
 
   autoLogin() {
-    const userData: {
-      email: string;
-      id: string;
+    const sessionData: {
       _token: string;
       _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem('userData'));
-    if (!userData) {
+    } = JSON.parse(localStorage.getItem('session'));
+    if (!sessionData) {
       return;
     }
-    //
-    // const loadedUser = new UserModel(
-    //   userData.email,
-    //   userData.id,
-    //   userData._token,
-    //   new Date(userData._tokenExpirationDate)
-    // );
 
-    this.session.next(null);
-    const expirationDuration =
-      new Date(userData._tokenExpirationDate).getTime() -
-      new Date().getTime();
-    this.autoLogout(expirationDuration);
+    const session = new Session(sessionData._token, new Date(sessionData._tokenExpirationDate));
+
+    if (session.token) {
+      this.session.next(session);
+      this.userService.populateUserData().subscribe(() => {
+        const expirationDuration =
+          new Date(sessionData._tokenExpirationDate).getTime() -
+          new Date().getTime();
+        this.autoLogout(expirationDuration);
+      })
+    }
   }
 
   logout() {
     this.session.next(null);
-    this.router.navigate(['/auth']);
-    localStorage.removeItem('userData');
+
+    this.userService.clearUser();
+
+    this.router.navigate(['/login']);
+    localStorage.removeItem('session');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -111,10 +119,14 @@ export class AuthService {
     token: string,
   ) {
     const jwt = this.decodeToken(token);
+
     const expirationDate = new Date(new Date().getTime() + jwt.exp);
     this.autoLogout(jwt.exp);
+
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);
+
+    localStorage.setItem('session', JSON.stringify(newSession));
   }
 
   private handleError(errorRes: HttpErrorResponse) {

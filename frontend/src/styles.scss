@@ -12,6 +12,12 @@ p, h1, h2, h3 {
   word-break: break-word;
 }
 
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
 .outerContainer {
   width: 100%;
   background-image: linear-gradient(261deg, #003b6d 0%, #021b30f2 100%);

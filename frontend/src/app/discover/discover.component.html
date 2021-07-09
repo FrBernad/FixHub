@@ -1,182 +1,174 @@
-  <div class="container-lg py-4">
-    <form class="mb-0" method="GET" id="searchForm"> <!--action="${postPath}"-->
-      <input value="${order}" type="hidden" id="orderInput"/>
-      <input value="${category}" type="hidden" id="categoryInput"/>
-      <input value="${state}" type="hidden" id="stateInput"/>
-      <input value="${city}" type="hidden" id="cityInput"/>
-      <input value="${query}" type="hidden" id="searchInput"/>
-      <input value="${page}" type="hidden" id="pageInput"/>
-    </form>
-    <div class="row pb-4 align-items-center justify-content-between">
-      <div class="col-12 px-0 d-flex align-items-center justify-content-start">
-        <div class="input-group">
-          <input [placeholder]="'discover.barPlaceholder'|translate" class="inputRadius form-control"/>
-          <div class="input-group-prepend" aria-describedby="DiscoverBar">
-            <button id="DiscoverBar" class="btn inputBtn" style="background-color: #003258">
-              {{'discover.search'|translate}}
-            </button>
-          </div>
+<div class="container-lg px-0">
+  <div class="row pb-4 align-items-center justify-content-between">
+    <div class="col-12 d-flex align-items-center justify-content-start">
+      <div class="input-group">
+        <input [placeholder]="'discover.barPlaceholder'|translate" class="inputRadius form-control"/>
+        <div class="input-group-prepend" aria-describedby="DiscoverBar">
+          <button id="DiscoverBar" class="btn inputBtn btn-outline-secondary" style="background-color: #003258">
+            {{'discover.search'|translate}}
+          </button>
         </div>
       </div>
-      <div class="col-12 px-0 justify-content-start align-items-center">
-        <small class="text-danger" style="display: none;" id="searchInvalidLength">
-          {{'landingPage.searchInvalidLength'|translate}}
-        </small>
-      </div>
-      <div class="col-12 mt-4 d-flex p-0 align-items-center justify-content-md-end justify-content-around">
-        <div class="container-fluid px-0">
-          <div class="row justify-content-around align-items-center">
-            <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
-              <div class="dropdown w-100">
-                <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
-                        type="button"
-                        data-bs-toggle="dropdown" id="categoryDropdown" aria-expanded="false">
-                  <span>{{'discover.category'|translate}}</span>
-                  <span class="resultQuery"
-                        *ngIf="results.category!=null else NoCategory">{{'home.categories.' + results.category|translate}}</span>
-                  <ng-template #NoCategory>
-                    <span class="resultQuery">{{'discover.all'|translate}}</span>
-                  </ng-template>
-                </button>
-                <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="categoryDropdown">
-                  <li class="dropdown-item">
-                    <button id="emptyCategoryButton" data-category="" class="dropdown-item">
-                      {{'discover.all'|translate}}
-                    </button>
-                  </li>
-                  <li *ngFor="let category of categories" class="dropdown-item">
-                    <button data-category="{{category}}}" class="dropdown-item">
-                      {{'home.categories.' + category.toString()|translate}}
-                    </button>
-                  </li>
-                </ul>
-              </div>
+    </div>
+    <div class="col-12 justify-content-start align-items-center">
+      <small class="text-danger" style="display: none;" id="searchInvalidLength">
+        {{'landingPage.searchInvalidLength'|translate}}
+      </small>
+    </div>
+    <div class="col-12 mt-4 d-flex align-items-center justify-content-md-end justify-content-around">
+      <div class="container-fluid px-0">
+        <div class="row justify-content-around align-items-center">
+          <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
+            <div class="dropdown w-100">
+              <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
+                      type="button"
+                      data-bs-toggle="dropdown" id="categoryDropdown" aria-expanded="false">
+                <span>{{'discover.category'|translate}}</span>
+                <span class="resultQuery"
+                      *ngIf="results.category!=null else NoCategory">{{'home.categories.' + results.category|translate}}</span>
+                <ng-template #NoCategory>
+                  <span class="resultQuery">{{'discover.all'|translate}}</span>
+                </ng-template>
+              </button>
+              <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="categoryDropdown">
+                <li class="dropdown-item">
+                  <button id="emptyCategoryButton" data-category="" class="dropdown-item">
+                    {{'discover.all'|translate}}
+                  </button>
+                </li>
+                <li *ngFor="let category of categories" class="dropdown-item">
+                  <button data-category="{{category}}}" class="dropdown-item">
+                    {{'home.categories.' + category.toString()|translate}}
+                  </button>
+                </li>
+              </ul>
             </div>
+          </div>
 
-            <div class="col-6 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-md-end">
-              <div class="dropdown w-100">
-                <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
-                        type="button" id="stateDropdown"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="col-6 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-md-end">
+            <div class="dropdown w-100">
+              <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
+                      type="button" id="stateDropdown"
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                  <span>{{'discover.state'|translate}}</span>
+                <span>{{'discover.state'|translate}}</span>
 
-                  <span class="resultQuery" *ngIf="results.state!=null else NoState">{{results.state}}</span>
-                  <ng-template #NoState>
-                    <span class="resultQuery">{{'discover.all'|translate}}</span>
-                  </ng-template>
-                </button>
-                <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="stateDropdown">
-                  <li class="dropdown-item">
-                    <button id="emptyStateButton" data-category="" class="dropdown-item">
-                      {{'discover.all'|translate}}
-                    </button>
-                  </li>
-                  <li *ngFor="let state of states" class="dropdown-item">
-                    <button data-state="{{state}}" class="dropdown-item">
-                      {{state}}
-                    </button>
-                  </li>
-                </ul>
-              </div>
+                <span class="resultQuery" *ngIf="results.state!=null else NoState">{{results.state}}</span>
+                <ng-template #NoState>
+                  <span class="resultQuery">{{'discover.all'|translate}}</span>
+                </ng-template>
+              </button>
+              <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="stateDropdown">
+                <li class="dropdown-item">
+                  <button id="emptyStateButton" data-category="" class="dropdown-item">
+                    {{'discover.all'|translate}}
+                  </button>
+                </li>
+                <li *ngFor="let state of states" class="dropdown-item">
+                  <button data-state="{{state}}" class="dropdown-item">
+                    {{state}}
+                  </button>
+                </li>
+              </ul>
             </div>
+          </div>
 
-            <div class="col-6 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-md-end">
-              <div class="dropdown w-100">
-                <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
-                        type="button" id="cityDropdown"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span>{{'discover.city'|translate}}</span>
-                  <span class="resultQuery" *ngIf="results.city!=null else NoCity">{{results.city}}</span>
-                  <ng-template #NoCity>
-                    <span class="resultQuery">{{'discover.all'|translate}}</span>
-                  </ng-template>
-                </button>
-                <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="cityDropdown">
-                  <li>
-                    <button id="emptyCityButton" data-city="" class="dropdown-item">
-                      {{'discover.all'|translate}}
-                    </button>
-                  </li>
-                  <li *ngFor="let city of cities">
-                    <button data-city="{{city}}}" class="dropdown-item">
-                      {{city|translate}}
-                    </button>
-                  </li>
-                </ul>
-              </div>
+          <div class="col-6 col-md-3 mt-4 mt-md-0 d-flex align-items-center justify-content-md-end">
+            <div class="dropdown w-100">
+              <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
+                      type="button" id="cityDropdown"
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>{{'discover.city'|translate}}</span>
+                <span class="resultQuery" *ngIf="results.city!=null else NoCity">{{results.city}}</span>
+                <ng-template #NoCity>
+                  <span class="resultQuery">{{'discover.all'|translate}}</span>
+                </ng-template>
+              </button>
+              <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="cityDropdown">
+                <li>
+                  <button id="emptyCityButton" data-city="" class="dropdown-item">
+                    {{'discover.all'|translate}}
+                  </button>
+                </li>
+                <li *ngFor="let city of cities">
+                  <button data-city="{{city}}}" class="dropdown-item">
+                    {{city|translate}}
+                  </button>
+                </li>
+              </ul>
             </div>
+          </div>
 
-            <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
-              <div class="dropdown w-100">
-                <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
-                        type="button" id="orderDropdown"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span>{{'discover.orderBy'|translate}}</span>
-                  <span class="resultQuery" *ngIf="results.order!=null else NoOrder">{{'discover.orderOption.'+results.order|translate}}</span>
-                  <ng-template #NoOrder>
-                    <span class="resultQuery">{{"None"|translate}}</span>
-                  </ng-template>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="orderDropdown">
-                  <div *ngFor="let order of orderOptions" class="input-group">
-                    <button data-order="{{order}}" class="dropdown-item orderButton">
-                      {{ 'discover.orderOption.'+order | translate }}
-                    </button>
-                  </div>
+          <div class="col-6 col-md-3 d-flex align-items-center justify-content-md-end">
+            <div class="dropdown w-100">
+              <button class="discoverDropdown dropdown-toggle d-flex align-items-center justify-content-between"
+                      type="button" id="orderDropdown"
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>{{'discover.orderBy'|translate}}</span>
+                <span class="resultQuery"
+                      *ngIf="results.order!=null else NoOrder">{{'discover.orderOption.' + results.order|translate}}</span>
+                <ng-template #NoOrder>
+                  <span class="resultQuery">{{"None"|translate}}</span>
+                </ng-template>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="orderDropdown">
+                <div *ngFor="let order of orderOptions" class="input-group">
+                  <button data-order="{{order}}" class="dropdown-item orderButton">
+                    {{ 'discover.orderOption.' + order | translate }}
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
+</div>
 
 
-  <div class="container-lg px-0">
-    <div class="container-fluid p-0 jobsContainer">
-      <div class="row align-content-start" style="padding: 3em;min-height: 75%">
-        <div *ngIf="[results.query]!=null && ![results.query]"
-             class="col-12 mb-3 resultHeader p-0 d-flex align-items-start">
-          <p class="mb-0">{{'discover.showingResults'}}
-            <span>{{'${results.query}'}}</span>
-          </p>
-        </div>
-        <div class="col-12">
-          <div class="container-fluid px-0" style="min-height: 100%">
-            <div class="row align-content-between" style="min-height: 100%">
-              <ng-template [ngIf]="results.results.length>0" [ngIfElse]="jobsNotFound">
-                <div class="col-12">
-                  <div class="container-fluid p-0">
-                    <div
-                      class="row align-items-top w-100  mx-0 ${fn:length(results.results)%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
-                      <div *ngFor="let job of results.results"
-                           class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                        <app-job-card [job]="job"></app-job-card>
-                      </div>
+<div class="container-lg px-0">
+  <div class="container-fluid jobsContainer px-0">
+    <div class="row align-content-start p-4 pt-3" style="min-height: 75%">
+      <div *ngIf="[results.query]!=null && ![results.query]"
+           class="col-12 mb-3 resultHeader p-0 d-flex align-items-start">
+        <p class="mb-0">{{'discover.showingResults'}}
+          <span>{{'${results.query}'}}</span>
+        </p>
+      </div>
+      <div class="col-12">
+        <div class="container-fluid px-0" style="min-height: 100%">
+          <div class="row align-content-between" style="min-height: 100%">
+            <ng-template [ngIf]="results.results.length>0" [ngIfElse]="jobsNotFound">
+              <div class="col-12">
+                <div class="container-fluid p-0">
+                  <div
+                    class="row align-items-top w-100  mx-0 ${fn:length(results.results)%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
+                    <div *ngFor="let job of results.results"
+                         class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
+                      <app-job-card [job]="job"></app-job-card>
                     </div>
                   </div>
                 </div>
-              </ng-template>
-              <ng-template #jobsNotFound>
-                <div class="col-12 h-100 d-flex align-items-center justify-content-center">
-                  <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
-                    <p class="m-0 text-center p-4" style="font-size: 16px">
-                      {{'discover.jobsNotFound'|translate}}
-                    </p>
-                  </div>
+              </div>
+            </ng-template>
+            <ng-template #jobsNotFound>
+              <div class="col-12 h-100 d-flex align-items-center justify-content-center">
+                <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
+                  <p class="m-0 text-center p-4" style="font-size: 16px">
+                    {{'discover.jobsNotFound'|translate}}
+                  </p>
                 </div>
-              </ng-template>
-            </div>
-            <!--              <%@ include file="../components/pagination.jsp" %>-->
+              </div>
+            </ng-template>
           </div>
+          <!--              <%@ include file="../components/pagination.jsp" %>-->
         </div>
       </div>
-
     </div>
+
   </div>
+</div>
 
 
 <!--<%@ include file="../components/footer.jsp" %>-->
