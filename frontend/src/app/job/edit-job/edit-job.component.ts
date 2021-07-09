@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../models/user.model";
 import {Job} from "../../models/job.model";
+import {JobCategoryModel} from "../../models/jobCategory.model";
 
 @Component({
   selector: 'app-edit-job',
@@ -52,8 +53,8 @@ export class EditJobComponent implements OnInit {
   }
 
   job: Job = {
-    id: 1, description: 'asda', jobProvided: 'dasda',
-    category: 'CARPINTERO', price: 121, totalRatings: 0,
+    id: 1, description: 'sillas de roble o pino', jobProvided: 'Arreglo sillas',
+    category: JobCategoryModel.CARPINTERO, price: 121, totalRatings: 0,
     averageRating: 0, images: [], reviews: [],
     provider: this.provider,
     paused: false,

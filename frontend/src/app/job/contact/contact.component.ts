@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { faAirFreshener } from '@fortawesome/free-solid-svg-icons';
-import { Contact } from './contact.model';
-import {User} from "../../models/user.model";
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from '../../models/user.model';
+import {Contact} from './contact.model';
+import {JobCategoryModel} from "../../models/jobCategory.model";
 import {Job} from "../../models/job.model";
 
 @Component({
@@ -40,9 +40,9 @@ export class ContactComponent implements OnInit {
   };
   job: Job = {
     id: 1,
-    description: 'asda',
-    jobProvided: 'dasda',
-    category: 'CARPINTERO',
+    description: 'Fotos de 15 o Casamientos',
+    jobProvided: 'Fotos eventos',
+    category: JobCategoryModel.FOTOGRAFO,
     price: 121,
     totalRatings: 0,
     averageRating: 0,

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Job} from "../models/job.model";
 import {User} from "../models/user.model";
+import {JobCategoryModel} from "../models/jobCategory.model";
 
 @Component({
   selector: 'app-job',
@@ -34,8 +35,8 @@ export class JobComponent implements OnInit {
   }
 
   job: Job = {
-    id: 1, description: 'asda', jobProvided: 'dasda',
-    category: 'CARPINTERO', price: 121, totalRatings: 0,
+    id: 1, description: 'Armo sillas', jobProvided: 'Sillas de Roble',
+    category: JobCategoryModel.CARPINTERO, price: 121, totalRatings: 0,
     averageRating: 0, images: [], reviews: [],
     provider: this.provider,
     paused: false,
