@@ -45,9 +45,9 @@ public class UserDto {
         this.city = user.getCity();
         this.roles = user.getRoles();
 
-        this.url = uriBuilder.build().toString();
-        this.profileImage = uriBuilder.path("profileImage").build().toString();
-        this.coverImage = uriBuilder.path("coverImage").build().toString();
+        this.url = uriBuilder.clone().build().toString();
+        this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
+        this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
 
     }
 
