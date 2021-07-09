@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.webapp.dto.JobDto;
 import ar.edu.itba.paw.webapp.form.ContactForm;
 import ar.edu.itba.paw.webapp.form.EditJobForm;
 import ar.edu.itba.paw.webapp.form.JobForm;
@@ -17,6 +18,7 @@ import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,18 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
-@Controller
+@Path("jobs")
+@Component
 public class JobController {
 
     @Autowired
@@ -45,14 +54,23 @@ public class JobController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 
-    @RequestMapping("/jobs/{jobId}")
+    @GET
+    @Path("/{jobId}")
+    @Produces(value={MediaType.APPLICATION_JSON})
+/*
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form,
                             @PathVariable("jobId") final Long jobId,
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
                             @RequestParam(defaultValue = "0") int page, Principal principal) {
-
+*/
+    public Response job(@PathParam("jobId") final Long jobId) {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        return Response.ok(new JobDto(job)).build();
+    }
+
+        /*LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 
         final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
         final ModelAndView mav = new ModelAndView("views/jobs/job");
@@ -72,9 +90,9 @@ public class JobController {
 
         mav.addObject("canReview", canReview);
 
-        return mav;
-    }
+        return mav;*/
 
+/*
     @RequestMapping(path = "/jobs/{jobId}", method = RequestMethod.POST)
     public ModelAndView jobReviewPost(@PathVariable("jobId") final long jobId,
                                       @Valid @ModelAttribute("reviewForm") final ReviewForm form,
@@ -235,6 +253,6 @@ public class JobController {
                 }
             }
         }
-    }
+    }*/
 
 }
