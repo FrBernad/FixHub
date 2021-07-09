@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("")
+@Path("/user")
 @Component
 public class WebAuthController {
 
@@ -65,7 +65,7 @@ public class WebAuthController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthController.class);
 
     @POST
-    @Path("/user")
+    @Path("")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response loginUser(UserAuthDto userAuthDto) {
         try {
@@ -80,18 +80,13 @@ public class WebAuthController {
             addAuthorizationHeader(responseBuilder, user);
 
             return responseBuilder.build();
-
         } catch (AuthenticationException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
-    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
-    }
-
     @GET
-    @Path("/user")
+    @Path("")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getUser() {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
@@ -113,7 +108,6 @@ public class WebAuthController {
 
         return new ModelAndView("views/register");
     }
-
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
@@ -255,7 +249,6 @@ public class WebAuthController {
 
         final ModelAndView mav = new ModelAndView("views/user/account/password/resetResult");
         if (userOptional.isPresent()) {
-
             success = true;
             User user = userOptional.get();
             LOGGER.debug("Updated user credentials");
@@ -267,7 +260,6 @@ public class WebAuthController {
     }
 
     //JOIN STEPS
-
     @RequestMapping("/user/join")
     public ModelAndView join(@ModelAttribute("joinForm") final FirstJoinForm form, Principal principal) {
         LOGGER.info("Accessed /user/join GET controller");
@@ -391,5 +383,11 @@ public class WebAuthController {
             .map((role) -> new SimpleGrantedAuthority("ROLE_" + role.name()))
             .collect(Collectors.toList());
     }
+
+
+    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
+        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
+    }
+
 
 }

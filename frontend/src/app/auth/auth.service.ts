@@ -58,7 +58,6 @@ export class AuthService {
         {
           email: email,
           password: password,
-          returnSecureToken: true
         },
         {
           observe: "response"
@@ -84,7 +83,6 @@ export class AuthService {
     }
 
     const session = new Session(sessionData._token, new Date(sessionData._tokenExpirationDate));
-
     if (session.token) {
       this.session.next(session);
       this.userService.populateUserData().subscribe(() => {
@@ -93,7 +91,10 @@ export class AuthService {
           new Date().getTime();
         this.autoLogout(expirationDuration);
       })
+    } else {
+      localStorage.removeItem("session")
     }
+
   }
 
   logout() {
