@@ -1,4 +1,5 @@
-package ar.edu.itba.paw.webapp.form.customValidations;
+package ar.edu.itba.paw.webapp.dto.customValidations;
+
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -7,19 +8,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = FieldsValueNotMatchValidator.class)
-@Target({ElementType.TYPE})
+@Constraint(validatedBy = { InvalidImageTypeValidator.class, InvalidImageTypeListValidator.class })
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldsValueNotMatch {
+public @interface ImageTypeConstraint {
 
-    String message() default "Fields values can't match";
-
-    String field();
-
-    String fieldNotMatch();
-
+    String message() default "Invalid image type";
+    String[] contentType();
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 
 }

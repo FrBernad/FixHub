@@ -1,6 +1,6 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.webapp.form.customValidations.FieldsValueMatch;
+import ar.edu.itba.paw.webapp.dto.customValidations.FieldsValueMatch;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
       field = "password",
       fieldMatch = "confirmPassword"
     )
-public class RegisterForm {
+public class RegisterDto {
 
     @NotEmpty
     @Size(max = 50)

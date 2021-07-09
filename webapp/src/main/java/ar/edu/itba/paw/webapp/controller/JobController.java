@@ -2,28 +2,12 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.contact.ContactDto;
-import ar.edu.itba.paw.models.contact.ContactInfo;
-import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
-import ar.edu.itba.paw.models.job.JobCategory;
-import ar.edu.itba.paw.models.job.Review;
-import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
-import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.JobDto;
-import ar.edu.itba.paw.webapp.form.ContactForm;
-import ar.edu.itba.paw.webapp.form.EditJobForm;
-import ar.edu.itba.paw.webapp.form.JobForm;
-import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;

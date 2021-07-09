@@ -1,10 +1,10 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class ReviewForm {
+public class ReviewDto {
 
     @NotEmpty
     @Size(min=4,max=300)

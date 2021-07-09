@@ -1,6 +1,5 @@
-package ar.edu.itba.paw.webapp.form.customValidations;
+package ar.edu.itba.paw.webapp.dto.customValidations;
 
-import ar.edu.itba.paw.webapp.form.customValidations.ImageTypeConstraint;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;

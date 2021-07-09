@@ -1,10 +1,10 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.webapp.form.customValidations.ImageSizeConstraint;
-import ar.edu.itba.paw.webapp.form.customValidations.ImageTypeConstraint;
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageSizeConstraint;
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import org.springframework.web.multipart.MultipartFile;
 
-public class ProfileImageForm {
+public class ProfileImageDto {
 
     @ImageTypeConstraint(contentType = {"image/png","image/jpeg","image/gif"})
     @ImageSizeConstraint(size=3000000)

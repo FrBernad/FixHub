@@ -1,8 +1,8 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.job.JobCategory;
-import ar.edu.itba.paw.webapp.form.customValidations.ImageSizeConstraint;
-import ar.edu.itba.paw.webapp.form.customValidations.ImageTypeConstraint;
+
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageSizeConstraint;
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,11 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import java.math.BigDecimal;
 import java.util.List;
 
-public class JobForm {
+public class EditJobDto {
 
     @NotEmpty
     @Size(max = 50)
@@ -34,10 +33,9 @@ public class JobForm {
     @ImageSizeConstraint(size=3000000)
     private List<MultipartFile> images;
 
-    private boolean paused;
+    private List<Long> imagesIdDeleted;
 
-    @NotNull
-    private JobCategory jobCategory;
+    private boolean paused;
 
     public String getJobProvided() {
         return jobProvided;
@@ -55,14 +53,6 @@ public class JobForm {
         this.description = description;
     }
 
-    public JobCategory getJobCategory() {
-        return jobCategory;
-    }
-
-    public void setJobCategory(JobCategory jobCategory) {
-        this.jobCategory = jobCategory;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -77,6 +67,14 @@ public class JobForm {
 
     public void setImages(List<MultipartFile> images) {
         this.images = images;
+    }
+
+    public List<Long> getImagesIdDeleted() {
+        return imagesIdDeleted;
+    }
+
+    public void setImagesIdDeleted(List<Long> imagesIdDeleted) {
+        this.imagesIdDeleted = imagesIdDeleted;
     }
 
     public boolean isPaused() {

@@ -1,6 +1,6 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 
-public class SearchForm {
+public class SearchDto {
     private String query;
 
     private String category;

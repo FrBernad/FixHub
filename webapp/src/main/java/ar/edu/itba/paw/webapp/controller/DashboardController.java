@@ -10,7 +10,7 @@ import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.webapp.form.SearchForm;
+import ar.edu.itba.paw.webapp.dto.SearchDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,8 @@ public class DashboardController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardController.class);
 
     @RequestMapping("/user/dashboard")
-    public ModelAndView dashboard(@ModelAttribute("searchForm") final SearchForm form,
-                                  @ModelAttribute("searchForm") final SearchForm form2,
+    public ModelAndView dashboard(@ModelAttribute("searchForm") final SearchDto form,
+                                  @ModelAttribute("searchForm") final SearchDto form2,
                                   Principal principal) {
 
         LOGGER.info("Accessed /user/dashboard GET controller");
@@ -63,7 +63,7 @@ public class DashboardController {
     }
 
     @RequestMapping("/user/dashboard/jobs/search")
-    public ModelAndView dashboardSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors, Principal principal) {
+    public ModelAndView dashboardSearch(@ModelAttribute("searchForm") final SearchDto form, BindingResult errors, Principal principal) {
 
         LOGGER.info("Accessed /user/dashboard/jobs/search GET controller");
 
@@ -86,7 +86,7 @@ public class DashboardController {
     }
 
     @RequestMapping("/user/dashboard/contacts/search")
-    public ModelAndView dashboardContactsSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors, Principal principal) {
+    public ModelAndView dashboardContactsSearch(@ModelAttribute("searchForm") final SearchDto form, BindingResult errors, Principal principal) {
 
         LOGGER.info("Accessed /user/dashboard/contacts/search GET controller");
 

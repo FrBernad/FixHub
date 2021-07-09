@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form.customValidations;
+package ar.edu.itba.paw.webapp.dto.customValidations;
 
 import org.springframework.web.multipart.MultipartFile;
 

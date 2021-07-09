@@ -1,6 +1,6 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.webapp.form.customValidations.FieldsValueNotMatch;
+import ar.edu.itba.paw.webapp.dto.customValidations.FieldsValueNotMatch;
 
 import javax.validation.constraints.Min;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
     field = "startTime",
     fieldNotMatch = "endTime"
 )
-public class FirstJoinForm {
+public class FirstJoinDto {
 
     @Min(1)
     private long state;

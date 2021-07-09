@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
-import ar.edu.itba.paw.webapp.form.SearchForm;
+import ar.edu.itba.paw.webapp.dto.SearchDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class SearchController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
     @RequestMapping("/discover")
-    public ModelAndView discover(@ModelAttribute("searchForm") final SearchForm form) {
+    public ModelAndView discover(@ModelAttribute("searchForm") final SearchDto form) {
         LOGGER.info("Accessed /discover GET controller");
 
         final ModelAndView mav = new ModelAndView("views/discover");
@@ -51,7 +51,7 @@ public class SearchController {
     }
 
     @RequestMapping("/discover/search")
-    public ModelAndView discoverSearch(@ModelAttribute("searchForm") final SearchForm form, BindingResult errors) {
+    public ModelAndView discoverSearch(@ModelAttribute("searchForm") final SearchDto form, BindingResult errors) {
         LOGGER.info("Accessed /discover/search GET controller");
 
         final ModelAndView mav = new ModelAndView("views/discover");

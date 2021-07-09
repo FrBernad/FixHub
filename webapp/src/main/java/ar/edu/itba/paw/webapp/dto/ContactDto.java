@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class ContactForm {
+public class ContactDto {
 
     @NotEmpty
     @Size(max = 50)

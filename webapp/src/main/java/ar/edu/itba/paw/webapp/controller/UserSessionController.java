@@ -3,8 +3,10 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
+import ar.edu.itba.paw.webapp.dto.RegisterDto;
 import ar.edu.itba.paw.webapp.dto.UserAuthDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.dto.UserInfoDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,15 +17,12 @@ import org.springframework.stereotype.Component;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -130,7 +129,7 @@ public class UserSessionController {
         return Response.ok().build();
     }
 
-    public ModelAndView register(@ModelAttribute("registerForm") final RegisterForm form) {
+    public ModelAndView register(@ModelAttribute("registerForm") final RegisterDto form) {
         LOGGER.info("Accessed /register GET controller");
 
         return new ModelAndView("views/register");
