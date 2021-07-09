@@ -42,6 +42,9 @@ export class DiscoverComponent implements OnInit {
     categories = Object.keys(JobCategoryModel).filter((item) => {
     return isNaN(Number(item));});
 
+    states= ['Mendoza','Buenos Aires','Salta'];
+    cities = ['Buenos Aires', 'La Plata', 'Rosario'];
+
 
   job: Job = {
     id: 1, description: 'Armo Sillas', jobProvided: 'Sillas de roble',
@@ -52,16 +55,13 @@ export class DiscoverComponent implements OnInit {
     thumbnailId: 1
   };
 
-  states= ['Mendoza','Buenos Aires','Salta'];
-  cities = ['Buenos Aires', 'La Plata', 'Rosario'];
-
 
 
   results= {
     results: [this.job,this.job,this.job],
     query:null,
-    order:this.orderOptions[0],
-    category:this.categories[0],
+    order:OrderOptionModel.MOST_POPULAR,
+    category:JobCategoryModel.CARPINTERO,
     state:this.states[0],
     city: this.cities[0]
   }
