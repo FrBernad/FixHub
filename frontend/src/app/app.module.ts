@@ -34,6 +34,7 @@ import { ChooseCityComponent } from './join/choose-city/choose-city.component';
 import { ChooseStateComponent } from './join/choose-state/choose-state.component';
 import { FooterComponent } from './footer/footer.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
+import { UpdateInfoComponent } from './update-info/update-info.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {AuthInterceptorService} from "./auth/auth-interceptor.service";
     JoinComponent,
     ChooseCityComponent,
     ChooseStateComponent,
-    FooterComponent
+    FooterComponent,
+    UpdateInfoComponent
   ],
   imports: [
     BrowserModule,
