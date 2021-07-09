@@ -74,6 +74,10 @@ export class EditJobComponent implements OnInit {
   }
 
   onSubmit(){
+    if(!this.editJobForm.valid){
+      this.editJobForm.markAllAsTouched();
+      return;
+    }
     console.log(this.editJobForm);
   }
 

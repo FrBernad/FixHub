@@ -75,6 +75,10 @@ export class NewJobComponent implements OnInit {
   }
 
   onSubmit() {
+    if(!this.jobForm.valid){
+      this.jobForm.markAllAsTouched();
+      return;
+    }
     console.log(this.jobForm);
   }
 

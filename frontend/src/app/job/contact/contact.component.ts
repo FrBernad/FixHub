@@ -80,6 +80,10 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
+    if(!this.contactForm.valid){
+      this.contactForm.markAllAsTouched();
+      return;
+    }
     console.log(this.contactForm);
   }
 

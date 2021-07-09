@@ -29,6 +29,10 @@ export class ReviewFormComponent implements OnInit {
   }
 
   onSubmit() {
+    if(!this.reviewForm.valid){
+      this.reviewForm.markAllAsTouched();
+      return;
+    }
 
   }
 
