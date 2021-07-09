@@ -16,31 +16,62 @@
         <div class="container-lg">
           <div class="row">
             <div class="col-12 d-flex align-items-center justify-content-center">
-              <form class="registerForm">
+              <form class="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                   <label class="mb-2">
                     {{'registerForm.userNameTitle' | translate}}
                     <span class="required-field">*</span>
                   </label>
-                  <input type="text" cssErrorClass="form-control is-invalid"
-                         class="form-control"
-                         placeholder="{{'registerForm.namePlaceholder' | translate}}"/>
+                  <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                    placeholder="{{'registerForm.namePlaceholder' | translate}}" formControlName="name" />
+                  <span *ngIf="!registerForm.get('name').valid && registerForm.get('name').touched">
+                    <span *ngIf="registerForm.get('name').errors['required']" class="errorMessage">
+                      {{'NotEmpty.registerForm.name' | translate }}<br>
+                    </span>
+                    <span *ngIf="registerForm.get('name').errors['maxlength']" class="errorMessage">
+                      {{'Size.registerForm.name' | translate: {max: maxNameLength} }}
+                    </span>
+                    <span *ngIf="registerForm.get('name').errors['pattern']" class="errorMessage">
+                      {{'Pattern.registerForm.name' | translate }}
+                    </span>
+                  </span>
                 </div>
                 <div class="form-group">
                   <label class="mb-2">
                     {{'registerForm.userSurnameTitle' | translate}}
                     <span class="required-field">*</span>
                   </label>
-                  <input type="text" cssErrorClass="form-control is-invalid"
-                         class="form-control" placeholder="{{'registerForm.surnamePlaceholder' | translate}}"/>
+                  <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                    placeholder="{{'registerForm.surnamePlaceholder' | translate}}" formControlName="surname" />
+                  <span *ngIf="!registerForm.get('surname').valid && registerForm.get('surname').touched">
+                    <span *ngIf="registerForm.get('surname').errors['required']" class="errorMessage">
+                      {{'NotEmpty.registerForm.surname' | translate }}<br>
+                    </span>
+                    <span *ngIf="registerForm.get('surname').errors['maxlength']" class="errorMessage">
+                      {{'Size.registerForm.surname' | translate: {max: maxSurnameLength} }}
+                    </span>
+                    <span *ngIf="registerForm.get('surname').errors['pattern']" class="errorMessage">
+                      {{'Pattern.registerForm.surname' | translate }}
+                    </span>
+                  </span>
                 </div>
                 <div class="form-group">
                   <label class="mb-2">
                     {{'registerForm.userEmailTitle' | translate}}
                     <span class="required-field">*</span></label>
-                  <input type="email" cssErrorClass="form-control is-invalid"
-                         class="form-control"
-                         placeholder="{{'registerForm.emailPlaceholder' | translate}}"/>
+                  <input type="email" cssErrorClass="form-control is-invalid" class="form-control"
+                    placeholder="{{'registerForm.emailPlaceholder' | translate}}" formControlName="email" />
+                  <span *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched">
+                    <span *ngIf="registerForm.get('email').errors['required']" class="errorMessage">
+                      {{'NotEmpty.registerForm.email' | translate }}<br>
+                    </span>
+                    <span *ngIf="registerForm.get('email').errors['maxlength']" class="errorMessage">
+                      {{'Size.registerForm.email' | translate: {max: maxEmailLength} }}
+                    </span>
+                    <span *ngIf="registerForm.get('email').errors['pattern']" class="errorMessage">
+                      {{'Pattern.registerForm.email' | translate }}
+                    </span>
+                  </span>
                 </div>
                 <div class="form-group">
                   <label class="mb-2">
@@ -48,18 +79,26 @@
                     <span class="required-field">*</span>
                   </label>
                   <div class="input-group d-flex justify-content-start align-items-center">
-                    <input type="password" class="form-control"
-                           name="password"
-                           placeholder="{{'registerForm.passwordPlaceHolder' | translate}}"
-                           cssErrorClass="form-control is-invalid"/>
+                    <input type="password" class="form-control" name="password"
+                      placeholder="{{'registerForm.passwordPlaceHolder' | translate}}"
+                      cssErrorClass="form-control is-invalid" formControlName="password" />
                     <div class="input-group-append">
-                      <button type="button" tabindex="-1"
-                              (click)="toogleEye1()"
-                              class="form-control input-group-text passwordInput">
+                      <button type="button" tabindex="-1" (click)="toogleEye1()"
+                        class="form-control input-group-text passwordInput">
                         <fa-icon [icon]="['far',showPass1 ? 'eye-slash' : 'eye']"></fa-icon>
                       </button>
                     </div>
                   </div>
+                  <span *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched">
+                    <span *ngIf="registerForm.get('password').errors['required']" class="errorMessage">
+                      {{'NotEmpty.registerForm.password' | translate }}<br>
+                    </span>
+                    <span
+                      *ngIf="registerForm.get('password').errors['minlength'] || registerForm.get('password').errors['maxlength']"
+                      class="errorMessage">
+                      {{'Size.registerForm.password' | translate: {min: minPasswordLength, max: maxPasswordLength} }}
+                    </span>
+                  </span>
                 </div>
                 <div class="form-group">
                   <label class="mb-2">
@@ -67,13 +106,11 @@
                     <span class="required-field">*</span>
                   </label>
                   <div class="input-group d-flex justify-content-start align-items-center">
-                    <input type="password" class="form-control"
-                           name="confirmPassword"
-                           aria-describedby="password input" cssErrorClass="form-control is-invalid"/>
+                    <input type="password" class="form-control" name="confirmPassword" aria-describedby="password input"
+                      cssErrorClass="form-control is-invalid" />
                     <div class="input-group-append">
-                      <button type="button" tabindex="-1"
-                              (click)="toogleEye2()"
-                              class="form-control passwordInput input-group-text">
+                      <button type="button" tabindex="-1" (click)="toogleEye2()"
+                        class="form-control passwordInput input-group-text">
                         <fa-icon [icon]="['far',showPass2 ? 'eye-slash' : 'eye']"></fa-icon>
                       </button>
                     </div>
@@ -84,8 +121,19 @@
                   <label class="mb-2">
                     {{'registerForm.userPhoneTitle' | translate}}
                     <span class="required-field">*</span></label>
-                  <input type="text" cssErrorClass="form-control is-invalid"
-                         class="form-control" placeholder="{{'registerForm.phoneNumberPlaceholder' | translate}}"/>
+                  <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                    placeholder="{{'registerForm.phoneNumberPlaceholder' | translate}}" formControlName="phoneNumber" />
+                  <span *ngIf="!registerForm.get('phoneNumber').valid && registerForm.get('phoneNumber').touched">
+                    <span *ngIf="registerForm.get('phoneNumber').errors['required']" class="errorMessage">
+                      {{'NotEmpty.registerForm.phoneNumber' | translate }}<br>
+                    </span>
+                    <span *ngIf="registerForm.get('phoneNumber').errors['maxlength']" class="errorMessage">
+                      {{'Size.registerForm.phoneNumber' | translate: {max: maxPhoneNumberLength} }}
+                    </span>
+                    <span *ngIf="registerForm.get('phoneNumber').errors['pattern']" class="errorMessage">
+                      {{'Pattern.registerForm.phoneNumber' | translate }}
+                    </span>
+                  </span>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -93,8 +141,19 @@
                       <label class="mb-2">
                         {{'registerForm.userStateTitle' | translate}}
                         <span class="required-field">*</span></label>
-                      <input type="text" cssErrorClass="form-control is-invalid"
-                             class="form-control" placeholder="{{'registerForm.userStatePlaceholder' | translate}}"/>
+                      <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                        placeholder="{{'registerForm.userStatePlaceholder' | translate}}" formControlName="state" />
+                      <span *ngIf="!registerForm.get('state').valid && registerForm.get('state').touched">
+                        <span *ngIf="registerForm.get('state').errors['required']" class="errorMessage">
+                          {{'NotEmpty.registerForm.state' | translate }}<br>
+                        </span>
+                        <span *ngIf="registerForm.get('state').errors['maxlength']" class="errorMessage">
+                          {{'Size.registerForm.state' | translate: {max: maxStateLength} }}
+                        </span>
+                        <span *ngIf="registerForm.get('state').errors['pattern']" class="errorMessage">
+                          {{'Pattern.registerForm.state' | translate }}
+                        </span>
+                      </span>
                     </div>
                   </div>
                   <div class="col">
@@ -102,14 +161,24 @@
                       <label class="mb-2">
                         {{'registerForm.userCityTitle' | translate}}
                         <span class="required-field">*</span></label>
-                      <input type="text" cssErrorClass="form-control is-invalid"
-                             class="form-control"
-                             placeholder="{{'registerForm.userCityTitlePlaceholder' | translate}}"/>
+                      <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                        placeholder="{{'registerForm.userCityTitlePlaceholder' | translate}}" formControlName="city" />
+                      <span *ngIf="!registerForm.get('city').valid && registerForm.get('city').touched">
+                        <span *ngIf="registerForm.get('city').errors['required']" class="errorMessage">
+                          {{'NotEmpty.registerForm.city' | translate }}<br>
+                        </span>
+                        <span *ngIf="registerForm.get('city').errors['maxlength']" class="errorMessage">
+                          {{'Size.registerForm.city' | translate: {max: maxCityLength} }}
+                        </span>
+                        <span *ngIf="registerForm.get('city').errors['pattern']" class="errorMessage">
+                          {{'Pattern.registerForm.city' | translate }}
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div class="col-12 px-0 d-flex align-items-center justify-content-center">
-                  <button type="button" class="w-100 continueBtn my-2">
+                  <button type="submit" class="w-100 continueBtn my-2">
                     {{'registerForm.buttonText' | translate}}
                   </button>
                 </div>
