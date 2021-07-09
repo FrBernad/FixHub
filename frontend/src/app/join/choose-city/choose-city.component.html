@@ -12,9 +12,9 @@
               <div class="col d-flex align-items-center justify-content-center">
                 <div class="dropdown">
                   <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
-                          data-bs-toggle="dropdown" aria-expanded="false">
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="state" id="cityName">
-                       {{ 'cityForm.city' | translate }}
+                      {{ 'cityForm.city' | translate }}
                     </span>
                     {{ citySelected.name }}
                   </button>
@@ -32,18 +32,18 @@
               </div>
             </div>
           </div>
-<!--      <span *ngIf="!chooseCityForm.get('city').valid && chooseCityForm.get('city').touched">
-                  <span *ngIf="chooseCityForm.get('city').errors['required']" class="errorMessage">
-                    {{'NotEmpty.chooseCityForm.city' | translate }}<br>
-                  </span>
-          </span>-->
-
+          <span *ngIf="!chooseCityForm.get('cities').valid">
+            <span *ngIf="chooseCityForm.get('cities').errors['required']" class="errorMessage">
+              {{'NotEmpty.chooseCityForm.city' | translate }}<br>
+            </span>
+          </span>
           <div class="form-group">
             <div class="row">
               <div class="col">
                 <div class="container-fluid" id="citiesHolder" style="width: 418px;">
-                  <button *ngFor="let citySel of citiesSelected; let i = index" (click)="deleteCity(i)" type="button" class="cityTag m-2">
-                    {{ citySel.name }}
+                  <button *ngFor="let citySel of citiesSelected.controls; let i = index" (click)="deleteCity(i)"
+                    type="button" class="cityTag m-2">
+                    {{ citySel.value.name }}
                     <fa-icon [icon]="['fas','times']" class="ms-1"></fa-icon>
                   </button>
                 </div>

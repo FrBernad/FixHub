@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-choose-city',
@@ -11,7 +11,7 @@ export class ChooseCityComponent implements OnInit {
   cities = [{id: '1', name: 'Palermo'}, {id: 2, name: 'Belgrano'}, {id: 3, name: 'Caballito'}];
   chooseCityForm: FormGroup;
   citySelected: { id: number, name: string } = {id: -1, name: ''};
-  citiesSelected: { id: number, name: string }[] = [];
+  citiesSelected = new FormArray([], Validators.required);
   @Output() citiesChosen = new EventEmitter<void>();
 
 
@@ -20,7 +20,7 @@ export class ChooseCityComponent implements OnInit {
 
   ngOnInit(): void {
     this.chooseCityForm = new FormGroup({
-
+      cities: this.citiesSelected
     });
   }
 
@@ -30,11 +30,13 @@ export class ChooseCityComponent implements OnInit {
       if (city.id === this.citiesSelected[i].id)
         return;
     }
-    this.citiesSelected.push(city);
+    (<FormArray>this.chooseCityForm.get('cities')).push(
+      new FormControl(city)
+    );
   }
 
   deleteCity(index: number) {
-    this.citiesSelected.splice(index, 1);
+    this.citiesSelected.removeAt(index);
     let len = this.citiesSelected.length;
     if (len == 0) {
       this.citySelected = {id: -1, name: ''};
