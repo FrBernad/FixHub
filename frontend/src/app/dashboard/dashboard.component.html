@@ -1,63 +1,64 @@
 <div class="container-lg userContainerProfile pb-4 px-0">
   <div class="row">
     <div class="col-3">
-      <div class="list-group" role="tablist" id="tabList">
-        <a href="#dashboard" class="list-group-item list-group-item-action active" data-toggle="list" role="tab"
-           data-name="${dashboard}" id="tabDashboard">
-          <i class="fas fa-chart-line me-2"></i><span class="text">{{'navBar.dashboard' | translate}}</span>
-        </a>
-        <a href="#works" class="list-group-item list-group-item-action inactive" data-toggle="list" role="tab"
-           data-name="${work}" id="tabWorks">
-          <i class="fas fa-wrench me-2"></i><span class="text">{{'dashboard.Work' | translate}}</span><span
-          class="badge badge-pill badge-secondary">jobsCount</span>
-        </a>
-        <a href="#contacts" class="list-group-item list-group-item-action inactive" data-toggle="list" role="tab"
-           data-name="${contacts}" id="tabContacts">
-          <i class="fas fa-address-book me-2"></i>
+      <div class="nav flex-column nav-pills" role="tablist" id="tabList">
+        <button class="nav-link" [ngClass]="{'active' : activeTab==='dashboard'}" (click)="changeTab('dashboard')"
+          data-bs-toggle="pill">
+          <fa-icon [icon]="['fas', 'chart-line']" class="me-2"></fa-icon><span class="text">{{'navBar.dashboard' |
+            translate}}</span>
+        </button>
+        <button class="nav-link" [ngClass]="{'active' : activeTab==='works'}" (click)="changeTab('works')">
+          <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon><span class="text">{{'dashboard.Work' |
+            translate}}</span><span class="badge rounded-pill bg-secondary">7</span>
+        </button>
+        <button class="nav-link" [ngClass]="{'active' : activeTab==='contacts'}" (click)="changeTab('contacts')">
+          <fa-icon [icon]="['fas', 'address-book']" class="me-2"></fa-icon>
           <span class="text">{{'dashboard.Contacts' | translate}}</span>
-          <span class="badge badge-pill badge-secondary">
-              contactsCount
-            </span>
-        </a>
+          <span class="badge rounded-pill bg-secondary">
+            5
+          </span>
+        </button>
       </div>
     </div>
     <div class="col-9">
       <div class="card">
         <div class="card-header" id="panelTitle">
-          {{'navBar.dashboard' | translate}}
+          {{'dashboard.'+activeTab.charAt(0).toUpperCase()+activeTab.slice(1) | translate}}
         </div>
         <div class="card-body">
           <div class="container">
             <div class="row">
               <div class="tab-content w-100">
-
-
                 <!-- Dashboard -->
-                <div class="tab-pane fade" role="tabpanel" id="dashboard">
+                <div class="tab-pane fade" role="tabpanel" id="dashboard"
+                  [ngClass]="{'show active' : activeTab==='dashboard'}">
                   <div class="col-12">
                     <div class="container-fluid p-0">
                       <div class="row align-items-center justify-content-between">
                         <div class="col-4">
                           <div class="card card-body info-box">
-                            <h2><i class="fas fa-wrench me-2"></i>
-                              jobsCount
+                            <h2>
+                              <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon>
+                              1
                             </h2>
                             <h4>{{'dashboard.Works' | translate}}</h4>
                           </div>
                         </div>
                         <div class="col-4">
                           <div class="card card-body info-box">
-                            <h2><i class="fas fa-star me-2"></i>avgRating
+                            <h2>
+                              <fa-icon [icon]="['fas', 'star']" class="me-2"></fa-icon>3
                             </h2>
                             <h4>{{'dashboard.Rating' | translate}}</h4>
                           </div>
                         </div>
                         <div class="col-4">
                           <div class="card card-body info-box">
-                            <h2><i class="fas fa-comment me-2"></i>
-                              reviewCount
+                            <h2>
+                              <fa-icon [icon]="['fas', 'wrench']"></fa-icon>
+                              15
                             </h2>
-                            <h4>dashboard.Reviews</h4>
+                            <h4>{{'dashboard.Reviews' | translate}}</h4>
                           </div>
                         </div>
                         <div class="col-12 px-0 my-2">
@@ -74,11 +75,11 @@
                                 </h3>
                               </div>
                               <div class="col-1  mb-4 d-flex align-items-center justify-content-end">
-                                <!-- <a href="<c:url value="/user/account/updateProviderStateAndTime"/>"> -->
-                                <button class="editBtn">
-                                  <i class="fas fa-pen"></i>
-                                </button>
-                                <!-- </a> -->
+                                <a href="/user/account/updateProviderStateAndTime">
+                                  <button class="editBtn">
+                                    <fa-icon [icon]="['fas', 'pen']"></fa-icon>
+                                  </button>
+                                </a>
                               </div>
                               <div class="col-12">
                                 <div class="container-fluid">
@@ -86,24 +87,22 @@
                                     <div class="col-6">
                                       <div class="card card-body h-100 position-relative">
                                         <div class="row">
-                                          <div style="position: absolute; top: -15px;left: -10px">
-                                            <i class="fas fa-2x info-box fa-compass "></i>
+                                          <div style="position: absolute; top: -15px;left: -20px">
+                                            <fa-icon [icon]="['fas', 'compass']" size="2x" class="info-box"></fa-icon>
                                           </div>
                                           <div class="col-12">
-                                            <span class="font-weight-bold">{{'contactForm.state' | translate}}:</span>
+                                            <span class="fw-bold">{{'contactForm.state' | translate}}:</span>
                                             <span>
-                                                loggedUser.providerDetails.location.state.name
-                                              </span>
+                                              <!-- {{loggedUser.providerDetails.location.state.name}} -->
+                                            </span>
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left mb-0">
-                                              <span class="font-weight-bold">job.information.city</span>
-                                              <!-- <c:forEach var="city"
-                                                                                                         items="${loggedUser.providerDetails.location.cities}"
-                                                                                                         varStatus="loop">
-                                                                                                  <c:out value="${city.name}"/>
-                                                                                                  <c:if test="${!loop.last}">,</c:if>
-                                                                                              </c:forEach> -->
+                                              <span class="fw-bold">{{'job.information.city' | translate}}</span>
+                                              <!-- <ng-container *ngFor="let city of loggedUser.providerDetails.location.cities; let i = index; let last = last">
+                                                {{city.name}}
+                                                <ng-container *ngIf="i != last">,</ng-container>
+                                              </ng-container> -->
                                             </p>
                                           </div>
                                         </div>
@@ -112,30 +111,20 @@
                                     <div class="col-6">
                                       <div class="card card-body h-100 position-relative">
                                         <div class="row">
-                                          <div style="position: absolute; top: -15px;left: -10px">
-                                            <i class="fas fa-2x info-box fa-clock"></i>
+                                          <div style="position: absolute; top: -15px;left: -20px">
+                                            <fa-icon [icon]="['fas', 'clock']" size="2x" class="info-box"></fa-icon>
                                           </div>
                                           <div class="col-1 d-flex align-items-center justify-content-center">
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left m-0">
-                                              <span class="font-weight-bold">job.information.time</span>
+                                              <span class="fw-bold">{{'job.information.time' | translate}}</span>
                                             </p>
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left m-0">
                                               <!-- {{'job.information.from' | translate: {value: loggedUser.providerDetails.schedule.startTime}}} -->
                                               <!-- {{'job.information.to' | translate: {value: loggedUser.providerDetails.schedule.endTime}}} -->
-                                              <!-- <spring:message
-                                                                                                      code="job.information.from"
-                                                                                                      arguments="${loggedUser.providerDetails.schedule.startTime}"
-                                                                                                      javaScriptEscape="true"
-                                                                                                      htmlEscape="true"/>
-                                                                                              <spring:message
-                                                                                                      code="job.information.to"
-                                                                                                      arguments="${loggedUser.providerDetails.schedule.endTime}"
-                                                                                                      javaScriptEscape="true"
-                                                                                                      htmlEscape="true"/> -->
                                             </p>
                                           </div>
                                         </div>
@@ -162,15 +151,13 @@
                                       <form:input path="page" type="hidden" id="pageInput"/>
                                   </form:form> -->
 
-                <div class="tab-pane fade" role="tabpanel" id="works">
+                <div class="tab-pane fade" role="tabpanel" id="works" [ngClass]="{'show active' : activeTab==='works'}">
                   <div class="container-fluid">
                     <div class="row align-content-start">
                       <div class="col-7 d-flex align-items-center justify-content-start">
                         <div class="input-group">
-                          <!-- <input placeholder="<spring:message code="dashboard.barPlaceholder"/>"
-                                                             id="searchBar"
-                                                             class="inputRadius form-control p-4"/>
-                                                            -->
+                          <input placeholder="{{'dashboard.barPlaceholder' | translate}}" id="searchBar"
+                            class="inputRadius form-control p-4" />
                           <div class="input-group-prepend">
                             <button id="searchButton" class="btn inputBtn">
                               {{'discover.search' | translate}}
@@ -179,26 +166,23 @@
                         </div>
                       </div>
                       <div class="col-5 d-flex align-items-center justify-content-end">
-                        <div class="dropdown ">
+                        <div class="dropdown">
                           <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{'discover.orderBy' | translate}}
                             <span class="resultQuery">
-                                <!-- <c:if test="${results.order!=null && !results.order.isEmpty()}">
-                                                                <spring:message
-                                                                        code="discover.orderOption.${results.order}"/>
-                                                            </c:if> -->
-                              </span>
+                              <!-- <ng-container *ngIf="results.order!=null && results.order.length > 0">
+                                {{'discover.orderOption.'+results.order | translate}}
+                              </ng-container> -->
+                            </span>
                           </button>
-                          <div class="dropdown-menu" aria-labelledby="orderDropdown">
-                            <!-- <c:forEach var="order" items="${orderOptions}"> -->
-                            <div class="input-group">
+                          <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+                            <li *ngFor="let order of orderOptions" class="input-group">
                               <button data-order="${order}" class="dropdown-item orderButton">
-                                {{'discover.orderOption.order' | translate}}
+                                {{'discover.orderOption.'+order | translate}}
                               </button>
-                            </div>
-                            <!-- </c:forEach> -->
-                          </div>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                       <div class="col-12 justify-content-start align-items-center">
@@ -208,42 +192,31 @@
                       </div>
                     </div>
                     <div class="row">
-                      <!-- <c:if test="${results.query!=null && !results.query.isEmpty()}"> -->
-                      <div class="col-12 my-2 resultHeader d-flex align-items-start">
+                      <!-- <div *ngIf="results.query != null && results.query.length > 0" class="col-12 my-2 resultHeader d-flex align-items-start">
                         <p class="mb-0">
                           {{'discover.showingResults' | translate}}
                           <span>{{'results.query' | translate}}</span>
                         </p>
-                      </div>
-                      <!-- </c:if> -->
-
-                      <!-- <c:choose> -->
-                      <!-- <c:when test="${fn:length(results.results) gt 0}"> -->
-                      <div class="col-12">
+                      </div> -->
+                      <!-- <div *ngIf="results.results.length > 0;else noResults" class="col-12">
                         <div class="container-fluid px-0">
                           <div
                             class="row align-items-top ${fn:length(results.results)%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
-                            <!-- <c:forEach var="job" items="${results.results}">
-                                                          <div class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center
+                            <div *ngFor="let job of results.results" class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center
                                                                       justify-content-center">
-                                                              jobCard
-                                                          </div>
-                                                          </c:forEach> -->
+                              jobCard
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <!-- </c:when> -->
-                      <!-- <c:otherwise> -->
-                      <div class="col-12 d-flex py-4 align-items-center justify-content-center">
+                      <div #noResults
+                        class="col-12 d-flex py-4 align-items-center justify-content-center">
                         <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
                           <p class="m-0 text-center p-4" style="font-size: 16px">
                             {{'discover.jobsNotFound' | translate}}
                           </p>
                         </div>
-                      </div>
-                      <!-- </c:otherwise> -->
-                      <!-- </c:choose> -->
-                      pagination
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -257,52 +230,45 @@
                                       <form:input path="query" type="hidden" id="searchInput2"/>
                                       <form:input path="page" type="hidden" id="pageInput2"/>
                                   </form:form> -->
-                <div class="tab-pane fade" role="tabpanel" id="contacts">
-                  <!-- <c:choose>
-                                          <c:when test="${contactsResults.totalPages > 0}">
-                                              <c:forEach var="contact" items="${contactsResults.results}"
-                                                         varStatus="status"> -->
-                  <div class="mt-2">
+                <div class="tab-pane fade" role="tabpanel" id="contacts"
+                  [ngClass]="{'show active' : activeTab==='contacts'}">
+
+                  <!-- <div *ngIf="contactsResults.totalPages > 0;else noPages"
+                    *ngFor="let contact of contactsResults.results" class="mt-2">
                     clientsContactCard
                   </div>
-                  <!-- </c:forEach>
-                                          </c:when>
-                                          <c:otherwise> -->
-                  <div class="col-12 d-flex align-items-center justify-content-center">
+                  <div #noPages class="col-12 d-flex align-items-center justify-content-center">
                     <div class="container mt-2 d-flex align-items-center justify-content-center">
                       <p class="m-0 text-center p-4" style="font-size: 16px">
                         {{'dashboard.Contact.Empty' | translate}}
                       </p>
                     </div>
-                  </div>
-                  <!-- </c:otherwise>
-                                      </c:choose> -->
+                  </div> -->
 
                   <div class="col-12 align-items-center justify-content-center mt-4
                                                      ${contactsResults.totalPages<=1 ? 'd-none':''} ">
                     <nav class="d-flex align-items-center justify-content-center">
                       <ul class="pagination mb-0" id="pagination2" data-page="${contactsResults.page}"
-                          data-contactmodal="${contactTab}">
-                        <li class="page-item ${contactsResults.isFirst() ? 'disabled' : ''}">
+                        data-contactmodal="${contactTab}">
+                        <!-- <li class="page-item" [ngClass]="{disabled: contactsResults == 0}">
                           <a class="page-link" id="prev2" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                           </a>
-                        </li>
+                        </li> -->
                         <!-- <c:forEach begin="1"
                                                              end="${contactsResults.totalPages}"
                                                              varStatus="status">
-                                                  <li
-                                                      class="page-item ${contactsResults.page == status.index-1 ? 'active' : ''}">
+                                                  <li *ngFor="" class="page-item ${contactsResults.page == status.index-1 ? 'active' : ''}">
                                                       <a class="page-link index2"
                                                           data-index="${status.index}">status.index
                                                       </a>
                                                   </li>
                                                   </c:forEach> -->
-                        <li class="page-item ${contactsResults.isLast() ? 'disabled' : ''}">
+                        <!-- <li class="page-item" [ngClass]="{disabled: contactsResults == contactsResults.length-1}">
                           <a class="page-link" id="next2" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                           </a>
-                        </li>
+                        </li> -->
                       </ul>
                     </nav>
                   </div>

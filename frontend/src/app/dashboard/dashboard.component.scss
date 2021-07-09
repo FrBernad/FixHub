@@ -1,0 +1,176 @@
+.nav > .active {
+  background-color: var(--quaternary-color) !important;
+  border-color: var(--quaternary-color) !important;
+  color: var(--tertiary-color) !important;
+}
+
+.dropDownArrow:hover {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.dropDownArrow {
+  color: black;
+}
+
+.accordion a {
+  color: black;
+  font-weight: 500;
+  transition: hover 1s;
+}
+
+.accordion a:hover {
+  color: rgb(0,104,192);
+  text-decoration: none;
+}
+
+.accordionCard {
+  border: none;
+  background-color: transparent;
+}
+
+.card-header {
+  color: black !important;
+}
+
+.card-body {
+  background-color: var(--tertiary-color);
+}
+
+.nav-link {
+  display: flex !important;
+  align-items: center !important;
+  border: 1px solid rgba(0,0,0,.125);
+}
+
+.nav-link .text {
+  flex: 1 !important;
+}
+
+.nav-link .badge {
+  flex: 0 0 auto !important;
+  width: 3em;
+}
+
+.info-box {
+  border-color: var(--quaternary-color) !important;
+  color: var(--primary-color) !important;
+  text-align: center !important;
+}
+
+.table-head {
+  background-color: var(--primary-color) !important;
+  color: var(--tertiary-color) !important;
+}
+
+.client-label{
+  font-weight: bolder;
+}
+
+.detailsSection {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.editBtn {
+  height: 40px;
+  border: none;
+  width: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.nav-pills {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-radius: .25rem;
+  background-color: #fff;
+}
+
+
+.page-item {
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: var(--primary-color);
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.inputBtn {
+  border-radius: 0 8px 8px 0 !important;
+  background-color: rgba(0, 59, 109, 1);
+  color: white;
+}
+
+.inputBtn:hover {
+  transition: 150ms linear;
+  color: rgba(255, 255, 255, .9);
+}
+
+.noJobsFound {
+  height: 300px;
+  width: auto;
+  background-color: white
+}
+
+.dropdown-custom {
+  width: 100%;
+  border-radius: 8px !important;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+}
+
+.resultQuery {
+  font-size: 12px;
+}
+
+.resultHeader {
+  max-height: 70px;
+}
+
+.resultHeader p span {
+  color: rgb(196, 85, 0);
+}
+
+.inputRadius::placeholder {
+  color: black !important;
+}
+
+.inputRadius {
+  padding: 8px 16px!important;
+  color: black !important;
+  border-radius: 8px 0 0 8px !important;
+}
+
+

@@ -8,7 +8,7 @@ import {OrderOptionModel} from "../models/orderOption.model";
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html',
-  styleUrls: ['./discover.component.scss', '/job-card/job-card.component.scss', '../join/join.component.scss', '../landing-page/landing-page.component.scss']
+  styleUrls: ['./discover.component.scss', './job-card/job-card.component.scss', '../join/join.component.scss', '../landing-page/landing-page.component.scss']
 })
 export class DiscoverComponent implements OnInit {
 

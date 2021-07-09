@@ -12,7 +12,13 @@ import {
   faUserFriends as fasUserFriends,
   faTimes as fasTimes,
   faCheck as fasCheck,
-  faMapMarkerAlt as fasMapMarkerAlt
+  faMapMarkerAlt as fasMapMarkerAlt,
+  faChartLine,
+  faWrench,
+  faAddressBook,
+  faPen,
+  faCompass,
+  faClock
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -60,6 +66,8 @@ export class AppComponent implements OnInit {
       farEnvelope, fasPhoneAlt,
       fasUserFriends, fasTimes,
       fasCheck, fasMapMarkerAlt,
+      faChartLine, faWrench, faAddressBook,
+      faPen, faCompass, faClock
     );
 
     this.authService.autoLogin();
