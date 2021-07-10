@@ -37,6 +37,7 @@ import {Title} from "@angular/platform-browser";
 import {AuthService} from "./auth/auth.service";
 import {filter, pairwise} from "rxjs/operators";
 import {PreviousRouteService} from "./auth/previous-route.service";
+import {JobsService} from "./discover/jobs.service";
 
 @Component({
   selector: 'app-root',
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
               private router: Router,
               private authService: AuthService,
               private previousRouteService: PreviousRouteService,
+              private jobsService: JobsService,
               private titleService: Title
   ) {
   }

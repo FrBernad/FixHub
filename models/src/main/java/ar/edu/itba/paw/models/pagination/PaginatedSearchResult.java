@@ -133,6 +133,10 @@ public class PaginatedSearchResult<T> {
         return results;
     }
 
+    public int getLastPage() {
+        return (int) Math.floor((float) totalItems / itemsPerPage);
+    }
+
     public void setResults(Collection<T> results) {
         this.results = results;
     }

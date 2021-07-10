@@ -35,6 +35,7 @@ import { ChooseStateComponent } from './join/choose-state/choose-state.component
 import { FooterComponent } from './footer/footer.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import { UpdateInfoComponent } from './update-info/update-info.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { UpdateInfoComponent } from './update-info/update-info.component';
     ChooseCityComponent,
     ChooseStateComponent,
     FooterComponent,
-    UpdateInfoComponent
+    UpdateInfoComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

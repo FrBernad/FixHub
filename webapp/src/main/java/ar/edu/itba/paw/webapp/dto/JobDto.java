@@ -9,8 +9,10 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JobDto {
 
@@ -18,6 +20,9 @@ public class JobDto {
         return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId()));
     }
 
+    public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo) {
+        return jobs.stream().map(p -> new JobDto(p, uriInfo)).collect(Collectors.toList());
+    }
 
     private Long id;
 
@@ -43,7 +48,7 @@ public class JobDto {
 
 //    private Set<Review> reviews;
 
-   private int maxImagesPerJob;
+    private int maxImagesPerJob;
 
 
     public JobDto() {
@@ -61,31 +66,15 @@ public class JobDto {
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = UserDto.getUserUriBuilder(job.getProvider(),uriInfo).build();
+        this.provider = UserDto.getUserUriBuilder(job.getProvider(), uriInfo).build();
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
-            this.images.add(ImageDto.getImageUriBuilder(image,uriInfo).build());
+            this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build());
         }
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
         this.maxImagesPerJob = Job.MAX_IMAGES_PER_JOB;
 
-    }
-
-    public URI getProvider() {
-        return provider;
-    }
-
-    public void setProvider(URI provider) {
-        this.provider = provider;
-    }
-
-    public Set<URI> getImages() {
-        return images;
-    }
-
-    public void setImages(Set<URI> images) {
-        this.images = images;
     }
 
     public Long getId() {
@@ -120,6 +109,22 @@ public class JobDto {
         this.jobProvided = jobProvided;
     }
 
+    public URI getProvider() {
+        return provider;
+    }
+
+    public void setProvider(URI provider) {
+        this.provider = provider;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -136,14 +141,6 @@ public class JobDto {
         this.paused = paused;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public Integer getAverageRating() {
         return averageRating;
     }
@@ -158,6 +155,14 @@ public class JobDto {
 
     public void setTotalRatings(Long totalRatings) {
         this.totalRatings = totalRatings;
+    }
+
+    public Set<URI> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<URI> images) {
+        this.images = images;
     }
 
     public int getMaxImagesPerJob() {

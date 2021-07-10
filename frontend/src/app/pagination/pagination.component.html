@@ -1,0 +1,29 @@
+<div class="col-12 align-items-center justify-content-center mt-4
+    ${results.totalPages<=1 ? 'd-none':''} ">
+  <nav class="d-flex align-items-center justify-content-center">
+    <ul class="pagination mb-0" id="pagination"
+        data-searched="${searched}"
+        data-page="${results.page}">
+      <li
+        [ngClass]="{'page-item':true, 'disabled':currentPage === 0}"
+      >
+        <a (click)="setPage(currentPage-1)" class="page-link" id="prev"
+           aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li *ngFor="let page of numSequence(totalPages)"
+          [ngClass]="{'page-item':true, 'active':currentPage === page}">
+        <a (click)="setPage(page)" class="page-link index">
+          {{page + 1}}
+        </a>
+      </li>
+      <li [ngClass]="{'page-item':true, 'disabled':currentPage === totalPages-1}">
+        <a (click)="setPage(currentPage+1)" class="page-link" id="next"
+           aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

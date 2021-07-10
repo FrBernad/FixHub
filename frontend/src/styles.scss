@@ -91,3 +91,34 @@ p, h1, h2, h3 {
   color: #003B6D;
 }
 
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: .25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  background-color: transparent;
+  border: 0;
+  font-size: 14px;
+}
+
+.dropdownItem:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-item:active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.dropdown-item:hover, .dropdown-item:hover button {
+  background-color: var(--primary-color);
+  color: white !important;
+}
+

@@ -1,24 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.webapp.dto.JobDto;
+import ar.edu.itba.paw.webapp.dto.PaginatedResultDto;
+import ar.edu.itba.paw.webapp.dto.StringCollectionResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
-import java.net.URI;
-import java.security.Principal;
+import javax.ws.rs.core.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Path("jobs")
 @Component
@@ -33,6 +29,9 @@ public class JobController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SearchService searchService;
+
     @Context
     private UriInfo uriInfo;
 
@@ -41,16 +40,87 @@ public class JobController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 
+
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getJobs(
+        @QueryParam("query") @DefaultValue("") String query,
+        @QueryParam("order") @DefaultValue("MOST_POPULAR") String order,
+        @QueryParam("category") String category,
+        @QueryParam("state") String state,
+        @QueryParam("city") String city,
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+    ) {
+        LOGGER.info("Accessed /jobs GET controller");
+
+        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, pageSize);
+
+        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo);
+
+        final PaginatedResultDto<JobDto> resultsDto =
+            new PaginatedResultDto<>(
+                results.getPage(),
+                results.getTotalPages(),
+                jobsDto);
+
+        Response.ResponseBuilder response = Response.ok(
+            new GenericEntity<PaginatedResultDto<JobDto>>(resultsDto) {
+            });
+
+        final UriBuilder uriBuilder = uriInfo
+            .getAbsolutePathBuilder()
+            .queryParam("pageSize", pageSize)
+            .queryParam("order", order)
+            .queryParam("query", query);
+
+        if (category != null) {
+            uriBuilder.queryParam("category", category);
+        }
+
+        if (state != null) {
+            uriBuilder.queryParam("state", state);
+            if (city != null) {
+                uriBuilder.queryParam("city", state);
+            }
+        }
+
+        addPaginationLinks(response, results, uriBuilder);
+
+        return response.build();
+    }
+
+    private <T> void addPaginationLinks(Response.ResponseBuilder responseBuilder, PaginatedSearchResult<T> results, UriBuilder uriBuilder) {
+        final int page = results.getPage();
+
+        final int first = 0;
+        final int last = results.getLastPage();
+        final int prev = page - 1;
+        final int next = page + 1;
+
+        responseBuilder.link(uriBuilder.clone().queryParam("page", first).build(), "first");
+
+        responseBuilder.link(uriBuilder.clone().queryParam("page", last).build(), "last");
+
+        if (page != first) {
+            responseBuilder.link(uriBuilder.clone().queryParam("page", prev).build(), "prev");
+        }
+
+        if (page != last) {
+            responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
+        }
+    }
+
     @GET
     @Path("/{jobId}")
-    @Produces(value={MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.APPLICATION_JSON})
     public Response job(@PathParam("jobId") final Long jobId) {
         LOGGER.info("Accessed /jobs/{} GET controller", jobId);
         final Optional<Job> job = jobService.getJobById(jobId);
-        if(!job.isPresent()){
+        if (!job.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
-        JobDto jobDto = new JobDto(job.get(),uriInfo);
+        JobDto jobDto = new JobDto(job.get(), uriInfo);
         return Response.ok(jobDto).build();
     }
 /*
@@ -59,6 +129,17 @@ public class JobController {
                             final Integer error,
                             @RequestParam(defaultValue = "false") final boolean paginationModal,
                             @RequestParam(defaultValue = "0") int page, Principal principal) {
+
+    @GET
+    @Path("/categories")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getCategories() {
+        LOGGER.info("Accessed /jobs/categories GET controller");
+        final Collection<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
+
+        return Response.ok(new StringCollectionResponseDto(categories)).build();
+    }
+
 
         /*LOGGER.info("Accessed /jobs/{} GET controller", jobId);
 

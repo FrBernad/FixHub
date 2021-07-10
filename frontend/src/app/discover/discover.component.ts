@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from "../models/user.model";
 import {Job} from "../models/job.model";
 import {JobCategoryModel} from "../models/jobCategory.model";
 import {OrderOptionModel} from "../models/orderOption.model";
+import {City, JobPaginationQuery, JobPaginationResult, JobsService, State} from "./jobs.service";
+import {Subscription} from "rxjs";
+import {map, take, tap} from "rxjs/operators";
 
 
 @Component({
@@ -10,46 +13,115 @@ import {OrderOptionModel} from "../models/orderOption.model";
   templateUrl: './discover.component.html',
   styleUrls: ['./discover.component.scss', './job-card/job-card.component.scss', '../join/join.component.scss', '../landing-page/landing-page.component.scss']
 })
-export class DiscoverComponent implements OnInit {
+export class DiscoverComponent implements OnInit, OnDestroy {
 
-  provider: User = new User(1, "","","","","","","","",[]);
+  jpr: JobPaginationResult = {
+    results: [],
+    page: 0,
+    totalPages: 0,
+  }
+
+  jpq: JobPaginationQuery = {
+    page: 0,
+    pageSize: 6,
+    order: "MOST_POPULAR"
+  }
+
+  searchError = false;
+
+  cities: City[] = [];
+  states: State[] = [];
+  selectedState: string = ""
+  selectedCity: string = ""
 
   orderOptions = Object.keys(OrderOptionModel).filter((item) => {
     return isNaN(Number(item));
   });
 
-  categories = Object.keys(JobCategoryModel).filter((item) => {
-    return isNaN(Number(item));
-  });
+  categories: string[] = [];
 
-  states = ['Mendoza', 'Buenos Aires', 'Salta'];
-  cities = ['Buenos Aires', 'La Plata', 'Rosario'];
+  private jobsSub: Subscription;
 
-
-  job: Job = {
-    id: 1, description: 'Armo Sillas', jobProvided: 'Sillas de roble',
-    category: JobCategoryModel.CARPINTERO, price: 121, totalRatings: 0,
-    averageRating: 0, images: [], reviews: [],
-    provider: this.provider,
-    paused: false,
-    thumbnailId: 1
-  };
-
-
-  results = {
-    results: [this.job, this.job, this.job],
-    query: null,
-    order: OrderOptionModel.MOST_POPULAR,
-    category: JobCategoryModel.CARPINTERO,
-    state: this.states[0],
-    city: this.cities[0]
-  }
-
-
-  constructor() {
+  constructor(
+    private jobsService: JobsService
+  ) {
   }
 
   ngOnInit(): void {
+    this.jobsService.populateJobs(this.jpq.pageSize)
+    this.jobsSub = this.jobsService.results.subscribe((results) => {
+      this.jpr = {
+        ...this.jpr,
+        ...results
+      };
+    });
+
+    this.jobsService.getCategories().subscribe((categories) => {
+      this.categories = categories.values;
+    });
+
+    this.jobsService.getStates().subscribe((states) => {
+      this.states = states;
+    });
+  }
+
+  onChangeCategory(category: string) {
+    this.jpq.category = category;
+    this.jobsService.getJobs(this.jpq)
+  }
+
+  onChangeOrder(order: string) {
+    this.jpq.order = order;
+    this.jobsService.getJobs(this.jpq)
+  }
+
+  onChangeState(state: string, id: string) {
+    this.selectedState = state;
+    this.jpq.state = id;
+    this.jobsService.getJobs(this.jpq)
+    if (!!state) {
+      this.jobsService.getStateCities(id).subscribe((cities) => {
+        this.cities = cities;
+      });
+    } else {
+      this.selectedCity = "";
+      this.jpq.city = "";
+      this.cities = [];
+    }
+  }
+
+  onChangeCity(city: string, id: string) {
+    this.selectedCity = city;
+    this.jpq.city = id;
+    this.jobsService.getJobs(this.jpq)
+  }
+
+  onChangePage(page: number) {
+    this.jpq.page = page;
+    this.jobsService.getJobs(this.jpq)
+  }
+
+  onSearchEnter(e: KeyboardEvent, query: string) {
+    if (e.key === "Enter") {
+      this.onSearch(query);
+    }
+  }
+
+  onSearch(query: string) {
+    if (!this.searchError) {
+      this.jpq.page = 0;
+      this.jpq.query = query;
+      this.jobsService.getJobs(this.jpq)
+    }
+  }
+
+  checkLength(query: string) {
+    console.log(query.length)
+    this.searchError = query.length > 50;
+  }
+
+  ngOnDestroy(): void {
+    this.jobsSub.unsubscribe();
   }
 
 }

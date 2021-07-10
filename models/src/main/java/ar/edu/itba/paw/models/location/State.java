@@ -25,10 +25,6 @@ public class State {
         // Just for Hibernate
     }
 
-    public State(String name, Collection<City> cities) {
-        this.name = name;
-    }
-
     public long getId() {
         return id;
     }
