@@ -28,6 +28,7 @@ export class EditJobComponent implements OnInit {
 
   imagesArray = new FormArray([]);
   imagesToDeleteArray = new FormArray([]);
+  imagesToUploadArray = new FormArray([]);
 
 
   job: Job = new Job();
@@ -68,23 +69,30 @@ export class EditJobComponent implements OnInit {
       'jobCategory': new FormControl(this.job.category, [Validators.required]),
       'price': new FormControl(this.job.price, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]),
       'description': new FormControl(this.job.description, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]),
+      'paused': new FormControl(this.job.paused),
       'images': this.imagesArray,
-      'imagesToDelete': this.imagesToDeleteArray
+      'imagesToDelete': this.imagesToDeleteArray,
+      'imagesToUpload': this.imagesToUploadArray
     })
-
 
     this.jobService.getJob(+this.job.id).subscribe(
       responseData => {
         this.job.jobProvided = responseData.jobProvided;
+        this.editJobForm.patchValue({jobProvided: responseData.jobProvided});
         this.job.description = responseData.description;
+        this.editJobForm.patchValue({description: responseData.description});
         this.job.category = responseData.category;
+        this.editJobForm.patchValue({jobCategory: responseData.category});
         this.job.price = responseData.price;
+        this.editJobForm.patchValue({price: responseData.price});
         this.job.provider = responseData.provider;
         this.job.totalRatings = responseData.totalRatings;
         this.job.averageRating = responseData.averageRating;
         this.job.images = responseData.images;
+        this.editJobForm.get('imagesToUpload').patchValue(responseData.images);
         this.job.reviews = [];
         this.job.paused = responseData.paused;
+        this.editJobForm.patchValue({paused: responseData.paused});
         this.job.thumbnailImage = responseData.thumbnailImage;
         this.isFetching = false;
         this.job.images.forEach(image => {
@@ -99,11 +107,11 @@ export class EditJobComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.editJobForm);
     if (!this.editJobForm.valid) {
       this.editJobForm.markAllAsTouched();
       return;
     }
-    console.log(this.editJobForm);
   }
 
   onFileChanged(event) {
@@ -122,7 +130,7 @@ export class EditJobComponent implements OnInit {
     }
 
     if (this.imagesArray.length < this.maxImagesPerJob) {
-      (<FormArray>this.editJobForm.get('images')).push(
+      (<FormArray>this.editJobForm.get('imagesToUpload')).push(
         new FormControl(file)
       );
     }
@@ -138,8 +146,7 @@ export class EditJobComponent implements OnInit {
 
   deleteUploadImage(index: number) {
     if (index >= 0) {
-      console.log(this.imagesArray[index]);
-      this.imagesArray.removeAt(index);
+      this.imagesToUploadArray.removeAt(index);
     }
   }
 
