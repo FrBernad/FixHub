@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.webapp.dto.JobDto;
+import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.dto.PaginatedResultDto;
 import ar.edu.itba.paw.webapp.dto.StringCollectionResponseDto;
 import org.slf4j.Logger;
@@ -120,7 +121,8 @@ public class JobController {
         if (!job.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
-        JobDto jobDto = new JobDto(job.get(), uriInfo);
+        UserDto userDto = new UserDto(job.get().getProvider(),uriInfo);
+        JobDto jobDto = new JobDto(job.get(),userDto,uriInfo);
         return Response.ok(jobDto).build();
     }
 /*

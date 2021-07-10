@@ -11,14 +11,12 @@ import {JobService} from "./job.service";
 })
 export class JobComponent implements OnInit {
 
-  provider: User = new User(1, "","","","","","","","",[]);
-
-
   job: Job = new Job();
 
   loggedUser: User;
   canReview: boolean;
-
+  selectedIndex = 0;
+  isFetching = true;
 
   results = {
     totalPages: 0
@@ -30,15 +28,35 @@ export class JobComponent implements OnInit {
   constructor(private route: ActivatedRoute, private jobService: JobService) {
   }
 
+  selectPrevious(){
+    if(this.selectedIndex == 0){
+      this.selectedIndex = this.job.images.length-1;
+    }else {
+      this.selectedIndex--;
+    }
+    console.log(this.selectedIndex);
+
+  }
+
+  selectNext(){
+    if(this.selectedIndex == this.job.images.length-1){
+      this.selectedIndex = 0;
+    }else {
+      this.selectedIndex++;
+    }
+    console.log(this.selectedIndex);
+  }
 
   getStartTime() {
-    let startTime = this.job.provider.providerDetails.schedule.startTime;
-    return startTime.getHours() + ':' + startTime.getMinutes();
+    // let startTime = this.job.provider.providerDetails.schedule.startTime;
+    // return startTime.getHours() + ':' + startTime.getMinutes();
+    return '1'
   }
 
   getEndTime() {
-    let endTime = this.job.provider.providerDetails.schedule.endTime;
-    return endTime.getHours() + ':' + endTime.getMinutes();
+    // let endTime = this.job.provider.providerDetails.schedule.endTime;
+    // return endTime.getHours() + ':' + endTime.getMinutes();
+    return '2';
   }
 
   ngOnInit(): void {
@@ -55,20 +73,17 @@ export class JobComponent implements OnInit {
         this.job.description = responseData.description;
         this.job.category = responseData.category;
         this.job.price = responseData.price;
-        this.job.provider = this.provider;
+        this.job.provider = responseData.provider;
         this.job.totalRatings = responseData.totalRatings;
         this.job.averageRating = responseData.averageRating;
         this.job.images = responseData.images;
-        this.job.provider = this.provider;
         this.job.reviews = [];
         this.job.paused = responseData.paused;
         this.job.thumbnailId = 1;
+        this.isFetching = false;
       }
     );
   }
 
-  /*{
-
-  };*/
 
 }

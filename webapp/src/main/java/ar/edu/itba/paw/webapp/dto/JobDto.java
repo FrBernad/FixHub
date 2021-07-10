@@ -32,7 +32,7 @@ public class JobDto {
 
     private String jobProvided;
 
-    private URI provider;
+    private UserDto provider;
 
     private String url;
 
@@ -55,7 +55,7 @@ public class JobDto {
         //use by Jersey
     }
 
-    public JobDto(Job job, UriInfo uriInfo) {
+    public JobDto(Job job, UserDto provider,UriInfo uriInfo) {
 
         final UriBuilder uriBuilder = getJobUriBuilder(job, uriInfo);
         this.url = uriBuilder.build().toString();
@@ -66,7 +66,7 @@ public class JobDto {
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = UserDto.getUserUriBuilder(job.getProvider(), uriInfo).build();
+        this.provider = provider;
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
             this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build());
@@ -75,6 +75,22 @@ public class JobDto {
         this.totalRatings = job.getTotalRatings();
         this.maxImagesPerJob = Job.MAX_IMAGES_PER_JOB;
 
+    }
+
+    public UserDto getProvider() {
+        return provider;
+    }
+
+    public void setProvider(UserDto provider) {
+        this.provider = provider;
+    }
+
+    public Set<URI> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<URI> images) {
+        this.images = images;
     }
 
     public Long getId() {
