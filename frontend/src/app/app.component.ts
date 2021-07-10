@@ -29,6 +29,7 @@ import {
 import {
   faEyeSlash as farEyeSlash,
   faEye as farEye,
+  faStar as farStar,
   faEnvelope as farEnvelope
 } from '@fortawesome/free-regular-svg-icons';
 
@@ -75,7 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
       farEnvelope, fasPhoneAlt,
       fasUserFriends, fasTimes,
       fasCheck, fasMapMarkerAlt,
-      faChartLine, faWrench, faAddressBook,
+      faChartLine, faWrench, faAddressBook,farStar,
       faPen, faCompass, faClock, faTrash, faUpload,
       faInfoCircle, faCamera, faTimes
     );

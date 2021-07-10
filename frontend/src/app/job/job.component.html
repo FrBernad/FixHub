@@ -78,12 +78,12 @@
                     </div>
                     <div class="col-12 pl-0 mt-2">
 
-                      <!-- <c:forEach begin="1" end="${job.averageRating}">
-                          <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
-                      </c:forEach>
-                      <c:forEach begin="${job.averageRating}" end="4">
-                          <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
-                      </c:forEach>-->
+                      <fa-icon *ngFor="let r of [0, 1, 2, 3, 4] | slice:0:job.averageRating" [icon]="['fas', 'star']"
+                               class="me-2 iconsColor"></fa-icon>
+
+                      <fa-icon *ngFor="let r of [0, 1, 2, 3, 4] | slice:job.averageRating:5" [icon]="['far', 'star']"
+                               class="me-2 iconsColor"></fa-icon>
+
                       <span style="font-style: normal; font-weight: 400;">
                           ({{ job.totalRatings }})
                       </span>
