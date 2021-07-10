@@ -43,7 +43,7 @@ export class LandingPageComponent implements OnInit {
     averageRating: 0, images: [], reviews: [],
     provider: this.provider,
     paused: false,
-    thumbnailId: 1
+    thumbnailImage: ''
   };
 
   jobs = [

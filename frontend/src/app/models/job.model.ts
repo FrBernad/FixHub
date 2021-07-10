@@ -10,7 +10,7 @@ export class Job{
   totalRatings: number;
   averageRating: number;
   images :  [];
-  thumbnailId: number;
+  thumbnailImage: string;
   reviews : [];
   provider: User;
   paused: boolean;

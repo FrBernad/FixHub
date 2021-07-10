@@ -76,7 +76,7 @@ export class JobComponent implements OnInit {
         this.job.images = responseData.images;
         this.job.reviews = [];
         this.job.paused = responseData.paused;
-        this.job.thumbnailId = 1;
+        this.job.thumbnailImage = responseData.thumbnailImage;
         this.isFetching = false;
       }
     );

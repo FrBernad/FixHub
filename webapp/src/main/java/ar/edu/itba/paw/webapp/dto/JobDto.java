@@ -9,9 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JobDto {
@@ -46,6 +44,8 @@ public class JobDto {
 
     private Set<URI> images;
 
+    private URI thumbnailImage;
+
 //    private Set<Review> reviews;
 
     private int maxImagesPerJob;
@@ -71,6 +71,8 @@ public class JobDto {
         for (Image image : job.getImages()) {
             this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build());
         }
+        Optional<URI> maybeThumbailImage = this.images.stream().findFirst();
+        maybeThumbailImage.ifPresent(uri -> this.thumbnailImage = uri);
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
         this.maxImagesPerJob = Job.MAX_IMAGES_PER_JOB;
@@ -171,5 +173,13 @@ public class JobDto {
 
     public void setMaxImagesPerJob(int maxImagesPerJob) {
         this.maxImagesPerJob = maxImagesPerJob;
+    }
+
+    public URI getThumbnailImage() {
+        return thumbnailImage;
+    }
+
+    public void setThumbnailImage(URI thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
     }
 }

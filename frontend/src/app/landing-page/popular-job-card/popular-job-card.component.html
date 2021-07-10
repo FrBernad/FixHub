@@ -25,17 +25,15 @@
     </div>
   </div>
   <div class="jobCardImgContainer">
-    <!--<img src="jobs/images/${job.thumbnailId}"-->
     <ng-template [ngIf]="job.images.length >0" [ngIfElse]="noImages">
 
-      <img src="#" alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
+      <img src="{{job.thumbnailImage}}" alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
     </ng-template>
 
     <ng-template #noImages>
-      <!--      src="<c:url value='/resources/images/${job.category}.jpg'/>"-->
       <img class="card-img jobCardImg"
-           src="#"
-           alt="${{ 'home.categories.' + job.category | translate }}">
+           src="../../../assets/images/{{job.category}}.jpg"
+           alt="{{ 'home.categories.' + job.category | translate }}">
     </ng-template>
 
     <span class="badge rounded-pill bg-secondary category" style="position: absolute; top: 10px; left: 10px">

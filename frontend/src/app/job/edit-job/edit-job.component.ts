@@ -85,7 +85,7 @@ export class EditJobComponent implements OnInit {
         this.job.images = responseData.images;
         this.job.reviews = [];
         this.job.paused = responseData.paused;
-        this.job.thumbnailId = responseData.thumbnailId;
+        this.job.thumbnailImage = responseData.thumbnailImage;
         this.isFetching = false;
         this.job.images.forEach(image => {
           (<FormArray>this.editJobForm.get('images')).push(

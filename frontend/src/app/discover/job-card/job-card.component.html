@@ -1,17 +1,13 @@
 <div class="card jobCard">
   <div class="jobCardImgContainer" style="position:relative;">
     <ng-template [ngIf]="job.images.length > 0" [ngIfElse]="noImages">
-      <!--<img src="<c:url value='/jobs/images/${job.thumbnailId}'/>"
-           alt="${job.category}" class="card-img jobCardImg">-->
-      <img src="#"
-           alt="Imagen no disponible" class="card-img jobCardImg">
+      <img src="{{job.thumbnailImage}}"
+           alt="{{job.jobProvided}}" class="card-img jobCardImg">-->
     </ng-template>
     <ng-template #noImages>
-      <!--<img class="card-img jobCardImg"
-           src="<c:url value='/resources/images/${job.category}.jpg'/>"
-           alt="${job.category}">-->
-      <img src="#"
-           alt="imagen no disponible" class="card-img jobCardImg">
+      <img class="card-img jobCardImg"
+           src="../../../assets/images/{{job.category}}.jpg"
+           alt="{{job.jobProvided}}">
     </ng-template>
 
     <div class="jobPrice">
