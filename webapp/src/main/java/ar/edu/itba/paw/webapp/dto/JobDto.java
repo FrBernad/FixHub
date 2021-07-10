@@ -159,12 +159,20 @@ public class JobDto {
         this.totalRatings = totalRatings;
     }
 
-    public Set<URI> getImages() {
+    public Set<String> getImages() {
         return images;
     }
 
-    public void setImages(Set<URI> images) {
+    public void setImages(Set<String> images) {
         this.images = images;
+    }
+
+    public String getThumbnailImage() {
+        return thumbnailImage;
+    }
+
+    public void setThumbnailImage(String thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
     }
 
     public int getMaxImagesPerJob() {
@@ -175,11 +183,4 @@ public class JobDto {
         this.maxImagesPerJob = maxImagesPerJob;
     }
 
-    public URI getThumbnailImage() {
-        return thumbnailImage;
-    }
-
-    public void setThumbnailImage(URI thumbnailImage) {
-        this.thumbnailImage = thumbnailImage;
-    }
 }
