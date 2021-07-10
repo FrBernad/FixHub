@@ -42,9 +42,9 @@ public class JobDto {
 
     private Long totalRatings;
 
-    private Set<URI> images;
+    private Set<String> images;
 
-    private URI thumbnailImage;
+    private String thumbnailImage;
 
 //    private Set<Review> reviews;
 
@@ -69,9 +69,9 @@ public class JobDto {
         this.provider = new UserDto(job.getProvider(),uriInfo);
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
-            this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build());
+            this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build().toString());
         }
-        Optional<URI> maybeThumbailImage = this.images.stream().findFirst();
+        Optional<String> maybeThumbailImage = this.images.stream().findFirst();
         maybeThumbailImage.ifPresent(uri -> this.thumbnailImage = uri);
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
