@@ -65,10 +65,10 @@
                     <div class="col-12 pl-0 mt-2">
 
                       <!-- <c:forEach begin="1" end="${job.averageRating}">
-                          <i class="fas iconsColor fa-star fa-1x mr-2"></i>
+                          <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
                       </c:forEach>
                       <c:forEach begin="${job.averageRating}" end="4">
-                          <i class="far iconsColor fa-star fa-1x mr-2"></i>
+                          <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
                       </c:forEach>-->
                       <span style="font-style: normal; font-weight: 400;">
                                                 ({{ job.totalRatings }})
@@ -92,7 +92,7 @@
                       </div>
                       <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
                         <div *ngIf="job.paused">
-                          <i class="fas fa-info-circle ml-1" style="color:#ffc107"></i>
+                          <fa-icon [icon]="['fas', 'info-circle']" class="ms-1" style="color:#ffc107"></fa-icon>
                           <span>
                               {{ 'job.pause' | translate }}
                           </span>
@@ -114,7 +114,7 @@
                       </div>
                       <ng-template #jobPaused>
                         <div class="col-12">
-                          <i class="fas fa-info-circle mr-2" style="color:#ffc107"></i>
+                          <fa-icon [icon]="['fas', 'info-circle']" class="me-2" style="color:#ffc107"></fa-icon>
                           <span>
                             {{ 'job.pause' | translate }}
                           </span>

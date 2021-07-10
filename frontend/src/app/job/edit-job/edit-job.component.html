@@ -20,7 +20,7 @@
                                    style="object-fit: cover; height: 100%; width: 100%">-->
                               <span class="imageDelete" style="cursor: pointer;" data-image-id="${image.id}">
                                 <button class="deleteButton" type="button">
-                                  <i class="fas fa-trash fa-lg trashIcon"></i>
+                                  <fa-icon [icon]="['fas', 'trash']"></fa-icon>
                                 </button>
                               </span>
                             </div>
@@ -73,7 +73,7 @@
                   <button class="buttonCustom d-flex align-items-center justify-content-center" type="button"
                     id="addFileButton" (click)="fileInput.click()" [disabled]="imagesArray.length >= maxImagesPerJob"
                     [ngClass]="imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
-                    <i class="fas fa-upload mr-1"></i>
+                    <fa-icon [icon]="['fas', 'upload']" class="me-1"></fa-icon>
                     {{'jobForm.ImagesButton' | translate}}
                   </button>
                   <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden
@@ -86,7 +86,7 @@
                       <button type="button" class="imgFile m-2"
                         *ngFor="let control of imagesArray.controls; let i = index" (click)="deleteImage(i)">
                         {{control.value.name}}
-                        <i class="fas fa-times ml-1"></i>
+                        <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
                       </button>
                       <span *ngIf="!allowedImageType" class="errorMessage"><br>{{'ImageTypeConstraint.jobForm.images' |
                         translate}}</span>

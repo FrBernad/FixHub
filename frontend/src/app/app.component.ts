@@ -18,7 +18,10 @@ import {
   faAddressBook,
   faPen,
   faCompass,
-  faClock
+  faClock,
+  faTrash,
+  faUpload,
+  faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -67,7 +70,8 @@ export class AppComponent implements OnInit {
       fasUserFriends, fasTimes,
       fasCheck, fasMapMarkerAlt,
       faChartLine, faWrench, faAddressBook,
-      faPen, faCompass, faClock
+      faPen, faCompass, faClock, faTrash, faUpload,
+      faInfoCircle
     );
 
     this.authService.autoLogin();

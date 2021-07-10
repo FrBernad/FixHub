@@ -128,7 +128,7 @@
                         <button class="buttonCustom d-flex align-items-center justify-content-center"
                           type="button" id="addFileButton" (click)="fileInput.click()" [disabled]="imagesArray.length >= maxImagesPerJob"
                           [ngClass] = "imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
-                          <i class="fas fa-upload mr-1"></i>
+                          <fa-icon [icon]="['fas', 'upload']" class="me-1"></fa-icon>
                           {{'jobForm.ImagesButton' | translate}}
                         </button>
                       </div>
@@ -155,7 +155,7 @@
                     <div class="col-12">
                       <button type="button" class="imgFile m-2" *ngFor="let control of imagesArray.controls; let i = index" (click)="deleteImage(i)">
                         {{control.value.name}}
-                        <i class="fas fa-times ml-1"></i>
+                        <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
                       </button>
                       <span *ngIf="!allowedImageType" class="errorMessage"><br>{{'ImageTypeConstraint.jobForm.images' | translate}}</span>
                       <span *ngIf="!allowedImageSize" class="errorMessage"><br>{{'errors.MaxUploadSizeException' | translate}}</span>
