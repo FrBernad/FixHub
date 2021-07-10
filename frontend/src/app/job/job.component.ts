@@ -34,8 +34,6 @@ export class JobComponent implements OnInit {
     }else {
       this.selectedIndex--;
     }
-    console.log(this.selectedIndex);
-
   }
 
   selectNext(){
@@ -44,7 +42,6 @@ export class JobComponent implements OnInit {
     }else {
       this.selectedIndex++;
     }
-    console.log(this.selectedIndex);
   }
 
   getStartTime() {

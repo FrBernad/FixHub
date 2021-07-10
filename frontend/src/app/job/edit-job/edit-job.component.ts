@@ -3,6 +3,8 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../models/user.model";
 import {Job} from "../../models/job.model";
 import {JobCategoryModel} from "../../models/jobCategory.model";
+import {JobService} from "../job.service";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-edit-job',
@@ -11,45 +13,89 @@ import {JobCategoryModel} from "../../models/jobCategory.model";
 })
 export class EditJobComponent implements OnInit {
 
-  maxImagesPerJob: number = 6;
   maxJobProvidedLength: number = 50;
   maxDescriptionLength: number = 300;
   minPrice: number = 1;
   maxPrice: number = 999999;
-
   editJobForm: FormGroup;
-
+  selectedIndex = 0;
+  isFetching = true;
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
+
   allowedImageType: boolean = true;
-
   maxImagesReached: boolean = false;
-
   allowedImageSize: boolean = true;
 
   imagesArray = new FormArray([]);
+  imagesToDeleteArray = new FormArray([]);
 
-  provider: User = new User(1, "","","","","","","","",[]);
 
-  job: Job = {
-    id: 1, description: 'sillas de roble o pino', jobProvided: 'Arreglo sillas',
-    category: JobCategoryModel.CARPINTERO, price: 121, totalRatings: 0,
-    averageRating: 0, images: [], reviews: [],
-    provider: this.provider,
-    paused: false,
-    thumbnailId: 1
-  };
+  job: Job = new Job();
 
-  constructor() {
+  maxImagesPerJob: number = 6;
+
+  constructor(private jobService: JobService, private route: ActivatedRoute) {
   }
 
+
+  selectPrevious() {
+    if (this.selectedIndex == 0) {
+      this.selectedIndex = this.job.images.length - 1;
+    } else {
+      this.selectedIndex--;
+    }
+  }
+
+  selectNext() {
+    if (this.selectedIndex == this.job.images.length - 1) {
+      this.selectedIndex = 0;
+    } else {
+      this.selectedIndex++;
+    }
+  }
+
+
   ngOnInit(): void {
+
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.job.id = params['jobId'];
+      }
+    );
+
     this.editJobForm = new FormGroup({
-      'jobProvided': new FormControl(null, [Validators.required, Validators.maxLength(this.maxJobProvidedLength), Validators.pattern("^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
-      'jobCategory': new FormControl(null, [Validators.required]),
-      'price': new FormControl(null, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]),
-      'description': new FormControl(null, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]),
-      images: this.imagesArray
+      'jobProvided': new FormControl(this.job.jobProvided, [Validators.required, Validators.maxLength(this.maxJobProvidedLength), Validators.pattern("^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")]),
+      'jobCategory': new FormControl(this.job.category, [Validators.required]),
+      'price': new FormControl(this.job.price, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]),
+      'description': new FormControl(this.job.description, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]),
+      'images': this.imagesArray,
+      'imagesToDelete': this.imagesToDeleteArray
     })
+
+
+    this.jobService.getJob(+this.job.id).subscribe(
+      responseData => {
+        this.job.jobProvided = responseData.jobProvided;
+        this.job.description = responseData.description;
+        this.job.category = responseData.category;
+        this.job.price = responseData.price;
+        this.job.provider = responseData.provider;
+        this.job.totalRatings = responseData.totalRatings;
+        this.job.averageRating = responseData.averageRating;
+        this.job.images = responseData.images;
+        this.job.reviews = [];
+        this.job.paused = responseData.paused;
+        this.job.thumbnailId = responseData.thumbnailId;
+        this.isFetching = false;
+        this.job.images.forEach(image => {
+          (<FormArray>this.editJobForm.get('images')).push(
+            new FormControl(image)
+          );
+        });
+      }
+    );
+
+
   }
 
   onSubmit() {
@@ -79,11 +125,18 @@ export class EditJobComponent implements OnInit {
       (<FormArray>this.editJobForm.get('images')).push(
         new FormControl(file)
       );
-      console.log(this.imagesArray);
     }
   }
 
-  deleteImage(index: number) {
+  deleteImage(index: number, image: string) {
+    if (index >= 0) {
+      this.imagesArray.removeAt(index);
+      this.imagesToDeleteArray.push(new FormControl(image));
+      this.job.images = this.imagesArray.value;
+    }
+  }
+
+  deleteUploadImage(index: number) {
     if (index >= 0) {
       console.log(this.imagesArray[index]);
       this.imagesArray.removeAt(index);
