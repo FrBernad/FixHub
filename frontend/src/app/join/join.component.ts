@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-join',
@@ -11,6 +11,9 @@ export class JoinComponent implements OnInit {
 
   chooseState = true;
 
+  @Input()
+  public isEdit: boolean;
+  
   ngOnInit(): void {
   }
 

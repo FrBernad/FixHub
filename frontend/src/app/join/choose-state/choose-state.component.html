@@ -19,17 +19,18 @@
               </div>
               <div class="col-md-4 col-6 align-items-center justify-content-end">
                 <input class="form-control" style="background-color: white" formControlName="startTime"
-                       [ngxTimepicker]="startTime" readonly>
-                <ngx-material-timepicker #startTime></ngx-material-timepicker>
+                  [ngxTimepicker]="startTime" readonly>
+                <ngx-material-timepicker #startTime
+                  [defaultTime]="isEdit ? providerDetails.schedule.startTime : '12:00 AM'"></ngx-material-timepicker>
               </div>
               <span *ngIf="!chooseStateForm.get('startTime').valid && chooseStateForm.get('startTime').touched">
-                  <span *ngIf="chooseStateForm.get('startTime').errors['required']" class="errorMessage">
-                    {{'NotEmpty.joinForm.startTime' | translate }}<br>
-                  </span>
-                     <span *ngIf="chooseStateForm.get('startTime').errors['pattern']" class="errorMessage">
-                    {{'Pattern.joinForm.startTime' | translate }}<br>
-                  </span>
+                <span *ngIf="chooseStateForm.get('startTime').errors['required']" class="errorMessage">
+                  {{'NotEmpty.joinForm.startTime' | translate }}<br>
                 </span>
+                <span *ngIf="chooseStateForm.get('startTime').errors['pattern']" class="errorMessage">
+                  {{'Pattern.joinForm.startTime' | translate }}<br>
+                </span>
+              </span>
             </div>
           </div>
           <div class="form-group">
@@ -41,17 +42,18 @@
               </div>
               <div class="col-md-4 col-6 align-items-center justify-content-end">
                 <input class="form-control" style="background-color: white" formControlName="endTime"
-                       [ngxTimepicker]="endTime" readonly>
-                <ngx-material-timepicker #endTime></ngx-material-timepicker>
+                  [ngxTimepicker]="endTime" readonly>
+                <ngx-material-timepicker #endTime
+                  [defaultTime]="isEdit ? providerDetails.schedule.endTime : '12:00 AM'"></ngx-material-timepicker>
               </div>
               <span *ngIf="!chooseStateForm.get('endTime').valid && chooseStateForm.get('endTime').touched">
-                  <span *ngIf="chooseStateForm.get('endTime').errors['required']" class="errorMessage">
-                     {{'NotEmpty.joinForm.endTime' | translate }}<br>
-                  </span>
-                     <span *ngIf="chooseStateForm.get('endTime').errors['pattern']" class="errorMessage">
-                        {{'Pattern.joinForm.endTime' | translate }}<br>
-                    </span>
+                <span *ngIf="chooseStateForm.get('endTime').errors['required']" class="errorMessage">
+                  {{'NotEmpty.joinForm.endTime' | translate }}<br>
                 </span>
+                <span *ngIf="chooseStateForm.get('endTime').errors['pattern']" class="errorMessage">
+                  {{'Pattern.joinForm.endTime' | translate }}<br>
+                </span>
+              </span>
             </div>
           </div>
           <div class="form-group">
@@ -62,11 +64,11 @@
               <div class="col d-flex align-items-center justify-content-center">
                 <div class="dropdown">
                   <button class="dropdown-custom dropdown-toggle mt-2" type="button" id="stateDropdown"
-                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="state" id="stateName">
-                        {{ 'joinForm.state' | translate}}
+                      {{ 'joinForm.state' | translate}}
                     </span>
-                    {{  stateSelected }}
+                    {{ stateSelected }}
                   </button>
                   <ul class="dropdown-menu dropdown-size" aria-labelledby="stateDropdown">
                     <ng-template ngFor let-state [ngForOf]="states">
@@ -78,12 +80,13 @@
                     </ng-template>
                   </ul>
                 </div>
-               </div>
-              <span class="text-center" *ngIf="!chooseStateForm.get('state').valid && chooseStateForm.get('state').touched">
-                  <span *ngIf="chooseStateForm.get('state').errors['required']" class="errorMessage text-center">
-                    {{'NotEmpty.joinForm.state' | translate }}<br>
-                  </span>
+              </div>
+              <span class="text-center"
+                *ngIf="!chooseStateForm.get('state').valid && chooseStateForm.get('state').touched">
+                <span *ngIf="chooseStateForm.get('state').errors['required']" class="errorMessage text-center">
+                  {{'NotEmpty.joinForm.state' | translate }}<br>
                 </span>
+              </span>
             </div>
           </div>
           <div class="col-12 d-flex align-items-center justify-content-center">

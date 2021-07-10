@@ -1,3 +1,4 @@
+import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
 import { UpdateInfoComponent } from './update-info/update-info.component';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
@@ -88,6 +89,10 @@ const routes: Routes = [
         component: UpdateInfoComponent
       },
       {
+        path: 'user/account/updateProviderInfo',
+        component: UpdateProviderInfoComponent
+      },
+      {
         path: '**',
         component: ErrorsComponent
       }
@@ -99,7 +104,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {
 }

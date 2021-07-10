@@ -1,5 +1,5 @@
 import { NewJobComponent } from './job/new-job/new-job.component';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -36,8 +36,10 @@ import { FooterComponent } from './footer/footer.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import { UpdateInfoComponent } from './update-info/update-info.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
     NavbarComponent,
@@ -64,7 +66,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     ChooseStateComponent,
     FooterComponent,
     UpdateInfoComponent,
-    PaginationComponent
+    PaginationComponent,
+    UpdateProviderInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +94,7 @@ import { PaginationComponent } from './pagination/pagination.component';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }
