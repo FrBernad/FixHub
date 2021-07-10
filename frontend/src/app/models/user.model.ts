@@ -1,16 +1,17 @@
+export interface ProviderDetails{
+  location: {
+    cities: { id: number, name: string }[],
+    state: { id: number, name: string }
+  },
+  schedule: {
+    startTime: Date,
+    endTime: Date
+  }
+}
+
 export class User {
   following: User[];
   followers: User[];
-  providerDetails: {
-    location: {
-      cities: { id: number, name: string }[],
-      state: { id: number, name: string }
-    },
-    schedule: {
-      startTime: Date,
-      endTime: Date
-    }
-  };
 
   constructor(
     public id: number,
@@ -22,7 +23,8 @@ export class User {
     public city: string,
     public profileImage: string,
     public coverImage: string,
-    public roles: string[]
+    public roles: string[],
+    public providerDetails?: ProviderDetails
   ) {
   }
 

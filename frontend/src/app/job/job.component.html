@@ -184,7 +184,7 @@
                               <span class="fw-bold">
                                 {{ 'job.information.state' | translate }}
                               </span>
-                              <!--                              {{ job.provider.providerDetails.location.state.name }}-->
+                              {{ job.provider.providerDetails.location.state.name }}
                             </p>
                           </div>
                           <div class="col-12">
@@ -193,11 +193,11 @@
                                   {{ 'job.information.city' | translate }}
                                 </span>
 
-                              <!--<span
+                              <span
                                 *ngFor="let city of job.provider.providerDetails.location.cities"
-                                class="badge rounded-pill bg-secondary p-2 mt-2">
+                                class="badge rounded-pill bg-secondary p-2 me-2 mt-2">
                                 {{ city.name }}
-                              </span>-->
+                              </span>
                             </p>
                           </div>
                           <div class="col-12">
@@ -207,10 +207,10 @@
                               </span>
 
                               {{ 'job.information.from' | translate:
-                              {from: getStartTime()} }}
+                              {from: job.provider.providerDetails.schedule.startTime} }}
 
                               {{ 'job.information.to' | translate:
-                              {to: getEndTime()} }}
+                              {to: job.provider.providerDetails.schedule.endTime} }}
                             </p>
                           </div>
                         </div>

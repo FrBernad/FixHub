@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -20,7 +21,7 @@ public class UserDto {
     private String phoneNumber;
     private String state;
     private String city;
-
+    private ProviderDetailsDto providerDetails;
     private Collection<Roles> roles;
 
     private String url;
@@ -43,7 +44,7 @@ public class UserDto {
         this.state = user.getState();
         this.city = user.getCity();
         this.roles = user.getRoles();
-
+        this.providerDetails = user.getProviderDetails() != null ? new ProviderDetailsDto(user.getProviderDetails()) : null;
         this.url = uriBuilder.clone().build().toString();
         this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
         this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
@@ -135,5 +136,13 @@ public class UserDto {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public ProviderDetailsDto getProviderDetails() {
+        return providerDetails;
+    }
+
+    public void setProviderDetails(ProviderDetailsDto providerDetails) {
+        this.providerDetails = providerDetails;
     }
 }

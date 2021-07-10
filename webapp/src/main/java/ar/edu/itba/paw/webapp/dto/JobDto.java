@@ -32,6 +32,10 @@ public class JobDto {
 
     private UserDto provider;
 
+    private LocationDto location;
+
+    private ScheduleDto schedule;
+
     private String url;
 
     private BigDecimal price;
@@ -76,7 +80,6 @@ public class JobDto {
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
         this.maxImagesPerJob = Job.MAX_IMAGES_PER_JOB;
-
     }
 
     public Long getId() {
@@ -183,4 +186,19 @@ public class JobDto {
         this.maxImagesPerJob = maxImagesPerJob;
     }
 
+    public LocationDto getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationDto location) {
+        this.location = location;
+    }
+
+    public ScheduleDto getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ScheduleDto schedule) {
+        this.schedule = schedule;
+    }
 }

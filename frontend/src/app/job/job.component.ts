@@ -28,34 +28,6 @@ export class JobComponent implements OnInit {
   constructor(private route: ActivatedRoute, private jobService: JobService) {
   }
 
-  selectPrevious(){
-    if(this.selectedIndex == 0){
-      this.selectedIndex = this.job.images.length-1;
-    }else {
-      this.selectedIndex--;
-    }
-  }
-
-  selectNext(){
-    if(this.selectedIndex == this.job.images.length-1){
-      this.selectedIndex = 0;
-    }else {
-      this.selectedIndex++;
-    }
-  }
-
-  getStartTime() {
-    // let startTime = this.job.provider.providerDetails.schedule.startTime;
-    // return startTime.getHours() + ':' + startTime.getMinutes();
-    return '1'
-  }
-
-  getEndTime() {
-    // let endTime = this.job.provider.providerDetails.schedule.endTime;
-    // return endTime.getHours() + ':' + endTime.getMinutes();
-    return '2';
-  }
-
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
@@ -81,6 +53,25 @@ export class JobComponent implements OnInit {
       }
     );
   }
+
+  selectPrevious(){
+    if(this.selectedIndex == 0){
+      this.selectedIndex = this.job.images.length-1;
+    }else {
+      this.selectedIndex--;
+    }
+  }
+
+  selectNext(){
+    if(this.selectedIndex == this.job.images.length-1){
+      this.selectedIndex = 0;
+    }else {
+      this.selectedIndex++;
+    }
+  }
+
+
+
 
 
 }
