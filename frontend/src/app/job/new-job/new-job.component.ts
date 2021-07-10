@@ -72,6 +72,7 @@ export class NewJobComponent implements OnInit {
         Validators.maxLength(this.maxDescriptionLength),
       ]),
       images: this.imagesArray,
+      paused: new FormControl(false)
     });
   }
 
