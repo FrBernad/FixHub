@@ -3,6 +3,8 @@ import {animate, query, stagger, state, style, transition, trigger} from "@angul
 import {User} from "../models/user.model";
 import {Job} from "../models/job.model";
 import {JobCategoryModel} from "../models/jobCategory.model";
+import {JobsService} from "../discover/jobs.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-landing-page',
@@ -32,10 +34,8 @@ import {JobCategoryModel} from "../models/jobCategory.model";
 })
 export class LandingPageComponent implements OnInit {
 
-  categories = ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA', 'ENTREGA'];
-
   //FIXME: BORRAR TODA ESTA PARTE DE JOB Y USER
-  provider: User = new User(1, "","","","","","","","",[]);
+  provider: User = new User(1, "", "", "", "", "", "", "", "", []);
 
   job: Job = {
     id: 1, description: 'sillas de roble o pino', jobProvided: 'Arreglo sillas',
@@ -50,10 +50,53 @@ export class LandingPageComponent implements OnInit {
     this.job, this.job, this.job, this.job
   ];
 
-  constructor() {
+  loading = true;
+
+  searchError = false;
+
+  categories: string[] = [];
+
+  constructor(
+    private jobsService: JobsService,
+    private router: Router
+  ) {
   }
 
   ngOnInit(): void {
+    this.jobsService.getCategories().subscribe((categories) => {
+      this.categories = categories.values.slice(0, 5);
+      this.loading = false;
+    });
+  }
+
+  onChangeCategory(category: string) {
+    this.router.navigate(['/discover'],
+      {
+        state: {
+          category
+        }
+      });
+  }
+
+  onSearchEnter(e: KeyboardEvent, query: string) {
+    if (e.key === "Enter") {
+      this.onSearch(query);
+    }
+  }
+
+  onSearch(query: string) {
+    if (!this.searchError) {
+      this.router.navigate(['/discover'],
+        {
+          state: {
+            query
+          }
+        });
+    }
+  }
+
+  checkLength(query: string) {
+    this.searchError = query.length > 50;
   }
 
 }

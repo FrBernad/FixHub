@@ -1,7 +1,7 @@
 <!--SEARCH SECTION-->
 <div class="container-fluid p-0 vh-100 bgImg d-flex flex-column">
   <app-navbar></app-navbar>
-  <div class="container-lg flex-grow-1" [@fadeIn]>
+  <div *ngIf="!loading" class="container-lg flex-grow-1" [@fadeIn]>
     <div class="row w-100 h-100 align-items-center justify-content-center">
       <div class="col-12 px-0">
         <div class="container-lg">
@@ -15,15 +15,24 @@
             </div>
             <div class="col-10 col-md-8 mt-2 d-flex justify-content-center align-items-center searchBar">
               <div class="input-group">
-                <input class="inputRadius form-control px-4"
+                <input #searchBar (keyup)="checkLength(searchBar.value)" class="inputRadius form-control px-4"
                        id="searchFormInput"
+                       (keypress)="onSearchEnter($event,searchBar.value)"
                        [placeholder]="'landingPage.searchbarPlaceholder' | translate">
                 <div class="input-group-prepend me-0">
-                  <button id="searchFormButton" class="btn btn-lg inputBtn" type="button">
+                  <button id="searchFormButton"
+                          (click)="onSearch(searchBar.value)"
+                          [ngClass]="{disabled:searchError}"
+                          class="btn btn-lg inputBtn" type="button">
                     {{'landingPage.searchButtonText' | translate}}
                   </button>
                 </div>
               </div>
+            </div>
+            <div class="col-12 justify-content-start align-items-center">
+              <small class="text-danger" [ngClass]="{'d-none': !searchError}">
+                {{'landingPage.searchInvalidLength'|translate}}
+              </small>
             </div>
             <div class="col-12 justify-content-start align-items-center">
               <small class="text-danger" style="display: none;" id="searchInvalidLength">
@@ -37,7 +46,7 @@
                 *ngFor="let category of categories">
                 <input type="hidden" name="category" value="${category}">
                 <div class="input-group-prepend">
-                  <button class="btn-sm suggestionBtn me-4">
+                  <button (click)="onChangeCategory(category)" class="btn-sm suggestionBtn me-4">
                     {{ 'home.categories.' + category | translate}}
                   </button>
                 </div>

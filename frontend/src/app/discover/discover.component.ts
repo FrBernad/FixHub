@@ -6,6 +6,7 @@ import {OrderOptionModel} from "../models/orderOption.model";
 import {City, JobPaginationQuery, JobPaginationResult, JobsService, State} from "./jobs.service";
 import {Subscription} from "rxjs";
 import {map, take, tap} from "rxjs/operators";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 
 
 @Component({
@@ -43,12 +44,25 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   private jobsSub: Subscription;
 
   constructor(
-    private jobsService: JobsService
+    private jobsService: JobsService,
+    private route: ActivatedRoute,
   ) {
   }
 
   ngOnInit(): void {
-    this.jobsService.populateJobs(this.jpq.pageSize)
+    const category = window.history.state['category'];
+    const query = window.history.state['query'];
+    if (category) {
+      this.jpr.category = category;
+      this.jpq.category = category;
+    }
+
+    if (query) {
+      this.jpr.query = query;
+      this.jpq.query = query;
+    }
+
+    this.jobsService.getJobs(this.jpq);
     this.jobsSub = this.jobsService.results.subscribe((results) => {
       this.jpr = {
         ...this.jpr,
@@ -116,7 +130,6 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   }
 
   checkLength(query: string) {
-    console.log(query.length)
     this.searchError = query.length > 50;
   }
 

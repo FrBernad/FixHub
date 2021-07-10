@@ -55,13 +55,6 @@ export class JobsService {
       )
   }
 
-  populateJobs(pageSize: number) {
-    this.getJobs({
-      page: 0,
-      pageSize
-    })
-  }
-
   getStates() {
     return this.http
       .get<State[]>(
