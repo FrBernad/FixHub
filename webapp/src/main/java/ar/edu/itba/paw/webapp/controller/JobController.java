@@ -57,6 +57,10 @@ public class JobController {
 
         PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, pageSize);
 
+        if(results==null){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo);
 
         final PaginatedResultDto<JobDto> resultsDto =
@@ -121,8 +125,7 @@ public class JobController {
         if (!job.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
-        UserDto userDto = new UserDto(job.get().getProvider(),uriInfo);
-        JobDto jobDto = new JobDto(job.get(),userDto,uriInfo);
+        JobDto jobDto = new JobDto(job.get(),uriInfo);
         return Response.ok(jobDto).build();
     }
 /*

@@ -45,6 +45,16 @@ public class PaginatedSearchResult<T> {
         this.cities = cities;
     }
 
+    public PaginatedSearchResult(int page, int itemsPerPage, int totalItems, Collection<T> results) {
+        this.page = page;
+        this.itemsPerPage = itemsPerPage;
+        this.totalItems = totalItems;
+        this.results = results;
+        this.totalPages = (int) Math.ceil((float) totalItems / itemsPerPage);
+        this.isFirst = page == 0;
+        this.isLast = itemsPerPage * page + results.size() > itemsPerPage * (totalPages - 1) && itemsPerPage * page + results.size() <= itemsPerPage * (totalPages);
+    }
+
     public Collection<City> getCities() {
         return cities;
     }
