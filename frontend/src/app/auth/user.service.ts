@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {User} from "../models/user.model";
 import {environment} from "../../environments/environment";
 import {tap} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-  user = new BehaviorSubject<User>(null);
+  user = new Subject<User>();
 
   constructor(
     private http: HttpClient,
