@@ -13,16 +13,15 @@ import {
   faTimes as fasTimes,
   faCheck as fasCheck,
   faMapMarkerAlt as fasMapMarkerAlt,
-  faChartLine,
-  faWrench,
-  faAddressBook,
-  faPen,
-  faCompass,
-  faClock,
-  faTrash,
-  faUpload,
-  faInfoCircle,
-  faCamera,
+  faChartLine as fasChartLine,
+  faWrench as fasWrench,
+  faAddressBook as fasAddressBook,
+  faPen as fasPen,
+  faCompass as fasCompass,
+  faClock as fasClock,
+  faTrash as fasTrash,
+  faUpload as fasUpload,
+  faInfoCircle as fasInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -73,9 +72,9 @@ export class AppComponent implements OnInit, OnDestroy {
       farEnvelope, fasPhoneAlt,
       fasUserFriends, fasTimes,
       fasCheck, fasMapMarkerAlt,
-      faChartLine, faWrench, faAddressBook,farStar,
-      faPen, faCompass, faClock, faTrash, faUpload,
-      faInfoCircle, faCamera
+      fasChartLine, fasWrench, fasAddressBook,farStar,
+      fasPen, fasCompass, fasClock, fasTrash, fasUpload,
+      fasInfoCircle, fasCamera
     );
 
     this.authService.autoLogin();
