@@ -21,7 +21,6 @@ export class UserService {
         environment.apiBaseUrl + '/user'
       ).pipe(tap(
         newUser => {
-          console.log(newUser);
           this.user.next(newUser);
         }
       ))

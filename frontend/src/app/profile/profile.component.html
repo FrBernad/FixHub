@@ -195,17 +195,15 @@
                           {{'profilePage.subtitle.state' | translate}}
                         </span>
                     <span>
-                          <!-- <c:choose>
-                            <c:when test="${loggedUser.hasRole('VERIFIED')}">
+                      <ng-template [ngIf]="user.isVerified" [ngIfElse]="notVerified">
                               {{'profilePage.subtitle.verified' | translate}}
-                              <fa-icon [icon]="['fas','fa-check']" class="ms-1" style="color: green"></fa-icon>
-                            </c:when>
-                            <c:otherwise>
+                        <fa-icon [icon]="['fas','check']" class="ms-1" style="color: green"></fa-icon>
+                      </ng-template>
+                       <ng-template #notVerified>
                               {{'profilePage.subtitle.notVerified' | translate}}
-                              <fa-icon [icon]="['fas','fa-times']" class="ms-1" style="color: darkred"></fa-icon>
-                            </c:otherwise>
-                          </c:choose> -->
-                        </span>
+                         <fa-icon [icon]="['fas','times']" class="ms-1" style="color: darkred"></fa-icon>
+                       </ng-template>
+                    </span>
                   </h1>
                 </div>
                 <div class="col-12 ps-0 mt-2">
@@ -214,21 +212,18 @@
                           {{'profilePage.subtitle.provider' | translate}}
                         </span>
                     <span>
-                          <!-- <c:choose>
-                            <c:when test="${loggedUser.hasRole('PROVIDER')}">
+                      <ng-template [ngIf]="user.isProvider" [ngIfElse]="notProvider">
                               {{'profilePage.subtitle.active' | translate}}
-                              <fa-icon [icon]="['fas','fa-check']" class="ms-1" style="color: green"></fa-icon>
-                            </c:when>
-                            <c:otherwise>
+                        <fa-icon [icon]="['fas','check']" class="ms-1" style="color: green"></fa-icon>
+                      </ng-template>
+                       <ng-template #notProvider>
                               {{'profilePage.subtitle.inactive' | translate}}
-                              <fa-icon [icon]="['fas','fa-times']" class="ms-1" style="color: darkred"></fa-icon>
-                              <a class="ms-2" href="<c:url value=" /user/join" />"
-                              style="font-weight: 500">
+                         <fa-icon [icon]="['fas','times']" class="ms-1" style="color: darkred"></fa-icon>
+                         <a class="ms-2" href="<c:url value=/user/join" style="font-weight: 500">
                               {{'profilePage.subtitle.join' | translate}}
-                              </a>
-                            </c:otherwise>
-                          </c:choose> -->
-                        </span>
+                         </a>
+                      </ng-template>
+                    </span>
                   </h1>
                 </div>
               </div>

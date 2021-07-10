@@ -23,7 +23,6 @@ import {
   faUpload,
   faInfoCircle,
   faCamera,
-  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -33,10 +32,9 @@ import {
   faEnvelope as farEnvelope
 } from '@fortawesome/free-regular-svg-icons';
 
-import {Router, RoutesRecognized} from "@angular/router";
+import {Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {AuthService} from "./auth/auth.service";
-import {filter, pairwise} from "rxjs/operators";
 import {PreviousRouteService} from "./auth/previous-route.service";
 import {JobsService} from "./discover/jobs.service";
 import {UserService} from "./auth/user.service";
@@ -47,7 +45,6 @@ import {Subscription} from "rxjs";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-
 
 export class AppComponent implements OnInit, OnDestroy {
   private subs: Subscription;
@@ -78,7 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
       fasCheck, fasMapMarkerAlt,
       faChartLine, faWrench, faAddressBook,farStar,
       faPen, faCompass, faClock, faTrash, faUpload,
-      faInfoCircle, faCamera, faTimes
+      faInfoCircle, faCamera
     );
 
     this.authService.autoLogin();
