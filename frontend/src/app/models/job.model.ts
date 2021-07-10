@@ -14,5 +14,4 @@ export class Job{
   reviews : [];
   provider: User;
   paused: boolean;
-
 }

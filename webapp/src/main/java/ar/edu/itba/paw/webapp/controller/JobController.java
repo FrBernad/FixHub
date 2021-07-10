@@ -57,7 +57,7 @@ public class JobController {
 
         PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, pageSize);
 
-        if(results==null){
+        if (results == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
@@ -125,9 +125,20 @@ public class JobController {
         if (!job.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
-        JobDto jobDto = new JobDto(job.get(),uriInfo);
+        JobDto jobDto = new JobDto(job.get(), uriInfo);
         return Response.ok(jobDto).build();
     }
+
+    @GET
+    @Path("/categories")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getCategories() {
+        LOGGER.info("Accessed /jobs/categories GET controller");
+        final Collection<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
+
+        return Response.ok(new StringCollectionResponseDto(categories)).build();
+    }
+
 /*
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form,
                             @PathVariable("jobId") final Long jobId,
@@ -209,8 +220,6 @@ public class JobController {
 //        LOGGER.info("Created job with id {}", job.getId());
 //        return new ModelAndView("redirect:/jobs/" + job.getId());
 //    }
-
-
 
 
 //    @PUT
@@ -308,8 +317,6 @@ public class JobController {
 //
 //        return new ModelAndView("redirect:/jobs/" + job.getId());
 //    }
-
-
 
 
 //

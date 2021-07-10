@@ -11,6 +11,8 @@ import {User} from "../models/user.model";
 export class ProfileComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
+
+  loading = true;
   user: User;
 
   constructor(
@@ -20,6 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userSub = this.userService.user.subscribe(user => {
+      this.loading = false;
       this.user = user;
     });
   }

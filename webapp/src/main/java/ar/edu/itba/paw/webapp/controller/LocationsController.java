@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Path("locations")
 @Component
-public class LocationController {
+public class LocationsController {
 
     @Autowired
     private LocationService locationService;

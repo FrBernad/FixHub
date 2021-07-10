@@ -1,310 +1,307 @@
-<div class="container-fluid px-0 outerContainer">
-  <div class="container-fluid py-4">
-    <ng-template [ngIf]="isFetching" [ngIfElse]="fetch">
-      Loading...
-    </ng-template>
+<div class="container-fluid py-4">
+  <ng-template [ngIf]="isFetching" [ngIfElse]="fetch">
+    Loading...
+  </ng-template>
 
-    <ng-template #fetch>
-      <div class="container-lg p-5 bigContentContainer">
+  <ng-template #fetch>
+    <div class="container-lg p-5 bigContentContainer">
 
 
-        <div class="row mt-3">
-          <div class="col-12 col-lg-6 d-flex justify-content-lg-start justify-content-center align-items-start">
-            <div style="position: relative;height: 400px; width:400px;">
-              <ng-template [ngIf]="job.images.length >  0" [ngIfElse]="noImages">
-                <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                    <div *ngFor="let image of job.images;let i = index" class="carousel-item"
-                         [ngClass]="{'active': i === selectedIndex}">
-                      <img src="{{image}}" class="rounded" style="object-fit: cover; height: 400px; width: 400px"
-                           alt="{{'home.categories.'+job.category | translate}}">
-                    </div>
+      <div class="row mt-3">
+        <div class="col-12 col-lg-6 d-flex justify-content-lg-start justify-content-center align-items-start">
+          <div style="position: relative;height: 400px; width:400px;">
+            <ng-template [ngIf]="job.images.length >  0" [ngIfElse]="noImages">
+              <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div *ngFor="let image of job.images;let i = index" class="carousel-item"
+                       [ngClass]="{'active': i === selectedIndex}">
+                    <img src="{{image}}" class="rounded" style="object-fit: cover; height: 400px; width: 400px"
+                         alt="{{'home.categories.'+job.category | translate}}">
                   </div>
-
-                  <ng-template [ngIf]="job.images.length > 1">
-
-                    <button class="carousel-control-prev" (click)="selectPrevious()" type="button"
-                            data-bs-target="#carouselControl"
-                            data-bs-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Previous</span>
-                    </button>
-
-                    <button class="carousel-control-next" type="button" (click)="selectNext()"
-                            data-bs-target="#carouselControl"
-                            data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Next</span>
-                    </button>
-
-                  </ng-template>
-
                 </div>
 
-              </ng-template>
-              <ng-template #noImages>
-                <img src="../../assets/images/{{job.category}}.jpg"
-                     alt="{{'home.categories.'+job.category | translate}}"
-                     class="rounded" style="object-fit: cover; height: 100%; width: 100%">
-              </ng-template>
+                <ng-template [ngIf]="job.images.length > 1">
+
+                  <button class="carousel-control-prev" (click)="selectPrevious()" type="button"
+                          data-bs-target="#carouselControl"
+                          data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+
+                  <button class="carousel-control-next" type="button" (click)="selectNext()"
+                          data-bs-target="#carouselControl"
+                          data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+
+                </ng-template>
+
+              </div>
+
+            </ng-template>
+            <ng-template #noImages>
+              <img src="../../assets/images/{{job.category}}.jpg"
+                   alt="{{'home.categories.'+job.category | translate}}"
+                   class="rounded" style="object-fit: cover; height: 100%; width: 100%">
+            </ng-template>
 
 
-              <span class="badge rounded-pill bg-secondary jobCategory">
+            <span class="badge rounded-pill bg-secondary jobCategory">
               {{ 'home.categories.' + job.category | translate }}
             </span>
-              <div class="jobPrice">
-                <p class="text-left mb-0">
-                  {{ 'job.priceText' | translate: {price: job.price} }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-lg-6 mt-lg-0 mt-4 d-flex justify-content-start align-items-start">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-7">
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-12 pl-0">
-                        <h1 class="jobTitle">{{ job.jobProvided }}</h1>
-                      </div>
-                      <div class="col-12 pl-0">
-
-                        <!-- <a href="<c:url value=/user/${job.provider.id}" />"> -->
-                        <a href="#">
-                          <h1 class="contactInfo names">
-                            {{ job.provider.name }} {{ job.provider.surname }}
-                          </h1>
-                        </a>
-                      </div>
-                      <div class="col-12 pl-0 mt-2">
-
-                        <!-- <c:forEach begin="1" end="${job.averageRating}">
-                            <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
-                        </c:forEach>
-                        <c:forEach begin="${job.averageRating}" end="4">
-                            <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
-                        </c:forEach>-->
-                        <span style="font-style: normal; font-weight: 400;">
-                          ({{ job.totalRatings }})
-                      </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-5 p-0 d-flex justify-content-start align-items-center">
-                  <div class="container-fluid px-0">
-                    <div class="row">
-                      <div *ngIf="loggedUser!=null && loggedUser.id==job.provider.id ; else notLoggedUser">
-                        <div class="col-12 d-flex justify-content-center align-items-center">
-                          <a href="#" style="text-decoration: none" [routerLink]="['/jobs',job.id,'edit']">
-                            <!-- <a href="<c:url value='/jobs/${job.id}/edit'/>" -->
-
-                            <button class="contactBtn">
-                              {{ 'job.editTitle' | translate }}
-                            </button>
-                          </a>
-                        </div>
-                        <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
-                          <div *ngIf="job.paused">
-                            <fa-icon [icon]="['fas', 'info-circle']" class="ms-1" style="color:#ffc107"></fa-icon>
-                            <span>
-                              {{ 'job.pause' | translate }}
-                          </span>
-                          </div>
-                        </div>
-                      </div>
-                      <ng-template #notLoggedUser>
-
-                        <div *ngIf="!job.paused; else jobPaused"
-                             class="col-12 d-flex align-items-center justify-content-center">
-                          <!-- <a href="<c:url value='/jobs/${job.id}/contact'/>"> -->
-
-                          <a [routerLink]="['contact']">
-
-                            <button class="contactBtn">
-                              {{ 'job.contact' | translate }}
-                            </button>
-                          </a>
-                        </div>
-                        <ng-template #jobPaused>
-                          <div class="col-12">
-                            <fa-icon [icon]="['fas', 'info-circle']" class="me-2" style="color:#ffc107"></fa-icon>
-                            <span>
-                            {{ 'job.pause' | translate }}
-                          </span>
-                          </div>
-                        </ng-template>
-                      </ng-template>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr class="text-left ml-0 my-4" style="width: 100%;">
-              <div class="row">
-                <div class="col-12">
-                  <div class="container-fluid px-0">
-                    <div class="row">
-                      <div class="col-12 d-flex justify-content-start align-items-center">
-                        <h2 class="sectionTitle mb-3">
-                          {{ 'job.information.title' | translate }}
-                        </h2>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="container-fluid p-0">
-                          <div class="row">
-                            <div class="col-12">
-                              <p class="text-left contactInfo names">
-                                                            <span class="font-weight-bold">
-                                                                {{ 'job.information.name&surname' | translate }}
-                                                            </span>
-                                {{ job.provider.name }} {{ job.provider.surname }}
-                              </p>
-                            </div>
-                            <div class="col-12">
-                              <p class="text-left">
-                              <span class="font-weight-bold">
-                                {{ 'job.information.email' | translate }}
-                              </span>
-                                {{ job.provider.email }}
-                              </p>
-                            </div>
-                            <div class="col-12">
-                              <p class="text-left">
-                              <span class="font-weight-bold">
-                                {{ 'job.information.phone' | translate }}
-                              </span>
-                                {{ job.provider.phoneNumber }}
-                              </p>
-                            </div>
-                            <div class="col-12">
-                              <p class="text-left">
-                              <span class="font-weight-bold">
-                                {{ 'job.information.state' | translate }}
-                              </span>
-                                <!--                              {{ job.provider.providerDetails.location.state.name }}-->
-                              </p>
-                            </div>
-                            <div class="col-12">
-                              <p class="text-left">
-                                <span class="font-weight-bold">
-                                  {{ 'job.information.city' | translate }}
-                                </span>
-
-                                <!--<span
-                                  *ngFor="let city of job.provider.providerDetails.location.cities"
-                                  class="badge rounded-pill bg-secondary p-2 mt-2">
-                                  {{ city.name }}
-                                </span>-->
-                              </p>
-                            </div>
-                            <div class="col-12">
-                              <p class="text-left">
-                              <span class="font-weight-bold">
-                                {{ 'job.information.time' | translate }}
-                              </span>
-
-                                {{ 'job.information.from' | translate:
-                                {from: getStartTime()} }}
-
-                                {{ 'job.information.to' | translate:
-                                {to: getEndTime()} }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <hr class="text-left ml-0 my-5" style="width: 80%;">
-
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-12">
-              <h1 class="sectionTitle">
-                {{ 'job.description.title' | translate }}
-              </h1>
-            </div>
-            <div class="col-12">
-              <p class="text-left contactInfo" style="font-weight: normal">
-                {{ job.description }}
+            <div class="jobPrice">
+              <p class="text-left mb-0">
+                {{ 'job.priceText' | translate: {price: job.price} }}
               </p>
             </div>
           </div>
         </div>
-
-        <hr class="text-left ml-0 my-5" style="width: 80%;">
-
-        <div class="container-fluid mt-3">
-          <div class="row">
-            <div class="col-12 d-flex justify-content-start align-items-center">
-              <h2 class="sectionTitle">
-                {{ 'job.review.title' | translate: {jobProvided: job.jobProvided} }}
-              </h2>
-            </div>
-
-            <!--        <div *ngIf="canReview == true && !job.paused"-->
-            <div
-              class="col-12 d-flex justify-content-start align-items-center">
-
-              <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="jobReviewLink"
-                 data-target="#newReview">
-                {{ 'job.review.hyperlink' | translate }}
-              </a>
-
-              <app-review-form></app-review-form>
-
-            </div>
-
-
-          </div>
-          <div class="row mt-2">
-            <div class="col-12 d-flex align-items-center">
-              <div class="container-fluid">
-                <div class="row">
-                  <div *ngIf="results.totalPages > 0; else noReviews">
-
-                    <div *ngFor="let review of firstResults.results" class="col-12 mt-3 col-md-7">
-                      <!-- <%@ include file="../../components/cards/reviewCard.jsp" %> -->
+        <div class="col-12 col-lg-6 mt-lg-0 mt-4 d-flex justify-content-start align-items-start">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-7">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-12 pl-0">
+                      <h1 class="jobTitle">{{ job.jobProvided }}</h1>
                     </div>
-                    <div *ngIf="results.totalPages >1" class="col-12 mt-4">
-                      <a href="#" type="button" data-toggle="modal" data-target="#reviewsModal">
-                        {{ 'job.reviews.more' | translate }}
+                    <div class="col-12 pl-0">
+
+                      <!-- <a href="<c:url value=/user/${job.provider.id}" />"> -->
+                      <a href="#">
+                        <h1 class="contactInfo names">
+                          {{ job.provider.name }} {{ job.provider.surname }}
+                        </h1>
                       </a>
-                      <!-- <%@ include file="../../components/reviewsPagination.jsp" %> -->
+                    </div>
+                    <div class="col-12 pl-0 mt-2">
+
+                      <!-- <c:forEach begin="1" end="${job.averageRating}">
+                          <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
+                      </c:forEach>
+                      <c:forEach begin="${job.averageRating}" end="4">
+                          <fa-icon [icon]="['fas', 'star']" class="me-2 iconsColor"></fa-icon>
+                      </c:forEach>-->
+                      <span style="font-style: normal; font-weight: 400;">
+                          ({{ job.totalRatings }})
+                      </span>
                     </div>
                   </div>
-                  <ng-template #noReviews>
-                    <div class="col-12 d-flex align-items-center justify-content-center">
-                      <div class="container mt-2 d-flex align-items-center justify-content-center">
-                        <p class="m-0 text-center p-4" style="font-size: 16px">
-                          {{ 'job.review.noReviews' | translate }}
+                </div>
+              </div>
+              <div class="col-5 p-0 d-flex justify-content-start align-items-center">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div *ngIf="loggedUser!=null && loggedUser.id==job.provider.id ; else notLoggedUser">
+                      <div class="col-12 d-flex justify-content-center align-items-center">
+                        <a href="#" style="text-decoration: none" [routerLink]="['/jobs',job.id,'edit']">
+                          <!-- <a href="<c:url value='/jobs/${job.id}/edit'/>" -->
 
-                        </p>
+                          <button class="contactBtn">
+                            {{ 'job.editTitle' | translate }}
+                          </button>
+                        </a>
+                      </div>
+                      <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
+                        <div *ngIf="job.paused">
+                          <fa-icon [icon]="['fas', 'info-circle']" class="ms-1" style="color:#ffc107"></fa-icon>
+                          <span>
+                              {{ 'job.pause' | translate }}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </ng-template>
+                    <ng-template #notLoggedUser>
 
+                      <div *ngIf="!job.paused; else jobPaused"
+                           class="col-12 d-flex align-items-center justify-content-center">
+                        <!-- <a href="<c:url value='/jobs/${job.id}/contact'/>"> -->
+
+                        <a [routerLink]="['contact']">
+
+                          <button class="contactBtn">
+                            {{ 'job.contact' | translate }}
+                          </button>
+                        </a>
+                      </div>
+                      <ng-template #jobPaused>
+                        <div class="col-12">
+                          <fa-icon [icon]="['fas', 'info-circle']" class="me-2" style="color:#ffc107"></fa-icon>
+                          <span>
+                            {{ 'job.pause' | translate }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ng-template>
+
+                  </div>
                 </div>
+              </div>
+            </div>
+            <hr class="text-left ml-0 my-4" style="width: 100%;">
+            <div class="row">
+              <div class="col-12">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-12 d-flex justify-content-start align-items-center">
+                      <h2 class="sectionTitle mb-3">
+                        {{ 'job.information.title' | translate }}
+                      </h2>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="container-fluid p-0">
+                        <div class="row">
+                          <div class="col-12">
+                            <p class="text-left contactInfo names">
+                                                            <span class="font-weight-bold">
+                                                                {{ 'job.information.name&surname' | translate }}
+                                                            </span>
+                              {{ job.provider.name }} {{ job.provider.surname }}
+                            </p>
+                          </div>
+                          <div class="col-12">
+                            <p class="text-left">
+                              <span class="font-weight-bold">
+                                {{ 'job.information.email' | translate }}
+                              </span>
+                              {{ job.provider.email }}
+                            </p>
+                          </div>
+                          <div class="col-12">
+                            <p class="text-left">
+                              <span class="font-weight-bold">
+                                {{ 'job.information.phone' | translate }}
+                              </span>
+                              {{ job.provider.phoneNumber }}
+                            </p>
+                          </div>
+                          <div class="col-12">
+                            <p class="text-left">
+                              <span class="font-weight-bold">
+                                {{ 'job.information.state' | translate }}
+                              </span>
+                              <!--                              {{ job.provider.providerDetails.location.state.name }}-->
+                            </p>
+                          </div>
+                          <div class="col-12">
+                            <p class="text-left">
+                                <span class="font-weight-bold">
+                                  {{ 'job.information.city' | translate }}
+                                </span>
+
+                              <!--<span
+                                *ngFor="let city of job.provider.providerDetails.location.cities"
+                                class="badge rounded-pill bg-secondary p-2 mt-2">
+                                {{ city.name }}
+                              </span>-->
+                            </p>
+                          </div>
+                          <div class="col-12">
+                            <p class="text-left">
+                              <span class="font-weight-bold">
+                                {{ 'job.information.time' | translate }}
+                              </span>
+
+                              {{ 'job.information.from' | translate:
+                              {from: getStartTime()} }}
+
+                              {{ 'job.information.to' | translate:
+                              {to: getEndTime()} }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
         </div>
       </div>
-    </ng-template>
 
 
-  </div>
+      <hr class="text-left ml-0 my-5" style="width: 80%;">
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="sectionTitle">
+              {{ 'job.description.title' | translate }}
+            </h1>
+          </div>
+          <div class="col-12">
+            <p class="text-left contactInfo" style="font-weight: normal">
+              {{ job.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="text-left ml-0 my-5" style="width: 80%;">
+
+      <div class="container-fluid mt-3">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-start align-items-center">
+            <h2 class="sectionTitle">
+              {{ 'job.review.title' | translate: {jobProvided: job.jobProvided} }}
+            </h2>
+          </div>
+
+          <!--        <div *ngIf="canReview == true && !job.paused"-->
+          <div
+            class="col-12 d-flex justify-content-start align-items-center">
+
+            <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="jobReviewLink"
+               data-target="#newReview">
+              {{ 'job.review.hyperlink' | translate }}
+            </a>
+
+            <app-review-form></app-review-form>
+
+          </div>
+
+
+        </div>
+        <div class="row mt-2">
+          <div class="col-12 d-flex align-items-center">
+            <div class="container-fluid">
+              <div class="row">
+                <div *ngIf="results.totalPages > 0; else noReviews">
+
+                  <div *ngFor="let review of firstResults.results" class="col-12 mt-3 col-md-7">
+                    <!-- <%@ include file="../../components/cards/reviewCard.jsp" %> -->
+                  </div>
+                  <div *ngIf="results.totalPages >1" class="col-12 mt-4">
+                    <a href="#" type="button" data-toggle="modal" data-target="#reviewsModal">
+                      {{ 'job.reviews.more' | translate }}
+                    </a>
+                    <!-- <%@ include file="../../components/reviewsPagination.jsp" %> -->
+                  </div>
+                </div>
+                <ng-template #noReviews>
+                  <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="container mt-2 d-flex align-items-center justify-content-center">
+                      <p class="m-0 text-center p-4" style="font-size: 16px">
+                        {{ 'job.review.noReviews' | translate }}
+
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
 
 </div>

@@ -109,6 +109,13 @@ public class JobDto {
         this.jobProvided = jobProvided;
     }
 
+    public UserDto getProvider() {
+        return provider;
+    }
+
+    public void setProvider(UserDto provider) {
+        this.provider = provider;
+    }
 
     public String getUrl() {
         return url;

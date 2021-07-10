@@ -51,7 +51,6 @@ export class AppComponent implements OnInit {
 
   static appName = "Fixhub";
 
-
   constructor(public translateService: TranslateService,
               public library: FaIconLibrary,
               private router: Router,
