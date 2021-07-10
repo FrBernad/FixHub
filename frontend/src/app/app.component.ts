@@ -21,7 +21,9 @@ import {
   faClock,
   faTrash,
   faUpload,
-  faInfoCircle
+  faInfoCircle,
+  faCamera,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -71,7 +73,7 @@ export class AppComponent implements OnInit {
       fasCheck, fasMapMarkerAlt,
       faChartLine, faWrench, faAddressBook,
       faPen, faCompass, faClock, faTrash, faUpload,
-      faInfoCircle
+      faInfoCircle, faCamera, faTimes
     );
 
     this.authService.autoLogin();
