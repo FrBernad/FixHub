@@ -13,7 +13,6 @@ public class UserDto {
         return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
     }
 
-
     private long id;
     private String name;
     private String surname;
@@ -48,7 +47,6 @@ public class UserDto {
         this.url = uriBuilder.clone().build().toString();
         this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
         this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
-
     }
 
     public long getId() {

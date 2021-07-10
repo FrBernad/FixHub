@@ -7,7 +7,8 @@ import {tap} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-  user = new Subject<User>();
+  user = new BehaviorSubject<User>(null);
+  loading = new BehaviorSubject<boolean>(true);
 
   constructor(
     private http: HttpClient,
@@ -24,6 +25,10 @@ export class UserService {
           this.user.next(newUser);
         }
       ))
+  }
+
+  setLoading(value: boolean){
+    this.loading.next(value);
   }
 
   clearUser() {

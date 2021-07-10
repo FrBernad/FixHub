@@ -1,2 +1,7 @@
-<router-outlet></router-outlet>
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+  Loading...
+</ng-template>
+<ng-template #loaded>
+  <router-outlet></router-outlet>
+</ng-template>
 

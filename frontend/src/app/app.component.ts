@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {
@@ -38,6 +38,8 @@ import {AuthService} from "./auth/auth.service";
 import {filter, pairwise} from "rxjs/operators";
 import {PreviousRouteService} from "./auth/previous-route.service";
 import {JobsService} from "./discover/jobs.service";
+import {UserService} from "./auth/user.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -46,15 +48,16 @@ import {JobsService} from "./discover/jobs.service";
 })
 
 
-export class AppComponent implements OnInit {
-  title = 'frontend';
+export class AppComponent implements OnInit, OnDestroy {
+  private subs: Subscription;
 
-  static appName = "Fixhub";
+  loading;
 
   constructor(public translateService: TranslateService,
               public library: FaIconLibrary,
               private router: Router,
               private authService: AuthService,
+              private userService: UserService,
               private previousRouteService: PreviousRouteService,
               private jobsService: JobsService,
               private titleService: Title
@@ -78,6 +81,10 @@ export class AppComponent implements OnInit {
     );
 
     this.authService.autoLogin();
+
+    this.subs = this.userService.loading.subscribe((loading) => {
+      this.loading = loading;
+    })
     // this.router.events
     //   .pipe(
     //     filter((event) => event instanceof NavigationEnd),
@@ -100,6 +107,10 @@ export class AppComponent implements OnInit {
 
   translateSite(language: string) {
     this.translateService.use(language);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
 

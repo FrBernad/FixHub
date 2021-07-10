@@ -80,6 +80,7 @@ export class AuthService {
       _tokenExpirationDate: string;
     } = JSON.parse(localStorage.getItem('session'));
     if (!sessionData) {
+      this.userService.setLoading(false);
       return;
     }
 
@@ -91,8 +92,12 @@ export class AuthService {
           new Date(sessionData._tokenExpirationDate).getTime() -
           new Date().getTime();
         this.autoLogout(expirationDuration);
+        this.userService.setLoading(false);
+      }, () => {
+        this.userService.setLoading(false);
       })
     } else {
+      this.userService.setLoading(false);
       localStorage.removeItem("session")
     }
 
