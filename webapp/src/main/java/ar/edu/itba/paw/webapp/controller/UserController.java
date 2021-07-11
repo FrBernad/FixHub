@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
+import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.PaginatedResultDto;
 import ar.edu.itba.paw.models.user.UserInfo;
@@ -71,7 +72,6 @@ public class UserController {
             return Response.ok(new ProviderDto(user, uriInfo)).build();
         }
         return Response.ok(new UserDto(user, uriInfo)).build();
-
     }
 
     @GET
