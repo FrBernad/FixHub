@@ -34,7 +34,7 @@ import { ChooseCityComponent } from './join/choose-city/choose-city.component';
 import { ChooseStateComponent } from './join/choose-state/choose-state.component';
 import { FooterComponent } from './footer/footer.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
-import { UpdateInfoComponent } from './update-info/update-info.component';
+import { UpdateInfoComponent } from './profile/update-info/update-info.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
 

@@ -1,18 +1,21 @@
-<div class="container-lg mt-4 smallContentContainer py-4">
-  <div class="container-lg px-4 m-2 ">
-      <form modelAttribute="userInfoForm" action="${postPath}" id="userInfoForm" method="POST"
-          enctype="multipart/form-data" [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
-          <div class="row">
+<div class="modal fade" id="updateInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="container-lg mt-4 smallContentContainer py-4">
+        <div class="container-lg px-4 m-2 ">
+          <form id="userInfoForm" enctype="multipart/form-data" [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
+            <div class="row">
               <div class="col">
-                  <h1 class="text-center title">{{'userInfoForm.title' | translate }}</h1>
+                <h1 class="text-center title">{{'userInfoForm.title' | translate }}</h1>
               </div>
-          </div>
-          <div class="form-group">
-              <label path="name">{{'userInfoForm.userNameLabel' | translate }}<span
-                      class="required-field">*</span></label>
-              <input type="text" path="name" value="{{loggedUser.name}}" id="name" class="form-control"
-                  cssErrorClass="form-control is-invalid" formControlName="name"/>
-              <!-- <errors path="name" cssClass="formError" element="p"/> -->
+            </div>
+            <div class="form-group">
+              <label> {{'userInfoForm.userNameLabel' | translate }}<span
+                class="required-field">*</span></label>
+              <input type="text" value="{{loggedUser.name}}" id="name" class="form-control"
+                     formControlName="name"/>
               <span *ngIf="!userInfoForm.get('name').valid && userInfoForm.get('name').touched">
                 <span *ngIf="userInfoForm.get('name').errors['required']" class="errorMessage">
                   {{'NotEmpty.userInfoForm.name' | translate }}<br>
@@ -24,13 +27,12 @@
                   {{'Pattern.userInfoForm.name' | translate }}
                 </span>
               </span>
-          </div>
-          <div class="form-group">
-              <label path="surname">{{'userInfoForm.userSurnameLabel' | translate }}<span
-                      class="required-field">*</span></label>
-              <input type="text" path="surname" value="{{loggedUser.surname}}" cssErrorClass="form-control is-invalid"
-                  id="surname" class="form-control" formControlName="surname"/>
-              <!-- <errors path="surname" cssClass="formError" element="p"/> -->
+            </div>
+            <div class="form-group">
+              <label>{{'userInfoForm.userSurnameLabel' | translate }}<span
+                class="required-field">*</span></label>
+              <input type="text" value="{{loggedUser.surname}}"
+                     id="surname" class="form-control" formControlName="surname"/>
               <span *ngIf="!userInfoForm.get('surname').valid && userInfoForm.get('surname').touched">
                 <span *ngIf="userInfoForm.get('surname').errors['required']" class="errorMessage">
                   {{'NotEmpty.userInfoForm.surname' | translate }}<br>
@@ -42,13 +44,13 @@
                   {{'Pattern.userInfoForm.surname' | translate }}
                 </span>
               </span>
-          </div>
-          <div class="form-group">
-              <label path="phoneNumber">{{'userInfoForm.userPhoneLabel' | translate }}<span
-                      class="required-field">*</span></label>
-              <input type="text" path="phoneNumber" value="{{loggedUser.phoneNumber}}"
-                  cssErrorClass="form-control is-invalid" id="phoneNumber" class="form-control" formControlName="phoneNumber"/>
-              <!-- <errors path="phoneNumber" cssClass="formError" element="p"/> -->
+            </div>
+            <div class="form-group">
+              <label>{{'userInfoForm.userPhoneLabel' | translate }}<span
+                class="required-field">*</span></label>
+              <input type="text" value="{{loggedUser.phoneNumber}}"
+                     id="phoneNumber" class="form-control"
+                     formControlName="phoneNumber"/>
               <span *ngIf="!userInfoForm.get('phoneNumber').valid && userInfoForm.get('phoneNumber').touched">
                 <span *ngIf="userInfoForm.get('phoneNumber').errors['required']" class="errorMessage">
                   {{'NotEmpty.userInfoForm.phoneNumber' | translate }}<br>
@@ -60,16 +62,16 @@
                   {{'Pattern.userInfoForm.phoneNumber' | translate }}
                 </span>
               </span>
-          </div>
-          <div class="row justify-content-center">
+            </div>
+            <div class="row justify-content-center">
               <div class="col-12">
-                  <div class="form-group">
-                      <label path="state">{{'userInfoForm.userStateLabel' | translate }}<span
-                              class="required-field">*</span></label>
-                      <input type="text" path="state" value="{{loggedUser.state}}"
-                          cssErrorClass="form-control is-invalid" id="state" class="form-control" formControlName="state"/>
-                      <!-- <errors path="state" cssClass="formError" element="p"/> -->
-                      <span *ngIf="!userInfoForm.get('state').valid && userInfoForm.get('state').touched">
+                <div class="form-group">
+                  <label>{{'userInfoForm.userStateLabel' | translate }}<span
+                    class="required-field">*</span></label>
+                  <input type="text" value="{{loggedUser.state}}"
+                         id="state" class="form-control"
+                         formControlName="state"/>
+                  <span *ngIf="!userInfoForm.get('state').valid && userInfoForm.get('state').touched">
                         <span *ngIf="userInfoForm.get('state').errors['required']" class="errorMessage">
                           {{'NotEmpty.userInfoForm.state' | translate }}<br>
                         </span>
@@ -80,16 +82,17 @@
                           {{'Pattern.userInfoForm.state' | translate }}
                         </span>
                       </span>
-                  </div>
+                </div>
               </div>
               <div class="col-12">
-                  <div class="form-group">
-                      <label path="city">{{'userInfoForm.userCityLabel' | translate }}<span
-                              class="required-field">*</span></label>
-                      <input type="text" path="city" value="{{loggedUser.city}}"
-                          cssErrorClass="form-control is-invalid" id="city" class="form-control" formControlName="city"/>
-                      <!-- <errors path="city" cssClass="formError" element="p"/> -->
-                      <span *ngIf="!userInfoForm.get('city').valid && userInfoForm.get('city').touched">
+                <div class="form-group">
+                  <label>
+                    {{'userInfoForm.userCityLabel' | translate }}
+                    <span class="required-field">*</span>
+                  </label>
+                  <input type="text" value="{{loggedUser.city}}"
+                         id="city" class="form-control" formControlName="city"/>
+                  <span *ngIf="!userInfoForm.get('city').valid && userInfoForm.get('city').touched">
                         <span *ngIf="userInfoForm.get('city').errors['required']" class="errorMessage">
                           {{'NotEmpty.userInfoForm.city' | translate }}<br>
                         </span>
@@ -100,19 +103,21 @@
                           {{'Pattern.userInfoForm.city' | translate }}
                         </span>
                       </span>
-                  </div>
+                </div>
               </div>
               <div class="col-10 col-md-8 px-0 d-flex align-items-center justify-content-around">
-                  <a href="/user/account" style="text-decoration:none">
-                  <button class="closeBtn my-2 d-flex align-items-center justify-content-center" type="button">
-                      {{'userInfoForm.cancel' | translate }}
-                  </button>
-                  </a>
-                  <button type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
-                      {{'userInfoForm.submit' | translate }}
-                  </button>
+                <button data-bs-dismiss="modal" class="closeBtn my-2 d-flex align-items-center justify-content-center"
+                        type="button">
+                  {{'userInfoForm.cancel' | translate }}
+                </button>
+                <button type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
+                  {{'userInfoForm.submit' | translate }}
+                </button>
               </div>
-          </div>
-      </form>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

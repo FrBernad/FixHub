@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.user.provider.Location;
 
-import javax.ws.rs.core.UriInfo;
 import java.util.LinkedList;
 import java.util.List;
 

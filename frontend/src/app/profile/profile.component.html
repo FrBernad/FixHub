@@ -14,13 +14,12 @@
           </c:otherwise>
         </c:choose> -->
         <div class="profileBackgroundPic">
-          <!-- <c:url value="/user/account/updateCoverImage" var="postCoverImage" />
-          <form:form modelAttribute="coverImageForm" id="changeCoverForm" type="hidden" action="${postCoverImage}"
-            method="POST" enctype="multipart/form-data">
-            <input type="file" id="coverInputFile" name="coverImage" hidden accept=".png,.jpg,.jpeg" />
-
-            <button type="button" class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
-              style="width: 224px">
+          <form method="POST" enctype="multipart/form-data">
+            <input [formControl]="coverImage" type="file" name="coverImage" hidden accept=".png,.jpg,.jpeg"
+                   (change)="onCoverImageChanged($event)" #coverImageInput/>
+            <button (click)="coverImageInput.click()" type="button"
+                    class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
+                    style="width: 224px">
               <span id="coverCamaraIcon">
                 <fa-icon [icon]="['fas', 'camera']" class="me-2"></fa-icon>
                 <span>
@@ -29,9 +28,14 @@
               </span>
               <span id="coverLoadingSpinner" class="spinner-border spinner-border-sm" hidden></span>
             </button>
-            <form:errors path="coverImage" cssClass="formError mt-2"
-              cssStyle="font-size: 14px;position: absolute;width: 250px;" element="p" />
-          </form:form> -->
+            <span *ngIf="!allowedCoverImageType" class="errorMessage">
+                  {{'ImageTypeConstraint.coverImageForm.coverImage' | translate }}<br>
+                </span>
+            <span *ngIf="!allowedCoverImageSize" class="errorMessage">
+                {{'ImageSizeConstraint.coverImageForm.coverImage' | translate:{size: this.maxCoverImageMBSize} }}
+
+            </span>
+          </form>
         </div>
       </div>
     </div>
@@ -51,19 +55,28 @@
                 </c:otherwise>
               </c:choose> -->
             </div>
-            <div>
 
-            </div>
             <div class="profilePicEditBtn">
-              <!--                <c:url value="/user/account/updateProfileImage" var="postProfileImage" />-->
               <form>
-                <input type="file" id="profileInputFile" name="profileImage" hidden accept=".png,.jpg,.jpeg,.gif"/>
-                <button type="button" id="changeProfileImageButton"
+                <input [formControl]="profileImage" type="file" name="profileImage" hidden
+                       (change)="onProfileFileChanged($event)" #profileImageInput accept=".png,.jpg,.jpeg,.gif"/>
+                <button (click)="profileImageInput.click()" type="button" id="changeProfileImageButton"
                         class="d-flex align-items-center justify-content-center">
                   <fa-icon [icon]="['fas','camera']" id="profileCamaraIcon"></fa-icon>
                   <span id="profileLoadingSpinner" class="spinner-border spinner-border-sm" hidden></span>
                 </button>
+
               </form>
+
+            </div>
+
+            <div>
+              <span *ngIf="!allowedProfileImageType" class="errorMessage" >
+                  {{'ImageTypeConstraint.profileImageForm.profileImage' | translate }}<br>
+                </span>
+              <span *ngIf="!allowedProfileImageSize" class="errorMessage">
+                  {{'ImageSizeConstraint.profileImageForm.profileImage' | translate:{size: this.maxProfileImageMBSize} }}
+                </span>
             </div>
           </div>
           <div class="col-8 mt-5">
@@ -91,11 +104,12 @@
             </h3>
           </div>
           <div class="col-6 d-flex align-items-center justify-content-end">
-            <!-- <a href="<c:url value=" /user/account/updateInfo" />">
-            <button class="editBtn">
+            <button data-bs-toggle="modal" data-bs-target="#updateInfo"
+                    type="button" class="editBtn">
               <fa-icon [icon]="['fas', 'pen']"></fa-icon>
             </button>
-            </a> -->
+            <app-update-info [loggedUser]="user"></app-update-info>
+
           </div>
           <div class="col-12">
             <div class="container-fluid">

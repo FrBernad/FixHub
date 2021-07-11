@@ -1,6 +1,6 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Component, OnInit} from '@angular/core';
-import {User} from '../models/user.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {User} from '../../models/user.model';
 
 @Component({
   selector: 'app-update-info',
@@ -9,7 +9,7 @@ import {User} from '../models/user.model';
 })
 export class UpdateInfoComponent implements OnInit {
 
-  loggedUser: User = new User(1, "","","","","","","","",[]);
+  @Input() loggedUser: User;
 
   userInfoForm: FormGroup;
 
@@ -33,10 +33,12 @@ export class UpdateInfoComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.userInfoForm);
     if (!this.userInfoForm.valid) {
       this.userInfoForm.markAllAsTouched();
       return;
     }
+
   }
 
 
