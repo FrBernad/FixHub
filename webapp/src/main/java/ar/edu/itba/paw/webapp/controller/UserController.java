@@ -15,6 +15,7 @@ import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
+import ar.edu.itba.paw.webapp.dto.ProviderDto;
 import ar.edu.itba.paw.webapp.dto.RegisterDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.slf4j.Logger;
@@ -83,7 +84,11 @@ public class UserController {
     public Response getUser(@PathParam("id") final long id) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
+        if(user.getRoles().contains(Roles.PROVIDER)){
+            return Response.ok(new ProviderDto(user, uriInfo)).build();
+        }
         return Response.ok(new UserDto(user, uriInfo)).build();
+
     }
 
     @GET

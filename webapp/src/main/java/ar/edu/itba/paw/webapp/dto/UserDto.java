@@ -44,7 +44,6 @@ public class UserDto {
         this.state = user.getState();
         this.city = user.getCity();
         this.roles = user.getRoles();
-        this.providerDetails = user.getProviderDetails() != null ? new ProviderDetailsDto(user.getProviderDetails()) : null;
         this.url = uriBuilder.clone().build().toString();
         this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
         this.coverImage = uriBuilder.clone().path("coverImage").build().toString();

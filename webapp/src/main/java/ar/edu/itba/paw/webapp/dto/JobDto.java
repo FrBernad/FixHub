@@ -70,7 +70,7 @@ public class JobDto {
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = new UserDto(job.getProvider(),uriInfo);
+        this.provider = new ProviderDto(job.getProvider(),uriInfo);
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
             this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build().toString());
