@@ -10,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ReviewFormComponent implements OnInit {
 
-  @Input() jobId:number;
+  @Input() jobId: number;
   rates: number[] = [1, 2, 3, 4, 5]
   reviewForm: FormGroup;
   minDescLength: number = 4;
@@ -20,8 +20,8 @@ export class ReviewFormComponent implements OnInit {
 
 
   constructor(
-    private jobService:JobService,
-    private route:ActivatedRoute
+    private jobService: JobService,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -31,21 +31,21 @@ export class ReviewFormComponent implements OnInit {
       'description': new FormControl(null, [Validators.required, Validators.minLength(this.minDescLength), Validators.maxLength(this.maxDescLength)]),//initial values, validators,async validators
       'rating': new FormControl("1", [Validators.required, Validators.min(this.minRate), Validators.max(this.maxRate)])
     })
-
   }
 
   onSubmit() {
-    if(!this.reviewForm.valid){
+    if (!this.reviewForm.valid) {
       this.reviewForm.markAllAsTouched();
       return;
     }
-    let jobId = this.route.snapshot.params['jobId'];
     this.jobService.createReview({
-        description: this.reviewForm.get('description').value,
-        rating: this.reviewForm.get('rating').value
-    },jobId).subscribe(()=>{
+      description: this.reviewForm.get('description').value,
+      rating: this.reviewForm.get('rating').value
+    }, this.jobId).subscribe(() => {
       console.log("Enviada la review")
     });
+
+    this.jobService.updateReviews(this.jobId);
 
   }
 

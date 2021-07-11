@@ -1,0 +1,29 @@
+.reviewBody {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.reviewerImage {
+  border-radius: 50%;
+}
+
+.reviewTitle {
+  color: rgba(0, 0, 0, .8);
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+a {
+  font-weight: 500;
+  color: black;
+  transition: hover 1s;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}

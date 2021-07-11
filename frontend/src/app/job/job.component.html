@@ -77,13 +77,11 @@
                       </a>
                     </div>
                     <div class="col-12 pl-0 mt-2">
-
                       <fa-icon *ngFor="let r of [0, 1, 2, 3, 4] | slice:0:job.averageRating" [icon]="['fas', 'star']"
                                class="me-2 iconsColor"></fa-icon>
 
                       <fa-icon *ngFor="let r of [0, 1, 2, 3, 4] | slice:job.averageRating:5" [icon]="['far', 'star']"
                                class="me-2 iconsColor"></fa-icon>
-
                       <span style="font-style: normal; font-weight: 400;">
                           ({{ job.totalRatings }})
                       </span>
@@ -118,9 +116,7 @@
                       <div *ngIf="!job.paused; else jobPaused"
                            class="col-12 d-flex align-items-center justify-content-center">
                         <!-- <a href="<c:url value='/jobs/${job.id}/contact'/>"> -->
-
                         <a [routerLink]="['contact']">
-
                           <button class="contactBtn">
                             {{ 'job.contact' | translate }}
                           </button>
@@ -157,9 +153,9 @@
                         <div class="row">
                           <div class="col-12">
                             <p class="text-left contactInfo names">
-                                                            <span class="fw-bold">
-                                                                {{ 'job.information.name&surname' | translate }}
-                                                            </span>
+                              <span class="fw-bold">
+                                  {{ 'job.information.name&surname' | translate }}
+                              </span>
                               {{ job.provider.name }} {{ job.provider.surname }}
                             </p>
                           </div>
@@ -189,10 +185,9 @@
                           </div>
                           <div class="col-12">
                             <p class="text-left">
-                                <span class="fw-bold">
-                                  {{ 'job.information.city' | translate }}
-                                </span>
-
+                              <span class="fw-bold">
+                                {{ 'job.information.city' | translate }}
+                              </span>
                               <span
                                 *ngFor="let city of job.provider.providerDetails.location.cities"
                                 class="badge rounded-pill bg-secondary p-2 me-2 mt-2">
@@ -205,10 +200,8 @@
                               <span class="fw-bold">
                                 {{ 'job.information.time' | translate }}
                               </span>
-
                               {{ 'job.information.from' | translate:
                               {from: job.provider.providerDetails.schedule.startTime} }}
-
                               {{ 'job.information.to' | translate:
                               {to: job.provider.providerDetails.schedule.endTime} }}
                             </p>
@@ -218,7 +211,6 @@
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -256,32 +248,20 @@
           <!--        <div *ngIf="canReview == true && !job.paused"-->
           <div
             class="col-12 d-flex justify-content-start align-items-center">
-
-            <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="jobReviewLink"
-               data-target="#newReview">
-              {{ 'job.review.hyperlink' | translate }}
-            </a>
-
             <app-review-form [jobId]="job.id"></app-review-form>
-
           </div>
-
 
         </div>
         <div class="row mt-2">
           <div class="col-12 d-flex align-items-center">
             <div class="container-fluid">
               <div class="row">
-                <div *ngIf="results.totalPages > 0; else noReviews">
-
-                  <div *ngFor="let review of firstResults.results" class="col-12 mt-3 col-md-7">
-                    <!-- <%@ include file="../../components/cards/reviewCard.jsp" %> -->
+                <div *ngIf="rpr.totalPages > 0; else noReviews">
+                  <div *ngFor="let review of rpr.results" class="col-12 mt-3 col-md-7">
+                    <app-review-card [review]="review"></app-review-card>
                   </div>
-                  <div *ngIf="results.totalPages >1" class="col-12 mt-4">
-                    <a href="#" type="button" data-toggle="modal" data-target="#reviewsModal">
-                      {{ 'job.reviews.more' | translate }}
-                    </a>
-                    <!-- <%@ include file="../../components/reviewsPagination.jsp" %> -->
+                  <div *ngIf="rpr.totalPages > 1" class="col-12 mt-4">
+                    <app-review-pagination [job]="job"></app-review-pagination>
                   </div>
                 </div>
                 <ng-template #noReviews>
@@ -289,12 +269,10 @@
                     <div class="container mt-2 d-flex align-items-center justify-content-center">
                       <p class="m-0 text-center p-4" style="font-size: 16px">
                         {{ 'job.review.noReviews' | translate }}
-
                       </p>
                     </div>
                   </div>
                 </ng-template>
-
               </div>
             </div>
           </div>
@@ -302,6 +280,5 @@
       </div>
     </div>
   </ng-template>
-
 
 </div>

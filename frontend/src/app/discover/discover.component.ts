@@ -8,7 +8,6 @@ import {Subscription} from "rxjs";
 import {map, take, tap} from "rxjs/operators";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 
-
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html',
@@ -53,12 +52,10 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     const category = window.history.state['category'];
     const query = window.history.state['query'];
     if (category) {
-      this.jpr.category = category;
       this.jpq.category = category;
     }
 
     if (query) {
-      this.jpr.query = query;
       this.jpq.query = query;
     }
 
@@ -81,6 +78,9 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   onChangeCategory(category: string) {
     this.jpq.category = category;
+    if (!category) {
+      delete this.jpq.category;
+    }
     this.jobsService.getJobs(this.jpq)
   }
 

@@ -1,0 +1,15 @@
+a {
+  font-weight: 500;
+  color: black;
+  transition: hover 1s;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}
+
+.roundedBorder {
+  border-radius: 8px;
+}

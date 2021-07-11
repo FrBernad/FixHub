@@ -22,11 +22,6 @@ export interface JobPaginationResult {
   page: number;
   totalPages: number;
   results: Job[];
-  query?: string;
-  order?: string;
-  category?: string;
-  state?: string;
-  city?: string;
 }
 
 export interface State {

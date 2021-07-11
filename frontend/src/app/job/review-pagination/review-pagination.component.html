@@ -1,0 +1,31 @@
+<a href="#" type="button" data-bs-toggle="modal" data-bs-target="#reviewsModal">
+  {{ 'job.review.more' | translate }}
+</a>
+<div class="modal fade" id="reviewsModal" tabindex="-1"
+     aria-labelledby="newReviewLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="container-lg roundedBorder pb-4 pt-5 px-5" style="background-color: #FAFAFA;">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-start align-items-center">
+            <h2 class="sectionTitle">
+              {{'job.review.title' | translate:{jobProvided: job.jobProvided} }}
+            </h2>
+          </div>
+          <div *ngFor="let review of rpr.results" class="col-12 mt-3">
+            <app-review-card [review]="review"></app-review-card>
+          </div>
+          <app-pagination
+            *ngIf="rpr.totalPages>1"
+            (changePage)="onChangePage($event)"
+            [currentPage]="rpr.page"
+            [totalPages]="rpr.totalPages">
+          </app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

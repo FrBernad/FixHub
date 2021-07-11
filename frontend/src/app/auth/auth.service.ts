@@ -127,8 +127,10 @@ export class AuthService {
   ) {
     const jwt = this.decodeToken(token);
 
-    const expirationDate = new Date(new Date().getTime() + jwt.exp);
-    this.autoLogout(jwt.exp);
+    const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
+
+    const expirationDate = new Date(new Date().getTime() + milliExpirationTime);
+    this.autoLogout(milliExpirationTime);
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);

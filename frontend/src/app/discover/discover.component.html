@@ -147,8 +147,9 @@
             <ng-template [ngIf]="jpr.results.length>0" [ngIfElse]="jobsNotFound">
               <div class="col-12">
                 <div class="container-fluid p-0">
+                  <!--                    FIXME-->
                   <div
-                    class="row align-items-top w-100  mx-0 ${fn:length(jpr.results)%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
+                    class="row align-items-top w-100 mx-0 {jpr.results)%3 == 0 ? 'justify-content-between': 'justify-content-start'}">
                     <div *ngFor="let job of jpr.results"
                          class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
                       <app-job-card class="w-100" [job]="job"></app-job-card>

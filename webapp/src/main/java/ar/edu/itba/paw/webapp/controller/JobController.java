@@ -305,14 +305,14 @@ public class JobController {
 //    }
 
 
-    @Path("/{jobId}/review")
+    @Path("/{id}/reviews")
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response jobReviewPost(@PathParam("jobId") long jobId, final NewReviewDto reviewDto){
+    public Response jobReviewPost(@PathParam("id") long id, final NewReviewDto reviewDto){
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
         Review review = reviewService.createReview(reviewDto.getDescription(), job, Integer.parseInt(reviewDto.getRating()), user);
-        LOGGER.info("Create review with id {} in the job with id {}",review.getId(),jobId);
+        LOGGER.info("Create review with id {} in the job with id {}",review.getId(),id);
         return Response.created(ReviewDto.getReviewUriBuilder(review,uriInfo).build()).build();
     }
 

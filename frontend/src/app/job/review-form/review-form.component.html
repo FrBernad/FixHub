@@ -1,3 +1,7 @@
+<a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="jobReviewLink"
+   data-target="#newReview">
+  {{ 'job.review.hyperlink' | translate }}
+</a>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -33,7 +37,7 @@
                   <span class="required-field">*</span>
                 </label>
                 <select class="form-control" formControlName="rating">
-                  <option *ngFor="let rate of rates" value="rate">{{rate}}</option>
+                  <option *ngFor="let rate of rates" [value]="rate">{{rate}}</option>
                 </select>
 
                 <span *ngIf="!reviewForm.get('rating').valid">

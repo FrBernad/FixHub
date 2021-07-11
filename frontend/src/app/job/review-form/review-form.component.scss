@@ -1,9 +1,21 @@
 .roundedBorder {
   border-radius: 8px;
 }
+
+#jobReviewLink {
+  font-weight: 500;
+  color: rgb(0, 104, 192);
+  transition: hover 1s;
+}
+
+#jobReviewLink:hover {
+  text-decoration: underline;
+  color: rgb(0, 104, 192);
+}
+
 .closeBtn {
   color: #FFFeFF;
-  font-size:0.8em;
+  font-size: 0.8em;
   background-color: #6c757d;
   border: none;
   box-shadow: none;
@@ -14,7 +26,7 @@
 }
 
 .rateBtn {
-  font-size:0.8em;
+  font-size: 0.8em;
   background-color: #003359;
   color: #fff;
   border: none;
@@ -26,10 +38,10 @@
   height: auto;
 }
 
-textarea.ng-invalid.ng-touched{
-  border:1px solid red;
+textarea.ng-invalid.ng-touched {
+  border: 1px solid red;
 }
 
-.errorMessage{
+.errorMessage {
   color: red;
 }

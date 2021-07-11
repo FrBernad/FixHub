@@ -90,7 +90,6 @@ export class EditJobComponent implements OnInit {
         this.job.averageRating = responseData.averageRating;
         this.job.images = responseData.images;
         this.editJobForm.get('imagesToUpload').patchValue(responseData.images);
-        this.job.reviews = [];
         this.job.paused = responseData.paused;
         this.editJobForm.patchValue({paused: responseData.paused});
         this.job.thumbnailImage = responseData.thumbnailImage;

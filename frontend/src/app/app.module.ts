@@ -38,6 +38,8 @@ import { UpdateInfoComponent } from './profile/update-info/update-info.component
 import { PaginationComponent } from './pagination/pagination.component';
 import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
 import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
+import { ReviewCardComponent } from './job/review-card/review-card.component';
+import { ReviewPaginationComponent } from './job/review-pagination/review-pagination.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -69,7 +71,9 @@ import { LoadingScreenComponent } from './loading-screen/loading-screen.componen
     UpdateInfoComponent,
     PaginationComponent,
     UpdateProviderInfoComponent,
-    LoadingScreenComponent
+    LoadingScreenComponent,
+    ReviewCardComponent,
+    ReviewPaginationComponent
   ],
   imports: [
     BrowserModule,

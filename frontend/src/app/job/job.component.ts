@@ -2,7 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Job} from "../models/job.model";
 import {User} from "../models/user.model";
 import {ActivatedRoute, Params} from "@angular/router";
-import {JobService} from "./job.service";
+import {JobService, ReviewsPaginationResult} from "./job.service";
+import {Subscription} from "rxjs";
+import {Review} from "./review.model";
+import {JobPaginationResult} from "../discover/jobs.service";
 
 @Component({
   selector: 'app-job',
@@ -18,14 +21,18 @@ export class JobComponent implements OnInit {
   selectedIndex = 0;
   isFetching = true;
 
-  results = {
-    totalPages: 0
-  };
-  firstResults: {
-    results: []
-  };
+  private reviewsSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private jobService: JobService) {
+  rpr: ReviewsPaginationResult = {
+    results: [],
+    page: 0,
+    totalPages: 0,
+  }
+
+  constructor(
+    private route: ActivatedRoute,
+    private jobService: JobService
+  ) {
   }
 
   ngOnInit(): void {
@@ -36,42 +43,38 @@ export class JobComponent implements OnInit {
     );
 
     this.jobService.getJob(+this.job.id).subscribe(
-      responseData => {
-        console.log(responseData.id);
-        this.job.jobProvided = responseData.jobProvided;
-        this.job.description = responseData.description;
-        this.job.category = responseData.category;
-        this.job.price = responseData.price;
-        this.job.provider = responseData.provider;
-        this.job.totalRatings = responseData.totalRatings;
-        this.job.averageRating = responseData.averageRating;
-        this.job.images = responseData.images;
-        this.job.reviews = [];
-        this.job.paused = responseData.paused;
-        this.job.thumbnailImage = responseData.thumbnailImage;
+      job => {
+        this.job = job;
         this.isFetching = false;
       }
     );
+
+    this.reviewsSub = this.jobService.firstReviews.subscribe((results) => {
+      this.rpr = results;
+    });
+
+    this.jobService.getFirstReviews(+this.job.id);
+
   }
 
-  selectPrevious(){
-    if(this.selectedIndex == 0){
-      this.selectedIndex = this.job.images.length-1;
-    }else {
+  selectPrevious() {
+    if (this.selectedIndex == 0) {
+      this.selectedIndex = this.job.images.length - 1;
+    } else {
       this.selectedIndex--;
     }
   }
 
-  selectNext(){
-    if(this.selectedIndex == this.job.images.length-1){
+  selectNext() {
+    if (this.selectedIndex == this.job.images.length - 1) {
       this.selectedIndex = 0;
-    }else {
+    } else {
       this.selectedIndex++;
     }
   }
 
-
-
-
+  ngOnDestroy(): void {
+    this.reviewsSub.unsubscribe();
+  }
 
 }
