@@ -1,19 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.interfaces.exceptions.ServerInternalException;
-import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.image.ImageDto;
-import ar.edu.itba.paw.models.location.State;
-import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
-import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.webapp.dto.PaginatedResultDto;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.webapp.dto.ProviderDto;
 import ar.edu.itba.paw.webapp.dto.RegisterDto;
@@ -22,23 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Map;
+import javax.ws.rs.core.*;
+import java.util.Collection;
 
 @Path("/users")
 @Component
@@ -75,7 +58,7 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Response.created(UserDto.getUserUriBuilder(user,uriInfo).build()).build();
+        return Response.created(UserDto.getUserUriBuilder(user, uriInfo).build()).build();
     }
 
     @GET
@@ -102,7 +85,6 @@ public class UserController {
         return Response.ok(profileImage).type(user.getProfileImage().getMimeType()).build();
     }
 
-
     @GET
     @Path("/{id}/coverImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
@@ -114,6 +96,63 @@ public class UserController {
         return Response.ok(coverImage).type(user.getCoverImage().getMimeType()).build();
     }
 
+    @GET
+    @Path("/{id}/followers")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getUserFollowers(
+        @PathParam("id") final long id,
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("4") int pageSize
+    ) {
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        final PaginatedSearchResult<User> results = searchService.getUserFollowers(user, page, pageSize);
+
+        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
+
+        final PaginatedResultDto<UserDto> resultsDto =
+            new PaginatedResultDto<>(
+                results.getPage(),
+                results.getTotalPages(),
+                userDtos);
+
+        final UriBuilder uriBuilder = uriInfo
+            .getAbsolutePathBuilder()
+            .queryParam("pageSize", pageSize);
+
+        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<UserDto>>(resultsDto) {
+        }, uriBuilder);
+    }
+
+
+    @GET
+    @Path("/{id}/following")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getUserFollowings(
+        @PathParam("id") final long id,
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("4") int pageSize
+    ) {
+
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        final PaginatedSearchResult<User> results = searchService.getUserFollowing(user, page, pageSize);
+
+        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
+
+        final PaginatedResultDto<UserDto> resultsDto =
+            new PaginatedResultDto<>(
+                results.getPage(),
+                results.getTotalPages(),
+                userDtos);
+
+        final UriBuilder uriBuilder = uriInfo
+            .getAbsolutePathBuilder()
+            .queryParam("pageSize", pageSize);
+
+        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<UserDto>>(resultsDto) {
+        }, uriBuilder);
+    }
 
 //    @RequestMapping(path = "/user/account/search")
 //    public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form,
@@ -437,5 +476,49 @@ public class UserController {
 //
 //        return new ModelAndView("redirect:/user/account");
 //    }
+
+
+    private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
+                                                     GenericEntity<PaginatedResultDto<K>> resultsDto,
+                                                     UriBuilder uriBuilder) {
+        if (results.getResults().isEmpty()) {
+            if (results.getPage() == 0) {
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        }
+
+        final Response.ResponseBuilder response = Response.ok(resultsDto);
+
+        addPaginationLinks(response, results, uriBuilder);
+
+        return response.build();
+    }
+
+    private <T> void addPaginationLinks(Response.ResponseBuilder responseBuilder,
+                                        PaginatedSearchResult<T> results,
+                                        UriBuilder uriBuilder) {
+
+        final int page = results.getPage();
+
+        final int first = 0;
+        final int last = results.getLastPage();
+        final int prev = page - 1;
+        final int next = page + 1;
+
+        responseBuilder.link(uriBuilder.clone().queryParam("page", first).build(), "first");
+
+        responseBuilder.link(uriBuilder.clone().queryParam("page", last).build(), "last");
+
+        if (page != first) {
+            responseBuilder.link(uriBuilder.clone().queryParam("page", prev).build(), "prev");
+        }
+
+        if (page != last) {
+            responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
+        }
+    }
+
 
 }

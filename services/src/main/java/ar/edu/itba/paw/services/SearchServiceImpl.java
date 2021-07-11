@@ -33,16 +33,12 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private LocationDao locationDao;
 
-    private final OrderOptions DEFAULT_ORDER = OrderOptions.valueOf("MOST_POPULAR");
-
-    private final int DEFAULT_ITEMS_PER_PAGE = 6;
-
     private final int SEACH_MAX_LENGTH = 50;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     @Override
-    public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String category, String state, String city, int page, int itemsPerPage) {
+    public PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String category, String state, String city, int page, int pageSize) {
 
         //ORDER
         OrderOptions queryOrderOption;
@@ -82,7 +78,6 @@ public class SearchServiceImpl implements SearchService {
 
         String queryState;
         String queryCity;
-        Collection<City> cities = Collections.emptyList();
         if (state == null) {
             if (city != null && !city.equals("")) {
                 LOGGER.debug("State empty but city provided");
@@ -102,8 +97,6 @@ public class SearchServiceImpl implements SearchService {
             Optional<State> stateOpt = locationDao.getStateById(stateId);
             if (stateOpt.isPresent()) {
                 stateObj = stateOpt.get();
-                cities = locationDao.getCitiesByState(stateObj);
-                state = stateObj.getName();
                 queryState = String.valueOf(stateId);
             } else {
                 LOGGER.debug("Invalid state id");
@@ -135,179 +128,187 @@ public class SearchServiceImpl implements SearchService {
             return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid", itemsPerPage);
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
             return null;
         }
 
         LOGGER.debug("Retrieving total jobs count");
         final int totalJobs = jobDao.getJobsCountByCategory(querySearchBy, queryCategoryFilter, queryState, queryCity);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalPages = (int) Math.ceil((float) totalJobs / pageSize);
 
         if (totalPages == 0 || page >= totalPages) {
             LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
-            return new PaginatedSearchResult<>(0, itemsPerPage, 0, Collections.emptyList());
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for jobs by category {}", page, category);
-        final Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, queryState, queryCity, page, itemsPerPage);
-//        return new PaginatedSearchResult<>(orderBy, category, searchBy, state, city, cities, page, itemsPerPage, totalJobs, jobs);
-        return new PaginatedSearchResult<>(page, itemsPerPage, totalJobs, jobs);
+        final Collection<Job> jobs = jobDao.getJobsByCategory(querySearchBy, queryOrderOption, queryCategoryFilter, queryState, queryCity, page, pageSize);
+
+        return new PaginatedSearchResult<>(page, pageSize, totalJobs, jobs);
     }
 
     @Override
-    public PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int itemsPerPage) {
+    public PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int pageSize) {
+
+        //ORDER
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
             LOGGER.debug("Order option {} not valid, setting default order", orderBy);
-            queryOrderOption = DEFAULT_ORDER;
-            orderBy = DEFAULT_ORDER.name();
-        } else {
-            LOGGER.debug("Order option is valid");
-            queryOrderOption = valueOf(orderBy);
+            return null;
         }
+        LOGGER.debug("Order option is valid");
+        queryOrderOption = valueOf(orderBy);
 
+        //QUERY
         String querySearchBy;
-        if (searchBy != null && (searchBy.equals("") || searchBy.length() > SEACH_MAX_LENGTH)) {
-            LOGGER.debug("Search query is empty, setting searchQuery to none");
-            querySearchBy = null;
-            searchBy = "";
-        } else {
+        if (!searchBy.equals("")) {
+            if (searchBy.length() > SEACH_MAX_LENGTH) {
+                LOGGER.debug("Search query is empty, setting state to none");
+                return null;
+            }
             LOGGER.debug("Search query is valid: {}", searchBy);
             querySearchBy = searchBy;
+        } else {
+            querySearchBy = null;
         }
 
         if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
         }
 
         LOGGER.debug("Retrieving total jobs count");
         final int totalJobs = jobDao.getJobsCountByProvider(provider, querySearchBy);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalPages = (int) Math.ceil((float) totalJobs / pageSize);
 
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for jobs by provider id {}", page, provider.getId());
-        final Collection<Job> jobs = jobDao.getJobsByProvider(querySearchBy, queryOrderOption, provider, page, itemsPerPage);
-        return new PaginatedSearchResult<>(orderBy, provider.getId().toString(), searchBy, page, itemsPerPage, totalJobs, jobs);
+
+        final Collection<Job> jobs = jobDao.getJobsByProvider(querySearchBy, queryOrderOption, provider, page, pageSize);
+        return new PaginatedSearchResult<>(page, pageSize, totalJobs, jobs);
     }
 
     @Override
-    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage) {
+    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int pageSize) {
 
         if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
         }
 
         LOGGER.debug("Retrieving total clients count");
-        final int totalJobs = userDao.getClientsCountByProvider(provider);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalContacts = userDao.getClientsCountByProvider(provider);
+        final int totalPages = (int) Math.ceil((float) totalContacts / pageSize);
 
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, provider.getId());
-        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, page, itemsPerPage);
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
+        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, page, pageSize);
+
+        return new PaginatedSearchResult<>(page, pageSize, totalContacts, contacts);
     }
 
 
     @Override
-    public PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int itemsPerPage) {
-
+    public PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int pageSize) {
         if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
         }
 
         LOGGER.debug("Retrieving total providers count");
-        final int totalJobs = userDao.getProvidersCountByClient(client);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalContacts = userDao.getProvidersCountByClient(client);
+        final int totalPages = (int) Math.ceil((float) totalContacts / pageSize);
 
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for providers by client id {}", page, client.getId());
-        final Collection<JobContact> contacts = userDao.getProvidersByClient(client, page, itemsPerPage);
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, contacts);
+        final Collection<JobContact> contacts = userDao.getProvidersByClient(client, page, pageSize);
+
+        return new PaginatedSearchResult<>(page, pageSize, totalContacts, contacts);
     }
 
     @Override
-    public PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer itemsPerPage) {
+    public PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer pageSize) {
 
         if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
         }
 
         LOGGER.debug("Retrieving total followers count");
-        final int totalJobs = userDao.getUserFollowersCount(user);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalUsers = userDao.getUserFollowersCount(user);
+        final int totalPages = (int) Math.ceil((float) totalUsers / pageSize);
 
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for user followers with id {}", page, user.getId());
-        final Collection<User> users = userDao.getUserFollowers(user, page, itemsPerPage);
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
+
+        final Collection<User> users = userDao.getUserFollowers(user, page, pageSize);
+
+        return new PaginatedSearchResult<>(page, pageSize, totalUsers, users);
 
     }
 
     @Override
-    public PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer itemsPerPage) {
+    public PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer pageSize) {
+
         if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, defaulting to DEFAULT {}", itemsPerPage, DEFAULT_ITEMS_PER_PAGE);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
         }
 
         LOGGER.debug("Retrieving total following count");
-        final int totalJobs = userDao.getUserFollowingCount(user);
-        final int totalPages = (int) Math.ceil((float) totalJobs / itemsPerPage);
+        final int totalUsers = userDao.getUserFollowingCount(user);
+        final int totalPages = (int) Math.ceil((float) totalUsers / pageSize);
 
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for user following with id {}", page, user.getId());
-        final Collection<User> users = userDao.getUserFollowings(user, page, itemsPerPage);
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalJobs, users);
+        final Collection<User> users = userDao.getUserFollowings(user, page, pageSize);
+        return new PaginatedSearchResult<>(page, pageSize, totalUsers, users);
     }
 
     @Override

@@ -7,11 +7,16 @@ import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class UserDto {
 
     public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
+    }
+
+    public static Collection<UserDto> mapUserToDto(Collection<User> users, UriInfo uriInfo) {
+        return users.stream().map(u -> new UserDto(u, uriInfo)).collect(Collectors.toList());
     }
 
     private long id;

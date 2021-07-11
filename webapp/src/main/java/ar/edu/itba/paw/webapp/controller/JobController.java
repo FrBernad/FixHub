@@ -41,7 +41,6 @@ public class JobController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 
-
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getJobs(
@@ -55,7 +54,7 @@ public class JobController {
     ) {
         LOGGER.info("Accessed /jobs GET controller");
 
-        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, pageSize);
+        final PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, pageSize);
 
         if (results == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -68,10 +67,6 @@ public class JobController {
                 results.getPage(),
                 results.getTotalPages(),
                 jobsDto);
-
-        Response.ResponseBuilder response = Response.ok(
-            new GenericEntity<PaginatedResultDto<JobDto>>(resultsDto) {
-            });
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -90,30 +85,8 @@ public class JobController {
             }
         }
 
-        addPaginationLinks(response, results, uriBuilder);
-
-        return response.build();
-    }
-
-    private <T> void addPaginationLinks(Response.ResponseBuilder responseBuilder, PaginatedSearchResult<T> results, UriBuilder uriBuilder) {
-        final int page = results.getPage();
-
-        final int first = 0;
-        final int last = results.getLastPage();
-        final int prev = page - 1;
-        final int next = page + 1;
-
-        responseBuilder.link(uriBuilder.clone().queryParam("page", first).build(), "first");
-
-        responseBuilder.link(uriBuilder.clone().queryParam("page", last).build(), "last");
-
-        if (page != first) {
-            responseBuilder.link(uriBuilder.clone().queryParam("page", prev).build(), "prev");
-        }
-
-        if (page != last) {
-            responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
-        }
+        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobDto>>(resultsDto) {
+        }, uriBuilder);
     }
 
     @GET
@@ -442,5 +415,48 @@ public class JobController {
 //            }
 //        }
 //
+
+
+    private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
+                                                     GenericEntity<PaginatedResultDto<K>> resultsDto,
+                                                     UriBuilder uriBuilder) {
+        if (results.getResults().isEmpty()) {
+            if (results.getPage() == 0) {
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        }
+
+        final Response.ResponseBuilder response = Response.ok(resultsDto);
+
+        addPaginationLinks(response, results, uriBuilder);
+
+        return response.build();
+    }
+
+    private <T> void addPaginationLinks(Response.ResponseBuilder responseBuilder,
+                                        PaginatedSearchResult<T> results,
+                                        UriBuilder uriBuilder) {
+
+        final int page = results.getPage();
+
+        final int first = 0;
+        final int last = results.getLastPage();
+        final int prev = page - 1;
+        final int next = page + 1;
+
+        responseBuilder.link(uriBuilder.clone().queryParam("page", first).build(), "first");
+
+        responseBuilder.link(uriBuilder.clone().queryParam("page", last).build(), "last");
+
+        if (page != first) {
+            responseBuilder.link(uriBuilder.clone().queryParam("page", prev).build(), "prev");
+        }
+
+        if (page != last) {
+            responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
+        }
+    }
 
 }

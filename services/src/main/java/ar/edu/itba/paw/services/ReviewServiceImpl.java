@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 
 @org.springframework.stereotype.Service
 public class ReviewServiceImpl implements ReviewService {
@@ -26,42 +27,40 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private UserService userService;
 
-    private static final int DEFAULT_ITEMS_PER_PAGE = 6;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ReviewService.class);
 
     @Override
-    public PaginatedSearchResult<Review> getReviewsByJob(Job job, int page, int itemsPerPage) {
+    public PaginatedSearchResult<Review> getReviewsByJob(Job job, int page, int pageSize) {
 
         if (page < 0) {
-            LOGGER.debug("Page number {} is invalid, defaulting to 0", page);
-            page = 0;
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
         }
 
-        if (itemsPerPage <= 0) {
-            LOGGER.debug("Items per page {} is invalid, assigning default", itemsPerPage);
-            itemsPerPage = DEFAULT_ITEMS_PER_PAGE;
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
         }
 
         LOGGER.debug("Retrieving total reviews count for job {}", job.getId());
         final int totalReviews = reviewDao.getReviewsCountByJob(job);
-        final int totalPages = (int) Math.ceil((float) totalReviews / itemsPerPage);
+        final int totalPages = (int) Math.ceil((float) totalReviews / pageSize);
 
-        if (page >= totalPages) {
-            LOGGER.debug("Page number {} is higher than totalPages {}, defaulting to {}", page, totalPages, totalPages - 1);
-            page = totalPages - 1;
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
         }
 
         LOGGER.debug("Retrieving page {} for reviews", page);
-        final Collection<Review> reviews = reviewDao.getReviewsByJob(job, page, itemsPerPage);
+        final Collection<Review> reviews = reviewDao.getReviewsByJob(job, page, pageSize);
 
-        return new PaginatedSearchResult<>("", "", "", page, itemsPerPage, totalReviews, reviews);
+        return new PaginatedSearchResult<>(page, pageSize, totalReviews, reviews);
     }
 
     @Transactional
     @Override
     public Review createReview(String description, Job job, int rating, User user) {
-        if (!userService.hasContactJobProvided(job.getProvider(), user,job))
+        if (!userService.hasContactJobProvided(job.getProvider(), user, job))
             throw new NoContactFoundException();
         else {
             final Review review = reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()), user);

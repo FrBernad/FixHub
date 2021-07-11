@@ -9,18 +9,18 @@ import ar.edu.itba.paw.models.user.User;
 import java.util.Collection;
 
 public interface SearchService {
-    PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String category, String state, String city, int page, int itemsPerPage);
+    PaginatedSearchResult<Job> getJobsByCategory(String searchBy, String orderBy, String category, String state, String city, int page, int pageSize);
 
-    PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int itemsPerPage);
+    PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int pageSize);
 
-    PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage);
+    PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int pageSize);
 
-    PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int itemsPerPage);
+    PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int pageSize);
 
     Collection<OrderOptions> getOrderOptions();
 
-    PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer itemsPerPage);
+    PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer pageSize);
 
-    PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer itemsPerPage);
+    PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer pageSize);
 
 }
