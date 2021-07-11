@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.contact.ContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
@@ -29,9 +30,9 @@ public interface UserDao {
 
     Optional<ContactInfo> getContactInfoById(Long Id);
 
-    Collection<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage);
+    Collection<JobContact> getClientsByProvider(User provider, JobStatus status, int page, int itemsPerPage);
 
-    int getClientsCountByProvider(User provider);
+    int getClientsCountByProvider(User provider, JobStatus status);
 
     Collection<JobContact> getProvidersByClient(User client, int page, int itemsPerPage);
 
@@ -47,6 +48,6 @@ public interface UserDao {
 
     void persistProviderDetails(Location location, Schedule schedule);
 
-    boolean hasContactJobProvided(User provider, User user,Job job);
+    boolean hasContactJobProvided(User provider, User user, Job job);
 
 }

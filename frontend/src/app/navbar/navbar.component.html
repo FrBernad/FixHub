@@ -17,18 +17,17 @@
             {{'navBar.discover'| translate}}
           </a>
         </li>
-        <li *ngIf="!!user && user.isProvider" class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+        <li *ngIf="!!user && user.roles.includes('PROVIDER')"
+            class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
           <a routerLink="/user/dashboard" class="nav-link navbarText">
             {{'navBar.dashboard'| translate}}
           </a>
         </li>
       </ul>
-
       <ul class="navbar-nav ms-auto">
         <ng-template [ngIf]="!!user" [ngIfElse]="noUser">
-
-          <li *ngIf="user.isProvider" class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
-            <a href="<c:url value='/jobs/new'/>" class="nav-link navbarText">
+          <li *ngIf="user.roles.includes('PROVIDER')" class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+            <a routerLink="/user/dashboard" class="nav-link navbarText">
               <fa-icon class="me-2 navbarText" [icon]="['fas','plus']" id="navBarPlus"></fa-icon>
               {{'navBar.newJob'| translate}}
             </a>
@@ -38,7 +37,7 @@
           <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
             <div class="userContainer pe-0 nav-link">
               <div id="moreOptions" class="dropdown" data-bs-toggle="dropdown">
-                <img [src]="user.profileImage"
+                <img [src]="user.profileImage ? user.profileImage : '../../assets/images/defaultProfileImage.png'"
                      class="avatar"
                      alt="profileImg"/>
                 <fa-icon class="ms-2 navbarText" [icon]="['fas','chevron-down']" id="navBarArrow"></fa-icon>
@@ -54,7 +53,7 @@
                 <a routerLink="/user/profile" class="dropdown-item ps-3">
                   {{'navBar.profile' | translate}}
                 </a>
-                <a *ngIf="user.isProvider" routerLink="/user/dashboard" class="dropdown-item ps-3">
+                <a *ngIf="user.roles.includes('PROVIDER')" routerLink="/user/dashboard" class="dropdown-item ps-3">
                   {{'navBar.dashboardItem'| translate}}
                 </a>
                 <div class="dropdown-divider"></div>

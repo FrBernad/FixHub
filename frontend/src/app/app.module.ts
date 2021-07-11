@@ -37,6 +37,7 @@ import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import { UpdateInfoComponent } from './profile/update-info/update-info.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -67,7 +68,8 @@ import { UpdateProviderInfoComponent } from './update-provider-info/update-provi
     FooterComponent,
     UpdateInfoComponent,
     PaginationComponent,
-    UpdateProviderInfoComponent
+    UpdateProviderInfoComponent,
+    LoadingScreenComponent
   ],
   imports: [
     BrowserModule,

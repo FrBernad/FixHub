@@ -1,5 +1,5 @@
 <ng-template [ngIf]="loading" [ngIfElse]="loaded">
-  Loading...
+  <app-loading-screen></app-loading-screen>
 </ng-template>
 <ng-template #loaded>
   <router-outlet></router-outlet>

@@ -38,7 +38,6 @@ public class UserDto {
     }
 
     public UserDto(User user, UriInfo uriInfo) {
-
         final UriBuilder uriBuilder = getUserUriBuilder(user, uriInfo);
 
         this.id = user.getId();
@@ -50,8 +49,12 @@ public class UserDto {
         this.city = user.getCity();
         this.roles = user.getRoles();
         this.url = uriBuilder.clone().build().toString();
-        this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
-        this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
+        if (user.getProfileImage() != null) {
+            this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
+        }
+        if (user.getCoverImage() != null) {
+            this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
+        }
     }
 
     public long getId() {

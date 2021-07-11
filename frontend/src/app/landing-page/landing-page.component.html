@@ -137,10 +137,9 @@
       <div class="col-12 p-0">
         <div class="container-fluid p-0">
           <div class="row align-items-center m-0"
-               [ngClass]="(jobs.length)%3 == 0 ? 'justify-content-between':'justify-content-start'">
-
-            <ng-template [ngIf]="jobs.length > 0" [ngIfElse]="noJobs">
-              <div *ngFor="let job of jobs | slice:0:3"
+               [ngClass]="(popularJobs.length)%3 == 0 ? 'justify-content-between':'justify-content-start'">
+            <ng-template [ngIf]="popularJobs.length > 0" [ngIfElse]="noJobs">
+              <div *ngFor="let job of popularJobs | slice:0:3"
                    class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
                 <app-popular-job-card [job]="job"></app-popular-job-card>
               </div>

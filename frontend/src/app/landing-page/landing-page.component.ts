@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, query, stagger, state, style, transition, trigger} from "@angular/animations";
 import {User} from "../models/user.model";
 import {Job} from "../models/job.model";
 import {JobCategoryModel} from "../models/jobCategory.model";
 import {JobsService} from "../discover/jobs.service";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-landing-page',
@@ -32,29 +33,17 @@ import {Router} from "@angular/router";
     ])
   ]
 })
-export class LandingPageComponent implements OnInit {
-
-  //FIXME: BORRAR TODA ESTA PARTE DE JOB Y USER
-  provider: User = new User(1, "", "", "", "", "", "", "", "", []);
-
-  job: Job = {
-    id: 1, description: 'sillas de roble o pino', jobProvided: 'Arreglo sillas',
-    category: JobCategoryModel.CARPINTERO, price: 121, totalRatings: 0,
-    averageRating: 0, images: [], reviews: [],
-    provider: this.provider,
-    paused: false,
-    thumbnailImage: ''
-  };
-
-  jobs = [
-    this.job, this.job, this.job, this.job
-  ];
+export class LandingPageComponent implements OnInit, OnDestroy {
 
   loading = true;
 
   searchError = false;
 
   categories: string[] = [];
+
+  popularJobs = [];
+
+  jobsSub: Subscription;
 
   constructor(
     private jobsService: JobsService,
@@ -63,9 +52,15 @@ export class LandingPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.jobsService.getJobs({page: 0});
+
     this.jobsService.getCategories().subscribe((categories) => {
       this.categories = categories.values.slice(0, 5);
       this.loading = false;
+    });
+
+    this.jobsSub = this.jobsService.results.subscribe((results) => {
+      this.popularJobs = results.results;
     });
   }
 
@@ -97,6 +92,10 @@ export class LandingPageComponent implements OnInit {
 
   checkLength(query: string) {
     this.searchError = query.length > 50;
+  }
+
+  ngOnDestroy(): void {
+    this.jobsSub.unsubscribe();
   }
 
 }

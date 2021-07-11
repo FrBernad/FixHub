@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {catchError, tap} from 'rxjs/operators';
+import {
+  HttpClient,
+  HttpStatusCode,
+  HttpParams,
+} from '@angular/common/http';
 import {throwError, BehaviorSubject, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Job} from "../models/job.model";
@@ -78,7 +80,15 @@ export class JobsService {
           params: new HttpParams({fromObject: {...jp}})
         },
       ).subscribe((res) => {
-      this.results.next(res.body);
+      if (res.status === HttpStatusCode.NoContent) {
+        this.results.next({
+          page: 0,
+          totalPages: 0,
+          results: []
+        });
+      } else {
+        this.results.next(res.body);
+      }
     });
   }
 

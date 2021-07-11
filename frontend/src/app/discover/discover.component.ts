@@ -92,27 +92,31 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   onChangeState(state: string, id: string) {
     this.selectedState = state;
     this.jpq.state = id;
-    this.jobsService.getJobs(this.jpq)
     if (!!state) {
       this.jobsService.getStateCities(id).subscribe((cities) => {
         this.cities = cities;
       });
     } else {
-      this.selectedCity = "";
-      this.jpq.city = "";
-      this.cities = [];
+      delete this.jpq.state;
     }
+    delete this.jpq.city;
+    this.selectedCity = "";
+    this.cities = [];
+    this.jobsService.getJobs(this.jpq);
   }
 
   onChangeCity(city: string, id: string) {
     this.selectedCity = city;
     this.jpq.city = id;
-    this.jobsService.getJobs(this.jpq)
+    if (!id) {
+      delete this.jpq.city;
+    }
+    this.jobsService.getJobs(this.jpq);
   }
 
   onChangePage(page: number) {
     this.jpq.page = page;
-    this.jobsService.getJobs(this.jpq)
+    this.jobsService.getJobs(this.jpq);
   }
 
   onSearchEnter(e: KeyboardEvent, query: string) {

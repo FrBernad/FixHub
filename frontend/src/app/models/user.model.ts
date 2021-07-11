@@ -28,16 +28,4 @@ export class User {
   ) {
   }
 
-  get isProvider(){
-    return this.hasRole("PROVIDER");
-  }
-
-  get isVerified(){
-    return this.hasRole("VERIFIED");
-  }
-
-  private hasRole(role:string){
-    return this.roles.includes(role);
-  }
-
 }

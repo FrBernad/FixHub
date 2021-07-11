@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.Job;
@@ -33,7 +34,7 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private LocationDao locationDao;
 
-    private final int SEACH_MAX_LENGTH = 50;
+    private final int MAX_SEARCH_LENGTH = 50;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchServiceImpl.class);
 
@@ -43,7 +44,7 @@ public class SearchServiceImpl implements SearchService {
         //ORDER
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
-            LOGGER.debug("Order option {} not valid, setting default order", orderBy);
+            LOGGER.debug("Order option {} not valid", orderBy);
             return null;
         }
         LOGGER.debug("Order option is valid");
@@ -53,7 +54,7 @@ public class SearchServiceImpl implements SearchService {
         JobCategory queryCategoryFilter;
         if (category != null) {
             if (!JobCategory.contains(category)) {
-                LOGGER.debug("Filter option {} not valid, defaulting filter to none", category);
+                LOGGER.debug("Filter option {} not valid", category);
                 return null;
             }
 
@@ -66,8 +67,8 @@ public class SearchServiceImpl implements SearchService {
         //QUERY
         String querySearchBy;
         if (!searchBy.equals("")) {
-            if (searchBy.length() > SEACH_MAX_LENGTH) {
-                LOGGER.debug("Search query is empty, setting state to none");
+            if (searchBy.length() > MAX_SEARCH_LENGTH) {
+                LOGGER.debug("Search query is empty");
                 return null;
             }
             LOGGER.debug("Search query is valid: {}", searchBy);
@@ -154,7 +155,7 @@ public class SearchServiceImpl implements SearchService {
         //ORDER
         OrderOptions queryOrderOption;
         if (!OrderOptions.contains(orderBy)) {
-            LOGGER.debug("Order option {} not valid, setting default order", orderBy);
+            LOGGER.debug("Order option {} not valid", orderBy);
             return null;
         }
         LOGGER.debug("Order option is valid");
@@ -163,8 +164,8 @@ public class SearchServiceImpl implements SearchService {
         //QUERY
         String querySearchBy;
         if (!searchBy.equals("")) {
-            if (searchBy.length() > SEACH_MAX_LENGTH) {
-                LOGGER.debug("Search query is empty, setting state to none");
+            if (searchBy.length() > MAX_SEARCH_LENGTH) {
+                LOGGER.debug("Search query is empty");
                 return null;
             }
             LOGGER.debug("Search query is valid: {}", searchBy);
@@ -199,7 +200,20 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, int page, int pageSize) {
+    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, String status, int page, int pageSize) {
+
+        //STATUS
+        JobStatus statusOption;
+        if (status != null) {
+            if (!JobStatus.contains(status)) {
+                LOGGER.debug("Status option {} not valid", status);
+                return null;
+            }
+            LOGGER.debug("Status option is valid");
+            statusOption = JobStatus.valueOf(status);
+        } else {
+            statusOption = null;
+        }
 
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid", page);
@@ -212,7 +226,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total clients count");
-        final int totalContacts = userDao.getClientsCountByProvider(provider);
+        final int totalContacts = userDao.getClientsCountByProvider(provider, statusOption);
         final int totalPages = (int) Math.ceil((float) totalContacts / pageSize);
 
         if (totalPages == 0 || page >= totalPages) {
@@ -221,7 +235,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, provider.getId());
-        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, page, pageSize);
+        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, statusOption, page, pageSize);
 
         return new PaginatedSearchResult<>(page, pageSize, totalContacts, contacts);
     }
@@ -309,11 +323,6 @@ public class SearchServiceImpl implements SearchService {
         LOGGER.debug("Retrieving page {} for user following with id {}", page, user.getId());
         final Collection<User> users = userDao.getUserFollowings(user, page, pageSize);
         return new PaginatedSearchResult<>(page, pageSize, totalUsers, users);
-    }
-
-    @Override
-    public Collection<OrderOptions> getOrderOptions() {
-        return Arrays.asList(values());
     }
 
 }

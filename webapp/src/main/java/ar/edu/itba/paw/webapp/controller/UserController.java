@@ -6,14 +6,13 @@ import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.image.Image;
+import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.webapp.dto.PaginatedResultDto;
+import ar.edu.itba.paw.webapp.dto.*;
 import ar.edu.itba.paw.models.user.UserInfo;
-import ar.edu.itba.paw.webapp.dto.ProviderDto;
-import ar.edu.itba.paw.webapp.dto.RegisterDto;
-import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class UserController {
     public Response getUser(@PathParam("id") final long id) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
-        if(user.getRoles().contains(Roles.PROVIDER)){
+        if (user.getRoles().contains(Roles.PROVIDER)) {
             return Response.ok(new ProviderDto(user, uriInfo)).build();
         }
         return Response.ok(new UserDto(user, uriInfo)).build();
@@ -80,9 +79,15 @@ public class UserController {
     public Response getUserProfileImage(@PathParam("id") final long id) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
-        final byte[] profileImage = user.getProfileImage().getData();
+        final Image img = user.getProfileImage();
 
-        return Response.ok(profileImage).type(user.getProfileImage().getMimeType()).build();
+        if (img == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        final byte[] profileImage = img.getData();
+
+        return Response.ok(profileImage).type(img.getMimeType()).build();
     }
 
     @GET
@@ -91,9 +96,15 @@ public class UserController {
     public Response getUserCoverImage(@PathParam("id") final long id) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
-        final byte[] coverImage = user.getCoverImage().getData();
+        final Image img = user.getCoverImage();
 
-        return Response.ok(coverImage).type(user.getCoverImage().getMimeType()).build();
+        if (img == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        final byte[] coverImage = img.getData();
+
+        return Response.ok(coverImage).type(img.getMimeType()).build();
     }
 
     @GET
@@ -107,6 +118,10 @@ public class UserController {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<User> results = searchService.getUserFollowers(user, page, pageSize);
+
+        if (results == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
 
@@ -137,6 +152,10 @@ public class UserController {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<User> results = searchService.getUserFollowing(user, page, pageSize);
+
+        if (results == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
 

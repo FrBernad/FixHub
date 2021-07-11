@@ -20,13 +20,14 @@ export class UserService {
       .get<User>(
         environment.apiBaseUrl + '/user'
       ).pipe(tap(
-        newUser => {
-          this.user.next(newUser);
+        res => {
+          console.log(res)
+          this.user.next(res);
         }
       ))
   }
 
-  setLoading(value: boolean){
+  setLoading(value: boolean) {
     this.loading.next(value);
   }
 

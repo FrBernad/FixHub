@@ -26,7 +26,6 @@ export class JobService {
 
   }
 
-
   updateJob(job: Job, JobData: {}) {
 
 

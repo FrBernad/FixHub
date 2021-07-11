@@ -34,43 +34,43 @@ public class SearchController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
-    @RequestMapping("/discover")
-    public ModelAndView discover(@ModelAttribute("searchForm") final SearchDto form) {
-        LOGGER.info("Accessed /discover GET controller");
-
-        final ModelAndView mav = new ModelAndView("views/discover");
-        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null, null, null, null, null, 0, -1);
-        Collection<JobCategory> categories = jobService.getJobsCategories();
-        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
-        Collection<State> stateOptions = locationService.getStates();
-        mav.addObject("states", stateOptions);
-        mav.addObject("categories", categories);
-        mav.addObject("orderOptions", orderOptions);
-        mav.addObject("results", results);
-        return mav;
-    }
-
-    @RequestMapping("/discover/search")
-    public ModelAndView discoverSearch(@ModelAttribute("searchForm") final SearchDto form, BindingResult errors) {
-        LOGGER.info("Accessed /discover/search GET controller");
-
-        final ModelAndView mav = new ModelAndView("views/discover");
-        final String query = form.getQuery(), order = form.getOrder(),
-            category = form.getCategory(), state = form.getState(), city = form.getCity();
-        final int page = form.getPage();
-
-        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, -1);
-        Collection<JobCategory> categories = jobService.getJobsCategories();
-        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
-        Collection<State> stateOptions = locationService.getStates();
-
-        mav.addObject("states", stateOptions);
-        mav.addObject("cities", results.getCities());
-        mav.addObject("orderOptions", orderOptions);
-        mav.addObject("categories", categories);
-        mav.addObject("results", results);
-
-        return mav;
-    }
+//    @RequestMapping("/discover")
+//    public ModelAndView discover(@ModelAttribute("searchForm") final SearchDto form) {
+//        LOGGER.info("Accessed /discover GET controller");
+//
+//        final ModelAndView mav = new ModelAndView("views/discover");
+//        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(null, null, null, null, null, 0, -1);
+//        Collection<JobCategory> categories = jobService.getJobsCategories();
+//        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
+//        Collection<State> stateOptions = locationService.getStates();
+//        mav.addObject("states", stateOptions);
+//        mav.addObject("categories", categories);
+//        mav.addObject("orderOptions", orderOptions);
+//        mav.addObject("results", results);
+//        return mav;
+//    }
+//
+//    @RequestMapping("/discover/search")
+//    public ModelAndView discoverSearch(@ModelAttribute("searchForm") final SearchDto form, BindingResult errors) {
+//        LOGGER.info("Accessed /discover/search GET controller");
+//
+//        final ModelAndView mav = new ModelAndView("views/discover");
+//        final String query = form.getQuery(), order = form.getOrder(),
+//            category = form.getCategory(), state = form.getState(), city = form.getCity();
+//        final int page = form.getPage();
+//
+//        PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, -1);
+//        Collection<JobCategory> categories = jobService.getJobsCategories();
+//        Collection<OrderOptions> orderOptions = searchService.getOrderOptions();
+//        Collection<State> stateOptions = locationService.getStates();
+//
+//        mav.addObject("states", stateOptions);
+//        mav.addObject("cities", results.getCities());
+//        mav.addObject("orderOptions", orderOptions);
+//        mav.addObject("categories", categories);
+//        mav.addObject("results", results);
+//
+//        return mav;
+//    }
 
 }

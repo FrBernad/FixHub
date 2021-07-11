@@ -100,12 +100,12 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public boolean hasContactJobProvided(User provider, User user,Job job) {
+    public boolean hasContactJobProvided(User provider, User user, Job job) {
         final Query query = em.createQuery("FROM JobContact as c where c.provider.id = :providerId and c.user.id = :userId and c.job.id = :jobId");
-        query.setParameter("providerId",provider.getId());
-        query.setParameter("userId",user.getId());
-        query.setParameter("jobId",job.getId());
-        return query.getResultList().size()>0;
+        query.setParameter("providerId", provider.getId());
+        query.setParameter("userId", user.getId());
+        query.setParameter("jobId", job.getId());
+        return query.getResultList().size() > 0;
 
     }
 
@@ -122,17 +122,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<JobContact> getClientsByProvider(User provider, int page, int itemsPerPage) {
+    public Collection<JobContact> getClientsByProvider(User provider, JobStatus status, int page, int itemsPerPage) {
         final List<Object> variables = new LinkedList<>();
 
         variables.add(provider.getId());
+
+        String statusQuery = getClientsByProviderStatusQuery(status, variables);
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
         final String filteredIdsSelectQuery =
             " SELECT c_id " +
                 " FROM CONTACT " +
-                " WHERE c_provider_id = ? " +
+                " WHERE c_provider_id = ? " + statusQuery +
                 " ORDER BY c_date DESC " + offsetAndLimitQuery;
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
@@ -150,14 +152,29 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int getClientsCountByProvider(User provider) {
-        final String query = "SELECT count(c_id) total FROM CONTACT WHERE c_provider_id = ?";
+    public int getClientsCountByProvider(User provider, JobStatus status) {
+        List<Object> variables = new LinkedList<>();
+        variables.add(provider.getId());
+
+        String statusQuery = getClientsByProviderStatusQuery(status, variables);
+
+        final String query = String.format("SELECT count(c_id) total FROM CONTACT WHERE c_provider_id = ? %s", statusQuery);
 
         Query nativeQuery = em.createNativeQuery(query);
 
-        nativeQuery.setParameter(1, provider.getId());
+        setQueryVariables(nativeQuery, variables);
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
+    }
+
+
+    private String getClientsByProviderStatusQuery(JobStatus status, List<Object> variables) {
+        String statusQuery = "";
+        if (status != null) {
+            statusQuery = " AND c_status = ? ";
+            variables.add(status.name());
+        }
+        return statusQuery;
     }
 
     @Override

@@ -32,7 +32,7 @@ export class ProviderGuard implements CanActivate {
     return this.userService.user.pipe(
       take(1),
       map(user => {
-        if (!!user && user.isProvider) {
+        if (!!user && user.roles.includes("PROVIDER")) {
           return true;
         }
         let previousRoute = this.previousRouteService.getPreviousUrl();

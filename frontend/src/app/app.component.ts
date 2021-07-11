@@ -38,11 +38,12 @@ import {PreviousRouteService} from "./auth/previous-route.service";
 import {JobsService} from "./discover/jobs.service";
 import {UserService} from "./auth/user.service";
 import {Subscription} from "rxjs";
+import {animate, query, stagger, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 
 export class AppComponent implements OnInit, OnDestroy {
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
       farEnvelope, fasPhoneAlt,
       fasUserFriends, fasTimes,
       fasCheck, fasMapMarkerAlt,
-      fasChartLine, fasWrench, fasAddressBook,farStar,
+      fasChartLine, fasWrench, fasAddressBook, farStar,
       fasPen, fasCompass, fasClock, fasTrash, fasUpload,
       fasInfoCircle, fasCamera
     );

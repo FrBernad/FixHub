@@ -3,16 +3,8 @@
     <!-- USER PICTURES -->
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
-        <img alt="profile cover picture" [src]="user.coverImage"
+        <img alt="profile cover picture" [src]="user.coverImage ? user.coverImage : '../../assets/images/defaultCoverImage.jpg'"
              class="backgroundImage">
-        <!-- <c:choose>
-          <c:when test="${loggedUser.coverImage == null}">
-          </c:when>
-          <c:otherwise>
-            <img alt="profile cover picture" src="<c:url value='/user/images/profile/${loggedUser.coverImage.id}'/>"
-              class="backgroundImage">
-          </c:otherwise>
-        </c:choose> -->
         <div class="profileBackgroundPic">
           <form method="POST" enctype="multipart/form-data">
             <input [formControl]="coverImage" type="file" name="coverImage" hidden accept=".png,.jpg,.jpeg"
@@ -44,16 +36,8 @@
         <div class="row align-items-center position-relative justify-content-center">
           <div class="profilePictureContainer px-0">
             <div class="picContainer">
-              <img alt="profile picture" [src]="user.profileImage"
+              <img alt="profile picture" [src]="user.profileImage ? user.profileImage : '../../assets/images/defaultProfileImage.png'"
                    class="profilePicture">
-              <!-- <c:choose>
-                <c:when test="${loggedUser.profileImage == null}">
-                </c:when>
-                <c:otherwise>
-                  <img alt="profile picture" src="<c:url value='/user/images/profile/${loggedUser.profileImage.id}'/>"
-                    class="profilePicture">
-                </c:otherwise>
-              </c:choose> -->
             </div>
 
             <div class="profilePicEditBtn">
@@ -209,7 +193,7 @@
                           {{'profilePage.subtitle.state' | translate}}
                         </span>
                     <span>
-                      <ng-template [ngIf]="user.isVerified" [ngIfElse]="notVerified">
+                      <ng-template [ngIf]="user.roles.includes('VERIFIED')" [ngIfElse]="notVerified">
                               {{'profilePage.subtitle.verified' | translate}}
                         <fa-icon [icon]="['fas','check']" class="ms-1" style="color: green"></fa-icon>
                       </ng-template>
@@ -226,7 +210,7 @@
                           {{'profilePage.subtitle.provider' | translate}}
                         </span>
                     <span>
-                      <ng-template [ngIf]="user.isProvider" [ngIfElse]="notProvider">
+                      <ng-template [ngIf]="user.roles.includes('PROVIDER')" [ngIfElse]="notProvider">
                               {{'profilePage.subtitle.active' | translate}}
                         <fa-icon [icon]="['fas','check']" class="ms-1" style="color: green"></fa-icon>
                       </ng-template>
