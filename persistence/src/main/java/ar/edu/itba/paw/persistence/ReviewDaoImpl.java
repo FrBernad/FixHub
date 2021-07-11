@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
+import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.user.User;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -94,5 +96,13 @@ public class ReviewDaoImpl implements ReviewDao {
             i++;
         }
     }
+
+    @Override
+    public Optional<Review> getReviewById(long reviewId){
+        final TypedQuery<Review> query = em.createQuery("from Review as r where r.id = :reviewId",Review.class);
+        query.setParameter("reviewId",reviewId);
+        return query.getResultList().stream().findFirst();
+    }
+
 
 }

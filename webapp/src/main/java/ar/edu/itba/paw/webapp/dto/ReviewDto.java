@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.job.Review;
 
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -13,6 +14,17 @@ public class ReviewDto {
         return reviews.stream().map(r -> new ReviewDto(r, uriInfo)).collect(Collectors.toList());
     }
 
+    public static UriBuilder getReviewUriBuilder(Review review, UriInfo uriInfo) {
+        return uriInfo.getBaseUriBuilder().path("reviews").path(String.valueOf(review.getId()));
+    }
+
+    private String url;
+    private Long id;
+    private String description;
+    private int rating;
+    private LocalDate creationDate;
+    private UserDto reviewer;
+
     public ReviewDto() {
     }
 
@@ -22,18 +34,9 @@ public class ReviewDto {
         this.rating = review.getRating();
         this.creationDate = review.getCreationDate();
         this.reviewer = new UserDto(review.getReviewer(), uriInfo);
+        final UriBuilder uriBuilder = getReviewUriBuilder(review, uriInfo);
+        this.url = uriBuilder.build().toString();
     }
-
-    private Long id;
-
-    private String description;
-
-    private int rating;
-
-    private LocalDate creationDate;
-
-    private UserDto reviewer;
-
 
     public Long getId() {
         return id;
@@ -73,5 +76,13 @@ public class ReviewDto {
 
     public void setReviewer(UserDto reviewer) {
         this.reviewer = reviewer;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

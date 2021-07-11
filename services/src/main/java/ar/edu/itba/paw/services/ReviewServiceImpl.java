@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class ReviewServiceImpl implements ReviewService {
@@ -60,15 +61,22 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public Review createReview(String description, Job job, int rating, User user) {
-        if (!userService.hasContactJobProvided(job.getProvider(), user, job))
-            throw new NoContactFoundException();
-        else {
+//        if (!userService.hasContactJobProvided(job.getProvider(), user, job)) //FIXME:
+//            throw new NoContactFoundException();
+//        else {
             final Review review = reviewDao.createReview(description, job, rating, Timestamp.valueOf(LocalDateTime.now()), user);
             LOGGER.debug("Created review for job {} with id {} by user with id {}", job.getJobProvided(), job.getId(), user.getId());
             job.getReviews().add(review);
             return review;
-        }
+//        }
     }
+
+    @Override
+    public Optional<Review> getReviewById(long reviewId){
+        LOGGER.debug("Retrieving review with id {}", reviewId);
+        return reviewDao.getReviewById(reviewId);
+    }
+
 
 
 }

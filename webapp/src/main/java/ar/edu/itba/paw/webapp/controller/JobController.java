@@ -1,16 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
+import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
@@ -300,6 +304,17 @@ public class JobController {
 //        return new ModelAndView("redirect:/jobs/{id}");
 //    }
 
+
+    @Path("/{jobId}/review")
+    @POST
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response jobReviewPost(@PathParam("jobId") long jobId, final NewReviewDto reviewDto){
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+        Review review = reviewService.createReview(reviewDto.getDescription(), job, Integer.parseInt(reviewDto.getRating()), user);
+        LOGGER.info("Create review with id {} in the job with id {}",review.getId(),jobId);
+        return Response.created(ReviewDto.getReviewUriBuilder(review,uriInfo).build()).build();
+    }
 
 //
 //    @RequestMapping(path = "/jobs/{id}", method = RequestMethod.POST)

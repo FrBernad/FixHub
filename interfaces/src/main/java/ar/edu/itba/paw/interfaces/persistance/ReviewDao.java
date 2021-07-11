@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.user.User;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Optional;
 
 public interface ReviewDao {
 
@@ -14,4 +15,6 @@ public interface ReviewDao {
     Review createReview(String description, Job job, int rating, Timestamp creationDate, User user);
 
     int getReviewsCountByJob(Job job);
+
+    Optional<Review> getReviewById(long reviewId);
 }

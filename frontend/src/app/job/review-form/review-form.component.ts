@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {JobService} from "../job.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-review-form',
@@ -8,6 +10,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class ReviewFormComponent implements OnInit {
 
+  @Input() jobId:number;
   rates: number[] = [1, 2, 3, 4, 5]
   reviewForm: FormGroup;
   minDescLength: number = 4;
@@ -16,7 +19,10 @@ export class ReviewFormComponent implements OnInit {
   maxRate: number = 5;
 
 
-  constructor() {
+  constructor(
+    private jobService:JobService,
+    private route:ActivatedRoute
+  ) {
   }
 
   ngOnInit(): void {
@@ -33,6 +39,13 @@ export class ReviewFormComponent implements OnInit {
       this.reviewForm.markAllAsTouched();
       return;
     }
+    let jobId = this.route.snapshot.params['jobId'];
+    this.jobService.createReview({
+        description: this.reviewForm.get('description').value,
+        rating: this.reviewForm.get('rating').value
+    },jobId).subscribe(()=>{
+      console.log("Enviada la review")
+    });
 
   }
 
