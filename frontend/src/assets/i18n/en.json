@@ -272,7 +272,7 @@
   "Range.jobForm.price": "Price must be between ${2} and ${1}",
   "NotNull.jobForm.price": "Enter a price for the service you are offering",
   "NotNull.jobForm.jobCategory": "Select a category",
-  "FieldsValueMatch.registerForm": "Passwords dont match",
+  "FieldsValueMatch.registerForm": "Passwords don't match",
   "NotEmpty.registerForm.name": "Please enter your name",
   "Size.registerForm.name": "Your name must be less than {{max}} characters",
   "Pattern.registerForm.name": "The name entered is not valid",
