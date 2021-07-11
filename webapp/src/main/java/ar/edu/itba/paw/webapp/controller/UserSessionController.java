@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Collection;
@@ -75,9 +76,8 @@ public class UserSessionController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUser(UserInfoDto userInfoDto) {
+    public Response updateUser(@Valid UserInfoDto userInfoDto) {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-
         userService.updateUserInfo(
             new UserInfo(userInfoDto.getName(), userInfoDto.getSurname(),
                 userInfoDto.getCity(), userInfoDto.getState(), userInfoDto.getPhoneNumber()),

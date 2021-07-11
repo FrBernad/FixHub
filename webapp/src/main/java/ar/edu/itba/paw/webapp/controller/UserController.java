@@ -471,12 +471,9 @@ public class UserController {
 //        return mav;
 //    }
 //
-//    @RequestMapping(path = "/user/account/updateInfo")
-//    public ModelAndView updateProfile(@ModelAttribute("userInfoForm") UserInfoDto form) {
-//        LOGGER.info("Accessed /user/account/updateInfo GET controller");
-//        return new ModelAndView("views/user/profile/editProfile");
-//    }
-//
+
+
+
 //    @RequestMapping(value = "/user/account/updateInfo", method = RequestMethod.POST)
 //    public ModelAndView updateProfileInfo(@Valid @ModelAttribute("userInfoForm") final UserInfoDto form,
 //                                          BindingResult errors, Principal principal) {

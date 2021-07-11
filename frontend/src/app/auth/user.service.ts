@@ -10,10 +10,7 @@ export class UserService {
   user = new BehaviorSubject<User>(null);
   loading = new BehaviorSubject<boolean>(true);
 
-  constructor(
-    private http: HttpClient,
-  ) {
-  }
+  constructor(private http: HttpClient) {}
 
   populateUserData() {
     return this.http
@@ -33,6 +30,26 @@ export class UserService {
 
   clearUser() {
     this.user.next(null);
+  }
+
+  updateProfileInfo(profileInfo) {
+    return this.http.put(
+      environment.apiBaseUrl + '/user',
+      {
+        ...this.user.getValue(),
+        ...profileInfo
+     })
+      .subscribe(()=> this.user.next({...this.user.getValue(),...profileInfo}));
+
+  }
+
+
+  uploadProfileImage() {
+
+  }
+
+  uploadCoverImage() {
+
   }
 
 }

@@ -1,4 +1,4 @@
-<div class="modal fade" id="updateInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div #staticBackdropLabel class="modal fade" id="updateInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -107,10 +107,10 @@
               </div>
               <div class="col-10 col-md-8 px-0 d-flex align-items-center justify-content-around">
                 <button data-bs-dismiss="modal" class="closeBtn my-2 d-flex align-items-center justify-content-center"
-                        type="button">
+                        type="button" (click)="onClose()">
                   {{'userInfoForm.cancel' | translate }}
                 </button>
-                <button type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
+                <button data-bs-dismiss="modal" type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
                   {{'userInfoForm.submit' | translate }}
                 </button>
               </div>

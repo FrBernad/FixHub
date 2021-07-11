@@ -1,6 +1,7 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {User} from '../../models/user.model';
+import {UserService} from "../../auth/user.service";
 
 @Component({
   selector: 'app-update-info',
@@ -19,8 +20,7 @@ export class UpdateInfoComponent implements OnInit {
   maxStateLength: number = 50;
   maxCityLength: number = 50;
 
-  constructor() {
-  }
+  constructor(private userService:UserService) {  }
 
   ngOnInit(): void {
     this.userInfoForm = new FormGroup({
@@ -33,13 +33,19 @@ export class UpdateInfoComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.userInfoForm);
     if (!this.userInfoForm.valid) {
       this.userInfoForm.markAllAsTouched();
       return;
     }
-
+    this.userService.updateProfileInfo(this.userInfoForm.value);
   }
 
+  onClose(){
+    this.userInfoForm.get('name').patchValue(this.loggedUser.name);
+    this.userInfoForm.get('surname').patchValue(this.loggedUser.surname);
+    this.userInfoForm.get('phoneNumber').patchValue(this.loggedUser.phoneNumber);
+    this.userInfoForm.get('state').patchValue(this.loggedUser.state);
+    this.userInfoForm.get('city').patchValue(this.loggedUser.city);
+  }
 
 }
