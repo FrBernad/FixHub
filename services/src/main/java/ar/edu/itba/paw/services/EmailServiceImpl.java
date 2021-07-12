@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.NewContactDto;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
@@ -19,7 +19,6 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
@@ -118,20 +117,20 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobRequestConfirmationEmail(ContactDto contactDto, Locale locale) {
+    public void sendJobRequestConfirmationEmail(NewContactDto newContactDto, Locale locale) {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + contactDto.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "user/" + contactDto.getJob().getProvider().getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + newContactDto.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + newContactDto.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
 
-            mailAttrs.put("to", contactDto.getUser().getEmail());
-            mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
-            mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
-            mailAttrs.put("name", contactDto.getUser().getName());
+            mailAttrs.put("to", newContactDto.getUser().getEmail());
+            mailAttrs.put("providerJob", newContactDto.getJob().getJobProvided());
+            mailAttrs.put("providerName", newContactDto.getJob().getProvider().getName());
+            mailAttrs.put("name", newContactDto.getUser().getName());
 
             sendMail("jobRequestConfirmation", messageSource.getMessage("email.jobRequestConfirmation", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException e) {
@@ -208,27 +207,27 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendJobRequestEmail(ContactDto contactDto, Locale locale) {
+    public void sendJobRequestEmail(NewContactDto newContactDto, Locale locale) {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + contactDto.getJob().getId();
-            final String userURL = appBaseUrl.toString() + "user/" + contactDto.getUser().getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + newContactDto.getJob().getId();
+            final String userURL = appBaseUrl.toString() + "user/" + newContactDto.getUser().getId();
 
-            final String address = String.format("%s, %s, %s %s, %s %s", contactDto.getState(), contactDto.getCity(),
-                contactDto.getStreet(), contactDto.getAddressNumber(), contactDto.getFloor(), contactDto.getDepartmentNumber());
+            final String address = String.format("%s, %s, %s %s, %s %s", newContactDto.getState(), newContactDto.getCity(),
+                newContactDto.getStreet(), newContactDto.getAddressNumber(), newContactDto.getFloor(), newContactDto.getDepartmentNumber());
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("userURL", userURL);
-            mailAttrs.put("to", contactDto.getJob().getProvider().getEmail());
-            mailAttrs.put("providerJob", contactDto.getJob().getJobProvided());
-            mailAttrs.put("providerName", contactDto.getJob().getProvider().getName());
-            mailAttrs.put("name", contactDto.getUser().getName());
-            mailAttrs.put("surname", contactDto.getUser().getSurname());
-            mailAttrs.put("email", contactDto.getUser().getEmail());
+            mailAttrs.put("to", newContactDto.getJob().getProvider().getEmail());
+            mailAttrs.put("providerJob", newContactDto.getJob().getJobProvided());
+            mailAttrs.put("providerName", newContactDto.getJob().getProvider().getName());
+            mailAttrs.put("name", newContactDto.getUser().getName());
+            mailAttrs.put("surname", newContactDto.getUser().getSurname());
+            mailAttrs.put("email", newContactDto.getUser().getEmail());
             mailAttrs.put("address", address);
-            mailAttrs.put("phoneNumber", contactDto.getUser().getPhoneNumber());
-            mailAttrs.put("message", contactDto.getMessage());
+            mailAttrs.put("phoneNumber", newContactDto.getUser().getPhoneNumber());
+            mailAttrs.put("message", newContactDto.getMessage());
 
             sendMail("jobRequest", messageSource.getMessage("email.jobRequest", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException e) {

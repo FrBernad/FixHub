@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.NewContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
@@ -86,12 +86,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public ContactInfo addContactInfo(ContactDto contactDto) {
+    public ContactInfo addContactInfo(NewContactDto newContactDto) {
 
-        final ContactInfo contactInfo = new ContactInfo(contactDto.getUser(), contactDto.getState(),
-            contactDto.getCity(), contactDto.getStreet(),
-            contactDto.getAddressNumber(), contactDto.getFloor(),
-            contactDto.getDepartmentNumber());
+        final ContactInfo contactInfo = new ContactInfo(newContactDto.getUser(), newContactDto.getState(),
+            newContactDto.getCity(), newContactDto.getStreet(),
+            newContactDto.getAddressNumber(), newContactDto.getFloor(),
+            newContactDto.getDepartmentNumber());
 
         em.persist(contactInfo);
 

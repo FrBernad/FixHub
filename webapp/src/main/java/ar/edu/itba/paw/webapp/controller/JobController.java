@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.contact.NewContactDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
@@ -148,6 +150,37 @@ public class JobController {
         final Collection<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
 
         return Response.ok(new StringCollectionResponseDto(categories)).build();
+    }
+
+    @POST
+    @Path("/{id}/contact")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response contactPost(@PathParam("id") final Long id, @Valid final ContactDto contactDto) {
+
+        LOGGER.info("Accessed /jobs/{}/contact POST controller", id);
+
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
+        final User user = userService.getUserById(Long.parseLong(contactDto.getUserId())).orElseThrow(UserNotFoundException::new);
+
+        NewContactDto newContactDto = new NewContactDto(
+            job,
+            Long.valueOf(contactDto.getContactInfoId()),
+            user, contactDto.getMessage(),
+            contactDto.getState(),
+            contactDto.getCity(),
+            contactDto.getStreet(),
+            contactDto.getAddressNumber(),
+            contactDto.getFloor(),
+            contactDto.getDepartmentNumber()
+        );
+
+        try {
+            userService.contact(newContactDto, user, job.getProvider());
+        }catch(IllegalContactException e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().build();
     }
 
 /*

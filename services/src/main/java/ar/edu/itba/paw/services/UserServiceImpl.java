@@ -10,7 +10,7 @@ import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.contact.ContactDto;
+import ar.edu.itba.paw.models.contact.NewContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.ImageDto;
@@ -284,25 +284,25 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void contact(ContactDto contactDto, User user, User provider) throws IllegalContactException {
+    public void contact(NewContactDto newContactDto, User user, User provider) throws IllegalContactException {
         ContactInfo contactInfo;
 
-        if (contactDto.getContactInfoId() == -1) {
+        if (newContactDto.getContactInfoId() == -1) {
             LOGGER.debug("Adding new contact info");
-            contactInfo = userDao.addContactInfo(contactDto);
+            contactInfo = userDao.addContactInfo(newContactDto);
         } else {
             LOGGER.debug("Retrieving used contact info");
-            contactInfo = userDao.getContactInfoById(contactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
+            contactInfo = userDao.getContactInfoById(newContactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
         }
         if (provider.getId().equals(user.getId()))
             throw new IllegalContactException();
 
         LOGGER.debug("Adding new client to provider {}", provider.getId());
-        final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, contactDto.getMessage(), LocalDateTime.now(), contactDto.getJob());
+        final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, newContactDto.getMessage(), LocalDateTime.now(), newContactDto.getJob());
         provider.getProviderDetails().getContacts().add(jobContact);
 
-        emailService.sendJobRequestEmail(contactDto, LocaleContextHolder.getLocale());
-        emailService.sendJobRequestConfirmationEmail(contactDto, LocaleContextHolder.getLocale());
+        emailService.sendJobRequestEmail(newContactDto, LocaleContextHolder.getLocale());
+        emailService.sendJobRequestConfirmationEmail(newContactDto, LocaleContextHolder.getLocale());
 
     }
 

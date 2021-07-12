@@ -1,44 +1,52 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.models.job.Job;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 public class ContactDto {
 
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
     private String state;
-
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
     private String city;
-
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
     private String street;
-
-    @NotEmpty
-    @Pattern(regexp = "[0-9]{0,9}")
     private String addressNumber;
-
-    @Pattern(regexp = "[0-9]{0,9}")
     private String floor;
-
-    @Pattern(regexp = "[A-Za-z0-9]{0,30}")
     private String departmentNumber;
-
-    @NotEmpty
-    @Size(max=300)
     private String message;
-
-    @NotNull
     private String contactInfoId;
+    private String userId;
+
+    public ContactDto() {
+        // Used by Jersey
+    }
+
+    public ContactDto(
+        String state,
+        String city,
+        String street,
+        String addressNumber,
+        String floor,
+        String departmentNumber,
+        String message,
+        String contactInfoId,
+        String userId
+    )
+    {
+        this.state = state;
+        this.city = city;
+        this.street = street;
+        this.addressNumber = addressNumber;
+        this.floor = floor;
+        this.departmentNumber = departmentNumber;
+        this.message = message;
+        this.contactInfoId = contactInfoId;
+        this.userId = userId;
+    }
 
     public String getState() {
         return state;
@@ -102,5 +110,13 @@ public class ContactDto {
 
     public void setContactInfoId(String contactInfoId) {
         this.contactInfoId = contactInfoId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
