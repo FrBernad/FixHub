@@ -6,7 +6,12 @@ export interface ProviderDetails{
   schedule: {
     startTime: Date,
     endTime: Date
-  }
+  },
+  jobsCount:number,
+  avgRating:number;
+  reviewCount:number;
+
+
 }
 
 export class User {

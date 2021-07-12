@@ -3,19 +3,21 @@
     <div class="col-3">
       <div class="nav flex-column nav-pills" role="tablist" id="tabList">
         <button class="nav-link" [ngClass]="{'active' : activeTab==='dashboard'}" (click)="changeTab('dashboard')"
-          data-bs-toggle="pill">
-          <fa-icon [icon]="['fas', 'chart-line']" class="me-2"></fa-icon><span class="text">{{'navBar.dashboard' |
+                data-bs-toggle="pill">
+          <fa-icon [icon]="['fas', 'chart-line']" class="me-2"></fa-icon>
+          <span class="text">{{'navBar.dashboard' |
             translate}}</span>
         </button>
         <button class="nav-link" [ngClass]="{'active' : activeTab==='works'}" (click)="changeTab('works')">
-          <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon><span class="text">{{'dashboard.Work' |
-            translate}}</span><span class="badge rounded-pill bg-secondary">7</span>
+          <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon>
+          <span class="text">{{'dashboard.Work' |
+            translate}}</span><span class="badge rounded-pill bg-secondary">{{getNumberOfWorks()}}</span>
         </button>
         <button class="nav-link" [ngClass]="{'active' : activeTab==='contacts'}" (click)="changeTab('contacts')">
           <fa-icon [icon]="['fas', 'address-book']" class="me-2"></fa-icon>
           <span class="text">{{'dashboard.Contacts' | translate}}</span>
           <span class="badge rounded-pill bg-secondary">
-            5
+            {{getNumberOfJobRequest()}}
           </span>
         </button>
       </div>
@@ -23,7 +25,7 @@
     <div class="col-9">
       <div class="card">
         <div class="card-header" id="panelTitle">
-          {{'dashboard.'+activeTab.charAt(0).toUpperCase()+activeTab.slice(1) | translate}}
+          {{'dashboard.' + activeTab.charAt(0).toUpperCase() + activeTab.slice(1) | translate}}
         </div>
         <div class="card-body">
           <div class="container">
@@ -31,7 +33,7 @@
               <div class="tab-content w-100">
                 <!-- Dashboard -->
                 <div class="tab-pane fade" role="tabpanel" id="dashboard"
-                  [ngClass]="{'show active' : activeTab==='dashboard'}">
+                     [ngClass]="{'show active' : activeTab==='dashboard'}">
                   <div class="col-12">
                     <div class="container-fluid p-0">
                       <div class="row align-items-center justify-content-between">
@@ -39,7 +41,7 @@
                           <div class="card card-body info-box">
                             <h2>
                               <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon>
-                              1
+                              {{getNumberOfWorks()}}
                             </h2>
                             <h4>{{'dashboard.Works' | translate}}</h4>
                           </div>
@@ -47,7 +49,8 @@
                         <div class="col-4">
                           <div class="card card-body info-box">
                             <h2>
-                              <fa-icon [icon]="['fas', 'star']" class="me-2"></fa-icon>3
+                              <fa-icon [icon]="['fas', 'star']" class="me-2"></fa-icon>
+                              {{getAvgRating()}}
                             </h2>
                             <h4>{{'dashboard.Rating' | translate}}</h4>
                           </div>
@@ -56,7 +59,7 @@
                           <div class="card card-body info-box">
                             <h2>
                               <fa-icon [icon]="['fas', 'wrench']"></fa-icon>
-                              15
+                              {{getNumberOfReviews()}}
                             </h2>
                             <h4>{{'dashboard.Reviews' | translate}}</h4>
                           </div>
@@ -93,16 +96,17 @@
                                           <div class="col-12">
                                             <span class="fw-bold">{{'contactForm.state' | translate}}:</span>
                                             <span>
-                                              <!-- {{loggedUser.providerDetails.location.state.name}} -->
+                                              {{provider.providerDetails.location.state.name}}
                                             </span>
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left mb-0">
                                               <span class="fw-bold">{{'job.information.city' | translate}}</span>
-                                              <!-- <ng-container *ngFor="let city of loggedUser.providerDetails.location.cities; let i = index; let last = last">
+                                              <ng-container
+                                                *ngFor="let city of provider.providerDetails.location.cities; let i = index; let last = last">
                                                 {{city.name}}
-                                                <ng-container *ngIf="i != last">,</ng-container>
-                                              </ng-container> -->
+                                                <ng-container *ngIf="!last">,</ng-container>
+                                              </ng-container>
                                             </p>
                                           </div>
                                         </div>
@@ -123,8 +127,9 @@
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left m-0">
-                                              <!-- {{'job.information.from' | translate: {value: loggedUser.providerDetails.schedule.startTime}}} -->
-                                              <!-- {{'job.information.to' | translate: {value: loggedUser.providerDetails.schedule.endTime}}} -->
+                                              From 14:00 to 16:00
+                                              <!--                                               {{'job.information.from' | translate: {value: provider.providerDetails.schedule.startTime},}}-->
+                                              <!--                                               {{'job.information.to' | translate: {value: provider.providerDetails.schedule.endTime}}}-->
                                             </p>
                                           </div>
                                         </div>
@@ -140,24 +145,13 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- Tus trabajos -->
-                <!-- <c:url value="/user/dashboard/jobs/search" var="postPath"/>
-                                  <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
-                                             method="GET"
-                                             id="searchForm">
-                                      <form:input path="order" type="hidden" id="orderInput"/>
-                                      <form:input path="query" type="hidden" id="searchInput"/>
-                                      <form:input path="page" type="hidden" id="pageInput"/>
-                                  </form:form> -->
-
                 <div class="tab-pane fade" role="tabpanel" id="works" [ngClass]="{'show active' : activeTab==='works'}">
                   <div class="container-fluid">
                     <div class="row align-content-start">
                       <div class="col-7 d-flex align-items-center justify-content-start">
                         <div class="input-group">
                           <input placeholder="{{'dashboard.barPlaceholder' | translate}}" id="searchBar"
-                            class="inputRadius form-control p-4" />
+                                 class="inputRadius form-control p-4"/>
                           <div class="input-group-prepend">
                             <button id="searchButton" class="btn inputBtn">
                               {{'discover.search' | translate}}
@@ -168,18 +162,17 @@
                       <div class="col-5 d-flex align-items-center justify-content-end">
                         <div class="dropdown">
                           <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{'discover.orderBy' | translate}}
+                                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{'discover.orderBy'| translate}}
                             <span class="resultQuery">
-                              <!-- <ng-container *ngIf="results.order!=null && results.order.length > 0">
-                                {{'discover.orderOption.'+results.order | translate}}
-                              </ng-container> -->
+                              {{'discover.orderOption.' + jpq.order|translate}}
                             </span>
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="orderDropdown">
                             <li *ngFor="let order of orderOptions" class="input-group">
-                              <button data-order="${order}" class="dropdown-item orderButton">
-                                {{'discover.orderOption.'+order | translate}}
+                              <button data-order="${order}" class="dropdown-item orderButton"
+                                      (click)="onChangeOrder(order)">
+                                {{'discover.orderOption.' + order | translate}}
                               </button>
                             </li>
                           </ul>
@@ -192,86 +185,55 @@
                       </div>
                     </div>
                     <div class="row">
-                      <!-- <div *ngIf="results.query != null && results.query.length > 0" class="col-12 my-2 resultHeader d-flex align-items-start">
-                        <p class="mb-0">
-                          {{'discover.showingResults' | translate}}
-                          <span>{{'results.query' | translate}}</span>
-                        </p>
-                      </div> -->
-                      <!-- <div *ngIf="results.results.length > 0;else noResults" class="col-12">
-                        <div class="container-fluid px-0">
-                          <div
-                            class="row align-items-top ${fn:length(results.results)%2 == 0 ? 'justify-content-between': 'justify-content-start'}">
-                            <div *ngFor="let job of results.results" class="col-12 mt-3 col-md-6 mb-4 mb-md-0 d-flex align-items-center
-                                                                      justify-content-center">
-                              jobCard
+                      <div *ngIf="jpq.query!= null" class="col-12 my-2 resultHeader d-flex align-items-start">
+                        <p class="mb-0">{{'discover.showingResults'|translate}}<span>"{{jpq.query}}"</span></p>
+                      </div>
+                      <ng-template [ngIf]="jpr.results.length>0" [ngIfElse]="jobsNotFound">
+                        <div class="col-12">
+                          <div class="container-fluid px-0">
+                            <div class="row align-items-top"
+                                 [ngClass]="jpr.results.length%2==0?'justify-content-between': 'justify-content-start'">
+                              <div *ngFor="let job of jpr.results"
+                                   class="col-12 mt-3 col-md-6 mb-md-0 flex align-items-center justify-content-center">
+                                <app-job-card class="w-100" [job]="job"></app-job-card>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div #noResults
-                        class="col-12 d-flex py-4 align-items-center justify-content-center">
+                      </ng-template>
+                      <ng-template #jobsNotFound>
                         <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
                           <p class="m-0 text-center p-4" style="font-size: 16px">
                             {{'discover.jobsNotFound' | translate}}
                           </p>
                         </div>
-                      </div> -->
+                      </ng-template>
+                      <app-pagination
+                        *ngIf="jpr.totalPages>1"
+                        (changePage)="onChangePage($event)"
+                        [currentPage]="jpr.page"
+                        [totalPages]="jpr.totalPages">
+                      </app-pagination>
                     </div>
                   </div>
                 </div>
-
-                <!-- Contactos -->
-                <!-- <c:url value="/user/dashboard/contacts/search" var="postPath"/> -->
-                <!-- <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm"
-                                             method="GET"
-                                             id="searchForm2">
-                                      <form:input path="order" type="hidden" id="orderInput2"/>
-                                      <form:input path="query" type="hidden" id="searchInput2"/>
-                                      <form:input path="page" type="hidden" id="pageInput2"/>
-                                  </form:form> -->
                 <div class="tab-pane fade" role="tabpanel" id="contacts"
-                  [ngClass]="{'show active' : activeTab==='contacts'}">
-
-                  <!-- <div *ngIf="contactsResults.totalPages > 0;else noPages"
-                    *ngFor="let contact of contactsResults.results" class="mt-2">
-                    clientsContactCard
-                  </div>
-                  <div #noPages class="col-12 d-flex align-items-center justify-content-center">
-                    <div class="container mt-2 d-flex align-items-center justify-content-center">
-                      <p class="m-0 text-center p-4" style="font-size: 16px">
-                        {{'dashboard.Contact.Empty' | translate}}
-                      </p>
+                     [ngClass]="{'show active' : activeTab==='contacts'}">
+                  <ng-template [ngIf]="jpr.results.length>0" [ngIfElse]="NoContacts">
+                    <!--                      <div *ngFor="let jobRequest of contacts">-->
+                    <!--                        <app-request-job-card [contact]="" ]></app-request-job-card>-->
+                    <!--                      </div>-->
+                  </ng-template>
+                  <ng-template #NoContacts>
+                    <div class="col-12 d-flex align-items-center justify-content-center">
+                      <div class="container mt-2 d-flex align-items-center justify-content-center">
+                        <p class="m-0 text-center p-4" style="font-size: 16px">
+                          {{'dashboard.Contact.Empty' | translate}}
+                        </p>
+                      </div>
                     </div>
-                  </div> -->
-
-                  <div class="col-12 align-items-center justify-content-center mt-4
-                                                     ${contactsResults.totalPages<=1 ? 'd-none':''} ">
-                    <nav class="d-flex align-items-center justify-content-center">
-                      <ul class="pagination mb-0" id="pagination2" data-page="${contactsResults.page}"
-                        data-contactmodal="${contactTab}">
-                        <!-- <li class="page-item" [ngClass]="{disabled: contactsResults == 0}">
-                          <a class="page-link" id="prev2" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                          </a>
-                        </li> -->
-                        <!-- <c:forEach begin="1"
-                                                             end="${contactsResults.totalPages}"
-                                                             varStatus="status">
-                                                  <li *ngFor="" class="page-item ${contactsResults.page == status.index-1 ? 'active' : ''}">
-                                                      <a class="page-link index2"
-                                                          data-index="${status.index}">status.index
-                                                      </a>
-                                                  </li>
-                                                  </c:forEach> -->
-                        <!-- <li class="page-item" [ngClass]="{disabled: contactsResults == contactsResults.length-1}">
-                          <a class="page-link" id="next2" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                          </a>
-                        </li> -->
-                      </ul>
-                    </nav>
-                  </div>
+                  </ng-template>
+                  <!--                  <app-pagination *ngIf="contacts.length>1" [currentPage]="con" [totalPages]=""></app-pagination>-->
                 </div>
               </div>
             </div>

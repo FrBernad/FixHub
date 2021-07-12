@@ -40,6 +40,7 @@ import { UpdateProviderInfoComponent } from './update-provider-info/update-provi
 import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 import { ReviewCardComponent } from './job/review-card/review-card.component';
 import { ReviewPaginationComponent } from './job/review-pagination/review-pagination.component';
+import { RequestJobCardComponent } from './dashboard/request-job-card/request-job-card.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -73,7 +74,8 @@ import { ReviewPaginationComponent } from './job/review-pagination/review-pagina
     UpdateProviderInfoComponent,
     LoadingScreenComponent,
     ReviewCardComponent,
-    ReviewPaginationComponent
+    ReviewPaginationComponent,
+    RequestJobCardComponent
   ],
   imports: [
     BrowserModule,

@@ -24,7 +24,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   jpq: JobPaginationQuery = {
     page: 0,
     pageSize: 6,
-    order: "MOST_POPULAR"
+    order: OrderOptionModel.MOST_POPULAR
   }
 
   searchError = false;

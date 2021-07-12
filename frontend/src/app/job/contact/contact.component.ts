@@ -16,6 +16,7 @@ import { UserService } from 'src/app/auth/user.service';
 })
 export class ContactComponent implements OnInit {
   contactForm: FormGroup;
+   contactInfoCollection: ContactInfo[] = [];
 
   provider: User = new User(1, '', '', '', '', '', '', '', '', [], {
     location: {
@@ -26,6 +27,10 @@ export class ContactComponent implements OnInit {
       startTime: new Date(2018, 11, 24, 10, 33, 30, 0),
       endTime: new Date(2018, 11, 24, 15, 33, 30, 0),
     },
+    jobsCount:20,
+    avgRating:3,
+    reviewCount:45
+
   });
 
   job: Job = {
@@ -41,8 +46,6 @@ export class ContactComponent implements OnInit {
     provider: this.provider,
     paused: false,
   };
-
-  contactInfoCollection: ContactInfo[] = [];
 
   maxStateLength: number = 50;
   maxCityLength: number = 50;
