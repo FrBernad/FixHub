@@ -148,7 +148,7 @@
               <div class="col-12">
                 <div class="container-fluid p-0">
                   <ng-template [ngIf]="isFetching" [ngIfElse]="jobsLoaded">
-                    Loading
+                    <app-loading-spinner></app-loading-spinner>
                   </ng-template>
                   <ng-template #jobsLoaded>
                     <!--                    FIXME-->

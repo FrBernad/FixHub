@@ -45,6 +45,7 @@ import { FollowerCardComponent } from './followers/follower-card/follower-card.c
 import {FollowingComponent} from "./followers/following.component";
 import { UserProfileComponent } from './profile/user-profile/user-profile.component';
 import {SessionProfileComponent} from "./profile/session-profile/session-profile.component";
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { WorksComponent } from './dashboard/works/works.component';
 
 @NgModule({
@@ -84,6 +85,7 @@ import { WorksComponent } from './dashboard/works/works.component';
     FollowersComponent,
     FollowingComponent,
     FollowerCardComponent,
+    LoadingSpinnerComponent,
     UserProfileComponent,
     WorksComponent
   ],

@@ -12,14 +12,14 @@
                           [isProvider]="isProvider"></app-choose-state>
       </ng-template>
       <ng-template #chooseCity>
-        <ng-template [ngIf]="!posting" [ngIfElse]="makingProvider">
+        <ng-template [ngIf]="!posting" [ngIfElse]="updatingProviderInfo">
 
           <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider"
                            (citiesChosen)="updateProviderInfo($event)"></app-choose-city>
         </ng-template>
 
-        <ng-template #makingProvider>
-          Loading...
+        <ng-template #updatingProviderInfo>
+          <app-loading-spinner></app-loading-spinner>
         </ng-template>
       </ng-template>
     </div>

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12 d-flex align-items-center justify-content-center">
         <ng-template [ngIf]="isFetching" [ngIfElse]="alreadyFetched">
-            Loading...
+          <app-loading-spinner></app-loading-spinner>
         </ng-template>
         <ng-template #alreadyFetched>
 
@@ -23,7 +23,7 @@
                   </label>
                 </div>
                 <div class="col-md-4 col-6 align-items-center justify-content-end">
-                  <input class="form-control" [format]="24"  style="background-color: white" formControlName="startTime"
+                  <input class="form-control" [format]="24" style="background-color: white" formControlName="startTime"
                          [ngxTimepicker]="startTime" readonly>
                   <ngx-material-timepicker #startTime
                                            [defaultTime]="isProvider ? user.providerDetails.schedule.startTime : '12:00'"></ngx-material-timepicker>
