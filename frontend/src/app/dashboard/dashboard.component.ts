@@ -24,9 +24,9 @@ export class DashboardComponent implements OnInit {
       startTime: new Date(),
       endTime: new Date()
     },
-    jobsCount:20,
-    avgRating:4,
-    reviewCount:35
+    jobsCount: 20,
+    avgRating: 4,
+    reviewCount: 35
   };
 
   provider = new User(
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
     'Adrogue',
     '',
     '',
-    ['PROVIDER', 'VERIFIED'], this.providerDetails);
+    ['PROVIDER', 'VERIFIED'], 1, 2, this.providerDetails);
 
   job: Job = {
     id: 1,
@@ -55,9 +55,9 @@ export class DashboardComponent implements OnInit {
     thumbnailImage: ""
   };
 
-  contactAux = new Contact('State', 'City', 'Street', 120, 1, 'C', 'I need the job',new Date());
-
-  contacts:Contact[] = [this.contactAux,this.contactAux,this.contactAux];
+  // contactAux = new Contact(1,this.provider, this.provider, 'City', 'Street', 120, 1, 'C');
+  //
+  // contacts: Contact[] = [this.contactAux, this.contactAux, this.contactAux];
 
   jpr: JobPaginationResult = {
     results: [this.job, this.job, this.job, this.job, this.job],
@@ -96,23 +96,24 @@ export class DashboardComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  getNumberOfWorks(): number{
+  getNumberOfWorks(): number {
     return this.provider.providerDetails.jobsCount;
   }
 
-  getAvgRating(): number{
+  getAvgRating(): number {
     return this.provider.providerDetails.avgRating;
   }
-  getNumberOfReviews(): number{
+
+  getNumberOfReviews(): number {
     return this.provider.providerDetails.reviewCount;
   }
 
-  getNumberOfJobRequest():number{
+  getNumberOfJobRequest(): number {
     return 4;
   }
 
-  onChangeOrder(order:string){
-    this.jpq.order=order;
+  onChangeOrder(order: string) {
+    this.jpq.order = order;
     this.jobsService.getJobs(this.jpq);
   }
 

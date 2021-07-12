@@ -42,7 +42,7 @@
 
             </ng-template>
             <ng-template #noImages>
-              <img src="../../assets/images/{{job.category}}.jpg"
+              <img src="assets/images/{{job.category}}.jpg"
                    alt="{{'home.categories.'+job.category | translate}}"
                    class="rounded" style="object-fit: cover; height: 100%; width: 100%">
             </ng-template>
@@ -68,9 +68,7 @@
                       <h1 class="jobTitle">{{ job.jobProvided }}</h1>
                     </div>
                     <div class="col-12 pl-0">
-
-                      <!-- <a href="<c:url value=/user/${job.provider.id}" />"> -->
-                      <a href="#">
+                      <a [routerLink]="'/user/'+job.provider.id">
                         <h1 class="contactInfo names">
                           {{ job.provider.name }} {{ job.provider.surname }}
                         </h1>

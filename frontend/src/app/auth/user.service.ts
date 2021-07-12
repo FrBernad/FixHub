@@ -10,7 +10,17 @@ export class UserService {
   user = new BehaviorSubject<User>(null);
   loading = new BehaviorSubject<boolean>(true);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient
+  ) {
+  }
+
+  getUser(id: number) {
+    return this.http
+      .get<User>(
+        environment.apiBaseUrl + '/users/' + id
+      );
+  }
 
   populateUserData() {
     return this.http
@@ -18,7 +28,6 @@ export class UserService {
         environment.apiBaseUrl + '/user'
       ).pipe(tap(
         res => {
-          console.log(res)
           this.user.next(res);
         }
       ))
@@ -33,16 +42,24 @@ export class UserService {
   }
 
   updateProfileInfo(profileInfo) {
-    return this.http.put(
+    this.http.put(
       environment.apiBaseUrl + '/user',
       {
         ...this.user.getValue(),
         ...profileInfo
-     })
-      .subscribe(()=> this.user.next({...this.user.getValue(),...profileInfo}));
-
+      })
+      .subscribe(() => this.user.next({...this.user.getValue(), ...profileInfo}));
   }
 
+  follow(id: number) {
+    return this.http.put(
+      environment.apiBaseUrl + '/user/following/' + id, {});
+  }
+
+  unfollow(id: number) {
+    return this.http.delete(
+      environment.apiBaseUrl + '/user/following/' + id, {});
+  }
 
   uploadProfileImage() {
 

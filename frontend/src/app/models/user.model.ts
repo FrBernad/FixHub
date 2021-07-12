@@ -1,4 +1,4 @@
-export interface ProviderDetails{
+export interface ProviderDetails {
   location: {
     cities: { id: number, name: string }[],
     state: { id: number, name: string }
@@ -7,16 +7,12 @@ export interface ProviderDetails{
     startTime: Date,
     endTime: Date
   },
-  jobsCount:number,
-  avgRating:number;
-  reviewCount:number;
-
-
+  jobsCount: number,
+  avgRating: number;
+  reviewCount: number;
 }
 
 export class User {
-  following: User[];
-  followers: User[];
 
   constructor(
     public id: number,
@@ -29,7 +25,11 @@ export class User {
     public profileImage: string,
     public coverImage: string,
     public roles: string[],
-    public providerDetails?: ProviderDetails
+    public followingCount: number,
+    public followersCount: number,
+    public providerDetails?: ProviderDetails,
+    public followed?: boolean,
+    public following?: boolean
   ) {
   }
 

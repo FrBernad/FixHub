@@ -6,6 +6,7 @@ import {JobCategoryModel} from "../models/jobCategory.model";
 import {JobsService} from "../discover/jobs.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {UserService} from "../auth/user.service";
 
 @Component({
   selector: 'app-landing-page',
@@ -44,15 +45,23 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   popularJobs = [];
 
   jobsSub: Subscription;
+  userSub: Subscription;
+
+  user: User;
 
   constructor(
     private jobsService: JobsService,
+    private userService: UserService,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
     this.jobsService.getJobs({page: 0});
+
+    this.userSub = this.userService.user.subscribe(user => {
+      this.user = user;
+    });
 
     this.jobsService.getCategories().subscribe((categories) => {
       this.categories = categories.values.slice(0, 5);
@@ -96,6 +105,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.jobsSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
 }

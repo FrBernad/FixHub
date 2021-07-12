@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.job.Review;
 
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.time.LocalDate;
@@ -10,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class ReviewDto {
 
-    public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo) {
-        return reviews.stream().map(r -> new ReviewDto(r, uriInfo)).collect(Collectors.toList());
+    public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo, SecurityContext securityContext) {
+        return reviews.stream().map(r -> new ReviewDto(r, uriInfo, securityContext)).collect(Collectors.toList());
     }
 
     public static UriBuilder getReviewUriBuilder(Review review, UriInfo uriInfo) {
@@ -28,12 +29,12 @@ public class ReviewDto {
     public ReviewDto() {
     }
 
-    public ReviewDto(Review review, UriInfo uriInfo) {
+    public ReviewDto(Review review, UriInfo uriInfo, SecurityContext securityContext) {
         this.id = review.getId();
         this.description = review.getDescription();
         this.rating = review.getRating();
         this.creationDate = review.getCreationDate();
-        this.reviewer = new UserDto(review.getReviewer(), uriInfo);
+        this.reviewer = new UserDto(review.getReviewer(), uriInfo, securityContext);
         final UriBuilder uriBuilder = getReviewUriBuilder(review, uriInfo);
         this.url = uriBuilder.build().toString();
     }

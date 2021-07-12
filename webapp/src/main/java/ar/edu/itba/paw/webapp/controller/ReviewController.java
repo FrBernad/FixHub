@@ -13,10 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 @Path("reviews")
 @Component
@@ -29,15 +26,18 @@ public class ReviewController {
     @Context
     private UriInfo uriInfo;
 
+    @Context
+    private SecurityContext securityContext;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 
 
     @Path("/{reviewId}")
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getReview(@PathParam("reviewId") long reviewId){
+    public Response getReview(@PathParam("reviewId") long reviewId) {
         Review review = reviewService.getReviewById(reviewId).orElseThrow(ReviewNotFoundException::new); //FIXME: falta capturarla la excepcion
         LOGGER.info("Return review with id {}", review.getId());
-        return Response.ok(new ReviewDto(review,uriInfo)).build();
+        return Response.ok(new ReviewDto(review, uriInfo, securityContext)).build();
     }
 }

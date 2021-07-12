@@ -228,6 +228,14 @@ public class User {
         this.providerDetails = providerDetails;
     }
 
+    public boolean userIsFollowing(String email) {
+        return following.stream().anyMatch(user -> user.getEmail().equals(email));
+    }
+
+    public boolean userIsFollower(String email) {
+        return followers.stream().anyMatch(user -> user.getEmail().equals(email));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

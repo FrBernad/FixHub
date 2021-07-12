@@ -4,7 +4,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {DiscoverComponent} from './discover/discover.component';
 import {LoginComponent} from './login/login.component';
-import {ProfileComponent} from './profile/profile.component';
+import {SessionProfileComponent} from './profile/session-profile/session-profile.component';
 import {RegisterComponent} from './register/register.component';
 import {LandingPageLayoutComponent} from "./layouts/landing-page-layout/landing-page-layout.component";
 import {LandingPageComponent} from "./landing-page/landing-page.component";
@@ -18,6 +18,10 @@ import {ErrorsComponent} from "./errors/errors.component";
 import {JoinComponent} from "./join/join.component";
 import {UnauthGuard} from "./auth/unauth.guard";
 import {ProviderGuard} from "./auth/provider.guard";
+import {NotProviderGuard} from "./auth/not-provider.guard";
+import {FollowersComponent} from "./followers/followers.component";
+import {FollowingComponent} from "./followers/following.component";
+import {UserProfileComponent} from "./profile/user-profile/user-profile.component";
 
 const routes: Routes = [
   {
@@ -40,13 +44,25 @@ const routes: Routes = [
       },
       {
         path: 'user/profile',
-        component: ProfileComponent,
+        component: SessionProfileComponent,
         canActivate: [AuthGuard]
       },
       {
         path: 'user/dashboard',
         component: DashboardComponent,
         canActivate: [AuthGuard, ProviderGuard]
+      },
+      {
+        path: 'user/:id',
+        component: UserProfileComponent,
+      },
+      {
+        path: 'user/:id/followers',
+        component: FollowersComponent
+      },
+      {
+        path: 'user/:id/following',
+        component: FollowingComponent
       },
       {
         path: 'login',
@@ -59,7 +75,7 @@ const routes: Routes = [
         component: RegisterComponent
       },
       {
-        path: 'jobs/:jobId/contact',
+        path: 'jobs/:id/contact',
         component: ContactComponent,
         canActivate: [AuthGuard]
       },
@@ -72,16 +88,17 @@ const routes: Routes = [
         component: NewJobComponent
       },
       {
-        path: "jobs/:jobId",
+        path: "jobs/:id",
         component: JobComponent
       },
       {
-        path: 'jobs/:jobId/edit',
+        path: 'jobs/:id/edit',
         component: EditJobComponent
       },
       {
         path: 'user/join',
-        component: JoinComponent
+        component: JoinComponent,
+        canActivate: [AuthGuard, NotProviderGuard]
       },
       {
         path: 'user/account/updateProviderInfo',

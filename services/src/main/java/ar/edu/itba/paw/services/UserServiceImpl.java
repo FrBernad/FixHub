@@ -322,7 +322,6 @@ public class UserServiceImpl implements UserService {
         follower.getFollowers().remove(user);
     }
 
-
     private PasswordResetToken generatePasswordResetToken(User user) {
         final String token = UUID.randomUUID().toString();
         return passwordResetTokenDao.createToken(user, token, VerificationToken.generateTokenExpirationDate());

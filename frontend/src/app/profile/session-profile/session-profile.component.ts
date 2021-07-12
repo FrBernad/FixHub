@@ -1,15 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../auth/user.service";
+import {UserService} from "../../auth/user.service";
 import {Subscription} from "rxjs";
-import {User} from "../models/user.model";
+import {User} from "../../models/user.model";
 import {Form, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-session-profile',
+  templateUrl: './session-profile.component.html',
+  styleUrls: ['./session-profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class SessionProfileComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
   profileImage: FormControl;

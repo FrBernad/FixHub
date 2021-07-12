@@ -1,9 +1,10 @@
 <div class="container-lg userContainerProfile pb-3 px-2">
   <div class="row">
+
     <!-- USER PICTURES -->
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
-        <img alt="profile cover picture" [src]="user.coverImage ? user.coverImage : '../../assets/images/defaultCoverImage.jpg'"
+        <img alt="profile cover picture" [src]="user.coverImage ? user.coverImage : 'assets/images/defaultCoverImage.jpg'"
              class="backgroundImage">
         <div class="profileBackgroundPic">
           <form method="POST" enctype="multipart/form-data">
@@ -36,7 +37,7 @@
         <div class="row align-items-center position-relative justify-content-center">
           <div class="profilePictureContainer px-0">
             <div class="picContainer">
-              <img alt="profile picture" [src]="user.profileImage ? user.profileImage : '../../assets/images/defaultProfileImage.png'"
+              <img alt="profile picture" [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
                    class="profilePicture">
             </div>
 
@@ -150,30 +151,26 @@
                         <fa-icon [icon]="['fas','user-friends']"></fa-icon>
                       </div>
                       <div class="col-10">
-                        {{'profilePage.subtitle.contact' | translate}}
-                        <!-- <a class="extraInfo" href="<c:url value=" /user/${loggedUser.id}/followers" />">
+                        <a class="extraInfo" [routerLink]="'/user/'+user.id+'/followers'">
                         <span class="detailField">
-                          <c:out value="${loggedUser.followers.size()}" />
+                          {{user.followersCount}}
                         </span>
                         {{'profilePage.info.followers' | translate}}
                         </a>
                         ·
-                        <a class="extraInfo" href="<c:url value=" /user/${loggedUser.id}/following" />">
+                        <a class="extraInfo" [routerLink]="'/user/'+user.id+'/following'">
                         <span class="detailField">
-                          <c:out value="${loggedUser.following.size()}" />
+                          {{user.followingCount}}
                         </span>
                         {{'profilePage.info.following' | translate}}
-                        </a> -->
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
 

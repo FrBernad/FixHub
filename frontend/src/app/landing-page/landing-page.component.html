@@ -163,7 +163,8 @@
 </div>
 
 <!--JOIN SECTION-->
-<div class="container-fluid py-5" style="background-color: var(--primary-color);">
+<div *ngIf="!!user && !user.roles.includes('PROVIDER')" class="container-fluid py-5"
+     style="background-color: var(--primary-color);">
   <div class="container-lg d-flex align-items-center py-5">
     <div class="row align-items-center justify-content-between w-100">
       <div class="col-12 col-md-6 d-flex justify-content-start align-items-center">
@@ -185,7 +186,7 @@
         </div>
       </div>
       <div class="col-12 col-md-6 d-flex justify-content-end align-items-center">
-        <img class="jobProvideImg" src='../../assets/images/manWorking.jpg'
+        <img class="jobProvideImg" src='assets/images/manWorking.jpg'
              alt="Hombre trabajando">
       </div>
     </div>

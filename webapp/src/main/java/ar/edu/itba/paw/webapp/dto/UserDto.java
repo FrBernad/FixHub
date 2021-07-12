@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
 
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
@@ -15,8 +16,8 @@ public class UserDto {
         return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
     }
 
-    public static Collection<UserDto> mapUserToDto(Collection<User> users, UriInfo uriInfo) {
-        return users.stream().map(u -> new UserDto(u, uriInfo)).collect(Collectors.toList());
+    public static Collection<UserDto> mapUserToDto(Collection<User> users, UriInfo uriInfo, SecurityContext securityContext) {
+        return users.stream().map(u -> new UserDto(u, uriInfo, securityContext)).collect(Collectors.toList());
     }
 
     private long id;
@@ -33,11 +34,17 @@ public class UserDto {
     private String coverImage;
     private String profileImage;
 
+    private Integer followersCount;
+    private Integer followingCount;
+
+    private boolean followed;
+    private boolean following;
+
     public UserDto() {
         // Used by Jersey
     }
 
-    public UserDto(User user, UriInfo uriInfo) {
+    public UserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         final UriBuilder uriBuilder = getUserUriBuilder(user, uriInfo);
 
         this.id = user.getId();
@@ -54,6 +61,14 @@ public class UserDto {
         }
         if (user.getCoverImage() != null) {
             this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
+        }
+
+        this.followersCount = user.getFollowers().size();
+        this.followingCount = user.getFollowing().size();
+
+        if (securityContext.getUserPrincipal() != null) {
+            this.following = user.userIsFollowing(securityContext.getUserPrincipal().getName());
+            this.followed = user.userIsFollower(securityContext.getUserPrincipal().getName());
         }
     }
 
@@ -113,20 +128,12 @@ public class UserDto {
         this.city = city;
     }
 
-    public String getCoverImage() {
-        return coverImage;
+    public ProviderDetailsDto getProviderDetails() {
+        return providerDetails;
     }
 
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+    public void setProviderDetails(ProviderDetailsDto providerDetails) {
+        this.providerDetails = providerDetails;
     }
 
     public Collection<Roles> getRoles() {
@@ -145,11 +152,51 @@ public class UserDto {
         this.url = url;
     }
 
-    public ProviderDetailsDto getProviderDetails() {
-        return providerDetails;
+    public String getCoverImage() {
+        return coverImage;
     }
 
-    public void setProviderDetails(ProviderDetailsDto providerDetails) {
-        this.providerDetails = providerDetails;
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public Integer getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(Integer followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public Integer getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(Integer followingCount) {
+        this.followingCount = followingCount;
+    }
+
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
+    }
+
+    public boolean isFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
     }
 }

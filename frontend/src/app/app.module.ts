@@ -12,7 +12,7 @@ import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
 import {DiscoverComponent} from './discover/discover.component';
-import {ProfileComponent} from './profile/profile.component';
+import {SessionProfileComponent} from './profile/session-profile/session-profile.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
@@ -34,13 +34,17 @@ import { ChooseCityComponent } from './join/choose-city/choose-city.component';
 import { ChooseStateComponent } from './join/choose-state/choose-state.component';
 import { FooterComponent } from './footer/footer.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
-import { UpdateInfoComponent } from './profile/update-info/update-info.component';
+import { UpdateInfoComponent } from './profile/session-profile/update-info/update-info.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
 import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 import { ReviewCardComponent } from './job/review-card/review-card.component';
 import { ReviewPaginationComponent } from './job/review-pagination/review-pagination.component';
 import { RequestJobCardComponent } from './dashboard/request-job-card/request-job-card.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FollowerCardComponent } from './followers/follower-card/follower-card.component';
+import {FollowingComponent} from "./followers/following.component";
+import { UserProfileComponent } from './profile/user-profile/user-profile.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -49,7 +53,7 @@ import { RequestJobCardComponent } from './dashboard/request-job-card/request-jo
     NavbarComponent,
     LandingPageComponent,
     DiscoverComponent,
-    ProfileComponent,
+    SessionProfileComponent,
     DashboardComponent,
     LoginComponent,
     RegisterComponent,
@@ -75,7 +79,11 @@ import { RequestJobCardComponent } from './dashboard/request-job-card/request-jo
     LoadingScreenComponent,
     ReviewCardComponent,
     ReviewPaginationComponent,
-    RequestJobCardComponent
+    RequestJobCardComponent,
+    FollowersComponent,
+    FollowingComponent,
+    FollowerCardComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -18,7 +18,7 @@ export class ContactComponent implements OnInit {
   contactForm: FormGroup;
    contactInfoCollection: ContactInfo[] = [];
 
-  provider: User = new User(1, '', '', '', '', '', '', '', '', [], {
+  provider: User = new User(1, '', '', '', '', '', '', '', '', [], 1,2,{
     location: {
       cities: [{ id: 1, name: 'Olivos' }],
       state: { id: 1, name: 'Buenos Aires' },

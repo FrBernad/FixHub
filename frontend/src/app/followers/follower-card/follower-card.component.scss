@@ -1,0 +1,16 @@
+.avatarPicture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+a {
+  color: black;
+  transition: hover 1s;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}

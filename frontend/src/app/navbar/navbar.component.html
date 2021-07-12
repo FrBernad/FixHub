@@ -3,7 +3,7 @@
   <nav #navbar class="navbar navbar-expand navbar-light navbarTop" id="navbar">
     <div class="container-lg px-0">
       <a routerLink="/" class="navbar-brand me-4">
-        <img src='../../assets/images/navbrand.png' alt="FixHub brand logo" height="56px" width="160px"
+        <img src='assets/images/navbrand.png' alt="FixHub brand logo" height="56px" width="160px"
              type="image/png">
       </a>
       <ul class="navbar-nav me-auto">
@@ -37,7 +37,7 @@
           <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
             <div class="userContainer pe-0 nav-link">
               <div id="moreOptions" class="dropdown" data-bs-toggle="dropdown">
-                <img [src]="user.profileImage ? user.profileImage : '../../assets/images/defaultProfileImage.png'"
+                <img [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
                      class="avatar"
                      alt="profileImg"/>
                 <fa-icon class="ms-2 navbarText" [icon]="['fas','chevron-down']" id="navBarArrow"></fa-icon>

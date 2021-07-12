@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.user.User;
 
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.math.BigDecimal;
@@ -18,8 +19,8 @@ public class JobDto {
         return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId()));
     }
 
-    public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo) {
-        return jobs.stream().map(p -> new JobDto(p, uriInfo)).collect(Collectors.toList());
+    public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo, SecurityContext securityContext) {
+        return jobs.stream().map(p -> new JobDto(p, uriInfo, securityContext)).collect(Collectors.toList());
     }
 
     private Long id;
@@ -59,7 +60,7 @@ public class JobDto {
         //use by Jersey
     }
 
-    public JobDto(Job job, UriInfo uriInfo) {
+    public JobDto(Job job, UriInfo uriInfo, SecurityContext securityContext) {
 
         final UriBuilder uriBuilder = getJobUriBuilder(job, uriInfo);
         this.url = uriBuilder.build().toString();
@@ -70,7 +71,7 @@ public class JobDto {
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = new ProviderDto(job.getProvider(),uriInfo);
+        this.provider = new ProviderDto(job.getProvider(), uriInfo, securityContext);
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
             this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build().toString());

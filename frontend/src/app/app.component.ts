@@ -38,7 +38,6 @@ import {PreviousRouteService} from "./auth/previous-route.service";
 import {JobsService} from "./discover/jobs.service";
 import {UserService} from "./auth/user.service";
 import {Subscription} from "rxjs";
-import {animate, query, stagger, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-root',
@@ -75,7 +74,7 @@ export class AppComponent implements OnInit, OnDestroy {
       fasCheck, fasMapMarkerAlt,
       fasChartLine, fasWrench, fasAddressBook, farStar,
       fasPen, fasCompass, fasClock, fasTrash, fasUpload,
-      fasInfoCircle, fasCamera
+      fasInfoCircle
     );
 
     this.authService.autoLogin();
@@ -83,24 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs = this.userService.loading.subscribe((loading) => {
       this.loading = loading;
     })
-    // this.router.events
-    //   .pipe(
-    //     filter((event) => event instanceof NavigationEnd),
-    //     map(() => this.router.routerState.root)
-    //   )
-    //   .subscribe((event) => {
-    //     console.log('NavigationEnd:', event);
-    //   });
 
-    // this.route.data.subscribe((data: Data) => {
-    //   this.translateService.get(data.title).pipe(take(1), tap((res: string) => {
-    //     if (!res) {
-    //       this.titleService.setTitle(AppComponent.appName);
-    //     } else {
-    //       this.titleService.setTitle(AppComponent.appName + " | " + res);
-    //     }
-    //   }))
-    // })
   }
 
   translateSite(language: string) {

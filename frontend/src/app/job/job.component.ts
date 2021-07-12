@@ -38,7 +38,7 @@ export class JobComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
-        this.job.id = params['jobId'];
+        this.job.id = params['id'];
       }
     );
 

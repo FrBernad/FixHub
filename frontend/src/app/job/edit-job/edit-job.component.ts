@@ -60,7 +60,7 @@ export class EditJobComponent implements OnInit {
 
     this.route.params.subscribe(
       (params: Params) => {
-        this.job.id = params['jobId'];
+        this.job.id = params['id'];
       }
     );
 

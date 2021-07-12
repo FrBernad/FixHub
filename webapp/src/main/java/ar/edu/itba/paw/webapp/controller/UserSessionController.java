@@ -52,6 +52,9 @@ public class UserSessionController {
     @Context
     private UriInfo uriInfo;
 
+    @Context
+    private SecurityContext securityContext;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserSessionController.class);
 
     @POST
@@ -78,7 +81,7 @@ public class UserSessionController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response updateUser(@Valid UserInfoDto userInfoDto) {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         userService.updateUserInfo(
             new UserInfo(userInfoDto.getName(), userInfoDto.getSurname(),
                 userInfoDto.getCity(), userInfoDto.getState(), userInfoDto.getPhoneNumber()),
@@ -91,11 +94,11 @@ public class UserSessionController {
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getUser() {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         if (user.getRoles().contains(Roles.PROVIDER)) {
-            return Response.ok(new ProviderDto(user, uriInfo)).build();
+            return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
         }
-        return Response.ok(new UserDto(user, uriInfo)).build();
+        return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
 
     }
 
@@ -103,7 +106,7 @@ public class UserSessionController {
     @Path("coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getUserCoverImage(@Context Request request) {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final byte[] coverImage = user.getCoverImage().getData();
 
@@ -114,7 +117,7 @@ public class UserSessionController {
     @Path("coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response updateUserCoverImage() {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         return Response.ok().build();
     }
@@ -123,7 +126,7 @@ public class UserSessionController {
     @Path("profileImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
     public Response getUserProfileImage() {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final byte[] profileImage = user.getProfileImage().getData();
 
@@ -133,7 +136,7 @@ public class UserSessionController {
     @PUT
     @Path("profileImage")
     public Response updateUserProfileImage() {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         return Response.ok().build();
     }
@@ -146,7 +149,7 @@ public class UserSessionController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> results = searchService.getClientsByProvider(user, status, page, pageSize);
 
@@ -154,7 +157,7 @@ public class UserSessionController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo);
+        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
 
         final PaginatedResultDto<JobContactDto> resultsDto =
             new PaginatedResultDto<>(
@@ -179,7 +182,7 @@ public class UserSessionController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Job> results = searchService.getJobsByProvider(query, order, user, page, pageSize);
 
@@ -187,7 +190,7 @@ public class UserSessionController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo);
+        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
 
         final PaginatedResultDto<JobDto> resultsDto =
             new PaginatedResultDto<>(
@@ -203,6 +206,34 @@ public class UserSessionController {
 
         return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobDto>>(resultsDto) {
         }, uriBuilder);
+    }
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @PUT
+    @Path("/following/{id}")
+    public Response followUser(@PathParam("id") long id){
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+
+        final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        userService.followUser(user, toFollow);
+
+        return Response.noContent().build();
+    }
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @DELETE
+    @Path("/following/{id}")
+    public Response unfollowUser(@PathParam("id") long id){
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+
+        final User toUnfollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        userService.unfollowUser(user, toUnfollow);
+
+        return Response.noContent().build();
     }
 
 

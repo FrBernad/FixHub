@@ -39,6 +39,9 @@ public class JobController {
     @Context
     private UriInfo uriInfo;
 
+    @Context
+    private SecurityContext securityContext;
+
     @Autowired
     private ImageService imageService;
 
@@ -61,7 +64,7 @@ public class JobController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo);
+        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
 
         final PaginatedResultDto<JobDto> resultsDto =
             new PaginatedResultDto<>(
@@ -99,7 +102,7 @@ public class JobController {
         if (!job.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
-        JobDto jobDto = new JobDto(job.get(), uriInfo);
+        JobDto jobDto = new JobDto(job.get(), uriInfo, securityContext);
         return Response.ok(jobDto).build();
     }
 
@@ -120,7 +123,7 @@ public class JobController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<ReviewDto> reviewsDto = ReviewDto.mapReviewToDto(results.getResults(), uriInfo);
+        final Collection<ReviewDto> reviewsDto = ReviewDto.mapReviewToDto(results.getResults(), uriInfo, securityContext);
 
         final PaginatedResultDto<ReviewDto> resultsDto =
             new PaginatedResultDto<>(
@@ -308,12 +311,12 @@ public class JobController {
     @Path("/{id}/reviews")
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response jobReviewPost(@PathParam("id") long id, final NewReviewDto reviewDto){
+    public Response jobReviewPost(@PathParam("id") long id, final NewReviewDto reviewDto) {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
         Review review = reviewService.createReview(reviewDto.getDescription(), job, Integer.parseInt(reviewDto.getRating()), user);
-        LOGGER.info("Create review with id {} in the job with id {}",review.getId(),id);
-        return Response.created(ReviewDto.getReviewUriBuilder(review,uriInfo).build()).build();
+        LOGGER.info("Create review with id {} in the job with id {}", review.getId(), id);
+        return Response.created(ReviewDto.getReviewUriBuilder(review, uriInfo).build()).build();
     }
 
 //

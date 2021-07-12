@@ -1,0 +1,36 @@
+<div class="container-lg py-1">
+  <div class="row">
+    <div class="col-2 p-0 d-flex justify-content-center align-items-center">
+      <img alt="profile picture"
+           [src]="follower.profileImage ? follower.profileImage : 'assets/images/defaultProfileImage.png'"
+           class="avatarPicture">
+    </div>
+    <div class="col-8 p-0 d-flex justify-content-center align-items-center">
+      <div class="container-fluid px-0">
+        <div class="row">
+          <div class="col-12 d-flex align-items-center justify-content-start">
+            <a [routerLink]="'/user/'+follower.id">
+                <span class="names">
+                    {{follower.name}} {{follower.surname}}
+                </span>
+            </a>
+          </div>
+          <div class="col-10 px-0">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-1 px-0 d-flex align-items-center justify-content-start">
+                  <fa-icon [icon]="['far','envelope']"></fa-icon>
+                </div>
+                <div class="col-10 ps-1 d-flex align-items-center justify-content-start">
+                    <span>
+                      {{follower.email}}
+                    </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

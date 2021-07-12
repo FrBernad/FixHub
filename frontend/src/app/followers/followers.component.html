@@ -1,0 +1,131 @@
+<div class="container-lg userContainerProfile py-4">
+  <div *ngIf="!loading" class="row">
+
+    <div class="col-12 col-md-5 d-flex justify-content-center pt-1">
+      <div class="container-lg">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <div>
+            <div class="picContainer">
+              <img alt="profile picture"
+                   [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
+                   class="profilePicture">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
+          <a [routerLink]="'/user/'+user.id">
+                <span class="userSectionTitles names">
+                    {{user.name}} {{user.surname}}
+                </span>
+          </a>
+        </div>
+
+        <div class="col-12 my-2">
+          <hr>
+        </div>
+
+        <div class="col-12">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['fas','map-marker-alt']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                          <span>
+                            {{user.state}}, {{user.city}}.
+                          </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['far','envelope']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                      <span>{{user.email}}.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['fas','phone-alt']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                      <span>{{user.phoneNumber}}.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2 mb-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['fas','user-friends']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                      <a class="extraInfo"
+                         [routerLink]="'/user/'+user.id+'/followers'">
+                      <span class="detailField">
+                          {{user.followersCount}}
+                      </span>
+                        {{'profilePage.info.followers' | translate}}
+                      </a>
+                      ·
+                      <a class="extraInfo"
+                         [routerLink]="'/user/'+user.id+'/following'">
+                      <span class="detailField">
+                          {{user.followingCount}}
+                      </span>
+                        {{'profilePage.info.following' | translate}}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="fpr.results.length > 0, else noResults" class="col-12 col-md-7 pt-5">
+      <div *ngFor="let follower of fpr.results">
+        <div class="col-12 mt-3">
+          <app-follower-card [follower]="follower"></app-follower-card>
+        </div>
+        <div class="col-10">
+          <hr>
+        </div>
+      </div>
+      <div *ngIf="fpr.totalPages > 1" class="col-12 mt-4">
+        <app-pagination
+          (changePage)="onChangePage($event)"
+          [currentPage]="fpr.page"
+          [totalPages]="fpr.totalPages">
+        </app-pagination>
+      </div>
+    </div>
+    <ng-template #noResults>
+      <div class="col-12 col-md-7 d-flex align-items-center justify-content-center">
+        <div class="container h-100 mt-2 d-flex align-items-center justify-content-center noFollowsFound">
+          <p class="m-0 text-center p-4" style="font-size: 16px">
+            {{ noData | translate}}
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

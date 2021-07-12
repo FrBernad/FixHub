@@ -1,7 +1,7 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {User} from '../../models/user.model';
-import {UserService} from "../../auth/user.service";
+import {User} from '../../../models/user.model';
+import {UserService} from "../../../auth/user.service";
 
 @Component({
   selector: 'app-update-info',

@@ -43,6 +43,9 @@ public class UserController {
     @Context
     private UriInfo uriInfo;
 
+    @Context
+    private SecurityContext securityContext;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @POST
@@ -69,9 +72,10 @@ public class UserController {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         if (user.getRoles().contains(Roles.PROVIDER)) {
-            return Response.ok(new ProviderDto(user, uriInfo)).build();
+            return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
         }
-        return Response.ok(new UserDto(user, uriInfo)).build();
+
+        return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
     }
 
     @GET
@@ -124,7 +128,7 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
+        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
 
         final PaginatedResultDto<UserDto> resultsDto =
             new PaginatedResultDto<>(
@@ -158,7 +162,7 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
+        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
 
         final PaginatedResultDto<UserDto> resultsDto =
             new PaginatedResultDto<>(
@@ -496,7 +500,6 @@ public class UserController {
 //        return mav;
 //    }
 //
-
 
 
 //    @RequestMapping(value = "/user/account/updateInfo", method = RequestMethod.POST)

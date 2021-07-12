@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.job.Review;
 
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class JobContactDto {
 
-    public static Collection<JobContactDto> mapContactToDto(Collection<JobContact> jobContacts, UriInfo uriInfo) {
-        return jobContacts.stream().map(jc -> new JobContactDto(jc, uriInfo)).collect(Collectors.toList());
+    public static Collection<JobContactDto> mapContactToDto(Collection<JobContact> jobContacts, UriInfo uriInfo, SecurityContext securityContext) {
+        return jobContacts.stream().map(jc -> new JobContactDto(jc, uriInfo,securityContext)).collect(Collectors.toList());
     }
 
     private Long id;
@@ -28,16 +29,17 @@ public class JobContactDto {
     String jobProvided;
 //    private ContactInfo contactInfo;
 
-    public JobContactDto() {}
+    public JobContactDto() {
+    }
 
-    public JobContactDto(JobContact jobContact, UriInfo uriInfo) {
+    public JobContactDto(JobContact jobContact, UriInfo uriInfo, SecurityContext securityContext) {
         this.id = jobContact.getId();
-        this.user = new UserDto(jobContact.getUser(),uriInfo);
-        this.provider = new UserDto(jobContact.getProvider(),uriInfo);
+        this.user = new UserDto(jobContact.getUser(), uriInfo, securityContext);
+        this.provider = new UserDto(jobContact.getProvider(), uriInfo, securityContext);
         this.message = jobContact.getMessage();
         this.status = jobContact.getStatus();
         this.date = jobContact.getDate();
-        this.jobUrl = JobDto.getJobUriBuilder(jobContact.getJob(),uriInfo).build().toString();
+        this.jobUrl = JobDto.getJobUriBuilder(jobContact.getJob(), uriInfo).build().toString();
         this.jobProvided = jobContact.getJob().getJobProvided();
     }
 
