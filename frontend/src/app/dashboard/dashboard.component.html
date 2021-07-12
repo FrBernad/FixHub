@@ -2,18 +2,30 @@
   <div class="row">
     <div class="col-3">
       <div class="nav flex-column nav-pills" role="tablist" id="tabList">
-        <button class="nav-link" [ngClass]="{'active' : activeTab==='dashboard'}" (click)="changeTab('dashboard')"
+        <button class="nav-link list-group-item list-group-item-action"
+                [ngClass]="{'active' : activeTab==='dashboard', 'inactive': activeTab!=='dashboard'}"
+                (click)="changeTab('dashboard')"
                 data-bs-toggle="pill">
           <fa-icon [icon]="['fas', 'chart-line']" class="me-2"></fa-icon>
-          <span class="text">{{'navBar.dashboard' |
-            translate}}</span>
+          <span class="text">
+            {{'navBar.dashboard' | translate}}
+          </span>
         </button>
-        <button class="nav-link" [ngClass]="{'active' : activeTab==='works'}" (click)="changeTab('works')">
+        <button class="nav-link list-group-item list-group-item-action"
+                [ngClass]="{'active' : activeTab==='works', 'inactive':  activeTab!=='works'} "
+                (click)="changeTab('works')">
           <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon>
-          <span class="text">{{'dashboard.Work' |
-            translate}}</span><span class="badge rounded-pill bg-secondary">{{getNumberOfWorks()}}</span>
+          <span class="text">
+            {{'dashboard.Work' |translate}}
+          </span>
+          <span
+            class="badge rounded-pill bg-secondary">
+            {{getNumberOfWorks()}}
+          </span>
         </button>
-        <button class="nav-link" [ngClass]="{'active' : activeTab==='contacts'}" (click)="changeTab('contacts')">
+        <button class="nav-link list-group-item list-group-item-action"
+                [ngClass]="{'active' : activeTab==='contacts', 'inactive':  activeTab!=='contacts'}"
+                (click)="changeTab('contacts')">
           <fa-icon [icon]="['fas', 'address-book']" class="me-2"></fa-icon>
           <span class="text">{{'dashboard.Contacts' | translate}}</span>
           <span class="badge rounded-pill bg-secondary">

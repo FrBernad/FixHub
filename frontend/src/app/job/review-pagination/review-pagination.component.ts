@@ -50,4 +50,9 @@ export class ReviewPaginationComponent implements OnInit, OnDestroy {
     this.reviewsSub.unsubscribe();
   }
 
+  resetReviews() {
+    this.rpq.page = 0;
+    this.jobService.getReviews(this.rpq, this.job.id);
+  }
+
 }

@@ -38,26 +38,23 @@ export class ReviewFormComponent implements OnInit {
       this.reviewForm.markAllAsTouched();
       return;
     }
+
     this.jobService.createReview({
       description: this.reviewForm.get('description').value,
       rating: this.reviewForm.get('rating').value
     }, this.jobId).subscribe(() => {
-      console.log("Enviada la review")
+      this.jobService.updateReviews(this.jobId);
     });
 
-    this.jobService.updateReviews(this.jobId);
     this.cleanReviewForm()
-
   }
 
   onClose(){
-
     this.cleanReviewForm();
   }
 
   private cleanReviewForm(){
     this.reviewForm.markAsUntouched();
-
     this.reviewForm.get('description').patchValue('');
     this.reviewForm.get('rating').patchValue('1');
   }
