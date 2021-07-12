@@ -236,11 +236,14 @@ public class UserServiceImpl implements UserService {
         final LocalTime localStartTime;
         final LocalTime localEndTime;
 
-        if ((localStartTime = parseTime(startTime)) == null)
+        if ((localStartTime = parseTime(startTime)) == null){
             return;
 
-        if ((localEndTime = parseTime(startTime)) == null)
+        }
+
+        if ((localEndTime = parseTime(endTime)) == null){
             return;
+        }
 
         schedule.setStartTime(localStartTime);
         schedule.setEndTime(localEndTime);

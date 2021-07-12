@@ -33,16 +33,15 @@ export class ChooseCityComponent implements OnInit {
       cities: this.citiesSelected,
     });
 
+
     if (this.isProvider != null && this.isProvider) {
-      this.cities.forEach((city) => {
+      this.user.providerDetails.location.cities.forEach((city) => {
         (<FormArray>this.chooseCityForm.get('cities')).push(
           new FormControl(city)
         );
       });
     }
 
-    console.log(this.chosenState.id);
-    console.log(this.chosenState.id.toString());
     this.jobsService.getStateCities(this.chosenState.id.toString()).subscribe(
       (cities) => {
         this.cities = cities;
@@ -77,6 +76,6 @@ export class ChooseCityComponent implements OnInit {
       this.chooseCityForm.markAllAsTouched();
       return;
     }
-    this.citiesChosen.emit(this.chooseCityForm.value);
+    this.citiesChosen.emit(this.chooseCityForm.value.cities);
   }
 }

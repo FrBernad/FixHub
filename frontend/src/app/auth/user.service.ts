@@ -4,6 +4,18 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {User} from "../models/user.model";
 import {environment} from "../../environments/environment";
 import {tap} from "rxjs/operators";
+import {City, State} from "../discover/jobs.service";
+
+export interface ProviderDetails {
+  schedule: {
+    startTime: string;
+    endTime: string
+  };
+  location: {
+    cities: City[];
+    state: State
+  }
+}
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -68,5 +80,25 @@ export class UserService {
   uploadCoverImage() {
 
   }
+
+  makeProvider(providerInfo: ProviderDetails) {
+    return this.http.put(
+      environment.apiBaseUrl + '/user/account/updateProviderInfo',
+      providerInfo)
+      .pipe(tap(() => {
+        this.populateUserData().subscribe();
+      }));
+  }
+
+  updateProviderInfo(providerInfo: ProviderDetails) {
+    return this.http.put(
+      environment.apiBaseUrl + '/user/account/updateProviderInfo',
+      providerInfo)
+      .pipe(tap(() => {
+        this.populateUserData().subscribe();
+    }));
+
+  }
+
 
 }

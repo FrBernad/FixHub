@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
@@ -28,7 +30,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Path("/user")
 @Component
@@ -402,6 +406,35 @@ public class UserSessionController {
 //        return mav;
 //    }
 //
+    @POST
+    @Path("/join")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response join(@Valid final JoinDto joinDto ){
+        LOGGER.info("Accessed /user/join POST controller");
+
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
+
+//        FIXME: si ya es provider lanzar una excepción
+
+        List<Long> citiesId = new ArrayList<>();
+        for (CityDto city: joinDto.getLocation().getCities()){
+            citiesId.add(city.getId());
+        }
+
+        userService.makeProvider(user,
+            citiesId,
+            joinDto.getSchedule().getStartTime(),
+            joinDto.getSchedule().getEndTime());
+
+        LOGGER.info("User with id {} become provider succesfully",user.getId());
+
+        //FIXME: forceLogin
+
+        return Response.ok().build();
+
+    }
+
 //    @RequestMapping(path = "/user/join", method = RequestMethod.POST)
 //    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final FirstJoinForm form,
 //                                 final BindingResult errors,
@@ -559,6 +592,141 @@ public class UserSessionController {
             responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
         }
     }
+
+
+    @PUT
+    @Path("/account/updateProviderInfo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateProviderInfo(final JoinDto joinDto){
+        LOGGER.info("Accessed /user/account/updateProviderInfo PUT controller");
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
+
+//        FIXME: si no es provider lanzar una excepcion
+
+        if(!user.hasRole(Roles.PROVIDER)) {
+//            LOGGER.warn("User {} is not a provider", user.getId());
+//            return new ModelAndView("redirect:/user/account");
+        }
+
+        List<Long> citiesId = new ArrayList<>();
+        for (CityDto city: joinDto.getLocation().getCities()){
+            citiesId.add(city.getId());
+        }
+
+
+        userService.updateProviderInfo( user,citiesId,
+            joinDto.getSchedule().getStartTime(),joinDto.getSchedule().getEndTime());
+
+
+        LOGGER.info("User with id {} update provider information succesfully",user.getId());
+
+        return Response.ok().build();
+
+    }
+
+
+
+//    @RequestMapping(path = "/user/account/updateProviderStateAndTime")
+//    public ModelAndView firstUpdateProvider(@ModelAttribute("providerInfoFirstForm") FirstJoinForm form, Principal principal) {
+//        LOGGER.info("Accessed /user/account/updateProviderInfo GET controller");
+//        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+//        if(!user.hasRole(Roles.PROVIDER)) {
+//            LOGGER.warn("User {} is not a provider", user.getId());
+//            return new ModelAndView("redirect:/user/account");
+//        }
+//        ModelAndView mav = new ModelAndView("views/user/editProviderInfo");
+//        mav.addObject("states", locationService.getStates());
+//        return mav;
+//    }
+//
+//    @RequestMapping(value = "/user/account/updateProviderStateAndTime", method = RequestMethod.POST)
+//    public ModelAndView firstUpdateProviderPost(@Valid @ModelAttribute("providerInfoFirstForm") FirstJoinForm form, BindingResult errors, RedirectAttributes ra, Principal principal) {
+//        LOGGER.info("Accessed /user/account/updateProviderInfo POST controller");
+//
+//        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+//        if(!user.hasRole(Roles.PROVIDER)) {
+//            LOGGER.warn("User {} is not a provider", user.getId());
+//            return new ModelAndView("redirect:/user/account");
+//        }
+//        if(errors.hasErrors()) {
+//            LOGGER.warn("Error in form providerInfoForm data");
+//            return firstUpdateProvider(form, principal);
+//        }
+//
+//
+//        ra.addFlashAttribute("state", form.getState());
+//        ra.addFlashAttribute("startTime", form.getStartTime());
+//        ra.addFlashAttribute("endTime", form.getEndTime());
+//        final State state = locationService.getStateById(form.getState()).orElseThrow(StateNotFoundException::new);
+//        ra.addFlashAttribute("cities", locationService.getCitiesByState(state));
+//
+//        LOGGER.debug("Added redirect attributes to /user/account/updateProviderCity");
+//
+//        return new ModelAndView("redirect:/user/account/updateProviderCity");
+//
+//    }
+//
+//    @RequestMapping(path = "/user/account/updateProviderCity")
+//    public ModelAndView secondUpdateProvider(@ModelAttribute("providerInfoSecondForm") SecondJoinForm form, HttpServletRequest request, Principal principal) {
+//        LOGGER.info("Accessed /user/account/updateProviderCity GET controller");
+//
+//        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+//        if(!user.hasRole(Roles.PROVIDER)) {
+//            LOGGER.warn("User {} is not a provider", user.getId());
+//            return new ModelAndView("redirect:/user/account");
+//        }
+//
+//        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+//        if (flashMap == null && form.getState() == 0) {
+//            LOGGER.warn("Flashmap and form are null redirecting to first step");
+//            return new ModelAndView("redirect:/user/account/updateProviderStateAndTime");
+//        }
+//
+//        ModelAndView mav = new ModelAndView("views/user/editProviderCity");
+//
+//        boolean newState = false;
+//
+//        if (flashMap != null) {
+//            mav.addAllObjects(flashMap);
+//            newState = user.getProviderDetails().getLocation().getState().getId() != (Long)flashMap.get("state");
+//        }
+//
+//        if (form != null && form.getState() != 0) {
+//            LOGGER.debug("Adding state cities again due to error in firstUpdateProvider form");
+//            final State state = locationService.getStateById(form.getState()).orElseThrow(StateNotFoundException::new);
+//            mav.addObject("cities", locationService.getCitiesByState(state));
+//            newState = user.getProviderDetails().getLocation().getState().getId() != form.getState();
+//        }
+//
+//        mav.addObject("newState", newState);
+//
+//        return mav;
+//    }
+//
+//    @RequestMapping(value = "/user/account/updateProviderCity", method = RequestMethod.POST)
+//    public ModelAndView secondUpdateProviderPost(@Valid @ModelAttribute("providerInfoSecondForm") final SecondJoinForm form,
+//                                                 final BindingResult errors,
+//                                                 HttpServletRequest request,
+//                                                 Principal principal) {
+//        LOGGER.info("Accessed /user/account/updateProviderCity POST controller");
+//
+//        User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+//        if (!user.hasRole(Roles.PROVIDER)) {
+//            LOGGER.warn("User {} is not a provider", user.getId());
+//            return new ModelAndView("redirect:/user/account");
+//        }
+//
+//        if (errors.hasErrors()) {
+//            LOGGER.warn("Error in form SecondJoinForm data");
+//            return secondUpdateProvider(form, request, principal);
+//        }
+//
+//        userService.updateProviderInfo(user, form.getCity(), form.getStartTime(), form.getEndTime());
+//
+//        return new ModelAndView("redirect:/user/dashboard");
+//    }
 
 
 }

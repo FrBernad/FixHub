@@ -17,9 +17,17 @@
                           [isProvider]="isProvider"></app-choose-state>
       </ng-template>
       <ng-template #chooseCity>
-        <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider"
-                         (citiesChosen)="onChooseCities($event)"></app-choose-city>
+        <ng-template [ngIf]="!posting" [ngIfElse]="makingProvider">
+
+          <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider"
+                           (citiesChosen)="makeProvider($event)"></app-choose-city>
+        </ng-template>
+
+        <ng-template #makingProvider>
+          Loading...
+        </ng-template>
       </ng-template>
+
     </div>
   </div>
 </div>

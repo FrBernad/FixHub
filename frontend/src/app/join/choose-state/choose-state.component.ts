@@ -28,25 +28,23 @@ export class ChooseStateComponent implements OnInit {
   @Input() user: User;
 
   ngOnInit(): void {
-
     if (this.isProvider) {
       this.chooseStateForm = new FormGroup({
-        'startTime': new FormControl(this.user.providerDetails.schedule.startTime, [Validators.required, Validators.pattern('((([1-9])|(1[0-2])):([0-5])([0-9]) (A|P)M)')]),
-        'endTime': new FormControl(this.user.providerDetails.schedule.endTime, [Validators.required, Validators.pattern('((([1-9])|(1[0-2])):([0-5])([0-9]) (A|P)M)')]),
+        'startTime': new FormControl(this.user.providerDetails.schedule.startTime, [Validators.required, Validators.pattern('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$')]),
+        'endTime': new FormControl(this.user.providerDetails.schedule.endTime, [Validators.required, Validators.pattern('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$')]),
         'state': new FormControl(this.user.providerDetails.location.state, [Validators.required])
       });
       this.stateSelected = this.user.providerDetails.location.state.name;
     } else {
       this.chooseStateForm = new FormGroup({
-        'startTime': new FormControl(null, [Validators.required, Validators.pattern('((([1-9])|(1[0-2])):([0-5])([0-9]) (A|P)M)')]),
-        'endTime': new FormControl(null, [Validators.required, Validators.pattern('((([1-9])|(1[0-2])):([0-5])([0-9]) (A|P)M)')]),
+        'startTime': new FormControl(null, [Validators.required, Validators.pattern('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$')]),
+        'endTime': new FormControl(null, [Validators.required, Validators.pattern('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$')]),
         'state': new FormControl(null, [Validators.required])
       });
     }
 
     this.jobsService.getStates().subscribe(
       (states) => {
-        console.log("bbb")
         this.states = states
         this.isFetching = false;
       }

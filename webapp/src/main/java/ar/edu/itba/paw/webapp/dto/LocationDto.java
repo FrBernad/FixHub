@@ -3,13 +3,14 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.user.provider.Location;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class LocationDto {
 
     private StateDto state;
-    private List<CityDto> cities;
+    private Collection<CityDto> cities;
 
     public LocationDto(){
 
@@ -31,11 +32,11 @@ public class LocationDto {
         this.state = state;
     }
 
-    public List<CityDto> getCities() {
+    public Collection<CityDto> getCities() {
         return cities;
     }
 
-    public void setCities(List<CityDto> cities) {
+    public void setCities(Collection<CityDto> cities) {
         this.cities = cities;
     }
 }

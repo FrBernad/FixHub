@@ -23,10 +23,10 @@
                   </label>
                 </div>
                 <div class="col-md-4 col-6 align-items-center justify-content-end">
-                  <input class="form-control" style="background-color: white" formControlName="startTime"
+                  <input class="form-control" [format]="24"  style="background-color: white" formControlName="startTime"
                          [ngxTimepicker]="startTime" readonly>
                   <ngx-material-timepicker #startTime
-                                           [defaultTime]="isProvider ? user.providerDetails.schedule.startTime : '12:00 AM'"></ngx-material-timepicker>
+                                           [defaultTime]="isProvider ? user.providerDetails.schedule.startTime : '12:00'"></ngx-material-timepicker>
                 </div>
                 <span *ngIf="!chooseStateForm.get('startTime').valid && chooseStateForm.get('startTime').touched">
                 <span *ngIf="chooseStateForm.get('startTime').errors['required']" class="errorMessage">
@@ -46,10 +46,10 @@
                   </label>
                 </div>
                 <div class="col-md-4 col-6 align-items-center justify-content-end">
-                  <input class="form-control" style="background-color: white" formControlName="endTime"
+                  <input class="form-control" [format]="24" style="background-color: white" formControlName="endTime"
                          [ngxTimepicker]="endTime" readonly>
                   <ngx-material-timepicker #endTime
-                                           [defaultTime]="isProvider ? user.providerDetails.schedule.endTime : '12:00 AM'"></ngx-material-timepicker>
+                                           [defaultTime]="isProvider ? user.providerDetails.schedule.endTime.toString() : '12:00'"></ngx-material-timepicker>
                 </div>
                 <span *ngIf="!chooseStateForm.get('endTime').valid && chooseStateForm.get('endTime').touched">
                 <span *ngIf="chooseStateForm.get('endTime').errors['required']" class="errorMessage">

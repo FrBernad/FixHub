@@ -1,1 +1,27 @@
-<app-join [isEdit]="true"></app-join>
+<div class="container-fluid py-4 px-0">
+  <div class="container-lg p-5 smallContentContainer">
+    <div class="row w-100 m-0 align-items-center justify-content-center">
+      <div class="col-12">
+        <h1 class="text-center title">
+          {{  'editProvider.header' | translate }}
+        </h1>
+
+      </div>
+      <ng-template [ngIf]="chooseState" [ngIfElse]="chooseCity">
+        <app-choose-state [user]="user" (stateChosen)="onChooseState($event)"
+                          [isProvider]="isProvider"></app-choose-state>
+      </ng-template>
+      <ng-template #chooseCity>
+        <ng-template [ngIf]="!posting" [ngIfElse]="makingProvider">
+
+          <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider"
+                           (citiesChosen)="updateProviderInfo($event)"></app-choose-city>
+        </ng-template>
+
+        <ng-template #makingProvider>
+          Loading...
+        </ng-template>
+      </ng-template>
+    </div>
+  </div>
+</div>

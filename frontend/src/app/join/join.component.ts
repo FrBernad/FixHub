@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../models/user.model";
 import {UserService} from "../auth/user.service";
 import {Subscription} from "rxjs";
 import {City, State} from "../discover/jobs.service";
+import {Router} from "@angular/router";
 
-export interface Schedule{
-  startTime:string;
-  endTime:string;
+export interface Schedule {
+  startTime: string;
+  endTime: string;
 }
 
 @Component({
@@ -21,15 +22,17 @@ export class JoinComponent implements OnInit {
   chooseState = true;
   state: State;
   cities: City[];
-  schedule: Schedule;
-  startTime;
-  endTime;
+  startTime: string;
+  endTime: string;
   isProvider: boolean;
+  posting = false;
 
 
   constructor(
     private userService: UserService,
-  ){ }
+    private router: Router
+  ) {
+  }
 
 
   ngOnInit(): void {
@@ -40,20 +43,33 @@ export class JoinComponent implements OnInit {
   }
 
 
-  onChooseState(event){
+  onChooseState(event) {
     this.state = event.state;
     this.startTime = event.startTime;
     this.endTime = event.endTime;
     this.chooseState = false;
   }
 
-  onChooseCities(event) {
+  makeProvider(event) {
+    this.posting = true;
     this.cities = event;
-    if(this.isProvider){
-      console.log('editando');
-    }else{
-      console.log('te hago provider')
-    }
+    let providerInfo = {
+      schedule: {
+        startTime: this.startTime,
+        endTime: this.endTime
+      },
+      location: {
+        state: this.state,
+        cities: this.cities
+      }
+    };
+    this.userService.makeProvider(providerInfo).subscribe(
+      () => {
+        this.posting = false;
+        this.router.navigate(['user', 'dashboard']);
+      }
+    );
+
   }
 
 }
