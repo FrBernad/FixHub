@@ -23,6 +23,7 @@
                 <input formControlName="email" type="email" class="form-control mb-2"
                        id="email" name="email"
                        aria-describedby="email input"/>
+
                 <span *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">
                   <span *ngIf="loginForm.get('email').errors['required']" class="errorMessage">
                     {{'NotEmpty.loginForm.email' | translate }}<br>
@@ -46,7 +47,7 @@
                         <input formControlName="password" [type]="showPass ? 'password' : 'text'" class="form-control"
                                id="password" name="password"
                                aria-describedby="password input"/>
-                       <div class="input-group-append">
+                        <div class="input-group-append">
                           <button id="passwordEye" type="button" tabindex="-1"
                                   (click)="toogleEye()"
                                   class="form-control input-group-text">
@@ -67,16 +68,9 @@
                             {{'login.error' | translate }}
                           </span>
                         </span>
-
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-12 mt-3 d-flex justify-content-start align-items-center">
-                <input type="checkbox" formControlName="rememberMe" name="rememberMe" id="rememberMe"/>
-                <label for="rememberMe" class="mb-0 ms-2">
-                  {{'login.rememberme' | translate }}
-                </label>
               </div>
             </div>
           </form>

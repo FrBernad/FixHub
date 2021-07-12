@@ -124,6 +124,37 @@ export class AuthService {
       );
   }
 
+  resetPassword(token: string, password:string) {
+    return this.http
+      .put(
+        environment.apiBaseUrl + '/user/resetPassword',
+        {
+          token,
+          password
+        },
+        {
+          observe: "response"
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+      );
+  }
+
+
+  sendResetPasswordEmail(email: string) {
+    return this.http
+      .post(
+        environment.apiBaseUrl + '/user/resetPassword',
+        {
+          email,
+        },
+        {
+          observe: "response"
+        }
+      );
+  }
+
   logout() {
     this.session.next(null);
 

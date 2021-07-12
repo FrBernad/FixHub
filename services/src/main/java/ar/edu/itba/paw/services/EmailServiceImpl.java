@@ -71,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
-            final String url = appBaseUrl.toString() + "user/verify?token=" + token.getValue();
+            final String url = appBaseUrl.toString() + "/user/verify?token=" + token.getValue();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -86,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
-            final String url = appBaseUrl.toString() + "user/resetPassword?token=" + token.getValue();
+            final String url = appBaseUrl.toString() + "/user/resetPassword?token=" + token.getValue();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -121,8 +121,8 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + newContactDto.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "user/" + newContactDto.getJob().getProvider().getId();
+            final String jobURL = appBaseUrl.toString() + "/jobs/" + newContactDto.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "/user/" + newContactDto.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -145,8 +145,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -167,8 +167,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -189,8 +189,8 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
@@ -211,8 +211,8 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            final String jobURL = appBaseUrl.toString() + "jobs/" + newContactDto.getJob().getId();
-            final String userURL = appBaseUrl.toString() + "user/" + newContactDto.getUser().getId();
+            final String jobURL = appBaseUrl.toString() + "/jobs/" + newContactDto.getJob().getId();
+            final String userURL = appBaseUrl.toString() + "/user/" + newContactDto.getUser().getId();
 
             final String address = String.format("%s, %s, %s %s, %s %s", newContactDto.getState(), newContactDto.getCity(),
                 newContactDto.getStreet(), newContactDto.getAddressNumber(), newContactDto.getFloor(), newContactDto.getDepartmentNumber());

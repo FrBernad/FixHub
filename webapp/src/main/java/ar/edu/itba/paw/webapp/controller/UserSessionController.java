@@ -156,6 +156,7 @@ public class UserSessionController {
         return Response.noContent().build();
     }
 
+
     @GET
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
@@ -207,6 +208,37 @@ public class UserSessionController {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> results = searchService.getClientsByProvider(user, status, page, pageSize);
+
+        if (results == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
+
+        final PaginatedResultDto<JobContactDto> resultsDto =
+            new PaginatedResultDto<>(
+                results.getPage(),
+                results.getTotalPages(),
+                contactsDto);
+
+        final UriBuilder uriBuilder = uriInfo
+            .getAbsolutePathBuilder()
+            .queryParam("pageSize", pageSize);
+
+        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobContactDto>>(resultsDto) {
+        }, uriBuilder);
+    }
+
+    @GET
+    @Path("/jobs/sentRequests")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getUserSentJobRequests(
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+    ) {
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+
+        final PaginatedSearchResult<JobContact> results = searchService.getProvidersByClient(user, page, pageSize);
 
         if (results == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();

@@ -25,7 +25,7 @@ public class DevWebConfig {
 
     @Bean(name = "appPort")
     public int appPort() {
-        return 8080;
+        return 4200;
     }
 
 }

@@ -1,4 +1,5 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-recover-email-popup',
@@ -6,10 +7,18 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
   styleUrls: ['./recover-email-popup.component.scss']
 })
 export class RecoverEmailPopupComponent implements OnInit {
-  constructor() {
+  constructor(
+    private authService: AuthService
+  ) {
   }
 
   ngOnInit(): void {
+  }
+
+  onSubmit(){
+    this.authService.sendResetPasswordEmail("pepe@yopmail.com").subscribe(()=>{
+      console.log("recovery sent")
+    });
   }
 
 }
