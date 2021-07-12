@@ -41,7 +41,7 @@
                     {{'registerForm.userSurnameTitle' | translate}}
                     <span class="required-field">*</span>
                   </label>
-                  <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                  <input type="text"  class="form-control"
                     placeholder="{{'registerForm.surnamePlaceholder' | translate}}" formControlName="surname" />
                   <span *ngIf="!registerForm.get('surname').valid && registerForm.get('surname').touched">
                     <span *ngIf="registerForm.get('surname').errors['required']" class="errorMessage">
@@ -81,7 +81,7 @@
                   <div class="input-group d-flex justify-content-start align-items-center">
                     <input [type]="showPass1 ? 'password':'text'" class="form-control" name="password"
                       placeholder="{{'registerForm.passwordPlaceHolder' | translate}}"
-                      cssErrorClass="form-control is-invalid" formControlName="password" />
+                     formControlName="password" />
                     <div class="input-group-append">
                       <button type="button" tabindex="-1" (click)="toogleEye1()"
                         class="form-control input-group-text passwordInput">

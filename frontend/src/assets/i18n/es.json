@@ -23,6 +23,8 @@
   "home.categories.FUMIGADOR": "Fumigador",
   "home.categories.FOTOGRAFO": "Fot\u00F3grafo",
   "FieldsValueMatch.resetPasswordForm": "Las contrase\u0148as no coinciden",
+  "NotEmpty.resetPasswordForm.password": "Ingresa tu nueva contrase\u0148a",
+  "Size.resetPasswordForm.password": "La contraseňa debe tener entre {{min}} y {{max}} caracteres",
   "email.resetPassword": "Recuperacion de contrase\u00F1a",
   "email.verifyAccount": "Verifica tu cuenta",
   "email.jobRequest": "Solicitud de trabajo",

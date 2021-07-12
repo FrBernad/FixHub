@@ -87,7 +87,7 @@ export class RegisterComponent implements OnInit {
     });
     this.registerForm.setValidators(this.passwordMatching.bind(this));
 
-    
+
   }
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {
@@ -109,7 +109,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.registerForm);
 
     if (!this.registerForm.valid) {
       this.registerForm.markAllAsTouched();
@@ -126,7 +125,6 @@ export class RegisterComponent implements OnInit {
       city: this.registerForm.value.city,
     };
 
-    console.log(registerData);
 
     const authObs = this.authService.signup(registerData);
 

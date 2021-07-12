@@ -24,6 +24,8 @@
   "home.categories.FUMIGADOR": "Fumigator",
   "home.categories.FOTOGRAFO": "Photographer",
   "FieldsValueMatch.resetPasswordForm": "Passwords dont match",
+  "NotEmpty.resetPasswordForm.password": "Enter your new password",
+  "Size.resetPasswordForm.password": "The password must be between {{min}} and {{max}} characters",
   "email.resetPassword": "Recover password",
   "email.verifyAccount": "Verify your account",
   "email.jobRequest": "Job request",

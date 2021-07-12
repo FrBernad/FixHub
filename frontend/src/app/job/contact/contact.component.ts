@@ -47,7 +47,8 @@ export class ContactComponent implements OnInit {
   constructor(
     private contactService: ContactService,
     private userService: UserService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
 
@@ -62,9 +63,12 @@ export class ContactComponent implements OnInit {
     this.contactService
       .getContactInfo(this.user.id)
       .subscribe((responseData) => {
-        responseData.forEach((contactInfo) => {
-          this.contactInfoCollection.push(contactInfo);
-        });
+        if (responseData != null) {
+          responseData.forEach((contactInfo) => {
+            this.contactInfoCollection.push(contactInfo);
+          });
+        }
+
       });
   }
 
