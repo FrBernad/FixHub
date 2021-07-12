@@ -86,6 +86,8 @@ export class RegisterComponent implements OnInit {
       ]),
     });
     this.registerForm.setValidators(this.passwordMatching.bind(this));
+
+    
   }
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {

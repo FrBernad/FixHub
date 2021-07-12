@@ -18,19 +18,19 @@
                 <div class="dropdown mb-4" *ngIf="contactInfoCollection.length > 0">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{'contactForm.Dropdown.Information' | translate}}
+                      {{'contactForm.Dropdown.Information' | translate}}
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li>
-                      <a class="dropdown-item" id="newUserContact">
+                      <a class="dropdown-item" id="newUserContact" (click)="dropdownClickNew()" style="cursor: pointer;">
                         {{'contactForm.newContactInfo' | translate}}
                       </a>
                     </li>
-                    <li *ngFor="let contact of contactInfoCollection">
+                    <li *ngFor="let contact of contactInfoCollection" (click)="dropdownClickContact(contact)">
                       <a class="dropdown-item userContact" data-state="contact.state" data-city="contact.city"
                         data-info-id="contact.id" data-street="contact.street"
                         data-address-number="contact.addressNumber" data-floor="contact.floor"
-                        data-department-number="contact.departmentNumber">
+                        data-department-number="contact.departmentNumber" style="cursor: pointer;">
                         {{contact.state}} {{contact.city}} {{contact.street}} {{contact.addressNumber}}
                         {{contact.floor}}
                         {{contact.departmentNumber}}
@@ -76,8 +76,8 @@
                             <span *ngIf="city.value != null">{{city.value.name}}</span>
                           </button>
                           <ul class="dropdown-menu dropdown-menu-end w-100" data-reference="parent">
-                            <li *ngFor="let city of job.provider.providerDetails.location.cities" data-name="city.name" (click)="dropdownClick(city)">
-                              <a class="dropdown-item">{{city.name}}</a>
+                            <li *ngFor="let city of job.provider.providerDetails.location.cities" data-name="city.name" (click)="dropdownClickCity(city)">
+                              <a class="dropdown-item" style="cursor: pointer;">{{city.name}}</a>
                             </li>
                           </ul>
                         </div>
@@ -95,7 +95,7 @@
                       </span>
                     </div>
                   </div>
-                  <p id="cityError" style="font-size: 14px" class="invisible mb-0 text-danger">
+                  <p *ngIf="cityNotIncluded()" id="cityError" style="font-size: 14px" class="mb-0 text-danger">
                     {{'contactForm.cityWarning' | translate}}
                   </p>
                 </div>

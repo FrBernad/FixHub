@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Collection;
+import java.util.Optional;
 
 @Path("/users")
 @Component
@@ -172,6 +173,30 @@ public class UserController {
         return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<UserDto>>(resultsDto) {
         }, uriBuilder);
     }
+
+    @GET
+    @Path("/{id}/contactInfo")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getContactInfo(@PathParam("id") final Long id) {
+        LOGGER.info("Accessed /user/{}/contactInfo GET controller", id);
+        final Optional<User> user = userService.getUserById(id);
+
+        if (!user.isPresent()) {
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+        }
+
+        final Collection<ContactInfoDto> contactInfoCollection = ContactInfoDto.mapCollectionInfoToDto(user.get().getContactInfo());
+
+        if (contactInfoCollection.isEmpty()) {
+            return Response.status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        }
+
+        GenericEntity<Collection<ContactInfoDto>> entity = new GenericEntity<Collection<ContactInfoDto>>(contactInfoCollection) {
+        };
+
+        return Response.ok(entity).build();
+    }
+
 
 //    @RequestMapping(path = "/user/account/search")
 //    public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form,
