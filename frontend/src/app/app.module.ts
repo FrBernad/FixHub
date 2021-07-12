@@ -12,7 +12,6 @@ import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
 import {DiscoverComponent} from './discover/discover.component';
-import {SessionProfileComponent} from './profile/session-profile/session-profile.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
@@ -45,6 +44,7 @@ import { FollowersComponent } from './followers/followers.component';
 import { FollowerCardComponent } from './followers/follower-card/follower-card.component';
 import {FollowingComponent} from "./followers/following.component";
 import { UserProfileComponent } from './profile/user-profile/user-profile.component';
+import {SessionProfileComponent} from "./profile/session-profile/session-profile.component";
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

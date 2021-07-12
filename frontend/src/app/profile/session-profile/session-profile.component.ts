@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../auth/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
-import {Form, FormControl, FormGroup} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-session-profile',

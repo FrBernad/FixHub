@@ -36,8 +36,8 @@ import {Title} from "@angular/platform-browser";
 import {AuthService} from "./auth/auth.service";
 import {PreviousRouteService} from "./auth/previous-route.service";
 import {JobsService} from "./discover/jobs.service";
-import {UserService} from "./auth/user.service";
 import {Subscription} from "rxjs";
+import {UserService} from "./auth/user.service";
 
 @Component({
   selector: 'app-root',

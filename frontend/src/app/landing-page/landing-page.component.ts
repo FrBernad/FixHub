@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, query, stagger, state, style, transition, trigger} from "@angular/animations";
 import {User} from "../models/user.model";
-import {Job} from "../models/job.model";
-import {JobCategoryModel} from "../models/jobCategory.model";
 import {JobsService} from "../discover/jobs.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";

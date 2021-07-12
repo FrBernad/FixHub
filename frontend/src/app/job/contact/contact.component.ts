@@ -1,15 +1,13 @@
-import { JobService } from './../job.service';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ContactInfo } from './../../models/contactInfo.model';
-import { ContactService } from './contact.service';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../models/user.model';
-import { Contact } from './contact.model';
-import { JobCategoryModel } from '../../models/jobCategory.model';
-import { Job } from '../../models/job.model';
-import { Subscription } from 'rxjs';
-import { UserService } from 'src/app/auth/user.service';
+import {JobService} from './../job.service';
+import {ActivatedRoute, Params} from '@angular/router';
+import {ContactInfo} from './../../models/contactInfo.model';
+import {ContactService} from './contact.service';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from '../../models/user.model';
+import {Job} from '../../models/job.model';
+import {Subscription} from 'rxjs';
+import {UserService} from 'src/app/auth/user.service';
 
 @Component({
   selector: 'app-contact',
