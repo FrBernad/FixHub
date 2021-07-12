@@ -2,12 +2,13 @@ import {JobService} from './../job.service';
 import {ActivatedRoute, Params} from '@angular/router';
 import {ContactInfo} from './../../models/contactInfo.model';
 import {ContactService} from './contact.service';
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {Job} from '../../models/job.model';
 import {Subscription} from 'rxjs';
 import {UserService} from 'src/app/auth/user.service';
+
 
 @Component({
   selector: 'app-contact',
@@ -18,8 +19,10 @@ export class ContactComponent implements OnInit {
   contactForm: FormGroup;
   contactInfoCollection: ContactInfo[] = [];
 
-  jobId: string;
+  @Input()
   job: Job;
+
+  jobId: number;
   isFetching: boolean = true;
 
   maxStateLength: number = 50;
@@ -44,28 +47,17 @@ export class ContactComponent implements OnInit {
   constructor(
     private contactService: ContactService,
     private userService: UserService,
-    private jobService: JobService,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
     });
 
+    this.jobId = this.job.id;
 
-    this.route.params.subscribe((params: Params) => {
-      this.jobId = params['id'];
-    });
-
-
-    this.jobService.getJob(+this.jobId).subscribe((job) => {
-      this.job = job;
-      console.log(this.job);
-      this.initForm();
-      this.isFetching=false;
-    });
-
+    this.initForm();
 
     this.contactService
       .getContactInfo(this.user.id)
@@ -81,7 +73,8 @@ export class ContactComponent implements OnInit {
       this.contactForm.markAllAsTouched();
       return;
     }
-    this.contactService.newContact(+this.jobId, {
+
+    this.contactService.newContact(this.jobId, {
       state: this.job.provider.providerDetails.location.state.name,
       city: this.contactForm.get('city').value,
       street: this.contactForm.get('street').value,
@@ -96,6 +89,8 @@ export class ContactComponent implements OnInit {
         console.log(response);
       }
     );
+
+    this.onClose();
   }
 
   dropdownClickCity(city: { id: number; name: string }) {
@@ -111,13 +106,19 @@ export class ContactComponent implements OnInit {
     this.contactForm.get('street').setValue(contact.street);
   }
 
-  dropdownClickNew() {
+  resetInfo() {
     this.contactForm.get('contactInfoId').setValue(-1);
     this.contactForm.get('addressNumber').setValue(null);
     this.city.setValue(null);
     this.contactForm.get('departmentNumber').setValue(null);
     this.contactForm.get('floor').setValue(null);
     this.contactForm.get('street').setValue(null);
+  }
+
+  onClose() {
+    this.resetInfo();
+    this.contactForm.get('message').setValue(null);
+    this.contactForm.markAsUntouched();
   }
 
   cityNotIncluded() {

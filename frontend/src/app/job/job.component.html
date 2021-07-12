@@ -13,24 +13,22 @@
               <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div *ngFor="let image of job.images;let i = index" class="carousel-item"
-                       [ngClass]="{'active': i === selectedIndex}">
+                    [ngClass]="{'active': i === selectedIndex}">
                     <img src="{{image}}" class="rounded" style="object-fit: cover; height: 400px; width: 400px"
-                         alt="{{'home.categories.'+job.category | translate}}">
+                      alt="{{'home.categories.'+job.category | translate}}">
                   </div>
                 </div>
 
                 <ng-template [ngIf]="job.images.length > 1">
 
                   <button class="carousel-control-prev" (click)="selectPrevious()" type="button"
-                          data-bs-target="#carouselControl"
-                          data-bs-slide="prev">
+                    data-bs-target="#carouselControl" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                   </button>
 
                   <button class="carousel-control-next" type="button" (click)="selectNext()"
-                          data-bs-target="#carouselControl"
-                          data-bs-slide="next">
+                    data-bs-target="#carouselControl" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                   </button>
@@ -41,9 +39,8 @@
 
             </ng-template>
             <ng-template #noImages>
-              <img src="assets/images/{{job.category}}.jpg"
-                   alt="{{'home.categories.'+job.category | translate}}"
-                   class="rounded" style="object-fit: cover; height: 100%; width: 100%">
+              <img src="assets/images/{{job.category}}.jpg" alt="{{'home.categories.'+job.category | translate}}"
+                class="rounded" style="object-fit: cover; height: 100%; width: 100%">
             </ng-template>
 
 
@@ -75,12 +72,12 @@
                     </div>
                     <div class="col-12 pl-0 mt-2">
                       <fa-icon *ngFor="let r of [0, 1, 2, 3, 4] | slice:0:job.averageRating" [icon]="['fas', 'star']"
-                               class="me-2 iconsColor"></fa-icon>
+                        class="me-2 iconsColor"></fa-icon>
 
                       <fa-icon *ngFor="let r of [0, 1, 2, 3, 4] | slice:job.averageRating:5" [icon]="['far', 'star']"
-                               class="me-2 iconsColor"></fa-icon>
+                        class="me-2 iconsColor"></fa-icon>
                       <span style="font-style: normal; font-weight: 400;">
-                          ({{ job.totalRatings }})
+                        ({{ job.totalRatings }})
                       </span>
                     </div>
                   </div>
@@ -103,21 +100,19 @@
                         <div *ngIf="job.paused">
                           <fa-icon [icon]="['fas', 'info-circle']" class="ms-1" style="color:#ffc107"></fa-icon>
                           <span>
-                              {{ 'job.pause' | translate }}
+                            {{ 'job.pause' | translate }}
                           </span>
                         </div>
                       </div>
                     </div>
                     <ng-template #notLoggedUser>
-
                       <div *ngIf="!job.paused; else jobPaused"
-                           class="col-12 d-flex align-items-center justify-content-center">
+                        class="col-12 d-flex align-items-center justify-content-center">
                         <!-- <a href="<c:url value='/jobs/${job.id}/contact'/>"> -->
-                        <a [routerLink]="['contact']">
-                          <button class="contactBtn">
-                            {{ 'job.contact' | translate }}
-                          </button>
-                        </a>
+                        <button type="button" class="contactBtn" data-bs-toggle="modal" data-bs-target="#contactModal">
+                          {{ 'job.contact' | translate }}
+                        </button>
+                        <app-contact [job]="job"></app-contact>
                       </div>
                       <ng-template #jobPaused>
                         <div class="col-12">
@@ -151,7 +146,7 @@
                           <div class="col-12">
                             <p class="text-left contactInfo names">
                               <span class="fw-bold">
-                                  {{ 'job.information.name&surname' | translate }}
+                                {{ 'job.information.name&surname' | translate }}
                               </span>
                               {{ job.provider.name }} {{ job.provider.surname }}
                             </p>
@@ -185,8 +180,7 @@
                               <span class="fw-bold">
                                 {{ 'job.information.city' | translate }}
                               </span>
-                              <span
-                                *ngFor="let city of job.provider.providerDetails.location.cities"
+                              <span *ngFor="let city of job.provider.providerDetails.location.cities"
                                 class="badge rounded-pill bg-secondary p-2 me-2 mt-2">
                                 {{ city.name }}
                               </span>
@@ -242,8 +236,7 @@
           </div>
 
           <!--        <div *ngIf="canReview == true && !job.paused"-->
-          <div
-            class="col-12 d-flex justify-content-start align-items-center">
+          <div class="col-12 d-flex justify-content-start align-items-center">
             <app-review-form [jobId]="job.id"></app-review-form>
           </div>
 

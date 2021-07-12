@@ -1,215 +1,217 @@
-<div class="container-fluid py-4 px-0">
-  <div class="container-lg p-5 w-50 bigContentContainer">
-    <div class="row w-100 m-0 align-items-center justify-content-center">
-      <div class="col-12">
-        <ng-template [ngIf]="!isFetching" [ngIfElse]="loading">
-          <h1 class="text-center title names">
-            {{'contact.contactTitle' | translate:{value: job.provider.name} }}
-          </h1>
-          <p class="subtitle text-center mb-4">
-            <span class="fw-bold">
-              {{'contact.description.boldText' | translate}}
-            </span>
-            {{'contact.description.normalText' | translate}}
-          </p>
-          <div class="container-lg">
-            <div class="row">
-              <div class="col-12 d-flex align-items-center justify-content-center">
-                <form [formGroup]="contactForm" id="contactForm" class="contactForm" (ngSubmit)="onSubmit()">
-                  <div class="dropdown mb-4" *ngIf="contactInfoCollection.length > 0">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{'contactForm.Dropdown.Information' | translate}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li>
-                        <a class="dropdown-item" id="newUserContact" (click)="dropdownClickNew()"
-                          style="cursor: pointer;">
-                          {{'contactForm.newContactInfo' | translate}}
-                        </a>
-                      </li>
-                      <li *ngFor="let contact of contactInfoCollection" (click)="dropdownClickContact(contact)">
-                        <a class="dropdown-item userContact" data-state="contact.state" data-city="contact.city"
-                          data-info-id="contact.id" data-street="contact.street"
-                          data-address-number="contact.addressNumber" data-floor="contact.floor"
-                          data-department-number="contact.departmentNumber" style="cursor: pointer;">
-                          {{contact.state}} {{contact.city}} {{contact.street}} {{contact.addressNumber}}
-                          {{contact.floor}}
-                          {{contact.departmentNumber}}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <input type="hidden" value="job.provider.email" name="providerEmail">
-                  <div class="row">
-                    <div class="col-6">
-                      <div class="form-group">
-                        <label form="contactForm">
-                          {{'contactForm.state' | translate}}
-                          <span class="required-field">*</span>
-                        </label>
-                        <input type="text" path="state" id="state" class="form-control" readonly="true"
-                          formControlName="state" />
-                        <span *ngIf="!contactForm.get('state').valid && contactForm.get('state').touched">
-                          <span *ngIf="contactForm.get('state').errors['required']" class="errorMessage">
-                            {{'NotEmpty.contactForm.state' | translate }}<br>
-                          </span>
-                          <span *ngIf="contactForm.get('state').errors['maxlength']" class="errorMessage">
-                            {{'Size.contactForm.state' | translate: {max: maxStateLength} }}
-                          </span>
-                          <span *ngIf="contactForm.get('state').errors['pattern']" class="errorMessage">
-                            {{'Pattern.contactForm.state' | translate }}
-                          </span>
-                        </span>
+<div #staticBackdropLabel class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="container-fluid py-4 px-0">
+        <div class="container-lg p-5 w-100 bigContentContainer">
+          <div class="row w-100 m-0 align-items-center justify-content-center">
+            <div class="col-12">
+              <h1 class="text-center title names">
+                {{'contact.contactTitle' | translate:{value: job.provider.name} }}
+              </h1>
+              <p class="subtitle text-center mb-4">
+                <span class="fw-bold">
+                  {{'contact.description.boldText' | translate}}
+                </span>
+                {{'contact.description.normalText' | translate}}
+              </p>
+              <div class="container-lg">
+                <div class="row">
+                  <div class="col-12 d-flex align-items-center justify-content-center">
+                    <form [formGroup]="contactForm" id="contactForm" class="contactForm" (ngSubmit)="onSubmit()">
+                      <div class="dropdown mb-4" *ngIf="contactInfoCollection.length > 0">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {{'contactForm.Dropdown.Information' | translate}}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <li>
+                            <a class="dropdown-item" id="newUserContact" (click)="resetInfo()" style="cursor: pointer;">
+                              {{'contactForm.newContactInfo' | translate}}
+                            </a>
+                          </li>
+                          <li *ngFor="let contact of contactInfoCollection" (click)="dropdownClickContact(contact)">
+                            <a class="dropdown-item userContact" data-state="contact.state" data-city="contact.city"
+                              data-info-id="contact.id" data-street="contact.street"
+                              data-address-number="contact.addressNumber" data-floor="contact.floor"
+                              data-department-number="contact.departmentNumber" style="cursor: pointer;">
+                              {{contact.state}} {{contact.city}} {{contact.street}} {{contact.addressNumber}}
+                              {{contact.floor}}
+                              {{contact.departmentNumber}}
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-group mb-0">
-                        <label form="contactForm">
-                          {{'contactForm.city' | translate}}
-                          <span class="required-field">*</span>
-                        </label>
-                        <div class="dropdown">
-                          <div class="input-group mb-1">
-                            <input type="text" path="city" id="city" class="form-control" formControlName="city" />
-                            <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
-                              id="cityDropdownBtn" data-bs-toggle="dropdown" data-reference="parent"
-                              style="border-radius: 0 .25rem .25rem 0; height: 38px">
-                              <span *ngIf="city.value != null">{{city.value.name}}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end w-100" data-reference="parent">
-                              <li *ngFor="let city of job.provider.providerDetails.location.cities"
-                                data-name="city.name" (click)="dropdownClickCity(city)">
-                                <a class="dropdown-item" style="cursor: pointer;">{{city.name}}</a>
-                              </li>
-                            </ul>
+                      <input type="hidden" value="job.provider.email" name="providerEmail">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="form-group">
+                            <label form="contactForm">
+                              {{'contactForm.state' | translate}}
+                              <span class="required-field">*</span>
+                            </label>
+                            <input type="text" path="state" id="state" class="form-control" readonly="true"
+                              formControlName="state" />
+                            <span *ngIf="!contactForm.get('state').valid && contactForm.get('state').touched">
+                              <span *ngIf="contactForm.get('state').errors['required']" class="errorMessage">
+                                {{'NotEmpty.contactForm.state' | translate }}<br>
+                              </span>
+                              <span *ngIf="contactForm.get('state').errors['maxlength']" class="errorMessage">
+                                {{'Size.contactForm.state' | translate: {max: maxStateLength} }}
+                              </span>
+                              <span *ngIf="contactForm.get('state').errors['pattern']" class="errorMessage">
+                                {{'Pattern.contactForm.state' | translate }}
+                              </span>
+                            </span>
                           </div>
                         </div>
-                        <span *ngIf="!contactForm.get('city').valid && contactForm.get('city').touched">
-                          <span *ngIf="contactForm.get('city').errors['required']" class="errorMessage">
-                            {{'NotEmpty.contactForm.city' | translate }}<br>
-                          </span>
-                          <span *ngIf="contactForm.get('city').errors['maxlength']" class="errorMessage">
-                            {{'Size.contactForm.city' | translate: {max: maxCityLength} }}
-                          </span>
-                          <span *ngIf="contactForm.get('city').errors['pattern']" class="errorMessage">
-                            {{'Pattern.contactForm.city' | translate }}
-                          </span>
-                        </span>
+                        <div class="col-6">
+                          <div class="form-group mb-0">
+                            <label form="contactForm">
+                              {{'contactForm.city' | translate}}
+                              <span class="required-field">*</span>
+                            </label>
+                            <div class="dropdown">
+                              <div class="input-group mb-1">
+                                <input type="text" path="city" id="city" class="form-control" formControlName="city" />
+                                <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
+                                  id="cityDropdownBtn" data-bs-toggle="dropdown" data-reference="parent"
+                                  style="border-radius: 0 .25rem .25rem 0; height: 38px">
+                                  <span *ngIf="city.value != null">{{city.value.name}}</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end w-100" data-reference="parent">
+                                  <li *ngFor="let city of job.provider.providerDetails.location.cities"
+                                    data-name="city.name" (click)="dropdownClickCity(city)">
+                                    <a class="dropdown-item" style="cursor: pointer;">{{city.name}}</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <span *ngIf="!contactForm.get('city').valid && contactForm.get('city').touched">
+                              <span *ngIf="contactForm.get('city').errors['required']" class="errorMessage">
+                                {{'NotEmpty.contactForm.city' | translate }}<br>
+                              </span>
+                              <span *ngIf="contactForm.get('city').errors['maxlength']" class="errorMessage">
+                                {{'Size.contactForm.city' | translate: {max: maxCityLength} }}
+                              </span>
+                              <span *ngIf="contactForm.get('city').errors['pattern']" class="errorMessage">
+                                {{'Pattern.contactForm.city' | translate }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                        <p *ngIf="cityNotIncluded()" id="cityError" style="font-size: 14px" class="mb-0 text-danger">
+                          {{'contactForm.cityWarning' | translate}}
+                        </p>
                       </div>
-                    </div>
-                    <p *ngIf="cityNotIncluded()" id="cityError" style="font-size: 14px" class="mb-0 text-danger">
-                      {{'contactForm.cityWarning' | translate}}
-                    </p>
-                  </div>
 
-                  <div class="form-group">
-                    <label form="contactForm">
-                      {{'contactForm.street' | translate}}
-                      <span class="required-field">*</span>
-                    </label>
-                    <input type="text" path="street" id="street" class="form-control" formControlName="street" />
-                    <span *ngIf="!contactForm.get('street').valid && contactForm.get('street').touched">
-                      <span *ngIf="contactForm.get('street').errors['required']" class="errorMessage">
-                        {{'NotEmpty.contactForm.street' | translate }}<br>
-                      </span>
-                      <span *ngIf="contactForm.get('street').errors['maxlength']" class="errorMessage">
-                        {{'Size.contactForm.street' | translate: {max: maxStreetLength} }}
-                      </span>
-                      <span *ngIf="contactForm.get('street').errors['pattern']" class="errorMessage">
-                        {{'Pattern.contactForm.street' | translate }}
-                      </span>
-                    </span>
-                  </div>
-                  <div class="row">
-                    <div class="col-4">
                       <div class="form-group">
                         <label form="contactForm">
-                          {{'contactForm.addressNumber' | translate}}
+                          {{'contactForm.street' | translate}}
                           <span class="required-field">*</span>
                         </label>
-                        <input type="number" path="addressNumber" id="addressNumber" class="form-control"
-                          formControlName="addressNumber" />
-                        <span
-                          *ngIf="!contactForm.get('addressNumber').valid && contactForm.get('addressNumber').touched">
-                          <span *ngIf="contactForm.get('addressNumber').errors['required']" class="errorMessage">
-                            {{'NotEmpty.contactForm.addressNumber' | translate }}<br>
+                        <input type="text" path="street" id="street" class="form-control" formControlName="street" />
+                        <span *ngIf="!contactForm.get('street').valid && contactForm.get('street').touched">
+                          <span *ngIf="contactForm.get('street').errors['required']" class="errorMessage">
+                            {{'NotEmpty.contactForm.street' | translate }}<br>
                           </span>
-                          <span *ngIf="contactForm.get('addressNumber').errors['pattern']" class="errorMessage">
-                            {{'Pattern.contactForm.addressNumber' | translate }}
+                          <span *ngIf="contactForm.get('street').errors['maxlength']" class="errorMessage">
+                            {{'Size.contactForm.street' | translate: {max: maxStreetLength} }}
                           </span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-4">
-                      <div class="form-group">
-                        <label form="contactForm">
-                          {{'contactForm.floor' | translate}}
-                        </label>
-                        <input type="number" path="floor" id="floor" class="form-control" formControlName="floor" />
-                        <span *ngIf="!contactForm.get('floor').valid && contactForm.get('floor').touched">
-                          <span *ngIf="contactForm.get('floor').errors['pattern']" class="errorMessage">
-                            {{'Pattern.contactForm.floor' | translate }}
+                          <span *ngIf="contactForm.get('street').errors['pattern']" class="errorMessage">
+                            {{'Pattern.contactForm.street' | translate }}
                           </span>
                         </span>
                       </div>
-                    </div>
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label form="contactForm">
+                              {{'contactForm.addressNumber' | translate}}
+                              <span class="required-field">*</span>
+                            </label>
+                            <input type="number" path="addressNumber" id="addressNumber" class="form-control"
+                              formControlName="addressNumber" />
+                            <span
+                              *ngIf="!contactForm.get('addressNumber').valid && contactForm.get('addressNumber').touched">
+                              <span *ngIf="contactForm.get('addressNumber').errors['required']" class="errorMessage">
+                                {{'NotEmpty.contactForm.addressNumber' | translate }}<br>
+                              </span>
+                              <span *ngIf="contactForm.get('addressNumber').errors['pattern']" class="errorMessage">
+                                {{'Pattern.contactForm.addressNumber' | translate }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label form="contactForm">
+                              {{'contactForm.floor' | translate}}
+                            </label>
+                            <input type="number" path="floor" id="floor" class="form-control" formControlName="floor" />
+                            <span *ngIf="!contactForm.get('floor').valid && contactForm.get('floor').touched">
+                              <span *ngIf="contactForm.get('floor').errors['pattern']" class="errorMessage">
+                                {{'Pattern.contactForm.floor' | translate }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
 
-                    <div class="col-4">
-                      <div class="form-group">
-                        <label form="contactForm">
-                          {{'contactForm.departmentNumber' | translate}}
-                        </label>
-                        <input type="text" path="departmentNumber" id="departmentNumber" class="form-control"
-                          formControlName="departmentNumber" />
-                        <span
-                          *ngIf="!contactForm.get('departmentNumber').valid && contactForm.get('departmentNumber').touched">
-                          <span *ngIf="contactForm.get('departmentNumber').errors['maxlength']" class="errorMessage">
-                            {{'Size.contactForm.departmentNumber' | translate: {max: maxDepartmentLength} }}
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label form="contactForm">
-                        {{'contactForm.description' | translate}}
-                        <span class="required-field">*</span>
-                      </label>
-                      <textarea class="form-control" path="message" id="message" style="resize: none; height: 150px;"
-                        form="contactForm" formControlName="message">
+                        <div class="col-4">
+                          <div class="form-group">
+                            <label form="contactForm">
+                              {{'contactForm.departmentNumber' | translate}}
+                            </label>
+                            <input type="text" path="departmentNumber" id="departmentNumber" class="form-control"
+                              formControlName="departmentNumber" />
+                            <span
+                              *ngIf="!contactForm.get('departmentNumber').valid && contactForm.get('departmentNumber').touched">
+                              <span *ngIf="contactForm.get('departmentNumber').errors['maxlength']"
+                                class="errorMessage">
+                                {{'Size.contactForm.departmentNumber' | translate: {max: maxDepartmentLength} }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label form="contactForm">
+                            {{'contactForm.description' | translate}}
+                            <span class="required-field">*</span>
+                          </label>
+                          <textarea class="form-control" path="message" id="message"
+                            style="resize: none; height: 150px;" form="contactForm" formControlName="message">
                   </textarea>
 
-                      <span *ngIf="!contactForm.get('message').valid && contactForm.get('message').touched">
-                        <span *ngIf="contactForm.get('message').errors['required']" class="errorMessage">
-                          {{'NotEmpty.contactForm.message' | translate }}<br>
-                        </span>
-                        <span *ngIf="contactForm.get('message').errors['maxlength']" class="errorMessage">
-                          {{'Size.contactForm.message' | translate: {max: maxMessageLength} }}
-                        </span>
-                      </span>
-                    </div>
-                    <input type="hidden" id="contactInfoId" formControlName="contactInfoId" />
-                    <div class="col-6 d-flex align-items-center justify-content-center">
-                      <a [routerLink]="['/jobs',job.id]" style="width: 100%;">
-                        <button class="w-100 closeBtn" type="button">
-                          {{'contactForm.cancel' | translate}}
-                        </button>
-                      </a>
-                    </div>
-                    <div class="col-6 d-flex align-items-center justify-content-center">
-                      <button type="submit" id="contactFormButton" class="contactBtn w-100">
-                        {{'contactForm.submit' | translate}}
-                      </button>
-                    </div>
+                          <span *ngIf="!contactForm.get('message').valid && contactForm.get('message').touched">
+                            <span *ngIf="contactForm.get('message').errors['required']" class="errorMessage">
+                              {{'NotEmpty.contactForm.message' | translate }}<br>
+                            </span>
+                            <span *ngIf="contactForm.get('message').errors['maxlength']" class="errorMessage">
+                              {{'Size.contactForm.message' | translate: {max: maxMessageLength} }}
+                            </span>
+                          </span>
+                        </div>
+                        <input type="hidden" id="contactInfoId" formControlName="contactInfoId" />
+                        <div class="col-6 d-flex align-items-center justify-content-center">
+                          <a [routerLink]="['/jobs',job.id]" style="width: 100%;">
+                            <button class="w-100 closeBtn" type="button" data-bs-dismiss="modal" (click)="onClose()">
+                              {{'contactForm.cancel' | translate}}
+                            </button>
+                          </a>
+                        </div>
+                        <div class="col-6 d-flex align-items-center justify-content-center">
+                          <button type="submit" id="contactFormButton" class="contactBtn w-100">
+                            {{'contactForm.submit' | translate}}
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
-        </ng-template>
-        <ng-template #loading>
-          <app-loading-spinner></app-loading-spinner>
-        </ng-template>
+        </div>
       </div>
     </div>
   </div>
