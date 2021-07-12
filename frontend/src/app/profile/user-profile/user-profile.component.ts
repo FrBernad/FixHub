@@ -40,7 +40,6 @@ export class UserProfileComponent implements OnInit {
   unfollow() {
     this.disable = true;
     this.userService.unfollow(this.user.id).subscribe(() => {
-      this.userService.populateUserData();
       this.userService.getUser(this.user.id).subscribe(
         (user) => {
           this.user = user;
@@ -53,7 +52,6 @@ export class UserProfileComponent implements OnInit {
   follow() {
     this.disable = true;
     this.userService.follow(this.user.id).subscribe(() => {
-      this.userService.populateUserData();
       this.userService.getUser(this.user.id).subscribe(
         (user) => {
           this.user = user;

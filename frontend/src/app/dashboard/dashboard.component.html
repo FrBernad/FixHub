@@ -1,7 +1,11 @@
 <div class="container-lg userContainerProfile pb-4 px-0">
+
   <div class="row">
+
     <div class="col-3">
+
       <div class="nav flex-column nav-pills" role="tablist" id="tabList">
+
         <button class="nav-link list-group-item list-group-item-action"
                 [ngClass]="{'active' : activeTab==='dashboard', 'inactive': activeTab!=='dashboard'}"
                 (click)="changeTab('dashboard')"
@@ -11,6 +15,7 @@
             {{'navBar.dashboard' | translate}}
           </span>
         </button>
+
         <button class="nav-link list-group-item list-group-item-action"
                 [ngClass]="{'active' : activeTab==='works', 'inactive':  activeTab!=='works'} "
                 (click)="changeTab('works')">
@@ -20,20 +25,24 @@
           </span>
           <span
             class="badge rounded-pill bg-secondary">
-            {{getNumberOfWorks()}}
+            {{user.providerDetails.jobsCount}}
           </span>
         </button>
+
         <button class="nav-link list-group-item list-group-item-action"
                 [ngClass]="{'active' : activeTab==='contacts', 'inactive':  activeTab!=='contacts'}"
                 (click)="changeTab('contacts')">
           <fa-icon [icon]="['fas', 'address-book']" class="me-2"></fa-icon>
           <span class="text">{{'dashboard.Contacts' | translate}}</span>
           <span class="badge rounded-pill bg-secondary">
-            {{getNumberOfJobRequest()}}
+            {{user.providerDetails.reviewCount}}
           </span>
         </button>
+
       </div>
+
     </div>
+
     <div class="col-9">
       <div class="card">
         <div class="card-header" id="panelTitle">
@@ -53,7 +62,7 @@
                           <div class="card card-body info-box">
                             <h2>
                               <fa-icon [icon]="['fas', 'wrench']" class="me-2"></fa-icon>
-                              {{getNumberOfWorks()}}
+                              {{user.providerDetails.jobsCount}}
                             </h2>
                             <h4>{{'dashboard.Works' | translate}}</h4>
                           </div>
@@ -62,7 +71,7 @@
                           <div class="card card-body info-box">
                             <h2>
                               <fa-icon [icon]="['fas', 'star']" class="me-2"></fa-icon>
-                              {{getAvgRating()}}
+                              {{user.providerDetails.avgRating}}
                             </h2>
                             <h4>{{'dashboard.Rating' | translate}}</h4>
                           </div>
@@ -71,7 +80,7 @@
                           <div class="card card-body info-box">
                             <h2>
                               <fa-icon [icon]="['fas', 'wrench']"></fa-icon>
-                              {{getNumberOfReviews()}}
+                              {{user.providerDetails.reviewCount}}
                             </h2>
                             <h4>{{'dashboard.Reviews' | translate}}</h4>
                           </div>
@@ -90,12 +99,12 @@
                                 </h3>
                               </div>
                               <div class="col-1  mb-4 d-flex align-items-center justify-content-end">
-                                  <button [routerLink]="['/user','account','updateProviderInfo']" class="editBtn">
-                                    <fa-icon [icon]="['fas', 'pen']"></fa-icon>
-                                  </button>
+                                <button [routerLink]="['/user','account','updateProviderInfo']" class="editBtn">
+                                  <fa-icon [icon]="['fas', 'pen']"></fa-icon>
+                                </button>
                               </div>
                               <div class="col-12">
-                                <div class="container-fluid">
+                                <div class="container-fluid px-0">
                                   <div class="row">
                                     <div class="col-6">
                                       <div class="card card-body h-100 position-relative">
@@ -154,78 +163,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-pane fade" role="tabpanel" id="works" [ngClass]="{'show active' : activeTab==='works'}">
-                  <div class="container-fluid">
-                    <div class="row align-content-start">
-                      <div class="col-7 d-flex align-items-center justify-content-start">
-                        <div class="input-group">
-                          <input placeholder="{{'dashboard.barPlaceholder' | translate}}" id="searchBar"
-                                 class="inputRadius form-control p-4"/>
-                          <div class="input-group-prepend">
-                            <button id="searchButton" class="btn inputBtn">
-                              {{'discover.search' | translate}}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-5 d-flex align-items-center justify-content-end">
-                        <div class="dropdown">
-                          <button class="dropdown-custom dropdown-toggle" type="button" id="orderDropdown"
-                                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{'discover.orderBy'| translate}}
-                            <span class="resultQuery">
-                              {{'discover.orderOption.' + jpq.order|translate}}
-                            </span>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="orderDropdown">
-                            <li *ngFor="let order of orderOptions" class="input-group">
-                              <button data-order="${order}" class="dropdown-item orderButton"
-                                      (click)="onChangeOrder(order)">
-                                {{'discover.orderOption.' + order | translate}}
-                              </button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-12 justify-content-start align-items-center">
-                        <small class="text-danger" style="display: none;" id="searchInvalidLength">
-                          {{'landingPage.searchInvalidLength' | translate}}
-                        </small>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div *ngIf="jpq.query!= null" class="col-12 my-2 resultHeader d-flex align-items-start">
-                        <p class="mb-0">{{'discover.showingResults'|translate}}<span>"{{jpq.query}}"</span></p>
-                      </div>
-                      <ng-template [ngIf]="jpr.results.length>0" [ngIfElse]="jobsNotFound">
-                        <div class="col-12">
-                          <div class="container-fluid px-0">
-                            <div class="row align-items-top"
-                                 [ngClass]="jpr.results.length%2==0?'justify-content-between': 'justify-content-start'">
-                              <div *ngFor="let job of jpr.results"
-                                   class="col-12 mt-3 col-md-6 mb-md-0 flex align-items-center justify-content-center">
-                                <app-job-card class="w-100" [job]="job"></app-job-card>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </ng-template>
-                      <ng-template #jobsNotFound>
-                        <div class="container mt-2 d-flex align-items-center justify-content-center noJobsFound">
-                          <p class="m-0 text-center p-4" style="font-size: 16px">
-                            {{'discover.jobsNotFound' | translate}}
-                          </p>
-                        </div>
-                      </ng-template>
-                      <app-pagination
-                        *ngIf="jpr.totalPages>1"
-                        (changePage)="onChangePage($event)"
-                        [currentPage]="jpr.page"
-                        [totalPages]="jpr.totalPages">
-                      </app-pagination>
-                    </div>
-                  </div>
-                </div>
+
+                <app-works [activeTab]="activeTab"></app-works>
+
                 <div class="tab-pane fade" role="tabpanel" id="contacts"
                      [ngClass]="{'show active' : activeTab==='contacts'}">
                   <ng-template [ngIf]="jpr.results.length>0" [ngIfElse]="NoContacts">

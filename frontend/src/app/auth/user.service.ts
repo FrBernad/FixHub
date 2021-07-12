@@ -76,12 +76,12 @@ export class UserService {
 
   follow(id: number) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/following/' + id, {});
+      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(()=>{this.populateUserData().subscribe()}));
   }
 
   unfollow(id: number) {
     return this.http.delete(
-      environment.apiBaseUrl + '/user/following/' + id, {});
+      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(()=>{this.populateUserData().subscribe()}));
   }
 
   uploadProfileImage() {

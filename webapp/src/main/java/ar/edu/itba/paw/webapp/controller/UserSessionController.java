@@ -215,7 +215,7 @@ public class UserSessionController {
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/following/{id}")
-    public Response followUser(@PathParam("id") long id){
+    public Response followUser(@PathParam("id") long id) {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -229,7 +229,7 @@ public class UserSessionController {
     @Produces(MediaType.APPLICATION_JSON)
     @DELETE
     @Path("/following/{id}")
-    public Response unfollowUser(@PathParam("id") long id){
+    public Response unfollowUser(@PathParam("id") long id) {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -240,8 +240,7 @@ public class UserSessionController {
         return Response.noContent().build();
     }
 
-
-//    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    //    @RequestMapping(path = "/register", method = RequestMethod.POST)
 //    public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
 //        LOGGER.info("Accessed /register POST controller");
 //
@@ -409,7 +408,7 @@ public class UserSessionController {
     @POST
     @Path("/join")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response join(@Valid final JoinDto joinDto ){
+    public Response join(@Valid final JoinDto joinDto) {
         LOGGER.info("Accessed /user/join POST controller");
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
@@ -418,7 +417,7 @@ public class UserSessionController {
 //        FIXME: si ya es provider lanzar una excepción
 
         List<Long> citiesId = new ArrayList<>();
-        for (CityDto city: joinDto.getLocation().getCities()){
+        for (CityDto city : joinDto.getLocation().getCities()) {
             citiesId.add(city.getId());
         }
 
@@ -427,7 +426,7 @@ public class UserSessionController {
             joinDto.getSchedule().getStartTime(),
             joinDto.getSchedule().getEndTime());
 
-        LOGGER.info("User with id {} become provider succesfully",user.getId());
+        LOGGER.info("User with id {} become provider succesfully", user.getId());
 
         //FIXME: forceLogin
 
@@ -598,34 +597,33 @@ public class UserSessionController {
     @Path("/account/updateProviderInfo")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response updateProviderInfo(final JoinDto joinDto){
+    public Response updateProviderInfo(final JoinDto joinDto) {
         LOGGER.info("Accessed /user/account/updateProviderInfo PUT controller");
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
         final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
 
 //        FIXME: si no es provider lanzar una excepcion
 
-        if(!user.hasRole(Roles.PROVIDER)) {
+        if (!user.hasRole(Roles.PROVIDER)) {
 //            LOGGER.warn("User {} is not a provider", user.getId());
 //            return new ModelAndView("redirect:/user/account");
         }
 
         List<Long> citiesId = new ArrayList<>();
-        for (CityDto city: joinDto.getLocation().getCities()){
+        for (CityDto city : joinDto.getLocation().getCities()) {
             citiesId.add(city.getId());
         }
 
 
-        userService.updateProviderInfo( user,citiesId,
-            joinDto.getSchedule().getStartTime(),joinDto.getSchedule().getEndTime());
+        userService.updateProviderInfo(user, citiesId,
+            joinDto.getSchedule().getStartTime(), joinDto.getSchedule().getEndTime());
 
 
-        LOGGER.info("User with id {} update provider information succesfully",user.getId());
+        LOGGER.info("User with id {} update provider information succesfully", user.getId());
 
         return Response.ok().build();
 
     }
-
 
 
 //    @RequestMapping(path = "/user/account/updateProviderStateAndTime")

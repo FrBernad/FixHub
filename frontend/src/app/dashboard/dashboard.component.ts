@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderOptionModel} from '../models/orderOption.model';
 import {JobPaginationQuery, JobPaginationResult, JobsService} from "../discover/jobs.service";
 import {Job} from "../models/job.model";
@@ -13,7 +13,7 @@ import {Subscription} from "rxjs";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   providerDetails: ProviderDetails = {
     location: {
@@ -82,14 +82,16 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private jobsService: JobsService,
-    private userService: UserService) {
+    private userService: UserService
+  ) {
   }
 
   ngOnInit(): void {
     this.jobsService.getJobs(this.jpq);
-    // this.userSub = this.userService.user.subscribe(user =>{
-    //   this.user = user;
-    // })
+    this.userSub = this.userService.user.subscribe(user => {
+      console.log(user)
+      this.user = user;
+    })
   }
 
   changeTab(tab: string) {
@@ -112,14 +114,9 @@ export class DashboardComponent implements OnInit {
     return 4;
   }
 
-  onChangeOrder(order: string) {
-    this.jpq.order = order;
-    this.jobsService.getJobs(this.jpq);
-  }
 
-  onChangePage(page: number) {
-    this.jpq.page = page;
-    this.jobsService.getJobs(this.jpq)
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
   }
 
 }

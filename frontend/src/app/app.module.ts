@@ -45,6 +45,7 @@ import { FollowerCardComponent } from './followers/follower-card/follower-card.c
 import {FollowingComponent} from "./followers/following.component";
 import { UserProfileComponent } from './profile/user-profile/user-profile.component';
 import {SessionProfileComponent} from "./profile/session-profile/session-profile.component";
+import { WorksComponent } from './dashboard/works/works.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -83,7 +84,8 @@ import {SessionProfileComponent} from "./profile/session-profile/session-profile
     FollowersComponent,
     FollowingComponent,
     FollowerCardComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    WorksComponent
   ],
   imports: [
     BrowserModule,

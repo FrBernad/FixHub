@@ -41,15 +41,15 @@ public class ProviderDetails {
     protected ProviderDetails() {
     }
 
-    public long getJobsCount() {
+    public Long getJobsCount() {
         return jobsCount;
     }
 
-    public long getAvgRating() {
+    public Long getAvgRating() {
         return avgRating;
     }
 
-    public long getReviewCount() {
+    public Long getReviewCount() {
         return reviewCount;
     }
 

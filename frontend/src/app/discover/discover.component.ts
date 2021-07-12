@@ -80,6 +80,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   onChangeCategory(category: string) {
     this.jpq.category = category;
+    this.jpq.page = 0;
     if (!category) {
       delete this.jpq.category;
     }
@@ -88,12 +89,14 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   onChangeOrder(order: string) {
     this.jpq.order = order;
+    this.jpq.page = 0;
     this.jobsService.getJobs(this.jpq)
   }
 
   onChangeState(state: string, id: string) {
     this.selectedState = state;
     this.jpq.state = id;
+    this.jpq.page = 0;
     if (!!state) {
       this.jobsService.getStateCities(id).subscribe((cities) => {
         this.cities = cities;
@@ -110,6 +113,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   onChangeCity(city: string, id: string) {
     this.selectedCity = city;
     this.jpq.city = id;
+    this.jpq.page = 0;
     if (!id) {
       delete this.jpq.city;
     }
