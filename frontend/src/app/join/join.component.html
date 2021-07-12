@@ -14,10 +14,10 @@
           </p>
         </div>
         <ng-template [ngIf]="chooseState" [ngIfElse]="chooseCity" >
-            <app-choose-state (stateChosen)="chooseState = false" [isEdit]="isEdit"></app-choose-state>
+            <app-choose-state [user]="user" (stateChosen)="onChooseState($event)" [isProvider]="isProvider"></app-choose-state>
         </ng-template>
         <ng-template #chooseCity>
-            <app-choose-city [isEdit]="isEdit"></app-choose-city>
+            <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider" (citiesChosen)="onChooseCities($event)"></app-choose-city>
         </ng-template>
       </div>
     </div>

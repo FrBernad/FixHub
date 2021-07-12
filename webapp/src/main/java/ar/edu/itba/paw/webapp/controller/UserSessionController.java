@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
+import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
@@ -91,8 +92,11 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getUser() {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-
+        if (user.getRoles().contains(Roles.PROVIDER)) {
+            return Response.ok(new ProviderDto(user, uriInfo)).build();
+        }
         return Response.ok(new UserDto(user, uriInfo)).build();
+
     }
 
     @GET

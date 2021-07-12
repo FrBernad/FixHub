@@ -2,60 +2,67 @@
   <div class="container-fluid px-0">
     <div class="row">
       <div class="col-12 d-flex align-items-center justify-content-center">
-        <form [formGroup]="chooseCityForm" id="chooseCityForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label class="label text-center font-weight-bold" style="display:block;">
-              {{ 'joinForm.availableCities' | translate }}
-            </label>
+        <ng-template [ngIf]="isFetching" [ngIfElse]="alreadyFetched">
+            Loading...
+        </ng-template>
+        <ng-template #alreadyFetched>
 
-            <div class="row">
-              <div class="col d-flex align-items-center justify-content-center">
-                <div class="dropdown">
-                  <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+          <form [formGroup]="chooseCityForm" id="chooseCityForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label class="label text-center font-weight-bold" style="display:block;">
+                {{ 'joinForm.availableCities' | translate }}
+              </label>
+
+              <div class="row">
+                <div class="col d-flex align-items-center justify-content-center">
+                  <div class="dropdown">
+                    <button class="dropdown-custom dropdown-toggle" type="button" id="cityDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="state" id="cityName">
                       {{ 'cityForm.city' | translate }}
                     </span>
-                    {{ citySelected.name }}
-                  </button>
-                  <ul class="dropdown-menu dropdown-size" aria-labelledby="cityDropdown">
-                    <ng-template ngFor let-city [ngForOf]="cities">
-                      <li>
-                        <button class="dropdown-item cityButton" (click)="selectCity(city)" type="button">
-                          {{ city.name}}
-                        </button>
-                      </li>
-                    </ng-template>
+                      {{ citySelected.name }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-size" aria-labelledby="cityDropdown">
+                      <ng-template ngFor let-city [ngForOf]="cities">
+                        <li>
+                          <button class="dropdown-item cityButton" (click)="selectCity(city)" type="button">
+                            {{ city.name}}
+                          </button>
+                        </li>
+                      </ng-template>
 
-                  </ul>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <span *ngIf="!chooseCityForm.get('cities').valid">
+            <span *ngIf="!chooseCityForm.get('cities').valid">
             <span *ngIf="chooseCityForm.get('cities').errors['required']" class="errorMessage">
               {{'NotEmpty.chooseCityForm.city' | translate }}<br>
             </span>
           </span>
-          <div class="form-group">
-            <div class="row">
-              <div class="col">
-                <div class="container-fluid" id="citiesHolder" style="width: 418px;">
-                  <button *ngFor="let citySel of citiesSelected.controls; let i = index" (click)="deleteCity(i)"
-                    type="button" class="cityTag m-2">
-                    {{ citySel.value.name }}
-                    <fa-icon [icon]="['fas','times']" class="ms-1"></fa-icon>
-                  </button>
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <div class="container-fluid" id="citiesHolder" style="width: 418px;">
+                    <button *ngFor="let citySel of citiesSelected.controls; let i = index" (click)="deleteCity(i)"
+                            type="button" class="cityTag m-2">
+                      {{ citySel.value.name }}
+                      <fa-icon [icon]="['fas','times']" class="ms-1"></fa-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-12 px-0 d-flex align-items-center justify-content-center">
-            <button class="w-100 continueBtn my-2" type="submit" id="submitButton">
-              {{ 'joinForm.Finish' | translate }}
-            </button>
-          </div>
-        </form>
+            <div class="col-12 px-0 d-flex align-items-center justify-content-center">
+              <button class="w-100 continueBtn my-2" type="submit" id="submitButton">
+                {{ 'joinForm.Finish' | translate }}
+              </button>
+            </div>
+          </form>
+        </ng-template>
+
       </div>
     </div>
   </div>

@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from "../../models/user.model";
+import {City, JobsService, State} from "../../discover/jobs.service";
 
 @Component({
   selector: 'app-choose-city',
@@ -7,40 +9,54 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./choose-city.component.scss'],
 })
 export class ChooseCityComponent implements OnInit {
-  cities = [
-    { id: '1', name: 'Palermo' },
-    { id: 2, name: 'Belgrano' },
-    { id: 3, name: 'Caballito' },
-  ];
 
+  @Input() user: User;
+  @Input() chosenState: State;
+  @Input() isProvider: boolean;
+  @Output() citiesChosen = new EventEmitter<City[]>();
+
+  cities: City[];
+  isFetching = true;
   chooseCityForm: FormGroup;
-  citySelected: { id: number; name: string } = { id: -1, name: '' };
+  citySelected: { id: number; name: string } = {id: -1, name: ''};
+
   citiesSelected: FormArray = new FormArray([], Validators.required);
-  @Output() citiesChosen = new EventEmitter<void>();
 
-  @Input()
-  public isEdit: boolean;
+  constructor(
+    private jobsService: JobsService
+  ) {
 
-  constructor() {}
+  }
 
   ngOnInit(): void {
     this.chooseCityForm = new FormGroup({
       cities: this.citiesSelected,
     });
 
-    if (this.isEdit != null && this.isEdit) {
+    if (this.isProvider != null && this.isProvider) {
       this.cities.forEach((city) => {
         (<FormArray>this.chooseCityForm.get('cities')).push(
           new FormControl(city)
         );
       });
     }
+
+    console.log(this.chosenState.id);
+    console.log(this.chosenState.id.toString());
+    this.jobsService.getStateCities(this.chosenState.id.toString()).subscribe(
+      (cities) => {
+        this.cities = cities;
+        this.isFetching = false;
+
+      });
+
   }
 
   selectCity(city: { id: number; name: string }) {
     this.citySelected = city;
     for (let i = 0; i < this.citiesSelected.value.length; i++) {
-      if (city.id === this.citiesSelected.value[i].id) return;
+      if (city.id === this.citiesSelected.value[i].id)
+        return;
     }
     (<FormArray>this.chooseCityForm.get('cities')).push(new FormControl(city));
   }
@@ -49,7 +65,7 @@ export class ChooseCityComponent implements OnInit {
     this.citiesSelected.removeAt(index);
     let len = this.citiesSelected.value.length;
     if (len == 0) {
-      this.citySelected = { id: -1, name: '' };
+      this.citySelected = {id: -1, name: ''};
     } else {
       this.citySelected =
         this.citiesSelected.value[this.citiesSelected.length - 1];
@@ -61,7 +77,6 @@ export class ChooseCityComponent implements OnInit {
       this.chooseCityForm.markAllAsTouched();
       return;
     }
-    console.log(this.chooseCityForm);
-    this.citiesChosen.emit();
+    this.citiesChosen.emit(this.chooseCityForm.value);
   }
 }

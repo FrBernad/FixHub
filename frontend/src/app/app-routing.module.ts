@@ -85,7 +85,7 @@ const routes: Routes = [
       },
       {
         path: 'user/account/updateProviderInfo',
-        component: UpdateProviderInfoComponent
+        component: JoinComponent//FIXME: revisar
       },
       {
         path: '**',
