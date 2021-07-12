@@ -85,11 +85,6 @@ const routes: Routes = [
         component: RegisterComponent
       },
       {
-        path: 'jobs/:id/contact',
-        component: ContactComponent,
-        canActivate: [AuthGuard]
-      },
-      {
         path: "job",
         component: JobComponent
       },
@@ -100,6 +95,11 @@ const routes: Routes = [
       {
         path: "jobs/:id",
         component: JobComponent
+      },
+      {
+        path: 'jobs/:id/contact',
+        component: ContactComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'jobs/:id/edit',

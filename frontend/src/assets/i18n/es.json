@@ -337,6 +337,7 @@
   "NotEmpty.contactForm.street": "Ingrese la calle en la que reside",
   "Size.contactForm.street": "La calle debe tener menos de {{max}} caracteres",
   "Pattern.contactForm.street": "La calle que ingres\u00F3 no es v\u00E1lida",
+  "Pattern.contactForm.city": "El nombre de la ciudad que ingres\u00F3 no es v\u00E1lido",
   "Size.contactForm.addressNumber": "La altura debe tener menos de {{max}} caracteres",
   "NotEmpty.contactForm.addressNumber": "Ingrese una altura",
   "Pattern.contactForm.addressNumber": "La altura que ingres\u00F3 no es v\u00E1lida",

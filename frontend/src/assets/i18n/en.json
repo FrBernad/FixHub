@@ -335,6 +335,7 @@
   "NotEmpty.contactForm.state": "Please enter the state in which you reside",
   "Size.contactForm.state": "The name of the state must be less than {1} characters",
   "Pattern.contactForm.state": "The name of the state you entered is not valid",
+  "Pattern.contactForm.city": "The city you entered is invalid",
   "NotEmpty.contactForm.city": "Please enter the city where you reside",
   "Size.contactForm.city": "City must be less than {{max}} characters",
   "NotEmpty.contactForm.street": "Please enter the street where you reside",
