@@ -103,6 +103,27 @@ export class AuthService {
 
   }
 
+  verify(token: string) {
+    return this.http
+      .put(
+        environment.apiBaseUrl + '/user/verify',
+        {
+          token: token,
+        },
+        {
+          observe: "response"
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(res => {
+          const authHeader = res.headers.get("Authorization");
+          const token = authHeader.split(" ")[1];
+          this.handleAuthentication(token);
+        })
+      );
+  }
+
   logout() {
     this.session.next(null);
 
@@ -117,6 +138,9 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);

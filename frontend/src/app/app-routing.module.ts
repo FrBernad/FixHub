@@ -22,6 +22,8 @@ import {NotProviderGuard} from "./auth/not-provider.guard";
 import {FollowersComponent} from "./followers/followers.component";
 import {FollowingComponent} from "./followers/following.component";
 import {UserProfileComponent} from "./profile/user-profile/user-profile.component";
+import {VerifyComponent} from "./verify/verify.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {
@@ -61,6 +63,14 @@ const routes: Routes = [
       {
         path: 'user/account/updateProviderInfo',
         component: UpdateProviderInfoComponent
+      },
+      {
+        path: 'user/verify',
+        component: VerifyComponent,
+      },
+      {
+        path: 'user/resetPassword',
+        component: ResetPasswordComponent,
       },
       {
         path: 'user/:id',

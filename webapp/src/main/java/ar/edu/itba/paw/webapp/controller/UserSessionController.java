@@ -24,8 +24,6 @@ import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -106,9 +104,62 @@ public class UserSessionController {
 
     }
 
-    @GET
-    @Path("coverImage")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Path("/verify")
+    public Response verifyUser(TokenDto tokenDto) {
+        final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);//FIXME: chequear token
+
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+
+        if (user.isProvider()) {
+            addAuthorizationHeader(responseBuilder, user);
+        }
+        return responseBuilder.build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Path("/verify")
+    public Response resendUserVerification() {
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+
+        userService.resendVerificationToken(user);
+
+        return Response.noContent().build();
+    }
+
+
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/resetPassword")
+    public Response sendResetPasswordEmail(@Valid final PasswordResetEmailDto passwordResetDto) {
+
+        final User user = userService.getUserByEmail(passwordResetDto.getEmail()).orElseThrow(UserNotFoundException::new);
+
+        userService.generateNewPassword(user);
+
+        return Response.noContent().build();
+    }
+
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @PUT
+    @Path("/resetPassword")
+    public Response resetPassword(@Valid final PasswordResetDto passwordResetDto) {
+
+        final User user = userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);
+
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/coverImage")
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+
     public Response getUserCoverImage(@Context Request request) {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -118,7 +169,7 @@ public class UserSessionController {
     }
 
     @PUT
-    @Path("coverImage")
+    @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response updateUserCoverImage() {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
@@ -127,7 +178,7 @@ public class UserSessionController {
     }
 
     @GET
-    @Path("profileImage")
+    @Path("/profileImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
     public Response getUserProfileImage() {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
@@ -138,7 +189,7 @@ public class UserSessionController {
     }
 
     @PUT
-    @Path("profileImage")
+    @Path("/profileImage")
     public Response updateUserProfileImage() {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 

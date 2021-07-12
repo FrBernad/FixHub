@@ -192,7 +192,7 @@ public class User {
         roles.remove(role);
     }
 
-    public boolean getIsProvider() {
+    public boolean isProvider() {
         return roles.stream().anyMatch(p -> p.name().equals(Roles.PROVIDER.name()));
     }
 

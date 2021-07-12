@@ -22,13 +22,15 @@ import {
   faTrash as fasTrash,
   faUpload as fasUpload,
   faInfoCircle as fasInfoCircle,
+  faExclamationCircle as fasExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
   faEyeSlash as farEyeSlash,
   faEye as farEye,
   faStar as farStar,
-  faEnvelope as farEnvelope
+  faEnvelope as farEnvelope,
+  faCheckCircle as farCheckCircle
 } from '@fortawesome/free-regular-svg-icons';
 
 import {Router} from "@angular/router";
@@ -74,7 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
       fasCheck, fasMapMarkerAlt,
       fasChartLine, fasWrench, fasAddressBook, farStar,
       fasPen, fasCompass, fasClock, fasTrash, fasUpload,
-      fasInfoCircle
+      fasInfoCircle, fasExclamationCircle, farCheckCircle
     );
 
     this.authService.autoLogin();

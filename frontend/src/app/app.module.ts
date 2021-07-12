@@ -47,6 +47,8 @@ import { UserProfileComponent } from './profile/user-profile/user-profile.compon
 import {SessionProfileComponent} from "./profile/session-profile/session-profile.component";
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { WorksComponent } from './dashboard/works/works.component';
+import { VerifyComponent } from './verify/verify.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -87,7 +89,9 @@ import { WorksComponent } from './dashboard/works/works.component';
     FollowerCardComponent,
     LoadingSpinnerComponent,
     UserProfileComponent,
-    WorksComponent
+    WorksComponent,
+    VerifyComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

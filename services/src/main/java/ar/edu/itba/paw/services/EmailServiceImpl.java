@@ -71,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
-            final String url = appBaseUrl.toString() + "user/verifyAccount?token=" + token.getValue();
+            final String url = appBaseUrl.toString() + "user/verify?token=" + token.getValue();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());

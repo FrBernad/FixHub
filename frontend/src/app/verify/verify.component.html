@@ -1,0 +1,32 @@
+<div class="container-fluid py-4 px-0 d-flex align-items-center" *ngIf="!loading">
+  <div class="container-lg p-5 mt-5 smallContentContainer">
+    <div class="row w-100 h-100 m-0 align-items-center justify-content-center">
+      <ng-template [ngIf]="success" [ngIfElse]="error">
+        <div class="col-12">
+          <h1 class="text-center title">
+            {{'account.verify.success' | translate }}
+          </h1>
+          <p class="subtitle text-center mb-4">
+            {{'account.verify.benefits' | translate }}
+          </p>
+        </div>
+        <div class="col-12 d-flex align-items-center justify-content-center">
+          <fa-icon [icon]="['far', 'check-circle ']"  size="7x" class="success"></fa-icon>
+        </div>
+      </ng-template>
+      <ng-template #error>
+        <div class="col-12">
+          <h1 class="text-center title">
+            {{'account.verify.error' | translate }}
+          </h1>
+          <p class="subtitle text-center mb-4">
+            {{'account.verify.checkData' | translate }}
+          </p>
+        </div>
+        <div class="col-12 d-flex align-items-center justify-content-center">
+          <fa-icon [icon]="['fas', 'exclamation-circle']" size="7x"  class="error"></fa-icon>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
