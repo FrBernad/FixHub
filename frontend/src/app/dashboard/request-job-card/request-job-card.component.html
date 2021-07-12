@@ -1,6 +1,6 @@
 <div class="accordion mb" [id]="'accordion'+contact.id.toString()">
   <div class="card accordionCard accordion-item">
-    <div class="accordion-header card-header px-0" [id]="'flush'+contact.id.toString()" >
+    <div class="accordion-header card-header px-0" [id]="'flush'+contact.id.toString()">
       <div class="accordion-button navbarText"
            style="background-color: rgba(0,0,0,.03)"
            data-bs-toggle="collapse"
@@ -9,7 +9,7 @@
         <div class="container-fluid pe-2 ps-0">
           <div class="row">
             <div class="col-8 align-items-lg-start">
-              <a  [routerLink]="['/jobs',contact.job.id]" class="card-link">
+              <a [routerLink]="['/jobs',contact.job.id]" class="card-link">
                 {{contact.job.jobProvided}}
               </a><span style="color: darkslategrey">|</span>
               <a [routerLink]="['/user',contact.user.id]" class="card-link">
@@ -45,8 +45,8 @@
             <div class="col-12">
               <span class="client-label">{{'dashboard.clientAddress'|translate}}:</span>
               {{contact.contactInfo.city}},  {{ contact.contactInfo.state}},
-            {{ contact.contactInfo.street}}, {{ contact.contactInfo.addressNumber}}
-            {{ contact.contactInfo.floor}}, {{ contact.contactInfo.departmentNumber}}
+              {{ contact.contactInfo.street}}, {{ contact.contactInfo.addressNumber}}
+              {{ contact.contactInfo.floor}}, {{ contact.contactInfo.departmentNumber}}
             </div>
 
             <div class="col-12">
@@ -72,7 +72,8 @@
                             {{'clientContactCard.jobDecision'|translate}}
                           </p>
                         </div>
-                        <div class="col-12 col-md-6 pr-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
+                        <div
+                          class="col-12 col-md-6 pr-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
                           <button class="finishBtn me-2"
                                   type="submit">
                             {{'clientContactCard.acceptJobBtn'|translate}}
@@ -106,7 +107,7 @@
                           class="col-12 col-md-5 pr-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">
                           <button class="finishBtn me-2" type="submit">
                             {{'clientContactCard.completedJobBtn'|translate}}
-                            <i class="fas fa-check ml-2"></i>
+                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>
                           </button>
                         </div>
                       </div>
