@@ -53,6 +53,16 @@ const routes: Routes = [
         canActivate: [AuthGuard, ProviderGuard]
       },
       {
+        path: 'user/join',
+        component: JoinComponent,
+        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard, NotProviderGuard]
+      },
+      {
+        path: 'user/account/updateProviderInfo',
+        component: UpdateProviderInfoComponent
+      },
+      {
         path: 'user/:id',
         component: UserProfileComponent,
       },
@@ -94,15 +104,6 @@ const routes: Routes = [
       {
         path: 'jobs/:id/edit',
         component: EditJobComponent
-      },
-      {
-        path: 'user/join',
-        component: JoinComponent,
-        canActivate: [AuthGuard, NotProviderGuard]
-      },
-      {
-        path: 'user/account/updateProviderInfo',
-        component: UpdateProviderInfoComponent
       },
       {
         path: '**',

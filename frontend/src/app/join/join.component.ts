@@ -36,6 +36,7 @@ export class JoinComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
       this.isProvider = this.user.providerDetails !== undefined;
@@ -50,9 +51,9 @@ export class JoinComponent implements OnInit {
     this.chooseState = false;
   }
 
-  makeProvider(event) {
-    this.posting = true;
+  makeProvider(event:City[]) {
     this.cities = event;
+    this.posting = true;
     let providerInfo = {
       schedule: {
         startTime: this.startTime,
@@ -69,7 +70,6 @@ export class JoinComponent implements OnInit {
         this.router.navigate(['user', 'dashboard']);
       }
     );
-
   }
 
 }

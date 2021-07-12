@@ -214,7 +214,7 @@
                        <ng-template #notProvider>
                               {{'profilePage.subtitle.inactive' | translate}}
                          <fa-icon [icon]="['fas','times']" class="ms-1" style="color: darkred"></fa-icon>
-                         <a class="ms-2" href="<c:url value=/user/join" style="font-weight: 500">
+                         <a class="ms-2" [routerLink]="['/user','join']"  style="font-weight: 500">
                               {{'profilePage.subtitle.join' | translate}}
                          </a>
                       </ng-template>

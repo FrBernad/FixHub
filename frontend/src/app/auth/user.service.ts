@@ -17,6 +17,17 @@ export interface ProviderDetails {
   }
 }
 
+export interface ProviderInfo {
+  schedule: {
+    startTime: string;
+    endTime: string
+  };
+  location: {
+    cities: City[];
+    state: State
+  }
+}
+
 @Injectable({providedIn: 'root'})
 export class UserService {
   user = new BehaviorSubject<User>(null);
@@ -81,16 +92,16 @@ export class UserService {
 
   }
 
-  makeProvider(providerInfo: ProviderDetails) {
-    return this.http.put(
-      environment.apiBaseUrl + '/user/account/updateProviderInfo',
+  makeProvider(providerInfo: ProviderInfo) {
+    return this.http.post(
+      environment.apiBaseUrl + '/user/join',
       providerInfo)
       .pipe(tap(() => {
         this.populateUserData().subscribe();
       }));
   }
 
-  updateProviderInfo(providerInfo: ProviderDetails) {
+  updateProviderInfo(providerInfo: ProviderInfo) {
     return this.http.put(
       environment.apiBaseUrl + '/user/account/updateProviderInfo',
       providerInfo)
