@@ -46,7 +46,19 @@ export class ReviewFormComponent implements OnInit {
     });
 
     this.jobService.updateReviews(this.jobId);
+    this.cleanReviewForm()
 
   }
 
+  onClose(){
+
+    this.cleanReviewForm();
+  }
+
+  private cleanReviewForm(){
+    this.reviewForm.markAsUntouched();
+
+    this.reviewForm.get('description').patchValue('');
+    this.reviewForm.get('rating').patchValue('1');
+  }
 }

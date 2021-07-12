@@ -1,25 +1,25 @@
-<div class="container-fluid px-0 outerContainer">
-  <div class="container-fluid py-4 px-0">
-    <div class="container-lg p-5 smallContentContainer">
-      <div class="row w-100 m-0 align-items-center justify-content-center">
-        <div class="col-12">
-          <h1 class="text-center title">
-            {{  'join.header' | translate }}
-          </h1>
-          <p class="subtitle text-center mb-4">
+<div class="container-fluid py-4 px-0">
+  <div class="container-lg p-5 smallContentContainer">
+    <div class="row w-100 m-0 align-items-center justify-content-center">
+      <div class="col-12">
+        <h1 class="text-center title">
+          {{  'join.header' | translate }}
+        </h1>
+        <p class="subtitle text-center mb-4">
                         <span class="font-weight-bold">
                             {{  'join.description.boldText' | translate}}
                         </span>
-            {{  'join.description.normalText' | translate}}
-          </p>
-        </div>
-        <ng-template [ngIf]="chooseState" [ngIfElse]="chooseCity" >
-            <app-choose-state [user]="user" (stateChosen)="onChooseState($event)" [isProvider]="isProvider"></app-choose-state>
-        </ng-template>
-        <ng-template #chooseCity>
-            <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider" (citiesChosen)="onChooseCities($event)"></app-choose-city>
-        </ng-template>
+          {{  'join.description.normalText' | translate}}
+        </p>
       </div>
+      <ng-template [ngIf]="chooseState" [ngIfElse]="chooseCity">
+        <app-choose-state [user]="user" (stateChosen)="onChooseState($event)"
+                          [isProvider]="isProvider"></app-choose-state>
+      </ng-template>
+      <ng-template #chooseCity>
+        <app-choose-city [user]="user" [chosenState]="state" [isProvider]="isProvider"
+                         (citiesChosen)="onChooseCities($event)"></app-choose-city>
+      </ng-template>
     </div>
   </div>
 </div>
