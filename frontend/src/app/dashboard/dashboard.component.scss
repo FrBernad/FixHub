@@ -4,6 +4,10 @@
   color: var(--tertiary-color) !important;
 }
 
+.nav-link {
+  border-radius: 0;
+}
+
 .dropDownArrow:hover {
   color: rgba(0, 0, 0, 0.7) !important;
 }
@@ -19,7 +23,7 @@
 }
 
 .accordion a:hover {
-  color: rgb(0,104,192);
+  color: rgb(0, 104, 192);
   text-decoration: none;
 }
 
@@ -39,7 +43,7 @@
 .nav-link {
   display: flex !important;
   align-items: center !important;
-  border: 1px solid rgba(0,0,0,.125);
+  border: 1px solid rgba(0, 0, 0, .125);
 }
 
 .nav-link .text {
@@ -62,7 +66,7 @@
   color: var(--tertiary-color) !important;
 }
 
-.client-label{
+.client-label {
   font-weight: bolder;
 }
 
@@ -80,7 +84,7 @@
 }
 
 .inactive {
-    color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
 }
 
 .sectionTitle {
@@ -98,6 +102,7 @@
   margin-bottom: 0;
   border-radius: .25rem;
   background-color: #fff;
+  overflow: hidden;
 }
 
 
@@ -172,7 +177,7 @@
 }
 
 .inputRadius {
-  padding: 8px 16px!important;
+  padding: 8px 16px !important;
   color: black !important;
   border-radius: 8px 0 0 8px !important;
 }

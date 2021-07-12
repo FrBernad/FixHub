@@ -11,7 +11,6 @@ public class ProviderDto extends  UserDto{
     private ProviderDetailsDto providerDetails;
 
     public ProviderDto(){
-
     }
 
     public ProviderDto(User user, UriInfo uriInfo, SecurityContext securityContext) {

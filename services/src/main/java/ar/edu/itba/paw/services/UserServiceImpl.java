@@ -33,10 +33,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @org.springframework.stereotype.Service
@@ -233,15 +233,17 @@ public class UserServiceImpl implements UserService {
         location.setState(state);
 
         final Schedule schedule = user.getProviderDetails().getSchedule();
-        final Time sqlStartTime;
-        final Time sqlEndTime;
-        if ((sqlStartTime = stringToSqlTime(startTime)) == null)
+        final LocalTime localStartTime;
+        final LocalTime localEndTime;
+
+        if ((localStartTime = parseTime(startTime)) == null)
             return;
 
-        if ((sqlEndTime = stringToSqlTime(endTime)) == null)
+        if ((localEndTime = parseTime(startTime)) == null)
             return;
-        schedule.setStartTime(sqlStartTime);
-        schedule.setEndTime(sqlEndTime);
+
+        schedule.setStartTime(localStartTime);
+        schedule.setEndTime(localEndTime);
 
         LOGGER.info("Update provider info with id {}", user.getId());
     }
@@ -254,17 +256,17 @@ public class UserServiceImpl implements UserService {
         final Collection<City> cities = locationDao.getCitiesById(citiesId);
         final State state = cities.stream().findFirst().get().getState();
         final Location location = new Location(user, new HashSet<>(cities), state);
-        final Time sqlStartTime;
-        final Time sqlEndTime;
+        final LocalTime localStartTime;
+        final LocalTime localEndTime;
 
-        if ((sqlStartTime = stringToSqlTime(startTime)) == null)
+        if ((localStartTime = parseTime(startTime)) == null)
             return;
 
-        if ((sqlEndTime = stringToSqlTime(endTime)) == null)
+        if ((localEndTime = parseTime(endTime)) == null)
             return;
 
 
-        final Schedule schedule = new Schedule(user, sqlStartTime, sqlEndTime);
+        final Schedule schedule = new Schedule(user, localStartTime, localEndTime);
 
         userDao.persistProviderDetails(location, schedule);
 
@@ -332,19 +334,16 @@ public class UserServiceImpl implements UserService {
         return verificationTokenDao.createVerificationToken(user, token, VerificationToken.generateTokenExpirationDate());
     }
 
-    private Time stringToSqlTime(String time) {
-        final long timeInMs;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    private LocalTime parseTime(String time) {
+        LocalTime localTime;
 
         try {
-            timeInMs = simpleDateFormat.parse(time).getTime();
-        } catch (ParseException e) {
-            LOGGER.warn("Error parsing startTime");
+            localTime = LocalTime.parse(time);
+        } catch (DateTimeParseException e) {
             return null;
         }
 
-        return new Time(timeInMs);
-
+        return localTime;
     }
 
 }

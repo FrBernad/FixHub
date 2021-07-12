@@ -8,12 +8,11 @@ public class ScheduleDto {
     private String endTime;
 
     public ScheduleDto(){
-
     }
 
     public ScheduleDto(Schedule schedule) {
-        this.startTime = schedule.getStartTime();
-        this.endTime = schedule.getEndTime();
+        this.startTime = schedule.getStartTime().toString();
+        this.endTime = schedule.getEndTime().toString();
     }
 
     public String getStartTime() {

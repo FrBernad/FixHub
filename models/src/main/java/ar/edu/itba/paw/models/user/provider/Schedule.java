@@ -3,8 +3,8 @@ package ar.edu.itba.paw.models.user.provider;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
@@ -22,17 +22,17 @@ public class Schedule {
     private User provider;
 
     @Column(name = "sch_start_time", length = 5, nullable = false)
-    private Time startTime;
+    private LocalTime startTime;
 
     @Column(name = "sch_end_time", length = 5, nullable = false)
-    private Time endTime;
+    private LocalTime endTime;
 
      /* default */
     protected Schedule() {
         // Just for Hibernate
     }
 
-    public Schedule(User provider, Time startTime, Time endTime) {
+    public Schedule(User provider, LocalTime startTime, LocalTime endTime) {
         this.provider = provider;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -54,21 +54,19 @@ public class Schedule {
         this.provider = provider;
     }
 
-    public String getStartTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        return sdf.format(startTime);
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        return sdf.format(endTime);
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
