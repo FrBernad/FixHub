@@ -39,14 +39,7 @@
                       </label>
                     </div>
                     <div class="col-6 px-0 d-flex justify-content-end">
-                      <a class="link" (click)="recoverPass=true" tabindex="-1">
-                          <span class="text-right"
-                                style="font-size: 0.9rem; margin-bottom: .5rem">
-                             {{ 'login.forgotPassword' | translate }}
-                          </span>
-                      </a>
-                      <app-recover-email-popup *ngIf="recoverPass"
-                                               (close)="recoverPass=false"></app-recover-email-popup>
+                      <app-recover-email-popup></app-recover-email-popup>
                     </div>
                     <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                       <div class="input-group d-flex justify-content-start align-items-center">

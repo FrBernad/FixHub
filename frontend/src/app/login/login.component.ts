@@ -13,7 +13,6 @@ import {PreviousRouteService} from "../auth/previous-route.service";
 export class LoginComponent implements OnInit {
 
   showPass = true;
-  recoverPass = false;
   loginForm: FormGroup;
   error = false;
 

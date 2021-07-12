@@ -6,17 +6,10 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
   styleUrls: ['./recover-email-popup.component.scss']
 })
 export class RecoverEmailPopupComponent implements OnInit {
-
-  @Output() close = new EventEmitter<void>();
-
   constructor() {
   }
 
   ngOnInit(): void {
-  }
-
-  onClose() {
-    this.close.emit();
   }
 
 }

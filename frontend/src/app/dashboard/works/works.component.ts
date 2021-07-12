@@ -27,8 +27,6 @@ export class WorksComponent implements OnInit, OnDestroy {
 
   private jobsSub: Subscription;
 
-  @Input("activeTab") activeTab: string;
-
   orderOptions = Object.keys(OrderOptionModel).filter((item) => {
     return isNaN(Number(item));
   });

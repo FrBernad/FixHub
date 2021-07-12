@@ -1,26 +1,38 @@
-<div class="backdrop" (click)="onClose()"></div>
-<div class="container-lg p-5 smallContentContainer recoverPopup">
-  <div class="row w-100 h-100 m-0 align-items-center justify-content-center">
-    <div class="col-12">
-      <h1 class="text-center instruction">
-        {{'account.password.resetRequest.instruction' | translate }}
-      </h1>
-    </div>
-    <div class="col-12">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 mt-4">
-            <form id="passResetRequest">
-              <label for="email">
-                {{'account.password.resetRequest.emailLabel' | translate }}
-              </label>
-              <input type="text" class="form-control input" id="email" name="email">
-            </form>
+<a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    <span class="text-right"
+          style="font-size: 0.9rem; margin-bottom: .5rem">
+      {{'login.forgotPassword' | translate}}
+    </span>
+</a>
+<div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="container-lg roundedBorder p-4" style="background-color: #FAFAFA; border-radius: 8px">
+        <div class="row w-100 h-100 m-0 align-items-center justify-content-center">
+          <div class="col-12">
+            <h1 class="text-center instruction">
+              {{'account.password.resetRequest.instruction' | translate }}
+            </h1>
           </div>
-          <div class="col-12 mt-2 d-flex align-items-center justify-content-center">
-            <button form="passResetRequest" type="submit" class="w-100 continueBtn my-2">
-              {{'account.password.resetRequest.submitBtn' | translate }}
-            </button>
+          <div class="col-12">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12 mt-4">
+                  <form id="passResetRequest">
+                    <label for="email">
+                      {{'account.password.resetRequest.emailLabel' | translate }}
+                    </label>
+                    <input type="text" class="form-control input" id="email" name="email">
+                  </form>
+                </div>
+                <div class="col-12 mt-2 d-flex align-items-center justify-content-center">
+                  <button form="passResetRequest" type="submit" class="w-100 continueBtn my-2">
+                    {{'account.password.resetRequest.submitBtn' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

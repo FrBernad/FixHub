@@ -164,7 +164,9 @@
                   </div>
                 </div>
 
-                <app-works [activeTab]="activeTab"></app-works>
+                <div class="tab-pane fade" role="tabpanel" id="works" [ngClass]="{'show active' : activeTab==='works'}">
+                  <app-works></app-works>
+                </div>
 
                 <div class="tab-pane fade" role="tabpanel" id="contacts"
                      [ngClass]="{'show active' : activeTab==='contacts'}">
@@ -188,6 +190,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>

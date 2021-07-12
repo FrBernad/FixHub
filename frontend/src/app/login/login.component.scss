@@ -53,3 +53,14 @@ input.ng-invalid.ng-touched{
 .errorMessage{
   color: red;
 }
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+}
