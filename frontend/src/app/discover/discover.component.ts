@@ -33,6 +33,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   states: State[] = [];
   selectedState: string = ""
   selectedCity: string = ""
+  isFetching = true;
 
   orderOptions = Object.keys(OrderOptionModel).filter((item) => {
     return isNaN(Number(item));
@@ -65,6 +66,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
         ...this.jpr,
         ...results
       };
+      this.isFetching = false;
     });
 
     this.jobsService.getCategories().subscribe((categories) => {
