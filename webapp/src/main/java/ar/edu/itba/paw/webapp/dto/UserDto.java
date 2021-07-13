@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
@@ -8,6 +9,8 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserDto {
@@ -39,6 +42,9 @@ public class UserDto {
 
     private boolean followed;
     private boolean following;
+    private Set<ContactInfoDto> contactInfo;
+
+
 
     public UserDto() {
         // Used by Jersey
@@ -69,6 +75,10 @@ public class UserDto {
         if (securityContext.getUserPrincipal() != null) {
             this.following = user.userIsFollowing(securityContext.getUserPrincipal().getName());
             this.followed = user.userIsFollower(securityContext.getUserPrincipal().getName());
+        }
+        this.contactInfo = new HashSet<>();
+        for (ContactInfo contactInfo : user.getContactInfo()){
+            this.contactInfo.add(new ContactInfoDto(contactInfo));
         }
     }
 
@@ -198,5 +208,13 @@ public class UserDto {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public Set<ContactInfoDto> getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(Set<ContactInfoDto> contactInfo) {
+        this.contactInfo = contactInfo;
     }
 }

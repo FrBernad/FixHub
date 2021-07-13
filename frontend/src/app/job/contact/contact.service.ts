@@ -4,6 +4,8 @@ import {ContactInfo} from 'src/app/models/contactInfo.model';
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {User} from "../../models/user.model";
+import {UserService} from "../../auth/user.service";
+import {tap} from "rxjs/operators";
 
 export interface ContactPaginationResult {
   page: number;
@@ -19,14 +21,14 @@ export interface ContactPaginationQuery {
 
 export interface JobRequest {
 
-  id:number;
-  jobProvided:string;
-  jobId:number;
-  message:string;
-  status:string;
-  provider:User;
-  user:User;
-  date:Date;
+  id: number;
+  jobProvided: string;
+  jobId: number;
+  message: string;
+  status: string;
+  provider: User;
+  user: User;
+  date: Date;
   contactInfo: ContactInfo;
 
 }
@@ -40,7 +42,7 @@ export interface RequestPaginationResult {
 export interface RequestPaginationQuery {
   page: number;
   pageSize?: number;
-  filter?:string;
+  filter?: string;
 }
 
 export interface ContactData {
@@ -55,22 +57,19 @@ export interface ContactData {
   addressNumber: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ContactService {
 
   results = new Subject<ContactPaginationResult>();
 
-
-  constructor(private http: HttpClient) {}
-
-  getContactInfo(id: number) {
-    return this.http.get<ContactInfo[]>(
-      environment.apiBaseUrl + '/users/' + id + '/contactInfo'
-    );
+  constructor(private http: HttpClient,
+              private userService: UserService) {
   }
 
   newContact(jobId: number, contactData: ContactData) {
-    return this.http.post<ContactData>(environment.apiBaseUrl + '/jobs/' + jobId + '/contact', contactData);
+    return this.http.post<ContactData>(environment.apiBaseUrl + '/jobs/' + jobId + '/contact', contactData).pipe(tap(() => {
+      this.userService.populateUserData().subscribe();
+    }));
   }
 
   getProviderRequests(rq: RequestPaginationQuery) {

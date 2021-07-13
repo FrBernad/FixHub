@@ -4,7 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.contact.NewContactDto;
+import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
@@ -155,27 +155,27 @@ public class JobController {
     @POST
     @Path("/{id}/contact")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response contactPost(@PathParam("id") final Long id, @Valid final ContactDto contactDto) {
+    public Response contactPost(@PathParam("id") final Long id, @Valid final NewContactDto contact) {
 
         LOGGER.info("Accessed /jobs/{}/contact POST controller", id);
 
         final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-        final User user = userService.getUserById(Long.parseLong(contactDto.getUserId())).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-        NewContactDto newContactDto = new NewContactDto(
+        AuxContactDto auxContactDto = new AuxContactDto(
             job,
-            Long.valueOf(contactDto.getContactInfoId()),
-            user, contactDto.getMessage(),
-            contactDto.getState(),
-            contactDto.getCity(),
-            contactDto.getStreet(),
-            contactDto.getAddressNumber(),
-            contactDto.getFloor(),
-            contactDto.getDepartmentNumber()
+            Long.valueOf(contact.getContactInfoId()),
+            user, contact.getMessage(),
+            contact.getState(),
+            contact.getCity(),
+            contact.getStreet(),
+            contact.getAddressNumber(),
+            contact.getFloor(),
+            contact.getDepartmentNumber()
         );
 
         try {
-            userService.contact(newContactDto, user, job.getProvider());
+            userService.contact(auxContactDto, user, job.getProvider());
         }catch(IllegalContactException e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

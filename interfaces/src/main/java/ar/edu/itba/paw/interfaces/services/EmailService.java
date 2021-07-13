@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 
-import ar.edu.itba.paw.models.contact.NewContactDto;
+import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
@@ -17,9 +17,9 @@ public interface EmailService {
 
     void sendProviderNotificationEmail(User user, Locale locale);
 
-    void sendJobRequestConfirmationEmail(NewContactDto newContactDto, Locale locale);
+    void sendJobRequestConfirmationEmail(AuxContactDto auxContactDto, Locale locale);
 
-    void sendJobRequestEmail(NewContactDto newContactDto, Locale locale);
+    void sendJobRequestEmail(AuxContactDto auxContactDto, Locale locale);
 
     void sendJobCancellationEmail(JobContact jobContact, Locale locale);
 

@@ -3,14 +3,14 @@ package ar.edu.itba.paw.models.contact;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.user.User;
 
-public class NewContactDto {
+public class AuxContactDto {
 
     private Job job;
     private Long contactInfoId;
     private User user;
     private String message, state, city, street, addressNumber, floor, departmentNumber;
 
-    public NewContactDto(Job job, Long contactInfoId, User user, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
+    public AuxContactDto(Job job, Long contactInfoId, User user, String message, String state, String city, String street, String addressNumber, String floor, String departmentNumber) {
         this.job = job;
         this.contactInfoId = contactInfoId;
         this.user = user;

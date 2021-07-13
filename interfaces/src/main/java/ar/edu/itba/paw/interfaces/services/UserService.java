@@ -2,7 +2,7 @@ package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
-import ar.edu.itba.paw.models.contact.NewContactDto;
+import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.image.ImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.user.User;
@@ -31,7 +31,7 @@ public interface UserService {
 
     void updateUserInfo(UserInfo userInfo, User user);
 
-    void contact(NewContactDto newContactDto, User user, User provider) throws IllegalContactException;
+    void contact(AuxContactDto auxContactDto, User user, User provider) throws IllegalContactException;
 
     void makeProvider(User user, List<Long> citiesId, String startTime, String endTime);
 

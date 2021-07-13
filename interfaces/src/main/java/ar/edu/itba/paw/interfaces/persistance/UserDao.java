@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
-import ar.edu.itba.paw.models.contact.NewContactDto;
+import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
@@ -24,7 +24,7 @@ public interface UserDao {
 
     User createUser(String password, String name, String surname, String email, String phoneNumber, String state, String city, Set<Roles> roles) throws DuplicateUserException;
 
-    ContactInfo addContactInfo(NewContactDto newContactDto);
+    ContactInfo addContactInfo(AuxContactDto auxContactDto);
 
     JobContact createJobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime creationTime, Job job);
 

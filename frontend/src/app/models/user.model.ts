@@ -1,3 +1,5 @@
+import {ContactInfo} from "./contactInfo.model";
+
 export interface ProviderDetails {
   location: {
     cities: { id: number, name: string }[],
@@ -27,6 +29,7 @@ export class User {
     public roles: string[],
     public followingCount: number,
     public followersCount: number,
+    public contactInfo: ContactInfo[],
     public providerDetails?: ProviderDetails,
     public followed?: boolean,
     public following?: boolean

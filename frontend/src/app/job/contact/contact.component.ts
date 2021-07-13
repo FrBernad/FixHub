@@ -1,6 +1,4 @@
-import {JobService} from './../job.service';
-import {ActivatedRoute, Params} from '@angular/router';
-import {ContactInfo} from './../../models/contactInfo.model';
+import {ContactInfo} from '../../models/contactInfo.model';
 import {ContactService} from './contact.service';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -32,17 +30,10 @@ export class ContactComponent implements OnInit {
   maxFloorLength: number = 9;
   maxAddressNumber: number = 9;
   maxDepartmentLength: number = 30;
+  newContactInfo = true;
 
   private userSub: Subscription;
   user: User;
-
-  city = new FormControl(null, [
-    Validators.required,
-    Validators.maxLength(this.maxCityLength),
-    Validators.pattern(
-      "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
-    ),
-  ]);
 
   constructor(
     private contactService: ContactService,
@@ -60,16 +51,6 @@ export class ContactComponent implements OnInit {
 
     this.initForm();
 
-    this.contactService
-      .getContactInfo(this.user.id)
-      .subscribe((responseData) => {
-        if (responseData != null) {
-          responseData.forEach((contactInfo) => {
-            this.contactInfoCollection.push(contactInfo);
-          });
-        }
-
-      });
   }
 
   onSubmit() {
@@ -98,25 +79,27 @@ export class ContactComponent implements OnInit {
   }
 
   dropdownClickCity(city: { id: number; name: string }) {
-    this.city.setValue(city.name);
+    this.contactForm.get('city').setValue(city.name);
   }
 
   dropdownClickContact(contact: ContactInfo) {
     this.contactForm.get('contactInfoId').setValue(contact.id);
     this.contactForm.get('addressNumber').setValue(contact.addressNumber);
-    this.city.setValue(contact.city);
+    this.contactForm.get('city').setValue(contact.city);
     this.contactForm.get('departmentNumber').setValue(contact.departmentNumber);
     this.contactForm.get('floor').setValue(contact.floor);
     this.contactForm.get('street').setValue(contact.street);
+    this.newContactInfo = false;
   }
 
   resetInfo() {
     this.contactForm.get('contactInfoId').setValue(-1);
     this.contactForm.get('addressNumber').setValue(null);
-    this.city.setValue(null);
+    this.contactForm.get('city').setValue(null);
     this.contactForm.get('departmentNumber').setValue(null);
     this.contactForm.get('floor').setValue(null);
     this.contactForm.get('street').setValue(null);
+    this.newContactInfo = true;
   }
 
   onClose() {
@@ -136,6 +119,9 @@ export class ContactComponent implements OnInit {
     );
   }
 
+  getCity(){
+    return this.contactForm.get('city').value;
+  }
   private initForm() {
     this.contactForm = new FormGroup({
       state: new FormControl(
@@ -148,12 +134,18 @@ export class ContactComponent implements OnInit {
           ),
         ]
       ),
-      city: this.city,
+      city: new FormControl(null, [
+        Validators.required,
+        Validators.maxLength(this.maxCityLength),
+        Validators.pattern(
+          "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
+        ),
+      ]),
       street: new FormControl(null, [
         Validators.required,
         Validators.maxLength(this.maxStreetLength),
         Validators.pattern(
-          "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
+          "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
         ),
       ]),
       addressNumber: new FormControl(null, [

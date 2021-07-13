@@ -10,7 +10,7 @@ import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.contact.NewContactDto;
+import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.ImageDto;
@@ -34,7 +34,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -284,25 +283,25 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void contact(NewContactDto newContactDto, User user, User provider) throws IllegalContactException {
+    public void contact(AuxContactDto auxContactDto, User user, User provider) throws IllegalContactException {
         ContactInfo contactInfo;
 
-        if (newContactDto.getContactInfoId() == -1) {
+        if (auxContactDto.getContactInfoId() == -1) {
             LOGGER.debug("Adding new contact info");
-            contactInfo = userDao.addContactInfo(newContactDto);
+            contactInfo = userDao.addContactInfo(auxContactDto);
         } else {
             LOGGER.debug("Retrieving used contact info");
-            contactInfo = userDao.getContactInfoById(newContactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
+            contactInfo = userDao.getContactInfoById(auxContactDto.getContactInfoId()).orElseThrow(ContactInfoNotFoundException::new);
         }
         if (provider.getId().equals(user.getId()))
             throw new IllegalContactException();
 
         LOGGER.debug("Adding new client to provider {}", provider.getId());
-        final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, newContactDto.getMessage(), LocalDateTime.now(), newContactDto.getJob());
+        final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, auxContactDto.getMessage(), LocalDateTime.now(), auxContactDto.getJob());
         provider.getProviderDetails().getContacts().add(jobContact);
 
-        emailService.sendJobRequestEmail(newContactDto, LocaleContextHolder.getLocale());
-        emailService.sendJobRequestConfirmationEmail(newContactDto, LocaleContextHolder.getLocale());
+        emailService.sendJobRequestEmail(auxContactDto, LocaleContextHolder.getLocale());
+        emailService.sendJobRequestConfirmationEmail(auxContactDto, LocaleContextHolder.getLocale());
 
     }
 

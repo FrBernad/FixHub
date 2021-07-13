@@ -19,7 +19,7 @@
                 <div class="row">
                   <div class="col-12 d-flex align-items-center justify-content-center">
                     <form [formGroup]="contactForm" id="contactForm" class="contactForm" (ngSubmit)="onSubmit()">
-                      <div class="dropdown mb-4" *ngIf="contactInfoCollection.length > 0">
+                      <div class="dropdown mb-4" *ngIf="user.contactInfo.length > 0">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           {{'contactForm.Dropdown.Information' | translate}}
@@ -30,7 +30,7 @@
                               {{'contactForm.newContactInfo' | translate}}
                             </a>
                           </li>
-                          <li *ngFor="let contact of contactInfoCollection" (click)="dropdownClickContact(contact)">
+                          <li *ngFor="let contact of user.contactInfo" (click)="dropdownClickContact(contact)">
                             <a class="dropdown-item userContact" data-state="contact.state" data-city="contact.city"
                               data-info-id="contact.id" data-street="contact.street"
                               data-address-number="contact.addressNumber" data-floor="contact.floor"
@@ -46,12 +46,11 @@
                       <div class="row">
                         <div class="col-6">
                           <div class="form-group">
-                            <label form="contactForm">
+                            <label >
                               {{'contactForm.state' | translate}}
                               <span class="required-field">*</span>
                             </label>
-                            <input type="text" path="state" id="state" class="form-control" readonly="true"
-                              formControlName="state" />
+                            <input type="text" id="state" class="form-control" [readOnly]="true" formControlName="state" />
                             <span *ngIf="!contactForm.get('state').valid && contactForm.get('state').touched">
                               <span *ngIf="contactForm.get('state').errors['required']" class="errorMessage">
                                 {{'NotEmpty.contactForm.state' | translate }}<br>
@@ -67,17 +66,17 @@
                         </div>
                         <div class="col-6">
                           <div class="form-group mb-0">
-                            <label form="contactForm">
+                            <label>
                               {{'contactForm.city' | translate}}
                               <span class="required-field">*</span>
                             </label>
                             <div class="dropdown">
                               <div class="input-group mb-1">
-                                <input type="text" path="city" id="city" class="form-control" formControlName="city" />
+                                <input type="text" id="city" class="form-control" [readOnly]="!newContactInfo" formControlName="city" />
                                 <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split" type="button"
                                   id="cityDropdownBtn" data-bs-toggle="dropdown" data-reference="parent"
                                   style="border-radius: 0 .25rem .25rem 0; height: 38px">
-                                  <span *ngIf="city.value != null">{{city.value.name}}</span>
+                                  <span *ngIf="getCity() != null">{{getCity().name}}</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end w-100" data-reference="parent">
                                   <li *ngFor="let city of job.provider.providerDetails.location.cities"
@@ -106,11 +105,11 @@
                       </div>
 
                       <div class="form-group">
-                        <label form="contactForm">
+                        <label>
                           {{'contactForm.street' | translate}}
                           <span class="required-field">*</span>
                         </label>
-                        <input type="text" path="street" id="street" class="form-control" formControlName="street" />
+                        <input type="text" id="street" class="form-control" [readOnly]="!newContactInfo" formControlName="street" />
                         <span *ngIf="!contactForm.get('street').valid && contactForm.get('street').touched">
                           <span *ngIf="contactForm.get('street').errors['required']" class="errorMessage">
                             {{'NotEmpty.contactForm.street' | translate }}<br>
@@ -126,12 +125,12 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="form-group">
-                            <label form="contactForm">
+                            <label>
                               {{'contactForm.addressNumber' | translate}}
                               <span class="required-field">*</span>
                             </label>
-                            <input type="number" path="addressNumber" id="addressNumber" class="form-control"
-                              formControlName="addressNumber" />
+                            <input type="number" id="addressNumber" class="form-control"
+                                   [readOnly]="!newContactInfo" formControlName="addressNumber" />
                             <span
                               *ngIf="!contactForm.get('addressNumber').valid && contactForm.get('addressNumber').touched">
                               <span *ngIf="contactForm.get('addressNumber').errors['required']" class="errorMessage">
@@ -145,10 +144,10 @@
                         </div>
                         <div class="col-4">
                           <div class="form-group">
-                            <label form="contactForm">
+                            <label>
                               {{'contactForm.floor' | translate}}
                             </label>
-                            <input type="number" path="floor" id="floor" class="form-control" formControlName="floor" />
+                            <input type="number" id="floor" class="form-control" [readOnly]="!newContactInfo" formControlName="floor" />
                             <span *ngIf="!contactForm.get('floor').valid && contactForm.get('floor').touched">
                               <span *ngIf="contactForm.get('floor').errors['pattern']" class="errorMessage">
                                 {{'Pattern.contactForm.floor' | translate }}
@@ -159,11 +158,11 @@
 
                         <div class="col-4">
                           <div class="form-group">
-                            <label form="contactForm">
+                            <label >
                               {{'contactForm.departmentNumber' | translate}}
                             </label>
-                            <input type="text" path="departmentNumber" id="departmentNumber" class="form-control"
-                              formControlName="departmentNumber" />
+                            <input type="text" id="departmentNumber" class="form-control"
+                                   [readOnly]="!newContactInfo" formControlName="departmentNumber" />
                             <span
                               *ngIf="!contactForm.get('departmentNumber').valid && contactForm.get('departmentNumber').touched">
                               <span *ngIf="contactForm.get('departmentNumber').errors['maxlength']"
@@ -174,11 +173,11 @@
                           </div>
                         </div>
                         <div class="form-group">
-                          <label form="contactForm">
+                          <label >
                             {{'contactForm.description' | translate}}
                             <span class="required-field">*</span>
                           </label>
-                          <textarea class="form-control" path="message" id="message"
+                          <textarea class="form-control"  id="message"
                             style="resize: none; height: 150px;" form="contactForm" formControlName="message">
                   </textarea>
 
@@ -191,7 +190,7 @@
                             </span>
                           </span>
                         </div>
-                        <input type="hidden" id="contactInfoId" formControlName="contactInfoId" />
+                        <input type="hidden" id="contactInfoId" [readOnly]="!newContactInfo" formControlName="contactInfoId" />
                         <div class="col-6 d-flex align-items-center justify-content-center">
                           <a [routerLink]="['/jobs',job.id]" style="width: 100%;">
                             <button class="w-100 closeBtn" type="button" data-bs-dismiss="modal" (click)="onClose()">

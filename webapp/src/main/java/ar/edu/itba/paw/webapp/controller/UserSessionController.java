@@ -31,6 +31,7 @@ import javax.ws.rs.core.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/user")
 @Component
@@ -323,7 +324,32 @@ public class UserSessionController {
         return Response.noContent().build();
     }
 
-    //    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @GET
+    @Path("/contactInfo")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getContactInfo() {
+        final Optional<User> user = userService.getUserByEmail(securityContext.getUserPrincipal().getName());
+
+        LOGGER.info("Accessed /user/contactInfo GET controller");
+
+        if (!user.isPresent()) {
+//            LOGGER.warn("NotFound user /user/contactInfo GET controller");
+
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+        }
+
+        final Collection<ContactInfoDto> contactInfoCollection = ContactInfoDto.mapCollectionInfoToDto(user.get().getContactInfo());
+
+        if (contactInfoCollection.isEmpty()) {
+            return Response.status(Response.Status.NO_CONTENT.getStatusCode()).build();
+        }
+
+        GenericEntity<Collection<ContactInfoDto>> entity = new GenericEntity<Collection<ContactInfoDto>>(contactInfoCollection) {};
+
+        return Response.ok(entity).build();
+    }
+
+//    @RequestMapping(path = "/register", method = RequestMethod.POST)
 //    public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
 //        LOGGER.info("Accessed /register POST controller");
 //
