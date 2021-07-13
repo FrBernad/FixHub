@@ -35,6 +35,8 @@ export class ContactComponent implements OnInit {
   private userSub: Subscription;
   user: User;
 
+  modal: any;
+
   constructor(
     private contactService: ContactService,
     private userService: UserService,
@@ -42,6 +44,8 @@ export class ContactComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.modal = new bootstrap.Modal(document.getElementById("contactModal"));
 
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
@@ -74,7 +78,7 @@ export class ContactComponent implements OnInit {
         console.log(response);
       }
     );
-
+    this.modal.hide();
     this.onClose();
   }
 
@@ -122,6 +126,7 @@ export class ContactComponent implements OnInit {
   getCity(){
     return this.contactForm.get('city').value;
   }
+
   private initForm() {
     this.contactForm = new FormGroup({
       state: new FormControl(
