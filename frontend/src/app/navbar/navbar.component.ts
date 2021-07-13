@@ -6,7 +6,6 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ViewEncapsulation
 } from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {Subscription} from "rxjs";

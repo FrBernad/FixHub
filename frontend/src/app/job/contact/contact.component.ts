@@ -15,7 +15,6 @@ import {UserService} from 'src/app/auth/user.service';
 })
 export class ContactComponent implements OnInit {
   contactForm: FormGroup;
-  contactInfoCollection: ContactInfo[] = [];
 
   @Input()
   job: Job;

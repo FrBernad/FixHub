@@ -50,7 +50,7 @@ import {UserService} from "./auth/user.service";
 export class AppComponent implements OnInit, OnDestroy {
   private subs: Subscription;
 
-  loading;
+  loading:boolean;
 
   constructor(public translateService: TranslateService,
               public library: FaIconLibrary,
@@ -87,9 +87,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
 
-  translateSite(language: string) {
-    this.translateService.use(language);
-  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

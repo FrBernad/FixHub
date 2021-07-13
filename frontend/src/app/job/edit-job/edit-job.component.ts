@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../models/user.model";
 import {Job} from "../../models/job.model";
-import {JobCategoryModel} from "../../models/jobCategory.model";
 import {JobService} from "../job.service";
 import {ActivatedRoute, Params} from "@angular/router";
 

@@ -1,12 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from "../models/user.model";
-import {Job} from "../models/job.model";
-import {JobCategoryModel} from "../models/jobCategory.model";
 import {OrderOptionModel} from "../models/orderOption.model";
 import {City, JobPaginationQuery, JobPaginationResult, JobsService, State} from "./jobs.service";
 import {Subscription} from "rxjs";
-import {map, take, tap} from "rxjs/operators";
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 
 @Component({
   selector: 'app-discover',
@@ -44,8 +39,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   private jobsSub: Subscription;
 
   constructor(
-    private jobsService: JobsService,
-    private route: ActivatedRoute,
+    private jobsService: JobsService
   ) {
   }
 

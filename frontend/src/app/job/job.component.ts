@@ -17,7 +17,6 @@ export class JobComponent implements OnInit {
   job: Job = new Job();
 
   loggedUser: User;
-  canReview: boolean;
   selectedIndex = 0;
   isFetching = true;
 

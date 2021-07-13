@@ -1,11 +1,10 @@
 import {User} from "./user.model";
-import {JobCategoryModel} from "./jobCategory.model";
 
 export class Job {
   id: number;
   description: string;
   jobProvided: string;
-  category: JobCategoryModel;
+  category: string;
   price: number;
   totalRatings: number;
   averageRating: number;

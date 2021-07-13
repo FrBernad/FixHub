@@ -9,32 +9,10 @@ import {JobsService} from "../../discover/jobs.service";
 @Component({
   selector: 'app-new-job',
   templateUrl: './new-job.component.html',
-  styleUrls: ['./new-job.component.scss'],
+  styleUrls: ['./new-job.component.scss','../../join/choose-state/choose-state.component.scss'],
 })
 export class NewJobComponent implements OnInit, OnDestroy {
-  categories: string[] = [
-    'CARPINTERO',
-    'CATERING',
-    'CHEF',
-    'ELECTRICISTA',
-    'ENTREGA',
-    'FOTOGRAFO',
-    'FUMIGADOR',
-    'GASISTA',
-    'HERRERO',
-    'JARDINERO',
-    'LIMPIEZA',
-    'CUIDADOR_DE_ANCIANO',
-    'MANTENIMIENTO',
-    'MECANICO',
-    'MUDANZA',
-    'NINERA',
-    'PASEADOR_DE_PERRO',
-    'PLOMERO',
-    'PINTOR',
-    'TECHISTA',
-    'VIDRIERO',
-  ];
+  categories: string[] = [];
 
   jobForm: FormGroup;
 
@@ -51,7 +29,6 @@ export class NewJobComponent implements OnInit, OnDestroy {
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
   allowedImageType: boolean = true;
 
-  maxImagesReached: boolean = false;
 
   allowedImageSize: boolean = true;
   isFetching = true;
@@ -61,14 +38,14 @@ export class NewJobComponent implements OnInit, OnDestroy {
   constructor(
     private jobService: JobService,
     private userService: UserService,
-    private jobsSerivce : JobsService
+    private jobsService : JobsService
   ) {}
 
   ngOnInit(): void {
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
     });
-    this.jobsSerivce.getCategories().subscribe(
+    this.jobsService.getCategories().subscribe(
       (responseData) => {
           responseData.values.forEach( (category) =>{this.categories.push(category);})
           this.isFetching = false;

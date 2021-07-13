@@ -4,7 +4,6 @@ import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {Review} from "./review.model";
-import {ActivatedRoute} from "@angular/router";
 
 export interface JobData {
     providerId: number,
@@ -92,10 +91,6 @@ export class JobService {
   createJob(jobData: JobData) {
     console.log(jobData);
     return this.http.post<JobData>(environment.apiBaseUrl + '/jobs/new', jobData);
-  }
-
-  updateJob(job: Job, JobData: {}) {
-
   }
 
   getJob(id: number) {
