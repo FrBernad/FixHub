@@ -13,7 +13,7 @@
                 {{request.jobProvided}}
               </a><span style="color: darkslategrey">|</span>
               <a [routerLink]="['/user',request.user.id]" class="card-link">
-                {{request.user.name + '  ' + request.user.surname}}
+                {{request.user.name }} {{ request.user.surname}}
               </a>
             </div>
             <div class="col-4 justify-content-end d-flex align-items-center">
@@ -59,63 +59,63 @@
               <span class="client-label">{{'clientContactCard.status'|translate}}:</span>
               {{'contact.status.' + request.status |translate}}
             </div>
-            <!--            <ng-template [ngIf]="request.isWorkPending()" [ngIfElse]="NotPending">-->
-            <!--              <div class="col-12 p-2">-->
-            <!--                <div class="container p-2"-->
-            <!--                     style="background-color: aliceblue;border-radius: 8px;">-->
-            <!--                  <div class="row">-->
-            <!--                    <div class="col-12">-->
-            <!--                      <div class="row">-->
-            <!--                        <div-->
-            <!--                          class="col-12 col-md-6 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">-->
-            <!--                          <p class="m-2 font-weight-bold">-->
-            <!--                            {{'clientContactCard.jobDecision'|translate}}-->
-            <!--                          </p>-->
-            <!--                        </div>-->
-            <!--                        <div-->
-            <!--                          class="col-12 col-md-6 pr-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">-->
-            <!--                          <button class="finishBtn me-2"-->
-            <!--                                  type="submit">-->
-            <!--                            {{'clientContactCard.acceptJobBtn'|translate}}-->
-            <!--                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>-->
-            <!--                          </button>-->
-            <!--                          <button class="closeBtn me-2" type="submit">-->
-            <!--                            {{'clientContactCard.rejectJobBtn'|translate}}-->
-            <!--                            <fa-icon [icon]="['fas', 'times']" class="ml-2"></fa-icon>-->
-            <!--                          </button>-->
-            <!--                        </div>-->
-            <!--                      </div>-->
-            <!--                    </div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </ng-template>-->
-            <!--            <ng-template #NotPending>-->
-            <!--              <div *ngIf="request.isWorkInProgress()" class="col-12 p-2">-->
-            <!--                <div class="container p-2"-->
-            <!--                     style="background-color: aliceblue;border-radius: 8px;">-->
-            <!--                  <div class="row">-->
-            <!--                    <div class="col-12">-->
-            <!--                      <div class="row">-->
-            <!--                        <div-->
-            <!--                          class="col-12 col-md-7 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">-->
-            <!--                          <p class="font-weight-bold m-2">-->
-            <!--                            {{'clientContactCard.jobCompletedIntro'|translate}}-->
-            <!--                          </p>-->
-            <!--                        </div>-->
-            <!--                        <div-->
-            <!--                          class="col-12 col-md-5 pr-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">-->
-            <!--                          <button class="finishBtn me-2" type="submit">-->
-            <!--                            {{'clientContactCard.completedJobBtn'|translate}}-->
-            <!--                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>-->
-            <!--                          </button>-->
-            <!--                        </div>-->
-            <!--                      </div>-->
-            <!--                    </div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </ng-template>-->
+            <ng-template [ngIf]="isWorkPending()" [ngIfElse]="NotPending">
+              <div class="col-12 p-2">
+                <div class="container p-2"
+                     style="background-color: aliceblue;border-radius: 8px;">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div
+                          class="col-12 col-md-6 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                          <p class="m-2 font-weight-bold">
+                            {{'clientContactCard.jobDecision'|translate}}
+                          </p>
+                        </div>
+                        <div
+                          class="col-12 col-md-6 pr-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
+                          <button class="finishBtn me-2"
+                                  type="submit" (click)="acceptJob()">
+                            {{'clientContactCard.acceptJobBtn'|translate}}
+                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>
+                          </button>
+                          <button class="closeBtn me-2" type="submit" (click)="rejectJob()">
+                            {{'clientContactCard.rejectJobBtn'|translate}}
+                            <fa-icon [icon]="['fas', 'times']" class="ml-2"></fa-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #NotPending>
+              <div *ngIf="isWorkInProgress()" class="col-12 p-2">
+                <div class="container p-2"
+                     style="background-color: aliceblue;border-radius: 8px;">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div
+                          class="col-12 col-md-7 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                          <p class="font-weight-bold m-2">
+                            {{'clientContactCard.jobCompletedIntro'|translate}}
+                          </p>
+                        </div>
+                        <div
+                          class="col-12 col-md-5 pr-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">
+                          <button class="finishBtn me-2" type="submit" (click)="jobFinished()">
+                            {{'clientContactCard.completedJobBtn'|translate}}
+                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
           </div>
 
         </div>

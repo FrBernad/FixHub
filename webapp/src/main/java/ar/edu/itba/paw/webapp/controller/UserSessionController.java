@@ -1,9 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
+import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
@@ -54,6 +57,9 @@ public class UserSessionController {
 
     @Context
     private UriInfo uriInfo;
+
+    @Autowired
+    private JobService jobService;
 
     @Context
     private SecurityContext securityContext;
@@ -732,6 +738,29 @@ public class UserSessionController {
 
         return Response.ok().build();
 
+    }
+
+
+    @PUT
+    @Path("/dashboard/contacts/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response changeStatus(@PathParam ("id") final long contactId,final NewStatusDto status) {
+
+        LOGGER.info("Accessed /user/dashboard/contacts/{}",contactId);
+
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+
+        JobStatus newStatus=status.getStatus();
+
+        if(newStatus == JobStatus.FINISHED){
+            jobService.finishJob(jobContact);
+        }else if(newStatus == JobStatus.REJECTED){
+            jobService.rejectJob(jobContact);
+        }else if(newStatus == JobStatus.IN_PROGRESS){
+            jobService.acceptJob(jobContact);
+        }else return Response.status(Response.Status.BAD_REQUEST).build();
+
+        return Response.ok().build();
     }
 
 

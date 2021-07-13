@@ -113,4 +113,18 @@ export class ContactService {
 
   }
 
+
+
+  changeContactStatus(contactId:number, status:string){
+    let obj ={
+      status:status
+    }
+
+    return this.http.put(
+      environment.apiBaseUrl + '/user/dashboard/contacts/'+contactId,
+      obj
+      );
+
+  }
+
 }
