@@ -74,11 +74,18 @@ export class UserService {
       environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(()=>{this.populateUserData().subscribe()}));
   }
 
-  uploadProfileImage() {
-
+  uploadProfileImage(file) {
+    this.http.put(environment.apiBaseUrl + '/user/profileImage',
+      file).pipe(tap(() => {
+      this.populateUserData().subscribe();
+    }));
   }
 
-  uploadCoverImage() {
+  uploadCoverImage(file) {
+    this.http.put(environment.apiBaseUrl + '/user/coverImage',
+      file).pipe(tap(() => {
+      this.populateUserData().subscribe();
+    }));
 
   }
 
