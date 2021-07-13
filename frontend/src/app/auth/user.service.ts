@@ -6,16 +6,6 @@ import {environment} from "../../environments/environment";
 import {tap} from "rxjs/operators";
 import {City, State} from "../discover/jobs.service";
 
-export interface ProviderDetails {
-  schedule: {
-    startTime: string;
-    endTime: string
-  };
-  location: {
-    cities: City[];
-    state: State
-  }
-}
 
 export interface ProviderInfo {
   schedule: {
