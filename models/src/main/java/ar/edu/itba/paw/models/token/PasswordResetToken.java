@@ -15,7 +15,7 @@ public class PasswordResetToken {
     @Column(name = "prt_id")
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "prt_user_id")
     private User user;
 

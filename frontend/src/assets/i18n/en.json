@@ -386,6 +386,7 @@
   "errors.BadRequest": "It seems you have sent a bad request",
   "errors.ServerError": "It seems that an error ocurred on the server. We are working on it. Try again later",
   "errors.notVerified.title": "Your account is not verified. Please check your email inbox and verify your account.",
+  "errors.notVerified.sent": "Verification link sent.",
   "errors.notVerified.notRecieved": "Haven't received your email yet?",
   "errors.notVerified.resend": "Resend",
   "errors.IllegalContentTypeException": "We only support JPEG, JPG, or PNG",

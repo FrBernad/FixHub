@@ -237,5 +237,42 @@
       <app-user-sent-request></app-user-sent-request>
     </div>
 
+    <!-- NOT VERIFIED POPUP-->
+    <div class="modal fade" (hide.bs.modal)="onClose()" tabindex="-1" data-show="true" id="notVerifiedModal">
+      <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="container-fluid pt-3">
+              <div class="row align-items-center justify-content-center">
+                <div class="col-12">
+                  <h1 class="text-center" style="font-size: 18px;font-weight: bold">
+                    {{'errors.notVerified.title' | translate}}
+                  </h1>
+                </div>
+                <div class="col-12 mt-2">
+                  <h2 class="text-center" style="font-size: 18px">
+                    {{'errors.notVerified.notRecieved' | translate}}
+                  </h2>
+                </div>
+                <div class="col-8 mt-2">
+                  <button [disabled]="disable" (click)="onVerify()" class="w-100 continueBtn my-2">
+                    <span *ngIf="!disable">
+                    {{'errors.notVerified.resend' | translate}}
+                    </span>
+                    <span class="spinner-border spinner-border-sm" [hidden]="!disable"></span>
+                  </button>
+                </div>
+                <div *ngIf="success" class="col-12 mt-2">
+                  <h2 class="text-center" style="font-size: 18px; color:#4BB543">
+                    {{'errors.notVerified.sent' | translate}}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

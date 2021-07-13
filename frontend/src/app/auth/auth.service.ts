@@ -124,7 +124,7 @@ export class AuthService {
       );
   }
 
-  resetPassword(token: string, password:string) {
+  resetPassword(token: string, password: string) {
     return this.http
       .put(
         environment.apiBaseUrl + '/user/resetPassword',
@@ -149,6 +149,17 @@ export class AuthService {
         {
           email,
         },
+        {
+          observe: "response"
+        }
+      );
+  }
+
+  resendVerificationEmail() {
+    return this.http
+      .post(
+        environment.apiBaseUrl + '/user/verify',
+        {},
         {
           observe: "response"
         }

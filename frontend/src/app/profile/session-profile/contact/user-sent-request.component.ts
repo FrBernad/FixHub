@@ -28,7 +28,6 @@ export class UserSentRequestComponent implements OnInit {
   ngOnInit(): void {
     this.contactService.getUserSentRequests(this.cpq);
     this.contactSub = this.contactService.results.subscribe((results) => {
-      console.log(results);
       this.cpr = {
         ...this.cpr,
         ...results

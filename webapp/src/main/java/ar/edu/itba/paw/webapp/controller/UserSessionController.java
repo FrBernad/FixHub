@@ -113,7 +113,7 @@ public class UserSessionController {
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
 
-        if (user.isProvider()) {
+        if (user.isVerified()) {
             addAuthorizationHeader(responseBuilder, user);
         }
         return responseBuilder.build();

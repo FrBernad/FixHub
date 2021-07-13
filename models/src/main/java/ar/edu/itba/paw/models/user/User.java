@@ -196,6 +196,10 @@ public class User {
         return roles.stream().anyMatch(p -> p.name().equals(Roles.PROVIDER.name()));
     }
 
+    public boolean isVerified() {
+        return roles.stream().anyMatch(p -> p.name().equals(Roles.VERIFIED.name()));
+    }
+
     public Set<User> getFollowing() {
         return following;
     }

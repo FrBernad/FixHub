@@ -3,6 +3,7 @@ import {UserService} from "../../auth/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {FormControl} from "@angular/forms";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-session-profile',
@@ -15,24 +16,36 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   profileImage: FormControl;
   coverImage: FormControl;
 
-  allowedCoverImageTypes: string[] = ['image/png', 'image/jpeg','image/jpg'];
+  allowedCoverImageTypes: string[] = ['image/png', 'image/jpeg', 'image/jpg'];
   maxCoverImageMBSize = 3;
   allowedCoverImageType: boolean = true;
   allowedCoverImageSize: boolean = true;
 
-  allowedProfileImageTypes: string[] = ['image/png', 'image/jpeg','image/gif','image/jpg'];
+  allowedProfileImageTypes: string[] = ['image/png', 'image/jpeg', 'image/gif', 'image/jpg'];
   maxProfileImageMBSize = 3;
   allowedProfileImageType: boolean = true;
   allowedProfileImageSize: boolean = true;
 
+  disable = false;
+  success = false;
+
   user: User;
 
-  constructor( private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     });
+
+    if (!this.user.roles.includes("VERIFIED")) {
+      let modal = new bootstrap.Modal(document.getElementById('notVerifiedModal'));
+      modal.show();
+    }
 
     this.profileImage = new FormControl(null);
     this.coverImage = new FormControl(null);
@@ -49,12 +62,12 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.allowedProfileImageType = true;
     this.allowedProfileImageSize = true;
 
-    if(!this.allowedProfileImageTypes.includes(file.type)) {
+    if (!this.allowedProfileImageTypes.includes(file.type)) {
       this.allowedProfileImageType = false;
       return;
     }
 
-    if(file.size > this.getTotalBytes(this.maxProfileImageMBSize)) {
+    if (file.size > this.getTotalBytes(this.maxProfileImageMBSize)) {
       this.allowedProfileImageSize = false;
       return
     }
@@ -65,8 +78,8 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
   }
 
-  private getTotalBytes(mb){
-    return mb * Math.pow(10,6);
+  private getTotalBytes(mb) {
+    return mb * Math.pow(10, 6);
   }
 
   onCoverImageChanged(event) {
@@ -74,19 +87,33 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.allowedCoverImageType = true;
     this.allowedCoverImageSize = true;
 
-    if(!this.allowedCoverImageTypes.includes(file.type)) {
+    if (!this.allowedCoverImageTypes.includes(file.type)) {
       this.allowedCoverImageType = false;
       return;
     }
 
-    if(file.size > this.getTotalBytes(this.maxCoverImageMBSize)) {
+    if (file.size > this.getTotalBytes(this.maxCoverImageMBSize)) {
       this.allowedCoverImageSize = false;
       return
     }
+  }
 
-    console.log(this.coverImage);
+  onVerify() {
+    this.disable = true;
+    this.authService.resendVerificationEmail().subscribe(() => {
+      this.disable = false;
+      this.success = true;
+      setTimeout(() => {
+        this.success = false;
+      }, 2000)
+    }, () => {
+      this.disable = false;
+    })
+  }
 
-
+  onClose() {
+    this.disable = false;
+    this.success = false;
   }
 
 }
