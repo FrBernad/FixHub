@@ -6,6 +6,15 @@ import {Subject} from "rxjs";
 import {Review} from "./review.model";
 import {ActivatedRoute} from "@angular/router";
 
+export interface JobData {
+    providerId: number,
+    jobProvided: string,
+    jobCategory: string,
+    price: number,
+    description: string,
+    images: File[],
+    paused?: boolean
+}
 export interface ReviewsPaginationResult {
   page: number;
   totalPages: number;
@@ -80,23 +89,9 @@ export class JobService {
     this.getFirstReviews(id);
   }
 
-  createJob(
-    jobData: {
-      jobProvided: string,
-      jobCategory: string,
-      price: number,
-      description: string,
-      images: File[]
-    }
-  ) {
-    return this.http.post<{
-      jobProvided: string,
-      jobCategory: string,
-      price: number,
-      description: string,
-      images: File[]
-    }>(environment.apiBaseUrl + '/jobs/new', jobData);
-
+  createJob(jobData: JobData) {
+    console.log(jobData);
+    return this.http.post<JobData>(environment.apiBaseUrl + '/jobs/new', jobData);
   }
 
   updateJob(job: Job, JobData: {}) {

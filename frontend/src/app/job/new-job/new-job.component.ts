@@ -1,13 +1,16 @@
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import {JobService} from "../job.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { JobService } from '../job.service';
+import { Subscription } from 'rxjs';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/auth/user.service';
 
 @Component({
   selector: 'app-new-job',
   templateUrl: './new-job.component.html',
   styleUrls: ['./new-job.component.scss'],
 })
-export class NewJobComponent implements OnInit {
+export class NewJobComponent implements OnInit, OnDestroy {
   categories: string[] = [
     'CARPINTERO',
     'CATERING',
@@ -40,6 +43,9 @@ export class NewJobComponent implements OnInit {
   minPrice: number = 1;
   maxPrice: number = 999999;
 
+  private userSub: Subscription;
+  user: User;
+
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
   allowedImageType: boolean = true;
 
@@ -50,9 +56,16 @@ export class NewJobComponent implements OnInit {
   imagesArray = new FormArray([]);
   jobCategory = new FormControl(null, [Validators.required]);
 
-  constructor(private jobService:JobService) {}
+  constructor(
+    private jobService: JobService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
+    this.userSub = this.userService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     this.jobForm = new FormGroup({
       jobProvided: new FormControl(null, [
         Validators.required,
@@ -72,24 +85,25 @@ export class NewJobComponent implements OnInit {
         Validators.maxLength(this.maxDescriptionLength),
       ]),
       images: this.imagesArray,
-      paused: new FormControl(false)
+      paused: new FormControl(false),
     });
   }
 
   onSubmit() {
-    if(!this.jobForm.valid){
+    if (!this.jobForm.valid) {
       this.jobForm.markAllAsTouched();
       return;
     }
 
-
     console.log(this.jobForm.value);
 
-    this.jobService.createJob(this.jobForm.value).subscribe(
-       response => {
-         console.log(response);
-       }
-    );
+    this.jobService
+      .createJob({
+        providerId: this.user.id,
+        ...this.jobForm.value,
+      }).subscribe((response) => {
+        console.log(response);
+      });
   }
 
   onFileChanged(event) {
@@ -97,20 +111,18 @@ export class NewJobComponent implements OnInit {
     this.allowedImageType = true;
     this.allowedImageSize = true;
 
-    if(!this.allowedImageTypes.includes(file.type)) {
+    if (!this.allowedImageTypes.includes(file.type)) {
       this.allowedImageType = false;
       return;
     }
 
-    if(file.size > 3000000) {
+    if (file.size > 3000000) {
       this.allowedImageSize = false;
-      return
+      return;
     }
 
     if (this.imagesArray.length < this.maxImagesPerJob) {
-      (<FormArray>this.jobForm.get('images')).push(
-        new FormControl(file)
-      );
+      (<FormArray>this.jobForm.get('images')).push(new FormControl(file));
       console.log(this.imagesArray);
     }
   }
@@ -126,4 +138,9 @@ export class NewJobComponent implements OnInit {
     this.jobCategory.setValue(category);
   }
 
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
+  }
+
 }
+
