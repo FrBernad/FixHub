@@ -20,6 +20,8 @@ export class UserSentRequestComponent implements OnInit {
     pageSize: 4,
   }
 
+  isFetching=true;
+
   private contactSub:Subscription;
 
   constructor(private contactService: ContactService) { }
@@ -31,6 +33,7 @@ export class UserSentRequestComponent implements OnInit {
         ...this.cpr,
         ...results
       };
+      this.isFetching=false;
     });
   }
 

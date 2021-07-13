@@ -6,35 +6,49 @@
       </h1>
     </div>
   </div>
-  <div class="row pb-2 align-items-start flex-grow-1 align-content-between">
-    <div class="col-12">
-      <div class="container-fluid px-0">
-        <div class="row">
-          <ng-template [ngIf]="cpr.results.length>0" [ngIfElse]="contactsNotFound">
-            <div class="col-12 mt-2">
-              <ng-template [ngFor] let-request [ngForOf]="cpr.results">
-                <app-user-sent-request-card class="w-100" [request]="request"></app-user-sent-request-card>
-              </ng-template>
-            </div>
-
-          </ng-template>
-          <ng-template #contactsNotFound>
-            <div class="col-12 d-flex align-items-center justify-content-center">
-              <div class="container mt-2 d-flex align-items-center justify-content-center">
-                <p class="m-0 text-center p-4" style="font-size: 16px">
-                  {{'profilePage.contacts.noContacts' | translate}}
-                </p>
-              </div>
-            </div>
-          </ng-template>
-          </div>
+  <ng-template [ngIf]="isFetching" [ngIfElse]="alreadyFetched">
+    <div class="container h-100">
+      <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-12">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
       </div>
     </div>
-    <app-pagination
-      *ngIf="cpr.totalPages>1"
-      (changePage)="onChangePage($event)"
-      [currentPage]="cpr.page"
-      [totalPages]="cpr.totalPages">
-    </app-pagination>
-  </div>
+  </ng-template>
+
+  <ng-template #alreadyFetched>
+    <div class="row pb-2 align-items-start flex-grow-1 align-content-between">
+      <div class="col-12">
+
+        <div class="container-fluid px-0">
+          <div class="row">
+            <ng-template [ngIf]="cpr.results.length>0" [ngIfElse]="contactsNotFound">
+              <div class="col-12 mt-2">
+                <ng-template [ngFor] let-request [ngForOf]="cpr.results">
+                  <app-user-sent-request-card class="w-100" [request]="request"></app-user-sent-request-card>
+                </ng-template>
+              </div>
+
+            </ng-template>
+            <ng-template #contactsNotFound>
+              <div class="col-12 d-flex align-items-center justify-content-center">
+                <div class="container mt-2 d-flex align-items-center justify-content-center">
+                  <p class="m-0 text-center p-4" style="font-size: 16px">
+                    {{'profilePage.contacts.noContacts' | translate}}
+                  </p>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <app-pagination
+        *ngIf="cpr.totalPages>1"
+        (changePage)="onChangePage($event)"
+        [currentPage]="cpr.page"
+        [totalPages]="cpr.totalPages">
+      </app-pagination>
+    </div>
+  </ng-template>
+
 </div>

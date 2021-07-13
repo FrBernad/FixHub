@@ -4,6 +4,7 @@ import { JobService } from '../job.service';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/auth/user.service';
+import {JobsService} from "../../discover/jobs.service";
 
 @Component({
   selector: 'app-new-job',
@@ -53,19 +54,26 @@ export class NewJobComponent implements OnInit, OnDestroy {
   maxImagesReached: boolean = false;
 
   allowedImageSize: boolean = true;
+  isFetching = true;
 
   imagesArray = new FormArray([]);
-  jobCategory = new FormControl(null, [Validators.required]);
 
   constructor(
     private jobService: JobService,
-    private userService: UserService
+    private userService: UserService,
+    private jobsSerivce : JobsService
   ) {}
 
   ngOnInit(): void {
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
     });
+    this.jobsSerivce.getCategories().subscribe(
+      (responseData) => {
+          responseData.values.forEach( (category) =>{this.categories.push(category);})
+          this.isFetching = false;
+      }
+    )
 
     this.jobForm = new FormGroup({
       jobProvided: new FormControl(null, [
@@ -75,7 +83,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
           "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
         ),
       ]),
-      jobCategory: this.jobCategory,
+      jobCategory:  new FormControl(null, [Validators.required]),
       price: new FormControl(null, [
         Validators.required,
         Validators.min(this.minPrice),
@@ -139,7 +147,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   }
 
   dropdownClick(category: string) {
-    this.jobCategory.setValue(category);
+    this.jobForm.get('jobCategory').setValue(category);
   }
 
   ngOnDestroy(): void {

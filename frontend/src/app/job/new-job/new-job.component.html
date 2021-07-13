@@ -1,30 +1,35 @@
 <div class="container-fluid py-4 px-0">
   <div class="container-lg w-50 p-5 smallContentContainer">
-    <div class="row w-100 m-0 align-items-center justify-content-center">
-      <div class="col-12">
-        <h1 class="text-center title">
-          {{'newJob.Title' | translate}}
-        </h1>
-        <p class="subtitle text-center mb-4">
+    <ng-template [ngIf]="isFetching" [ngIfElse]="alreadyFetched">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-template>
+
+    <ng-template #alreadyFetched>
+      <div class="row w-100 m-0 align-items-center justify-content-center">
+        <div class="col-12">
+          <h1 class="text-center title">
+            {{'newJob.Title' | translate}}
+          </h1>
+          <p class="subtitle text-center mb-4">
           <span class="font-weight-bold">
             {{'newJob.description.boldText' | translate}}
           </span>
-          {{'newJob.description.normalText' | translate}}
-        </p>
-      </div>
-      <div class="col-12">
-        <div class="container-lg">
-          <div class="row">
-            <div class="col-12 d-flex align-items-center justify-content-center">
-              <form id="jobForm" class="jobForm" [formGroup]="jobForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                  <label form="jobForm">
-                    {{'jobForm.jobNameTitle' | translate}}
-                    <span class="required-field">*</span>
-                  </label>
-                  <input type="text" id="jobProvided" class="form-control"
-                    formControlName="jobProvided" />
-                  <span *ngIf="!jobForm.get('jobProvided').valid && jobForm.get('jobProvided').touched">
+            {{'newJob.description.normalText' | translate}}
+          </p>
+        </div>
+        <div class="col-12">
+          <div class="container-lg">
+            <div class="row">
+              <div class="col-12 d-flex align-items-center justify-content-center">
+                <form id="jobForm" class="jobForm" [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <label form="jobForm">
+                      {{'jobForm.jobNameTitle' | translate}}
+                      <span class="required-field">*</span>
+                    </label>
+                    <input type="text" id="jobProvided" class="form-control"
+                           formControlName="jobProvided"/>
+                    <span *ngIf="!jobForm.get('jobProvided').valid && jobForm.get('jobProvided').touched">
                     <span *ngIf="jobForm.get('jobProvided').errors['required']" class="errorMessage">
                       {{'NotEmpty.jobForm.jobProvided' | translate }}<br>
                     </span>
@@ -35,51 +40,53 @@
                       {{'Pattern.jobForm.jobProvided' | translate }}
                     </span>
                   </span>
-                  <!-- <form:errors path="jobProvided" cssClass="formError" element="p" /> -->
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label form="jobForm">
-                        {{'jobForm.jobTypeTitle' | translate}}
-                        <span class="required-field">*</span>
-                      </label>
-                      <input type="hidden" id="jobCategory" formControlName="jobCategory" />
-                      <div class="dropdown">
-                        <button
-                          class="dropdown-custom dropdown-toggle w-100 d-flex align-items-center justify-content-between"
-                          type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                          aria-expanded="false">
+                    <!-- <form:errors path="jobProvided" cssClass="formError" element="p" /> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label form="jobForm">
+                          {{'jobForm.jobTypeTitle' | translate}}
+                          <span class="required-field">*</span>
+                        </label>
+                        <input type="hidden" id="jobCategory" formControlName="jobCategory"/>
+                        <div class="dropdown">
+                          <button
+                            class="dropdown-custom dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                            type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                           <span>
                             {{'newJob.category' | translate}}
                           </span>
-                          <span *ngIf="jobCategory.value == null" class="category" id="categoryName">-</span>
-                          <span *ngIf="jobCategory.value != null" class="category" id="categoryName">{{'home.categories.'+jobCategory.value | translate}}</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-size w-100">
-                          <li *ngFor="let category of categories" class="dropdown-item categoryButton " type="button"
-                            data-name="${category}" data-i18name="${categoryName}" (click)="dropdownClick(category)">
-                            {{'home.categories.'+category | translate}}
-                          </li>
-                        </ul>
-                      </div>
-                      <span *ngIf="!jobForm.get('jobCategory').valid && jobForm.get('jobCategory').touched">
+                            <span *ngIf="jobForm.get('jobCategory').value == null" class="category">-</span>
+                            <span *ngIf="jobForm.get('jobCategory').value != null"
+                                  class="category">{{'home.categories.' + jobForm.get('jobCategory').value | translate}}</span>
+                          </button>
+                          <ul class="dropdown-menu dropdown-size w-100">
+                            <li *ngFor="let category of categories" class="dropdown-item categoryButton " type="button"
+                                data-name="${category}" data-i18name="${categoryName}"
+                                (click)="dropdownClick(category)">
+                              {{'home.categories.' + category | translate}}
+                            </li>
+                          </ul>
+                        </div>
+                        <span *ngIf="!jobForm.get('jobCategory').valid && jobForm.get('jobCategory').touched">
                         <span *ngIf="jobForm.get('jobCategory').errors['required']" class="errorMessage">
                           {{'NotEmpty.jobForm.jobCategory' | translate }}<br>
                         </span>
                       </span>
-                      <!-- <form:errors path="jobCategory" cssClass="formError" element="p" /> -->
+                        <!-- <form:errors path="jobCategory" cssClass="formError" element="p" /> -->
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label form="jobForm">
-                        {{'jobForm.jobPriceTitle' | translate}}
-                        <span class="required-field">*</span>
-                      </label>
-                      <input type="number" path="price" id="price" class="form-control"
-                        cssErrorClass="form-control is-invalid" formControlName="price" />
-                      <span *ngIf="!jobForm.get('price').valid && jobForm.get('price').touched">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label form="jobForm">
+                          {{'jobForm.jobPriceTitle' | translate}}
+                          <span class="required-field">*</span>
+                        </label>
+                        <input type="number" path="price" id="price" class="form-control"
+                               cssErrorClass="form-control is-invalid" formControlName="price"/>
+                        <span *ngIf="!jobForm.get('price').valid && jobForm.get('price').touched">
                         <span *ngIf="jobForm.get('price').errors['required']" class="errorMessage">
                           {{'NotNull.jobForm.price' | translate }}<br>
                         </span>
@@ -93,17 +100,17 @@
                           {{'Pattern.jobForm.price' | translate }}
                         </span>
                       </span>
-                      <!-- <form:errors path="price" cssClass="formError" element="p" /> -->
+                        <!-- <form:errors path="price" cssClass="formError" element="p" /> -->
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label form="jobForm">
-                    {{'jobForm.jobDescriptionTitle' | translate}}
-                    <span class="required-field">*</span>
-                  </label>
-                  <textarea class="form-control" path="description" id="description"
-                    cssErrorClass="form-control is-invalid" formControlName="description">
+                  <div class="form-group">
+                    <label form="jobForm">
+                      {{'jobForm.jobDescriptionTitle' | translate}}
+                      <span class="required-field">*</span>
+                    </label>
+                    <textarea class="form-control" path="description" id="description"
+                              cssErrorClass="form-control is-invalid" formControlName="description">
                     </textarea>
                     <span *ngIf="!jobForm.get('description').valid && jobForm.get('description').touched">
                       <span *ngIf="jobForm.get('description').errors['required']" class="errorMessage">
@@ -113,69 +120,76 @@
                         {{'Size.jobForm.description' | translate: {max: maxDescriptionLength} }}
                       </span>
                     </span>
-                  <!-- <form:errors path="description" cssClass="formError" element="p" /> -->
-                </div>
+                    <!-- <form:errors path="description" cssClass="formError" element="p" /> -->
+                  </div>
 
-                <div class="form-group d-flex justify-content-between align-items-center">
-                  <div class="container-fluid px-0">
-                    <div class="row">
-                      <div class="col-12 d-flex align-items-center justify-content-start">
-                        <label class="mb-0" form="jobForm">
-                          {{'jobForm.jobImageTitle' | translate}}
-                        </label>
-                      </div>
-                      <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
-                        <button class="buttonCustom d-flex align-items-center justify-content-center"
-                          type="button" id="addFileButton" (click)="fileInput.click()" [disabled]="imagesArray.length >= maxImagesPerJob"
-                          [ngClass] = "imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
-                          <fa-icon [icon]="['fas', 'upload']" class="me-1"></fa-icon>
-                          {{'jobForm.ImagesButton' | translate}}
-                        </button>
-                      </div>
-                      <div class="col-2 mt-3 d-flex px-0 align-items-center justify-content-start">
-                        <div>
-                          <span id="imagesQuantity" data-max="${maxImagesPerJob}">{{imagesArray.length}}</span>
-                          <span> / {{maxImagesPerJob}}</span>
+                  <div class="form-group d-flex justify-content-between align-items-center">
+                    <div class="container-fluid px-0">
+                      <div class="row">
+                        <div class="col-12 d-flex align-items-center justify-content-start">
+                          <label class="mb-0" form="jobForm">
+                            {{'jobForm.jobImageTitle' | translate}}
+                          </label>
+                        </div>
+                        <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
+                          <button class="buttonCustom d-flex align-items-center justify-content-center"
+                                  type="button" id="addFileButton" (click)="fileInput.click()"
+                                  [disabled]="imagesArray.length >= maxImagesPerJob"
+                                  [ngClass]="imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
+                            <fa-icon [icon]="['fas', 'upload']" class="me-1"></fa-icon>
+                            {{'jobForm.ImagesButton' | translate}}
+                          </button>
+                        </div>
+                        <div class="col-2 mt-3 d-flex px-0 align-items-center justify-content-start">
+                          <div>
+                            <span id="imagesQuantity" data-max="${maxImagesPerJob}">{{imagesArray.length}}</span>
+                            <span> / {{maxImagesPerJob}}</span>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <!-- <form:errors path="images" cssClass="formError" element="p" /> -->
+                          <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden
+                                 (change)="onFileChanged($event)" #fileInput/>
                         </div>
                       </div>
+                    </div>
+
+
+                  </div>
+
+                  <input type="hidden" value="${user.id}" name="userId">
+
+                  <div class="container-fluid p-0" id="imagesHolder">
+                    <div class="row">
                       <div class="col-12">
-                        <!-- <form:errors path="images" cssClass="formError" element="p" /> -->
-                        <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden (change)="onFileChanged($event)" #fileInput/>
+                        <button type="button" class="imgFile m-2"
+                                *ngFor="let control of imagesArray.controls; let i = index" (click)="deleteImage(i)">
+                          {{control.value.name}}
+                          <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
+                        </button>
+                        <span *ngIf="!allowedImageType"
+                              class="errorMessage"><br>{{'ImageTypeConstraint.jobForm.images' | translate}}</span>
+                        <span *ngIf="!allowedImageSize"
+                              class="errorMessage"><br>{{'errors.MaxUploadSizeException' | translate}}</span>
                       </div>
                     </div>
                   </div>
 
-
-                </div>
-
-                <input type="hidden" value="${user.id}" name="userId">
-
-                <div class="container-fluid p-0" id="imagesHolder">
-                  <div class="row">
-                    <div class="col-12">
-                      <button type="button" class="imgFile m-2" *ngFor="let control of imagesArray.controls; let i = index" (click)="deleteImage(i)">
-                        {{control.value.name}}
-                        <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
-                      </button>
-                      <span *ngIf="!allowedImageType" class="errorMessage"><br>{{'ImageTypeConstraint.jobForm.images' | translate}}</span>
-                      <span *ngIf="!allowedImageSize" class="errorMessage"><br>{{'errors.MaxUploadSizeException' | translate}}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 px-0 hide d-flex align-items-center justify-content-center">
-                  <button type="submit" [disabled]="disabled" id="jobFormButton" class="w-100 continueBtn my-2">
-                    <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
-                    <span id="jobFormBtnText">
+                  <div class="col-12 px-0 hide d-flex align-items-center justify-content-center">
+                    <button type="submit" [disabled]="disabled" id="jobFormButton" class="w-100 continueBtn my-2">
+                      <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
+                      <span id="jobFormBtnText">
                       <span *ngIf="!disabled"> {{'jobForm.buttonText' | translate}}</span>
                     </span>
-                  </button>
-                </div>
-              </form>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-template>
+
   </div>
 </div>
