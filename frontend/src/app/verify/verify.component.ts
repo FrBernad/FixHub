@@ -21,7 +21,8 @@ export class VerifyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const token = this.route.snapshot.params['token'];
+
+    const token = this.route.snapshot.queryParams['token'];
 
     this.authService.verify(token).subscribe(() => {
       this.userService.populateUserData().subscribe(() => {

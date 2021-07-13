@@ -4,7 +4,7 @@
       {{'login.forgotPassword' | translate}}
     </span>
 </a>
-<div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="staticBackdrop" (hide.bs.modal)="onClose()" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -19,17 +19,42 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-12 mt-4">
-                  <form id="passResetRequest">
+                  <form [formGroup]="resetPasswordForm" (ngSubmit)="onSubmit()" id="passResetRequest">
                     <label for="email">
                       {{'account.password.resetRequest.emailLabel' | translate }}
                     </label>
-                    <input type="text" class="form-control input" id="email" name="email">
+                    <input formControlName="email" type="text" class="form-control input" id="email" name="email">
+                    <span *ngIf="!resetPasswordForm.get('email').valid && resetPasswordForm.get('email').touched">
+                        <span *ngIf="resetPasswordForm.get('email').errors['required']" class="errorMessage">
+                            {{'NotEmpty.loginForm.email' | translate }}<br>
+                        </span>
+                        <span
+                          *ngIf="resetPasswordForm.get('email').errors['email']"
+                          class="errorMessage">
+                          {{'account.password.resetEmailConfirmation.emailFormError' | translate:
+                          {min: minPasswordLength, max: maxPasswordLength} }}
+                        </span>
+                  </span>
                   </form>
                 </div>
                 <div class="col-12 mt-2 d-flex align-items-center justify-content-center">
-                  <button form="passResetRequest" type="button" (click)="onSubmit()" class="w-100 continueBtn my-2">
+                  <button form="passResetRequest" [disabled]="disable"
+                          class="w-100 continueBtn my-2">
+                    <span *ngIf="!disable">
                     {{'account.password.resetRequest.submitBtn' | translate }}
+                    </span>
+                    <span class="spinner-border spinner-border-sm" [hidden]="!disable"></span>
                   </button>
+                </div>
+                <div *ngIf="success" class="col-12 mt-2 d-flex align-items-center justify-content-center">
+                  <p class="fw-bold">
+                    {{'account.password.resetEmailConfirmation.emailAck' | translate }}
+                  </p>
+                </div>
+                <div *ngIf="error" class="col-12 mt-2 d-flex align-items-center justify-content-center">
+                  <p class="fw-bold">
+                    {{'account.password.resetEmailConfirmation.error' | translate }}
+                  </p>
                 </div>
               </div>
             </div>

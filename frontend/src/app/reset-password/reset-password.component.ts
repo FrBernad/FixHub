@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 import {UserService} from "../auth/user.service";
+import {Modal} from "node_modules/bootstrap/dist/js/bootstrap.esm.js"
 
 @Component({
   selector: 'app-reset-password',
@@ -32,7 +33,6 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.token = this.route.snapshot.queryParams['token'];
-    console.log(this.token);
 
     if (!this.token) {
       this.router.navigate(['/']);
@@ -51,6 +51,7 @@ export class ResetPasswordComponent implements OnInit {
     });
 
     this.resetPasswordForm.setValidators(this.passwordMatching.bind(this));
+
   }
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {
@@ -73,18 +74,27 @@ export class ResetPasswordComponent implements OnInit {
 
   onSubmit() {
     this.disable = true;
-
     if (!this.resetPasswordForm.valid) {
       this.resetPasswordForm.markAllAsTouched();
       this.disable = false;
       return;
     }
 
+    let modal: Modal = new Modal(document.getElementById('resultsModal'), {})
+
     this.authService.resetPassword(this.token, this.resetPasswordForm.get("password").value).subscribe(() => {
       this.success = true;
       this.disable = false;
+      modal.show();
     }, () => {
+      modal.show();
       this.disable = false;
     })
   }
+
+  onClose() {
+    this.router.navigate(['/login']);
+    this.resetPasswordForm.reset();
+  }
+
 }
