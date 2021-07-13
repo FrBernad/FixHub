@@ -46,6 +46,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   userSub: Subscription;
 
   user: User;
+  isFetching=true;
 
   constructor(
     private jobsService: JobsService,
@@ -68,6 +69,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
     this.jobsSub = this.jobsService.results.subscribe((results) => {
       this.popularJobs = results.results;
+      this.isFetching= false;
+
     });
   }
 

@@ -136,25 +136,32 @@
       </div>
       <div class="col-12 p-0">
         <div class="container-fluid p-0">
-          <div class="row align-items-center m-0"
-               [ngClass]="(popularJobs.length)%3 == 0 ? 'justify-content-between':'justify-content-start'">
-            <ng-template [ngIf]="popularJobs.length > 0" [ngIfElse]="noJobs">
-              <div *ngFor="let job of popularJobs | slice:0:3"
-                   class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                <app-popular-job-card [job]="job"></app-popular-job-card>
-              </div>
-            </ng-template>
-            <ng-template #noJobs>
-              <div class="col-12 mt-3 col-md-12 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
-                <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
-                  <p class="m-0 text-center p-4" style="font-size: 16px;">
-                    {{ 'landingPage.mostPopularJobs.noPopularJobsText' | translate}}
-                  </p>
-                </div>
-              </div>
-            </ng-template>
+          <ng-template [ngIf]="isFetching" [ngIfElse]="alreadyFetched">
+            <app-loading-spinner></app-loading-spinner>
+          </ng-template>
+          <ng-template #alreadyFetched>
 
-          </div>
+            <div class="row align-items-center m-0"
+                 [ngClass]="(popularJobs.length)%3 == 0 ? 'justify-content-between':'justify-content-start'">
+              <ng-template [ngIf]="popularJobs.length > 0" [ngIfElse]="noJobs">
+                <div *ngFor="let job of popularJobs | slice:0:3"
+                     class="col-12 mt-3 col-md-4 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
+                  <app-popular-job-card [job]="job"></app-popular-job-card>
+                </div>
+              </ng-template>
+              <ng-template #noJobs>
+                <div class="col-12 mt-3 col-md-12 mb-4 mb-md-0 d-flex align-items-center justify-content-center">
+                  <div class="container mt-5 d-flex align-items-center justify-content-center noJobsFound">
+                    <p class="m-0 text-center p-4" style="font-size: 16px;">
+                      {{ 'landingPage.mostPopularJobs.noPopularJobsText' | translate}}
+                    </p>
+                  </div>
+                </div>
+              </ng-template>
+
+            </div>
+          </ng-template>
+
 
         </div>
       </div>
