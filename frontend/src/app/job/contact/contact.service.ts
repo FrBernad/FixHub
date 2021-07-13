@@ -26,6 +26,7 @@ export interface JobRequest {
   provider:User;
   user:User;
   date:Date;
+  contactInfo: ContactInfo;
 
 }
 

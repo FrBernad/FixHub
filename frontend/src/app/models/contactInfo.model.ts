@@ -1,19 +1,10 @@
 export class ContactInfo {
-  id: number;
-  addressNumber: string;
-  city: string;
-  departmentNumber: string;
-  floor: string;
-  state: string;
-  street: string;
-
-  constructor(id: number, addressNumber: string, city: string, departmentNumber: string, floor: string, state: string, street: string) {
-    this.id = id;
-    this.addressNumber = addressNumber;
-    this.city = city;
-    this.departmentNumber = departmentNumber;
-    this.floor = floor;
-    this.state = state;
-    this.street = street;
+  constructor(public id: number,
+              public addressNumber: string,
+              public city: string,
+              public state: string,
+              public street: string,
+              public floor?: string,
+              public departmentNumber?: string) {
   }
 }

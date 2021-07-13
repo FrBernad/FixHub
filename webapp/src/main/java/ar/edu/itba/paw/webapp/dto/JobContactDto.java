@@ -27,7 +27,7 @@ public class JobContactDto {
     private LocalDate date;
     String jobUrl;
     String jobProvided;
-//    private ContactInfo contactInfo;
+    private ContactInfoDto contactInfo;
 
     public JobContactDto() {
     }
@@ -41,6 +41,7 @@ public class JobContactDto {
         this.date = jobContact.getDate();
         this.jobUrl = JobDto.getJobUriBuilder(jobContact.getJob(), uriInfo).build().toString();
         this.jobProvided = jobContact.getJob().getJobProvided();
+        this.contactInfo = new ContactInfoDto(jobContact.getContactInfo());
     }
 
     public Long getId() {
@@ -105,5 +106,13 @@ public class JobContactDto {
 
     public void setJobProvided(String jobProvided) {
         this.jobProvided = jobProvided;
+    }
+
+    public ContactInfoDto getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(ContactInfoDto contactInfo) {
+        this.contactInfo = contactInfo;
     }
 }
