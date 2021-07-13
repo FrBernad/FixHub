@@ -115,14 +115,14 @@
                                           <div class="col-12">
                                             <span class="fw-bold">{{'contactForm.state' | translate}}:</span>
                                             <span>
-                                              {{provider.providerDetails.location.state.name}}
+                                              {{user.providerDetails.location.state.name}}
                                             </span>
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left mb-0">
                                               <span class="fw-bold">{{'job.information.city' | translate}}</span>
                                               <ng-container
-                                                *ngFor="let city of provider.providerDetails.location.cities; let i = index; let last = last">
+                                                *ngFor="let city of user.providerDetails.location.cities; let i = index; let last = last">
                                                 {{city.name}}
                                                 <ng-container *ngIf="!last">,</ng-container>
                                               </ng-container>
@@ -146,8 +146,8 @@
                                           </div>
                                           <div class="col-12">
                                             <p class="text-left m-0">
-                                              {{'job.information.from' | translate: {from: provider.providerDetails.schedule.startTime} }}
-                                              {{'job.information.to' | translate: {to: provider.providerDetails.schedule.endTime} }}
+                                              {{'job.information.from' | translate: {from: user.providerDetails.schedule.startTime} }}
+                                              {{'job.information.to' | translate: {to: user.providerDetails.schedule.endTime} }}
                                             </p>
                                           </div>
                                         </div>
@@ -170,11 +170,11 @@
 
                 <div class="tab-pane fade" role="tabpanel" id="contacts"
                      [ngClass]="{'show active' : activeTab==='contacts'}">
-                  <ng-template [ngIf]="jpr.results.length>0" [ngIfElse]="NoContacts">
-                    <!--                      <div *ngFor="let jobRequest of contacts">-->
-                    <!--                        <app-request-job-card [contact]="" ]></app-request-job-card>-->
-                    <!--                      </div>-->
-                  </ng-template>
+<!--                  <ng-template [ngIf]="contacts.length>0" [ngIfElse]="NoContacts">-->
+<!--                    <div *ngFor="let contact of contacts" class="p-0">-->
+<!--                      <app-request-job-card [contact]="contact"></app-request-job-card>-->
+<!--                    </div>-->
+<!--                  </ng-template>-->
                   <ng-template #NoContacts>
                     <div class="col-12 d-flex align-items-center justify-content-center">
                       <div class="container mt-2 d-flex align-items-center justify-content-center">
@@ -184,7 +184,11 @@
                       </div>
                     </div>
                   </ng-template>
-                  <!--                  <app-pagination *ngIf="contacts.length>1" [currentPage]="con" [totalPages]=""></app-pagination>-->
+<!--                  <app-pagination *ngIf="contacts.length>1"-->
+<!--                                  (changePage)="onChangePage($event)"-->
+<!--                                  [currentPage]="jpr.page"-->
+<!--                                  [totalPages]="jpr.totalPages">-->
+<!--                  </app-pagination>-->
                 </div>
               </div>
             </div>
