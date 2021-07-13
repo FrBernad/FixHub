@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   showPass = true;
   loginForm: FormGroup;
   error = false;
+  disable = false;
 
   constructor(
     private authService: AuthService,
@@ -33,13 +34,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitLogin() {
-    if(!this.loginForm.valid){
+    this.disable = true;
+    if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
+      this.disable = false;
       return;
     }
-    // if (!form.valid) {
-    //   return;
-    // }
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
@@ -57,10 +57,15 @@ export class LoginComponent implements OnInit {
               this.previousRouteService.setAuthRedirect(false);
             }
             this.router.navigate([url]);
+            this.disable = false;
           });
       },
-      errorMessage => {
-        console.log(errorMessage);
+      () => {
+        this.disable = false;
+        this.error = true;
+        setTimeout(() => {
+          this.error = false
+        }, 2000)
       }
     );
 

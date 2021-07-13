@@ -76,12 +76,11 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
+    let modal = new bootstrap.Modal(document.getElementById('resultsModal'));
     this.authService.resetPassword(this.token, this.resetPasswordForm.get("password").value).subscribe(() => {
-      this.success = true;
-      this.disable = false;
-      console.log($('#resultsModal'))
+      modal.show();
     }, () => {
-      console.log($('#resultsModal'))
+      modal.show();
       this.disable = false;
     })
   }

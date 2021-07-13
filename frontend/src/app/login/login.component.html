@@ -69,8 +69,13 @@
                         </span>
                     </div>
 
-                  </div>
+                    <div *ngIf="error" class="col-12 mt-2 d-flex align-items-center justify-content-center">
+                      <p class="errorMessage mb-0">
+                        {{'login.error' | translate }}
+                      </p>
+                    </div>
 
+                  </div>
                 </div>
               </div>
             </div>
@@ -78,8 +83,11 @@
         </div>
       </div>
       <div class="col-12 d-flex align-items-center justify-content-center">
-        <button form="loginForm" class="w-100 continueBtn my-2">
-          {{'login.buttonText' | translate }}
+        <button form="loginForm" [disabled]="disable" class="w-100 continueBtn my-2">
+          <span *ngIf="!disable">
+           {{'login.buttonText' | translate }}
+          </span>
+          <span class="spinner-border spinner-border-sm" [hidden]="!disable"></span>
         </button>
       </div>
       <div class="col-12 mt-4">
