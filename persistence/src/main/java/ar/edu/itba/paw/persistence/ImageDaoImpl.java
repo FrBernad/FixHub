@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.ImageDao;
 import ar.edu.itba.paw.models.image.Image;
-import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.image.NewImageDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -22,10 +22,10 @@ public class ImageDaoImpl implements ImageDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageDaoImpl.class);
 
     @Override
-    public Set<Image> createImages(List<ImageDto> imageDtoList) {
+    public Set<Image> createImages(List<NewImageDto> newImageDtoList) {
         final Set<Image> images = new LinkedHashSet<>();
         Image aux;
-        for(ImageDto image: imageDtoList){
+        for(NewImageDto image: newImageDtoList){
             aux = createImage(image);
             LOGGER.info("Image with id {} has been created succesfully",aux.getId());
             images.add(aux);
@@ -34,7 +34,7 @@ public class ImageDaoImpl implements ImageDao {
     }
 
     @Override
-    public Image createImage(ImageDto image) {
+    public Image createImage(NewImageDto image) {
         LOGGER.info("Trying to create a new image");
         Image img = new Image(image.getData(),image.getMimeType());
         em.persist(img);

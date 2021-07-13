@@ -13,7 +13,7 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.image.Image;
-import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
@@ -201,25 +201,25 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateCoverImage(ImageDto imageDto, User user) {
+    public void updateCoverImage(NewImageDto newImageDto, User user) {
         Image image = user.getCoverImage();
         LOGGER.debug("Updating user {} cover image", user.getEmail());
         if (image == null) {
-            user.setCoverImage(imageService.createImage(imageDto));
+            user.setCoverImage(imageService.createImage(newImageDto));
         } else
-            user.getCoverImage().setData(imageDto.getData());
+            user.getCoverImage().setData(newImageDto.getData());
 
     }
 
     @Override
     @Transactional
-    public void updateProfileImage(ImageDto imageDto, User user) {
+    public void updateProfileImage(NewImageDto newImageDto, User user) {
         Image image = user.getProfileImage();
         LOGGER.debug("Updating user {} profile image", user.getEmail());
         if (image == null)
-            user.setProfileImage(imageService.createImage(imageDto));
+            user.setProfileImage(imageService.createImage(newImageDto));
         else
-            user.getProfileImage().setData(imageDto.getData());
+            user.getProfileImage().setData(newImageDto.getData());
     }
 
     @Override

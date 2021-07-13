@@ -29,10 +29,10 @@ public class NewJobDto {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
-    @Size(max = 6)
-    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
-    @ImageSizeConstraint(size=3000000)
-    private List<MultipartFile> images;
+//    @Size(max = 6)
+//    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
+//    @ImageSizeConstraint(size=3000000)
+//    private List<MultipartFile> images;
 
     private boolean paused;
 
@@ -71,13 +71,13 @@ public class NewJobDto {
         this.price = price;
     }
 
-    public List<MultipartFile> getImages() {
-        return images;
-    }
-
-    public void setImages(List<MultipartFile> images) {
-        this.images = images;
-    }
+//    public List<MultipartFile> getImages() {
+//        return images;
+//    }
+//
+//    public void setImages(List<MultipartFile> images) {
+//        this.images = images;
+//    }
 
     public boolean isPaused() {
         return paused;

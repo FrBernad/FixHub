@@ -7,7 +7,7 @@ import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.models.image.Image;
-import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
@@ -41,19 +41,25 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, List<ImageDto> images, User provider) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider) {
 
-        Set<Image> jobImages = null;
-        if (!images.isEmpty()) {
-            LOGGER.debug("Job {} has images", jobProvided);
-            jobImages = imageService.createImages(images);
-        } else
-            LOGGER.debug("Job {} has no images", jobProvided);
-
-        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider, jobImages);
+        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider);
         LOGGER.info("Created job {} with id {}", job.getId(), job.getJobProvided());
 
         return job;
+    }
+
+    @Transactional
+    @Override
+    public void addImagesToJob(Job job, List<NewImageDto> imagesToUpload) {
+        if (!imagesToUpload.isEmpty()) {
+            LOGGER.debug("Job {} has images", job.getJobProvided());
+            Set<Image> images = imageService.createImages(imagesToUpload);
+            job.getImages().addAll(images);
+
+        } else
+            LOGGER.debug("Job {} has no images", job.getJobProvided());
+
     }
 
     @Override
@@ -97,7 +103,7 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<ImageDto> imagesToUpload, Job job, List<Long> imagesIdToDelete) {
+    public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<NewImageDto> imagesToUpload, Job job, List<Long> imagesIdToDelete) {
         LOGGER.debug("Updating job");
         job.setJobProvided(jobProvided);
         job.setDescription(description);
@@ -126,11 +132,11 @@ public class JobServiceImpl implements JobService {
         LOGGER.debug("Deleting job images");
         jobImages.removeIf(ji -> imagesIdToDelete.contains(ji.getId()));
 
-        if (!imagesToUpload.isEmpty()) {
-            LOGGER.debug("Job {} has images", jobProvided);
-            Set<Image> images = imageService.createImages(imagesToUpload);
-            jobImages.addAll(images);
-        }
+//        if (!imagesToUpload.isEmpty()) {
+//            LOGGER.debug("Job {} has images", jobProvided);
+//            Set<Image> images = imageService.createImages(imagesToUpload);
+//            jobImages.addAll(images);
+//        }
     }
 
 }

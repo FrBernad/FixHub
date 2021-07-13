@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models.image;
 
-public class ImageDto {
+public class NewImageDto {
     private byte[] data;
     private String mimeType;
 
@@ -20,7 +20,7 @@ public class ImageDto {
         this.mimeType = mimeType;
     }
 
-    public ImageDto(byte[] data, String mimeType) {
+    public NewImageDto(byte[] data, String mimeType) {
         this.data = data;
         this.mimeType = mimeType;
     }

@@ -46,7 +46,7 @@ public class ReviewServiceImplTest {
     private static final BigDecimal PRICE = new BigDecimal(1000);
     private static final User USER = new User(PASSWORD, NAME, SURNAME, EMAIL, PHONENUMBER, STATE, CITY, DEFAULT_ROLES);
 
-    private static final Job JOB = new Job("desc","Job",4,4L, JobCategory.CARPINTERO,PRICE,false,USER,null);
+    private static final Job JOB = new Job("desc","Job",4,4L, JobCategory.CARPINTERO,PRICE,false,USER);
 
     private static final Review REVIEW = new Review("", null, 5, CREATIONDATE.toLocalDateTime().toLocalDate(), USER);
     private static final Collection<Review> REVIEW_COLLECTION = Collections.singletonList(REVIEW);

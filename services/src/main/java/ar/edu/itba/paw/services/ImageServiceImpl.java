@@ -3,7 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistance.ImageDao;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.image.Image;
-import ar.edu.itba.paw.models.image.ImageDto;
+import ar.edu.itba.paw.models.image.NewImageDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +30,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
 
-    public Set<Image> createImages(List<ImageDto> images) {
+    public Set<Image> createImages(List<NewImageDto> images) {
         LOGGER.debug("Creating {} images", images.size());
         return imageDao.createImages(images);
     }
 
-    public Image createImage(ImageDto image) {
+    public Image createImage(NewImageDto image) {
         final Image img = imageDao.createImage(image);
         LOGGER.info("Created image with id {}", img.getId());
         return img;

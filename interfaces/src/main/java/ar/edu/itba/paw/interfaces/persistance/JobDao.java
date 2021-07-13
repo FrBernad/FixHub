@@ -18,7 +18,7 @@ public interface JobDao {
 
     Optional<JobContact> getContactById(long id);
 
-    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, Set<Image> images);
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider);
 
     Collection<JobCategory> getJobsCategories();
 

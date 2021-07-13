@@ -6,14 +6,13 @@ import {Subject} from "rxjs";
 import {Review} from "./review.model";
 
 export interface JobData {
-    providerId: number,
     jobProvided: string,
     jobCategory: string,
     price: number,
     description: string,
-    images: File[],
     paused?: boolean
 }
+
 export interface ReviewsPaginationResult {
   page: number;
   totalPages: number;
@@ -90,7 +89,11 @@ export class JobService {
 
   createJob(jobData: JobData) {
     console.log(jobData);
-    return this.http.post<JobData>(environment.apiBaseUrl + '/jobs/new', jobData);
+    return this.http.post<JobData>(environment.apiBaseUrl + '/jobs', jobData, {observe: 'response'});
+  }
+
+  addJobImages(id:number, images: FormData) {
+    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id + '/images', images);
   }
 
   getJob(id: number) {

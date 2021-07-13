@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { JobService } from '../job.service';
@@ -26,6 +27,8 @@ export class NewJobComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   user: User;
 
+  jobId: number;
+
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
   allowedImageType: boolean = true;
 
@@ -37,8 +40,9 @@ export class NewJobComponent implements OnInit, OnDestroy {
 
   constructor(
     private jobService: JobService,
+    private jobsService: JobsService,
     private userService: UserService,
-    private jobsService : JobsService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -82,16 +86,30 @@ export class NewJobComponent implements OnInit, OnDestroy {
     }
     this.disabled=true;
 
-    console.log(this.jobForm.value);
-
     this.jobService
       .createJob({
-        providerId: this.user.id,
-        ...this.jobForm.value,
+        jobProvided: this.jobForm.get('jobProvided').value,
+        jobCategory: this.jobForm.get('jobCategory').value,
+        price: this.jobForm.get('price').value,
+        description: this.jobForm.get('description').value,
+        paused: this.jobForm.get('paused').value
       }).subscribe((response) => {
-        console.log(response);
-       this.disabled=false;
+        let location = response.headers.get('location').split('/');
+        this.jobId = +location[location.length-1];
+        if(this.imagesArray.value.length > 0) {
+          let formData = new FormData;
+          this.imagesArray.value.forEach(image => {
+            formData.append(image.name, image);
+            console.log(formData.get(image.name));
+          });
+          console.log(formData);
+          this.jobService.addJobImages(this.jobId, formData).subscribe((response) => {
+            console.log(response);
+          })
+        }
+        this.router.navigate(['/jobs', this.jobId]);
       });
+
 
   }
 
