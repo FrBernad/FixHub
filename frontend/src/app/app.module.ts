@@ -1,4 +1,3 @@
-import { NewJobComponent } from './job/new-job/new-job.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -6,8 +5,9 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-
 import {AppRoutingModule} from './app-routing.module';
+
+import {NewJobComponent} from './job/new-job/new-job.component';
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {LandingPageComponent} from './landing-page/landing-page.component';
@@ -26,29 +26,32 @@ import {AuthComponent} from './auth/auth.component';
 import {ReviewFormComponent} from './job/review-form/review-form.component';
 import {PopularJobCardComponent} from './landing-page/popular-job-card/popular-job-card.component';
 import {JobCardComponent} from './discover/job-card/job-card.component';
-import { EditJobComponent } from './job/edit-job/edit-job.component';
-import { ErrorsComponent } from './errors/errors.component';
-import { JoinComponent } from './join/join.component';
-import { ChooseCityComponent } from './join/choose-city/choose-city.component';
-import { ChooseStateComponent } from './join/choose-state/choose-state.component';
-import { FooterComponent } from './footer/footer.component';
+import {EditJobComponent} from './job/edit-job/edit-job.component';
+import {ErrorsComponent} from './errors/errors.component';
+import {JoinComponent} from './join/join.component';
+import {ChooseCityComponent} from './join/choose-city/choose-city.component';
+import {ChooseStateComponent} from './join/choose-state/choose-state.component';
+import {FooterComponent} from './footer/footer.component';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
-import { UpdateInfoComponent } from './profile/session-profile/update-info/update-info.component';
-import { PaginationComponent } from './pagination/pagination.component';
-import { UpdateProviderInfoComponent } from './update-provider-info/update-provider-info.component';
-import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
-import { ReviewCardComponent } from './job/review-card/review-card.component';
-import { ReviewPaginationComponent } from './job/review-pagination/review-pagination.component';
-import { RequestJobCardComponent } from './dashboard/request-job-card/request-job-card.component';
-import { FollowersComponent } from './followers/followers.component';
-import { FollowerCardComponent } from './followers/follower-card/follower-card.component';
+import {UpdateInfoComponent} from './profile/session-profile/update-info/update-info.component';
+import {PaginationComponent} from './pagination/pagination.component';
+import {UpdateProviderInfoComponent} from './update-provider-info/update-provider-info.component';
+import {LoadingScreenComponent} from './loading-screen/loading-screen.component';
+import {ReviewCardComponent} from './job/review-card/review-card.component';
+import {ReviewPaginationComponent} from './job/review-pagination/review-pagination.component';
+import {RequestJobCardComponent} from './dashboard/request-job-card/request-job-card.component';
+import {FollowersComponent} from './followers/followers.component';
+import {FollowerCardComponent} from './followers/follower-card/follower-card.component';
 import {FollowingComponent} from "./followers/following.component";
-import { UserProfileComponent } from './profile/user-profile/user-profile.component';
+import {UserProfileComponent} from './profile/user-profile/user-profile.component';
 import {SessionProfileComponent} from "./profile/session-profile/session-profile.component";
-import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
-import { WorksComponent } from './dashboard/works/works.component';
-import { VerifyComponent } from './verify/verify.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
+import {WorksComponent} from './dashboard/works/works.component';
+import {VerifyComponent} from './verify/verify.component';
+import {ResetPasswordComponent} from './reset-password/reset-password.component';
+import {UserSentRequestComponent} from "./profile/session-profile/contact/user-sent-request.component";
+import {UserSentRequestCardComponent} from './profile/session-profile/contact/user-sent-request-card/user-sent-request-card.component';
+
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -91,7 +94,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     UserProfileComponent,
     WorksComponent,
     VerifyComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    UserSentRequestComponent,
+    UserSentRequestCardComponent
   ],
   imports: [
     BrowserModule,

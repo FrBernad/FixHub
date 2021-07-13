@@ -4,7 +4,8 @@
     <!-- USER PICTURES -->
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
-        <img alt="profile cover picture" [src]="user.coverImage ? user.coverImage : 'assets/images/defaultCoverImage.jpg'"
+        <img alt="profile cover picture"
+             [src]="user.coverImage ? user.coverImage : 'assets/images/defaultCoverImage.jpg'"
              class="backgroundImage">
         <div class="profileBackgroundPic">
           <form method="POST" enctype="multipart/form-data">
@@ -37,7 +38,8 @@
         <div class="row align-items-center position-relative justify-content-center">
           <div class="profilePictureContainer px-0">
             <div class="picContainer">
-              <img alt="profile picture" [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
+              <img alt="profile picture"
+                   [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
                    class="profilePicture">
             </div>
 
@@ -56,7 +58,7 @@
             </div>
 
             <div>
-              <span *ngIf="!allowedProfileImageType" class="errorMessage" >
+              <span *ngIf="!allowedProfileImageType" class="errorMessage">
                   {{'ImageTypeConstraint.profileImageForm.profileImage' | translate }}<br>
                 </span>
               <span *ngIf="!allowedProfileImageSize" class="errorMessage">
@@ -155,14 +157,14 @@
                         <span class="detailField">
                           {{user.followersCount}}
                         </span>
-                        {{'profilePage.info.followers' | translate}}
+                          {{'profilePage.info.followers' | translate}}
                         </a>
                         ·
                         <a class="extraInfo" [routerLink]="'/user/'+user.id+'/following'">
                         <span class="detailField">
                           {{user.followingCount}}
                         </span>
-                        {{'profilePage.info.following' | translate}}
+                          {{'profilePage.info.following' | translate}}
                         </a>
                       </div>
                     </div>
@@ -214,7 +216,7 @@
                        <ng-template #notProvider>
                               {{'profilePage.subtitle.inactive' | translate}}
                          <fa-icon [icon]="['fas','times']" class="ms-1" style="color: darkred"></fa-icon>
-                         <a class="ms-2" [routerLink]="['/user','join']"  style="font-weight: 500">
+                         <a class="ms-2" [routerLink]="['/user','join']" style="font-weight: 500">
                               {{'profilePage.subtitle.join' | translate}}
                          </a>
                       </ng-template>
@@ -230,53 +232,10 @@
     </div>
 
     <!-- RECENT CONTACTS -->
+
     <div class="col-12 col-md-6 pe-md-5">
-      <div class="container-lg d-flex flex-column recentContacts">
-        <div class="row py-2">
-          <div class="col-12 mt-2">
-            <h1 class="text-left mb-0 sectionTitle">
-              {{'profilePage.contacts.recents' | translate}}
-            </h1>
-          </div>
-        </div>
-        <div class="row pb-2 align-items-start flex-grow-1 align-content-between">
-          <!-- <c:url value="/user/account/search" var="postPath" />
-          <form:form cssClass="mb-0" action="${postPath}" modelAttribute="searchForm" method="GET"
-            id="searchForm">ø
-            <form:input path="page" type="hidden" id="pageInput" />
-          </form:form> -->
-          <div class="col-12">
-            <div class="container-fluid px-0">
-              <div class="row">
-                <!-- <c:choose>
-                  <c:when test="${results.totalPages > 0}">
-                    <c:forEach var="contact" items="${results.results}" varStatus="status">
-                      <div class="col-12 mt-2">
-                        <%@ include file="../../../components/cards/accordionContact.jsp" %>
-                      </div>
-                    </c:forEach>
-                  </c:when>
-                  <c:otherwise>
-                    <div class="col-12 d-flex align-items-center justify-content-center">
-                      <div class="container mt-2 d-flex align-items-center justify-content-center">
-                        <p class="m-0 text-center p-4" style="font-size: 16px">
-                          {{'profilePage.contacts.noContacts' | translate}}
-                        </p>
-                      </div>
-                    </div>
-                  </c:otherwise>
-                </c:choose> -->
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-12 mb-2 d-flex align-self-end align-items-center justify-content-center ${results.totalPages<=1 ? 'd-none':''}">
-            <div class="row">
-              pagination
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-user-sent-request></app-user-sent-request>
+
     </div>
   </div>
 </div>

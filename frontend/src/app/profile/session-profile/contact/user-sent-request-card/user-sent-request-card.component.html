@@ -1,0 +1,149 @@
+<div class="accordion" id="accordion${status.index}">
+  <div class="card accordionCard accordion-item">
+    <div class="accordion-header px-0" data-toggle="collapse" data-target="#collapse${status.index}"
+         style="cursor: pointer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8">
+            <a class="preventParent" href="">
+              {{request.jobProvided}}
+            </a>
+            |
+            <a class="preventParent names" href="">
+              {{request.provider.name + request.provider.surname}}
+            </a>
+          </div>
+          <div class="col-3 d-flex align-items-center justify-content-end">
+                        <span>
+                            {{request.date}}
+                        </span>
+          </div>
+          <div class="col-1 d-flex align-items-center justify-content-center">
+            <i (click)="toggleAccordion()"
+               class="fas fa-chevron-down navbarText dropDownArrow"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="collapse${status.index}" class="collapse" data-parent="#accordion${status.index}">
+      <div class="card-body px-0">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.client'|translate}}:</span>
+              <a class="preventParent names" href="">
+                {{'contact.user.name' + 'contact.user.surname'}}
+              </a>
+            </div>
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.clientPhoneNumber'|translate}}:</span>
+              {{'contact.user.phoneNumber'}}
+            </div>
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.clientEmail'|translate}}:</span>
+              {{'contact.user.email'}}
+            </div>
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.clientAddress'|translate}}:</span>
+              {{'contact.contactInfo.city' + "," + 'contact.contactInfo.state' + "," +
+            'contact.contactInfo.street' + "," + 'contact.contactInfo.addressNumber' + "," +
+            'contact.contactInfo.floor' + "," + 'contact.contactInfo.departmentNumber'}}
+            </div>
+
+            <div class="col-12">
+              <p class="mb-0">
+                <span class="client-label">{{'dashboard.clientMessage'|translate}}:</span>
+                {{request.message}}/>
+              </p>
+            </div>
+            <div class="col-12">
+              <span class="client-label">{{'clientContactCard.status'|translate}}:</span>
+              {{'contact.status.' + request.status|translate}}
+            </div>
+
+            <ng-template [ngIf]="request.status" [ngIfElse]="NotPending">
+              <div class="col-12 p-2">
+                <div class="container p-2"
+                     style="background-color: aliceblue;border-radius: 8px;">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div
+                          class="col-12 col-md-6 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                          <p class="m-2 font-weight-bold">
+                            {{'clientContactCard.jobDecision'|translate}}
+                          </p>
+                        </div>
+                        <div
+                          class="col-12 col-md-6 pr-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
+                          <form id="acceptJobForm${contact.id}"
+                                action="<c:url value='/user/dashboard/contacts/acceptJob'/"
+                                method="POST">
+                            <input type="hidden" name="contactId" value="${contact.id}">
+                          </form>
+                          <button class="mr-4 finishBtn"
+                                  type="submit"
+                                  form="acceptJobForm${contact.id}"
+                                  id="acceptJobBtn${contact.id}">
+                            {{'clientContactCard.acceptJobBtn'|translate}}
+                            <i class="fas fa-check ml-2"></i>
+                          </button>
+                          <form id="rejectJobForm${contact.id}"
+                                action="<c:url value='/user/dashboard/contacts/rejectJob'/>"
+                                method="POST">
+                            <input type="hidden" name="contactId" value="${contact.id}">
+                          </form>
+                          <button class="closeBtn" type="submit"
+                                  form="rejectJobForm${contact.id}"
+                                  id="rejectJobBtn${contact.id}">
+                            {{"clientContactCard.rejectJobBtn"|translate}}
+                            <i class="fas fa-times ml-2"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #NotPending [ngIf]="request.status">
+              <div class="col-12 col-md-10 p-2">
+                <div class="container p-2"
+                     style="background-color: aliceblue;border-radius: 8px;">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div
+                          class="col-12 col-md-7 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                          <p class="font-weight-bold mb-0">
+                            {{'clientContactCard.jobCompletedIntro'|translate}}
+                          </p>
+                        </div>
+                        <div
+                          class="col-12 col-md-5 pr-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">
+                          <form id="completedJobForm${contact.id}"
+                                action="<c:url value='/user/dashboard/contacts/completedJob'/>"
+                                method="POST">
+                            <input type="hidden" name="contactId" value="${contact.id}">
+                          </form>
+                          <button class="finishBtn" type="submit"
+                                  form="completedJobForm${contact.id}"
+                                  id="completedJobBtn${contact.id}">
+                            {{'clientContactCard.completedJobBtn'|translate}}/>
+                            <i class="fas fa-check ml-2"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
