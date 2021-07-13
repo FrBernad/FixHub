@@ -34,7 +34,7 @@ export class ContactComponent implements OnInit {
 
   private userSub: Subscription;
   user: User;
-
+  disabled = false;
   modal: any;
 
   constructor(
@@ -58,10 +58,14 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
+
     if (!this.contactForm.valid) {
       this.contactForm.markAllAsTouched();
       return;
     }
+
+    this.disabled=true
+
 
     this.contactService.newContact(this.jobId, {
       state: this.job.provider.providerDetails.location.state.name,
@@ -75,11 +79,12 @@ export class ContactComponent implements OnInit {
       addressNumber: this.contactForm.get('addressNumber').value,
     }).subscribe(
       response => {
+        this.modal.hide();
+        this.onClose();
+        this.disabled =false;
         console.log(response);
       }
     );
-    this.modal.hide();
-    this.onClose();
   }
 
   dropdownClickCity(city: { id: number; name: string }) {

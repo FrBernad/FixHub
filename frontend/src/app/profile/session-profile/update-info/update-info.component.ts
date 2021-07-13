@@ -21,8 +21,10 @@ export class UpdateInfoComponent implements OnInit {
   maxPhoneNumberLength: number = 50;
   maxStateLength: number = 50;
   maxCityLength: number = 50;
+  disabled = false;
 
-  constructor(private userService:UserService) {  }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit(): void {
     this.modal = new bootstrap.Modal(document.getElementById("updateInfo"));
@@ -40,11 +42,16 @@ export class UpdateInfoComponent implements OnInit {
       this.userInfoForm.markAllAsTouched();
       return;
     }
-    this.userService.updateProfileInfo(this.userInfoForm.value);
-    this.modal.hide();
+    this.disabled = true;
+    this.userService.updateProfileInfo(this.userInfoForm.value).subscribe(
+      () =>{
+        this.disabled = false;
+         this.modal.hide();
+      });
+   
   }
 
-  onClose(){
+  onClose() {
     this.userInfoForm.get('name').patchValue(this.loggedUser.name);
     this.userInfoForm.get('surname').patchValue(this.loggedUser.surname);
     this.userInfoForm.get('phoneNumber').patchValue(this.loggedUser.phoneNumber);

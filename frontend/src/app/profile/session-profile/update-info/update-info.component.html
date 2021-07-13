@@ -109,8 +109,9 @@
                         type="button" (click)="onClose()">
                   {{'userInfoForm.cancel' | translate }}
                 </button>
-                <button type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
-                  {{'userInfoForm.submit' | translate }}
+                <button type="submit"  [disabled]="disabled" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
+                  <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
+                  <span *ngIf="!disabled"> {{'userInfoForm.submit' | translate }}</span>
                 </button>
               </div>
             </div>

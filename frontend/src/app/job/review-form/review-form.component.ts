@@ -17,6 +17,7 @@ export class ReviewFormComponent implements OnInit {
   maxDescLength: number = 300;
   minRate: number = 1;
   maxRate: number = 5;
+  disabled = false;
 
   modal: any;
 
@@ -41,11 +42,14 @@ export class ReviewFormComponent implements OnInit {
       return;
     }
 
+    this.disabled = true;
+
     this.jobService.createReview({
       description: this.reviewForm.get('description').value,
       rating: this.reviewForm.get('rating').value
     }, this.jobId).subscribe(() => {
       this.jobService.updateReviews(this.jobId);
+      this.disabled=false;
     });
 
     this.modal.hide();

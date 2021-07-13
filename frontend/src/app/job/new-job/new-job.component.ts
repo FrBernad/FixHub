@@ -42,6 +42,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   maxDescriptionLength: number = 300;
   minPrice: number = 1;
   maxPrice: number = 999999;
+  disabled=false;
 
   private userSub: Subscription;
   user: User;
@@ -94,6 +95,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
       this.jobForm.markAllAsTouched();
       return;
     }
+    this.disabled=true;
 
     console.log(this.jobForm.value);
 
@@ -103,7 +105,9 @@ export class NewJobComponent implements OnInit, OnDestroy {
         ...this.jobForm.value,
       }).subscribe((response) => {
         console.log(response);
+       this.disabled=false;
       });
+
   }
 
   onFileChanged(event) {

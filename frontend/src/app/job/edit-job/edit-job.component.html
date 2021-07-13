@@ -86,7 +86,8 @@
                     <div class="row">
                       <div class="col-12">
                         <button type="button" class="imgFile m-2"
-                                *ngFor="let control of imagesToUploadArray.controls; let i = index" (click)="deleteUploadImage(i)">
+                                *ngFor="let control of imagesToUploadArray.controls; let i = index"
+                                (click)="deleteUploadImage(i)">
                           {{control.value.name}}
                           <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
                         </button>
@@ -144,7 +145,8 @@
                   <div class="form-group">
                     <input type="hidden" id="paused" value="job.paused"/>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="job.paused" id="pauseCheck" [attr.checked]="job.paused ? 'checked': null">
+                      <input class="form-check-input" type="checkbox" value="job.paused" id="pauseCheck"
+                             [attr.checked]="job.paused ? 'checked': null">
                       <label class="form-check-label" for="pauseCheck">
                         {{ 'job.editPaused' | translate }}
                       </label>
@@ -166,13 +168,12 @@
               {{ 'job.cancel' | translate }}
             </button>
 
-            <button type="submit" id="editFormButton"
+
+            <button type="submit" id="editFormButton" [disabled]="disabled"
                     class="rateBtn my-2 d-flex align-items-center justify-content-center">
-            <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
-                  aria-hidden="true"></span>
-              <span id="senBtnText">
-              {{ 'job.submit' | translate }}
-            </span>
+              <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
+
+              <span *ngIf="!disabled"> {{ 'job.submit' | translate }}</span>
             </button>
 
           </div>

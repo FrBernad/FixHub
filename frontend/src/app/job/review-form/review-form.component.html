@@ -54,11 +54,13 @@
               </div>
 
               <div class="col-12 d-flex justify-content-start align-items-center py-4">
-                <button data-bs-dismiss="modal" id="reviewFormButton" type="submit" class="rateBtn me-4">
-                  {{ 'reviewForm.submitButtonText' | translate }}
-                </button>
                 <button type="button" data-bs-dismiss="modal" (click)="onClose()" id="reviewFormCloseButton" class="closeBtn">
                   {{ 'reviewForm.cancelButtonText' | translate }}
+                </button>
+                <button id="reviewFormButton" type="submit" [disabled]="disabled" class="rateBtn ms-4">
+                  <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
+                  <span *ngIf="!disabled">{{ 'reviewForm.submitButtonText' | translate }}</span>
+
                 </button>
               </div>
             </form>

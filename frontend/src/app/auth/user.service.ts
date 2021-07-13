@@ -55,13 +55,12 @@ export class UserService {
   }
 
   updateProfileInfo(profileInfo) {
-    this.http.put(
+    return this.http.put(
       environment.apiBaseUrl + '/user',
       {
         ...this.user.getValue(),
         ...profileInfo
-      })
-      .subscribe(() => this.user.next({...this.user.getValue(), ...profileInfo}));
+      }).pipe(tap(() => this.user.next({...this.user.getValue(), ...profileInfo})));
   }
 
   follow(id: number) {

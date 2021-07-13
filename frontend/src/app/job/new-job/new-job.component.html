@@ -164,11 +164,10 @@
                 </div>
 
                 <div class="col-12 px-0 hide d-flex align-items-center justify-content-center">
-                  <button type="submit" id="jobFormButton" class="w-100 continueBtn my-2">
-                    <span id="loadingSpinner" class="spinner-border spinner-border-sm" hidden role="status"
-                      aria-hidden="true"></span>
+                  <button type="submit" [disabled]="disabled" id="jobFormButton" class="w-100 continueBtn my-2">
+                    <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
                     <span id="jobFormBtnText">
-                      {{'jobForm.buttonText' | translate}}
+                      <span *ngIf="!disabled"> {{'jobForm.buttonText' | translate}}</span>
                     </span>
                   </button>
                 </div>

@@ -20,6 +20,7 @@ export class EditJobComponent implements OnInit {
   editJobForm: FormGroup;
   selectedIndex = 0;
   isFetching = true;
+  disabled=false;
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
 
   allowedImageType: boolean = true;
@@ -111,6 +112,11 @@ export class EditJobComponent implements OnInit {
       this.editJobForm.markAllAsTouched();
       return;
     }
+    this.disabled=true;
+    /*
+     Agregar luego de hacer el pedido al servicio
+     this.disabled=false;
+    */
   }
 
   onFileChanged(event) {

@@ -199,9 +199,11 @@
                           </a>
                         </div>
                         <div class="col-6 d-flex align-items-center justify-content-center">
-                          <button type="submit" id="contactFormButton" class="contactBtn w-100">
-                            {{'contactForm.submit' | translate}}
+                          <button type="submit" [disabled]="disabled" id="contactFormButton" class="contactBtn w-100">
+                            <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
+                            <span *ngIf="!disabled">{{'contactForm.submit' | translate}}</span>
                           </button>
+
                         </div>
                       </div>
                     </form>
