@@ -30,3 +30,29 @@
 .card-link{
   text-decoration: none;
 }
+
+.accordion a {
+  color: black;
+  font-weight: 500;
+  transition: hover 1s;
+  text-decoration: none;
+}
+
+.accordion a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}
+
+.accordion > .card {
+  overflow: hidden;
+}
+
+.card-header {
+  border: none;
+}
+
+
+.accordionCard {
+  border: none;
+  background-color: transparent;
+}

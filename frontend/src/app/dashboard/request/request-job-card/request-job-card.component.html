@@ -1,14 +1,13 @@
 <div class="accordion">
-  <div class="card accordionCard accordion-item">
-    <div class="accordion-header card-header px-0">
+  <div class="card accordionCard card-header m-1 p-0">
       <div class="accordion-button navbarText" #accordion
-           style="background-color: rgba(0,0,0,.03)"
+           style="background-color: rgba(0,0,0,.03); cursor: pointer"
            data-bs-toggle="collapse"
            aria-expanded="false"
            aria-controls="panelsStayOpen">
         <div class="container-fluid pe-2 ps-0">
           <div class="row">
-            <div class="col-8 align-items-lg-start">
+            <div class="col-9 align-items-lg-start">
               <a [routerLink]="['/jobs',request.jobId]" class="card-link">
                 {{request.jobProvided}}
               </a><span style="color: darkslategrey">|</span>
@@ -16,15 +15,14 @@
                 {{request.user.name }} {{ request.user.surname}}
               </a>
             </div>
-            <div class="col-4 justify-content-end d-flex align-items-center">
-              <span style="color: darkslategrey">{{request.date|date:'dd-MM-yyy'}}</span>
+            <div class="col-3 justify-content-end d-flex align-items-center">
+              <span style="color: darkslategrey">{{request.date|date:'yyyy-MM-dd'}}</span>
             </div>
           </div>
         </div>
-      </div>
     </div>
 
-    <div [id]="'accordion'+this.request.id" class="accordion-collapse collapse show">
+    <div [id]="'accordion'+this.request.id" class="collapse">
       <div class="card-body accordion-body px-0">
         <div class="container-fluid">
           <div class="row">
