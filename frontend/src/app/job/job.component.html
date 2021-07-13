@@ -109,10 +109,12 @@
                       <div *ngIf="!job.paused; else jobPaused"
                         class="col-12 d-flex align-items-center justify-content-center">
                         <!-- <a href="<c:url value='/jobs/${job.id}/contact'/>"> -->
+                      <!--CONTACT-->
                         <button type="button" class="contactBtn" data-bs-toggle="modal" data-bs-target="#contactModal">
                           {{ 'job.contact' | translate }}
                         </button>
                         <app-contact [job]="job"></app-contact>
+
                       </div>
                       <ng-template #jobPaused>
                         <div class="col-12">

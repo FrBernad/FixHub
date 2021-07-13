@@ -1,6 +1,5 @@
 <div class="accordion" id="accordion${status.index}">
     <div class="card accordionCard">
-
         <div class="card-header px-0" data-toggle="collapse" data-target="#collapse${status.index}" style="cursor: pointer">
             <div class="container-fluid">
                 <div class="row">

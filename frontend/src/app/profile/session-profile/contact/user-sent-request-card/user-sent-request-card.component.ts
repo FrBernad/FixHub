@@ -1,29 +1,23 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {JobRequest} from "../../../../job/contact/contact.service";
 
 @Component({
   selector: 'app-user-sent-request-card',
   templateUrl: './user-sent-request-card.component.html',
-  styleUrls: ['./user-sent-request-card.component.scss','../../../../dashboard/dashboard.component.scss']
+  styleUrls: ['./user-sent-request-card.component.scss']
 })
 export class UserSentRequestCardComponent implements OnInit {
 
-  constructor() { }
-
-  @Input() request:JobRequest;
-
-  isAccordionOpen:boolean;
-
-  toggleAccordion(){
-    this.isAccordionOpen=!this.isAccordionOpen;
+  constructor() {
   }
 
-  isOpen():boolean{
-    return this.isAccordionOpen
-  }
+  @ViewChild('accordion', {static: true}) accordion: ElementRef;
+  @ViewChild('accordionBody', {static: true}) accordionBody: ElementRef;
+  @Input() request: JobRequest;
 
   ngOnInit(): void {
-    this.isAccordionOpen=false;
+    this.accordion.nativeElement.setAttribute('data-bs-target', '#collapse' + this.request.id);
+    this.accordionBody.nativeElement.setAttribute('data-bs-parent', '#accordion' + this.request.id);
   }
 
 }

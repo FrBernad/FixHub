@@ -12,22 +12,6 @@
     color: black;
 }
 
-.accordion a {
-    color: black;
-    font-weight: 500;
-    transition: hover 1s;
-}
-
-.accordion a:hover {
-    color: rgb(0,104,192);
-    text-decoration: none;
-}
-
-.accordionCard {
-    border: none;
-    background-color: transparent;
-}
-
 .inactive {
     color: var(--primary-color) !important;
 }
@@ -65,7 +49,7 @@ a .badge {
     color: var(--tertiary-color) !important;
 }
 
-.client-label{
+.client-label {
     font-weight: bolder;
 }
 

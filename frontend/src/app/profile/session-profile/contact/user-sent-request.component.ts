@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../../../job/contact/contact.service";
 
-
 @Component({
   selector: 'app-user-sent-request',
   templateUrl: './user-sent-request.component.html',

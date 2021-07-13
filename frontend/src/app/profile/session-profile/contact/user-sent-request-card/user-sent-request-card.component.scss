@@ -1,6 +1,6 @@
 .closeBtn {
   color: #FFFeFF;
-  font-size:0.8em;
+  font-size: 0.8em;
   background-color: #6c757d;
   border: none;
   box-shadow: none;
@@ -10,8 +10,34 @@
   font-weight: bold;
 }
 
+.accordion a {
+  color: black;
+  font-weight: 500;
+  transition: hover 1s;
+  text-decoration: none;
+}
+
+.accordion a:hover {
+  color: rgb(0, 104, 192);
+  text-decoration: none;
+}
+
+.accordion > .card {
+  overflow: hidden;
+}
+
+.card-header {
+  border: none;
+}
+
+
+.accordionCard {
+  border: none;
+  background-color: transparent;
+}
+
 .finishBtn {
-  font-size:0.8em;
+  font-size: 0.8em;
   background-color: #003359;
   color: #fff;
   border: none;
@@ -23,10 +49,10 @@
   height: auto;
 }
 
-.font-weight-bold{
+.font-weight-bold {
   font-weight: bold;
 }
 
-.card-link{
+.card-link {
   text-decoration: none;
 }

@@ -51,7 +51,7 @@ import {VerifyComponent} from './verify/verify.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
 import {UserSentRequestComponent} from "./profile/session-profile/contact/user-sent-request.component";
 import {UserSentRequestCardComponent} from './profile/session-profile/contact/user-sent-request-card/user-sent-request-card.component';
-import { RequestComponent } from './dashboard/request/request.component';
+import {RequestComponent} from './dashboard/request/request.component';
 
 
 @NgModule({

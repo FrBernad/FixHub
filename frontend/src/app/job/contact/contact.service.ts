@@ -21,6 +21,7 @@ export interface JobRequest {
 
   id:number;
   jobProvided:string;
+  jobId:number;
   message:string;
   status:string;
   provider:User;

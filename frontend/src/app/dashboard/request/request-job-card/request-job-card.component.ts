@@ -11,13 +11,13 @@ export class RequestJobCardComponent implements OnInit {
 
   @Input() request: JobRequest;
 
-  @ViewChild('accordion', {static: true}) backNavbar: ElementRef;
+  @ViewChild('accordion', {static: true}) accordion: ElementRef;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.backNavbar.nativeElement.setAttribute('data-bs-target', '#accordion'+this.request.id);
+    this.accordion.nativeElement.setAttribute('data-bs-target', '#accordion' + this.request.id);
   }
 
 }
