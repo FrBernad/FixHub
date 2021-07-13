@@ -17,6 +17,16 @@ a:hover {
   text-decoration: none;
 }
 
+#jobReviewLink:hover {
+  text-decoration: underline;
+  color: rgb(0, 104, 192);
+}
+
+#jobReviewLink {
+  font-weight: 500;
+  color: rgb(0, 104, 192);
+  transition: hover 1s;
+}
 
 .jobTitle {
   font-size: 22px;

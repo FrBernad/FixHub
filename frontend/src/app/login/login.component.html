@@ -21,7 +21,7 @@
                   {{ 'login.EmailText' | translate }}
                 </label>
                 <input formControlName="email" type="email" class="form-control mb-2"
-                       id="email" name="email"
+                       name="email"
                        aria-describedby="email input"/>
 
                 <span *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">

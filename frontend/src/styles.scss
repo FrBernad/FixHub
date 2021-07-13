@@ -122,6 +122,14 @@ p, h1, h2, h3 {
   color: white !important;
 }
 
+.modal {
+  border-radius: 8px;
+}
+
+.roundedBorder {
+  border-radius: 8px;
+}
+
 .sectionTitle {
   font-size: 20px;
   line-height: 1;
@@ -129,11 +137,11 @@ p, h1, h2, h3 {
 }
 
 .success {
-    color: rgb(130,201,30);
+  color: rgb(130, 201, 30);
 }
 
 .error {
-    color: #FF0033;
+  color: #FF0033;
 }
 
 .errorMessage {

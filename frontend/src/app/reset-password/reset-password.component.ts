@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 import {UserService} from "../auth/user.service";
-import {Modal} from "node_modules/bootstrap/dist/js/bootstrap.esm.js"
 
 @Component({
   selector: 'app-reset-password',
@@ -17,7 +16,6 @@ export class ResetPasswordComponent implements OnInit {
   minPasswordLength: number = 6;
   maxPasswordLength: number = 20;
   disable = false;
-
   resetPasswordForm: FormGroup;
 
   success = false;
@@ -49,9 +47,7 @@ export class ResetPasswordComponent implements OnInit {
         Validators.maxLength(this.maxPasswordLength)
       ])
     });
-
     this.resetPasswordForm.setValidators(this.passwordMatching.bind(this));
-
   }
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {
@@ -80,14 +76,12 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
-    let modal: Modal = new Modal(document.getElementById('resultsModal'), {})
-
     this.authService.resetPassword(this.token, this.resetPasswordForm.get("password").value).subscribe(() => {
       this.success = true;
       this.disable = false;
-      modal.show();
+      console.log($('#resultsModal'))
     }, () => {
-      modal.show();
+      console.log($('#resultsModal'))
       this.disable = false;
     })
   }
