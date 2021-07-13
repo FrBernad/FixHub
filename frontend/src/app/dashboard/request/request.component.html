@@ -1,0 +1,21 @@
+<div>
+  <ng-template [ngIf]="rpr.results.length>0" [ngIfElse]="NoContacts">
+    <div *ngFor="let request of rpr.results" class="p-0">
+      <app-request-job-card [request]="request"></app-request-job-card>
+    </div>
+  </ng-template>
+  <ng-template #NoContacts>
+    <div class="col-12 d-flex align-items-center justify-content-center">
+      <div class="container mt-2 d-flex align-items-center justify-content-center">
+        <p class="m-0 text-center p-4" style="font-size: 16px">
+          {{'dashboard.Contact.Empty' | translate}}
+        </p>
+      </div>
+    </div>
+  </ng-template>
+  <app-pagination *ngIf="rpr.totalPages>1"
+                  (changePage)="onChangePage($event)"
+                  [currentPage]="rpr.page"
+                  [totalPages]="rpr.totalPages">
+  </app-pagination>
+</div>

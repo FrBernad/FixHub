@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserSentRequestComponent } from './user-sent-request.component';
+import {UserSentRequestComponent} from './user-sent-request.component';
 
 describe('ContactComponent', () => {
   let component: UserSentRequestComponent;

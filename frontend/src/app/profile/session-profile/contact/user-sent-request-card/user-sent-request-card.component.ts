@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {JobRequest} from "../user-sent-request.component";
+import {JobRequest} from "../../../../job/contact/contact.service";
 
 @Component({
   selector: 'app-user-sent-request-card',
   templateUrl: './user-sent-request-card.component.html',
-  styleUrls: ['./user-sent-request-card.component.scss']
+  styleUrls: ['./user-sent-request-card.component.scss','../../../../dashboard/dashboard.component.scss']
 })
 export class UserSentRequestCardComponent implements OnInit {
 

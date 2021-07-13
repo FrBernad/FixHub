@@ -1,15 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderOptionModel} from '../models/orderOption.model';
 import {JobPaginationQuery, JobPaginationResult, JobsService} from "../discover/jobs.service";
-import {Job} from "../models/job.model";
-import {ProviderDetails, User} from "../models/user.model";
-import {JobCategoryModel} from "../models/jobCategory.model";
+import {User} from "../models/user.model";
 import {UserService} from "../auth/user.service";
-import {Contact} from "../job/contact/contact.model";
 import {Subscription} from "rxjs";
-import {JobStatusModel} from "../models/job-status.model";
-import {ContactInfo} from "../models/contactInfo.model";
-import {ContactService} from "../job/contact/contact.service";
+
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +13,17 @@ import {ContactService} from "../job/contact/contact.service";
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-  activeTab: string = 'dashboard';
+  jpr: JobPaginationResult = {
+    results: [],
+    page: 0,
+    totalPages: 4,
+  };
+
+  jpq: JobPaginationQuery = {
+    page: 0,
+    pageSize: 4,
+    order: OrderOptionModel.MOST_POPULAR
+  };
 
   orderOptions = Object.keys(OrderOptionModel).filter((item) => {
     return isNaN(Number(item));
@@ -27,20 +32,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   user: User;
 
+  activeTab: string = 'dashboard';
+
   constructor(
+    private jobsService: JobsService,
     private userService: UserService,
   ) {
   }
 
   ngOnInit(): void {
-    this.userSub = this.userService.user.subscribe(user =>{
+    this.jobsService.getJobs(this.jpq);
+    this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     })
+
   }
 
   changeTab(tab: string) {
     this.activeTab = tab;
   }
+
 
 
   ngOnDestroy(): void {

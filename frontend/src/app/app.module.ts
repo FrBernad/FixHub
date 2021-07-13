@@ -39,7 +39,7 @@ import {UpdateProviderInfoComponent} from './update-provider-info/update-provide
 import {LoadingScreenComponent} from './loading-screen/loading-screen.component';
 import {ReviewCardComponent} from './job/review-card/review-card.component';
 import {ReviewPaginationComponent} from './job/review-pagination/review-pagination.component';
-import {RequestJobCardComponent} from './dashboard/request-job-card/request-job-card.component';
+import {RequestJobCardComponent} from './dashboard/request/request-job-card/request-job-card.component';
 import {FollowersComponent} from './followers/followers.component';
 import {FollowerCardComponent} from './followers/follower-card/follower-card.component';
 import {FollowingComponent} from "./followers/following.component";
@@ -51,6 +51,7 @@ import {VerifyComponent} from './verify/verify.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
 import {UserSentRequestComponent} from "./profile/session-profile/contact/user-sent-request.component";
 import {UserSentRequestCardComponent} from './profile/session-profile/contact/user-sent-request-card/user-sent-request-card.component';
+import { RequestComponent } from './dashboard/request/request.component';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import {UserSentRequestCardComponent} from './profile/session-profile/contact/us
     VerifyComponent,
     ResetPasswordComponent,
     UserSentRequestComponent,
-    UserSentRequestCardComponent
+    UserSentRequestCardComponent,
+    RequestComponent
   ],
   imports: [
     BrowserModule,
