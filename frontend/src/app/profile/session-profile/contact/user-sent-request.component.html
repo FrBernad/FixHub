@@ -12,7 +12,7 @@
         <div class="row">
           <ng-template [ngIf]="cpr.results.length>0" [ngIfElse]="contactsNotFound">
             <div class="col-12 mt-2">
-              <ng-template ngFor let-request [ngForOf]="cpr.results">
+              <ng-template [ngFor] let-request [ngForOf]="cpr.results">
                 <app-user-sent-request-card class="w-100" [request]="request"></app-user-sent-request-card>
               </ng-template>
             </div>
