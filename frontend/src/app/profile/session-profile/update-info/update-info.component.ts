@@ -12,6 +12,8 @@ export class UpdateInfoComponent implements OnInit {
 
   @Input() loggedUser: User;
 
+  modal: any;
+
   userInfoForm: FormGroup;
 
   maxNameLength: number = 50;
@@ -23,6 +25,7 @@ export class UpdateInfoComponent implements OnInit {
   constructor(private userService:UserService) {  }
 
   ngOnInit(): void {
+    this.modal = new bootstrap.Modal(document.getElementById("updateInfo"));
     this.userInfoForm = new FormGroup({
       name: new FormControl(this.loggedUser.name, [Validators.required, Validators.maxLength(this.maxNameLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]*$")]),
       surname: new FormControl(this.loggedUser.surname, [Validators.required, Validators.maxLength(this.maxSurnameLength), Validators.pattern("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]*$")]),
@@ -38,6 +41,7 @@ export class UpdateInfoComponent implements OnInit {
       return;
     }
     this.userService.updateProfileInfo(this.userInfoForm.value);
+    this.modal.hide();
   }
 
   onClose(){

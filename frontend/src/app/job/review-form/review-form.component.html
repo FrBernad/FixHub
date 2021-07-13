@@ -15,7 +15,7 @@
                   {{ 'reviewForm.descriptionTitle' | translate }} <span class="required-field">*</span>
                 </label>
                 <textarea formControlName="description" id="reviewFormTextArea"
-                          class="form-control"></textarea>
+                          class="form-control" style="resize: none;"></textarea>
                 <span *ngIf="!reviewForm.get('description').valid && reviewForm.get('description').touched">
             <span *ngIf="reviewForm.get('description').errors['required']" class="errorMessage">
               {{'NotEmpty.reviewForm.description' | translate }}<br>

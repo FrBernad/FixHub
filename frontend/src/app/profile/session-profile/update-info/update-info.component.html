@@ -2,7 +2,6 @@
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-
       <div class="container-lg mt-4 smallContentContainer py-4">
         <div class="container-lg px-4 m-2 ">
           <form id="userInfoForm" enctype="multipart/form-data" [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
@@ -110,7 +109,7 @@
                         type="button" (click)="onClose()">
                   {{'userInfoForm.cancel' | translate }}
                 </button>
-                <button data-bs-dismiss="modal" type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
+                <button type="submit" id="editFormButton" form="userInfoForm" class="continueBtn my-2 ">
                   {{'userInfoForm.submit' | translate }}
                 </button>
               </div>

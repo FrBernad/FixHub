@@ -18,6 +18,7 @@ export class ReviewFormComponent implements OnInit {
   minRate: number = 1;
   maxRate: number = 5;
 
+  modal: any;
 
   constructor(
     private jobService: JobService,
@@ -27,6 +28,7 @@ export class ReviewFormComponent implements OnInit {
 
   ngOnInit(): void {
     //key value pairs
+    this.modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
     this.reviewForm = new FormGroup({
       'description': new FormControl(null, [Validators.required, Validators.minLength(this.minDescLength), Validators.maxLength(this.maxDescLength)]),//initial values, validators,async validators
       'rating': new FormControl("1", [Validators.required, Validators.min(this.minRate), Validators.max(this.maxRate)])
@@ -46,6 +48,7 @@ export class ReviewFormComponent implements OnInit {
       this.jobService.updateReviews(this.jobId);
     });
 
+    this.modal.hide();
     this.cleanReviewForm()
   }
 
