@@ -42,7 +42,7 @@
                                     data-bs-target="#carouselControl"
                                     data-bs-slide="next">
                               <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span  class="visually-hidden">Next</span>
+                              <span class="visually-hidden">Next</span>
                             </button>
 
                           </ng-template>
@@ -112,6 +112,17 @@
                     <span class="required-field"> *</span></label>
                   <input type="text" id="state" class="form-control" value="{{job.jobProvided}}"
                          formControlName="jobProvided">
+                  <span *ngIf="!editJobForm.get('jobProvided').valid && editJobForm.get('jobProvided').touched">
+                    <span *ngIf="editJobForm.get('jobProvided').errors['required']" class="errorMessage">
+                          {{'NotEmpty.editJobForm.jobProvided' | translate }}<br>
+                        </span>
+                        <span *ngIf="editJobForm.get('jobProvided').errors['maxlength']" class="errorMessage">
+                          {{'Size.editJobForm.jobProvided' | translate: {max: maxJobProvidedLength} }}<br>
+                        </span>
+                        <span *ngIf="editJobForm.get('jobProvided').errors['pattern']" class="errorMessage">
+                          {{'Pattern.editJobForm.jobProvided' | translate }}
+                        </span>
+                  </span>
                 </div>
                 <div class="col-12 pl-0 form-group ">
                 <span class="label">
@@ -128,6 +139,17 @@
                     <span class="required-field"> *</span></label>
 
                   <input type="number" value="{{job.price}}" id="price" class="form-control" formControlName="price"/>
+                  <span *ngIf="!editJobForm.get('price').valid && editJobForm.get('price').touched">
+                    <span *ngIf="editJobForm.get('price').errors['required']" class="errorMessage">
+                          {{'NotNull.editJobForm.price' | translate }}<br>
+                        </span>
+                       <span *ngIf="editJobForm.get('price').errors['min']" class="errorMessage">
+                          {{'Min.editJobForm.price' | translate: {min: minPrice} }}
+                        </span>
+                        <span *ngIf="editJobForm.get('price').errors['max']" class="errorMessage">
+                          {{'Max.editJobForm.price' | translate: {max: maxPrice} }}
+                        </span>
+                  </span>
                 </div>
                 <div class="col-12 pl-0 form-group">
                   <label class="label">
@@ -138,7 +160,15 @@
                              padding: 12px 20px; box-sizing: border-box;
                            border: 2px solid #ccc; border-radius: 4px;
                             background-color: #f8f8f8; resize: none;" id="textArea" class="form-control"
-                            formControlName="description" [value]="job.description"></textarea>
+                            formControlName="description" [value]="job.description" #description ></textarea>
+                  <span *ngIf="!editJobForm.get('description').valid && editJobForm.get('description').touched">
+                    <span *ngIf="editJobForm.get('description').errors['required']" class="errorMessage">
+                          {{'NotEmpty.editJobForm.description' | translate }}<br>
+                    </span>
+                    <span *ngIf="description.textLength>maxDescriptionLength" class="errorMessage">
+                          {{'Size.editJobForm.description' | translate: {max: maxDescriptionLength} }}
+                    </span>
+                  </span>
 
                 </div>
                 <div class="col-12 pl-0">
