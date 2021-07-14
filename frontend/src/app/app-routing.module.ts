@@ -24,6 +24,7 @@ import {VerifyComponent} from "./verify/verify.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {NotProviderGuard} from "./auth/not-provider.guard";
 import {VerifiedGuard} from "./auth/verified.guard";
+import {ProfileGuard} from "./auth/profile.guard";
 
 const routes: Routes = [
   {
@@ -75,6 +76,7 @@ const routes: Routes = [
       {
         path: 'user/:id',
         component: UserProfileComponent,
+        canActivate: [ProfileGuard],
       },
       {
         path: 'user/:id/followers',
