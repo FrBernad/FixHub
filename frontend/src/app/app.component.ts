@@ -79,18 +79,14 @@ export class AppComponent implements OnInit, OnDestroy {
       fasInfoCircle, fasExclamationCircle, farCheckCircle
     );
 
-    this.authService.autoLogin();
-
     this.subs = this.userService.loading.subscribe((loading) => {
       this.loading = loading;
     })
 
   }
 
-
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
-
 
 }

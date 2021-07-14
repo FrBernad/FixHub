@@ -17,17 +17,17 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
     private EntityManager em;
 
     @Override
-    public Optional<PasswordResetToken> getToken(long id) {
-        return Optional.ofNullable(em.find(PasswordResetToken.class, id));
-    }
-
-    @Override
     public PasswordResetToken createToken(User user, String token, LocalDateTime expirationDate) {
         final PasswordResetToken resetToken = new PasswordResetToken(token, user, expirationDate);
 
         em.persist(resetToken);
 
         return resetToken;
+    }
+
+    @Override
+    public Optional<PasswordResetToken> getToken(long id) {
+        return Optional.ofNullable(em.find(PasswordResetToken.class, id));
     }
 
     @Override

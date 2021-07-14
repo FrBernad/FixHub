@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {catchError, tap} from 'rxjs/operators';
-import {throwError, BehaviorSubject} from 'rxjs';
+import {catchError, filter, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {throwError, BehaviorSubject, Observable, from, scheduled, empty, EMPTY, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Session} from '../models/session.model';
 import jwtDecode from "jwt-decode";
@@ -29,6 +29,45 @@ export interface RegisterData {
 export class AuthService {
 
   session = new BehaviorSubject<Session>(null);
+
+  autoLogin: Observable<boolean> = this.http
+    .post(
+      environment.apiBaseUrl + '/user/refreshSession',
+      {},
+      {
+        observe: "response"
+      }
+    )
+    .pipe(
+      catchError(() => {
+          this.userService.setLoading(false);
+          return of(true);
+        }
+      ),
+      mergeMap((res: HttpResponse<Object>) => {
+          if (res as unknown as boolean === true) {
+            return of(true);
+          }
+          const authHeader = res.headers.get("Authorization");
+          const token = authHeader.split(" ")[1];
+          this.handleAuthentication(token);
+          return this.userService.populateUserData()
+            .pipe(
+              catchError(() => {
+                  this.userService.setLoading(false);
+                  return of(true);
+                }
+              ),
+              mergeMap(() => {
+                  this.userService.setLoading(false);
+                  return of(true);
+                }
+              )
+            )
+        }
+      ),
+      shareReplay(1)
+    );
 
   private tokenExpirationTimer: any;
 
@@ -74,33 +113,6 @@ export class AuthService {
       );
   }
 
-  autoLogin() {
-    const sessionData: {
-      _token: string;
-      _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem('session'));
-    if (!sessionData) {
-      this.userService.setLoading(false);
-      return;
-    }
-    const session = new Session(sessionData._token, new Date(sessionData._tokenExpirationDate));
-    if (session.token) {
-      this.session.next(session);
-      this.userService.populateUserData().subscribe(() => {
-        const expirationDuration =
-          new Date(sessionData._tokenExpirationDate).getTime() -
-          new Date().getTime();
-        this.autoLogout(expirationDuration);
-        this.userService.setLoading(false);
-      }, () => {
-        this.userService.setLoading(false);
-      })
-    } else {
-      this.userService.setLoading(false);
-      localStorage.removeItem("session")
-    }
-
-  }
 
   verify(token: string) {
     return this.http
@@ -116,10 +128,11 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(res => {
-          const authHeader = res.headers.get("Authorization");
-          const token = authHeader.split(" ")[1];
-          this.handleAuthentication(token);
-        })
+            const authHeader = res.headers.get("Authorization");
+            const token = authHeader.split(" ")[1];
+            this.handleAuthentication(token);
+          }
+        )
       );
   }
 
@@ -166,12 +179,17 @@ export class AuthService {
   }
 
   logout() {
+    this.http
+      .delete(
+        environment.apiBaseUrl + '/user/refreshSession',
+        {observe: "response"},
+      ).subscribe();
+
     this.session.next(null);
 
     this.userService.clearUser();
-
     this.router.navigate(['/login']);
-    localStorage.removeItem('session');
+
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -187,9 +205,7 @@ export class AuthService {
     }, expirationDuration);
   }
 
-  private handleAuthentication(
-    token: string,
-  ) {
+  private handleAuthentication(token: string) {
     const jwt = this.decodeToken(token);
 
     const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
@@ -199,8 +215,6 @@ export class AuthService {
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);
-
-    localStorage.setItem('session', JSON.stringify(newSession));
   }
 
   private handleError(errorRes: HttpErrorResponse) {

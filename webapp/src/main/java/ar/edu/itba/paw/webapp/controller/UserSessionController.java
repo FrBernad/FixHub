@@ -89,7 +89,10 @@ public class UserSessionController {
 
             addAuthorizationHeader(responseBuilder, user);
 
+            addSessionRefreshTokenCookie(responseBuilder, user);
+
             return responseBuilder.build();
+
         } catch (AuthenticationException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -108,6 +111,51 @@ public class UserSessionController {
         return Response.ok().build();
     }
 
+
+    @Produces
+    @POST
+    @Path("/refreshSession")
+    public Response refreshAccessToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) String sessionRefreshToken) {
+
+        if (sessionRefreshToken == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        final Optional<User> userOpt = userService.getUserByRefreshToken(sessionRefreshToken);
+
+        if (!userOpt.isPresent()) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        final User user = userOpt.get();
+
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+
+        addAuthorizationHeader(responseBuilder, user);
+
+        return responseBuilder.build();
+    }
+
+    @Produces
+    @DELETE
+    @Path("/refreshSession")
+    public Response deleteRefreshToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) Cookie sessionRefreshCookie,
+                                       @QueryParam("allSessions") @DefaultValue("false") boolean allSessions) {
+
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+
+        if (sessionRefreshCookie != null) {
+            responseBuilder.cookie(jwtUtil.generateDeleteSessionCookie());
+
+            if (allSessions) {
+                userService
+                    .getUserByRefreshToken(sessionRefreshCookie.getValue())
+                    .ifPresent(user -> userService.deleteSessionRefreshToken(user));
+            }
+        }
+
+        return responseBuilder.build();
+    }
 
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON,})
@@ -131,6 +179,9 @@ public class UserSessionController {
 
         if (user.isVerified()) {
             addAuthorizationHeader(responseBuilder, user);
+            if (securityContext.getUserPrincipal() == null) {
+                addSessionRefreshTokenCookie(responseBuilder, user);
+            }
         }
         return responseBuilder.build();
     }
@@ -361,12 +412,13 @@ public class UserSessionController {
             return Response.status(Response.Status.NO_CONTENT.getStatusCode()).build();
         }
 
-        GenericEntity<Collection<ContactInfoDto>> entity = new GenericEntity<Collection<ContactInfoDto>>(contactInfoCollection) {};
+        GenericEntity<Collection<ContactInfoDto>> entity = new GenericEntity<Collection<ContactInfoDto>>(contactInfoCollection) {
+        };
 
         return Response.ok(entity).build();
     }
 
-//    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    //    @RequestMapping(path = "/register", method = RequestMethod.POST)
 //    public ModelAndView registerPost(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpServletRequest request) {
 //        LOGGER.info("Accessed /register POST controller");
 //
@@ -555,9 +607,10 @@ public class UserSessionController {
         LOGGER.info("User with id {} become provider succesfully", user.getId());
 
         //FIXME: forceLogin
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+        addAuthorizationHeader(responseBuilder, user);
 
-        return Response.ok().build();
-
+        return responseBuilder.build();
     }
 
 //    @RequestMapping(path = "/user/join", method = RequestMethod.POST)
@@ -675,6 +728,9 @@ public class UserSessionController {
         responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
     }
 
+    private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
+        responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
+    }
 
     private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
                                                      GenericEntity<PaginatedResultDto<K>> resultsDto,
@@ -755,21 +811,21 @@ public class UserSessionController {
     @PUT
     @Path("/dashboard/contacts/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response changeStatus(@PathParam ("id") final long contactId,final NewStatusDto status) {
+    public Response changeStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
 
-        LOGGER.info("Accessed /user/dashboard/contacts/{}",contactId);
+        LOGGER.info("Accessed /user/dashboard/contacts/{}", contactId);
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
 
-        JobStatus newStatus=status.getStatus();
+        JobStatus newStatus = status.getStatus();
 
-        if(newStatus == JobStatus.FINISHED){
+        if (newStatus == JobStatus.FINISHED) {
             jobService.finishJob(jobContact);
-        }else if(newStatus == JobStatus.REJECTED){
+        } else if (newStatus == JobStatus.REJECTED) {
             jobService.rejectJob(jobContact);
-        }else if(newStatus == JobStatus.IN_PROGRESS){
+        } else if (newStatus == JobStatus.IN_PROGRESS) {
             jobService.acceptJob(jobContact);
-        }else return Response.status(Response.Status.BAD_REQUEST).build();
+        } else return Response.status(Response.Status.BAD_REQUEST).build();
 
         return Response.ok().build();
     }

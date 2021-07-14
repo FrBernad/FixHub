@@ -25,11 +25,13 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
 import {NotProviderGuard} from "./auth/not-provider.guard";
 import {VerifiedGuard} from "./auth/verified.guard";
 import {ProfileGuard} from "./auth/profile.guard";
+import {StartGuard} from "./auth/start.guard";
 
 const routes: Routes = [
   {
     path: '',
     component: LandingPageLayoutComponent,
+    canActivate: [StartGuard],
     children: [
       {
         path: '',
@@ -40,6 +42,7 @@ const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [StartGuard],
     children: [
       {
         path: 'discover',

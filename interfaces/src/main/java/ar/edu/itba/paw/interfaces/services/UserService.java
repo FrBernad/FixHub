@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 
@@ -27,6 +28,12 @@ public interface UserService {
 
     void generateNewPassword(User user);
 
+    SessionRefreshToken getSessionRefreshToken(User user);
+
+    void deleteSessionRefreshToken(User user);
+
+    Optional<User> getUserByRefreshToken(String token);
+
     Optional<User> updatePassword(String token, String password);
 
     void updateUserInfo(UserInfo userInfo, User user);
@@ -35,7 +42,7 @@ public interface UserService {
 
     void makeProvider(User user, List<Long> citiesId, String startTime, String endTime);
 
-    void updateProviderInfo(User user,List<Long> citiesId,String startTime,String endTime);
+    void updateProviderInfo(User user, List<Long> citiesId, String startTime, String endTime);
 
     void updateCoverImage(NewImageDto newImageDto, User user);
 

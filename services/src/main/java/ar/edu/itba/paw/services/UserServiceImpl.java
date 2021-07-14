@@ -3,10 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
-import ar.edu.itba.paw.interfaces.persistance.LocationDao;
-import ar.edu.itba.paw.interfaces.persistance.PasswordResetTokenDao;
-import ar.edu.itba.paw.interfaces.persistance.UserDao;
-import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
+import ar.edu.itba.paw.interfaces.persistance.*;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.UserService;
@@ -19,6 +16,7 @@ import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
+import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
@@ -52,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordResetTokenDao passwordResetTokenDao;
+
+    @Autowired
+    private SessionRefreshTokenDao sessionRefreshTokenDao;
 
     @Autowired
     private EmailService emailService;
@@ -147,6 +148,33 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Transactional
+    @Override
+    public SessionRefreshToken getSessionRefreshToken(User user) {
+        final Optional<SessionRefreshToken> tokenOpt = sessionRefreshTokenDao.getTokenByUser(user);
+
+        if (tokenOpt.isPresent()) {
+            final SessionRefreshToken sessionRefreshToken = tokenOpt.get();
+            if (!sessionRefreshToken.isValid()) {
+                sessionRefreshToken.refresh();
+            }
+            return sessionRefreshToken;
+        }
+
+        return generateSessionRefreshToken(user);
+    }
+
+    @Transactional
+    @Override
+    public void deleteSessionRefreshToken(User user) {
+        final Optional<SessionRefreshToken> optToken = sessionRefreshTokenDao.getTokenByUser(user);
+        optToken.ifPresent(sessionRefreshToken -> sessionRefreshTokenDao.removeToken(sessionRefreshToken));
+    }
+
+    @Override
+    public Optional<User> getUserByRefreshToken(String token) {
+        return sessionRefreshTokenDao.getTokenByValue(token).map(SessionRefreshToken::getUser);
+    }
 
     @Transactional
     @Override
@@ -235,12 +263,12 @@ public class UserServiceImpl implements UserService {
         final LocalTime localStartTime;
         final LocalTime localEndTime;
 
-        if ((localStartTime = parseTime(startTime)) == null){
+        if ((localStartTime = parseTime(startTime)) == null) {
             return;
 
         }
 
-        if ((localEndTime = parseTime(endTime)) == null){
+        if ((localEndTime = parseTime(endTime)) == null) {
             return;
         }
 
@@ -334,6 +362,13 @@ public class UserServiceImpl implements UserService {
     private VerificationToken generateVerificationToken(User user) {
         final String token = UUID.randomUUID().toString();
         return verificationTokenDao.createVerificationToken(user, token, VerificationToken.generateTokenExpirationDate());
+    }
+
+    private SessionRefreshToken generateSessionRefreshToken(User user) {
+        return sessionRefreshTokenDao.createToken(user,
+            SessionRefreshToken.generateSessionToken(),
+            SessionRefreshToken.generateTokenExpirationDate()
+        );
     }
 
     private LocalTime parseTime(String time) {

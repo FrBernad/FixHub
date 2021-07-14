@@ -1,4 +1,4 @@
-import {CUSTOM_ELEMENTS_SCHEMA, Inject, isDevMode, NgModule} from '@angular/core';
+import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, Inject, isDevMode, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -53,6 +53,8 @@ import {ResetPasswordComponent} from './reset-password/reset-password.component'
 import {UserSentRequestsComponent} from "./profile/session-profile/contact/user-sent-requests.component";
 import {UserSentRequestCardComponent} from './profile/session-profile/contact/user-sent-request-card/user-sent-request-card.component';
 import {RequestComponent} from './dashboard/request/request.component';
+import {AuthService} from "./auth/auth.service";
+import {Observable} from "rxjs";
 
 
 @NgModule({

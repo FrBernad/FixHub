@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import io.jsonwebtoken.*;
@@ -9,17 +10,24 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.FileCopyUtils;
 
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.NewCookie;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class JwtUtil {
 
+    public final static String SESSION_REFRESH_TOKEN_COOKIE_NAME = "SESSION_REFRESH_TOKEN";
+
     private String secretKey;
-    private final static int TOKEN_EXPIRATION_MILLIS = 1000 * 60 * 60;
+
+    private final static int TOKEN_EXPIRATION_MILLIS = 1000 * 20 * 60;  //20 mins duration
 
     public JwtUtil(Resource secretKeyRes) throws IOException {
         this.secretKey = FileCopyUtils.copyToString(new InputStreamReader(secretKeyRes.getInputStream()));
@@ -60,6 +68,34 @@ public class JwtUtil {
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
     }
+
+    public NewCookie generateSessionRefreshCookie(SessionRefreshToken sessionRefreshToken) {
+        return new NewCookie(SESSION_REFRESH_TOKEN_COOKIE_NAME,
+            sessionRefreshToken.getValue(),
+            "/",
+            null,
+            Cookie.DEFAULT_VERSION,
+            "Session Refresh Token",
+            (int) ChronoUnit.SECONDS.between(LocalDateTime.now(), sessionRefreshToken.getExpirationDate()),
+            null,
+            false,
+            true);
+    }
+
+
+    public NewCookie generateDeleteSessionCookie() {
+        return new NewCookie(SESSION_REFRESH_TOKEN_COOKIE_NAME,
+            null,
+            "/",
+            null,
+            Cookie.DEFAULT_VERSION,
+            null,
+            0,
+            new Date(0),
+            false,
+            true);
+    }
+
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
