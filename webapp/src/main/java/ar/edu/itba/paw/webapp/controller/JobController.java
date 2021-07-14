@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
-import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.image.NewImageDto;
@@ -250,6 +247,7 @@ public class JobController {
                               @Size(max = 6) @ImageTypeConstraint(contentType ={"image/png","image/jpeg"} ) @FormDataParam("images") List<FormDataBodyPart> images,
                               @FormDataParam("imagesIdToDelete") List<Long> imagesIdToDelete) {
 
+
         LOGGER.info("Accessed /jobs/{}/ POST controller", id);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).
             orElseThrow(UserNotFoundException::new);
@@ -261,7 +259,6 @@ public class JobController {
                 user.getId(), id, job.getProvider().getId());
             return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
         }
-
 
         List<NewImageDto> imagesToUpload = new LinkedList<>();
 

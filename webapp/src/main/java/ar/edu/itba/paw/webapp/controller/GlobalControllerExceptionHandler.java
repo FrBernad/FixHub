@@ -59,6 +59,8 @@ public class GlobalControllerExceptionHandler {
         return mav;
     }
 
+
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = {ContactInfoNotFoundException.class, UserNotFoundException.class})
     public ModelAndView userNotFoundException() {
