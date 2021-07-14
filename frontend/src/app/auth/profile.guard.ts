@@ -32,7 +32,7 @@ export class ProfileGuard implements CanActivate {
     return this.userService.user.pipe(
       take(1),
       map(user => {
-        if (!!user && route.params['id'] != user.id) {
+        if (!user || (!!user && route.params['id'] != user.id)) {
           return true;
         }
         let previousRoute = "/user/profile";
