@@ -4,8 +4,8 @@ import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
-import ar.edu.itba.paw.webapp.dto.CityDto;
-import ar.edu.itba.paw.webapp.dto.StateDto;
+import ar.edu.itba.paw.webapp.dto.response.CityDto;
+import ar.edu.itba.paw.webapp.dto.response.StateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Path("locations")
 @Component

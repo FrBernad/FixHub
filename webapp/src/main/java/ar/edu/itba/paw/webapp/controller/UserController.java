@@ -7,12 +7,13 @@ import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.image.Image;
-import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.webapp.dto.*;
-import ar.edu.itba.paw.models.user.UserInfo;
+import ar.edu.itba.paw.webapp.dto.response.PaginatedResultDto;
+import ar.edu.itba.paw.webapp.dto.response.ProviderDto;
+import ar.edu.itba.paw.webapp.dto.response.RegisterDto;
+import ar.edu.itba.paw.webapp.dto.response.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Collection;
-import java.util.Optional;
 
 @Path("/users")
 @Component

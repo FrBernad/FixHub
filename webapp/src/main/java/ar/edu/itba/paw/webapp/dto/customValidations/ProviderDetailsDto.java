@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.webapp.dto.customValidations;
 
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
-import ar.edu.itba.paw.webapp.dto.LocationDto;
-import ar.edu.itba.paw.webapp.dto.ScheduleDto;
+import ar.edu.itba.paw.webapp.dto.response.LocationDto;
+import ar.edu.itba.paw.webapp.dto.response.ScheduleDto;
 
 public class ProviderDetailsDto {
 

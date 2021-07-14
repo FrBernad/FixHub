@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.ReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.models.job.Review;
-import ar.edu.itba.paw.webapp.dto.ReviewDto;
+import ar.edu.itba.paw.webapp.dto.response.ReviewDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
