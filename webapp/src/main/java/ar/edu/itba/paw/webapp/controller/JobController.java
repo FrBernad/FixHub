@@ -209,7 +209,7 @@ public class JobController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        return Response.ok().build();
+        return Response.created(JobDto.getContactUriBuilder(job, uriInfo).build()).build();
     }
 
     @POST
@@ -289,7 +289,7 @@ public class JobController {
 
         LOGGER.info("The job with id {} has been updated successfully", id);
 
-        return Response.ok().build();
+        return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
 
 
     }
