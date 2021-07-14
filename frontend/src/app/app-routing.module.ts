@@ -112,7 +112,7 @@ const routes: Routes = [
         component: JobComponent
       },
       {
-        path: '/404',
+        path: '404',
         component: ErrorsComponent
       },
       {

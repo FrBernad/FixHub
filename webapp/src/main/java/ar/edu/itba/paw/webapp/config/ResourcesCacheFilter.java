@@ -12,11 +12,13 @@ import java.io.IOException;
 @Component
 public class ResourcesCacheFilter extends OncePerRequestFilter {
 
+    private final String MAX_TIME = "31536000";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(!request.getRequestURI().contains("index.html")){
             //Add 1 year cache time
-            response.addHeader("Cache-Control", "max-age=31536000, public");
+            response.addHeader("Cache-Control", "public, max-age="+MAX_TIME+", immutable");
         }
 
         filterChain.doFilter(request, response);
