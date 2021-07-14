@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Job} from "../../models/job.model";
 import {JobService} from "../job.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import {SingleJob} from "../../models/single-job.model";

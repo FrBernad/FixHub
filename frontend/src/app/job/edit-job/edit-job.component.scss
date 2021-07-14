@@ -273,6 +273,34 @@ a:hover {
   background-color: rgba(189, 189, 189, 0.8);
 }
 
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 50px;
+  width: 50px;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  background-color: rgba(189, 189, 189, 1);
+  background-image: none;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover{
+  background-color: rgba(189, 189, 189, 0.8);
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 35px;
+  color: var(--primary-color);
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 35px;
+  color: var(--primary-color);
+}
+
 .dropdown-custom {
   border-radius: 8px !important;
   font-size: 14px;
