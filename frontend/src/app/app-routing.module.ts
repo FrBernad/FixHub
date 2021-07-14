@@ -112,6 +112,10 @@ const routes: Routes = [
         component: JobComponent
       },
       {
+        path: '/404',
+        component: ErrorsComponent
+      },
+      {
         path: '**',
         component: ErrorsComponent
       }
