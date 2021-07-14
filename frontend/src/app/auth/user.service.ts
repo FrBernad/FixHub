@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {User} from "../models/user.model";
 import {environment} from "../../environments/environment";
-import {tap} from "rxjs/operators";
+import {mergeMap, tap} from "rxjs/operators";
 import {City, State} from "../discover/jobs.service";
+import {AuthService} from "./auth.service";
 
 
 export interface ProviderInfo {
@@ -24,7 +25,8 @@ export class UserService {
   loading = new BehaviorSubject<boolean>(true);
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
   }
 
@@ -65,12 +67,16 @@ export class UserService {
 
   follow(id: number) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(()=>{this.populateUserData().subscribe()}));
+      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(() => {
+      this.populateUserData().subscribe()
+    }));
   }
 
   unfollow(id: number) {
     return this.http.delete(
-      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(()=>{this.populateUserData().subscribe()}));
+      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(() => {
+      this.populateUserData().subscribe()
+    }));
   }
 
   uploadProfileImage(file) {
@@ -92,9 +98,15 @@ export class UserService {
     return this.http.post(
       environment.apiBaseUrl + '/user/join',
       providerInfo)
-      .pipe(tap(() => {
-        this.populateUserData().subscribe();
-      }));
+      .pipe(
+        tap((res: HttpResponse<Object>) => {
+            this.authService.handleSession(res);
+          },
+          mergeMap(() => {
+            return this.populateUserData();
+          })
+        )
+      );
   }
 
   updateProviderInfo(providerInfo: ProviderInfo) {
@@ -103,7 +115,7 @@ export class UserService {
       providerInfo)
       .pipe(tap(() => {
         this.populateUserData().subscribe();
-    }));
+      }));
 
   }
 

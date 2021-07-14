@@ -48,9 +48,7 @@ export class AuthService {
           if (res as unknown as boolean === true) {
             return of(true);
           }
-          const authHeader = res.headers.get("Authorization");
-          const token = authHeader.split(" ")[1];
-          this.handleAuthentication(token);
+          this.handleSession(res);
           return this.userService.populateUserData()
             .pipe(
               catchError(() => {
@@ -106,9 +104,7 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(res => {
-          const authHeader = res.headers.get("Authorization");
-          const token = authHeader.split(" ")[1];
-          this.handleAuthentication(token);
+          this.handleSession(res);
         })
       );
   }
@@ -128,12 +124,16 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(res => {
-            const authHeader = res.headers.get("Authorization");
-            const token = authHeader.split(" ")[1];
-            this.handleAuthentication(token);
+            this.handleSession(res);
           }
         )
       );
+  }
+
+  handleSession(res: HttpResponse<Object>) {
+    const authHeader = res.headers.get("Authorization");
+    const token = authHeader.split(" ")[1];
+    this.handleAuthentication(token);
   }
 
   resetPassword(token: string, password: string) {

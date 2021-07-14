@@ -385,6 +385,66 @@ public class UserSessionController {
         }, uriBuilder);
     }
 
+    @POST
+    @Path("/join")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response join(@Valid final JoinDto joinDto) {
+        LOGGER.info("Accessed /user/join POST controller");
+
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
+
+//        FIXME: si ya es provider lanzar una excepción
+
+        List<Long> citiesId = new ArrayList<>();
+        for (CityDto city : joinDto.getLocation().getCities()) {
+            citiesId.add(city.getId());
+        }
+
+        userService.makeProvider(user,
+            citiesId,
+            joinDto.getSchedule().getStartTime(),
+            joinDto.getSchedule().getEndTime());
+
+        LOGGER.info("User with id {} become provider succesfully", user.getId());
+
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+        addAuthorizationHeader(responseBuilder, user);
+
+        return responseBuilder.build();
+    }
+
+
+    @PUT
+    @Path("/account/updateProviderInfo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateProviderInfo(final JoinDto joinDto) {
+        LOGGER.info("Accessed /user/account/updateProviderInfo PUT controller");
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
+
+//        FIXME: si no es provider lanzar una excepcion
+
+        if (!user.hasRole(Roles.PROVIDER)) {
+//            LOGGER.warn("User {} is not a provider", user.getId());
+//            return new ModelAndView("redirect:/user/account");
+        }
+
+        List<Long> citiesId = new ArrayList<>();
+        for (CityDto city : joinDto.getLocation().getCities()) {
+            citiesId.add(city.getId());
+        }
+
+        userService.updateProviderInfo(user, citiesId,
+            joinDto.getSchedule().getStartTime(), joinDto.getSchedule().getEndTime());
+
+        LOGGER.info("User with id {} update provider information succesfully", user.getId());
+
+        return Response.ok().build();
+
+    }
+
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/following/{id}")
@@ -604,35 +664,7 @@ public class UserSessionController {
 //        return mav;
 //    }
 //
-    @POST
-    @Path("/join")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response join(@Valid final JoinDto joinDto) {
-        LOGGER.info("Accessed /user/join POST controller");
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
-
-//        FIXME: si ya es provider lanzar una excepción
-
-        List<Long> citiesId = new ArrayList<>();
-        for (CityDto city : joinDto.getLocation().getCities()) {
-            citiesId.add(city.getId());
-        }
-
-        userService.makeProvider(user,
-            citiesId,
-            joinDto.getSchedule().getStartTime(),
-            joinDto.getSchedule().getEndTime());
-
-        LOGGER.info("User with id {} become provider succesfully", user.getId());
-
-        //FIXME: forceLogin
-        final Response.ResponseBuilder responseBuilder = Response.noContent();
-        addAuthorizationHeader(responseBuilder, user);
-
-        return responseBuilder.build();
-    }
 
 //    @RequestMapping(path = "/user/join", method = RequestMethod.POST)
 //    public ModelAndView joinPost(@Valid @ModelAttribute("joinForm") final FirstJoinForm form,
@@ -793,39 +825,6 @@ public class UserSessionController {
         if (page != last) {
             responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
         }
-    }
-
-
-    @PUT
-    @Path("/account/updateProviderInfo")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response updateProviderInfo(final JoinDto joinDto) {
-        LOGGER.info("Accessed /user/account/updateProviderInfo PUT controller");
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
-
-//        FIXME: si no es provider lanzar una excepcion
-
-        if (!user.hasRole(Roles.PROVIDER)) {
-//            LOGGER.warn("User {} is not a provider", user.getId());
-//            return new ModelAndView("redirect:/user/account");
-        }
-
-        List<Long> citiesId = new ArrayList<>();
-        for (CityDto city : joinDto.getLocation().getCities()) {
-            citiesId.add(city.getId());
-        }
-
-
-        userService.updateProviderInfo(user, citiesId,
-            joinDto.getSchedule().getStartTime(), joinDto.getSchedule().getEndTime());
-
-
-        LOGGER.info("User with id {} update provider information succesfully", user.getId());
-
-        return Response.ok().build();
-
     }
 
 

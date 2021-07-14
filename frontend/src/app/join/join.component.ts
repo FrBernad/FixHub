@@ -51,7 +51,7 @@ export class JoinComponent implements OnInit {
     this.chooseState = false;
   }
 
-  makeProvider(event:City[]) {
+  makeProvider(event: City[]) {
     this.cities = event;
     this.posting = true;
     let providerInfo = {
