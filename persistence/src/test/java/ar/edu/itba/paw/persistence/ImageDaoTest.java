@@ -70,27 +70,27 @@ public class ImageDaoTest {
 
     }
 
-//    @Test
-//    public void testCreateImages(){
-//
-//        List<NewImageDto> dtos1 = new ArrayList<>();
-//
-//        dtos1.add(IMAGEDTO_1);
-//        dtos1.add(IMAGEDTO_2);
-//        dtos1.add(IMAGEDTO_3);
-//
-//        Set<Image> dtos2 = imageDao.createImages(dtos1);
-//
-//        assertNotNull(dtos2);
-//
-//        Image[] dtos2Vec= dtos2.toArray(new Image[0]);
-//
-//        for (int i = 0; i < dtos1.size() ; i++) {
-//            assertArrayEquals(dtos1.get(i).getData(),dtos2Vec[i].getData());
-//            assertEquals(dtos1.get(i).getMimeType(),dtos2Vec[i].getMimeType());
-//        }
-//
-//    }
+    @Test
+    public void testCreateImages(){
+
+        List<NewImageDto> dtos1 = new ArrayList<>();
+
+        dtos1.add(IMAGEDTO_1);
+        dtos1.add(IMAGEDTO_2);
+        dtos1.add(IMAGEDTO_3);
+
+        Set<Image> dtos2 = imageDao.createImages(dtos1);
+
+        assertNotNull(dtos2);
+
+        Image[] dtos2Vec= dtos2.toArray(new Image[0]);
+
+        for (int i = 0; i < dtos1.size() ; i++) {
+            assertArrayEquals(dtos1.get(i).getData(),dtos2Vec[i].getData());
+            assertEquals(dtos1.get(i).getMimeType(),dtos2Vec[i].getMimeType());
+        }
+
+    }
 
 
     @Test

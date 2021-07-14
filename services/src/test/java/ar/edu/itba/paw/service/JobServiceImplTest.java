@@ -117,12 +117,12 @@ public class JobServiceImplTest {
         List<NewImageDto> imagesToUpload = new LinkedList<>(IMAGES_TO_UPLOAD);
 
         Job defaultJob = new Job(DESCRIPTION, JOB_PROVIDED, 0, 0L, CATEGORY,
-            PRICE, PAUSED, DEFAULT_USER);
+            PRICE, PAUSED, DEFAULT_USER, images);
 
 
         when(mockJobDao.createJob(Mockito.eq(JOB_PROVIDED), Mockito.eq(CATEGORY),
             Mockito.eq(DESCRIPTION), Mockito.eq(PRICE), Mockito.eq(PAUSED),
-            Mockito.eq(DEFAULT_USER))).thenReturn(defaultJob);
+            Mockito.eq(DEFAULT_USER), Mockito.any())).thenReturn(defaultJob);
 
         lenient().when(job.getJobProvided()).thenReturn("");
         lenient().when(job.getId()).thenReturn(1L);
@@ -131,11 +131,11 @@ public class JobServiceImplTest {
             .thenReturn(images);
 
         jobService.createJob(JOB_PROVIDED, CATEGORY, DESCRIPTION,
-            PRICE, false, DEFAULT_USER);
+            PRICE, false, DEFAULT_USER, imagesToUpload);
 
         Mockito.verify(mockJobDao).createJob(JOB_PROVIDED, CATEGORY,
             DESCRIPTION, PRICE, PAUSED,
-            DEFAULT_USER);
+            DEFAULT_USER, images);
     }
 
     @Test(expected = IllegalOperationException.class)
@@ -175,26 +175,26 @@ public class JobServiceImplTest {
         Mockito.verify(job).setPaused(false);
     }
 
-//    @Test
-//    public void testUpdateJob() {
-//        List<NewImageDto> imagesToUpload = new LinkedList<>(IMAGES_TO_UPLOAD);
-//        Set<Image> imagesUploaded = new HashSet<>(IMAGES_UPLOADED);
-//        Set<Image> images = new LinkedHashSet<>(IMAGES);
-//
-//        when(mockImageService.createImages(imagesToUpload))
-//            .thenReturn(imagesUploaded);
-//
-//        when(job.getImages()).thenReturn(images);
-//
-//        jobService.updateJob(JOB_PROVIDED, DESCRIPTION, PRICE, false,
-//            imagesToUpload, job, IMAGES_ID_TO_DELETE);
-//
-//        Mockito.verify(job).setJobProvided(JOB_PROVIDED);
-//        Mockito.verify(job).setDescription(DESCRIPTION);
-//        Mockito.verify(job).setPrice(PRICE);
-//        Mockito.verify(job).setPaused(false);
-//
-//    }
+    @Test
+    public void testUpdateJob() {
+        List<NewImageDto> imagesToUpload = new LinkedList<>(IMAGES_TO_UPLOAD);
+        Set<Image> imagesUploaded = new HashSet<>(IMAGES_UPLOADED);
+        Set<Image> images = new LinkedHashSet<>(IMAGES);
+
+        when(mockImageService.createImages(imagesToUpload))
+            .thenReturn(imagesUploaded);
+
+        when(job.getImages()).thenReturn(images);
+
+        jobService.updateJob(JOB_PROVIDED, DESCRIPTION, PRICE, false,
+            imagesToUpload, job, IMAGES_ID_TO_DELETE);
+
+        Mockito.verify(job).setJobProvided(JOB_PROVIDED);
+        Mockito.verify(job).setDescription(DESCRIPTION);
+        Mockito.verify(job).setPrice(PRICE);
+        Mockito.verify(job).setPaused(false);
+
+    }
 
     @Test
     public void testAcceptJob() {

@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
@@ -15,6 +16,7 @@ import ar.edu.itba.paw.webapp.dto.*;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -183,7 +186,7 @@ public class JobController {
 
         try {
             userService.contact(auxContactDto, user, job.getProvider());
-        }catch(IllegalContactException e) {
+        } catch (IllegalContactException e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
@@ -192,32 +195,30 @@ public class JobController {
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response newJob(@Valid NewJobDto newJobDto) {
+    public Response newJob(
+        @FormDataParam("jobProvided") final String jobProvided,
+        @FormDataParam("jobCategory") final JobCategory jobCategory,
+        @FormDataParam("price") final BigDecimal price,
+        @FormDataParam("description") final String description,
+        @FormDataParam("paused") final boolean paused,
+        @FormDataParam("images") List<FormDataBodyPart> images) throws IOException {
+
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-        final Job job = jobService.createJob(newJobDto.getJobProvided(), newJobDto.getJobCategory(), newJobDto.getDescription(), newJobDto.getPrice(), newJobDto.isPaused(), user);
+
+        List<NewImageDto> imagesToUpload = new LinkedList<>();
+
+        for (FormDataBodyPart part : images) {
+            InputStream in = part.getEntityAs(InputStream.class);
+            imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
+        }
+        final Job job = jobService.createJob(jobProvided, jobCategory, description, price, paused, user, imagesToUpload);
         LOGGER.info("Created job with id {}", job.getId());
         return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
+
     }
 
-    @PUT
-    @Path("/{id}/images")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response newJobImages(@PathParam("id") final Long id, FormDataMultiPart multiPart) throws IOException {
 
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-        Map<String, List<FormDataBodyPart>> map = multiPart.getFields();
-        List<NewImageDto> images = new LinkedList<>();
 
-        for (Map.Entry<String, List<FormDataBodyPart>> entry : map.entrySet()) {
-            for (FormDataBodyPart part : entry.getValue()) {
-                InputStream in = part.getEntityAs(InputStream.class);
-                images.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
-            }
-        }
-        jobService.addImagesToJob(job, images);
-        return Response.ok().build();
-    }
 /*
     public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form,
                             @PathVariable("id") final Long id,

@@ -17,9 +17,8 @@ public interface JobService {
 
     Optional<JobContact> getContactById(long id);
 
-    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider);
+    Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, List<NewImageDto> images);
 
-    void addImagesToJob(Job job, List<NewImageDto> imagesToUpload);
 
     Collection<JobCategory> getJobsCategories();
 

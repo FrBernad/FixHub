@@ -60,7 +60,7 @@ public class Job {
         // Just for Hibernate
     }
 
-    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, User provider) {
+    public Job(String description, String jobProvided, Integer averageRating, Long totalRatings, JobCategory category, BigDecimal price, boolean paused, User provider, Set<Image> images) {
         this.description = description;
         this.jobProvided = jobProvided;
         this.averageRating = averageRating;
@@ -69,6 +69,7 @@ public class Job {
         this.provider = provider;
         this.price = price;
         this.paused = paused;
+        this.images = images;
     }
 
     public void addImage(Image image) {

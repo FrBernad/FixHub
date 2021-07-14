@@ -41,26 +41,19 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, List<NewImageDto> images) {
+        Set<Image> jobImages = null;
+        if (!images.isEmpty()) {
+            LOGGER.debug("Job {} has images", jobProvided);
+            jobImages = imageService.createImages(images);
+        } else
+            LOGGER.debug("Job {} has no images", jobProvided);
 
-        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider);
+        final Job job = jobDao.createJob(jobProvided, category, description, price, paused, provider, jobImages);
         LOGGER.info("Created job {} with id {}", job.getId(), job.getJobProvided());
-
         return job;
     }
 
-    @Transactional
-    @Override
-    public void addImagesToJob(Job job, List<NewImageDto> imagesToUpload) {
-        if (!imagesToUpload.isEmpty()) {
-            LOGGER.debug("Job {} has images", job.getJobProvided());
-            Set<Image> images = imageService.createImages(imagesToUpload);
-            job.getImages().addAll(images);
-
-        } else
-            LOGGER.debug("Job {} has no images", job.getJobProvided());
-
-    }
 
     @Override
     public Optional<Job> getJobById(long id) {

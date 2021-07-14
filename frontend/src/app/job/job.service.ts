@@ -87,9 +87,8 @@ export class JobService {
     this.getFirstReviews(id);
   }
 
-  createJob(jobData: JobData) {
-    console.log(jobData);
-    return this.http.post<JobData>(environment.apiBaseUrl + '/jobs', jobData, {observe: 'response'});
+  createJob(formData: FormData) {
+    return this.http.post<JobData>(environment.apiBaseUrl + '/jobs', formData, {observe: 'response'});
   }
 
   addJobImages(id:number, images: FormData) {

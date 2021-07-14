@@ -85,30 +85,34 @@ export class NewJobComponent implements OnInit, OnDestroy {
       return;
     }
     this.disabled=true;
+    let newFormData = new FormData();
+    newFormData.append('jobProvided',this.jobForm.get('jobProvided').value);
+    newFormData.append('jobCategory', this.jobForm.get('jobCategory').value);
+    newFormData.append('price', this.jobForm.get('price').value);
+    newFormData.append('description', this.jobForm.get('description').value);
+    newFormData.append('paused', this.jobForm.get('paused').value);
 
-    this.jobService
-      .createJob({
-        jobProvided: this.jobForm.get('jobProvided').value,
-        jobCategory: this.jobForm.get('jobCategory').value,
-        price: this.jobForm.get('price').value,
-        description: this.jobForm.get('description').value,
-        paused: this.jobForm.get('paused').value
-      }).subscribe((response) => {
-        let location = response.headers.get('location').split('/');
-        this.jobId = +location[location.length-1];
-        if(this.imagesArray.value.length > 0) {
-          let formData = new FormData;
-          this.imagesArray.value.forEach(image => {
-            formData.append(image.name, image);
-            console.log(formData.get(image.name));
-          });
-          console.log(formData);
-          this.jobService.addJobImages(this.jobId, formData).subscribe((response) => {
-            console.log(response);
-          })
-        }
-        this.router.navigate(['/jobs', this.jobId]);
+    if(this.imagesArray.value.length > 0) {
+      this.imagesArray.value.forEach(image => {
+        newFormData.append('images', image);
+        console.log(newFormData.get(image.name));
       });
+    }
+
+    this.jobService.createJob(newFormData).subscribe((response) =>{
+      console.log(response);
+    })
+      // }).subscribe((response) => {
+      //   let location = response.headers.get('location').split('/');
+      //   this.jobId = +location[location.length-1];
+      //
+      //     console.log(formData);
+      //     this.jobService.addJobImages(this.jobId, formData).subscribe((response) => {
+      //       console.log(response);
+      //     })
+      //   }
+      //   this.router.navigate(['/jobs', this.jobId]);
+      // });
 
 
   }

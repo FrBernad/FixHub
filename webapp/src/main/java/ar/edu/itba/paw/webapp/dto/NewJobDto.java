@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageSizeConstraint;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +30,10 @@ public class NewJobDto {
     @Range(min = 1, max = 999999)
     private BigDecimal price;
 
-//    @Size(max = 6)
-//    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
-//    @ImageSizeConstraint(size=3000000)
-//    private List<MultipartFile> images;
+    @Size(max = 6)
+    @ImageTypeConstraint(contentType = {"image/png","image/jpeg"})
+    @ImageSizeConstraint(size=3000000)
+    private List<FormDataBodyPart> images;
 
     private boolean paused;
 

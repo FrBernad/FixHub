@@ -45,10 +45,10 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider) {
+    public Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, Set<Image> images) {
         final int averageRating = 0;
         final Long totalRatings = 0L;
-        Job job = new Job(description, jobProvided, averageRating, totalRatings, category, price, paused, provider);
+        Job job = new Job(description, jobProvided, averageRating, totalRatings, category, price, paused, provider, images);
         em.persist(job);
         LOGGER.debug("Created job with id {}", job.getId());
         return job;
