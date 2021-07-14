@@ -6,6 +6,7 @@ import {JobService, ReviewsPaginationResult} from "./job.service";
 import {Subscription} from "rxjs";
 import {Review} from "./review.model";
 import {JobPaginationResult} from "../discover/jobs.service";
+import {UserService} from "../auth/user.service";
 
 @Component({
   selector: 'app-job',
@@ -16,7 +17,6 @@ export class JobComponent implements OnInit {
 
   job: Job = new Job();
 
-  loggedUser: User;
   selectedIndex = 0;
   isFetching = true;
 
@@ -28,9 +28,14 @@ export class JobComponent implements OnInit {
     totalPages: 0,
   }
 
+  userSub: Subscription;
+  loggedUser: User;
+  user: User;
+
   constructor(
     private route: ActivatedRoute,
-    private jobService: JobService
+    private jobService: JobService,
+    private userService:UserService
   ) {
   }
 
@@ -40,6 +45,10 @@ export class JobComponent implements OnInit {
         this.job.id = params['id'];
       }
     );
+
+    this.userSub = this.userService.user.subscribe((user) => {
+      this.loggedUser = user;
+    });
 
     this.jobService.getJob(+this.job.id).subscribe(
       job => {
