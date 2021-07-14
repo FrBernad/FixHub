@@ -1,9 +1,9 @@
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from '../auth/user.service';
-import { AuthService } from '../auth/auth.service';
-import { PreviousRouteService } from '../auth/previous-route.service';
+import {Form, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {UserService} from '../auth/user.service';
+import {AuthService} from '../auth/auth.service';
+import {PreviousRouteService} from '../auth/previous-route.service';
 
 @Component({
   selector: 'app-register',
@@ -25,12 +25,15 @@ export class RegisterComponent implements OnInit {
   maxStateLength: number = 50;
   maxCityLength: number = 50;
 
+  disable = false;
+
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private previousRouteService: PreviousRouteService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -92,9 +95,9 @@ export class RegisterComponent implements OnInit {
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {
     const confirmPasswordControl = group.controls['confirmPassword'];
-    if(group.controls['password'].value != confirmPasswordControl.value){
-      confirmPasswordControl.setErrors({ passwordsDontMatch: true });
-    }else {
+    if (group.controls['password'].value != confirmPasswordControl.value) {
+      confirmPasswordControl.setErrors({passwordsDontMatch: true});
+    } else {
       confirmPasswordControl.setErrors(null);
     }
     return;
@@ -109,11 +112,14 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.disable = true;
 
     if (!this.registerForm.valid) {
       this.registerForm.markAllAsTouched();
+      this.disable = false;
       return;
     }
+
 
     const registerData = {
       name: this.registerForm.value.name,
@@ -130,12 +136,12 @@ export class RegisterComponent implements OnInit {
 
     authObs.subscribe(
       () => {
-        console.log('registered!');
         this.authService
           .login(registerData.email, registerData.password)
           .subscribe(
             () => {
               this.userService.populateUserData().subscribe(() => {
+                this.disable = false;
                 let url = '/user/profile';
                 if (this.previousRouteService.getAuthRedirect()) {
                   let prevUrl = this.previousRouteService.getPreviousUrl();
@@ -146,11 +152,13 @@ export class RegisterComponent implements OnInit {
               });
             },
             (errorMessage) => {
+              this.disable = false;
               console.log(errorMessage);
             }
           );
       },
       (errorMessage) => {
+        this.disable = false;
         console.log(errorMessage);
       }
     );

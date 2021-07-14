@@ -3,11 +3,11 @@ import {Subscription} from "rxjs";
 import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../../../job/contact/contact.service";
 
 @Component({
-  selector: 'app-user-sent-request',
-  templateUrl: './user-sent-request.component.html',
-  styleUrls: ['./user-sent-request.component.scss','../session-profile.component.scss']
+  selector: 'app-user-sent-requests',
+  templateUrl: './user-sent-requests.component.html',
+  styleUrls: ['./user-sent-requests.component.scss','../session-profile.component.scss']
 })
-export class UserSentRequestComponent implements OnInit {
+export class UserSentRequestsComponent implements OnInit {
 
   cpr: ContactPaginationResult = {
     results: [],

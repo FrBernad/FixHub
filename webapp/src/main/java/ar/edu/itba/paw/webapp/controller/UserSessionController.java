@@ -14,6 +14,7 @@ import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.*;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -134,7 +135,6 @@ public class UserSessionController {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         userService.resendVerificationToken(user);
-
         return Response.noContent().build();
     }
 

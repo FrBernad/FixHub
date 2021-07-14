@@ -9,7 +9,6 @@ import {RegisterComponent} from './register/register.component';
 import {LandingPageLayoutComponent} from "./layouts/landing-page-layout/landing-page-layout.component";
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {DefaultLayoutComponent} from "./layouts/default-layout/default-layout.component";
-import {ContactComponent} from './job/contact/contact.component';
 import {JobComponent} from "./job/job.component";
 import {AuthGuard} from "./auth/auth.guard";
 import {EditJobComponent} from "./job/edit-job/edit-job.component";
@@ -18,12 +17,13 @@ import {ErrorsComponent} from "./errors/errors.component";
 import {JoinComponent} from "./join/join.component";
 import {UnauthGuard} from "./auth/unauth.guard";
 import {ProviderGuard} from "./auth/provider.guard";
-import {NotProviderGuard} from "./auth/not-provider.guard";
 import {FollowersComponent} from "./followers/followers.component";
 import {FollowingComponent} from "./followers/following.component";
 import {UserProfileComponent} from "./profile/user-profile/user-profile.component";
 import {VerifyComponent} from "./verify/verify.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {NotProviderGuard} from "./auth/not-provider.guard";
+import {VerifiedGuard} from "./auth/verified.guard";
 
 const routes: Routes = [
   {
@@ -57,12 +57,12 @@ const routes: Routes = [
       {
         path: 'user/join',
         component: JoinComponent,
-        canActivate: [AuthGuard]
-        // canActivate: [AuthGuard, NotProviderGuard]
+        canActivate: [AuthGuard, VerifiedGuard, NotProviderGuard]
       },
       {
         path: 'user/account/updateProviderInfo',
-        component: UpdateProviderInfoComponent
+        component: UpdateProviderInfoComponent,
+        canActivate: [ProviderGuard]
       },
       {
         path: 'user/verify',
@@ -92,28 +92,22 @@ const routes: Routes = [
       },
       {
         path: 'register',
+        canActivate: [UnauthGuard],
         component: RegisterComponent
       },
       {
-        path: "job",
-        component: JobComponent
+        path: "jobs/new",
+        component: NewJobComponent,
+        canActivate: [ProviderGuard]
       },
       {
-        path: "jobs/new",
-        component: NewJobComponent
+        path: 'jobs/:id/edit',
+        canActivate: [ProviderGuard],
+        component: EditJobComponent
       },
       {
         path: "jobs/:id",
         component: JobComponent
-      },
-      {
-        path: 'jobs/:id/contact',
-        component: ContactComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'jobs/:id/edit',
-        component: EditJobComponent
       },
       {
         path: '**',

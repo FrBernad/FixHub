@@ -83,7 +83,6 @@ export class AuthService {
       this.userService.setLoading(false);
       return;
     }
-
     const session = new Session(sessionData._token, new Date(sessionData._tokenExpirationDate));
     if (session.token) {
       this.session.next(session);

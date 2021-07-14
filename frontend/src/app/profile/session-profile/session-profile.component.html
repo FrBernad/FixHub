@@ -216,7 +216,7 @@
                        <ng-template #notProvider>
                               {{'profilePage.subtitle.inactive' | translate}}
                          <fa-icon [icon]="['fas','times']" class="ms-1" style="color: darkred"></fa-icon>
-                         <a class="ms-2" [routerLink]="['/user','join']" style="font-weight: 500">
+                         <a *ngIf="user.roles.includes('VERIFIED')"  class="ms-2" [routerLink]="['/user/join']" style="font-weight: 500">
                               {{'profilePage.subtitle.join' | translate}}
                          </a>
                       </ng-template>
@@ -225,7 +225,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -233,7 +232,7 @@
 
     <!-- RECENT CONTACTS -->
     <div class="col-12 col-md-6 pe-md-5">
-      <app-user-sent-request></app-user-sent-request>
+      <app-user-sent-requests></app-user-sent-requests>
     </div>
 
     <!-- NOT VERIFIED POPUP-->

@@ -1,7 +1,8 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, Inject, isDevMode, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {APP_BASE_HREF} from "@angular/common";
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
@@ -49,7 +50,7 @@ import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.compone
 import {WorksComponent} from './dashboard/works/works.component';
 import {VerifyComponent} from './verify/verify.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
-import {UserSentRequestComponent} from "./profile/session-profile/contact/user-sent-request.component";
+import {UserSentRequestsComponent} from "./profile/session-profile/contact/user-sent-requests.component";
 import {UserSentRequestCardComponent} from './profile/session-profile/contact/user-sent-request-card/user-sent-request-card.component';
 import {RequestComponent} from './dashboard/request/request.component';
 
@@ -96,7 +97,7 @@ import {RequestComponent} from './dashboard/request/request.component';
     WorksComponent,
     VerifyComponent,
     ResetPasswordComponent,
-    UserSentRequestComponent,
+    UserSentRequestsComponent,
     UserSentRequestCardComponent,
     RequestComponent
   ],
@@ -123,6 +124,10 @@ import {RequestComponent} from './dashboard/request/request.component';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true
+    },
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
     }
   ],
   bootstrap: [AppComponent],
@@ -131,5 +136,5 @@ export class AppModule {
 }
 
 export function translateFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient);
+  return new TranslateHttpLoader(httpClient, isDevMode() ? "/assets/i18n/" : "/resources/assets/i18n/");
 }

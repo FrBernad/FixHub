@@ -53,6 +53,7 @@
                   "maximumError": "10kb"
                 }
               ],
+              "baseHref": "/resources/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
