@@ -26,6 +26,7 @@ import {NotProviderGuard} from "./auth/not-provider.guard";
 import {VerifiedGuard} from "./auth/verified.guard";
 import {ProfileGuard} from "./auth/profile.guard";
 import {StartGuard} from "./auth/start.guard";
+import {RequestsComponent} from "./requests/requests.component";
 
 const routes: Routes = [
   {
@@ -57,6 +58,11 @@ const routes: Routes = [
         path: 'user/dashboard',
         component: DashboardComponent,
         canActivate: [AuthGuard, ProviderGuard]
+      },
+      {
+        path: 'user/requests',
+        component: RequestsComponent,
+        canActivate: [AuthGuard, VerifiedGuard]
       },
       {
         path: 'user/join',

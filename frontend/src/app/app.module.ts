@@ -50,11 +50,9 @@ import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.compone
 import {WorksComponent} from './dashboard/works/works.component';
 import {VerifyComponent} from './verify/verify.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
-import {UserSentRequestsComponent} from "./profile/session-profile/contact/user-sent-requests.component";
-import {UserSentRequestCardComponent} from './profile/session-profile/contact/user-sent-request-card/user-sent-request-card.component';
+import {UserSentRequestCardComponent} from './requests/user-sent-request-card/user-sent-request-card.component';
 import {RequestComponent} from './dashboard/request/request.component';
-import {AuthService} from "./auth/auth.service";
-import {Observable} from "rxjs";
+import { RequestsComponent } from './requests/requests.component';
 
 
 @NgModule({
@@ -99,9 +97,9 @@ import {Observable} from "rxjs";
     WorksComponent,
     VerifyComponent,
     ResetPasswordComponent,
-    UserSentRequestsComponent,
     UserSentRequestCardComponent,
-    RequestComponent
+    RequestComponent,
+    RequestsComponent
   ],
   imports: [
     BrowserModule,

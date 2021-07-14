@@ -238,7 +238,7 @@ public class UserSessionController {
     @PUT
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUserCoverImage(@NotNull @ImageTypeConstraint(contentType ={"image/png","image/jpeg"}) @FormDataParam("coverImage")FormDataBodyPart coverImage) throws IOException {
+    public Response updateUserCoverImage(@NotNull @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}) @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = coverImage.getEntityAs(InputStream.class);
         userService.updateCoverImage(new NewImageDto(IOUtils.toByteArray(in), coverImage.getMediaType().toString()), user);
@@ -258,7 +258,7 @@ public class UserSessionController {
 
     @PUT
     @Path("/profileImage")
-    public Response updateUserProfileImage(@NotNull @ImageTypeConstraint(contentType ={"image/png","image/jpeg"}) @FormDataParam("profileImage")FormDataBodyPart profileImage) throws IOException {
+    public Response updateUserProfileImage(@NotNull @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}) @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = profileImage.getEntityAs(InputStream.class);
         userService.updateProfileImage(new NewImageDto(IOUtils.toByteArray(in), profileImage.getMediaType().toString()), user);
@@ -271,11 +271,12 @@ public class UserSessionController {
     public Response getUserJobRequests(
         @QueryParam("status") String status,
         @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("order") @DefaultValue("NEWEST") String order,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
-        final PaginatedSearchResult<JobContact> results = searchService.getClientsByProvider(user, status, page, pageSize);
+        final PaginatedSearchResult<JobContact> results = searchService.getClientsByProvider(user, status, order, page, pageSize);
 
         if (results == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -295,6 +296,26 @@ public class UserSessionController {
 
         return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobContactDto>>(resultsDto) {
         }, uriBuilder);
+    }
+
+    @PUT
+    @Path("/jobs/request/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
+
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+
+        JobStatus newStatus = status.getStatus();
+
+        if (newStatus == JobStatus.FINISHED) {
+            jobService.finishJob(jobContact);
+        } else if (newStatus == JobStatus.REJECTED) {
+            jobService.rejectJob(jobContact);
+        } else if (newStatus == JobStatus.IN_PROGRESS) {
+            jobService.acceptJob(jobContact);
+        } else return Response.status(Response.Status.BAD_REQUEST).build();
+
+        return Response.ok().build();
     }
 
     @GET
@@ -337,7 +358,7 @@ public class UserSessionController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
-        
+
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Job> results = searchService.getJobsByProvider(query, order, user, page, pageSize);
@@ -805,29 +826,6 @@ public class UserSessionController {
 
         return Response.ok().build();
 
-    }
-
-
-    @PUT
-    @Path("/dashboard/contacts/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response changeStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
-
-        LOGGER.info("Accessed /user/dashboard/contacts/{}", contactId);
-
-        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
-
-        JobStatus newStatus = status.getStatus();
-
-        if (newStatus == JobStatus.FINISHED) {
-            jobService.finishJob(jobContact);
-        } else if (newStatus == JobStatus.REJECTED) {
-            jobService.rejectJob(jobContact);
-        } else if (newStatus == JobStatus.IN_PROGRESS) {
-            jobService.acceptJob(jobContact);
-        } else return Response.status(Response.Status.BAD_REQUEST).build();
-
-        return Response.ok().build();
     }
 
 

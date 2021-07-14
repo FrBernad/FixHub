@@ -1,6 +1,6 @@
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpParams, HttpStatusCode} from '@angular/common/http';
-import {ContactInfo} from 'src/app/models/contactInfo.model';
+import {ContactInfo} from 'src/app/models/contact-info.model';
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {User} from "../../models/user.model";
@@ -41,8 +41,9 @@ export interface RequestPaginationResult {
 
 export interface RequestPaginationQuery {
   page: number;
+  order?: string
   pageSize?: number;
-  filter?: string;
+  status?: string;
 }
 
 export interface ContactData {
@@ -116,15 +117,12 @@ export class ContactService {
 
 
   changeContactStatus(contactId:number, status:string){
-    let obj ={
-      status:status
-    }
-
     return this.http.put(
-      environment.apiBaseUrl + '/user/dashboard/contacts/'+contactId,
-      obj
+      environment.apiBaseUrl + '/user/request/'+contactId,
+      {
+        status
+      }
       );
-
   }
 
 }

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {OrderOptionModel} from "../models/orderOption.model";
+import {OrderOption} from "../models/order-option-enum.model";
 import {City, JobPaginationQuery, JobPaginationResult, JobsService, State} from "./jobs.service";
 import {Subscription} from "rxjs";
 
@@ -19,7 +19,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   jpq: JobPaginationQuery = {
     page: 0,
     pageSize: 6,
-    order: OrderOptionModel.MOST_POPULAR
+    order: OrderOption.MOST_POPULAR
   }
 
   searchError = false;
@@ -30,7 +30,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   selectedCity: string = ""
   isFetching = true;
 
-  orderOptions = Object.keys(OrderOptionModel).filter((item) => {
+  orderOptions = Object.keys(OrderOption).filter((item) => {
     return isNaN(Number(item));
   });
 

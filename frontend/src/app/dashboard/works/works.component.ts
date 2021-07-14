@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {JobPaginationQuery, JobPaginationResult} from "../../discover/jobs.service";
-import {OrderOptionModel} from "../../models/orderOption.model";
+import {OrderOption} from "../../models/order-option-enum.model";
 import {Subscription} from "rxjs";
 import {WorksService} from "./works.service";
 
@@ -20,14 +20,14 @@ export class WorksComponent implements OnInit, OnDestroy {
   jpq: JobPaginationQuery = {
     page: 0,
     pageSize: 4,
-    order: OrderOptionModel.MOST_POPULAR
+    order: OrderOption.MOST_POPULAR
   }
 
   searchError = false;
 
   private jobsSub: Subscription;
 
-  orderOptions = Object.keys(OrderOptionModel).filter((item) => {
+  orderOptions = Object.keys(OrderOption).filter((item) => {
     return isNaN(Number(item));
   });
 

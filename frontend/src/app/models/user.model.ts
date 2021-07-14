@@ -1,4 +1,4 @@
-import {ContactInfo} from "./contactInfo.model";
+import {ContactInfo} from "./contact-info.model";
 
 export interface ProviderDetails {
   location: {

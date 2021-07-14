@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {JobRequest} from "../../../../job/contact/contact.service";
+import {JobRequest} from "../../job/contact/contact.service";
 
 @Component({
   selector: 'app-user-sent-request-card',

@@ -1,4 +1,4 @@
-import {ContactInfo} from '../../models/contactInfo.model';
+import {ContactInfo} from '../../models/contact-info.model';
 import {ContactService} from './contact.service';
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';

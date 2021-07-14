@@ -12,6 +12,7 @@ import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
+import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,7 +201,16 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, String status, int page, int pageSize) {
+    public PaginatedSearchResult<JobContact> getClientsByProvider(User provider, String status, String orderBy, int page, int pageSize) {
+
+        //ORDER
+        StatusOrderOptions queryOrderOption;
+        if (!StatusOrderOptions.contains(orderBy)) {
+            LOGGER.debug("Order option {} not valid", orderBy);
+            return null;
+        }
+        LOGGER.debug("Order option is valid");
+        queryOrderOption = StatusOrderOptions.valueOf(orderBy);
 
         //STATUS
         JobStatus statusOption;
@@ -235,7 +245,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, provider.getId());
-        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, statusOption, page, pageSize);
+        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, statusOption,queryOrderOption, page, pageSize);
 
         return new PaginatedSearchResult<>(page, pageSize, totalContacts, contacts);
     }

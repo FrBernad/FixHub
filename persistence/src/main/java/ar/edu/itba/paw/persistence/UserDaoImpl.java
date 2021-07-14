@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
+import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
@@ -31,6 +32,19 @@ public class UserDaoImpl implements UserDao {
     private EntityManager em;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+
+    private static final Map<StatusOrderOptions, String> SQL_CONTACT_ORDER_OPTIONS = new EnumMap<>(StatusOrderOptions.class);
+    private static final Map<StatusOrderOptions, String> HQL_CONTACT_ORDER_OPTIONS = new EnumMap<>(StatusOrderOptions.class);
+
+    static {
+        SQL_CONTACT_ORDER_OPTIONS.put(StatusOrderOptions.NEWEST, "c_date desc, c_id desc");
+        SQL_CONTACT_ORDER_OPTIONS.put(StatusOrderOptions.OLDER, "c_date asc, c_id desc");
+    }
+
+    static {
+        HQL_CONTACT_ORDER_OPTIONS.put(StatusOrderOptions.NEWEST, "jb.date desc, jb.id desc");
+        HQL_CONTACT_ORDER_OPTIONS.put(StatusOrderOptions.OLDER, "jb.date asc, jb.id desc");
+    }
 
     @Override
     public Optional<User> getUserById(long id) {
@@ -121,21 +135,22 @@ public class UserDaoImpl implements UserDao {
         return Optional.ofNullable(em.find(ContactInfo.class, id));
     }
 
+
     @Override
-    public Collection<JobContact> getClientsByProvider(User provider, JobStatus status, int page, int itemsPerPage) {
+    public Collection<JobContact> getClientsByProvider(User provider, JobStatus status, StatusOrderOptions order, int page, int itemsPerPage) {
         final List<Object> variables = new LinkedList<>();
 
         variables.add(provider.getId());
 
         String statusQuery = getClientsByProviderStatusQuery(status, variables);
+        String orderQuery = getContactOrderQuery(order);
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
         final String filteredIdsSelectQuery =
             " SELECT c_id " +
                 " FROM CONTACT " +
-                " WHERE c_provider_id = ? " + statusQuery +
-                " ORDER BY c_date DESC " + offsetAndLimitQuery;
+                " WHERE c_provider_id = ? " + statusQuery + orderQuery + offsetAndLimitQuery;
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
 
@@ -146,7 +161,9 @@ public class UserDaoImpl implements UserDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from JobContact jb where id IN :filteredIds order by jb.date DESC", JobContact.class)
+        String hqlOrderQuery = getContactHQLOrderQuery(order);
+
+        return em.createQuery("from JobContact jb where id IN :filteredIds" + hqlOrderQuery, JobContact.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
     }
@@ -329,5 +346,13 @@ public class UserDaoImpl implements UserDao {
         return offsetAndLimitQuery.toString();
     }
 
+    private String getContactOrderQuery(StatusOrderOptions orderOption) {
+        return String.format(" ORDER BY %s ", SQL_CONTACT_ORDER_OPTIONS.get(orderOption));
+    }
+
+    private String getContactHQLOrderQuery(StatusOrderOptions orderOption) {
+        return String.format(" ORDER BY %s ", HQL_CONTACT_ORDER_OPTIONS.get(orderOption));
+    }
 
 }
+

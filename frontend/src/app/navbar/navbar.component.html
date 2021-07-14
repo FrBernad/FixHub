@@ -23,10 +23,17 @@
             {{'navBar.dashboard'| translate}}
           </a>
         </li>
+        <li *ngIf="!!user && user.roles.includes('VERIFIED')"
+            class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+          <a routerLink="/user/requests" class="nav-link navbarText">
+            {{'navBar.requests'| translate}}
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav ms-auto">
         <ng-template [ngIf]="!!user" [ngIfElse]="noUser">
-          <li *ngIf="user.roles.includes('PROVIDER')" class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
+          <li *ngIf="user.roles.includes('PROVIDER')"
+              class="nav-item mx-1 navOption d-flex justify-content-center align-items-center">
             <a [routerLink]="['/jobs','new']" class="nav-link navbarText">
               <fa-icon class="me-2 navbarText" [icon]="['fas','plus']" id="navBarPlus"></fa-icon>
               {{'navBar.newJob'| translate}}
@@ -55,6 +62,9 @@
                 </a>
                 <a *ngIf="user.roles.includes('PROVIDER')" routerLink="/user/dashboard" class="dropdown-item ps-3">
                   {{'navBar.dashboardItem'| translate}}
+                </a>
+                <a routerLink="/user/requests" class="dropdown-item ps-3">
+                  {{'navBar.requestsItem'| translate}}
                 </a>
                 <div class="dropdown-divider"></div>
                 <div class="mb-0 dropdown-item px-0" (click)="onLogout()">

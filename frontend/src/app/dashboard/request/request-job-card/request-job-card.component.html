@@ -1,25 +1,30 @@
 <div class="accordion">
   <div class="card accordionCard card-header m-1 p-0">
-      <div class="accordion-button navbarText" #accordion
-           style="background-color: rgba(0,0,0,.03); cursor: pointer"
-           data-bs-toggle="collapse"
-           aria-expanded="false"
-           aria-controls="panelsStayOpen">
-        <div class="container-fluid pe-2 ps-0">
-          <div class="row">
-            <div class="col-9 align-items-lg-start">
-              <a [routerLink]="['/jobs',request.jobId]" class="card-link">
-                {{request.jobProvided}}
-              </a><span style="color: darkslategrey">|</span>
-              <a [routerLink]="['/user',request.user.id]" class="card-link">
-                {{request.user.name }} {{ request.user.surname}}
-              </a>
-            </div>
-            <div class="col-3 justify-content-end d-flex align-items-center">
-              <span style="color: darkslategrey">{{request.date|date:'yyyy-MM-dd'}}</span>
-            </div>
+    <div class="navbarText" #accordion
+         style="background-color: rgba(0,0,0,.03); cursor: pointer; padding: 1rem 1.25rem;"
+         data-bs-toggle="collapse"
+         aria-expanded="false"
+         aria-controls="panelsStayOpen">
+      <div class="container-fluid pe-2 ps-0">
+        <div class="row">
+          <div class="col-6 align-items-lg-start">
+            <a [routerLink]="['/jobs',request.jobId]" class="card-link">
+              {{request.jobProvided}}
+            </a><span style="color: darkslategrey">|</span>
+            <a [routerLink]="['/user',request.user.id]" class="card-link">
+              {{request.user.name }} {{ request.user.surname}}
+            </a>
+          </div>
+          <div class="col-5 justify-content-end d-flex align-items-center">
+            <span style="color: darkslategrey">{{request.date|date:'yyyy-MM-dd'}}</span>
+          </div>
+          <div class="col-1 d-flex align-items-center justify-content-end">
+            <fa-icon type="button"
+                     class="ms-2 navbarText dropDownArrow" [icon]="['fas','chevron-down']" id="navBarArrow">
+            </fa-icon>
           </div>
         </div>
+      </div>
     </div>
 
     <div [id]="'accordion'+this.request.id" class="collapse">
@@ -42,9 +47,9 @@
             </div>
             <div class="col-12">
               <span class="client-label">{{'dashboard.clientAddress'|translate}}:</span>
-                            {{request.contactInfo.city}},  {{ request.contactInfo.state}},
-                            {{ request.contactInfo.street}} {{ request.contactInfo.addressNumber}}
-                            {{ request.contactInfo.floor}} {{ request.contactInfo.departmentNumber}}
+              {{request.contactInfo.city}},  {{ request.contactInfo.state}},
+              {{ request.contactInfo.street}} {{ request.contactInfo.addressNumber}}
+              {{ request.contactInfo.floor}} {{ request.contactInfo.departmentNumber}}
             </div>
 
             <div class="col-12">
@@ -65,21 +70,21 @@
                     <div class="col-12">
                       <div class="row">
                         <div
-                          class="col-12 col-md-6 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                          class="col-12 col-md-6 ps-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
                           <p class="m-2 font-weight-bold">
                             {{'clientContactCard.jobDecision'|translate}}
                           </p>
                         </div>
                         <div
-                          class="col-12 col-md-6 pr-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
+                          class="col-12 col-md-6 pe-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
                           <button class="finishBtn me-2"
                                   type="submit" (click)="acceptJob()">
                             {{'clientContactCard.acceptJobBtn'|translate}}
-                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>
+                            <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
                           </button>
                           <button class="closeBtn me-2" type="submit" (click)="rejectJob()">
                             {{'clientContactCard.rejectJobBtn'|translate}}
-                            <fa-icon [icon]="['fas', 'times']" class="ml-2"></fa-icon>
+                            <fa-icon [icon]="['fas', 'times']" class="ms-2"></fa-icon>
                           </button>
                         </div>
                       </div>
@@ -96,16 +101,16 @@
                     <div class="col-12">
                       <div class="row">
                         <div
-                          class="col-12 col-md-7 pl-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                          class="col-12 col-md-7 ps-4 my-2 d-flex align-items-center justify-content-center justify-content-md-start">
                           <p class="font-weight-bold m-2">
                             {{'clientContactCard.jobCompletedIntro'|translate}}
                           </p>
                         </div>
                         <div
-                          class="col-12 col-md-5 pr-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">
+                          class="col-12 col-md-5 pe-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">
                           <button class="finishBtn me-2" type="submit" (click)="jobFinished()">
                             {{'clientContactCard.completedJobBtn'|translate}}
-                            <fa-icon [icon]="['fas', 'check']" class="ml-2"></fa-icon>
+                            <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
                           </button>
                         </div>
                       </div>

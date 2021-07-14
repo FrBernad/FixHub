@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ContactService, RequestPaginationQuery, RequestPaginationResult} from "../../job/contact/contact.service";
-import {FilterStatusRequestModel} from "../../models/filterStatusRequest.model";
+import {FilterStatusRequest} from "../../models/filter-status-request-enum.model";
 import {Subscription} from "rxjs";
+import {ContactOrder} from "../../models/contact-order-enum.model";
 
 @Component({
   selector: 'app-request',
@@ -11,9 +12,9 @@ import {Subscription} from "rxjs";
 export class RequestComponent implements OnInit {
 
   rpq: RequestPaginationQuery = {
-    page:0,
-    pageSize:4,
-    filter:FilterStatusRequestModel.PENDING,
+    page: 0,
+    pageSize: 4,
+    order: ContactOrder.NEWEST
   };
 
   rpr: RequestPaginationResult = {
@@ -22,10 +23,18 @@ export class RequestComponent implements OnInit {
     totalPages: 0,
   }
 
-  private contactSub:Subscription;
+  filterOptions = Object.keys(FilterStatusRequest).filter((item) => {
+    return isNaN(Number(item));
+  });
 
+  orderOptions = Object.keys(ContactOrder).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-  constructor( private contactService: ContactService) { }
+  private contactSub: Subscription;
+
+  constructor(private contactService: ContactService) {
+  }
 
   ngOnInit(): void {
     this.contactService.getProviderRequests(this.rpq);
@@ -42,6 +51,20 @@ export class RequestComponent implements OnInit {
     this.contactService.getProviderRequests(this.rpq);
   }
 
+  onChangeStatus(status: string) {
+    this.rpq.status = status;
+    this.rpq.page = 0;
+    if (!status) {
+      delete this.rpq.status;
+    }
+    this.contactService.getProviderRequests(this.rpq);
+  }
+
+  onChangeOrder(order: string) {
+    this.rpq.order = order;
+    this.rpq.page = 0;
+    this.contactService.getProviderRequests(this.rpq);
+  }
 
   ngOnDestroy(): void {
     this.contactSub.unsubscribe();

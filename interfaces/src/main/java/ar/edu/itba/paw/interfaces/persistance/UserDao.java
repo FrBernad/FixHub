@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
+import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.provider.Location;
@@ -30,7 +31,7 @@ public interface UserDao {
 
     Optional<ContactInfo> getContactInfoById(Long Id);
 
-    Collection<JobContact> getClientsByProvider(User provider, JobStatus status, int page, int itemsPerPage);
+    Collection<JobContact> getClientsByProvider(User provider, JobStatus status, StatusOrderOptions order, int page, int itemsPerPage);
 
     int getClientsCountByProvider(User provider, JobStatus status);
 

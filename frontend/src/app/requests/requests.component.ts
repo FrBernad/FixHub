@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
-import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../../../job/contact/contact.service";
+import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../job/contact/contact.service";
 
 @Component({
-  selector: 'app-user-sent-requests',
-  templateUrl: './user-sent-requests.component.html',
-  styleUrls: ['./user-sent-requests.component.scss','../session-profile.component.scss']
+  selector: 'app-requests',
+  templateUrl: './requests.component.html',
+  styleUrls: ['./requests.component.scss']
 })
-export class UserSentRequestsComponent implements OnInit {
+export class RequestsComponent implements OnInit {
 
   cpr: ContactPaginationResult = {
     results: [],

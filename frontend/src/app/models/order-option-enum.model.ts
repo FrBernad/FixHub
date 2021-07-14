@@ -1,4 +1,4 @@
-export enum OrderOptionModel{
+export enum OrderOption{
   MOST_POPULAR='MOST_POPULAR',
   LESS_POPULAR='LESS_POPULAR',
   HIGHER_PRICE='HIGHER_PRICE',
