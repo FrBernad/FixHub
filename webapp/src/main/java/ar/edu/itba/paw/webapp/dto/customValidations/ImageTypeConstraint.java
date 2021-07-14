@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Constraint(validatedBy = { InvalidImageTypeValidator.class, InvalidImageTypeListValidator.class })
-@Target({ ElementType.FIELD })
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImageTypeConstraint {
 

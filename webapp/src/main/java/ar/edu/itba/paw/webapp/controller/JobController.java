@@ -12,12 +12,16 @@ import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageSizeConstraint;
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewContactDto;
 import ar.edu.itba.paw.webapp.dto.request.NewReviewDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +29,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Path("jobs")
@@ -118,10 +128,10 @@ public class JobController {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
         SingleJobDto singleJobDto = new SingleJobDto(
-                job.get(),
-                uriInfo,
-                securityContext,
-                user.isPresent() && userService.hasContactJobProvided(job.get().getProvider(), user.get(), job.get())
+            job.get(),
+            uriInfo,
+            securityContext,
+            user.isPresent() && userService.hasContactJobProvided(job.get().getProvider(), user.get(), job.get())
         );
 
         return Response.ok(singleJobDto).build();
@@ -202,15 +212,21 @@ public class JobController {
         return Response.ok().build();
     }
 
+//    @NotEmpty @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
+//    @NotNull @Size(max = 300) @FormDataParam("jobCategory") final JobCategory jobCategory,
+//    @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
+//    @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
+//    @FormDataParam("paused") @DefaultValue("false") final boolean paused,
+//    @FormDataParam("images") @Size(max = 6) List<FormDataBodyPart> images)
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response newJob(
-        @FormDataParam("jobProvided") final String jobProvided,
-        @FormDataParam("jobCategory") final JobCategory jobCategory,
-        @FormDataParam("price") final BigDecimal price,
-        @FormDataParam("description") final String description,
-        @FormDataParam("paused") final boolean paused,
-        @FormDataParam("images") List<FormDataBodyPart> images) throws IOException {
+        @NotEmpty  @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
+        @NotNull @FormDataParam("jobCategory") final JobCategory jobCategory,
+        @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
+        @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
+        @NotNull @DefaultValue("false") @FormDataParam("paused") final Boolean paused,
+        @Size(max = 6) @ImageTypeConstraint(contentType ={"image/png","image/jpeg"} ) @FormDataParam("images") List<FormDataBodyPart> images) throws IOException {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -226,6 +242,7 @@ public class JobController {
         final Job job = jobService.createJob(jobProvided, jobCategory, description, price, paused, user, imagesToUpload);
         LOGGER.info("Created job with id {}", job.getId());
         return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
+        return Response.ok().build();
 
     }
 
@@ -233,11 +250,12 @@ public class JobController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateJob(@PathParam("id") final long id,
-                              @FormDataParam("jobProvided") final String jobProvided,
-                              @FormDataParam("price") final BigDecimal price,
-                              @FormDataParam("description") final String description,
-                              @FormDataParam("paused") final boolean paused,
-                              @FormDataParam("images") List<FormDataBodyPart> images,
+                              @NotEmpty  @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
+                              @NotNull @FormDataParam("jobCategory") final JobCategory jobCategory,
+                              @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
+                              @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
+                              @NotNull @DefaultValue("false") @FormDataParam("paused") final Boolean paused,
+                              @Size(max = 6) @ImageTypeConstraint(contentType ={"image/png","image/jpeg"} ) @FormDataParam("images") List<FormDataBodyPart> images,
                               @FormDataParam("imagesIdToDelete") List<Long> imagesIdToDelete) {
 
         LOGGER.info("Accessed /jobs/{}/ POST controller", id);
@@ -268,7 +286,7 @@ public class JobController {
             }
         }
 
-        List<Long> imagesToDelete = imagesIdToDelete ==null? new LinkedList<>(): imagesIdToDelete;
+        List<Long> imagesToDelete = imagesIdToDelete == null ? new LinkedList<>() : imagesIdToDelete;
 
         try {
             jobService.updateJob(jobProvided, description, price, paused, imagesToUpload, job, imagesToDelete);

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.dto.customValidations;
 
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class InvalidImageTypeListValidator implements ConstraintValidator<ImageTypeConstraint, List<MultipartFile>> {
+public class InvalidImageTypeListValidator implements ConstraintValidator<ImageTypeConstraint, List<FormDataBodyPart>> {
 
 
     private ImageTypeConstraint imageTypeConstraint;
@@ -23,10 +24,10 @@ public class InvalidImageTypeListValidator implements ConstraintValidator<ImageT
     }
 
     @Override
-    public boolean isValid(List<MultipartFile> files, ConstraintValidatorContext context) {
-        if (!files.get(0).isEmpty()) {
-            for (MultipartFile file : files) {
-                if (!validTypes.contains(file.getContentType()))
+    public boolean isValid(List<FormDataBodyPart> images, ConstraintValidatorContext context) {
+        if (images != null && !images.isEmpty()) {
+            for (FormDataBodyPart image : images) {
+                if (!validTypes.contains(image.getMediaType().toString()))
                     return false;
             }
         }

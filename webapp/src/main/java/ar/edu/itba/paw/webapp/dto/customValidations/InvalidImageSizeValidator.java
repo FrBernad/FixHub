@@ -1,10 +1,11 @@
 package ar.edu.itba.paw.webapp.dto.customValidations;
 
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class InvalidImageSizeValidator implements ConstraintValidator<ImageSizeConstraint, MultipartFile> {
+public class InvalidImageSizeValidator implements ConstraintValidator<ImageSizeConstraint, FormDataBodyPart> {
 
     private ImageSizeConstraint imageSizeConstraint;
     private int size;
@@ -16,8 +17,10 @@ public class InvalidImageSizeValidator implements ConstraintValidator<ImageSizeC
     }
 
     @Override
-    public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
-        return file.getSize() <= size;
+    public boolean isValid(FormDataBodyPart image, ConstraintValidatorContext context) {
+//        return image.getContentDisposition().getSize();
+//        return file.getSize() <= size;
+        return true;
     }
 }
 
