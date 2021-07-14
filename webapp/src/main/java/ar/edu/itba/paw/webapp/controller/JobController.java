@@ -212,12 +212,6 @@ public class JobController {
         return Response.ok().build();
     }
 
-//    @NotEmpty @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
-//    @NotNull @Size(max = 300) @FormDataParam("jobCategory") final JobCategory jobCategory,
-//    @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
-//    @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
-//    @FormDataParam("paused") @DefaultValue("false") final boolean paused,
-//    @FormDataParam("images") @Size(max = 6) List<FormDataBodyPart> images)
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response newJob(
@@ -242,7 +236,6 @@ public class JobController {
         final Job job = jobService.createJob(jobProvided, jobCategory, description, price, paused, user, imagesToUpload);
         LOGGER.info("Created job with id {}", job.getId());
         return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
-        return Response.ok().build();
 
     }
 
@@ -251,7 +244,6 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateJob(@PathParam("id") final long id,
                               @NotEmpty  @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
-                              @NotNull @FormDataParam("jobCategory") final JobCategory jobCategory,
                               @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
                               @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
                               @NotNull @DefaultValue("false") @FormDataParam("paused") final Boolean paused,

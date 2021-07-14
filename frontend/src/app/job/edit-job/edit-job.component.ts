@@ -105,7 +105,6 @@ export class EditJobComponent implements OnInit {
       });
     }
 
-
     this.jobService.updateJob(this.job.id, newFormData).subscribe((response) => {
       this.isFetching= true;
       this.jobService.getJob(+this.job.id).subscribe(

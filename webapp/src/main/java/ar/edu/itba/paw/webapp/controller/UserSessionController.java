@@ -286,6 +286,7 @@ public class UserSessionController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
+        
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Job> results = searchService.getJobsByProvider(query, order, user, page, pageSize);
