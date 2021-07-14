@@ -222,9 +222,10 @@
             </h2>
           </div>
 
-          <!--        <div *ngIf="canReview == true && !job.paused"-->
-          <div class="col-12 d-flex justify-content-start align-items-center">
-            <app-review-form [jobId]="job.id"></app-review-form>
+          <div *ngIf="job.canReview && !job.paused">
+            <div class="col-12 d-flex justify-content-start align-items-center">
+              <app-review-form [jobId]="job.id"></app-review-form>
+            </div>
           </div>
 
         </div>

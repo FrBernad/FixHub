@@ -112,11 +112,19 @@ public class JobController {
     public Response job(@PathParam("id") final Long id) {
         LOGGER.info("Accessed /jobs/{} GET controller", id);
         final Optional<Job> job = jobService.getJobById(id);
+        final Optional<User> user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
         if (!job.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
-        JobDto jobDto = new JobDto(job.get(), uriInfo, securityContext);
-        return Response.ok(jobDto).build();
+        SingleJobDto singleJobDto = new SingleJobDto(
+                job.get(),
+                uriInfo,
+                securityContext,
+                user.isPresent() && userService.hasContactJobProvided(job.get().getProvider(), user.get(), job.get())
+        );
+
+        return Response.ok(singleJobDto).build();
     }
 
     @GET

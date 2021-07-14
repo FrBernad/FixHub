@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {Review} from "./review.model";
+import {SingleJob} from "../models/single-job.model";
 
 export interface JobData {
     jobProvided: string,
@@ -96,7 +97,7 @@ export class JobService {
   }
 
   getJob(id: number) {
-    return this.http.get<Job>(environment.apiBaseUrl + '/jobs/' + id);
+    return this.http.get<SingleJob>(environment.apiBaseUrl + '/jobs/' + id);
   }
 
   createReview(review: { description: string, rating: string }, id: number) {

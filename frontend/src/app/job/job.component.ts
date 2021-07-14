@@ -7,6 +7,7 @@ import {Subscription} from "rxjs";
 import {Review} from "./review.model";
 import {JobPaginationResult} from "../discover/jobs.service";
 import {UserService} from "../auth/user.service";
+import {SingleJob} from "../models/single-job.model";
 
 @Component({
   selector: 'app-job',
@@ -15,7 +16,7 @@ import {UserService} from "../auth/user.service";
 })
 export class JobComponent implements OnInit {
 
-  job: Job = new Job();
+  job: SingleJob = new SingleJob();
 
   selectedIndex = 0;
   isFetching = true;

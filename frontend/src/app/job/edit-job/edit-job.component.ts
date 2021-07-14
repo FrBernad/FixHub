@@ -3,6 +3,7 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Job} from "../../models/job.model";
 import {JobService} from "../job.service";
 import {ActivatedRoute, Params} from "@angular/router";
+import {SingleJob} from "../../models/single-job.model";
 
 @Component({
   selector: 'app-edit-job',
@@ -30,7 +31,7 @@ export class EditJobComponent implements OnInit {
   imagesToUploadArray = new FormArray([]);
 
 
-  job: Job = new Job();
+  job: SingleJob = new SingleJob();
 
   maxImagesPerJob: number = 6;
 

@@ -1,6 +1,6 @@
 import {User} from "./user.model";
 
-export class Job {
+export class Job{
   id: number;
   description: string;
   jobProvided: string;
