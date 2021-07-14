@@ -14,6 +14,7 @@ import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
+import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewStatusDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
 import org.apache.commons.io.IOUtils;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
@@ -185,7 +187,7 @@ public class UserSessionController {
     @PUT
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUserCoverImage(@FormDataParam("coverImage")FormDataBodyPart coverImage) throws IOException {
+    public Response updateUserCoverImage(@NotNull @ImageTypeConstraint(contentType ={"image/png","image/jpeg"}) @FormDataParam("coverImage")FormDataBodyPart coverImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = coverImage.getEntityAs(InputStream.class);
         userService.updateCoverImage(new NewImageDto(IOUtils.toByteArray(in), coverImage.getMediaType().toString()), user);
@@ -205,7 +207,7 @@ public class UserSessionController {
 
     @PUT
     @Path("/profileImage")
-    public Response updateUserProfileImage(@FormDataParam("profileImage")FormDataBodyPart profileImage) throws IOException {
+    public Response updateUserProfileImage(@NotNull @ImageTypeConstraint(contentType ={"image/png","image/jpeg"}) @FormDataParam("profileImage")FormDataBodyPart profileImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = profileImage.getEntityAs(InputStream.class);
         userService.updateProfileImage(new NewImageDto(IOUtils.toByteArray(in), profileImage.getMediaType().toString()), user);
