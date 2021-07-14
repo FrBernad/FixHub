@@ -134,24 +134,6 @@
                 <scope>runtime</scope>
             </dependency>
 
-            <!--   Validators  -->
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${javax.validation-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${org.hibernate.validator}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.logging</groupId>
-                        <artifactId>jboss-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
             <!--   Testing  -->
             <dependency>
                 <groupId>org.mockito</groupId>
@@ -302,6 +284,19 @@
                     <exclusion>
                         <groupId>javax.validation</groupId>
                         <artifactId>validation-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- JERSEY VALIDATION -->
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-bean-validation</artifactId>
+                <version>${jersey.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>jboss-logging</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
