@@ -18,18 +18,14 @@ export class EditJobComponent implements OnInit {
   maxPrice: number = 999999;
   editJobForm: FormGroup;
   selectedIndex = 0;
+  allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
+  imagesCounter:number;
+
   isFetching = true;
   disabled = false;
-  allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
 
   allowedImageType: boolean = true;
-  maxImagesReached: boolean = false;
   allowedImageSize: boolean = true;
-
-  imagesArray = new FormArray([]);
-  imagesToDeleteArray = new FormArray([]);
-  imagesToUploadArray = new FormArray([]);
-
 
   job: SingleJob = new SingleJob();
 
@@ -70,9 +66,8 @@ export class EditJobComponent implements OnInit {
       'price': new FormControl(this.job.price, [Validators.required, Validators.min(this.minPrice), Validators.max(this.maxPrice)]),
       'description': new FormControl(this.job.description, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]),
       'paused': new FormControl(this.job.paused),
-      'images': this.imagesArray,
-      'imagesToDelete': this.imagesToDeleteArray,
-      'imagesToUpload': this.imagesToUploadArray
+      'imagesIdToDelete': new FormArray([]),
+      'imagesToUpload': new FormArray([])
     })
 
     this.jobService.getJob(+this.job.id).subscribe(
@@ -85,7 +80,6 @@ export class EditJobComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.editJobForm.get('imagesToDelete'));
 
     if (!this.editJobForm.valid) {
       this.editJobForm.markAllAsTouched();
@@ -95,10 +89,9 @@ export class EditJobComponent implements OnInit {
     this.disabled = true;
     let newFormData = new FormData();
 
-    this.editJobForm.get('imagesToDelete').value.forEach(
-      (url) => {
-        let aux = url.split('/');
-        newFormData.append('imagesIdToDelete', aux[aux.length - 1]);
+    this.editJobForm.get('imagesIdToDelete').value.forEach(
+      (id) => {
+        newFormData.append('imagesIdToDelete', id);
       }
     );
 
@@ -107,26 +100,23 @@ export class EditJobComponent implements OnInit {
     newFormData.append('description', this.editJobForm.get('description').value);
     newFormData.append('paused', this.editJobForm.get('paused').value);
 
-    if (this.imagesToUploadArray.value.length > 0) {
-      this.imagesToUploadArray.value.forEach(image => {
+    if (this.editJobForm.get('imagesToUpload').value.length > 0) {
+      this.editJobForm.get('imagesToUpload').value.forEach(image => {
         newFormData.append('images', image);
       });
     }
+
 
     this.jobService.updateJob(this.job.id, newFormData).subscribe((response) => {
       this.isFetching= true;
       this.jobService.getJob(+this.job.id).subscribe(
         responseData => {
           this.updateView(responseData);
+          this.disabled = false;
         }
       );
-      this.disabled = false;
     })
 
-    /*
-     Agregar luego de hacer el pedido al servicio
-     this.disabled=false;
-    */
   }
 
   onFileChanged(event) {
@@ -144,24 +134,27 @@ export class EditJobComponent implements OnInit {
       return
     }
 
-    if (this.imagesArray.length < this.maxImagesPerJob) {
+    if (this.imagesCounter < this.maxImagesPerJob) {
       (<FormArray>this.editJobForm.get('imagesToUpload')).push(
         new FormControl(file)
       );
+      this.imagesCounter++;
     }
   }
 
   deleteImage(index: number, image: string) {
+    let aux = image.split('/');
     if (index >= 0) {
-      this.imagesArray.removeAt(index);
-      this.imagesToDeleteArray.push(new FormControl(image));
-      this.job.images = this.imagesArray.value;
+      (<FormArray>this.editJobForm.get('imagesIdToDelete')).push(new FormControl(aux[aux.length - 1]))
+      this.job.images.splice(index,1);
+      this.imagesCounter--;
     }
   }
 
   deleteUploadImage(index: number) {
     if (index >= 0) {
-      this.imagesToUploadArray.removeAt(index);
+      (<FormArray>this.editJobForm.get('imagesToUpload')).removeAt(index);
+      this.imagesCounter--;
     }
   }
 
@@ -178,15 +171,17 @@ export class EditJobComponent implements OnInit {
     this.job.totalRatings = responseData.totalRatings;
     this.job.averageRating = responseData.averageRating;
     this.job.images = responseData.images;
-    this.editJobForm.get('imagesToUpload').patchValue(responseData.images);
+    (<FormArray>this.editJobForm.get('imagesToUpload')).clear();
+    (<FormArray>this.editJobForm.get('imagesIdToDelete')).clear();
+
     this.job.paused = responseData.paused;
     this.editJobForm.patchValue({paused: responseData.paused});
     this.job.thumbnailImage = responseData.thumbnailImage;
-    this.job.images.forEach(image => {
-      (<FormArray>this.editJobForm.get('images')).push(
-        new FormControl(image)
-      );
-    });
+    this.imagesCounter = this.job.images.length;
     this.isFetching = false;
+  }
+
+  getImagesToUpload() {
+    return (<FormArray>this.editJobForm.get('imagesToUpload')).controls;
   }
 }

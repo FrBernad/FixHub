@@ -1,7 +1,7 @@
 <div class="container-fluid py-4 px-0">
   <div class="container-lg pb-2 pt-5 px-5 bigContentContainer">
     <ng-template [ngIf]="isFetching" [ngIfElse]="fetched">
-      Loading
+      <app-loading-spinner></app-loading-spinner>
     </ng-template>
     <ng-template #fetched>
 
@@ -66,15 +66,15 @@
                     </label>
                     <div>
                     <span>
-                      {{imagesToUploadArray.length}}
+                      {{imagesCounter}}
                     </span>
                       <span>/ {{ maxImagesPerJob }}</span>
                     </div>
 
                     <button class="buttonCustom d-flex align-items-center justify-content-center" type="button"
                             id="addFileButton" (click)="fileInput.click()"
-                            [disabled]="imagesArray.length >= maxImagesPerJob"
-                            [ngClass]="imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
+                            [disabled]="imagesCounter >= maxImagesPerJob"
+                            [ngClass]="imagesCounter < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
                       <fa-icon [icon]="['fas', 'upload']" class="me-1"></fa-icon>
                       {{'jobForm.ImagesButton' | translate}}
                     </button>
@@ -86,7 +86,7 @@
                     <div class="row">
                       <div class="col-12">
                         <button type="button" class="imgFile m-2"
-                                *ngFor="let control of imagesToUploadArray.controls; let i = index"
+                                *ngFor="let control of getImagesToUpload(); let i = index"
                                 (click)="deleteUploadImage(i)">
                           {{control.value.name}}
                           <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
@@ -107,10 +107,10 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-12 pl-0 form-group">
-                  <label class="label" path="jobProvided">
+                  <label class="label">
                     {{ 'jobForm.jobNameTitle' | translate }}
                     <span class="required-field"> *</span></label>
-                  <input type="text" path="jobProvided" id="state" class="form-control" value="{{job.jobProvided}}"
+                  <input type="text" id="state" class="form-control" value="{{job.jobProvided}}"
                          formControlName="jobProvided">
                 </div>
                 <div class="col-12 pl-0 form-group ">
@@ -130,7 +130,7 @@
                   <input type="number" value="{{job.price}}" id="price" class="form-control" formControlName="price"/>
                 </div>
                 <div class="col-12 pl-0 form-group">
-                  <label class="label" path="description">
+                  <label class="label">
                     {{ 'jobForm.jobDescriptionTitle' | translate }}
                     <span class="required-field"> *</span>
                   </label>
