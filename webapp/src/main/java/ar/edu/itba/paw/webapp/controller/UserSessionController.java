@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
+import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
@@ -14,7 +15,9 @@ import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.*;
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -179,9 +184,10 @@ public class UserSessionController {
     @PUT
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUserCoverImage() {
+    public Response updateUserCoverImage(@FormDataParam("coverImage")FormDataBodyPart coverImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-
+        InputStream in = coverImage.getEntityAs(InputStream.class);
+        userService.updateCoverImage(new NewImageDto(IOUtils.toByteArray(in), coverImage.getMediaType().toString()), user);
         return Response.ok().build();
     }
 
@@ -198,9 +204,10 @@ public class UserSessionController {
 
     @PUT
     @Path("/profileImage")
-    public Response updateUserProfileImage() {
+    public Response updateUserProfileImage(@FormDataParam("profileImage")FormDataBodyPart profileImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-
+        InputStream in = profileImage.getEntityAs(InputStream.class);
+        userService.updateProfileImage(new NewImageDto(IOUtils.toByteArray(in), profileImage.getMediaType().toString()), user);
         return Response.ok().build();
     }
 

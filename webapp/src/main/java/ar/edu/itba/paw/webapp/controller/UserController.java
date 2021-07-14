@@ -179,8 +179,6 @@ public class UserController {
     }
 
 
-
-
 //    @RequestMapping(path = "/user/account/search")
 //    public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form,
 //                                      BindingResult errors, Principal principal) {

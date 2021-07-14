@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {FormControl} from "@angular/forms";
 import {AuthService} from "../../auth/auth.service";
+import {SessionProfileService} from "./session-profile.service";
 
 @Component({
   selector: 'app-session-profile',
@@ -33,7 +34,8 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private sessionProfileService: SessionProfileService
   ) {
   }
 
@@ -71,9 +73,12 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       this.allowedProfileImageSize = false;
       return
     }
+    let profileImageUpload = new FormData();
+    profileImageUpload.append('profileImage', file);
 
-    console.log(file);
-    console.log(this.profileImage);
+    this.sessionProfileService.updateProfileImage(profileImageUpload).subscribe((response) => {
+      console.log(response);
+    });
 
 
   }
@@ -96,6 +101,13 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       this.allowedCoverImageSize = false;
       return
     }
+
+    let coverImageUpload = new FormData();
+    coverImageUpload.append('coverImage', file);
+
+    this.sessionProfileService.updateCoverImage(coverImageUpload).subscribe((response) => {
+      console.log(response);
+    });
   }
 
   onVerify() {
