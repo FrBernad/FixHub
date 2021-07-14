@@ -22,7 +22,8 @@ import {
   faTrash as fasTrash,
   faUpload as fasUpload,
   faInfoCircle as fasInfoCircle,
-  faExclamationCircle as fasExclamationCircle
+  faExclamationCircle as fasExclamationCircle,
+  faComment as fasComment
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -50,7 +51,7 @@ import {UserService} from "./auth/user.service";
 export class AppComponent implements OnInit, OnDestroy {
   private subs: Subscription;
 
-  loading:boolean;
+  loading: boolean;
 
   constructor(public translateService: TranslateService,
               public library: FaIconLibrary,
@@ -76,7 +77,8 @@ export class AppComponent implements OnInit, OnDestroy {
       fasCheck, fasMapMarkerAlt,
       fasChartLine, fasWrench, fasAddressBook, farStar,
       fasPen, fasCompass, fasClock, fasTrash, fasUpload,
-      fasInfoCircle, fasExclamationCircle, farCheckCircle
+      fasInfoCircle, fasExclamationCircle, farCheckCircle,
+      fasComment
     );
 
     this.subs = this.userService.loading.subscribe((loading) => {

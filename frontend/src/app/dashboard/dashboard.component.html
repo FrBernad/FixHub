@@ -35,7 +35,7 @@
           <fa-icon [icon]="['fas', 'address-book']" class="me-2"></fa-icon>
           <span class="text">{{'dashboard.Contacts' | translate}}</span>
           <span class="badge rounded-pill bg-secondary">
-            {{user.providerDetails.reviewCount}}
+            {{user.providerDetails.contactsCount}}
           </span>
         </button>
 
@@ -79,8 +79,8 @@
                         <div class="col-4">
                           <div class="card card-body info-box">
                             <h2>
-                              <fa-icon [icon]="['fas', 'wrench']"></fa-icon>
-                              {{user.providerDetails.contactsCount}}
+                              <fa-icon [icon]="['fas', 'comment']"></fa-icon>
+                              {{user.providerDetails.reviewCount}}
                             </h2>
                             <h4>{{'dashboard.Reviews' | translate}}</h4>
                           </div>
