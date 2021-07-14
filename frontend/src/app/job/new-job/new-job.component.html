@@ -134,15 +134,15 @@
                         <div class="col-5 mt-3 d-flex align-items-center justify-content-start">
                           <button class="buttonCustom d-flex align-items-center justify-content-center"
                                   type="button" id="addFileButton" (click)="fileInput.click()"
-                                  [disabled]="imagesArray.length >= maxImagesPerJob"
-                                  [ngClass]="imagesArray.length < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
+                                  [disabled]="imagesCounter >= maxImagesPerJob"
+                                  [ngClass]="imagesCounter < maxImagesPerJob ? 'buttonEnabled' : 'buttonDisabled'">
                             <fa-icon [icon]="['fas', 'upload']" class="me-1"></fa-icon>
                             {{'jobForm.ImagesButton' | translate}}
                           </button>
                         </div>
                         <div class="col-2 mt-3 d-flex px-0 align-items-center justify-content-start">
                           <div>
-                            <span id="imagesQuantity" data-max="${maxImagesPerJob}">{{imagesArray.length}}</span>
+                            <span id="imagesQuantity" data-max="${maxImagesPerJob}">{{imagesCounter}}</span>
                             <span> / {{maxImagesPerJob}}</span>
                           </div>
                         </div>
@@ -163,8 +163,8 @@
                     <div class="row">
                       <div class="col-12">
                         <button type="button" class="imgFile m-2"
-                                *ngFor="let control of imagesArray.controls; let i = index" (click)="deleteImage(i)">
-                          {{control.value.name}}
+                                *ngFor="let image of jobForm.get('images').value; let i = index" (click)="deleteImage(i)">
+                          {{image.name}}
                           <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
                         </button>
                         <span *ngIf="!allowedImageType"

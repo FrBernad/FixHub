@@ -89,7 +89,7 @@ export class JobService {
   }
 
   createJob(formData: FormData) {
-    return this.http.post<JobData>(environment.apiBaseUrl + '/jobs', formData, {observe: 'response'});
+    return this.http.post<FormData>(environment.apiBaseUrl + '/jobs', formData, {observe: 'response'});
   }
 
   updateJob(id:number, formData: FormData) {

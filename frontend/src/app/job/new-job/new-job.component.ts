@@ -24,6 +24,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   maxPrice: number = 999999;
   disabled=false;
 
+  imagesCounter: number = 0;
   private userSub: Subscription;
   user: User;
 
@@ -36,7 +37,6 @@ export class NewJobComponent implements OnInit, OnDestroy {
   allowedImageSize: boolean = true;
   isFetching = true;
 
-  imagesArray = new FormArray([]);
 
   constructor(
     private jobService: JobService,
@@ -74,7 +74,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.maxLength(this.maxDescriptionLength),
       ]),
-      images: this.imagesArray,
+      images: new FormArray([]),
       paused: new FormControl(false),
     });
   }
@@ -92,28 +92,18 @@ export class NewJobComponent implements OnInit, OnDestroy {
     newFormData.append('description', this.jobForm.get('description').value);
     newFormData.append('paused', this.jobForm.get('paused').value);
 
-    if(this.imagesArray.value.length > 0) {
-      this.imagesArray.value.forEach(image => {
+    if(this.jobForm.get('images').value.length > 0) {
+      this.jobForm.get('images').value.forEach(image => {
         newFormData.append('images', image);
-        console.log(newFormData.get(image.name));
       });
     }
 
     this.jobService.createJob(newFormData).subscribe((response) =>{
-      console.log(response);
-    })
-      // }).subscribe((response) => {
-      //   let location = response.headers.get('location').split('/');
-      //   this.jobId = +location[location.length-1];
-      //
-      //     console.log(formData);
-      //     this.jobService.addJobImages(this.jobId, formData).subscribe((response) => {
-      //       console.log(response);
-      //     })
-      //   }
-      //   this.router.navigate(['/jobs', this.jobId]);
-      // });
-
+      this.disabled=false;
+      let location = response.headers.get('location').split('/');
+      this.jobId = +location[location.length-1];
+      this.router.navigate(['/jobs', this.jobId]);
+    });
 
   }
 
@@ -132,16 +122,16 @@ export class NewJobComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.imagesArray.length < this.maxImagesPerJob) {
+    if (this.imagesCounter < this.maxImagesPerJob) {
       (<FormArray>this.jobForm.get('images')).push(new FormControl(file));
-      console.log(this.imagesArray);
+      this.imagesCounter++;
     }
   }
 
   deleteImage(index: number) {
     if (index >= 0) {
-      console.log(this.imagesArray[index]);
-      this.imagesArray.removeAt(index);
+      (<FormArray>this.jobForm.get('images')).removeAt(index);
+      this.imagesCounter--;
     }
   }
 
