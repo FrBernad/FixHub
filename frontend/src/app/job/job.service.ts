@@ -91,8 +91,8 @@ export class JobService {
     return this.http.post<JobData>(environment.apiBaseUrl + '/jobs', formData, {observe: 'response'});
   }
 
-  addJobImages(id:number, images: FormData) {
-    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id + '/images', images);
+  updateJob(id:number, formData: FormData) {
+    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id ,formData);
   }
 
   getJob(id: number) {

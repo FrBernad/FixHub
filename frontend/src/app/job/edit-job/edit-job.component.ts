@@ -18,7 +18,7 @@ export class EditJobComponent implements OnInit {
   editJobForm: FormGroup;
   selectedIndex = 0;
   isFetching = true;
-  disabled=false;
+  disabled = false;
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
 
   allowedImageType: boolean = true;
@@ -76,28 +76,7 @@ export class EditJobComponent implements OnInit {
 
     this.jobService.getJob(+this.job.id).subscribe(
       responseData => {
-        this.job.jobProvided = responseData.jobProvided;
-        this.editJobForm.patchValue({jobProvided: responseData.jobProvided});
-        this.job.description = responseData.description;
-        this.editJobForm.patchValue({description: responseData.description});
-        this.job.category = responseData.category;
-        this.editJobForm.patchValue({jobCategory: responseData.category});
-        this.job.price = responseData.price;
-        this.editJobForm.patchValue({price: responseData.price});
-        this.job.provider = responseData.provider;
-        this.job.totalRatings = responseData.totalRatings;
-        this.job.averageRating = responseData.averageRating;
-        this.job.images = responseData.images;
-        this.editJobForm.get('imagesToUpload').patchValue(responseData.images);
-        this.job.paused = responseData.paused;
-        this.editJobForm.patchValue({paused: responseData.paused});
-        this.job.thumbnailImage = responseData.thumbnailImage;
-        this.isFetching = false;
-        this.job.images.forEach(image => {
-          (<FormArray>this.editJobForm.get('images')).push(
-            new FormControl(image)
-          );
-        });
+          this.updateView(responseData);
       }
     );
 
@@ -105,12 +84,44 @@ export class EditJobComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.editJobForm);
+    console.log(this.editJobForm.get('imagesToDelete'));
+
     if (!this.editJobForm.valid) {
       this.editJobForm.markAllAsTouched();
       return;
     }
-    this.disabled=true;
+
+    this.disabled = true;
+    let newFormData = new FormData();
+
+    this.editJobForm.get('imagesToDelete').value.forEach(
+      (url) => {
+        let aux = url.split('/');
+        newFormData.append('imagesIdToDelete', aux[aux.length - 1]);
+      }
+    );
+
+    newFormData.append('jobProvided', this.editJobForm.get('jobProvided').value);
+    newFormData.append('price', this.editJobForm.get('price').value);
+    newFormData.append('description', this.editJobForm.get('description').value);
+    newFormData.append('paused', this.editJobForm.get('paused').value);
+
+    if (this.imagesToUploadArray.value.length > 0) {
+      this.imagesToUploadArray.value.forEach(image => {
+        newFormData.append('images', image);
+      });
+    }
+
+    this.jobService.updateJob(this.job.id, newFormData).subscribe((response) => {
+      this.isFetching= true;
+      this.jobService.getJob(+this.job.id).subscribe(
+        responseData => {
+          this.updateView(responseData);
+        }
+      );
+      this.disabled = false;
+    })
+
     /*
      Agregar luego de hacer el pedido al servicio
      this.disabled=false;
@@ -153,4 +164,28 @@ export class EditJobComponent implements OnInit {
     }
   }
 
+  private updateView(responseData){
+    this.job.jobProvided = responseData.jobProvided;
+    this.editJobForm.patchValue({jobProvided: responseData.jobProvided});
+    this.job.description = responseData.description;
+    this.editJobForm.patchValue({description: responseData.description});
+    this.job.category = responseData.category;
+    this.editJobForm.patchValue({jobCategory: responseData.category});
+    this.job.price = responseData.price;
+    this.editJobForm.patchValue({price: responseData.price});
+    this.job.provider = responseData.provider;
+    this.job.totalRatings = responseData.totalRatings;
+    this.job.averageRating = responseData.averageRating;
+    this.job.images = responseData.images;
+    this.editJobForm.get('imagesToUpload').patchValue(responseData.images);
+    this.job.paused = responseData.paused;
+    this.editJobForm.patchValue({paused: responseData.paused});
+    this.job.thumbnailImage = responseData.thumbnailImage;
+    this.job.images.forEach(image => {
+      (<FormArray>this.editJobForm.get('images')).push(
+        new FormControl(image)
+      );
+    });
+    this.isFetching = false;
+  }
 }

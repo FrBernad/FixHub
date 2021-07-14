@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.MaxImagesPerJobException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
@@ -207,15 +208,75 @@ public class JobController {
 
         List<NewImageDto> imagesToUpload = new LinkedList<>();
 
-        for (FormDataBodyPart part : images) {
-            InputStream in = part.getEntityAs(InputStream.class);
-            imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
+        if (images != null) {
+            for (FormDataBodyPart part : images) {
+                InputStream in = part.getEntityAs(InputStream.class);
+                imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
+            }
         }
+
         final Job job = jobService.createJob(jobProvided, jobCategory, description, price, paused, user, imagesToUpload);
         LOGGER.info("Created job with id {}", job.getId());
         return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
 
     }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateJob(@PathParam("id") final long id,
+                              @FormDataParam("jobProvided") final String jobProvided,
+                              @FormDataParam("price") final BigDecimal price,
+                              @FormDataParam("description") final String description,
+                              @FormDataParam("paused") final boolean paused,
+                              @FormDataParam("images") List<FormDataBodyPart> images,
+                              @FormDataParam("imagesIdToDelete") List<Long> imagesIdToDelete) {
+
+        LOGGER.info("Accessed /jobs/{}/ POST controller", id);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).
+            orElseThrow(UserNotFoundException::new);
+        final Job job = jobService.getJobById(id).
+            orElseThrow(JobNotFoundException::new);
+
+        if (!job.getProvider().getId().equals(user.getId())) {
+            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",
+                user.getId(), id, job.getProvider().getId());
+            return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
+        }
+
+
+        List<NewImageDto> imagesToUpload = new LinkedList<>();
+
+        if (images != null) {
+            for (FormDataBodyPart part : images) {
+                InputStream in = part.getEntityAs(InputStream.class);
+                try {
+                    imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
+                } catch (IOException e) {
+                    LOGGER.error("Error getting bytes from images");
+                    return Response.serverError().build();
+//              throw new ServerInternalException();
+                }
+            }
+        }
+
+        List<Long> imagesToDelete = imagesIdToDelete ==null? new LinkedList<>(): imagesIdToDelete;
+
+        try {
+            jobService.updateJob(jobProvided, description, price, paused, imagesToUpload, job, imagesToDelete);
+        } catch (MaxImagesPerJobException e) {
+            LOGGER.warn("Error max Images per job reached");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        LOGGER.info("The job with id {} has been updated successfully", id);
+
+        return Response.ok().build();
+
+
+    }
+
+
 
 
 
@@ -301,42 +362,6 @@ public class JobController {
 //        return new ModelAndView("redirect:/jobs/" + job.getId());
 //    }
 
-
-//    @PUT
-//    @Path("/{id}")
-//    @Produces(value={MediaType.APPLICATION_JSON})
-//    @Consumes(value={MediaType.MULTIPART_FORM_DATA})
-//    public Response updateJob(@PathParam("id") final long id, @Valid final EditJobForm form, Principal principal) {
-//        LOGGER.info("Accessed /jobs/{}/ POST controller", id);
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//
-//        if (!job.getProvider().getId().equals(user.getId())) {
-//            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}", user.getId(), id, job.getProvider().getId());
-//            return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
-//        }
-//
-//        List<ImageDto> imagesDto = new LinkedList<>();
-//
-//        getImagesFromJob(imagesDto, form.getImages());
-//
-//        List<Long> imagesIdDeleted = form.getImagesIdDeleted() == null ? new LinkedList<>(): form.getImagesIdDeleted();
-//
-//        try {
-//            jobService.updateJob(form.getJobProvided(), form.getDescription(), form.getPrice(), form.isPaused(), imagesDto, job, imagesIdDeleted);
-//        } catch (MaxImagesPerJobException e) {
-//            LOGGER.warn("Error max Images per job reached");
-//            errors.rejectValue("images", "validation.job.ImagesMax");
-//            return updateJob(id, form);
-//        }
-//
-//        LOGGER.info("The job with id {} has been updated successfully", id);
-//
-//        return new ModelAndView("redirect:/jobs/{id}");
-//
-//
-//    }
 
 //
 //    @RequestMapping(value = "/jobs/{id}/edit", method = RequestMethod.POST)
