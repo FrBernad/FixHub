@@ -2,10 +2,6 @@ package ar.edu.itba.paw.webapp.dto.response;
 
 import ar.edu.itba.paw.webapp.dto.customValidations.FieldsValueNotMatch;
 
-@FieldsValueNotMatch(
-    field = "startTime",
-    fieldNotMatch = "endTime"
-)
 public class JoinDto {
 
     private ScheduleDto schedule;
