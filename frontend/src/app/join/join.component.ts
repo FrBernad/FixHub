@@ -4,6 +4,7 @@ import {UserService} from "../auth/user.service";
 import {Subscription} from "rxjs";
 import {City, State} from "../discover/jobs.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../auth/auth.service";
 
 export interface Schedule {
   startTime: string;
@@ -30,6 +31,7 @@ export class JoinComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private router: Router
   ) {
   }
@@ -64,7 +66,7 @@ export class JoinComponent implements OnInit {
         cities: this.cities
       }
     };
-    this.userService.makeProvider(providerInfo).subscribe(
+    this.authService.makeProvider(providerInfo).subscribe(
       () => {
         this.posting = false;
         this.router.navigate(['user', 'dashboard']);

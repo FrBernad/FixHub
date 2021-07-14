@@ -6,7 +6,7 @@ import {throwError, BehaviorSubject, Observable, from, scheduled, empty, EMPTY, 
 import {environment} from '../../environments/environment';
 import {Session} from '../models/session.model';
 import jwtDecode from "jwt-decode";
-import {UserService} from "./user.service";
+import {ProviderInfo, UserService} from "./user.service";
 
 interface Jwt {
   exp: number,
@@ -126,6 +126,22 @@ export class AuthService {
         tap(res => {
             this.handleSession(res);
           }
+        )
+      );
+  }
+
+
+  makeProvider(providerInfo: ProviderInfo) {
+    return this.http.post(
+      environment.apiBaseUrl + '/user/join',
+      providerInfo)
+      .pipe(
+        tap((res: HttpResponse<Object>) => {
+            this.handleSession(res);
+          },
+          mergeMap(() => {
+            return this.userService.populateUserData();
+          })
         )
       );
   }

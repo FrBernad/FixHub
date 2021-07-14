@@ -12,6 +12,7 @@ public class ProviderDetailsDto {
     private Long jobsCount;
     private Long avgRating;
     private Long reviewCount;
+    private Integer contactsCount;
 
     public ProviderDetailsDto() {
     }
@@ -27,6 +28,9 @@ public class ProviderDetailsDto {
         }
         if (providerDetails.getReviewCount() != null) {
             this.reviewCount = providerDetails.getReviewCount();
+        }
+        if (providerDetails.getContacts() != null) {
+            this.contactsCount = providerDetails.getContacts().size();
         }
     }
 
@@ -68,6 +72,14 @@ public class ProviderDetailsDto {
 
     public void setReviewCount(Long reviewCount) {
         this.reviewCount = reviewCount;
+    }
+
+    public Integer getContactsCount() {
+        return contactsCount;
+    }
+
+    public void setContactsCount(Integer contactsCount) {
+        this.contactsCount = contactsCount;
     }
 }
 

@@ -44,8 +44,6 @@ public class UserDto {
     private boolean following;
     private Set<ContactInfoDto> contactInfo;
 
-
-
     public UserDto() {
         // Used by Jersey
     }

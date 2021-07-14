@@ -12,6 +12,7 @@ export interface ProviderDetails {
   jobsCount: number,
   avgRating: number;
   reviewCount: number;
+  contactsCount: number;
 }
 
 export class User {

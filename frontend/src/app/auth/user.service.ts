@@ -26,7 +26,6 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
   ) {
   }
 
@@ -92,21 +91,6 @@ export class UserService {
       this.populateUserData().subscribe();
     }));
 
-  }
-
-  makeProvider(providerInfo: ProviderInfo) {
-    return this.http.post(
-      environment.apiBaseUrl + '/user/join',
-      providerInfo)
-      .pipe(
-        tap((res: HttpResponse<Object>) => {
-            this.authService.handleSession(res);
-          },
-          mergeMap(() => {
-            return this.populateUserData();
-          })
-        )
-      );
   }
 
   updateProviderInfo(providerInfo: ProviderInfo) {
