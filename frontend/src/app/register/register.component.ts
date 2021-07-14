@@ -1,4 +1,4 @@
-import {Form, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, Form, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../auth/user.service';
@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
   maxCityLength: number = 50;
 
   disable = false;
+  error = false;
 
   constructor(
     private authService: AuthService,
@@ -159,7 +160,10 @@ export class RegisterComponent implements OnInit {
       },
       (errorMessage) => {
         this.disable = false;
-        console.log(errorMessage);
+        this.error = true;
+        setTimeout(() => {
+          this.error = false
+        }, 4000)
       }
     );
   }

@@ -72,6 +72,9 @@
                       {{'Pattern.registerForm.email' | translate }}
                     </span>
                   </span>
+                  <span *ngIf="error" class="errorMessage">
+                    {{'validation.user.DuplicateEmail'|translate}}
+                  </span>
                 </div>
                 <div class="form-group">
                   <label class="mb-2">
