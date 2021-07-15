@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../models/user.model";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {JobService, ReviewsPaginationResult} from "./job.service";
 import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";
@@ -31,9 +31,10 @@ export class JobComponent implements OnInit {
   user: User;
 
   constructor(
-    private route: ActivatedRoute,
     private jobService: JobService,
-    private userService:UserService
+    private userService:UserService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
@@ -48,10 +49,13 @@ export class JobComponent implements OnInit {
       this.loggedUser = user;
     });
 
-    this.jobService.getJob(+this.job.id).subscribe(
+    this.jobService.getJob(this.job.id).subscribe(
       job => {
         this.job = job;
         this.isFetching = false;
+      },
+      ()=>{
+        this.router.navigate(['/404']);
       }
     );
 

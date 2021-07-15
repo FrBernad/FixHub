@@ -4,7 +4,7 @@ import {BehaviorSubject} from 'rxjs';
 import {User} from "../../models/user.model";
 import {environment} from "../../../environments/environment";
 import {tap} from "rxjs/operators";
-import {City, State} from "../../discover/jobs.service";
+import {City, State} from "../../discover/discover.service";
 
 
 export interface ProviderInfo {
@@ -93,7 +93,7 @@ export class UserService {
 
   updateProviderInfo(providerInfo: ProviderInfo) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/account/updateProviderInfo',
+      environment.apiBaseUrl + '/user/account/provider',
       providerInfo)
       .pipe(tap(() => {
         this.populateUserData().subscribe();

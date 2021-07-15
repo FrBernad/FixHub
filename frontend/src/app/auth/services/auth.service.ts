@@ -84,9 +84,6 @@ export class AuthService {
           ...registerData
         }
       )
-      .pipe(
-        catchError(this.handleError),
-      );
   }
 
   login(email: string, password: string) {
@@ -102,7 +99,6 @@ export class AuthService {
         }
       )
       .pipe(
-        catchError(this.handleError),
         tap(res => {
           this.handleSession(res);
         })
@@ -122,7 +118,6 @@ export class AuthService {
         }
       )
       .pipe(
-        catchError(this.handleError),
         tap(res => {
             this.handleSession(res);
           }
@@ -133,7 +128,7 @@ export class AuthService {
 
   makeProvider(providerInfo: ProviderInfo) {
     return this.http.post(
-      environment.apiBaseUrl + '/user/join',
+      environment.apiBaseUrl + '/user/account/provider',
       providerInfo)
       .pipe(
         tap((res: HttpResponse<Object>) => {
@@ -164,9 +159,6 @@ export class AuthService {
           observe: "response"
         }
       )
-      .pipe(
-        catchError(this.handleError),
-      );
   }
 
 
@@ -231,25 +223,6 @@ export class AuthService {
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);
-  }
-
-  private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-    if (!errorRes.error || !errorRes.error.error) {
-      return throwError(errorMessage);
-    }
-    switch (errorRes.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email exists already';
-        break;
-      case 'EMAIL_NOT_FOUND':
-        errorMessage = 'This email does not exist.';
-        break;
-      case 'INVALID_PASSWORD':
-        errorMessage = 'This password is not correct.';
-        break;
-    }
-    return throwError(errorMessage);
   }
 
   private decodeToken(token: string): Jwt {

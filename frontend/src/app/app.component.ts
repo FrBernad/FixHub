@@ -38,7 +38,7 @@ import {Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {AuthService} from "./auth/services/auth.service";
 import {PreviousRouteService} from "./auth/services/previous-route.service";
-import {JobsService} from "./discover/jobs.service";
+import {DiscoverService} from "./discover/discover.service";
 import {Subscription} from "rxjs";
 import {UserService} from "./auth/services/user.service";
 
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               private userService: UserService,
               private previousRouteService: PreviousRouteService,
-              private jobsService: JobsService,
+              private jobsService: DiscoverService,
               private titleService: Title
   ) {
   }

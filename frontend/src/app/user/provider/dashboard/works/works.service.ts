@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams, HttpStatusCode,} from '@angular/common/http';
 import {Subject} from 'rxjs';
-import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/jobs.service";
+import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/discover.service";
 import {environment} from "../../../../../environments/environment";
 
 

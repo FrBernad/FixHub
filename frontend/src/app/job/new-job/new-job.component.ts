@@ -5,7 +5,7 @@ import {JobService} from '../job.service';
 import {Subscription} from 'rxjs';
 import {User} from 'src/app/models/user.model';
 import {UserService} from 'src/app/auth/services/user.service';
-import {JobsService} from "../../discover/jobs.service";
+import {DiscoverService} from "../../discover/discover.service";
 
 @Component({
   selector: 'app-new-job',
@@ -40,7 +40,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
 
   constructor(
     private jobService: JobService,
-    private jobsService: JobsService,
+    private jobsService: DiscoverService,
     private userService: UserService,
     private router: Router
   ) {}

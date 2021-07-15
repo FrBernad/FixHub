@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../auth/services/user.service";
 import {User} from "../../../models/user.model";
 
@@ -19,8 +19,9 @@ export class UserProfileComponent implements OnInit {
   userSub: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
     private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
@@ -33,6 +34,9 @@ export class UserProfileComponent implements OnInit {
       (user) => {
         this.user = user;
         this.loading = false;
+      },
+      () => {
+        this.router.navigate(['/404'])
       }
     );
   }

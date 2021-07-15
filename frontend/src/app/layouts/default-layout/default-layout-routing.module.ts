@@ -24,8 +24,13 @@ const routes: Routes = [
           .then(m => m.DashboardModule)
       },
       {
+        path: 'user/requests/:id',
+        loadChildren: () => import("../../user/provider/request/request.module")
+          .then(m => m.RequestModule)
+      },
+      {
         path: 'user/requests',
-        loadChildren: () => import("../../requests/requests.module").then(m => m.RequestsModule)
+        loadChildren: () => import("../../user/requests/requests.module").then(m => m.RequestsModule)
       },
       {
         path: 'user/join',

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderOption} from "../models/order-option-enum.model";
-import {City, JobPaginationQuery, JobPaginationResult, JobsService, State} from "./jobs.service";
+import {City, JobPaginationQuery, JobPaginationResult, DiscoverService, State} from "./discover.service";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -39,7 +39,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   private jobsSub: Subscription;
 
   constructor(
-    private jobsService: JobsService
+    private jobsService: DiscoverService
   ) {
   }
 

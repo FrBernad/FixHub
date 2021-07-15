@@ -116,6 +116,24 @@ public class UserSessionController {
     }
 
 
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response getUser() {
+        LOGGER.info("Accessed /user/ GET controller");
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        if (user.getRoles().contains(Roles.PROVIDER)) {
+            LOGGER.info("Return provider with id {} in /user/ GET controller", user.getId());
+
+            return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
+        }
+        LOGGER.info("Return user with id {} in /user/ GET controller", user.getId());
+
+
+        return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
+
+    }
+
     @Produces
     @POST
     @Path("/refreshSession")
@@ -165,23 +183,6 @@ public class UserSessionController {
         return responseBuilder.build();
     }
 
-    @GET
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getUser() {
-        LOGGER.info("Accessed /user/ GET controller");
-
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        if (user.getRoles().contains(Roles.PROVIDER)) {
-            LOGGER.info("Return provider with id {} in /user/ GET controller", user.getId());
-
-            return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
-        }
-        LOGGER.info("Return user with id {} in /user/ GET controller", user.getId());
-
-
-        return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
-
-    }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -368,20 +369,44 @@ public class UserSessionController {
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
-        if(!user.getId().equals(jobContact.getProvider().getId()) ){
+        if (!user.getId().equals(jobContact.getProvider().getId())) {
             throw new IllegalOperationException(); //FIXME: agregar mensaje
         }
-        JobStatus newStatus = status.getStatus();
 
-        if (newStatus == JobStatus.FINISHED) {
-            jobService.finishJob(jobContact);
-        } else if (newStatus == JobStatus.REJECTED) {
-            jobService.rejectJob(jobContact);
-        } else if (newStatus == JobStatus.IN_PROGRESS) {
-            jobService.acceptJob(jobContact);
-        } else return Response.status(Response.Status.BAD_REQUEST).build();//FIXME: agregar mensaje
+        final JobStatus newStatus = status.getStatus();
+
+        switch (newStatus) {
+            case FINISHED:
+                jobService.finishJob(jobContact);
+                break;
+            case REJECTED:
+                jobService.rejectJob(jobContact);
+                break;
+            case IN_PROGRESS:
+                jobService.acceptJob(jobContact);
+                break;
+            default:
+                return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/jobs/requests/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getRequest(@PathParam("id") final long contactId) {
+
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+
+        if (!user.getId().equals(jobContact.getProvider().getId())) {
+            throw new IllegalOperationException(); //FIXME: agregar mensaje
+        }
+
+        final JobContactDto jobContactDto = new JobContactDto(jobContact, uriInfo, securityContext);
+
+        return Response.ok(jobContactDto).build();
     }
 
     @GET
@@ -456,13 +481,12 @@ public class UserSessionController {
     }
 
     @POST
-    @Path("/join")
+    @Path("/account/provider")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response join(@Valid final JoinDto joinDto) {
         LOGGER.info("Accessed /user/join POST controller");
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);//FIXME: agregar mensaje
 
         if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User with id {} is already a provider", user.getId());
@@ -490,13 +514,12 @@ public class UserSessionController {
 
 
     @PUT
-    @Path("/account/updateProviderInfo")
+    @Path("/account/provider")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateProviderInfo(final JoinDto joinDto) {
-        LOGGER.info("Accessed /user/account/updateProviderInfo PUT controller");
+        LOGGER.info("Accessed /user/account/provider PUT controller");
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);
 
 //        FIXME: si no es provider lanzar una excepcion
 

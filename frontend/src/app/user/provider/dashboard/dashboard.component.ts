@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {JobsService} from "../../../discover/jobs.service";
+import {DiscoverService} from "../../../discover/discover.service";
 import {UserService} from "../../../auth/services/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../../models/user.model";
@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user: User;
 
   constructor(
-    private jobsService: JobsService,
+    private jobsService: DiscoverService,
     private userService: UserService,
   ) {
   }

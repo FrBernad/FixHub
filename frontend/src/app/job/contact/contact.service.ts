@@ -6,6 +6,7 @@ import {Subject} from "rxjs";
 import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
 import {tap} from "rxjs/operators";
+import {JobRequest} from "../../models/job-request.model";
 
 export interface ContactPaginationResult {
   page: number;
@@ -17,20 +18,6 @@ export interface ContactPaginationResult {
 export interface ContactPaginationQuery {
   page: number;
   pageSize?: number;
-}
-
-export interface JobRequest {
-
-  id: number;
-  jobProvided: string;
-  jobId: number;
-  message: string;
-  status: string;
-  provider: User;
-  user: User;
-  date: Date;
-  contactInfo: ContactInfo;
-
 }
 
 export interface RequestPaginationResult {
@@ -93,6 +80,12 @@ export class ContactService {
     });
   }
 
+  getProviderJobRequest(id: number) {
+    return this.http.get<JobRequest>(
+      environment.apiBaseUrl + '/user/jobs/requests/' + id,
+    )
+  }
+
   getUserSentRequests(cp: ContactPaginationQuery) {
     this.http.get<ContactPaginationResult>(
       environment.apiBaseUrl + '/user/jobs/sentRequests',
@@ -114,15 +107,13 @@ export class ContactService {
 
   }
 
-
-
-  changeContactStatus(contactId:number, status:string){
+  changeContactStatus(contactId: number, status: string) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/jobs/requests/'+contactId,
+      environment.apiBaseUrl + '/user/jobs/requests/' + contactId,
       {
         status
       }
-      );
+    );
   }
 
 }

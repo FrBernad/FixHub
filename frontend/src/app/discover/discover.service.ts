@@ -32,7 +32,7 @@ export interface City {
 
 
 @Injectable({providedIn: 'root'})
-export class JobsService {
+export class DiscoverService {
 
   results = new Subject<JobPaginationResult>();
 

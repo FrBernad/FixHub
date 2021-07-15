@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
+import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
@@ -167,6 +168,29 @@ public class JobController {
         }, uriBuilder);
     }
 
+    @GET
+    @Path("images/{id}")
+    @Produces({"image/*", javax.ws.rs.core.MediaType.APPLICATION_JSON})
+    public Response getJobImage(@PathParam("id") long id, @Context Request request) {
+        LOGGER.info("Accessed images/{} GET controller", id);
+        Image img = imageService.getImageById(id).orElseThrow(ImageNotFoundException::new);
+        LOGGER.info("Response image with id {}", id);
+//        Fixme: si no existe
+        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
+
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoCache(true);
+
+        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
+
+        if (responseBuilder == null) {
+            final byte[] jobImage = img.getData();
+            responseBuilder = Response.ok(jobImage).type(img.getMimeType()).tag(eTag);
+        }
+
+        return responseBuilder.cacheControl(cacheControl).build();
+    }
+
 
     @GET
     @Path("/categories")
@@ -225,9 +249,8 @@ public class JobController {
         @FormDataParam("price")
         final BigDecimal price,
         @NotEmpty(message = "{NotEmpty.newJob.description}")
-        @Size(max = 300, message="{Size.newJob.description}")
-        @FormDataParam("description")
-        final String description,
+        @Size(max = 300, message = "{Size.newJob.description}")
+        @FormDataParam("description") final String description,
         @NotNull(message = "{NotNull.newJob.paused}")
         @DefaultValue("false")
         @FormDataParam("paused")
@@ -236,8 +259,7 @@ public class JobController {
         @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{ContentType.newJob.images}")
         @FormDataParam("images")
             List<FormDataBodyPart> images
-    ) throws IOException
-    {
+    ) throws IOException {
         LOGGER.info("Accessed /jobs/ POST controller");
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new); //FIXME agregar mensaje
@@ -262,31 +284,27 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateJob(
         @PathParam("id") final long id,
-        @NotEmpty(message="{NotEmpty.updateJob.jobProvided}")
-        @Size(max = 50, message="{Size.updateJob.jobProvided}")
+        @NotEmpty(message = "{NotEmpty.updateJob.jobProvided}")
+        @Size(max = 50, message = "{Size.updateJob.jobProvided}")
         @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message = "{Pattern.updateJob.jobProvided}")
-        @FormDataParam("jobProvided")
-        final String jobProvided,
+        @FormDataParam("jobProvided") final String jobProvided,
         @NotNull(message = "{NotNull.updateJob.price}")
         @Range(min = 1, max = 999999, message = "{Size.updateJob.price}")
         @FormDataParam("price")
         final BigDecimal price,
         @NotEmpty(message = "{NotEmpty.updateJob.description}")
         @Size(max = 300, message = "{Size.updateJob.description}")
-        @FormDataParam("description")
-        final String description,
+        @FormDataParam("description") final String description,
         @NotNull(message = "{NotNull.updateJob.paused}")
         @DefaultValue("false")
-        @FormDataParam("paused")
-        final Boolean paused,
+        @FormDataParam("paused") final Boolean paused,
         @Size(max = 6, message = "{Size.updateJob.images}")
-        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{Size.updateJob.images}")
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{Size.updateJob.images}")
         @FormDataParam("images")
-        List<FormDataBodyPart> images,
+            List<FormDataBodyPart> images,
         @FormDataParam("imagesIdToDelete")
             List<Long> imagesIdToDelete
-    )
-    {
+    ) {
 
 
         LOGGER.info("Accessed /jobs/{}/ PUT controller", id);

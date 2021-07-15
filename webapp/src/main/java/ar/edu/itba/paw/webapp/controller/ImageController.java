@@ -24,27 +24,5 @@ public class ImageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 
-    @GET
-    @Path("/{id}")
-    @Produces({"image/*", javax.ws.rs.core.MediaType.APPLICATION_JSON})
-    public Response getJobImage(@PathParam("id") long id, @Context Request request) {
-        LOGGER.info("Accessed images/{} GET controller", id);
-        Image img = imageService.getImageById(id).orElseThrow(ImageNotFoundException::new);
-        LOGGER.info("Response image with id {}", id);
-//        Fixme: si no existe
-        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
-
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setNoCache(true);
-
-        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
-
-        if (responseBuilder == null) {
-            final byte[] jobImage = img.getData();
-            responseBuilder = Response.ok(jobImage).type(img.getMimeType()).tag(eTag);
-        }
-
-        return responseBuilder.cacheControl(cacheControl).build();
-    }
 
 }

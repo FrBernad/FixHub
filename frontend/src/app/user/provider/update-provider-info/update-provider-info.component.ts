@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../auth/services/user.service";
 import {Schedule} from "../../../auth/join/join.component";
-import {City, State} from "../../../discover/jobs.service";
+import {City, State} from "../../../discover/discover.service";
 import {User} from "../../../models/user.model";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";

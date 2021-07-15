@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, query, stagger, state, style, transition, trigger} from "@angular/animations";
 import {User} from "../models/user.model";
-import {JobsService} from "../discover/jobs.service";
+import {DiscoverService} from "../discover/discover.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";
@@ -49,7 +49,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   isFetching=true;
 
   constructor(
-    private jobsService: JobsService,
+    private jobsService: DiscoverService,
     private userService: UserService,
     private router: Router
   ) {

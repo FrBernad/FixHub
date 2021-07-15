@@ -17,6 +17,10 @@ public class JobDto {
         return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId()));
     }
 
+    public static UriBuilder getJobImagesUriBuilder(Image image, UriInfo uriInfo) {
+        return uriInfo.getBaseUriBuilder().path("jobs").path("images").path(String.valueOf(image.getId()));
+    }
+
     public static UriBuilder getContactUriBuilder(Job job, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId())).path("contact");
     }
@@ -53,8 +57,6 @@ public class JobDto {
 
     private String thumbnailImage;
 
-//    private Set<Review> reviews;
-
     private int maxImagesPerJob;
 
 
@@ -76,7 +78,7 @@ public class JobDto {
         this.provider = new ProviderDto(job.getProvider(), uriInfo, securityContext);
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
-            this.images.add(ImageDto.getImageUriBuilder(image, uriInfo).build().toString());
+            this.images.add(getJobImagesUriBuilder(image, uriInfo).build().toString());
         }
         Optional<String> maybeThumbailImage = this.images.stream().findFirst();
         maybeThumbailImage.ifPresent(uri -> this.thumbnailImage = uri);

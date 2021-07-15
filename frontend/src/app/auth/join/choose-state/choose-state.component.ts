@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {JobsService, State} from "../../../discover/jobs.service";
+import {DiscoverService, State} from "../../../discover/discover.service";
 import {User} from "../../../models/user.model";
 
 @Component({
@@ -19,7 +19,7 @@ export class ChooseStateComponent implements OnInit {
   @Input() public isProvider: boolean;
 
   constructor(
-    private jobsService: JobsService
+    private jobsService: DiscoverService
   ) {
   }
 

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user.model";
 import {UserService} from "../services/user.service";
 import {Subscription} from "rxjs";
-import {City, State} from "../../discover/jobs.service";
+import {City, State} from "../../discover/discover.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/jobs.service";
+import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/discover.service";
 import {OrderOption} from "../../../../models/order-option-enum.model";
 import {Subscription} from "rxjs";
 import {WorksService} from "./works.service";

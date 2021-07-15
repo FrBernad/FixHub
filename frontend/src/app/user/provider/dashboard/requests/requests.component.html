@@ -56,7 +56,7 @@
     <div class="col-12">
       <ng-template [ngIf]="rpr.results.length>0" [ngIfElse]="NoContacts">
         <div *ngFor="let request of rpr.results" class="p-0">
-          <app-request-job-card [request]="request"></app-request-job-card>
+          <app-request-job-card (changeStatus)="onChangeChildStatus()" [request]="request"></app-request-job-card>
         </div>
       </ng-template>
       <ng-template #NoContacts>

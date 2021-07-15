@@ -6,10 +6,10 @@ import {ContactOrder} from "../../../../models/contact-order-enum.model";
 
 @Component({
   selector: 'app-request',
-  templateUrl: './request.component.html',
-  styleUrls: ['./request.component.scss']
+  templateUrl: './requests.component.html',
+  styleUrls: ['./requests.component.scss']
 })
-export class RequestComponent implements OnInit {
+export class RequestsComponent implements OnInit {
 
   rpq: RequestPaginationQuery = {
     page: 0,
@@ -62,6 +62,11 @@ export class RequestComponent implements OnInit {
 
   onChangeOrder(order: string) {
     this.rpq.order = order;
+    this.rpq.page = 0;
+    this.contactService.getProviderRequests(this.rpq);
+  }
+
+  onChangeChildStatus() {
     this.rpq.page = 0;
     this.contactService.getProviderRequests(this.rpq);
   }
