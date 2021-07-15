@@ -6,12 +6,12 @@ import javax.validation.constraints.Size;
 
 public class NewReviewDto {
 
-    @NotEmpty
-    @Size(min=4,max=300)
+    @NotEmpty(message = "{NotEmpty.newReviewDto.description}")
+    @Size(min=4,max=300, message="{Size.newReviewDto.description}")
     private String description;
 
-    @NotEmpty
-    @Pattern(regexp = "[1-5]")
+    @NotEmpty(message = "{NotEmpty.newReviewDto.rating}")
+    @Pattern(regexp = "[1-5]", message = "{Pattern.newReviewDto.rating}")
     private String rating;
 
     public String getDescription() {

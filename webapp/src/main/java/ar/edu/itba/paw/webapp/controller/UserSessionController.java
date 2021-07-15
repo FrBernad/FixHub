@@ -255,7 +255,7 @@ public class UserSessionController {
     @PUT
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUserCoverImage(@NotNull @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}) @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
+    public Response updateUserCoverImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{ContentType.newJob.images}") @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = coverImage.getEntityAs(InputStream.class);
         userService.updateCoverImage(new NewImageDto(IOUtils.toByteArray(in), coverImage.getMediaType().toString()), user);
@@ -293,7 +293,7 @@ public class UserSessionController {
 
     @PUT
     @Path("/profileImage")
-    public Response updateUserProfileImage(@NotNull @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}) @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
+    public Response updateUserProfileImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}") @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = profileImage.getEntityAs(InputStream.class);
         userService.updateProfileImage(new NewImageDto(IOUtils.toByteArray(in), profileImage.getMediaType().toString()), user);

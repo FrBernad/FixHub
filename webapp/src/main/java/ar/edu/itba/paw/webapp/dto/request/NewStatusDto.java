@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class NewStatusDto {
 
-    @NotEmpty
+    @NotEmpty(message = "{NotEmpty.newStatusDto.status}")
     JobStatus status;
 
     public JobStatus getStatus() {

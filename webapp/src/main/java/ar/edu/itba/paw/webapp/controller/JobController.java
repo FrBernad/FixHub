@@ -268,7 +268,7 @@ public class JobController {
         @FormDataParam("jobProvided")
         final String jobProvided,
         @NotNull(message = "{NotNull.updateJob.price}")
-        @Range(min = 1, max = 999999, message = "{NotNull.updateJob.price}")
+        @Range(min = 1, max = 999999, message = "{Size.updateJob.price}")
         @FormDataParam("price")
         final BigDecimal price,
         @NotEmpty(message = "{NotEmpty.updateJob.descriptiomessage}")
@@ -279,8 +279,8 @@ public class JobController {
         @DefaultValue("false")
         @FormDataParam("paused")
         final Boolean paused,
-        @Size(max = 6)
-        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"})
+        @Size(max = 6, message = "{Size.updateJob.images}")
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{Size.updateJob.images}")
         @FormDataParam("images")
         List<FormDataBodyPart> images,
         @FormDataParam("imagesIdToDelete")
