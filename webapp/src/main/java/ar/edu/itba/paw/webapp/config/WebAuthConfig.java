@@ -72,12 +72,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .and().authorizeRequests()
 //            //session routes
 //            .antMatchers("/login", "/register").anonymous()
+            .antMatchers("/login", "/register").anonymous()
+
 //            .antMatchers(HttpMethod.POST, "/user/verifyAccount/resend").hasRole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount").hasRole("USER")
 //            .antMatchers("/logout").authenticated()
-            .antMatchers(HttpMethod.GET,"/api/user").authenticated()
-            .antMatchers(HttpMethod.PUT,"/api/user").authenticated()
+
+            .antMatchers(HttpMethod.GET, "/api/user").authenticated()
+            .antMatchers(HttpMethod.PUT, "/api/user").authenticated()
 //            //profile routes
 //            .antMatchers("/user/account").hasRole("USER")
 //            .antMatchers("/user/account/search", "/user/account/update",
@@ -86,8 +89,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers(HttpMethod.POST, "/user/follow", "/user/unfollow").hasRole("VERIFIED")
 //
 //            //jobs routes
-//            .antMatchers("/jobs/{id:[\\d]+}/contact").hasRole("VERIFIED")
-//            .antMatchers("/jobs/new").hasRole("PROVIDER")
+            .antMatchers(HttpMethod.POST, "/api/jobs/{id:[\\\\d]+}/contact").hasRole("VERIFIED")
+            .antMatchers(HttpMethod.POST, "/api/jobs/").hasRole("PROVIDER")
+            .antMatchers(HttpMethod.PUT, "/api/jobs/{id:[\\\\d]+}").hasRole("PROVIDER")
+            .antMatchers(HttpMethod.POST,"/api/jobs/{id:[\\\\d]+}/reviews").hasRole("VERIFIED")
 //            .antMatchers(HttpMethod.POST, "/jobs/{id:[\\d]+}").hasRole("VERIFIED")
 //            .antMatchers("/jobs/{id:[\\d]+}/edit").hasRole("PROVIDER")
 //
