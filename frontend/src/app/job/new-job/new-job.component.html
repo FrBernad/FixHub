@@ -23,7 +23,7 @@
               <div class="col-12 d-flex align-items-center justify-content-center">
                 <form id="jobForm" class="jobForm" [formGroup]="jobForm" (ngSubmit)="onSubmit()">
                   <div class="form-group">
-                    <label form="jobForm">
+                    <label >
                       {{'jobForm.jobNameTitle' | translate}}
                       <span class="required-field">*</span>
                     </label>
@@ -45,7 +45,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label form="jobForm">
+                        <label >
                           {{'jobForm.jobTypeTitle' | translate}}
                           <span class="required-field">*</span>
                         </label>
@@ -75,17 +75,16 @@
                           {{'NotEmpty.jobForm.jobCategory' | translate }}<br>
                         </span>
                       </span>
-                        <!-- <form:errors path="jobCategory" cssClass="formError" element="p" /> -->
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="form-group">
-                        <label form="jobForm">
+                        <label >
                           {{'jobForm.jobPriceTitle' | translate}}
                           <span class="required-field">*</span>
                         </label>
-                        <input type="number" path="price" id="price" class="form-control"
-                               cssErrorClass="form-control is-invalid" formControlName="price"/>
+                        <input type="number" id="price" class="form-control"
+                              formControlName="price"/>
                         <span *ngIf="!jobForm.get('price').valid && jobForm.get('price').touched">
                         <span *ngIf="jobForm.get('price').errors['required']" class="errorMessage">
                           {{'NotNull.jobForm.price' | translate }}<br>
@@ -105,12 +104,12 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label form="jobForm">
+                    <label >
                       {{'jobForm.jobDescriptionTitle' | translate}}
                       <span class="required-field">*</span>
                     </label>
-                    <textarea class="form-control" path="description" id="description"
-                              cssErrorClass="form-control is-invalid" formControlName="description">
+                    <textarea class="form-control"  id="description"
+                              formControlName="description">
                     </textarea>
                     <span *ngIf="!jobForm.get('description').valid && jobForm.get('description').touched">
                       <span *ngIf="jobForm.get('description').errors['required']" class="errorMessage">
@@ -120,14 +119,13 @@
                         {{'Size.jobForm.description' | translate: {max: maxDescriptionLength} }}
                       </span>
                     </span>
-                    <!-- <form:errors path="description" cssClass="formError" element="p" /> -->
                   </div>
 
                   <div class="form-group d-flex justify-content-between align-items-center">
                     <div class="container-fluid px-0">
                       <div class="row">
                         <div class="col-12 d-flex align-items-center justify-content-start">
-                          <label class="mb-0" form="jobForm">
+                          <label class="mb-0" >
                             {{'jobForm.jobImageTitle' | translate}}
                           </label>
                         </div>
@@ -147,7 +145,6 @@
                           </div>
                         </div>
                         <div class="col-12">
-                          <!-- <form:errors path="images" cssClass="formError" element="p" /> -->
                           <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden
                                  (change)="onFileChanged($event)" #fileInput/>
                         </div>

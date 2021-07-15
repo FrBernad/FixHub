@@ -1,10 +1,11 @@
 <div class="container-fluid py-4">
-  <ng-template [ngIf]="isFetching" [ngIfElse]="fetch">
-    Loading...
-  </ng-template>
 
-  <ng-template #fetch>
-    <div class="container-lg p-5 bigContentContainer">
+
+  <div class="container-lg p-5 bigContentContainer">
+    <ng-template [ngIf]="isFetching" [ngIfElse]="fetch">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-template>
+    <ng-template #fetch>
 
       <div class="row mt-3">
         <div class="col-12 col-lg-6 d-flex justify-content-lg-start justify-content-center align-items-start">
@@ -255,9 +256,9 @@
           </div>
         </div>
       </div>
+    </ng-template>
 
-    </div>
+  </div>
 
-  </ng-template>
 
 </div>
