@@ -9,9 +9,10 @@ import java.util.Optional;
 public interface NotificationDao {
 
     Notification createNotification(User user, AuxNotificationDto notificationDto);
-    Optional<Notification> getNotificationsByUser(User user);
+
     Optional<Notification> getNotificationById(Long id);
+
     int deleteNotificationById(Long id);
-    void markNotificationAsSeen(long id);
+
     void markAllNotificationAsSeen(User user);
 }

@@ -9,9 +9,12 @@ import java.util.Optional;
 public interface NotificationService {
 
     Notification createNotification(User user, AuxNotificationDto notificationDto);
+
     Optional<Notification> getNotificationById(Long id);
-    Optional<Notification> getNotificationByUser(User user);
+
     int deleteNotificationById(Long id);
-    void markNotificationAsSeen(long id);
+
+    void markNotificationAsSeen(Notification notification);
+
     void markAllNotificationsAsSeen(User user);
 }

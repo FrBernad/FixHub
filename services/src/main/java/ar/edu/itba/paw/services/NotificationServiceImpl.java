@@ -35,29 +35,23 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationDao.getNotificationById(id);
     }
 
-    @Override
-    public Optional<Notification> getNotificationByUser(User user) {
-        LOGGER.debug("Looking for notifications of the user  with id {}",user.getId());
-        return notificationDao.getNotificationsByUser(user);
-    }
-
     @Transactional
     @Override
     public int deleteNotificationById(Long id) {
         LOGGER.debug("Deleting notification with id {} in service",id);
+
         return notificationDao.deleteNotificationById(id);
     }
 
     @Override
-    public void markNotificationAsSeen(long id) {
-        LOGGER.debug("Mark notification as seen with id {} in service",id);
-        notificationDao.markNotificationAsSeen(id);
+    public void markNotificationAsSeen(Notification notification) {
+        LOGGER.debug("Mark notification as seen with id {} in service",notification.getId());
+        notification.setSeen(true);
     }
 
     @Override
     public void markAllNotificationsAsSeen(User user) {
         LOGGER.debug("Mark all notification as seen of the user with id {} in service",user.getId());
         notificationDao.markAllNotificationAsSeen(user);
-
     }
 }

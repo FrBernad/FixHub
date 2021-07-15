@@ -40,14 +40,6 @@ public class NotificationDaoImpl implements NotificationDao {
     }
 
     @Override
-    public Optional<Notification> getNotificationsByUser(User user) {
-//        final TypedQuery<Notification> query = em.createQuery("from Notification as n where n.user.id = :userId",Notification.class);
-//        query.setParameter("userId",user.getId());
-//        return query.getResultList().stream();
-        return Optional.empty();
-    }
-
-    @Override
     public int deleteNotificationById(Long id) {
         LOGGER.info("Trying to delete the notification with id {}", id);
 
@@ -64,12 +56,11 @@ public class NotificationDaoImpl implements NotificationDao {
     }
 
     @Override
-    public void markNotificationAsSeen(long id) {
-
-    }
-
-    @Override
     public void markAllNotificationAsSeen(User user) {
-
+        final TypedQuery<Notification> query = em.createQuery("update Notification n set n.seen = :value where n.user.id = :userId", Notification.class);
+        query.setParameter("value", true);
+        query.setParameter("userId",user.getId());
+        int seenNotifications = query.executeUpdate();
+        LOGGER.info("{} notification of the user with id {} were marked as seen", seenNotifications,user.getId());
     }
 }

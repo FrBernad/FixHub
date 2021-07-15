@@ -667,7 +667,7 @@ public class UserSessionController {
         if(!notification.getUser().getId().equals(user.getId())){
             throw new IllegalOperationException();//FIXME: agregar mensaje
         }
-        notificationService.markNotificationAsSeen(id);
+        notificationService.markNotificationAsSeen(notification);
         return Response.ok().build();
     }
 
@@ -678,6 +678,7 @@ public class UserSessionController {
     public Response getNotificationsByUser(){
         LOGGER.info("Accessed /user/notifications GET controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+//        searchService.getNotificationsByUser(user,)
 //        Notification notification = notificationService.getNotificationByUser(user);
 //        return Response.ok(new NotificationDto(notification,uriInfo, securityContext) ).build();
         return Response.ok().build();

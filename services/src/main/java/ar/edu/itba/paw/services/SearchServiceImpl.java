@@ -14,6 +14,7 @@ import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,7 +246,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for contacts by provider id {}", page, provider.getId());
-        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, statusOption,queryOrderOption, page, pageSize);
+        final Collection<JobContact> contacts = userDao.getClientsByProvider(provider, statusOption, queryOrderOption, page, pageSize);
 
         return new PaginatedSearchResult<>(page, pageSize, totalContacts, contacts);
     }
@@ -333,6 +334,16 @@ public class SearchServiceImpl implements SearchService {
         LOGGER.debug("Retrieving page {} for user following with id {}", page, user.getId());
         final Collection<User> users = userDao.getUserFollowings(user, page, pageSize);
         return new PaginatedSearchResult<>(page, pageSize, totalUsers, users);
+    }
+
+    @Override
+    public PaginatedSearchResult<Notification> getNotificationsByUser(User user, Integer page, Integer pageSize) {
+//        final TypedQuery<Notification> query = em.createQuery("from Notification as n where n.user.id = :userId",Notification.class);
+//        query.setParameter("userId",user.getId());
+//        return query.getResultList().stream();
+        int totalNotifications = 0;
+        Collection<Notification> notifications = new LinkedList<>();
+        return new PaginatedSearchResult<>(page, pageSize, totalNotifications, notifications);
     }
 
 }
