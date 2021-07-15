@@ -1,9 +1,7 @@
 <div class="col-12 align-items-center justify-content-center mt-4
     ${results.totalPages<=1 ? 'd-none':''} ">
   <nav class="d-flex align-items-center justify-content-center">
-    <ul class="pagination mb-0" id="pagination"
-        data-searched="${searched}"
-        data-page="${results.page}">
+    <ul class="pagination mb-0" id="pagination">
       <li
         [ngClass]="{'page-item':true, 'disabled':currentPage === 0}"
       >

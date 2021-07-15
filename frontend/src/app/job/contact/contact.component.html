@@ -31,10 +31,7 @@
                             </a>
                           </li>
                           <li *ngFor="let contact of user.contactInfo" (click)="dropdownClickContact(contact)">
-                            <a class="dropdown-item userContact" data-state="contact.state" data-city="contact.city"
-                              data-info-id="contact.id" data-street="contact.street"
-                              data-address-number="contact.addressNumber" data-floor="contact.floor"
-                              data-department-number="contact.departmentNumber" style="cursor: pointer;">
+                            <a class="dropdown-item userContact" style="cursor: pointer;">
                               {{contact.state}} {{contact.city}} {{contact.street}} {{contact.addressNumber}}
                               {{contact.floor}}
                               {{contact.departmentNumber}}
@@ -80,7 +77,7 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end w-100" data-reference="parent">
                                   <li *ngFor="let city of job.provider.providerDetails.location.cities"
-                                    data-name="city.name" (click)="dropdownClickCity(city)">
+                                     (click)="dropdownClickCity(city)">
                                     <a class="dropdown-item" style="cursor: pointer;">{{city.name}}</a>
                                   </li>
                                 </ul>
