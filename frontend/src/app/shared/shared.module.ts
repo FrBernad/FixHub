@@ -10,6 +10,7 @@ import {FooterComponent} from "./footer/footer.component";
 import {RouterModule} from "@angular/router";
 import {ChooseCityComponent} from "./choose-city/choose-city.component";
 import {ChooseStateComponent} from "./choose-state/choose-state.component";
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {ChooseStateComponent} from "./choose-state/choose-state.component";
     JobCardComponent,
   ],
   imports: [
+    NgxMaterialTimepickerModule,
     FontAwesomeModule,
     RouterModule,
     TranslateModule,

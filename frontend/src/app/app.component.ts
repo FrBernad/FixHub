@@ -53,21 +53,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   loading: boolean;
 
-  constructor(public translateService: TranslateService,
-              public library: FaIconLibrary,
-              private router: Router,
-              private authService: AuthService,
-              private userService: UserService,
-              private previousRouteService: PreviousRouteService,
-              private jobsService: DiscoverService,
-              private titleService: Title
+  constructor(
+    public translateService: TranslateService,
+    public library: FaIconLibrary,
+    private router: Router,
+    private authService: AuthService,
+    private userService: UserService,
+    private previousRouteService: PreviousRouteService,
+    private jobsService: DiscoverService,
+    private titleService: Title
   ) {
   }
 
   ngOnInit(): void {
     this.translateService.addLangs(['en', 'es']);
     this.translateService.setDefaultLang('en');
-    this.translateService.use('es');
+    this.translateService.use(this.translateService.getBrowserLang());
 
     this.library.addIcons(fasPlus, fasSearch,
       fasStar, fasHandshake,

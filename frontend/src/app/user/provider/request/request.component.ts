@@ -13,21 +13,18 @@ import {JobStatusEnum} from "../../../models/job-status-enum.model";
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit, OnDestroy {
+export class RequestComponent implements OnInit {
 
   loading = true;
   request: JobRequest = new JobRequest;
-  user: User;
 
   acceptJobLoading = false;
   rejectJobLoading = false;
   finishJobLoading = false;
 
-  private userSub: Subscription;
 
   constructor(
     private contactService: ContactService,
-    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -35,9 +32,6 @@ export class RequestComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.request.id = this.route.snapshot.params["id"]
-    this.userSub = this.userService.user.subscribe(user => {
-      this.user = user;
-    });
     this.contactService.getProviderJobRequest(this.request.id).subscribe(
       request => {
         this.request = request;
@@ -95,10 +89,5 @@ export class RequestComponent implements OnInit, OnDestroy {
       }
     )
   }
-
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-  }
-
 
 }
