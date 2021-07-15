@@ -4,7 +4,7 @@ import {ContactInfo} from 'src/app/models/contact-info.model';
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {User} from "../../models/user.model";
-import {UserService} from "../../auth/user.service";
+import {UserService} from "../../auth/services/user.service";
 import {tap} from "rxjs/operators";
 
 export interface ContactPaginationResult {

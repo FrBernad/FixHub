@@ -4,13 +4,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {JobService} from '../job.service';
 import {Subscription} from 'rxjs';
 import {User} from 'src/app/models/user.model';
-import {UserService} from 'src/app/auth/user.service';
+import {UserService} from 'src/app/auth/services/user.service';
 import {JobsService} from "../../discover/jobs.service";
 
 @Component({
   selector: 'app-new-job',
   templateUrl: './new-job.component.html',
-  styleUrls: ['./new-job.component.scss','../../join/choose-state/choose-state.component.scss'],
+  styleUrls: ['./new-job.component.scss','../../auth/join/choose-state/choose-state.component.scss'],
 })
 export class NewJobComponent implements OnInit, OnDestroy {
   categories: string[] = [];

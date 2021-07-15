@@ -73,16 +73,16 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getUser(@PathParam("id") final long id) {
-        LOGGER.info("Accessed /users/{} GET controller",id);
+        LOGGER.info("Accessed /users/{} GET controller", id);
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         if (user.getRoles().contains(Roles.PROVIDER)) {
-            LOGGER.info("Return provider with id {}",id);
+            LOGGER.info("Return provider with id {}", id);
             return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
         }
 
-        LOGGER.info("Return user with id {}",id);
+        LOGGER.info("Return user with id {}", id);
         return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
     }
 
@@ -90,7 +90,7 @@ public class UserController {
     @Path("/{id}/profileImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
     public Response getUserProfileImage(@PathParam("id") final long id, @Context Request request) {
-        LOGGER.info("Accessed /users/{}/profileImage GET controller",id);
+        LOGGER.info("Accessed /users/{}/profileImage GET controller", id);
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
@@ -101,8 +101,7 @@ public class UserController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String hash = getMD5Hash(img.getData());
-        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
+        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
 
         final CacheControl cacheControl = new CacheControl();
         cacheControl.setNoCache(true);
@@ -121,7 +120,7 @@ public class UserController {
     @Path("/{id}/coverImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
     public Response getUserCoverImage(@PathParam("id") final long id, @Context Request request) {
-        LOGGER.info("Accessed /users/{}/coverImage GET controller",id);
+        LOGGER.info("Accessed /users/{}/coverImage GET controller", id);
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new); //FIXME: agregar mensaje
 
@@ -132,8 +131,7 @@ public class UserController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String hash = getMD5Hash(img.getData());
-        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
+        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
 
         final CacheControl cacheControl = new CacheControl();
         cacheControl.setNoCache(true);
@@ -156,7 +154,7 @@ public class UserController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("4") int pageSize
     ) {
-        LOGGER.info("Accessed /users/{}/followers GET controller page {} with pageSize {}",id,page,pageSize);
+        LOGGER.info("Accessed /users/{}/followers GET controller page {} with pageSize {}", id, page, pageSize);
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
@@ -191,7 +189,7 @@ public class UserController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("4") int pageSize
     ) {
-        LOGGER.info("Accessed /users/{}/following GET controller page {} with pageSize {}",id,page,pageSize);
+        LOGGER.info("Accessed /users/{}/following GET controller page {} with pageSize {}", id, page, pageSize);
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
@@ -256,16 +254,6 @@ public class UserController {
 
         if (page != last) {
             responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
-        }
-    }
-
-    private String getMD5Hash(byte[] data) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] md5hash = md.digest(data);
-            return Base64.getEncoder().encodeToString(md5hash);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
         }
     }
 

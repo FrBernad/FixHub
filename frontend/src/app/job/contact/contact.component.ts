@@ -5,7 +5,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {Job} from '../../models/job.model';
 import {Subscription} from 'rxjs';
-import {UserService} from 'src/app/auth/user.service';
+import {UserService} from 'src/app/auth/services/user.service';
 
 
 @Component({

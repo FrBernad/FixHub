@@ -3,7 +3,7 @@ import {User} from "../models/user.model";
 import {ActivatedRoute, Params} from "@angular/router";
 import {JobService, ReviewsPaginationResult} from "./job.service";
 import {Subscription} from "rxjs";
-import {UserService} from "../auth/user.service";
+import {UserService} from "../auth/services/user.service";
 import {SingleJob} from "../models/single-job.model";
 
 @Component({

@@ -4,7 +4,7 @@ import {User} from "../models/user.model";
 import {JobsService} from "../discover/jobs.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {UserService} from "../auth/user.service";
+import {UserService} from "../auth/services/user.service";
 
 @Component({
   selector: 'app-landing-page',

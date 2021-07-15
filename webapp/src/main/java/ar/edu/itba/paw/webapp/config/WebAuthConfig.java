@@ -75,7 +75,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/login", "/register").anonymous()
 
 //            .antMatchers(HttpMethod.POST, "/user/verifyAccount/resend").hasRole("NOT_VERIFIED")
-//            .antMatchers("/user/verifyAccount/resendConfirmation").hasRole("NOT_VERIFIED")
+//            .antMatchers("/user/verifyAccount/resendConfirmation").hasRwole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount").hasRole("USER")
 //            .antMatchers("/logout").authenticated()
 

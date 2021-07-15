@@ -172,11 +172,11 @@ public class UserSessionController {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         if (user.getRoles().contains(Roles.PROVIDER)) {
-            LOGGER.info("Return provider with id {} in /user/ GET controller",user.getId());
+            LOGGER.info("Return provider with id {} in /user/ GET controller", user.getId());
 
             return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
         }
-        LOGGER.info("Return user with id {} in /user/ GET controller",user.getId());
+        LOGGER.info("Return user with id {} in /user/ GET controller", user.getId());
 
 
         return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
@@ -258,8 +258,7 @@ public class UserSessionController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String hash = getMD5Hash(img.getData());
-        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
+        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
 
         final CacheControl cacheControl = new CacheControl();
         cacheControl.setNoCache(true);
@@ -277,7 +276,7 @@ public class UserSessionController {
     @PUT
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUserCoverImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{ContentType.newJob.images}") @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
+    public Response updateUserCoverImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}") @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
         LOGGER.info("Accessed /user/coverImage PUT controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         InputStream in = coverImage.getEntityAs(InputStream.class);
@@ -300,8 +299,7 @@ public class UserSessionController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String hash = getMD5Hash(img.getData());
-        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
+        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
 
         final CacheControl cacheControl = new CacheControl();
         cacheControl.setNoCache(true);
@@ -365,7 +363,7 @@ public class UserSessionController {
     @Path("/jobs/requests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
-        LOGGER.info("Accessed /user/jobs/requests/{} GET controller",contactId);
+        LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
 
@@ -462,7 +460,7 @@ public class UserSessionController {
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         final State state = locationService.getStateById(joinDto.getLocation().getState().getId()).orElseThrow(StateNotFoundException::new);//FIXME: agregar mensaje
 
-        if(user.hasRole(Roles.PROVIDER)){
+        if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User with id {} is already a provider", user.getId());
             throw new IllegalOperationException();//FIXME: agregar mensaje
         }
@@ -521,12 +519,12 @@ public class UserSessionController {
     @PUT
     @Path("/following/{id}")
     public Response followUser(@PathParam("id") long id) {
-        LOGGER.info("Accessed /user/following/{} PUT controller",id);
+        LOGGER.info("Accessed /user/following/{} PUT controller", id);
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
 
         final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        if (user.getId().equals(toFollow.getId()) ) {
+        if (user.getId().equals(toFollow.getId())) {
             throw new IllegalOperationException();//FIXME: agregar mensaje
         }
         userService.followUser(user, toFollow);
@@ -539,12 +537,12 @@ public class UserSessionController {
     @DELETE
     @Path("/following/{id}")
     public Response unfollowUser(@PathParam("id") long id) {
-        LOGGER.info("Accessed /user/following/{} DELETE controller",id);
+        LOGGER.info("Accessed /user/following/{} DELETE controller", id);
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         final User toUnfollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
-        if (user.getId().equals(toUnfollow.getId()) ) {
+        if (user.getId().equals(toUnfollow.getId())) {
             throw new IllegalOperationException();//FIXME: agregar mensaje
         }
         userService.unfollowUser(user, toUnfollow);
@@ -621,18 +619,5 @@ public class UserSessionController {
             responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
         }
     }
-
-
-    private String getMD5Hash(byte[] data) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] md5hash = md.digest(data);
-            return Base64.getEncoder().encodeToString(md5hash);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
-    }
-
-
 
 }
