@@ -1,13 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
-import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.interfaces.services.JobService;
-import ar.edu.itba.paw.interfaces.services.LocationService;
-import ar.edu.itba.paw.interfaces.services.SearchService;
-import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.interfaces.exceptions.*;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
@@ -18,6 +12,7 @@ import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
+import ar.edu.itba.paw.models.user.notification.Notification;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewStatusDto;
@@ -41,8 +36,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Path("/user")
@@ -54,6 +47,9 @@ public class UserSessionController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -646,5 +642,57 @@ public class UserSessionController {
             responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
         }
     }
+
+    @GET
+    @Path("/notification/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getNotification(@PathParam("id") long id){
+        LOGGER.info("Accessed /user/notification/{} GET controller",id);
+        Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        if(!notification.getUser().getId().equals(user.getId())){
+            throw new IllegalOperationException();//FIXME: agregar mensaje
+        }
+
+        return Response.ok(new NotificationDto(notification,uriInfo, securityContext) ).build();
+    }
+
+    @PUT
+    @Path("/notification/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response markNotificationAsSeen(@PathParam("id") long id){
+        LOGGER.info("Accessed /user/notification/{} PUT controller",id);
+        Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        if(!notification.getUser().getId().equals(user.getId())){
+            throw new IllegalOperationException();//FIXME: agregar mensaje
+        }
+        notificationService.markNotificationAsSeen(id);
+        return Response.ok().build();
+    }
+
+
+    @GET
+    @Path("/notifications")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getNotificationsByUser(){
+        LOGGER.info("Accessed /user/notifications GET controller");
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+//        Notification notification = notificationService.getNotificationByUser(user);
+//        return Response.ok(new NotificationDto(notification,uriInfo, securityContext) ).build();
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/notifications")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response markAllNotificationsAsSeen(){
+        LOGGER.info("Accessed /user/notifications PUT controller");
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        notificationService.markAllNotificationsAsSeen(user);
+        return Response.ok().build();
+    }
+
+
 
 }

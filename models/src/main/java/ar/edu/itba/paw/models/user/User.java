@@ -2,6 +2,7 @@ package ar.edu.itba.paw.models.user;
 
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.image.Image;
+import ar.edu.itba.paw.models.user.notification.Notification;
 import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 
 import javax.persistence.*;
@@ -65,6 +66,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<ContactInfo> contactInfo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Notification> notifications;
 
     @Embedded
     private ProviderDetails providerDetails;
@@ -238,6 +242,14 @@ public class User {
 
     public boolean userIsFollower(String email) {
         return followers.stream().anyMatch(user -> user.getEmail().equals(email));
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     @Override
