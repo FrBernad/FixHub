@@ -13,6 +13,10 @@ export class RequestJobCardComponent implements OnInit {
 
   @ViewChild('accordion', {static: true}) accordion: ElementRef;
 
+  acceptJobLoading = false;
+  rejectJobLoading=false;
+  finishJobLoading=false;
+
   constructor(private contactService:ContactService) {
   }
 
@@ -29,22 +33,29 @@ export class RequestJobCardComponent implements OnInit {
   }
 
   acceptJob():void{
+    this.acceptJobLoading = true;
     this.contactService.changeContactStatus(this.request.id,JobStatusModel.IN_PROGRESS).subscribe(
       ()=>{
+        this.acceptJobLoading = false;
         this.request.status=JobStatusModel.IN_PROGRESS;
       }
     );
   }
   rejectJob():void{
+    this.rejectJobLoading=true;
+
     this.contactService.changeContactStatus(this.request.id,JobStatusModel.REJECTED).subscribe(
       ()=> {
+        this.rejectJobLoading=false;
         this.request.status = JobStatusModel.REJECTED;
       }
     );
   }
   jobFinished():void{
+    this.finishJobLoading=true;
     this.contactService.changeContactStatus(this.request.id,JobStatusModel.FINISHED).subscribe(
       ()=>{
+        this.rejectJobLoading=false;
         this.request.status=JobStatusModel.FINISHED;
       }
     )

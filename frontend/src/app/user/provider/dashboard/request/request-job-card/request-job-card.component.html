@@ -78,13 +78,20 @@
                         <div
                           class="col-12 col-md-6 pe-4 my-2  d-flex align-items-center justify-content-center justify-content-md-end">
                           <button class="finishBtn me-2"
-                                  type="submit" (click)="acceptJob()">
-                            {{'clientContactCard.acceptJobBtn'|translate}}
-                            <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                                  type="submit" (click)="acceptJob()" [disabled]="acceptJobLoading || rejectJobLoading">
+                            <span class="spinner-border spinner-border-sm ms-2" [hidden]="!acceptJobLoading"></span>
+                            <span *ngIf="!acceptJobLoading">
+                                {{'clientContactCard.acceptJobBtn'|translate}}
+                              <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                            </span>
                           </button>
-                          <button class="closeBtn me-2" type="submit" (click)="rejectJob()">
-                            {{'clientContactCard.rejectJobBtn'|translate}}
-                            <fa-icon [icon]="['fas', 'times']" class="ms-2"></fa-icon>
+                          <button class="closeBtn me-2" type="submit" (click)="rejectJob()"
+                                  [disabled]="acceptJobLoading || rejectJobLoading">
+                            <span class="spinner-border spinner-border-sm ms-2" [hidden]="!rejectJobLoading"></span>
+                            <span *ngIf="!rejectJobLoading">
+                              {{'clientContactCard.rejectJobBtn'|translate}}
+                              <fa-icon [icon]="['fas', 'times']" class="ms-2"></fa-icon>
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -108,9 +115,13 @@
                         </div>
                         <div
                           class="col-12 col-md-5 pe-4 d-flex my-2 d-flex align-items-center justify-content-center justify-content-md-end">
-                          <button class="finishBtn me-2" type="submit" (click)="jobFinished()">
-                            {{'clientContactCard.completedJobBtn'|translate}}
-                            <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                          <button class="finishBtn me-2" type="submit" (click)="jobFinished()"
+                                  [disabled]="finishJobLoading">
+                            <span class="spinner-border spinner-border-sm ms-2" [hidden]="!finishJobLoading"></span>
+                            <span *ngIf="!finishJobLoading">
+                              {{'clientContactCard.completedJobBtn'|translate}}
+                              <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                            </span>
                           </button>
                         </div>
                       </div>

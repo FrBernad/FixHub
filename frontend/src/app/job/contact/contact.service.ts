@@ -118,7 +118,7 @@ export class ContactService {
 
   changeContactStatus(contactId:number, status:string){
     return this.http.put(
-      environment.apiBaseUrl + '/user/requests/'+contactId,
+      environment.apiBaseUrl + '/user/jobs/requests/'+contactId,
       {
         status
       }

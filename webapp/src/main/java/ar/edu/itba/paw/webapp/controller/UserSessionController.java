@@ -366,7 +366,11 @@ public class UserSessionController {
         LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
+        if(!user.getId().equals(jobContact.getProvider().getId()) ){
+            throw new IllegalOperationException(); //FIXME: agregar mensaje
+        }
         JobStatus newStatus = status.getStatus();
 
         if (newStatus == JobStatus.FINISHED) {
