@@ -10,7 +10,7 @@ import {DiscoverService} from "../../discover/discover.service";
 @Component({
   selector: 'app-new-job',
   templateUrl: './new-job.component.html',
-  styleUrls: ['./new-job.component.scss','../../auth/join/choose-state/choose-state.component.scss'],
+  styleUrls: ['./new-job.component.scss','../../shared/choose-state/choose-state.component.scss'],
 })
 export class NewJobComponent implements OnInit, OnDestroy {
   categories: string[] = [];

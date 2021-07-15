@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DiscoverService, State} from "../../../discover/discover.service";
-import {User} from "../../../models/user.model";
+import {DiscoverService, State} from "../../discover/discover.service";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-choose-state',

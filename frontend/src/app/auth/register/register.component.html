@@ -22,7 +22,7 @@
                     {{'registerForm.userNameTitle' | translate}}
                     <span class="required-field">*</span>
                   </label>
-                  <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                  <input type="text" class="form-control"
                          placeholder="{{'registerForm.namePlaceholder' | translate}}" formControlName="name"/>
                   <span *ngIf="!registerForm.get('name').valid && registerForm.get('name').touched">
                     <span *ngIf="registerForm.get('name').errors['required']" class="errorMessage">
@@ -59,7 +59,7 @@
                   <label class="mb-2">
                     {{'registerForm.userEmailTitle' | translate}}
                     <span class="required-field">*</span></label>
-                  <input type="email" cssErrorClass="form-control is-invalid" class="form-control"
+                  <input type="email" class="form-control"
                          placeholder="{{'registerForm.emailPlaceholder' | translate}}" formControlName="email"/>
                   <span *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched">
                     <span *ngIf="registerForm.get('email').errors['required']" class="errorMessage">
@@ -110,7 +110,7 @@
                   </label>
                   <div class="input-group d-flex justify-content-start align-items-center">
                     <input [type]="showPass2 ? 'password':'text'" class="form-control" name="confirmPassword"
-                           aria-describedby="password input" cssErrorClass="form-control is-invalid"
+                           aria-describedby="password input"
                            formControlName="confirmPassword"/>
                     <div class="input-group-append">
                       <button type="button" tabindex="-1" (click)="toogleEye2()"
@@ -139,7 +139,7 @@
                   <label class="mb-2">
                     {{'registerForm.userPhoneTitle' | translate}}
                     <span class="required-field">*</span></label>
-                  <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                  <input type="text" class="form-control"
                          placeholder="{{'registerForm.phoneNumberPlaceholder' | translate}}"
                          formControlName="phoneNumber"/>
                   <span *ngIf="!registerForm.get('phoneNumber').valid && registerForm.get('phoneNumber').touched">
@@ -160,7 +160,7 @@
                       <label class="mb-2">
                         {{'registerForm.userStateTitle' | translate}}
                         <span class="required-field">*</span></label>
-                      <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                      <input type="text" class="form-control"
                              placeholder="{{'registerForm.userStatePlaceholder' | translate}}" formControlName="state"/>
                       <span *ngIf="!registerForm.get('state').valid && registerForm.get('state').touched">
                         <span *ngIf="registerForm.get('state').errors['required']" class="errorMessage">
@@ -180,7 +180,7 @@
                       <label class="mb-2">
                         {{'registerForm.userCityTitle' | translate}}
                         <span class="required-field">*</span></label>
-                      <input type="text" cssErrorClass="form-control is-invalid" class="form-control"
+                      <input type="text" class="form-control"
                              placeholder="{{'registerForm.userCityTitlePlaceholder' | translate}}"
                              formControlName="city"/>
                       <span *ngIf="!registerForm.get('city').valid && registerForm.get('city').touched">

@@ -7,7 +7,6 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ErrorsComponent implements OnInit {
 
-  errors:string ='Not Found';
   code: number = 404;
 
   constructor() { }

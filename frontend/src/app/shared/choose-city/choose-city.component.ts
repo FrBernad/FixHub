@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {User} from "../../../models/user.model";
-import {City, DiscoverService, State} from "../../../discover/discover.service";
+import {User} from "../../models/user.model";
+import {City, DiscoverService, State} from "../../discover/discover.service";
 
 @Component({
   selector: 'app-choose-city',

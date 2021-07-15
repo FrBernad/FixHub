@@ -8,9 +8,13 @@ import {NavbarComponent} from "./navbar/navbar.component";
 import {JobCardComponent} from "./job-card/job-card.component";
 import {FooterComponent} from "./footer/footer.component";
 import {RouterModule} from "@angular/router";
+import {ChooseCityComponent} from "./choose-city/choose-city.component";
+import {ChooseStateComponent} from "./choose-state/choose-state.component";
 
 @NgModule({
   declarations: [
+    ChooseCityComponent,
+    ChooseStateComponent,
     LoadingSpinnerComponent,
     PaginationComponent,
     NavbarComponent,
@@ -24,6 +28,8 @@ import {RouterModule} from "@angular/router";
     CommonModule
   ],
   exports: [
+    ChooseCityComponent,
+    ChooseStateComponent,
     CommonModule,
     TranslateModule,
     FontAwesomeModule,
