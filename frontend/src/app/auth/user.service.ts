@@ -77,19 +77,18 @@ export class UserService {
     }));
   }
 
-  uploadProfileImage(file) {
-    this.http.put(environment.apiBaseUrl + '/user/profileImage',
-      file).pipe(tap(() => {
+  updateProfileImage(profileImage: FormData) {
+    return this.http.put<FormData>(environment.apiBaseUrl + '/user/profileImage',
+      profileImage).pipe(tap(() => {
       this.populateUserData().subscribe();
     }));
   }
 
-  uploadCoverImage(file) {
-    this.http.put(environment.apiBaseUrl + '/user/coverImage',
-      file).pipe(tap(() => {
+  updateCoverImage(coverImage: FormData) {
+    return this.http.put<FormData>(environment.apiBaseUrl + '/user/coverImage',
+      coverImage).pipe(tap(() => {
       this.populateUserData().subscribe();
     }));
-
   }
 
   updateProviderInfo(providerInfo: ProviderInfo) {
@@ -99,7 +98,6 @@ export class UserService {
       .pipe(tap(() => {
         this.populateUserData().subscribe();
       }));
-
   }
 
 

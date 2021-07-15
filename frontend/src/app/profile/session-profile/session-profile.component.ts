@@ -4,7 +4,6 @@ import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {FormControl} from "@angular/forms";
 import {AuthService} from "../../auth/auth.service";
-import {SessionProfileService} from "./session-profile.service";
 
 @Component({
   selector: 'app-session-profile',
@@ -14,6 +13,8 @@ import {SessionProfileService} from "./session-profile.service";
 export class SessionProfileComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
+  user: User;
+
   profileImage: FormControl;
   coverImage: FormControl;
 
@@ -30,12 +31,10 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   disable = false;
   success = false;
 
-  user: User;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private sessionProfileService: SessionProfileService
   ) {
   }
 
@@ -53,9 +52,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.coverImage = new FormControl(null);
   }
 
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe()
-  }
+
 
 
   onProfileFileChanged(event) {
@@ -76,9 +73,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     let profileImageUpload = new FormData();
     profileImageUpload.append('profileImage', file);
 
-    this.sessionProfileService.updateProfileImage(profileImageUpload).subscribe((response) => {
-      console.log(response);
-    });
+    this.userService.updateProfileImage(profileImageUpload).subscribe();
 
 
   }
@@ -105,9 +100,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     let coverImageUpload = new FormData();
     coverImageUpload.append('coverImage', file);
 
-    this.sessionProfileService.updateCoverImage(coverImageUpload).subscribe((response) => {
-      console.log(response);
-    });
+    this.userService.updateCoverImage(coverImageUpload).subscribe();
   }
 
   onVerify() {
@@ -128,4 +121,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.success = false;
   }
 
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe()
+  }
 }
