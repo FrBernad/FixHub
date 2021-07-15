@@ -9,36 +9,36 @@ import javax.validation.constraints.Size;
 
 public class NewContactDto {
 
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
+    @NotEmpty(message="{NotEmpty.newContact.state}")
+    @Size(max = 50, message="{Size.newContact.state}")
+    @Pattern(regexp = "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message="{Pattern.newContact.state}")
     private String state;
 
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
+    @NotEmpty(message="{NotEmpty.newContact.city}")
+    @Size(max = 50, message="{Size.newContact.city}")
+    @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message="{Pattern.newContact.city}")
     private String city;
 
-    @NotEmpty
-    @Size(max = 50)
-    @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$")
+    @NotEmpty(message="{NotEmpty.newContact.street}")
+    @Size(max = 50, message="{Size.newContact.street}")
+    @Pattern(regexp = "^[0-9a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message="{Pattern.newContact.street}")
     private String street;
 
-    @NotEmpty
-    @Pattern(regexp = "[0-9]{0,9}")
+    @NotEmpty(message="{NotEmpty.newContact.addressNumber}")
+    @Pattern(regexp = "[0-9]{0,9}", message="{Pattern.newContact.addressNumber}")
     private String addressNumber;
 
-    @Pattern(regexp = "[0-9]{0,9}")
+    @Pattern(regexp = "[0-9]{0,9}", message="{Pattern.newContact.floor}")
     private String floor;
 
-    @Pattern(regexp = "[A-Za-z0-9]{0,30}")
+    @Pattern(regexp = "[A-Za-z0-9]{0,30}", message="{Pattern.newContact.departmentNumber}")
     private String departmentNumber;
 
-    @NotEmpty
-    @Size(max = 300)
+    @NotEmpty(message="")
+    @Size(max = 300, message="{NotEmpty.newContact.message}")
     private String message;
 
-    @NotNull
+    @NotNull(message="")
     private String contactInfoId;
 
     public String getState() {

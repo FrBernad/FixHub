@@ -11,7 +11,7 @@ public class IllegalContactExceptionMapper implements ExceptionMapper<IllegalCon
 
     @Override
     public Response toResponse(IllegalContactException exception) {
-        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
+        return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity(exception.getMessage()).build();
     }
 }
 
