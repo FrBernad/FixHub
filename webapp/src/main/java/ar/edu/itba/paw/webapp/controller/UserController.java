@@ -53,7 +53,8 @@ public class UserController {
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response registerUser(@Valid final RegisterDto registerDto) {
+    public Response registerUser(@Valid final RegisterDto registerDto) throws DuplicateUserException {
+        LOGGER.info("Accessed /users/ POST controller");
         User user;
         try {
             user = userService.createUser(registerDto.getPassword(),
@@ -62,7 +63,7 @@ public class UserController {
                 registerDto.getState(), registerDto.getCity());
         } catch (DuplicateUserException e) {
             LOGGER.warn("Error in registerDto RegisterForm, email is already in used");
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            throw new DuplicateUserException();//FIXME: agregar mensaje
         }
 
         return Response.created(UserDto.getUserUriBuilder(user, uriInfo).build()).build();
@@ -72,12 +73,16 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getUser(@PathParam("id") final long id) {
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Accessed /users/{} GET controller",id);
+
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         if (user.getRoles().contains(Roles.PROVIDER)) {
+            LOGGER.info("Return provider with id {}",id);
             return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
         }
 
+        LOGGER.info("Return user with id {}",id);
         return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
     }
 
@@ -85,7 +90,9 @@ public class UserController {
     @Path("/{id}/profileImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
     public Response getUserProfileImage(@PathParam("id") final long id, @Context Request request) {
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Accessed /users/{}/profileImage GET controller",id);
+
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         final Image img = user.getProfileImage();
 
@@ -114,7 +121,9 @@ public class UserController {
     @Path("/{id}/coverImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
     public Response getUserCoverImage(@PathParam("id") final long id, @Context Request request) {
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Accessed /users/{}/coverImage GET controller",id);
+
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new); //FIXME: agregar mensaje
 
         final Image img = user.getCoverImage();
 
@@ -147,7 +156,9 @@ public class UserController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("4") int pageSize
     ) {
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        LOGGER.info("Accessed /users/{}/followers GET controller page {} with pageSize {}",id,page,pageSize);
+
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         final PaginatedSearchResult<User> results = searchService.getUserFollowers(user, page, pageSize);
 
@@ -180,8 +191,9 @@ public class UserController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("4") int pageSize
     ) {
+        LOGGER.info("Accessed /users/{}/following GET controller page {} with pageSize {}",id,page,pageSize);
 
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         final PaginatedSearchResult<User> results = searchService.getUserFollowing(user, page, pageSize);
 
@@ -206,115 +218,6 @@ public class UserController {
     }
 
 
-//    @RequestMapping(path = "/user/account/search")
-//    public ModelAndView profileSearch(@ModelAttribute("searchForm") final SearchForm form,
-//                                      BindingResult errors, Principal principal) {
-//        LOGGER.info("Accessed /user/account/search GET controller");
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClient(user, form.getPage(), 4);
-//
-//        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
-//        mav.addObject("results", providersContacted);
-//        return mav;
-//    }
-//
-//    @RequestMapping(path = "/user/follow", method = RequestMethod.POST)
-//    public ModelAndView follow(@RequestParam("userId") long userId, Principal principal) {
-//        LOGGER.info("Accessed /user/follow POST controller");
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final User followUser = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        if (user.getId() != userId) {
-//            userService.followUser(user, followUser);
-//        }
-//        final ModelAndView mav = new ModelAndView("redirect:/user/" + userId);
-//        mav.addObject("loggedUser", user);
-//        return mav;
-//    }
-//
-//    @RequestMapping(path = "/user/unfollow", method = RequestMethod.POST)
-//    public ModelAndView unfollow(@RequestParam("userId") long userId, Principal principal) {
-//        LOGGER.info("Accessed /user/unfollow POST controller");
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final User followUser = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//
-//        if (user.getId() != userId) {
-//            userService.unfollowUser(user, followUser);
-//        }
-//        final ModelAndView mav = new ModelAndView("redirect:/user/" + userId);
-//        mav.addObject("loggedUser", user);
-//        return mav;
-//    }
-//
-//
-//    @RequestMapping(path = "/user/{userId}/followers")
-//    public ModelAndView followers(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form) {
-//        LOGGER.info("Accessed /user/profile/followers GET controller");
-//
-//        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-//        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user, 0, 4);
-//
-//        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
-//        mav.addObject("results", followers);
-//        mav.addObject("user", user);
-//
-//        return mav;
-//    }
-//
-//    @RequestMapping(path = "/user/{userId}/followers/search")
-//    public ModelAndView followersSearch(@PathVariable("userId") long userId,
-//                                        @ModelAttribute("searchForm") SearchForm form,
-//                                        BindingResult errors) {
-//        LOGGER.info("Accessed /user/profile/followers/search GET controller");
-//
-//        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-////        user.setFollowers(userService.getFollowersCount(user));
-////        user.setFollowing(userService.getFollowingCount(user));
-//        final PaginatedSearchResult<User> followers = searchService.getUserFollowers(user, form.getPage(), 4);
-//
-//        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
-//        mav.addObject("results", followers);
-//        mav.addObject("user", user);
-//
-//        return mav;
-//    }
-//
-//    @RequestMapping(path = "/user/{userId}/following")
-//    public ModelAndView following(@PathVariable("userId") long userId, @ModelAttribute("searchForm") SearchForm form) {
-//        LOGGER.info("Accessed /user/profile/following GET controller");
-//
-//        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-////        user.setFollowers(userService.getFollowersCount(user));
-////        user.setFollowing(userService.getFollowingCount(user));
-//        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user, 0, 4);
-//
-//        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
-//        mav.addObject("flag", true);
-//        mav.addObject("results", following);
-//        mav.addObject("user", user);
-//
-//        return mav;
-//    }
-//
-//    @RequestMapping(path = "/user/{userId}/following/search")
-//    public ModelAndView followingSearch(@PathVariable("userId") long userId,
-//                                        @ModelAttribute("searchForm") SearchForm form,
-//                                        BindingResult errors) {
-//        LOGGER.info("Accessed /user/profile/following/search GET controller");
-//
-//        final User user = userService.getUserById(userId).orElseThrow(UserNotFoundException::new);
-////        user.setFollowers(userService.getFollowersCount(user));
-////        user.setFollowing(userService.getFollowingCount(user));
-//        final PaginatedSearchResult<User> following = searchService.getUserFollowing(user, form.getPage(), 4);
-//        final ModelAndView mav = new ModelAndView("views/user/profile/followersPage");
-//        mav.addObject("results", following);
-//        mav.addObject("flag", true);
-//        mav.addObject("user", user);
-//
-//        return mav;
-//    }
 //
 //    @RequestMapping(path = "/user/{userId}")
 //    public ModelAndView userProfile(@PathVariable("userId") final long userId, Principal principal) {
@@ -335,24 +238,9 @@ public class UserController {
 //        mav.addObject("user", user);
 //        return mav;
 //    }
-//
 
-//
-//    @RequestMapping(path = "/user/account")
-//    public ModelAndView profile(@ModelAttribute("searchForm") SearchForm searchForm, Principal principal) {
-//        LOGGER.info("Accessed /user/account GET controller");
-//
-//        final ModelAndView mav = new ModelAndView("views/user/profile/profile");
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//
-//        final PaginatedSearchResult<JobContact> providersContacted = searchService.getProvidersByClient(user, 0, 4);
-//
-//        mav.addObject("loggedUser", user);
-//        mav.addObject("results", providersContacted);
-//
-//        return mav;
-//    }
+
+
 //
 //    @RequestMapping(value = "/user/account/updateCoverImage", method = RequestMethod.POST)
 //    public ModelAndView updateCoverImage(@Valid @ModelAttribute("coverImageForm")CoverImageForm coverImageForm,

@@ -36,7 +36,8 @@ public class ReviewController {
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getReview(@PathParam("reviewId") long reviewId) {
-        Review review = reviewService.getReviewById(reviewId).orElseThrow(ReviewNotFoundException::new); //FIXME: falta capturarla la excepcion
+        LOGGER.info("Access reviews/{} CONTROLLER", reviewId);
+        Review review = reviewService.getReviewById(reviewId).orElseThrow(ReviewNotFoundException::new); //FIXME: agregar mensaje
         LOGGER.info("Return review with id {}", review.getId());
         return Response.ok(new ReviewDto(review, uriInfo, securityContext)).build();
     }

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
 import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.JobService;
@@ -484,11 +485,14 @@ public class UserSessionController {
     @Path("/following/{id}")
     public Response followUser(@PathParam("id") long id) {
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
 
-        final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
-
+        final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        if (user.getId().equals(toFollow.getId()) ) {
+            throw new IllegalOperationException();//FIXME: agregar mensaje
+        }
         userService.followUser(user, toFollow);
+
 
         return Response.noContent().build();
     }
@@ -499,9 +503,11 @@ public class UserSessionController {
     public Response unfollowUser(@PathParam("id") long id) {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-
         final User toUnfollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
+        if (user.getId().equals(toUnfollow.getId()) ) {
+            throw new IllegalOperationException();//FIXME: agregar mensaje
+        }
         userService.unfollowUser(user, toUnfollow);
 
         return Response.noContent().build();

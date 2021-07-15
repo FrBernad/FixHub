@@ -28,32 +28,10 @@ public class ImageController {
     @Path("/{imageId}")
     @Produces({"image/*", javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public Response getJobImage(@PathParam("imageId") long imageId) {
-        LOGGER.info("Accessed jobs/images/{} GET controller", imageId);
+        LOGGER.info("Accessed images/{} GET controller", imageId);
         Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+        LOGGER.info("Response image with id {}", imageId);
         return Response.ok(image.getData()).type(image.getMimeType()).build();
     }
 
-
-
-
- /*   @RequestMapping(path = "jobs/images/{imageId}",
-        produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
-        method = RequestMethod.GET)
-    @ResponseBody
-    public byte[] getJobImage(@PathVariable("imageId") long imageId) {
-        LOGGER.info("Accessed jobs/images/{} GET controller", imageId);
-        Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
-        return image.getData();
-    }
-*/
-/*    @RequestMapping(path = "/user/images/profile/{imageId}",
-        produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE},
-        method = RequestMethod.GET)
-    @ResponseBody
-    public byte[] getProfileImage(@PathVariable("imageId") long imageId) {
-        LOGGER.info("Accessed /user/images/profile/{} GET controller", imageId);
-        Image image = imageService.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
-        return image.getData();
-    }
-*/
 }

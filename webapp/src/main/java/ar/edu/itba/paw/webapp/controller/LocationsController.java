@@ -6,6 +6,8 @@ import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.webapp.dto.response.CityDto;
 import ar.edu.itba.paw.webapp.dto.response.StateDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,25 +27,28 @@ public class LocationsController {
     @Autowired
     private LocationService locationService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationsController.class);
+
     @GET
     @Path("/states")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getStates() {
+        LOGGER.info("Accessed /locations/states GET controller");
 
         Collection<State> states = locationService.getStates();
 
         Collection<StateDto> stateDtos = StateDto.mapStateToDto(states);
 
-        return Response.ok(new GenericEntity<Collection<StateDto>>(stateDtos) {
-        }).build();
+        return Response.ok(new GenericEntity<Collection<StateDto>>(stateDtos) {}).build();
     }
 
     @GET
     @Path("/state/{id}/cities")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getStateCities(@PathParam("id") final long id) {
+        LOGGER.info("Accessed /locations/state/{}/cities GET controller",id);
 
-        State state = locationService.getStateById(id).orElseThrow(StateNotFoundException::new);
+        State state = locationService.getStateById(id).orElseThrow(StateNotFoundException::new);//FIXME: agregar mensaje
 
         Collection<City> cities = locationService.getCitiesByState(state);
 

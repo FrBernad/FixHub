@@ -9,7 +9,6 @@ import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.webapp.dto.customValidations.ImageSizeConstraint;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewContactDto;
 import ar.edu.itba.paw.webapp.dto.request.NewReviewDto;
@@ -78,6 +77,8 @@ public class JobController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
+        LOGGER.info("Accessed /jobs/ GET controller");
+
         final PaginatedSearchResult<Job> results = searchService.getJobsByCategory(query, order, category, state, city, page, pageSize);
 
         if (results == null) {
@@ -118,21 +119,19 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response job(@PathParam("id") final Long id) {
         LOGGER.info("Accessed /jobs/{} GET controller", id);
-        final Optional<Job> job = jobService.getJobById(id);
-        final Optional<User> user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
 
-        if (!job.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
+        if (securityContext.getUserPrincipal() != null) {
+            final Optional<User> user = userService.getUserByEmail(securityContext.getUserPrincipal().getName());
+            SingleJobDto singleJobDto = new SingleJobDto(job, uriInfo, securityContext,
+                user.isPresent() && userService.hasContactJobProvided(job.getProvider(), user.get(), job));
+            return Response.ok(singleJobDto).build();
         }
-        SingleJobDto singleJobDto = new SingleJobDto(
-            job.get(),
-            uriInfo,
-            securityContext,
-            user.isPresent() && userService.hasContactJobProvided(job.get().getProvider(), user.get(), job.get())
-        );
 
-        return Response.ok(singleJobDto).build();
+        JobDto jobDto = new JobDto(job, uriInfo, securityContext);
+        return Response.ok(jobDto).build();
     }
+
 
     @GET
     @Path("/{id}/reviews")
@@ -142,8 +141,9 @@ public class JobController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
+        LOGGER.info("Accessed /jobs/{}/reviews GET controller", id);
 
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
 
         final PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, pageSize);
 
@@ -185,8 +185,8 @@ public class JobController {
 
         LOGGER.info("Accessed /jobs/{}/contact POST controller", id);
 
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
 
         AuxContactDto auxContactDto = new AuxContactDto(
             job,
@@ -203,7 +203,7 @@ public class JobController {
         try {
             userService.contact(auxContactDto, user, job.getProvider());
         } catch (IllegalContactException e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            throw new IllegalContactException();//FIXME agregar mensaje si se contacta a si mismo
         }
 
         return Response.created(JobDto.getContactUriBuilder(job, uriInfo).build()).build();
@@ -212,14 +212,35 @@ public class JobController {
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response newJob(
-        @NotEmpty  @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
-        @NotNull @FormDataParam("jobCategory") final JobCategory jobCategory,
-        @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
-        @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
-        @NotNull @DefaultValue("false") @FormDataParam("paused") final Boolean paused,
-        @Size(max = 6) @ImageTypeConstraint(contentType ={"image/png","image/jpeg"} ) @FormDataParam("images") List<FormDataBodyPart> images) throws IOException {
+        @NotEmpty(message="{NotEmpty.newJob.jobProvided}")
+        @Size(max = 50, message="Size.newJob.jobProvided")
+        @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message="{Pattern.newJob.jobProvided}")
+        @FormDataParam("jobProvided")
+        final String jobProvided,
+        @NotNull(message="{NotNull.newJob.jobCategory}")
+        @FormDataParam("jobCategory")
+        final JobCategory jobCategory,
+        @NotNull(message="{NotNull.newJob.price}")
+        @Range(min = 1, max = 999999, message="{Range.newJob.price}")
+        @FormDataParam("price")
+        final BigDecimal price,
+        @NotEmpty(message = "{NotEmpty.newJob.description}")
+        @Size(max = 300, message="{Size.newJob.description}")
+        @FormDataParam("description")
+        final String description,
+        @NotNull(message = "{NotNull.newJob.paused}")
+        @DefaultValue("false")
+        @FormDataParam("paused")
+        final Boolean paused,
+        @Size(max = 6, message="{Size.newJob.images}")
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="ContentType.newJob.images")
+        @FormDataParam("images")
+            List<FormDataBodyPart> images
+    ) throws IOException
+    {
+        LOGGER.info("Accessed /jobs/ POST controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new); //FIXME agregar mensaje
 
         List<NewImageDto> imagesToUpload = new LinkedList<>();
 
@@ -239,25 +260,45 @@ public class JobController {
     @PUT
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response updateJob(@PathParam("id") final long id,
-                              @NotEmpty  @Size(max = 50) @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$") @FormDataParam("jobProvided") final String jobProvided,
-                              @NotNull @Range(min = 1, max = 999999) @FormDataParam("price") final BigDecimal price,
-                              @NotEmpty @Size(max = 300) @FormDataParam("description") final String description,
-                              @NotNull @DefaultValue("false") @FormDataParam("paused") final Boolean paused,
-                              @Size(max = 6) @ImageTypeConstraint(contentType ={"image/png","image/jpeg"} ) @FormDataParam("images") List<FormDataBodyPart> images,
-                              @FormDataParam("imagesIdToDelete") List<Long> imagesIdToDelete) {
+    public Response updateJob(
+        @PathParam("id") final long id,
+        @NotEmpty(message="{NotEmpty.updateJob.jobProvided}")
+        @Size(max = 50, message="{Size.updateJob.jobProvided}")
+        @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message = "{Pattern.updateJob.jobProvided}")
+        @FormDataParam("jobProvided")
+        final String jobProvided,
+        @NotNull(message = "{NotNull.updateJob.price}")
+        @Range(min = 1, max = 999999, message = "{NotNull.updateJob.price}")
+        @FormDataParam("price")
+        final BigDecimal price,
+        @NotEmpty(message = "{NotEmpty.updateJob.descriptiomessage}")
+        @Size(max = 300, message = "{Size.updateJob.description}")
+        @FormDataParam("description")
+        final String description,
+        @NotNull(message = "{NotNull.updateJob.paused}")
+        @DefaultValue("false")
+        @FormDataParam("paused")
+        final Boolean paused,
+        @Size(max = 6)
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"})
+        @FormDataParam("images")
+        List<FormDataBodyPart> images,
+        @FormDataParam("imagesIdToDelete")
+            List<Long> imagesIdToDelete
+    )
+    {
 
 
-        LOGGER.info("Accessed /jobs/{}/ POST controller", id);
+        LOGGER.info("Accessed /jobs/{}/ PUT controller", id);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).
-            orElseThrow(UserNotFoundException::new);
+            orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
         final Job job = jobService.getJobById(id).
-            orElseThrow(JobNotFoundException::new);
+            orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
 
         if (!job.getProvider().getId().equals(user.getId())) {
             LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",
                 user.getId(), id, job.getProvider().getId());
-            return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
+            throw new IllegalOperationException();//FIXME agregar mensaje
         }
 
         List<NewImageDto> imagesToUpload = new LinkedList<>();
@@ -269,9 +310,9 @@ public class JobController {
                     imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
                 } catch (IOException e) {
                     LOGGER.error("Error getting bytes from images");
-                    return Response.serverError().build();
-//              throw new ServerInternalException();
+                    throw new ServerInternalException();//FIXME agregar mensaje
                 }
+
             }
         }
 
@@ -281,299 +322,23 @@ public class JobController {
             jobService.updateJob(jobProvided, description, price, paused, imagesToUpload, job, imagesToDelete);
         } catch (MaxImagesPerJobException e) {
             LOGGER.warn("Error max Images per job reached");
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            throw new MaxImagesPerJobException();//FIXME agregar mensaje;
         }
-
         LOGGER.info("The job with id {} has been updated successfully", id);
-
         return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
-
-
     }
-
-
-
-
-
-/*
-    public ModelAndView job(@ModelAttribute("reviewForm") final ReviewForm form,
-                            @PathVariable("id") final Long id,
-                            final Integer error,
-                            @RequestParam(defaultValue = "false") final boolean paginationModal,
-                            @RequestParam(defaultValue = "0") int page, Principal principal) {
-
-    @GET
-    @Path("/categories")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getCategories() {
-        LOGGER.info("Accessed /jobs/categories GET controller");
-        final Collection<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
-
-        return Response.ok(new StringCollectionResponseDto(categories)).build();
-    }
-
-
-        /*LOGGER.info("Accessed /jobs/{} GET controller", id);
-
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-        final ModelAndView mav = new ModelAndView("views/jobs/job");
-        mav.addObject("job", job);
-        mav.addObject("error", error);
-        PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, 4);
-        PaginatedSearchResult<Review> firstResults = reviewService.getReviewsByJob(job, 0, 4);
-        mav.addObject("results", results);
-        mav.addObject("firstResults", firstResults);
-        mav.addObject("paginationModal", paginationModal);
-
-        boolean canReview = false;
-        if (principal != null) {
-            final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-            canReview = userService.hasContactJobProvided(job.getProvider(), user,job);
-        }
-
-        mav.addObject("canReview", canReview);
-
-        return mav;
-
- */
-
-//    @POST
-//    @Path("/new")
-//    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    public Response newJobPost(@Valid final JobForm form) {
-//
-//        LOGGER.info("Accessed /jobs/new POST controller");
-//
-////        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//
-//        List<ImageDto> imagesDto = new LinkedList<>();
-////        getImagesFromJob(imagesDto, form.getImages());
-//
-////        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
-////        LOGGER.info("Created job with id {}", job.getId());
-//    //        return new ModelAndView("redirect:/jobs/" + job.getId());
-//        return Response.ok().build();
-//    }
-
-
-//    @RequestMapping(path = "/jobs/new", method = RequestMethod.POST)
-//    public ModelAndView newJobPost(@Valid @ModelAttribute("jobForm") final JobForm form, final BindingResult errors, Principal principal) {
-//
-//        LOGGER.info("Accessed /jobs/new POST controller");
-//
-//        if (errors.hasErrors()) {
-//            LOGGER.warn("Error in form JobForm data");
-//            return newJob(form);
-//        }
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//
-//
-//        List<ImageDto> imagesDto = new LinkedList<>();
-//        getImagesFromJob(imagesDto, form.getImages());
-//
-//        final Job job = jobService.createJob(form.getJobProvided(), form.getJobCategory(), form.getDescription(), form.getPrice(), false, imagesDto, user);
-//        LOGGER.info("Created job with id {}", job.getId());
-//        return new ModelAndView("redirect:/jobs/" + job.getId());
-//    }
-
-
-//
-//    @RequestMapping(value = "/jobs/{id}/edit", method = RequestMethod.POST)
-//    public ModelAndView updateJob(@PathVariable("id") final long id, @Valid @ModelAttribute("editJobForm") final EditJobForm form, BindingResult errors, Principal principal) {
-//
-//        LOGGER.info("Accessed /jobs/{}/edit POST controller", id);
-//
-//        if (errors.hasErrors()) {
-//            LOGGER.warn("The form has errors");
-//            return updateJob(id, form);
-//        }
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//
-//        if (!job.getProvider().getId().equals(user.getId())) {
-//            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}", user.getId(), id, job.getProvider().getId());
-//            throw new IllegalOperationException();
-//        }
-//
-//
-//        List<ImageDto> imagesDto = new LinkedList<>();
-//        getImagesFromJob(imagesDto, form.getImages());
-//
-//        List<Long> imagesIdDeleted = form.getImagesIdDeleted() == null ? new LinkedList<>(): form.getImagesIdDeleted();
-//
-//        try {
-//            jobService.updateJob(form.getJobProvided(), form.getDescription(), form.getPrice(), form.isPaused(), imagesDto, job, imagesIdDeleted);
-//        } catch (MaxImagesPerJobException e) {
-//            LOGGER.warn("Error max Images per job reached");
-//            errors.rejectValue("images", "validation.job.ImagesMax");
-//            return updateJob(id, form);
-//        }
-//
-//        LOGGER.info("The job with id {} has been updated successfully", id);
-//
-//        return new ModelAndView("redirect:/jobs/{id}");
-//    }
-
 
     @Path("/{id}/reviews")
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response jobReviewPost(@PathParam("id") long id, final NewReviewDto reviewDto) {
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
+    public Response jobReviewPost(@PathParam("id") long id, @Valid final NewReviewDto reviewDto) {
+        LOGGER.info("Accessed /jobs/{}/reviews POST controller", id);
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new); //FIXME: agregar mensaje
         Review review = reviewService.createReview(reviewDto.getDescription(), job, Integer.parseInt(reviewDto.getRating()), user);
         LOGGER.info("Create review with id {} in the job with id {}", review.getId(), id);
         return Response.created(ReviewDto.getReviewUriBuilder(review, uriInfo).build()).build();
     }
-
-//
-//    @RequestMapping(path = "/jobs/{id}", method = RequestMethod.POST)
-//    public ModelAndView jobReviewPost(@PathVariable("id") final long id,
-//                                      @Valid @ModelAttribute("reviewForm") final ReviewForm form,
-//                                      final BindingResult errors, Principal principal) {
-//
-//        LOGGER.info("Accessed /jobs/{} POST controller", id);
-//
-//        if (errors.hasErrors()) {
-//            LOGGER.warn("Error in form ReviewForm data for job {}", id);
-//            return job(form, id, 1, false, 0, principal);
-//        }
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//        //Se que el job existe porque ya pedí el job en la base de datos
-//        reviewService.createReview(form.getDescription(), job, Integer.parseInt(form.getRating()), user);
-//
-//        return new ModelAndView("redirect:/jobs/" + job.getId());
-//    }
-
-
-//
-//    @RequestMapping("/jobs/{id}/edit")
-//    public ModelAndView updateJob(@PathVariable("id") final long id, @ModelAttribute("editJobForm") final EditJobForm form) {
-//        ModelAndView mav = new ModelAndView("views/jobs/editJob");
-//
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//
-//        LOGGER.info("Accessed /jobs/{}/edit GET controller", id);
-//        mav.addObject("maxImagesPerJob", Job.MAX_IMAGES_PER_JOB);
-//        mav.addObject("job", job);
-//        return mav;
-//    }
-
-//
-//    @RequestMapping(value = "/jobs/{id}/edit", method = RequestMethod.POST)
-//    public ModelAndView updateJob(@PathVariable("id") final long id, @Valid @ModelAttribute("editJobForm") final EditJobForm form, BindingResult errors, Principal principal) {
-//
-//        LOGGER.info("Accessed /jobs/{}/edit POST controller", id);
-//
-//        if (errors.hasErrors()) {
-//            LOGGER.warn("The form has errors");
-//            return updateJob(id, form);
-//        }
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//
-//        if (!job.getProvider().getId().equals(user.getId())) {
-//            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}", user.getId(), id, job.getProvider().getId());
-//            throw new IllegalOperationException();
-//        }
-//
-//
-//        List<ImageDto> imagesDto = new LinkedList<>();
-//        getImagesFromJob(imagesDto, form.getImages());
-//
-//        List<Long> imagesIdDeleted = form.getImagesIdDeleted() == null ? new LinkedList<>(): form.getImagesIdDeleted();
-//
-//        try {
-//            jobService.updateJob(form.getJobProvided(), form.getDescription(), form.getPrice(), form.isPaused(), imagesDto, job, imagesIdDeleted);
-//        } catch (MaxImagesPerJobException e) {
-//            LOGGER.warn("Error max Images per job reached");
-//            errors.rejectValue("images", "validation.job.ImagesMax");
-//            return updateJob(id, form);
-//        }
-//
-//        LOGGER.info("The job with id {} has been updated successfully", id);
-//
-//        return new ModelAndView("redirect:/jobs/{id}");
-//    }
-
-//    @RequestMapping("/jobs/{id}/contact")
-//    public ModelAndView contact(@PathVariable("id") final long id,
-//                                @ModelAttribute("contactForm") final ContactForm form, Principal principal) {
-//
-//        LOGGER.info("Accessed /jobs/{}/contact GET controller", id);
-//
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//        final ModelAndView mav;
-//        mav = new ModelAndView("views/contact");
-//        mav.addObject("job", job);
-//
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//        Collection<ContactInfo> contactInfoCollection = user.getContactInfo();
-//        LOGGER.info("Retrieved user {} contactInfo", user.getId());
-//        mav.addObject("contactInfoCollection", contactInfoCollection);
-//
-//        return mav;
-//    }
-
-//
-//    @RequestMapping(path = "/jobs/{id}/contact", method = RequestMethod.POST)
-//    public ModelAndView contactPost(@PathVariable("id") final long id,
-//                                    @Valid @ModelAttribute("contactForm") final ContactForm form,
-//                                    final BindingResult errors,
-//                                    @RequestParam(value = "providerEmail") final String providerEmail, Principal principal) {
-//
-//        LOGGER.info("Accessed /jobs/{}/contact POST controller", id);
-//
-//        if (errors.hasErrors()) {
-//            LOGGER.warn("Error in form contactForm data for job {}", id);
-//            return contact(id, form, principal);
-//        }
-//
-//        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-//        final User user = userService.getUserByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
-//
-//        ContactDto contactDto = new ContactDto(job, Long.valueOf(form.getContactInfoId()), user, form.getMessage(), form.getState(), form.getCity(), form.getStreet(), form.getAddressNumber(), form.getFloor(), form.getDepartmentNumber());
-//
-//        userService.contact(contactDto, user, job.getProvider());
-//
-//        return new ModelAndView("redirect:/jobs/" + job.getId());
-//    }
-
-//
-//    @RequestMapping(path = "/jobs/new")
-//    public ModelAndView newJob(@ModelAttribute("jobForm") final JobForm form) {
-//
-//        LOGGER.info("Accessed /jobs/new GET controller");
-//
-//        final ModelAndView mav;
-//
-//        mav = new ModelAndView("/views/jobs/newJob");
-//        final Collection<JobCategory> categories = jobService.getJobsCategories();
-//        mav.addObject("maxImagesPerJob", Job.MAX_IMAGES_PER_JOB);
-//        mav.addObject("categories", categories);
-//
-//        return mav;
-//    }
-
-
-//    private void getImagesFromJob(List<ImageDto> imagesDto,List<MultipartFile> images ){
-//        if (!images.get(0).isEmpty()) {
-//            for (final MultipartFile image : images) {
-//                try {
-//                    imagesDto.add(new ImageDto(image.getBytes(),image.getContentType()));
-//                } catch (IOException e) {
-//                    LOGGER.error("Error getting bytes from images");
-//                    throw new ServerInternalException();
-//                }
-//            }
-//        }
-//
-
 
     private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
                                                      GenericEntity<PaginatedResultDto<K>> resultsDto,
