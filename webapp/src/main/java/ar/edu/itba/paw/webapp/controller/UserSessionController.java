@@ -388,7 +388,7 @@ public class UserSessionController {
         return Response.ok().build();
     }
 
-    @PUT
+    @GET
     @Path("/jobs/requests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRequest(@PathParam("id") final long contactId) {
@@ -644,27 +644,27 @@ public class UserSessionController {
     }
 
     @GET
-    @Path("/notification/{id}")
+    @Path("/notifications/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getNotification(@PathParam("id") long id){
-        LOGGER.info("Accessed /user/notification/{} GET controller",id);
+    public Response getNotification(@PathParam("id") long id) {
+        LOGGER.info("Accessed /user/notification/{} GET controller", id);
         Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);//FIXME: agregar mensaje
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        if(!notification.getUser().getId().equals(user.getId())){
+        if (!notification.getUser().getId().equals(user.getId())) {
             throw new IllegalOperationException();//FIXME: agregar mensaje
         }
 
-        return Response.ok(new NotificationDto(notification,uriInfo, securityContext) ).build();
+        return Response.ok(new NotificationDto(notification, uriInfo, securityContext)).build();
     }
 
     @PUT
-    @Path("/notification/{id}")
+    @Path("/notifications/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response markNotificationAsSeen(@PathParam("id") long id){
-        LOGGER.info("Accessed /user/notification/{} PUT controller",id);
+    public Response markNotificationAsSeen(@PathParam("id") long id) {
+        LOGGER.info("Accessed /user/notification/{} PUT controller", id);
         Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);//FIXME: agregar mensaje
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        if(!notification.getUser().getId().equals(user.getId())){
+        if (!notification.getUser().getId().equals(user.getId())) {
             throw new IllegalOperationException();//FIXME: agregar mensaje
         }
         notificationService.markNotificationAsSeen(notification);
@@ -675,25 +675,45 @@ public class UserSessionController {
     @GET
     @Path("/notifications")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getNotificationsByUser(){
+    public Response getNotificationsByUser(
+        @QueryParam("onlyNew") @DefaultValue("false") boolean onlyNew,
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+    ) {
         LOGGER.info("Accessed /user/notifications GET controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-//        searchService.getNotificationsByUser(user,)
-//        Notification notification = notificationService.getNotificationByUser(user);
-//        return Response.ok(new NotificationDto(notification,uriInfo, securityContext) ).build();
-        return Response.ok().build();
+
+        final PaginatedSearchResult<Notification> results = searchService.getNotificationsByUser(user,onlyNew,page,pageSize);
+
+        if (results == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        final Collection<NotificationDto> notificationsDtos = NotificationDto.MapNotificationToDto(results.getResults(), uriInfo, securityContext);
+
+        final PaginatedResultDto<NotificationDto> resultsDto =
+            new PaginatedResultDto<>(
+                results.getPage(),
+                results.getTotalPages(),
+                notificationsDtos);
+
+        final UriBuilder uriBuilder = uriInfo
+            .getAbsolutePathBuilder()
+            .queryParam("pageSize", pageSize);
+
+        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<NotificationDto>>(resultsDto) {
+        }, uriBuilder);
     }
 
     @PUT
     @Path("/notifications")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response markAllNotificationsAsSeen(){
+    public Response markAllNotificationsAsSeen() {
         LOGGER.info("Accessed /user/notifications PUT controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         notificationService.markAllNotificationsAsSeen(user);
         return Response.ok().build();
     }
-
 
 
 }

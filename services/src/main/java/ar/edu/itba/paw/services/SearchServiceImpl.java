@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
+import ar.edu.itba.paw.interfaces.persistance.NotificationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
@@ -32,6 +33,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private NotificationDao notificationDao;
 
     @Autowired
     private LocationDao locationDao;
@@ -337,13 +341,30 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PaginatedSearchResult<Notification> getNotificationsByUser(User user, Integer page, Integer pageSize) {
-//        final TypedQuery<Notification> query = em.createQuery("from Notification as n where n.user.id = :userId",Notification.class);
-//        query.setParameter("userId",user.getId());
-//        return query.getResultList().stream();
-        int totalNotifications = 0;
-        Collection<Notification> notifications = new LinkedList<>();
-        return new PaginatedSearchResult<>(page, pageSize, totalNotifications, notifications);
+    public PaginatedSearchResult<Notification> getNotificationsByUser(User user, boolean onlyNew, Integer page, Integer pageSize) {
+
+        if (page < 0) {
+            LOGGER.debug("Page number {} is invalid", page);
+            return null;
+        }
+
+        if (pageSize <= 0) {
+            LOGGER.debug("Items per page {} is invalid", pageSize);
+            return null;
+        }
+
+        LOGGER.debug("Retrieving total following count");
+        final int totalNotifications = notificationDao.getNotificationCountByUser(user, onlyNew);
+        final int totalPages = (int) Math.ceil((float) totalNotifications / pageSize);
+
+        if (totalPages == 0 || page >= totalPages) {
+            LOGGER.debug("Page number {} is higher than totalPages {} or there is no jobs", page, totalPages);
+            return new PaginatedSearchResult<>(0, pageSize, 0, Collections.emptyList());
+        }
+
+        LOGGER.debug("Retrieving page {} for user following with id {}", page, user.getId());
+        final Collection<Notification> notifactions = notificationDao.getNotificationsByUser(user, onlyNew, page, pageSize);
+        return new PaginatedSearchResult<>(page, pageSize, totalNotifications, notifactions);
     }
 
 }

@@ -10,6 +10,14 @@ public interface NotificationService {
 
     Notification createNotification(User user, AuxNotificationDto notificationDto);
 
+    void createNewJobNotification(User user);
+
+    void createNewFollowerNotification(User user);
+
+    void createNewRequestNotification(User user);
+
+    void createRequestStatusChange(User user);
+
     Optional<Notification> getNotificationById(Long id);
 
     int deleteNotificationById(Long id);

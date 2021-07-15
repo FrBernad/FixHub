@@ -23,7 +23,7 @@ public interface SearchService {
 
     PaginatedSearchResult<User> getUserFollowing(User user, Integer page, Integer pageSize);
 
-    PaginatedSearchResult<Notification> getNotificationsByUser(User user, Integer page, Integer pageSize);
+    PaginatedSearchResult<Notification> getNotificationsByUser(User user, boolean onlyNew, Integer page, Integer pageSize);
 
 
 }

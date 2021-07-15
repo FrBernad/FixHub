@@ -6,8 +6,14 @@ import ar.edu.itba.paw.models.user.notification.NotificationType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class NotificationDto {
+
+    public static Collection<NotificationDto> MapNotificationToDto(Collection<Notification> notifications, UriInfo uriInfo, SecurityContext securityContext) {
+        return notifications.stream().map(n -> new NotificationDto(n, uriInfo, securityContext)).collect(Collectors.toList());
+    }
 
     private Long id;
     private String title;
@@ -30,7 +36,7 @@ public class NotificationDto {
         this.resource = notification.getResource();
         this.type = notification.getType();
         this.date = notification.getDate();
-        this.user = new UserDto(notification.getUser(),uriInfo,securityContext);
+        this.user = new UserDto(notification.getUser(), uriInfo, securityContext);
         this.seen = notification.isSeen();
     }
 

@@ -75,6 +75,8 @@ export class ContactService {
           results: []
         });
       } else {
+                //FIXME:
+                console.log(res.body)
         this.results.next(res.body);
       }
     });

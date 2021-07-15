@@ -1,31 +1,209 @@
-<div class="container-lg d-flex flex-column recentContacts pb-3">
+<div class="container-lg recentContacts p-4">
+  <div *ngIf="!loading" class="row">
 
-  <ng-template [ngIf]="loading" [ngIfElse]="loaded">
-    <div class="container h-100">
-      <div class="row h-100 justify-content-center align-items-center">
-        <div class="col-12">
-          <app-loading-spinner></app-loading-spinner>
+    <div class="col-12 col-md-6 d-flex justify-content-center pt-1">
+      <div class="container-lg">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <div>
+            <div class="picContainer">
+              <img alt="profile picture"
+                   [src]="request.user.profileImage ? request.user.profileImage : 'assets/images/defaultProfileImage.png'"
+                   class="profilePicture">
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </ng-template>
-  <ng-template #loaded>
-    <div class="row py-2">
-      <div class="col-12 mb-2 mt-4">
-        <h1 class="text-left mb-0 ms-2 sectionTitle">
-          {{'profilePage.contacts.recents' | translate}}
-        </h1>
-      </div>
-    </div>
-    <div class="row pb-2 align-items-start align-content-between">
-      <div class="col-12">
-        <div class="container-fluid px-0">
-          <div class="row">
 
+        <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
+          <a [routerLink]="'/user/'+request.user.id">
+                <span class="userSectionTitles names">
+                    {{request.user.name}} {{request.user.surname}}
+                </span>
+          </a>
+        </div>
+
+        <div class="col-12 my-2">
+          <hr>
+        </div>
+
+        <div class="col-12">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['fas','map-marker-alt']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                          <span>
+                            {{request.user.state}}, {{request.user.city}}.
+                          </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['far','envelope']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                      <span>{{request.user.email}}.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['fas','phone-alt']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                      <span>{{request.user.phoneNumber}}.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2 mb-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                      <fa-icon [icon]="['fas','user-friends']"></fa-icon>
+                    </div>
+                    <div class="col-10">
+                      <a class="extraInfo"
+                         [routerLink]="'/user/'+request.user.id+'/followers'">
+                      <span class="detailField">
+                          {{request.user.followersCount}}
+                      </span>
+                        {{'profilePage.info.followers' | translate}}
+                      </a>
+                      ·
+                      <a class="extraInfo"
+                         [routerLink]="'/user/'+request.user.id+'/following'">
+                      <span class="detailField">
+                          {{request.user.followingCount}}
+                      </span>
+                        {{'profilePage.info.following' | translate}}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </ng-template>
 
+    <div class="col-12 col-md-6 d-flex justify-content-center pt-1x">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 contentBubble mb-4 p-3 px-4">
+            <div class="container-fluid px-0">
+              <div class="row">
+                <div class="col-12">
+                  <span class="sectionTitle">{{'clientContactCard.info'|translate}}</span>
+                </div>
+                <div class="col-12a mt-2">
+                  <span class="client-label">{{'clientContactCard.job'|translate}}: </span>
+                  <a [routerLink]="['/jobs',request.jobId]">
+                    {{request.jobProvided}}
+                  </a>
+                </div>
+                <div class="col-12  mt-2">
+                  <span class="client-label">{{'clientContactCard.date'|translate}}: </span>
+                  <span style="color: darkslategrey">{{request.date|date:'yyyy-MM-dd'}}</span>
+                </div>
+                <div class="col-12 mt-2">
+                  <span class="client-label">{{'dashboard.clientAddress'|translate}}: </span>
+                  {{request.contactInfo.city}},  {{ request.contactInfo.state}},
+                  {{ request.contactInfo.street}} {{ request.contactInfo.addressNumber}}
+                  {{ request.contactInfo.floor}} {{ request.contactInfo.departmentNumber}}
+                </div>
+                <div class="col-12 mt-2">
+                  <p class="mb-0">
+                    <span class="client-label">
+                      {{'dashboard.clientMessage'|translate}}:
+                    </span>
+                    {{request.message}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 contentBubble p-3 px-4">
+            <div class="col-12">
+              <span class="sectionTitle">{{'clientContactCard.status'|translate}}</span>
+            </div>
+            <div class="col-12 mt-2">
+              <span class="client-label">{{'clientContactCard.statusField'|translate}}: </span>
+              {{'contact.status.' + request.status |translate}}
+            </div>
+            <ng-template [ngIf]="isWorkPending()" [ngIfElse]="NotPending">
+              <div class="col-12 mt-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-12 mb-2 d-flex align-items-center justify-content-md-start">
+                      <p class="fw-bold mb-0">
+                        {{'clientContactCard.jobDecision'|translate}}
+                      </p>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                      <button class="finishBtn me-3"
+                              type="submit" (click)="acceptJob()" [disabled]="acceptJobLoading || rejectJobLoading">
+                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!acceptJobLoading"></span>
+                        <span *ngIf="!acceptJobLoading">
+                                {{'clientContactCard.acceptJobBtn'|translate}}
+                          <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                            </span>
+                      </button>
+                      <button class="closeBtn me-2" type="submit" (click)="rejectJob()"
+                              [disabled]="acceptJobLoading || rejectJobLoading">
+                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!rejectJobLoading"></span>
+                        <span *ngIf="!rejectJobLoading">
+                              {{'clientContactCard.rejectJobBtn'|translate}}
+                          <fa-icon [icon]="['fas', 'times']" class="ms-2"></fa-icon>
+                            </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #NotPending>
+              <div *ngIf="isWorkInProgress()" class="col-12 mt-2">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-12 mb-2 d-flex align-items-center justify-content-md-start">
+                      <p class="fw-bold mb-0">
+                        {{'clientContactCard.jobCompletedIntro'|translate}}
+                      </p>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                      <button class="finishBtn" type="submit" (click)="jobFinished()"
+                              [disabled]="finishJobLoading">
+                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!finishJobLoading"></span>
+                        <span *ngIf="!finishJobLoading">
+                              {{'clientContactCard.completedJobBtn'|translate}}
+                          <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                            </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
 </div>
