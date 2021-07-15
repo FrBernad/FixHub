@@ -26,13 +26,11 @@
           </div>
           <div class="followBtnContainer">
             <div *ngIf="!!loggedUser" class="followBtnContainer">
-              <!--                  <form id="unfollowForm" action="<c:url value='/user/unfollow'/>" method="POST">-->
               <button [disabled]="disable" (click)="unfollow()" *ngIf="user.followed, else notFollowed"
                       class="followBtn">
                 <span *ngIf="!disable">{{'profilePage.unfollow' | translate }}</span>
                 <span class="spinner-border spinner-border-sm" [hidden]="!disable"></span>
               </button>
-              <!--                  <form id="followForm" action="<c:url value='/user/follow'/>" method="POST">-->
               <ng-template #notFollowed>
                 <button [disabled]="disable" (click)="follow()" class="followBtn">
                   <span *ngIf="!disable">{{'profilePage.follow' | translate}}</span>

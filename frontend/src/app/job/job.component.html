@@ -90,11 +90,9 @@
                     <ng-template [ngIf]="!!loggedUser">
                       <div class="col-12 d-flex justify-content-center align-items-center">
                         <ng-template [ngIf]="loggedUser.id==job.provider.id" [ngIfElse]="notProvider">
-                          <a href="#" style="text-decoration: none" [routerLink]="['/jobs',job.id,'edit']">
-                            <button class="contactBtn">
+                            <button class="contactBtn" style="text-decoration: none" [routerLink]="['/jobs',job.id,'edit']">
                               {{ 'job.editTitle' | translate }}
                             </button>
-                          </a>
                         </ng-template>
                       </div>
                       <ng-template #notProvider>
