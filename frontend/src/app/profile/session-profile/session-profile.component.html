@@ -82,7 +82,7 @@
     </div>
 
     <!-- USER INFO -->
-    <div class="col-12 col-md-6 ps-md-0 ps-md-5">
+    <div class="col-12 col-md-6 ps-md-0 ps-md-5 mb-md-3">
       <div class="container-lg detailsSection">
         <div class="row py-2">
           <div class="col-6 my-2">
@@ -175,8 +175,10 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="container-lg detailsSection my-4">
+    <div class="col-12 col-md-6 pe-md-0 pe-md-5">
+      <div class="container-lg detailsSection mb-3">
         <div class="row py-2 pb-3">
           <div class="col-6 my-2">
             <h3 class="sectionTitle text-left">
@@ -216,7 +218,8 @@
                        <ng-template #notProvider>
                               {{'profilePage.subtitle.inactive' | translate}}
                          <fa-icon [icon]="['fas','times']" class="ms-1" style="color: darkred"></fa-icon>
-                         <a *ngIf="user.roles.includes('VERIFIED')"  class="ms-2" [routerLink]="['/user/join']" style="font-weight: 500">
+                         <a *ngIf="user.roles.includes('VERIFIED')" class="ms-2" [routerLink]="['/user/join']"
+                            style="font-weight: 500">
                               {{'profilePage.subtitle.join' | translate}}
                          </a>
                       </ng-template>

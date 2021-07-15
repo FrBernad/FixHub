@@ -2,36 +2,36 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {
-  faPlus as fasPlus,
-  faStar as fasStar,
-  faSearch as fasSearch,
-  faHandshake as fasHandshake,
-  faChevronDown as fasChevronDown,
-  faCamera as fasCamera,
-  faPhoneAlt as fasPhoneAlt,
-  faUserFriends as fasUserFriends,
-  faTimes as fasTimes,
-  faCheck as fasCheck,
-  faMapMarkerAlt as fasMapMarkerAlt,
-  faChartLine as fasChartLine,
-  faWrench as fasWrench,
   faAddressBook as fasAddressBook,
-  faPen as fasPen,
-  faCompass as fasCompass,
+  faCamera as fasCamera,
+  faChartLine as fasChartLine,
+  faCheck as fasCheck,
+  faChevronDown as fasChevronDown,
   faClock as fasClock,
+  faComment as fasComment,
+  faCompass as fasCompass,
+  faExclamationCircle as fasExclamationCircle,
+  faHandshake as fasHandshake,
+  faInfoCircle as fasInfoCircle,
+  faMapMarkerAlt as fasMapMarkerAlt,
+  faPen as fasPen,
+  faPhoneAlt as fasPhoneAlt,
+  faPlus as fasPlus,
+  faSearch as fasSearch,
+  faStar as fasStar,
+  faTimes as fasTimes,
   faTrash as fasTrash,
   faUpload as fasUpload,
-  faInfoCircle as fasInfoCircle,
-  faExclamationCircle as fasExclamationCircle,
-  faComment as fasComment
+  faUserFriends as fasUserFriends,
+  faWrench as fasWrench
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  faEyeSlash as farEyeSlash,
-  faEye as farEye,
-  faStar as farStar,
+  faCheckCircle as farCheckCircle,
   faEnvelope as farEnvelope,
-  faCheckCircle as farCheckCircle
+  faEye as farEye,
+  faEyeSlash as farEyeSlash,
+  faStar as farStar
 } from '@fortawesome/free-regular-svg-icons';
 
 import {Router} from "@angular/router";
@@ -67,6 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.translateService.addLangs(['en', 'es']);
     this.translateService.setDefaultLang('en');
+    this.translateService.use('es');
 
     this.library.addIcons(fasPlus, fasSearch,
       fasStar, fasHandshake,

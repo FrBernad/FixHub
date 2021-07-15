@@ -22,6 +22,9 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Collection;
 
 @Path("/users")
@@ -81,35 +84,59 @@ public class UserController {
     @GET
     @Path("/{id}/profileImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
-    public Response getUserProfileImage(@PathParam("id") final long id) {
+    public Response getUserProfileImage(@PathParam("id") final long id, @Context Request request) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final Image img = user.getProfileImage();
 
         if (img == null) {
+//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        final byte[] profileImage = img.getData();
+        String hash = getMD5Hash(img.getData());
+        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
 
-        return Response.ok(profileImage).type(img.getMimeType()).build();
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoCache(true);
+
+        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
+
+        if (responseBuilder == null) {
+            final byte[] profileImage = img.getData();
+            responseBuilder = Response.ok(profileImage).type(img.getMimeType()).tag(eTag);
+        }
+
+        return responseBuilder.cacheControl(cacheControl).build();
     }
 
     @GET
     @Path("/{id}/coverImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
-    public Response getUserCoverImage(@PathParam("id") final long id) {
+    public Response getUserCoverImage(@PathParam("id") final long id, @Context Request request) {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final Image img = user.getCoverImage();
 
         if (img == null) {
+//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        final byte[] coverImage = img.getData();
+        String hash = getMD5Hash(img.getData());
+        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
 
-        return Response.ok(coverImage).type(img.getMimeType()).build();
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoCache(true);
+
+        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
+
+        if (responseBuilder == null) {
+            final byte[] coverImage = img.getData();
+            responseBuilder = Response.ok(coverImage).type(img.getMimeType()).tag(eTag);
+        }
+
+        return responseBuilder.cacheControl(cacheControl).build();
     }
 
     @GET
@@ -443,5 +470,14 @@ public class UserController {
         }
     }
 
+    private String getMD5Hash(byte[] data) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] md5hash = md.digest(data);
+            return Base64.getEncoder().encodeToString(md5hash);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
 
 }

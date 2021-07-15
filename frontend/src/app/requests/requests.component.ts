@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../job/contact/contact.service";
 

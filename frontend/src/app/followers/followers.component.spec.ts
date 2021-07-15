@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FollowersComponent } from './followers.component';
+import {FollowersComponent} from './followers.component';
 
 describe('FollowersComponent', () => {
   let component: FollowersComponent;

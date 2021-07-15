@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Job} from "../models/job.model";
 import {User} from "../models/user.model";
 import {ActivatedRoute, Params} from "@angular/router";
 import {JobService, ReviewsPaginationResult} from "./job.service";
 import {Subscription} from "rxjs";
-import {Review} from "./review.model";
-import {JobPaginationResult} from "../discover/jobs.service";
 import {UserService} from "../auth/user.service";
 import {SingleJob} from "../models/single-job.model";
 

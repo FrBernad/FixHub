@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Job} from "../../models/job.model";
 import {JobService, ReviewsPaginationQuery, ReviewsPaginationResult} from "../job.service";
-import {JobsService} from "../../discover/jobs.service";
 import {Subscription} from "rxjs";
 
 @Component({

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.StateNotFoundException;
 import ar.edu.itba.paw.interfaces.services.JobService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
+import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
@@ -40,10 +41,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 @Path("/user")
 @Component
@@ -222,17 +222,33 @@ public class UserSessionController {
         return Response.noContent().build();
     }
 
-
     @GET
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-
     public Response getUserCoverImage(@Context Request request) {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
-        final byte[] coverImage = user.getCoverImage().getData();
+        final Image img = user.getProfileImage();
 
-        return Response.ok(coverImage).type(user.getCoverImage().getMimeType()).build();
+        if (img == null) {
+//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        String hash = getMD5Hash(img.getData());
+        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
+
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoCache(true);
+
+        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
+
+        if (responseBuilder == null) {
+            final byte[] coverImage = img.getData();
+            responseBuilder = Response.ok(coverImage).type(img.getMimeType()).tag(eTag);
+        }
+
+        return responseBuilder.cacheControl(cacheControl).build();
     }
 
     @PUT
@@ -248,12 +264,30 @@ public class UserSessionController {
     @GET
     @Path("/profileImage")
     @Produces({"image/*", MediaType.APPLICATION_JSON})
-    public Response getUserProfileImage() {
+    public Response getUserProfileImage(@Context Request request) {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
-        final byte[] profileImage = user.getProfileImage().getData();
+        final Image img = user.getProfileImage();
 
-        return Response.ok(profileImage).type(user.getProfileImage().getMimeType()).build();
+        if (img == null) {
+//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        String hash = getMD5Hash(img.getData());
+        final EntityTag eTag = new EntityTag(hash != null ? hash : img.getId().toString());
+
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoCache(true);
+
+        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
+
+        if (responseBuilder == null) {
+            final byte[] profileImage = img.getData();
+            responseBuilder = Response.ok(profileImage).type(img.getMimeType()).tag(eTag);
+        }
+
+        return responseBuilder.cacheControl(cacheControl).build();
     }
 
     @PUT
@@ -299,7 +333,7 @@ public class UserSessionController {
     }
 
     @PUT
-    @Path("/jobs/request/{id}")
+    @Path("/jobs/requests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
 
@@ -824,6 +858,17 @@ public class UserSessionController {
 
         if (page != last) {
             responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
+        }
+    }
+
+
+    private String getMD5Hash(byte[] data) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] md5hash = md.digest(data);
+            return Base64.getEncoder().encodeToString(md5hash);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
         }
     }
 

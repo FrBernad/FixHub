@@ -1,10 +1,6 @@
 import {Injectable} from '@angular/core';
-import {
-  HttpClient,
-  HttpStatusCode,
-  HttpParams,
-} from '@angular/common/http';
-import {throwError, BehaviorSubject, Subject} from 'rxjs';
+import {HttpClient, HttpParams, HttpStatusCode,} from '@angular/common/http';
+import {Subject} from 'rxjs';
 import {JobPaginationQuery, JobPaginationResult} from "../../discover/jobs.service";
 import {environment} from "../../../environments/environment";
 

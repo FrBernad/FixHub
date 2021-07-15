@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs';
 import {User} from "../models/user.model";
 import {environment} from "../../environments/environment";
-import {mergeMap, tap} from "rxjs/operators";
+import {tap} from "rxjs/operators";
 import {City, State} from "../discover/jobs.service";
-import {AuthService} from "./auth.service";
 
 
 export interface ProviderInfo {

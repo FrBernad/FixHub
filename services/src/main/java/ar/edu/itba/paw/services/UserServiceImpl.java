@@ -234,9 +234,9 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Updating user {} cover image", user.getEmail());
         if (image == null) {
             user.setCoverImage(imageService.createImage(newImageDto));
-        } else
+        } else {
             user.getCoverImage().setData(newImageDto.getData());
-
+        }
     }
 
     @Override
@@ -382,5 +382,7 @@ public class UserServiceImpl implements UserService {
 
         return localTime;
     }
+
+
 
 }

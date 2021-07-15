@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, Inject, isDevMode, NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, isDevMode, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
@@ -52,7 +52,7 @@ import {VerifyComponent} from './verify/verify.component';
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
 import {UserSentRequestCardComponent} from './requests/user-sent-request-card/user-sent-request-card.component';
 import {RequestComponent} from './dashboard/request/request.component';
-import { RequestsComponent } from './requests/requests.component';
+import {RequestsComponent} from './requests/requests.component';
 
 
 @NgModule({

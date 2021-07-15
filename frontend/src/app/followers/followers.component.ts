@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {JobService} from "../job/job.service";
 import {UserService} from "../auth/user.service";
 import {User} from "../models/user.model";
 import {FollowPaginationQuery, FollowPaginationResult, FollowService} from "./follow.service";

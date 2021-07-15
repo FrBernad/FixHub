@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {JobService} from "../../job/job.service";
 import {JobsService, State} from "../../discover/jobs.service";
 import {User} from "../../models/user.model";
 

@@ -1,5 +1,5 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../models/user.model';
 import {UserService} from "../../../auth/user.service";
 
@@ -48,7 +48,7 @@ export class UpdateInfoComponent implements OnInit {
         this.disabled = false;
          this.modal.hide();
       });
-   
+
   }
 
   onClose() {

@@ -1,10 +1,10 @@
-import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { JobService } from '../job.service';
-import { Subscription } from 'rxjs';
-import { User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/auth/user.service';
+import {Router} from '@angular/router';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {JobService} from '../job.service';
+import {Subscription} from 'rxjs';
+import {User} from 'src/app/models/user.model';
+import {UserService} from 'src/app/auth/user.service';
 import {JobsService} from "../../discover/jobs.service";
 
 @Component({

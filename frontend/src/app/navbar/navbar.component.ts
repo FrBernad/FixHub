@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild,} from '@angular/core';
 import {AuthService} from "../auth/auth.service";
 import {Subscription} from "rxjs";
 import {User} from "../models/user.model";

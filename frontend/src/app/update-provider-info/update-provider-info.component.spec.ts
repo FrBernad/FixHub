@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UpdateProviderInfoComponent } from './update-provider-info.component';
+import {UpdateProviderInfoComponent} from './update-provider-info.component';
 
 describe('UpdateProviderInfoComponent', () => {
   let component: UpdateProviderInfoComponent;

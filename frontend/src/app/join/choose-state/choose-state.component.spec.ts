@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChooseStateComponent } from './choose-state.component';
+import {ChooseStateComponent} from './choose-state.component';
 
 describe('ChooseStateComponent', () => {
   let component: ChooseStateComponent;

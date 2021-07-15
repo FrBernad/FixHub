@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DefaultLayoutComponent } from './default-layout.component';
+import {DefaultLayoutComponent} from './default-layout.component';
 
 describe('DefaultLayoutComponent', () => {
   let component: DefaultLayoutComponent;

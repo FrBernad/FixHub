@@ -1,6 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {User} from "../models/user.model";
+import {Injectable} from '@angular/core';
 import {Router, RoutesRecognized} from "@angular/router";
 import {filter, pairwise} from "rxjs/operators";
 

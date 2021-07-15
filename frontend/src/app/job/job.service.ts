@@ -1,5 +1,4 @@
 import {HttpClient, HttpParams, HttpStatusCode} from "@angular/common/http";
-import {Job} from "../models/job.model";
 import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";

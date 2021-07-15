@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RecoverEmailPopupComponent } from './recover-email-popup.component';
+import {RecoverEmailPopupComponent} from './recover-email-popup.component';
 
 describe('RecoverEmailPopupComponent', () => {
   let component: RecoverEmailPopupComponent;
