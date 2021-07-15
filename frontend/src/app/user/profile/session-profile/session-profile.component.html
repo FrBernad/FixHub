@@ -11,10 +11,12 @@
           <form method="POST" enctype="multipart/form-data">
             <input [formControl]="coverImage" type="file" name="coverImage" hidden accept=".png,.jpg,.jpeg"
                    (change)="onCoverImageChanged($event)" #coverImageInput/>
-            <button (click)="coverImageInput.click()" type="button"
+            <button (click)="coverImageInput.click()" [disabled]="disabledCover" type="button"
                     class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
                     style="width: 224px">
-              <span id="coverCamaraIcon">
+              <span class="spinner-border spinner-border-sm" [hidden]="!disabledCover"></span>
+
+              <span *ngIf="!disabledCover" id="coverCamaraIcon">
                 <fa-icon [icon]="['fas', 'camera']" class="me-2"></fa-icon>
                 <span>
                   {{'profilePage.picture.changeBg' | translate}}
@@ -47,10 +49,13 @@
               <form>
                 <input [formControl]="profileImage" type="file" name="profileImage" hidden
                        (change)="onProfileFileChanged($event)" #profileImageInput accept=".png,.jpg,.jpeg,.gif"/>
-                <button (click)="profileImageInput.click()" type="button" id="changeProfileImageButton"
+                <button (click)="profileImageInput.click()" [disabled]="disabledProfile" type="button"
+                        id="changeProfileImageButton"
                         class="d-flex align-items-center justify-content-center">
-                  <fa-icon [icon]="['fas','camera']" id="profileCamaraIcon"></fa-icon>
-                  <span id="profileLoadingSpinner" class="spinner-border spinner-border-sm" hidden></span>
+                  <span class="spinner-border spinner-border-sm" [hidden]="!disabledProfile"></span>
+                  <span *ngIf="!disabledProfile">
+                    <fa-icon [icon]="['fas', 'camera']"></fa-icon>
+                  </span>
                 </button>
 
               </form>

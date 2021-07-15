@@ -1,10 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../../../auth/services/user.service";
 import {Subscription} from "rxjs";
-import {User} from "../../../models/user.model";
 import {FormControl} from "@angular/forms";
+import {User} from "../../../models/user.model";
+import {UserService} from "../../../auth/services/user.service";
 import {AuthService} from "../../../auth/services/auth.service";
-import {SessionProfileService} from "./session-profile.service";
 
 @Component({
   selector: 'app-session-profile',
@@ -14,6 +13,8 @@ import {SessionProfileService} from "./session-profile.service";
 export class SessionProfileComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
+  user: User;
+
   profileImage: FormControl;
   coverImage: FormControl;
 
@@ -28,14 +29,14 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   allowedProfileImageSize: boolean = true;
 
   disable = false;
+  disabledCover=false;
+  disabledProfile=false;
   success = false;
 
-  user: User;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private sessionProfileService: SessionProfileService
   ) {
   }
 
@@ -53,9 +54,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.coverImage = new FormControl(null);
   }
 
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe()
-  }
+
 
 
   onProfileFileChanged(event) {
@@ -69,17 +68,21 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
+
+
     if (file.size > this.getTotalBytes(this.maxProfileImageMBSize)) {
       this.allowedProfileImageSize = false;
       return
     }
+    this.disabledProfile = true;
+
     let profileImageUpload = new FormData();
     profileImageUpload.append('profileImage', file);
 
-    this.sessionProfileService.updateProfileImage(profileImageUpload).subscribe((response) => {
-      console.log(response);
-    });
-
+    this.userService.updateProfileImage(profileImageUpload).subscribe(
+      () => {
+        this.disabledProfile = false;
+      });
 
   }
 
@@ -97,18 +100,24 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
+
     if (file.size > this.getTotalBytes(this.maxCoverImageMBSize)) {
       this.allowedCoverImageSize = false;
       return
     }
 
+    this.disabledCover = true;
+
     let coverImageUpload = new FormData();
     coverImageUpload.append('coverImage', file);
 
-    this.sessionProfileService.updateCoverImage(coverImageUpload).subscribe((response) => {
-      console.log(response);
-    });
+    this.userService.updateCoverImage(coverImageUpload).subscribe(
+      () => {
+        this.disabledCover = false;
+      }
+    );
   }
+
 
   onVerify() {
     this.disable = true;
@@ -128,4 +137,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.success = false;
   }
 
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe()
+  }
 }
