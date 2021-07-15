@@ -30,5 +30,6 @@ public interface JobService {
 
     void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<NewImageDto> images, Job job, List<Long> imagesIdDeleted);
 
+    void cancelJob(JobContact jobContact);
 }
 

@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-11">
-            <a (click)="$event.stopPropagation()" [routerLink]="['/jobs',request.jobId]" >
+            <a (click)="$event.stopPropagation()" [routerLink]="['/jobs',request.jobId]">
               {{request.jobProvided}}
             </a> |
             <a class="names" (click)="$event.stopPropagation()" [routerLink]="['/user',request.user.id]">
@@ -12,8 +12,8 @@
             </a>
           </div>
           <div class="col-1 d-flex align-items-center justify-content-end">
-            <fa-icon type="button"
-                     class="ms-2 navbarText dropDownArrow" [icon]="['fas','chevron-down']" id="navBarArrow">
+            <fa-icon
+              class="ms-2 navbarText dropDownArrow" [icon]="['fas','chevron-down']" id="navBarArrow">
             </fa-icon>
           </div>
           <div class="col-12 d-flex align-items-center justify-content-start">
@@ -58,7 +58,44 @@
             </div>
           </div>
         </div>
+
+        <ng-template [ngIf]="isWorkNotFinished()">
+          <ng-template [ngIf]="!confirm" [ngIfElse]="confirmCancel">
+            <div class="row">
+              <div class="col-11 d-flex align-items-center justify-content-end ">
+                <button class="closeBtn" (click)="confirm=true">
+                  {{'sentRequest.cancelRequest'|translate}}
+                </button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #confirmCancel>
+            <div class="row">
+              <div class="col-12 d-flex align-items-center justify-content-end me-2 mb-2">
+                    <span>
+                      {{'sentRequest.askForConfirmation'|translate}}
+                    </span>
+              </div>
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <button class="finishBtn me-3"
+                        (click)="cancelRequest()" [disabled]="disabled">
+                  <span class="spinner-border spinner-border-sm ms-2" [hidden]="!disabled"></span>
+                  <span *ngIf="!disabled">
+                                {{'sentRequest.confirm'|translate}}
+                  </span>
+                </button>
+                <button class="closeBtn me-2" (click)="confirm=false">
+                  <span>
+                    {{'sentRequest.cancel'|translate}}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </ng-template>
+
+        </ng-template>
       </div>
+
     </div>
   </div>
 </div>

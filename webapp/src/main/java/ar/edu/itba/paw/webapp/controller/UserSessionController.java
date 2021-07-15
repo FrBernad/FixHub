@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static ar.edu.itba.paw.models.job.JobStatus.CANCELED;
+
 @Path("/user")
 @Component
 public class UserSessionController {
@@ -364,12 +366,14 @@ public class UserSessionController {
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final JobStatus newStatus = status.getStatus();
+
 
         if (!user.getId().equals(jobContact.getProvider().getId())) {
-            throw new IllegalOperationException(); //FIXME: agregar mensaje
+            if(!user.getId().equals(jobContact.getUser().getId()) || !newStatus.equals(CANCELED)  ){
+                throw new IllegalOperationException(); //FIXME: agregar mensaje
+            }
         }
-
-        final JobStatus newStatus = status.getStatus();
 
         switch (newStatus) {
             case FINISHED:
@@ -380,6 +384,9 @@ public class UserSessionController {
                 break;
             case IN_PROGRESS:
                 jobService.acceptJob(jobContact);
+                break;
+            case CANCELED:
+                jobService.cancelJob(jobContact);
                 break;
             default:
                 return Response.status(Response.Status.BAD_REQUEST).build();

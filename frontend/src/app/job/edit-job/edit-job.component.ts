@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {JobService} from "../job.service";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {SingleJob} from "../../models/single-job.model";
 
 @Component({
@@ -30,7 +30,9 @@ export class EditJobComponent implements OnInit {
 
   maxImagesPerJob: number = 6;
 
-  constructor(private jobService: JobService, private route: ActivatedRoute) {
+  constructor(private jobService: JobService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
 
@@ -109,8 +111,10 @@ export class EditJobComponent implements OnInit {
       this.isFetching= true;
       this.jobService.getJob(+this.job.id).subscribe(
         responseData => {
-          this.updateView(responseData);
           this.disabled = false;
+          this.updateView(responseData);
+          this.router.navigate(['jobs', this.job.id]);
+
         }
       );
     })

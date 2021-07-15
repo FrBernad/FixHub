@@ -251,6 +251,7 @@
   "clientContactCard.status": "Job status",
   "clientContactCard.info": "Request information",
   "contact.status.FINISHED": "Completed",
+  "contact.status.CANCELED": "Canceled",
   "contact.order.NEWEST": "Newest",
   "contact.order.OLDER": "Older",
   "contact.status.REJECTED": "Rejected",
@@ -415,5 +416,10 @@
   "NotEmpty.providerInfoSecondForm.city": "Please select at least one city",
   "editProvider.header": "Edit your provider information",
   "FieldsValueNotMatch.providerInfoFirstForm": "Times can't be equal",
-  "FieldsValueNotMatch.joinForm": "Times can't be equal"
+  "FieldsValueNotMatch.joinForm": "Times can't be equal",
+  "sentRequest.cancelRequest": "Cancel job request",
+  "sentRequest.cancel": "No",
+  "sentRequest.confirm": "Yes",
+  "sentRequest.askForConfirmation": "Are you sure?"
+
 }

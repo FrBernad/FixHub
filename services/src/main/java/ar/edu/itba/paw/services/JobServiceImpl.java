@@ -99,6 +99,13 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
+    public void cancelJob(JobContact jc){
+        jc.setStatus(JobStatus.CANCELED);
+//        emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
+    }
+
+    @Transactional
+    @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<NewImageDto> imagesToUpload, Job job, List<Long> imagesIdToDelete) {
         LOGGER.debug("Updating job");
         job.setJobProvided(jobProvided);
