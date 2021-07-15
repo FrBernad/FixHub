@@ -213,7 +213,7 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response newJob(
         @NotEmpty(message="{NotEmpty.newJob.jobProvided}")
-        @Size(max = 50, message="Size.newJob.jobProvided")
+        @Size(max = 50, message="{Size.newJob.jobProvided}")
         @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message="{Pattern.newJob.jobProvided}")
         @FormDataParam("jobProvided")
         final String jobProvided,
@@ -233,7 +233,7 @@ public class JobController {
         @FormDataParam("paused")
         final Boolean paused,
         @Size(max = 6, message="{Size.newJob.images}")
-        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="ContentType.newJob.images")
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{ContentType.newJob.images}")
         @FormDataParam("images")
             List<FormDataBodyPart> images
     ) throws IOException
@@ -271,7 +271,7 @@ public class JobController {
         @Range(min = 1, max = 999999, message = "{Size.updateJob.price}")
         @FormDataParam("price")
         final BigDecimal price,
-        @NotEmpty(message = "{NotEmpty.updateJob.descriptiomessage}")
+        @NotEmpty(message = "{NotEmpty.updateJob.description}")
         @Size(max = 300, message = "{Size.updateJob.description}")
         @FormDataParam("description")
         final String description,

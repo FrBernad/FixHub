@@ -16,7 +16,8 @@ public class AcceptLanguageRequestFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
         final List<Locale> acceptableLanguages = requestContext.getAcceptableLanguages();
 
-        if(!acceptableLanguages.isEmpty())
+        if (!acceptableLanguages.isEmpty()) {
             LocaleContextHolder.setLocale(acceptableLanguages.get(0));
+        }
     }
 }

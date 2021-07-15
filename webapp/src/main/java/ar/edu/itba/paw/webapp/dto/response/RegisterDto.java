@@ -29,7 +29,7 @@ public class RegisterDto {
     private String password;
 
     @NotEmpty(message = "{NotEmpty.registerDto.phoneNumber}")
-    @Size(max = 15, message = "{Size.registerDto.phoneNumber=}")
+    @Size(max = 15, message = "{Size.registerDto.phoneNumber}")
     /* Toma como opcionales: el prefijo internacional (54) el prefijo internacional para celulares (9) el prefijo
      de acceso a interurbanas (0) el prefijo local para celulares (15) Es obligatorio: el código de área
      (11, 2xx, 2xxx, 3xx, 3xxx, 6xx y 8xx) (no toma como válido un número local sin código de área como 4444-0000)
