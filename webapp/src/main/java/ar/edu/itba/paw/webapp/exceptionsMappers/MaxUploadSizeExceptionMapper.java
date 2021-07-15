@@ -17,7 +17,7 @@ public class MaxUploadSizeExceptionMapper implements ExceptionMapper<MaxUploadSi
     @Override
     public Response toResponse(MaxUploadSizeExceededException exception) {
         LOGGER.error("Error encountered, MultipartException caught (max size exceeded)");
-        return Response.status(Response.Status.BAD_REQUEST).entity("Something bad happened. Please try again !!").type("text/plain").build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
     }
 }
 

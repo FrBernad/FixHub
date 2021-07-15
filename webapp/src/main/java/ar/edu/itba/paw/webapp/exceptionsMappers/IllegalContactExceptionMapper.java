@@ -7,12 +7,11 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-
 public class IllegalContactExceptionMapper implements ExceptionMapper<IllegalContactException> {
 
     @Override
     public Response toResponse(IllegalContactException exception) {
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
     }
 }
 

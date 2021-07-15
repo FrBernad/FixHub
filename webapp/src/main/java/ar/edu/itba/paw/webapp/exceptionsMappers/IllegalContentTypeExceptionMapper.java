@@ -18,6 +18,6 @@ public class IllegalContentTypeExceptionMapper implements ExceptionMapper<Illega
     @Override
     public Response toResponse(IllegalContentTypeException exception) {
         LOGGER.error("Error encountered, IllegalContentTypeException caught");
-        return Response.status(Response.Status.BAD_REQUEST).entity("We only support JPEG, JPG, or PNG").build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
     }
 }

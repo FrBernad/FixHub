@@ -21,7 +21,7 @@ public class NoContactFoundExceptionMapper implements ExceptionMapper<NoContactF
     @Override
     public Response toResponse(NoContactFoundException exception) {
         LOGGER.error("Error encountered, there is no contact between the users");
-        return Response.status(Response.Status.BAD_REQUEST).entity("Something bad happened. Please try again !!").type("text/plain").build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
     }
 
 }

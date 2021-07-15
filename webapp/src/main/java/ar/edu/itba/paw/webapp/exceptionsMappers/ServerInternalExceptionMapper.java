@@ -15,6 +15,6 @@ public class ServerInternalExceptionMapper implements ExceptionMapper<ServerInte
 
     @Override
     public Response toResponse(ServerInternalException exception) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something bad happened. Please try again !!").type("text/plain").build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exception.getMessage()).build();
     }
 }

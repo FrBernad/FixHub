@@ -16,7 +16,7 @@ public class ImageNotFoundExceptionMapper implements ExceptionMapper<ImageNotFou
     @Override
     public Response toResponse(ImageNotFoundException exception) {
         LOGGER.error("Error encountered, ImageNotFoundException caught");
-        return Response.status(Response.Status.NOT_FOUND).entity("Image not Found").build();
+        return Response.status(Response.Status.NOT_FOUND).entity(exception.getMessage()).build();
     }
 
 }

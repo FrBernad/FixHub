@@ -16,7 +16,7 @@ public class IllegalContentTypeGifExceptionMapper  implements ExceptionMapper<Il
     @Override
     public Response toResponse(IllegalContentTypeExceptionGIF exception) {
         LOGGER.error("Error encountered, jobNotFoundException caught");
-        return Response.status(Response.Status.BAD_REQUEST).entity("We only support JPEG, JPG, PNG or GIF").type("text/plain").build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
     }
 }
 

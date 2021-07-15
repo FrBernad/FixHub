@@ -17,6 +17,6 @@ public class ForbiddenExceptionMapper implements ExceptionMapper<ForbiddenExcept
     @Override
     public Response toResponse(ForbiddenException exception) {
         LOGGER.error("Error encountered, ForbiddenException caught by a forbidden action");
-        return Response.status(Response.Status.FORBIDDEN).build();
+        return Response.status(Response.Status.FORBIDDEN).entity(exception.getMessage()).build();
     }
 }

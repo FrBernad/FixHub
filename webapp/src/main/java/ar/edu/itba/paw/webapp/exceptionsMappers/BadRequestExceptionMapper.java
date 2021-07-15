@@ -15,6 +15,6 @@ public class BadRequestExceptionMapper  implements ExceptionMapper<BadRequestExc
     @Override
     public Response toResponse(BadRequestException exception) {
         LOGGER.error("Error encountered, badRequestException");
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
     }
 }
