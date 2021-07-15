@@ -1,1 +1,0 @@
-$('#notVerifiedModal').modal('show')

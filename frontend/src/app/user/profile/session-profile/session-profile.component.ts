@@ -18,6 +18,9 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   profileImage: FormControl;
   coverImage: FormControl;
 
+  coverChange = "";
+  profileChange = "";
+
   allowedCoverImageTypes: string[] = ['image/png', 'image/jpeg', 'image/jpg'];
   maxCoverImageMBSize = 3;
   allowedCoverImageType: boolean = true;
@@ -29,8 +32,8 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   allowedProfileImageSize: boolean = true;
 
   disable = false;
-  disabledCover=false;
-  disabledProfile=false;
+  disabledCover = false;
+  disabledProfile = false;
   success = false;
 
 
@@ -55,10 +58,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   onProfileFileChanged(event) {
-
     const file = event.target.files[0];
     this.allowedProfileImageType = true;
     this.allowedProfileImageSize = true;
@@ -68,12 +68,11 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
-
-
     if (file.size > this.getTotalBytes(this.maxProfileImageMBSize)) {
       this.allowedProfileImageSize = false;
       return
     }
+
     this.disabledProfile = true;
 
     let profileImageUpload = new FormData();
@@ -81,6 +80,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
     this.userService.updateProfileImage(profileImageUpload).subscribe(
       () => {
+        this.profileChange = "?" + new Date().getMilliseconds();
         this.disabledProfile = false;
       });
 
@@ -100,7 +100,6 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
-
     if (file.size > this.getTotalBytes(this.maxCoverImageMBSize)) {
       this.allowedCoverImageSize = false;
       return
@@ -113,11 +112,11 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
     this.userService.updateCoverImage(coverImageUpload).subscribe(
       () => {
+        this.coverChange = "?" + new Date().getMilliseconds();
         this.disabledCover = false;
       }
     );
   }
-
 
   onVerify() {
     this.disable = true;

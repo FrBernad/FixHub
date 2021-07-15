@@ -61,7 +61,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    //    FIXME: volver a habilitar security
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.sessionManagement()
@@ -72,8 +71,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             .and().authorizeRequests()
 //            //session routes
 //            .antMatchers("/login", "/register").anonymous()
-            .antMatchers("/login", "/register").anonymous()
-
 //            .antMatchers(HttpMethod.POST, "/user/verifyAccount/resend").hasRole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount/resendConfirmation").hasRwole("NOT_VERIFIED")
 //            .antMatchers("/user/verifyAccount").hasRole("USER")

@@ -5,7 +5,7 @@
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
         <img alt="profile cover picture"
-             [src]="user.coverImage ? user.coverImage : 'assets/images/defaultCoverImage.jpg'"
+             [src]="user.coverImage ? user.coverImage+coverChange : 'assets/images/defaultCoverImage.jpg'"
              class="backgroundImage">
         <div class="profileBackgroundPic">
           <form method="POST" enctype="multipart/form-data">
@@ -41,7 +41,7 @@
           <div class="profilePictureContainer px-0">
             <div class="picContainer">
               <img alt="profile picture"
-                   [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
+                   [src]="user.profileImage ? user.profileImage+profileChange : 'assets/images/defaultProfileImage.png'"
                    class="profilePicture">
             </div>
 
