@@ -64,7 +64,6 @@
                           </button>
                           <ul class="dropdown-menu dropdown-size w-100">
                             <li *ngFor="let category of categories" class="dropdown-item categoryButton " type="button"
-                                data-name="${category}" data-i18name="${categoryName}"
                                 (click)="dropdownClick(category)">
                               {{'home.categories.' + category | translate}}
                             </li>
@@ -140,7 +139,7 @@
                         </div>
                         <div class="col-2 mt-3 d-flex px-0 align-items-center justify-content-start">
                           <div>
-                            <span id="imagesQuantity" data-max="${maxImagesPerJob}">{{imagesCounter}}</span>
+                            <span id="imagesQuantity">{{imagesCounter}}</span>
                             <span> / {{maxImagesPerJob}}</span>
                           </div>
                         </div>
