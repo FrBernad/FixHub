@@ -26,6 +26,7 @@ export class WorksComponent implements OnInit, OnDestroy {
   searchError = false;
 
   private jobsSub: Subscription;
+  maxSearchInputLength: number = 50;
 
   orderOptions = Object.keys(OrderOption).filter((item) => {
     return isNaN(Number(item));

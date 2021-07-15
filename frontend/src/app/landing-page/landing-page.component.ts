@@ -47,7 +47,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   user: User;
   isFetching=true;
-
+  maxSearchInputLength: number = 50;
   constructor(
     private jobsService: DiscoverService,
     private userService: UserService,

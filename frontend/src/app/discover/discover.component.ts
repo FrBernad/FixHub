@@ -29,6 +29,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   selectedState: string = ""
   selectedCity: string = ""
   isFetching = true;
+  maxSearchInputLength:number = 50;
 
   orderOptions = Object.keys(OrderOption).filter((item) => {
     return isNaN(Number(item));

@@ -38,7 +38,7 @@
 
     <div class="col-12 justify-content-start align-items-center">
       <small class="text-danger" [ngClass]="{'d-none': !searchError}">
-        {{'landingPage.searchInvalidLength'|translate}}
+        {{'landingPage.searchInvalidLength'|translate: {max: maxSearchInputLength} }}
       </small>
     </div>
   </div>
