@@ -11,6 +11,7 @@ import {RouterModule} from "@angular/router";
 import {ChooseCityComponent} from "./choose-city/choose-city.component";
 import {ChooseStateComponent} from "./choose-state/choose-state.component";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
     JobCardComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     NgxMaterialTimepickerModule,
     FontAwesomeModule,
     RouterModule,
