@@ -232,11 +232,7 @@ public class UserServiceImpl implements UserService {
     public void updateCoverImage(NewImageDto newImageDto, User user) {
         Image image = user.getCoverImage();
         LOGGER.debug("Updating user {} cover image", user.getEmail());
-        if (image == null) {
-            user.setCoverImage(imageService.createImage(newImageDto));
-        } else {
-            user.getCoverImage().setData(newImageDto.getData());
-        }
+        user.setCoverImage(imageService.createImage(newImageDto));
     }
 
     @Override
@@ -244,10 +240,7 @@ public class UserServiceImpl implements UserService {
     public void updateProfileImage(NewImageDto newImageDto, User user) {
         Image image = user.getProfileImage();
         LOGGER.debug("Updating user {} profile image", user.getEmail());
-        if (image == null)
-            user.setProfileImage(imageService.createImage(newImageDto));
-        else
-            user.getProfileImage().setData(newImageDto.getData());
+        user.setProfileImage(imageService.createImage(newImageDto));
     }
 
     @Override

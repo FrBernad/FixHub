@@ -33,11 +33,11 @@ public class User {
     @Column(name = "u_phone_number", length = 15, nullable = false)
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "u_profile_picture")
     private Image profileImage;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "u_cover_picture")
     private Image coverImage;
 
