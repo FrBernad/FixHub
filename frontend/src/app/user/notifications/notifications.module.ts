@@ -5,7 +5,7 @@ import {NotificationsRoutingModule} from "./notifications-routing.module";
 import {NewFollowerNotificationCard} from './new-follower-notification-card/new-follower-notification-card.component';
 import {NewJobRequestNotificationCardComponent} from './new-job-request-notification-card/new-job-request-notification-card.component';
 import {ChangeStatusJobUserNotificationCardComponent} from './change-status-job-user-notification-card/change-status-job-user-notification-card.component';
-import {ChangeStausJobProviderNotificationCardComponent} from './change-staus-job-provider-notification-card/change-staus-job-provider-notification-card.component';
+import {ChangeStatusJobProviderNotificationCard} from "./change-status-job-provider-notification-card/change-status-job-provider-notification-card.component";
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import {ChangeStausJobProviderNotificationCardComponent} from './change-staus-jo
     NewFollowerNotificationCard,
     NewJobRequestNotificationCardComponent,
     ChangeStatusJobUserNotificationCardComponent,
-    ChangeStausJobProviderNotificationCardComponent,
+    ChangeStatusJobProviderNotificationCard
   ],
   imports: [
     SharedModule,

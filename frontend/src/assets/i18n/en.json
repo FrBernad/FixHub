@@ -82,7 +82,9 @@
   "account.notifications.jobRequest.finished.body2": "has been marked as finished. Check it out:",
   "account.notifications.jobRequest.cancelled.title": "Job request cancelled",
   "account.notifications.jobRequest.cancelled.body": "Your request for the job ",
-  "account.notifications.jobRequest.cancelled.body2": "has been cancelled. Check it out:",
+  "account.notifications.jobRequest.cancelled.body2": "has been cancelled.",
+  "account.notifications.jobRequest.cancelled.body3": "Check it out",
+
   "contact.description.boldText": "Enter your information",
   "contact.description.normalText": "so that you can be contacted",
   "contact.contactTitle": "Contact {{value}}",
