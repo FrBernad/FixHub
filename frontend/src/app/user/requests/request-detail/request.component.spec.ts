@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {RequestComponent} from './request.component';
+import {RequestComponent} from './request-detail.component';
 
 describe('RequestComponent', () => {
   let component: RequestComponent;

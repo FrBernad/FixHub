@@ -99,6 +99,8 @@
   "translations.es": "Español",
   "translations.en": "Inglés",
   "requests.title": "Contactos",
+  "requests.sent": "Sent",
+  "requests.received": "Received",
   "contactForm.cityWarning": "Puede que el servicio no este disponible en esta zona.",
   "contactForm.addressNumber": "N\u00DAmero",
   "contactForm.floor": "Piso ",

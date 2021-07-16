@@ -1,14 +1,14 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {JobRequest} from "../../../models/job-request.model";
-import {JobStatusEnum} from "../../../models/job-status-enum.model";
-import {ContactService} from "../../../job/contact/contact.service";
+import {JobRequest} from "../../../../models/job-request.model";
+import {JobStatusEnum} from "../../../../models/job-status-enum.model";
+import {ContactService} from "../../../../job/contact/contact.service";
 
 @Component({
   selector: 'app-user-sent-request-card',
-  templateUrl: './user-sent-request-card.component.html',
-  styleUrls: ['./user-sent-request-card.component.scss']
+  templateUrl: './sent-request-card.component.html',
+  styleUrls: ['./sent-request-card.component.scss']
 })
-export class UserSentRequestCardComponent implements OnInit {
+export class SentRequestCardComponent implements OnInit {
 
   constructor(private contactService:ContactService) {
   }

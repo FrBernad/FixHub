@@ -7,8 +7,8 @@ import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-request',
-  templateUrl: './request.component.html',
-  styleUrls: ['./request.component.scss']
+  templateUrl: './request-detail.component.html',
+  styleUrls: ['./request-detail.component.scss']
 })
 export class RequestComponent implements OnInit {
 

@@ -11,44 +11,18 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 })
 export class RequestsComponent implements OnInit {
 
-  cpr: ContactPaginationResult = {
-    results: [],
-    page: 0,
-    totalPages: 0,
-  }
-
-  cpq: ContactPaginationQuery = {
-    page: 0,
-    pageSize: 4,
-  }
-
-  isFetching = true;
-
-  private contactSub: Subscription;
-
   constructor(
-    private contactService: ContactService,
     private titleService: Title,
     private translateService: TranslateService,
   ) {
   }
 
   ngOnInit(): void {
-    this.contactService.getUserSentRequests(this.cpq);
-    this.contactSub = this.contactService.results.subscribe((results) => {
-      this.cpr = {
-        ...this.cpr,
-        ...results
-      };
-      this.isFetching = false;
-    });
-
     this.changeTitle();
 
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
-
   }
 
   changeTitle() {
@@ -60,13 +34,5 @@ export class RequestsComponent implements OnInit {
       )
   }
 
-  onChangePage(page: number) {
-    this.cpq.page = page;
-    this.contactService.getUserSentRequests(this.cpq);
-  }
-
-  ngOnDestroy(): void {
-    this.contactSub.unsubscribe();
-  }
 
 }

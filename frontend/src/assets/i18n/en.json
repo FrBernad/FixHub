@@ -244,6 +244,8 @@
   "navBar.dashboard": "Dashboard",
   "navBar.login": "Sign in",
   "requests.title": "Requests",
+  "requests.sent": "Sent",
+  "requests.received": "Received",
   "navBar.newJob": "New job",
   "navBar.profile": "Your profile",
   "navBar.logout": "Sign out",

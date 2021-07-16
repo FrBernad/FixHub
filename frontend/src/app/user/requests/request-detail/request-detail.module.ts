@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
-import {RequestComponent} from "./request.component";
+import {RequestComponent} from "./request-detail.component";
 import {SharedModule} from "../../../shared/shared.module";
-import {RequestRoutingModule} from "./request-routing.module";
+import {RequestDetailRoutingModule} from "./request-detail-routing.module";
 
 @NgModule({
   declarations: [
@@ -9,11 +9,11 @@ import {RequestRoutingModule} from "./request-routing.module";
   ],
   imports: [
     SharedModule,
-    RequestRoutingModule,
+    RequestDetailRoutingModule,
   ],
   exports: [
     RequestComponent,
   ]
 })
-export class RequestModule {
+export class RequestDetailModule {
 }

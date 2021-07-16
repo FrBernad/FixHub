@@ -30,8 +30,8 @@ const routes: Routes = [
       },
       {
         path: 'user/requests/:id',
-        loadChildren: () => import("../../user/provider/request/request.module")
-          .then(m => m.RequestModule)
+        loadChildren: () => import("../../user/requests/request-detail/request-detail.module")
+          .then(m => m.RequestDetailModule)
       },
       {
         path: 'user/requests',
