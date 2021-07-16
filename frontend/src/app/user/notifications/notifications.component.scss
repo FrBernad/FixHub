@@ -27,3 +27,19 @@
   max-height: 200px !important;
   overflow-y: auto !important;
 }
+
+
+.seeMoreBtn {
+  padding: 5px 9px;
+  width: 150px;
+  border: none;
+  border-radius: 8px !important;
+  background-color: #013866;
+  color: white;
+}
+
+.seeMoreBtn:hover {
+  transition: 150ms linear;
+  color: rgba(255, 255, 255, .9);
+}
+

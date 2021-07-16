@@ -47,8 +47,8 @@
           <hr>
         </div>
       </div>
-      <div *ngIf="canLoadMore()" class="col-12 mt-4">
-        <button (click)="loadMore()">
+      <div *ngIf="canLoadMore()" class="d-flex justify-content-center col-12 mt-4">
+        <button class="seeMoreBtn" (click)="loadMore()">
           {{ "account.notifications.more" | translate}}
         </button>
       </div>
