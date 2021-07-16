@@ -85,7 +85,7 @@ public class NotificationDaoImpl implements NotificationDao {
             " select n_id " +
                 " from NOTIFICATIONS " +
                 " WHERE n_user_id = ? " + filterQuery +
-                " order by n_date desc, n_id desc, n_seen desc " + offsetAndLimitQuery;
+                " order by n_seen asc, n_date desc, n_id desc " + offsetAndLimitQuery;
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
 
@@ -98,14 +98,14 @@ public class NotificationDaoImpl implements NotificationDao {
 
         final String hqlFilterQuery = getNotificationHqlFilterQuery(onlyNew);
 
-        return em.createQuery("from Notification n where id IN :filteredIds " + hqlFilterQuery + " order by n.date desc, n.id desc, n.seen desc", Notification.class)
+        return em.createQuery("from Notification n where id IN :filteredIds " + hqlFilterQuery + " order by n.seen asc, n.date desc, n.id desc", Notification.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
     }
 
     @Override
     public void markAllNotificationAsSeen(User user) {
-        final TypedQuery<Notification> query = em.createQuery("update Notification n set n.seen = :value where n.user.id = :userId", Notification.class);
+        final Query query = em.createQuery("update Notification n set n.seen = :value where n.user.id = :userId");
         query.setParameter("value", true);
         query.setParameter("userId", user.getId());
         int seenNotifications = query.executeUpdate();
