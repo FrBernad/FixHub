@@ -13,6 +13,7 @@ import {
   faExclamationCircle as fasExclamationCircle,
   faHandshake as fasHandshake,
   faInfoCircle as fasInfoCircle,
+  faLanguage as fasLanguage,
   faMapMarkerAlt as fasMapMarkerAlt,
   faPen as fasPen,
   faPhoneAlt as fasPhoneAlt,
@@ -24,7 +25,6 @@ import {
   faUpload as fasUpload,
   faUserFriends as fasUserFriends,
   faWrench as fasWrench,
-  faLanguage as fasLanguage,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {

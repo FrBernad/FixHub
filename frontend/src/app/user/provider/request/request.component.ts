@@ -1,14 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ContactService} from "../../../job/contact/contact.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Job} from "../../../models/job.model";
 import {JobRequest} from "../../../models/job-request.model";
-import {Subscription} from "rxjs";
-import {UserService} from "../../../auth/services/user.service";
-import {User} from "../../../models/user.model";
 import {JobStatusEnum} from "../../../models/job-status-enum.model";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-request',

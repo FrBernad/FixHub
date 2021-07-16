@@ -1,9 +1,7 @@
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpParams, HttpStatusCode} from '@angular/common/http';
-import {ContactInfo} from 'src/app/models/contact-info.model';
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
-import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
 import {tap} from "rxjs/operators";
 import {JobRequest} from "../../models/job-request.model";

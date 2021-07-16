@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderOption} from "../models/order-option-enum.model";
-import {City, JobPaginationQuery, JobPaginationResult, DiscoverService, State} from "./discover.service";
+import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} from "./discover.service";
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
 import {TranslateService} from "@ngx-translate/core";

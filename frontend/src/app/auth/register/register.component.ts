@@ -154,21 +154,15 @@ export class RegisterComponent implements OnInit {
               this.userService.populateUserData().subscribe(() => {
                 this.disable = false;
                 let url = '/user/profile';
-                if (this.previousRouteService.getAuthRedirect()) {
-                  let prevUrl = this.previousRouteService.getPreviousUrl();
-                  url = !!prevUrl ? prevUrl : url;
-                  this.previousRouteService.setAuthRedirect(false);
-                }
                 this.router.navigate([url]);
               });
             },
-            (errorMessage) => {
+            () => {
               this.disable = false;
-              console.log(errorMessage);
             }
           );
       },
-      (errorMessage) => {
+      () => {
         this.disable = false;
         this.error = true;
         setTimeout(() => {

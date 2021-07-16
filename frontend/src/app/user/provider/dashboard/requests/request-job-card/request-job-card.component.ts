@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ContactService} from "../../../../../job/contact/contact.service";
 import {JobStatusEnum} from "../../../../../models/job-status-enum.model";
 import {JobRequest} from "../../../../../models/job-request.model";
