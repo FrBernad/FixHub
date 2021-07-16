@@ -28,7 +28,7 @@
             </fa-icon>
           </div>
           <div class="col-12 d-flex align-items-center justify-content-start">
-            <a class="names" (click)="$event.stopPropagation()"
+            <a class="names manage" (click)="$event.stopPropagation()"
                [routerLink]="['/user/requests/',request.id]">
               {{"requests.manage" | translate }}
             </a>
