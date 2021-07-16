@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Notification} from "../../../models/notification.model";
+import {ContactService} from "../../../job/contact/contact.service";
+import {JobRequest} from "../../../models/job-request.model";
 
 @Component({
   selector: 'app-new-job-request-notification-card',
@@ -10,9 +12,13 @@ export class NewJobRequestNotificationCardComponent implements OnInit {
 
   @Input("notification") notification: Notification;
 
-  constructor() { }
+  jobRequest: JobRequest;
+  constructor(private contactService: ContactService) { }
 
   ngOnInit(): void {
+    this.contactService.getProviderJobRequest(this.notification.resource).subscribe((jobRequest) => {
+      this.jobRequest = jobRequest;
+    });
   }
 
 }
