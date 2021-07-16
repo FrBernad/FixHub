@@ -1,10 +1,5 @@
 package ar.edu.itba.paw.webapp.dto.response;
 
-import org.springframework.http.HttpStatus;
-
-import java.util.Collections;
-import java.util.List;
-
 public class BeanValidationErrorDto {
 
     private String message;

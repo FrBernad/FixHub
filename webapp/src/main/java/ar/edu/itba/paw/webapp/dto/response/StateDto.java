@@ -2,9 +2,11 @@ package ar.edu.itba.paw.webapp.dto.response;
 
 import ar.edu.itba.paw.models.location.State;
 
+import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@XmlType(name = "")
 public class StateDto {
 
     public static Collection<StateDto> mapStateToDto(Collection<State> states) {

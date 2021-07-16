@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.models.location;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "states")

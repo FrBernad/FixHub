@@ -5,10 +5,12 @@ import ar.edu.itba.paw.models.job.Review;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@XmlType(name = "")
 public class ReviewDto {
 
     public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo, SecurityContext securityContext) {

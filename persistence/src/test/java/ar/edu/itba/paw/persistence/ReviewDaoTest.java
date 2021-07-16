@@ -20,7 +20,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 

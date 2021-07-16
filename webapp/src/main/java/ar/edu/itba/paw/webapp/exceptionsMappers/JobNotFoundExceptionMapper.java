@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.exceptionsMappers;
 
 import ar.edu.itba.paw.interfaces.exceptions.JobNotFoundException;
-import ar.edu.itba.paw.webapp.controller.GlobalControllerExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import javax.ws.rs.ext.Provider;
 @Component
 @Provider
 public class JobNotFoundExceptionMapper implements ExceptionMapper<JobNotFoundException> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobNotFoundExceptionMapper.class);
 
     @Autowired
     private MessageSource messageSource;

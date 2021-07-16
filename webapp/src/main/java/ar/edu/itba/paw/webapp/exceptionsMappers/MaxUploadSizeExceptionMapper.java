@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.exceptionsMappers;
 
-import ar.edu.itba.paw.webapp.controller.GlobalControllerExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -12,7 +11,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class MaxUploadSizeExceptionMapper implements ExceptionMapper<MaxUploadSizeExceededException> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MaxUploadSizeExceptionMapper.class);
 
     @Override
     public Response toResponse(MaxUploadSizeExceededException exception) {

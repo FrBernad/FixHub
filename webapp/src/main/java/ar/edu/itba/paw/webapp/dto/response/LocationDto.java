@@ -3,9 +3,11 @@ package ar.edu.itba.paw.webapp.dto.response;
 import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.user.provider.Location;
 
+import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 import java.util.LinkedList;
 
+@XmlType(name = "")
 public class LocationDto {
 
     private StateDto state;

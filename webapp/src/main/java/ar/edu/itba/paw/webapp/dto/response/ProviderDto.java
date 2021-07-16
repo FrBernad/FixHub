@@ -5,7 +5,9 @@ import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
 
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlType(name = "")
 public class ProviderDto extends  UserDto{
 
     private ProviderDetailsDto providerDetails;

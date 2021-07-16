@@ -1,14 +1,8 @@
 package ar.edu.itba.paw.webapp.dto.response;
 
-import ar.edu.itba.paw.models.job.Job;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlType;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
-
+@XmlType(name="")
 public class ContactDto {
 
     private String state;

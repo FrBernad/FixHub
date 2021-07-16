@@ -2,7 +2,6 @@ package ar.edu.itba.paw.models.user.notification;
 
 import ar.edu.itba.paw.models.user.User;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 public class AuxNotificationDto {

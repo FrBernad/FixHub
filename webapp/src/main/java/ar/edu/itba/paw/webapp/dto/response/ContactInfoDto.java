@@ -3,9 +3,12 @@ package ar.edu.itba.paw.webapp.dto.response;
 
 import ar.edu.itba.paw.models.contact.ContactInfo;
 
+import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+
+@XmlType(name="")
 public class ContactInfoDto {
 
     public static Collection<ContactInfoDto> mapCollectionInfoToDto(Collection<ContactInfo> contactInfoCollection) {

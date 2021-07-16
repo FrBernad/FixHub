@@ -14,7 +14,6 @@ import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewContactDto;
 import ar.edu.itba.paw.webapp.dto.request.NewReviewDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
-import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -24,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -269,7 +269,7 @@ public class JobController {
         if (images != null) {
             for (FormDataBodyPart part : images) {
                 InputStream in = part.getEntityAs(InputStream.class);
-                imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
+                imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
             }
         }
 
@@ -325,7 +325,7 @@ public class JobController {
             for (FormDataBodyPart part : images) {
                 InputStream in = part.getEntityAs(InputStream.class);
                 try {
-                    imagesToUpload.add(new NewImageDto(IOUtils.toByteArray(in), part.getMediaType().toString()));
+                    imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
                 } catch (IOException e) {
                     LOGGER.error("Error getting bytes from images");
                     throw new ServerInternalException();//FIXME agregar mensaje

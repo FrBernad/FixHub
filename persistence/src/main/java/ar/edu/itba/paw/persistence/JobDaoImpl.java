@@ -4,14 +4,16 @@ import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
-import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;

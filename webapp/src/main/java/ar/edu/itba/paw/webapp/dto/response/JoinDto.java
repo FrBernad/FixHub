@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.webapp.dto.response;
 
-import ar.edu.itba.paw.webapp.dto.customValidations.FieldsValueNotMatch;
-
 public class JoinDto {
 
     private ScheduleDto schedule;

@@ -5,10 +5,12 @@ import ar.edu.itba.paw.models.job.JobStatus;
 
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@XmlType(name = "")
 public class JobContactDto {
 
     public static Collection<JobContactDto> mapContactToDto(Collection<JobContact> jobContacts, UriInfo uriInfo, SecurityContext securityContext) {

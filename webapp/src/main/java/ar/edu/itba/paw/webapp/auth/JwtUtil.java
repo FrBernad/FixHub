@@ -14,11 +14,11 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.NewCookie;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class JwtUtil {
@@ -31,11 +31,6 @@ public class JwtUtil {
 
     public JwtUtil(Resource secretKeyRes) throws IOException {
         this.secretKey = FileCopyUtils.copyToString(new InputStreamReader(secretKeyRes.getInputStream()));
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
     }
 
     public UserDetails decodeToken(String token) {

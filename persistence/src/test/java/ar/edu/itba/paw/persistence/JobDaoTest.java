@@ -13,9 +13,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Optional;
 
-import static ar.edu.itba.paw.models.job.JobCategory.*;
+import static ar.edu.itba.paw.models.job.JobCategory.ELECTRICISTA;
+import static ar.edu.itba.paw.models.job.JobCategory.MECANICO;
 import static ar.edu.itba.paw.models.pagination.OrderOptions.*;
 import static org.junit.Assert.*;
 

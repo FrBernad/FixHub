@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.exceptionsMappers;
 
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContentTypeException;
-import ar.edu.itba.paw.webapp.controller.GlobalControllerExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class IllegalContentTypeExceptionMapper implements ExceptionMapper<Illega
     @Autowired
     private MessageSource messageSource;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IllegalContentTypeExceptionMapper.class);
 
     @Override
     public Response toResponse(IllegalContentTypeException exception) {

@@ -8,11 +8,13 @@ import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@XmlType(name = "")
 public class UserDto {
 
     public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {

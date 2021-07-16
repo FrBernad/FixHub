@@ -5,9 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -16,15 +14,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -35,31 +24,19 @@ import java.util.Properties;
 
 @EnableTransactionManagement
 @EnableAsync
-@EnableWebMvc
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.config"})
 @Configuration
-public class WebConfig extends WebMvcConfigurerAdapter {
-
-    private static final int MAX_SIZE_PER_FILE = 3000000;
+public class WebConfig {
 
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+
         messageSource.setBasename("classpath:i18n/messages");
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
         messageSource.setCacheSeconds(5);
+
         return messageSource;
-    }
-
-    @Bean
-    public ViewResolver viewResolver() {
-        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-
-        resolver.setViewClass(JstlView.class);
-        resolver.setPrefix("/WEB-INF/jsp/");
-        resolver.setSuffix(".jsp");
-
-        return resolver;
     }
 
     @Bean
@@ -74,14 +51,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //        ds.setUsername("paw-2021a-06");
 //        ds.setPassword("QroE40tsz");
         return ds;
-    }
-
-    @Bean
-    public MultipartResolver multipartResolver() {
-        final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSizePerFile(MAX_SIZE_PER_FILE);
-        multipartResolver.setMaxUploadSize(MAX_SIZE_PER_FILE * 6);
-        return multipartResolver;
     }
 
     @Bean

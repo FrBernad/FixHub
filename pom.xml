@@ -33,7 +33,6 @@
         <logback.version>1.1.2</logback.version>
         <logback-ext-org.springframework.version>0.1.1</logback-ext-org.springframework.version>
         <maven-war-plugin.version>2.6</maven-war-plugin.version>
-        <commons-fileuploead.version>1.4</commons-fileuploead.version>
         <org.hibernate.version>5.1.0.Final</org.hibernate.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <jersey.version>3.0-SNAPSHOT</jersey.version>
@@ -63,7 +62,7 @@
     <dependencyManagement>
         <dependencies>
 
-            <!--    spring security   -->
+            <!--    Spring security   -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
@@ -178,21 +177,10 @@
                 <version>${org.springframework.version}</version>
             </dependency>
 
-            <!--   WebMVC  -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${org.springframework.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${org.springframework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-tomcat</artifactId>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -204,13 +192,6 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>jstl</artifactId>
                 <version>${jstl.version}</version>
-            </dependency>
-
-            <!--   File uploading  -->
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>${commons-fileuploead.version}</version>
             </dependency>
 
             <!--   Hibernate  -->
@@ -364,24 +345,3 @@
     </build>
 
 </project>
-
-        <!--<plugin>-->
-        <!--<artifactId>maven-resources-plugin</artifactId>-->
-        <!--<executions>-->
-        <!--    <execution>-->
-        <!--        <id>copy-resources</id>-->
-        <!--        <phase>validate</phase>-->
-        <!--        <goals>-->
-        <!--            <goal>copy-resources</goal>-->
-        <!--        </goals>-->
-        <!--        <configuration>-->
-        <!--            <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>-->
-        <!--            <resources>-->
-        <!--                <resource>-->
-        <!--                    <directory>${project.parent.basedir}/frontend/src/dist/frontend</directory>-->
-        <!--                </resource>-->
-        <!--            </resources>-->
-        <!--        </configuration>-->
-        <!--    </execution>-->
-        <!--</executions>-->
-        <!--</plugin>-->

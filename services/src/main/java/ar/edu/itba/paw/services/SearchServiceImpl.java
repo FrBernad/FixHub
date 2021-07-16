@@ -1,16 +1,16 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
 import ar.edu.itba.paw.interfaces.persistance.NotificationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
-import ar.edu.itba.paw.interfaces.persistance.JobDao;
-import ar.edu.itba.paw.models.job.JobStatus;
-import ar.edu.itba.paw.models.location.City;
-import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
+import ar.edu.itba.paw.models.location.City;
+import ar.edu.itba.paw.models.location.State;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
@@ -21,9 +21,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
-import static ar.edu.itba.paw.models.pagination.OrderOptions.*;
+import static ar.edu.itba.paw.models.pagination.OrderOptions.valueOf;
 
 @Service
 public class SearchServiceImpl implements SearchService {

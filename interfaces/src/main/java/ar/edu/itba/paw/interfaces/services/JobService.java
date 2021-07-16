@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface JobService {
     Optional<Job> getJobById(long id);

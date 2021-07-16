@@ -3,7 +3,6 @@ package ar.edu.itba.paw.models.user.provider;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Objects;
 
