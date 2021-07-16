@@ -5,7 +5,7 @@ import {UserService} from '../services/user.service';
 import {AuthService} from '../services/auth.service';
 import {PreviousRouteService} from '../services/previous-route.service';
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
@@ -41,12 +41,11 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.translateService.get("register.title")
-      .subscribe(
-        (routeTitle) => {
-          this.titleService.setTitle('Fixhub | ' + routeTitle)
-        }
-      )
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
 
     this.registerForm = new FormGroup({
       name: new FormControl(null, [
@@ -102,6 +101,15 @@ export class RegisterComponent implements OnInit {
     });
     this.registerForm.setValidators(this.passwordMatching.bind(this));
 
+  }
+
+  changeTitle() {
+    this.translateService.get("register.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {

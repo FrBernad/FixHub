@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-errors',
@@ -18,6 +18,14 @@ export class ErrorsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+  }
+
+  changeTitle() {
     this.translateService.get("pageNotFound.title")
       .subscribe(
         (routeTitle) => {

@@ -4,7 +4,7 @@ import {UserService} from "../../../auth/services/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../../models/user.model";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-dashboard',
@@ -31,13 +31,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.user = user;
     })
 
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+
+  }
+
+  changeTitle() {
     this.translateService.get("navBar.dashboard")
       .subscribe(
         (routeTitle) => {
           this.titleService.setTitle('Fixhub | ' + routeTitle)
         }
       )
-
   }
 
   changeTab(tab: string) {

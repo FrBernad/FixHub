@@ -3,7 +3,7 @@ import {OrderOption} from "../models/order-option-enum.model";
 import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} from "./discover.service";
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-discover',
@@ -49,12 +49,11 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.translateService.get("discover.title")
-      .subscribe(
-        (routeTitle) => {
-          this.titleService.setTitle('Fixhub | ' + routeTitle)
-        }
-      )
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
 
     const category = window.history.state['category'];
     const query = window.history.state['query'];
@@ -82,6 +81,15 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     this.jobsService.getStates().subscribe((states) => {
       this.states = states;
     });
+  }
+
+  changeTitle() {
+    this.translateService.get("discover.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   onChangeCategory(category: string) {

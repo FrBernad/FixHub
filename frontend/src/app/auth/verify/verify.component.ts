@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {UserService} from "../services/user.service";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-verify',
@@ -26,12 +26,11 @@ export class VerifyComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.translateService.get("account.verify.title")
-      .subscribe(
-        (routeTitle) => {
-          this.titleService.setTitle('Fixhub | ' + routeTitle)
-        }
-      )
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
 
     const token = this.route.snapshot.queryParams['token'];
     this.authService.verify(token).subscribe(() => {
@@ -43,6 +42,15 @@ export class VerifyComponent implements OnInit {
       this.loading = false;
     })
 
+  }
+
+  changeTitle() {
+    this.translateService.get("account.verify.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
 }

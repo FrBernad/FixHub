@@ -6,7 +6,7 @@ import {City, State} from "../../discover/discover.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 export interface Schedule {
   startTime: string;
@@ -47,6 +47,14 @@ export class JoinComponent implements OnInit {
       this.isProvider = this.user.providerDetails !== undefined;
     });
 
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+  }
+
+  changeTitle() {
     this.translateService.get("join.title")
       .subscribe(
         (routeTitle) => {

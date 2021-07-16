@@ -5,7 +5,7 @@ import {User} from "../../../models/user.model";
 import {UserService} from "../../../auth/services/user.service";
 import {AuthService} from "../../../auth/services/auth.service";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-session-profile',
@@ -52,12 +52,11 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       this.user = user;
     });
 
-    this.translateService.get("profilePage.subtitle.account")
-      .subscribe(
-        (routeTitle) => {
-          this.titleService.setTitle('Fixhub | ' + routeTitle)
-        }
-      )
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
 
     if (!this.user.roles.includes("VERIFIED")) {
       let modal = new bootstrap.Modal(document.getElementById('notVerifiedModal'));
@@ -67,6 +66,15 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.profileImage = new FormControl(null);
     this.coverImage = new FormControl(null);
 
+  }
+
+  changeTitle() {
+    this.translateService.get("profilePage.subtitle.account")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
 

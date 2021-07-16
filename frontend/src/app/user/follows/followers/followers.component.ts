@@ -5,7 +5,7 @@ import {User} from "../../../models/user.model";
 import {FollowPaginationQuery, FollowPaginationResult, FollowService} from "../follow.service";
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-followers',
@@ -59,6 +59,15 @@ export class FollowersComponent implements OnInit, OnDestroy {
         this.router.navigate(['/404'])
       }
     );
+
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+  }
+
+  changeTitle() {
     this.translateService.get("profilePage.following")
       .subscribe(
         (routeTitle) => {

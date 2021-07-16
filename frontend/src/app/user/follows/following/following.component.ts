@@ -5,7 +5,7 @@ import {User} from "../../../models/user.model";
 import {FollowPaginationQuery, FollowPaginationResult, FollowService} from "../follow.service";
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-following',
@@ -59,7 +59,15 @@ export class FollowingComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.translateService.get("profilePage.followers")
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+  }
+
+  changeTitle() {
+    this.translateService.get("profilePage.following")
       .subscribe(
         (routeTitle) => {
           this.titleService.setTitle('Fixhub | ' + routeTitle)

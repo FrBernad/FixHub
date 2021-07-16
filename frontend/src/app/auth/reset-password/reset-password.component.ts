@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {Title} from "@angular/platform-browser";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-reset-password',
@@ -38,12 +38,11 @@ export class ResetPasswordComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    this.translateService.get("account.password.resetRequest.title")
-      .subscribe(
-        (routeTitle) => {
-          this.titleService.setTitle('Fixhub | ' + routeTitle)
-        }
-      )
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
 
     this.resetPasswordForm = new FormGroup({
       password: new FormControl("", [
@@ -57,6 +56,15 @@ export class ResetPasswordComponent implements OnInit {
       ])
     });
     this.resetPasswordForm.setValidators(this.passwordMatching.bind(this));
+  }
+
+  changeTitle() {
+    this.translateService.get("account.password.resetRequest.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   passwordMatching(group: FormGroup): { [s: string]: boolean } {
