@@ -84,4 +84,14 @@ export class NotificationsService {
   }
 
 
+  markAsReadNotification(id: number) {
+    return this.http.put(
+      environment.apiBaseUrl + '/user/notifications/'+id,{});
+  }
+
+  markAsReadAllNotifications(){
+    return this.http.put(
+      environment.apiBaseUrl + '/user/notifications',{});
+
+  }
 }

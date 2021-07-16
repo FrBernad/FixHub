@@ -1,10 +1,25 @@
 <div class="container-lg py-1">
-  <div class="row">
-    <div class="col-12">
-      TITLE
+  <ng-template [ngIf]="isLoading" [ngIfElse]="alreadyFetched">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-template>
+  <ng-template #alreadyFetched>
+    <div class="row">
+      <div class="col-8 d-flex justify-content-start">
+        <h1 class="sectionTitle">
+          {{ 'account.notifications.newFollower.title'|translate}}
+        </h1>
+      </div>
+      <div class="col-4 d-flex justify-content-end">
+
+      </div>
+      <div class="col-12">
+        <a (click)="onClick()" style="cursor: pointer" class="contactInfo names">
+          <span>{{ user.name + ' ' + user.surname}}</span>
+        </a>
+        <span>{{'account.notifications.newFollower.body'|translate}}</span>
+      </div>
     </div>
-    <div class="col-12">
-      BODY
-    </div>
-  </div>
+  </ng-template>
+
+
 </div>

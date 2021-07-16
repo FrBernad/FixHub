@@ -1,5 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Notification} from "../../../models/notification.model";
+import {UserService} from "../../../auth/services/user.service";
+import {User} from "../../../models/user.model";
+import {Router} from "@angular/router";
+import {NotificationsService} from "../notifications.service";
 
 @Component({
   selector: 'app-new-follower-notification-card',
@@ -9,11 +13,32 @@ import {Notification} from "../../../models/notification.model";
 export class NewFollowerNotificationCard implements OnInit {
 
   @Input("notification") notification: Notification;
+  isLoading = false;
+  user:User;
 
-  constructor() {
+  constructor(private userService: UserService,
+              private router: Router,
+              private notificationService: NotificationsService) {
   }
 
   ngOnInit(): void {
+    console.log(this.notification.id);
+    this.isLoading = true;
+
+    this.userService.getUser(this.notification.resource).subscribe(
+      (responseData) => {
+        this.isLoading = false;
+        this.user = responseData;
+      }
+    );
   }
 
+
+  onClick() {
+    this.notificationService.markAsReadNotification(this.notification.id).subscribe(
+      () => {
+        this.notification.seen=true;}
+    );
+    this.router.navigate(['/user',this.user.id]);
+  }
 }
