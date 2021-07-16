@@ -25,4 +25,8 @@ export class FooterComponent implements OnInit {
     this.translateService.use(lang);
   }
 
+  currentLang() {
+    return this.translateService.currentLang;
+  }
+
 }

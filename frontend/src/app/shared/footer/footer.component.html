@@ -10,7 +10,9 @@
       </div>
 
       <div class="col-3 d-flex justify-content-around align-items-center">
-        <a *ngFor="let lang of languages" (click)="changeLang(lang)" class="footerLang">
+        <a *ngFor="let lang of languages" (click)="changeLang(lang)" class="footerLang"
+        [ngClass]="{active:lang===currentLang()}"
+        >
           {{'translations.' + lang | translate}}
         </a>
       </div>

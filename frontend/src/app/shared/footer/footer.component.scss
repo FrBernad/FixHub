@@ -10,6 +10,10 @@
   transition: hover 1s;
 }
 
-.footerLang :hover {
+.footerLang:hover {
   color: #003359;
+}
+
+.active{
+  color: #0077c7;
 }
