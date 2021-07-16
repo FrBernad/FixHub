@@ -17,6 +17,8 @@ export class FollowingComponent implements OnInit, OnDestroy {
   user: User;
   loading = true;
 
+  noData = "profilePage.noFollowings"
+
   fpr: FollowPaginationResult = {
     results: [],
     page: 0,

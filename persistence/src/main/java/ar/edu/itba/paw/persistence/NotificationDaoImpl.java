@@ -135,7 +135,7 @@ public class NotificationDaoImpl implements NotificationDao {
     String getNotificationFilterQuery(boolean onlyNew) {
         final StringBuilder filterQuery = new StringBuilder();
         if (onlyNew) {
-            filterQuery.append(" AND n_seen is true ");
+            filterQuery.append(" AND n_seen is false ");
         }
         return filterQuery.toString();
     }
