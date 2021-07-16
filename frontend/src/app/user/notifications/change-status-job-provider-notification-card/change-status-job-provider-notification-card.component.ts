@@ -6,7 +6,7 @@ import {ContactService} from "../../../job/contact/contact.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-change-staus-job-provider-notification-card',
+  selector: 'app-change-status-job-provider-notification-card',
   templateUrl: './change-status-job-provider-notification-card.component.html',
   styleUrls: ['./change-status-job-provider-notification-card.component.scss']
 })
@@ -28,6 +28,7 @@ export class ChangeStatusJobProviderNotificationCard implements OnInit {
   ngOnInit(): void {
     this.contactService.getJobRequest(this.notification.resource).subscribe((jobRequest) => {
       this.jobRequest = jobRequest;
+      this.isLoading=false;
     });
   }
 

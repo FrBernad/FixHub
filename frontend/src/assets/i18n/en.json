@@ -81,9 +81,8 @@
   "account.notifications.jobRequest.finished.body": "Your request for the job ",
   "account.notifications.jobRequest.finished.body2": "has been marked as finished. Check it out:",
   "account.notifications.jobRequest.cancelled.title": "Job request cancelled",
-  "account.notifications.jobRequest.cancelled.body": "Your request for the job ",
-  "account.notifications.jobRequest.cancelled.body2": "has been cancelled.",
-  "account.notifications.jobRequest.cancelled.body3": "Check it out",
+  "account.notifications.jobRequest.cancelled.body":"We regret to inform you that the user {{name}} {{surname}} has canceled the request for the job {{job}}. ",
+  "account.notifications.jobRequest.cancelled.body1":"Check it out",
 
   "contact.description.boldText": "Enter your information",
   "contact.description.normalText": "so that you can be contacted",

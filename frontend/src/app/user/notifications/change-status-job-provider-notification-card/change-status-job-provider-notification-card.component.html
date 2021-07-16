@@ -4,25 +4,21 @@
   </ng-template>
   <ng-template #alreadyFetched>
     <div class="row">
-      <div class="col-8 d-flex justify-content-start">
+      <div class="col-12 d-flex justify-content-start">
         <h1 class="sectionTitle">
           {{ 'account.notifications.jobRequest.cancelled.title'|translate}}
+          | {{this.jobRequest.date}}
+
         </h1>
       </div>
 
-      <div class="col-4 d-flex justify-content-end">
-
-
-      </div>
       <div class="col-12">
         <span>
-          {{ 'account.notifications.jobRequest.cancelled.body'|translate}}
-          <span class="contactInfo names">
-            {{this.jobRequest.jobProvided}}
-          </span>
-          <span>{{'account.notifications.jobRequest.cancelled.body2'|translate}}</span>
+          {{ 'account.notifications.jobRequest.cancelled.body'| translate:
+          {name:this.jobRequest.user.name, surname:this.jobRequest.user.surname,job:this.jobRequest.jobProvided} }}
+
           <a (click)="onClick()" style="cursor: pointer" class="contactInfo names">
-              <span>{{'account.notifications.jobRequest.cancelled.body3'|translate}}</span>
+              <span>{{'account.notifications.jobRequest.cancelled.body1'|translate}}</span>
           </a>
         </span>
 
