@@ -6,6 +6,7 @@ import {AuthService} from '../services/auth.service';
 import {PreviousRouteService} from '../services/previous-route.service';
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {NotificationsService} from "../../user/notifications/notifications.service";
 
 @Component({
   selector: 'app-register',
@@ -37,6 +38,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private translateService: TranslateService,
+    private notificationService: NotificationsService,
   ) {
   }
 
@@ -160,6 +162,7 @@ export class RegisterComponent implements OnInit {
           .subscribe(
             () => {
               this.userService.populateUserData().subscribe(() => {
+                this.notificationService.initNotificationsInterval();
                 this.disable = false;
                 let url = '/user/profile';
                 this.router.navigate([url]);

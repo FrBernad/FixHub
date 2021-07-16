@@ -7,6 +7,7 @@ import {environment} from '../../../environments/environment';
 import {Session} from '../../models/session.model';
 import jwtDecode from "jwt-decode";
 import {ProviderInfo, UserService} from "./user.service";
+import {NotificationsService} from "../../user/notifications/notifications.service";
 
 interface Jwt {
   exp: number,
@@ -57,6 +58,7 @@ export class AuthService {
                 }
               ),
               mergeMap(() => {
+                  this.notificationsService.initNotificationsInterval();
                   this.userService.setLoading(false);
                   return of(true);
                 }
@@ -72,6 +74,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private userService: UserService,
+    private notificationsService: NotificationsService,
     private router: Router
   ) {
   }
@@ -197,6 +200,7 @@ export class AuthService {
 
     this.userService.clearUser();
     this.router.navigate(['/login']);
+    this.notificationsService.clearNotificationsInterval();
 
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -218,7 +222,7 @@ export class AuthService {
         }
       ).pipe(
         catchError(() => {
-            this.router.navigate(["/login"]);
+            this.logout();
             return throwError("");
           }
         ),
@@ -241,6 +245,7 @@ export class AuthService {
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);
+
   }
 
   private decodeToken(token: string): Jwt {

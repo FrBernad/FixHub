@@ -80,7 +80,7 @@ public class UserSessionController {
     public Response loginUser(UserAuthDto userAuthDto) {
         LOGGER.info("Accessed /user POST controller");
 
-        if(userAuthDto == null) {
+        if (userAuthDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -110,7 +110,7 @@ public class UserSessionController {
     public Response updateUser(@Valid UserInfoDto userInfoDto) {
         LOGGER.info("Accessed /user/ PUT controller");
 
-        if(userInfoDto == null) {
+        if (userInfoDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -199,7 +199,7 @@ public class UserSessionController {
     public Response verifyUser(TokenDto tokenDto) {
         LOGGER.info("Accessed /user/verify PUT controller");
 
-        if(tokenDto == null) {
+        if (tokenDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -237,7 +237,7 @@ public class UserSessionController {
     public Response sendResetPasswordEmail(@Valid final PasswordResetEmailDto passwordResetDto) {
         LOGGER.info("Accessed /user/resetPassword POST controller");
 
-        if(passwordResetDto == null) {
+        if (passwordResetDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -255,7 +255,7 @@ public class UserSessionController {
     public Response resetPassword(@Valid final PasswordResetDto passwordResetDto) {
         LOGGER.info("Accessed /user/resetPassword PUT controller");
 
-        if(passwordResetDto == null) {
+        if (passwordResetDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -386,7 +386,7 @@ public class UserSessionController {
     public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
         LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
 
-        if(status == null) {
+        if (status == null) {
             throw new ContentExpectedException();
         }
 
@@ -395,12 +395,12 @@ public class UserSessionController {
         final JobStatus newStatus = status.getStatus();
 
 
-        if(newStatus.equals(CANCELED)){
+        if (newStatus.equals(CANCELED)) {
             //Solo el usuario puede cancelar el request
-            if(!user.getId().equals(jobContact.getUser().getId())){
-               throw new IllegalOperationException(); //FIXME: agregar mensaje
+            if (!user.getId().equals(jobContact.getUser().getId())) {
+                throw new IllegalOperationException(); //FIXME: agregar mensaje
             }
-        }else if (!user.getId().equals(jobContact.getProvider().getId())){
+        } else if (!user.getId().equals(jobContact.getProvider().getId())) {
             throw new IllegalOperationException(); //FIXME: agregar mensaje
         }
 
@@ -519,7 +519,7 @@ public class UserSessionController {
     public Response join(@Valid final JoinDto joinDto) {
         LOGGER.info("Accessed /user/join POST controller");
 
-        if(joinDto == null) {
+        if (joinDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -557,7 +557,7 @@ public class UserSessionController {
     public Response updateProviderInfo(final JoinDto joinDto) {
         LOGGER.info("Accessed /user/account/provider PUT controller");
 
-        if(joinDto == null) {
+        if (joinDto == null) {
             throw new ContentExpectedException();
         }
 
@@ -761,7 +761,7 @@ public class UserSessionController {
 
         final int count = notificationService.getUnseenNotificationsCount(user);
 
-        return Response.ok(count).build();
+        return Response.ok(new NotificationsCountDto(count)).build();
     }
 
 

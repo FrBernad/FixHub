@@ -44,7 +44,7 @@
               <div class="position-relative">
                 <fa-icon class="navbarText mt-1" [icon]="['far','bell']" id="navBarBell">
                 </fa-icon>
-                <span class="position-absolute start-100 translate-middle
+                <span *ngIf="newNotifications" class="position-absolute start-100 translate-middle
                   notCount rounded-circle bg-danger p-2">
                  </span>
               </div>

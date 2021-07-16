@@ -5,6 +5,7 @@ import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
 import {Languages} from "../../models/languages-enum.model";
 import {TranslateService} from "@ngx-translate/core";
+import {NotificationsService} from "../../user/notifications/notifications.service";
 
 @Component({
   selector: 'app-navbar',
@@ -21,10 +22,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   });
 
   private userSub: Subscription;
+  private notSub: Subscription;
   user: User;
+  newNotifications: boolean;
 
   constructor(
     private userService: UserService,
+    private notificationsService: NotificationsService,
     private authService: AuthService,
     private translateService: TranslateService,
     private renderer: Renderer2
@@ -35,6 +39,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     });
+    this.notSub = this.notificationsService.newNotifications.subscribe(
+      (res) => {
+        this.newNotifications = res;
+      }
+    )
   }
 
   @HostListener('window:scroll') onScrollHost(): void {

@@ -61,9 +61,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   onChangeFilter(filter: string) {
     this.npq.onlyNew = !!filter;
     this.npq.page = 0;
-    if (!filter) {
-      delete this.npq.onlyNew;
-    }
     this.notificationsService.getNotifications(this.npq);
   }
 

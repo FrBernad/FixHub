@@ -6,6 +6,7 @@ import {AuthService} from "../services/auth.service";
 import {PreviousRouteService} from "../services/previous-route.service";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {NotificationsService} from "../../user/notifications/notifications.service";
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
     private previousRouteService: PreviousRouteService,
     private titleService: Title,
     private translateService: TranslateService,
+    private notificationService: NotificationsService,
   ) {
   }
 
@@ -68,6 +70,7 @@ export class LoginComponent implements OnInit {
         this.userService
           .populateUserData()
           .subscribe(() => {
+            this.notificationService.initNotificationsInterval();
             let url = '/user/profile';
             if (this.previousRouteService.getAuthRedirect()) {
               let prevUrl = this.previousRouteService.getPreviousUrl();

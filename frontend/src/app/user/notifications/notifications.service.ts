@@ -26,10 +26,40 @@ export class NotificationsService {
   }
 
   notifications = new Subject<NotificationPaginationResult>();
+  newNotifications = new Subject<boolean>();
+
+  private notificationsInterval: any;
 
   constructor(
     private http: HttpClient
   ) {
+  }
+
+  initNotificationsInterval() {
+    this.clearNotificationsInterval();
+    this.refreshNotifications();
+    this.notificationsInterval = setInterval(this.refreshNotifications.bind(this), 30000);
+  }
+
+  clearNotificationsInterval() {
+    if (this.notificationsInterval) {
+      clearTimeout(this.notificationsInterval);
+    }
+    this.notificationsInterval = null;
+  }
+
+  refreshNotifications() {
+    this.http
+      .get<{ count: number }>(
+        environment.apiBaseUrl + '/user/unseenNotifications'
+      ).subscribe((res) => {
+        if (res.count > 0) {
+          this.newNotifications.next(true);
+        } else {
+          this.newNotifications.next(false);
+        }
+      }
+    );
   }
 
   getNotifications(npq: NotificationPaginationQuery) {
