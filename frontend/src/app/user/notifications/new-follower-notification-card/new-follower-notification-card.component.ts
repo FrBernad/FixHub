@@ -2,11 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Notification} from "../../../models/notification.model";
 
 @Component({
-  selector: 'app-notification-card',
-  templateUrl: './notification-card.component.html',
-  styleUrls: ['./notification-card.component.scss']
+  selector: 'app-new-follower-notification-card',
+  templateUrl: './new-follower-notification-card.component.html',
+  styleUrls: ['./new-follower-notification-card.component.scss']
 })
-export class NotificationCardComponent implements OnInit {
+export class NewFollowerNotificationCard implements OnInit {
 
   @Input("notification") notification: Notification;
 

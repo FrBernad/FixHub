@@ -19,7 +19,6 @@ public class NotificationDto {
     private Long resource;
     private NotificationType type;
     private LocalDateTime date;
-    private UserDto user;
     private boolean seen;
 
 
@@ -32,7 +31,6 @@ public class NotificationDto {
         this.resource = notification.getResource();
         this.type = notification.getType();
         this.date = notification.getDate();
-        this.user = new UserDto(notification.getUser(), uriInfo, securityContext);
         this.seen = notification.isSeen();
     }
 
@@ -66,14 +64,6 @@ public class NotificationDto {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
     }
 
     public boolean isSeen() {

@@ -37,9 +37,12 @@
 
     <div *ngIf="npr.results.length > 0, else noResults" class="col-12 pt-5">
       <div *ngFor="let notification of npr.results">
-        <div class="col-12 mt-3">
-          <app-notification-card [notification]="notification"></app-notification-card>
-        </div>
+        <div class="col-12 mt-3" [ngSwitch]="notification.type">
+          <app-new-follower-notification-card *ngSwitchCase="newfollower" [notification]="notification"></app-new-follower-notification-card>
+          <app-new-job-request-notification-card *ngSwitchCase="jobRequest" [notification]="notification"></app-new-job-request-notification-card>
+          <app-change-status-job-provider-notification-card *ngSwitchCase="requestStatusChangeProvider" [notification]="notification"></app-change-status-job-provider-notification-card>
+          <app-change-status-job-user-notification-card *ngSwitchCase="requestStatusChangeUser" [notification]="notification"></app-change-status-job-user-notification-card>
+         </div>
         <div class="col-10">
           <hr>
         </div>

@@ -2,12 +2,18 @@ import {NgModule} from "@angular/core";
 import {NotificationsComponent} from "./notifications.component";
 import {SharedModule} from "../../shared/shared.module";
 import {NotificationsRoutingModule} from "./notifications-routing.module";
-import { NotificationCardComponent } from './notification-card/notification-card.component';
+import {NewFollowerNotificationCard} from './new-follower-notification-card/new-follower-notification-card.component';
+import {NewJobRequestNotificationCardComponent} from './new-job-request-notification-card/new-job-request-notification-card.component';
+import {ChangeStatusJobUserNotificationCardComponent} from './change-status-job-user-notification-card/change-status-job-user-notification-card.component';
+import {ChangeStausJobProviderNotificationCardComponent} from './change-staus-job-provider-notification-card/change-staus-job-provider-notification-card.component';
 
 @NgModule({
   declarations: [
     NotificationsComponent,
-    NotificationCardComponent,
+    NewFollowerNotificationCard,
+    NewJobRequestNotificationCardComponent,
+    ChangeStatusJobUserNotificationCardComponent,
+    ChangeStausJobProviderNotificationCardComponent,
   ],
   imports: [
     SharedModule,

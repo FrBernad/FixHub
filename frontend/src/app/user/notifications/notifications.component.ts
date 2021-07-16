@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NotificationPaginationQuery, NotificationPaginationResult, NotificationsService} from "./notifications.service";
 import {Subscription} from "rxjs";
 import {NotificationFilter} from "../../models/notification-filter-enum";
+import {NotificationType} from "../../models/notification-type-enum.model";
 
 @Component({
   selector: 'app-notifications',
@@ -13,6 +14,11 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   loading = true;
 
   private notificationSub: Subscription;
+
+  jobRequest = NotificationType.JOB_REQUEST;
+  newfollower = NotificationType.NEW_FOLLOWER;
+  requestStatusChangeProvider = NotificationType.REQUEST_STATUS_CHANGE_PROVIDER;
+  requestStatusChangeUser= NotificationType.REQUEST_STATUS_CHANGE_USER;
 
   npq: NotificationPaginationQuery = {
     page: 0,
@@ -70,6 +76,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.notificationsService.getNotifications(this.npq);
     }
   }
+
+
 
 
 }
