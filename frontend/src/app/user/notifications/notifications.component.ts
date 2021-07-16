@@ -38,6 +38,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = false;
+    this.notificationsService.getNotifications(this.npq);
     this.notificationSub = this.notificationsService.notifications.subscribe((results) => {
       if (this.npq.page == 0) {
         this.npr = results;

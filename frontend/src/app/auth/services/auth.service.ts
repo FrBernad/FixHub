@@ -204,10 +204,11 @@ export class AuthService {
     this.tokenExpirationTimer = null;
   }
 
-  refreshToken(expirationDuration: number) {
+  autoRefreshToken(expirationDuration: number) {
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
+
     this.tokenExpirationTimer = setTimeout(() => {
       this.http.post(
         environment.apiBaseUrl + '/user/refreshSession',
@@ -224,9 +225,10 @@ export class AuthService {
         mergeMap((res: HttpResponse<Object>) => {
           this.handleSession(res);
           return this.userService.populateUserData()
-        }, expirationDuration)
+        })
       ).subscribe();
-    });
+    }, expirationDuration);
+
   }
 
   private handleAuthentication(token: string) {
@@ -235,7 +237,7 @@ export class AuthService {
     const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
 
     const expirationDate = new Date(new Date().getTime() + milliExpirationTime);
-    this.refreshToken(milliExpirationTime);
+    this.autoRefreshToken(milliExpirationTime);
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);
