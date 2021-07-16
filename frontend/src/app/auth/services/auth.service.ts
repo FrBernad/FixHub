@@ -132,16 +132,19 @@ export class AuthService {
   makeProvider(providerInfo: ProviderInfo) {
     return this.http.post(
       environment.apiBaseUrl + '/user/account/provider',
-      providerInfo)
-      .pipe(
-        tap((res: HttpResponse<Object>) => {
-            this.handleSession(res);
-          },
-          mergeMap(() => {
-            return this.userService.populateUserData();
-          })
-        )
-      );
+      providerInfo,
+      {
+        observe: "response"
+      }
+    ).pipe(
+      tap((res) => {
+          this.handleSession(res);
+        }
+      ),
+      mergeMap(() => {
+        return this.userService.populateUserData();
+      })
+    );
   }
 
   handleSession(res: HttpResponse<Object>) {
@@ -198,8 +201,10 @@ export class AuthService {
 
     this.session.next(null);
 
-    this.userService.clearUser();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      this.userService.clearUser();
+    });
+
     this.notificationsService.clearNotificationsInterval();
 
     if (this.tokenExpirationTimer) {
@@ -245,7 +250,6 @@ export class AuthService {
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);
-
   }
 
   private decodeToken(token: string): Jwt {

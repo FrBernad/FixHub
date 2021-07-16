@@ -48,6 +48,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     });

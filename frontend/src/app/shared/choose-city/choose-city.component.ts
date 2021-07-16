@@ -33,7 +33,6 @@ export class ChooseCityComponent implements OnInit {
       cities: this.citiesSelected,
     });
 
-
     if (this.isProvider != null && this.isProvider) {
       if(this.chosenState == this.user.providerDetails.location.state) {
         this.user.providerDetails.location.cities.forEach((city) => {
@@ -48,7 +47,6 @@ export class ChooseCityComponent implements OnInit {
       (cities) => {
         this.cities = cities;
         this.isFetching = false;
-
       });
 
   }

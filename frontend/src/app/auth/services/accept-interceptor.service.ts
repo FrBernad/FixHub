@@ -13,7 +13,6 @@ export class AcceptInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const translateService: TranslateService = this.injector.get(TranslateService)
-    console.log(translateService.currentLang)
     const modifiedReq = req.clone({
       headers: new HttpHeaders().set('Accept', translateService.currentLang)
     });

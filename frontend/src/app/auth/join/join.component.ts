@@ -87,7 +87,9 @@ export class JoinComponent implements OnInit {
     this.authService.makeProvider(providerInfo).subscribe(
       () => {
         this.posting = false;
-        this.router.navigate(['user', 'dashboard']);
+        this.router.navigate(['/user/dashboard']);
+      }, () => {
+        this.router.navigate(['/user/profile']);
       }
     );
   }

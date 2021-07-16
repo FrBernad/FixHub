@@ -22,7 +22,6 @@ export class NewFollowerNotificationCard implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.notification.id);
     this.isLoading = true;
 
     this.userService.getUser(this.notification.resource).subscribe(

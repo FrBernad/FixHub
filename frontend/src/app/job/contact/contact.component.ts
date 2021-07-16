@@ -81,7 +81,6 @@ export class ContactComponent implements OnInit {
         this.modal.hide();
         this.onClose();
         this.disabled =false;
-        console.log(response);
       }
     );
   }

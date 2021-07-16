@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.translateService.onLangChange.subscribe(() => {
       this.changeTitle();
     });
 
