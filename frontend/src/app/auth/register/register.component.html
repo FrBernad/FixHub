@@ -82,7 +82,7 @@
                     <span class="required-field">*</span>
                   </label>
                   <div class="input-group d-flex justify-content-start align-items-center">
-                    <input [type]="showPass1 ? 'password':'text'" class="form-control" name="password"
+                    <input autocomplete="on" [type]="showPass1 ? 'password':'text'" class="form-control" name="password"
                            placeholder="{{'registerForm.passwordPlaceHolder' | translate}}"
                            formControlName="password"/>
                     <div class="input-group-append">
@@ -109,7 +109,7 @@
                     <span class="required-field">*</span>
                   </label>
                   <div class="input-group d-flex justify-content-start align-items-center">
-                    <input [type]="showPass2 ? 'password':'text'" class="form-control" name="confirmPassword"
+                    <input autocomplete="on" [type]="showPass2 ? 'password':'text'" class="form-control" name="confirmPassword"
                            aria-describedby="password input"
                            formControlName="confirmPassword"/>
                     <div class="input-group-append">

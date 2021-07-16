@@ -17,7 +17,7 @@
           <form [formGroup]="loginForm" id="loginForm" (ngSubmit)="onSubmitLogin()">
             <div class="row">
               <div class="col-12">
-                <label for="email" class="mb-2">
+                <label class="mb-2">
                   {{ 'login.EmailText' | translate }}
                 </label>
                 <input formControlName="email" type="email" class="form-control mb-2"
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-12 px-0 d-flex justify-content-start align-items-center">
                       <div class="input-group d-flex justify-content-start align-items-center">
-                        <input formControlName="password" [type]="showPass ? 'password' : 'text'" class="form-control"
+                        <input autocomplete="on" formControlName="password" [type]="showPass ? 'password' : 'text'" class="form-control"
                                id="password" name="password"
                                aria-describedby="password input"/>
                         <div class="input-group-append">
