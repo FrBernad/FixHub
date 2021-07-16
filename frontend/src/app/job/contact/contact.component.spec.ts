@@ -1,16 +1,24 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ContactComponent} from './contact.component';
+import {ContactService} from "./contact.service";
+import {UserService} from "../../auth/services/user.service";
+import {TestingModule} from "../../testing.module";
 
 describe('ContactComponent', () => {
   let component: ContactComponent;
   let fixture: ComponentFixture<ContactComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContactComponent ]
+      declarations: [ContactComponent],
+      imports: [
+        TestingModule
+      ],
+      providers:[
+        ContactService,UserService
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

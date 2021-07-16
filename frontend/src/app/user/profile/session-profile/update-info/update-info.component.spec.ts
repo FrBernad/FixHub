@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {UpdateInfoComponent} from './update-info.component';
+import {TestingModule} from "../../../../testing.module";
 
 describe('UpdateInfoComponent', () => {
   let component: UpdateInfoComponent;
@@ -8,9 +9,12 @@ describe('UpdateInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UpdateInfoComponent ]
+      declarations: [UpdateInfoComponent],
+      imports: [
+        TestingModule
+      ],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

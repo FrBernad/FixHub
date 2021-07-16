@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NewFollowerNotificationCard} from './new-follower-notification-card.component';
+import {TestingModule} from "../../../testing.module";
 
 describe('NotificationCardComponent', () => {
   let component: NewFollowerNotificationCard;
@@ -8,7 +9,10 @@ describe('NotificationCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewFollowerNotificationCard ]
+      declarations: [ NewFollowerNotificationCard ],
+      imports:[
+        TestingModule
+      ]
     })
     .compileComponents();
   });
