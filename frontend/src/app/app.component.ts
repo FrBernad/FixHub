@@ -32,7 +32,8 @@ import {
   faEnvelope as farEnvelope,
   faEye as farEye,
   faEyeSlash as farEyeSlash,
-  faStar as farStar
+  faStar as farStar,
+  faBell as farBell
 } from '@fortawesome/free-regular-svg-icons';
 
 import {Router} from "@angular/router";
@@ -75,7 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
       fasChartLine, fasWrench, fasAddressBook, farStar,
       fasPen, fasCompass, fasClock, fasTrash, fasUpload,
       fasInfoCircle, fasExclamationCircle, farCheckCircle,
-      fasComment, fasLanguage
+      fasComment, fasLanguage, farBell
     );
 
     this.subs = this.userService.loading.subscribe((loading) => {

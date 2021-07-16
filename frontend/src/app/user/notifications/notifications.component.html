@@ -1,0 +1,63 @@
+<div class="container-lg notiContainer py-4">
+  <div *ngIf="!loading" class="row">
+    <div class="col-12">
+      <div class="container-fluid px-0">
+        <div class="row">
+          <div class="col-5 d-flex align-items-center justify-content-start">
+            <div class="dropdown">
+              <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                      type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false" style="width: 200px">
+                <span>{{'discover.filterBy'|translate}}</span>
+                <span class="resultQuery"
+                      *ngIf="!!npq.onlyNew else all">
+                  {{'account.notifications.filter.UNSEEN' | translate}}
+                </span>
+                <ng-template #all>
+                  <span class="resultQuery">{{'discover.all'|translate}}</span>
+                </ng-template>
+              </button>
+              <ul class="dropdown-menu limitSizeDropdown .dropdown-menu-end" aria-labelledby="categoryDropdown">
+                <li class="dropdown-item">
+                  <button (click)="onChangeFilter('')" class="dropdown-item">
+                    {{'discover.all'|translate}}
+                  </button>
+                </li>
+                <li *ngFor="let filter of filterOptions" class="dropdown-item">
+                  <button (click)="onChangeFilter(filter)" class="dropdown-item">
+                    {{'account.notifications.filter.' + filter | translate}}
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="npr.results.length > 0, else noResults" class="col-12 pt-5">
+      <div *ngFor="let notification of npr.results">
+        <div class="col-12 mt-3">
+          <app-notification-card [notification]="notification"></app-notification-card>
+        </div>
+        <div class="col-10">
+          <hr>
+        </div>
+      </div>
+      <div *ngIf="canLoadMore()" class="col-12 mt-4">
+        <button (click)="loadMore()">
+          {{ "account.notifications.more" | translate}}
+        </button>
+      </div>
+    </div>
+    <ng-template #noResults>
+      <div class="col-12 d-flex mt-4 align-items-center justify-content-center">
+        <div class="container h-100 mt-2 d-flex align-items-center justify-content-center noFollowsFound">
+          <p class="m-0 text-center p-4" style="font-size: 16px">
+            {{ "account.notifications.empty" | translate}}
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

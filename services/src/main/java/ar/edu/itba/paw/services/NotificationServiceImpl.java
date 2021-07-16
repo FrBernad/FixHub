@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.NotificationFilter;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -86,6 +87,11 @@ public class NotificationServiceImpl implements NotificationService {
         LOGGER.debug("Creating a new request status notification for user with id {} for the job contact with id {}",
             user.getId(),resource.getId());
         return createNotification(user,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_PROVIDER,LocalDateTime.now());
+    }
+
+    @Override
+    public int getUnseenNotificationsCount(User user) {
+        return notificationDao.getNotificationCountByUser(user, true);
     }
 }
 

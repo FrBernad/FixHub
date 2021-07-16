@@ -3,6 +3,19 @@
   font-size: 16px;
 }
 
+#navBarBell {
+  font-size: 18px;
+}
+
+.notCount {
+  top: 5px;
+  border: none!important;
+}
+
+a:hover div .notCount {
+  background-color: rgb(220,53,69,0.9)!important;
+}
+
 .navbarTop {
   position: relative;
   top: 0;

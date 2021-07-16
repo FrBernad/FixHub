@@ -24,6 +24,11 @@ const routes: Routes = [
           .then(m => m.DashboardModule)
       },
       {
+        path: 'user/notifications',
+        loadChildren: () => import("../../user/notifications/notifications.module")
+          .then(m => m.NotificationsModule)
+      },
+      {
         path: 'user/requests/:id',
         loadChildren: () => import("../../user/provider/request/request.module")
           .then(m => m.RequestModule)

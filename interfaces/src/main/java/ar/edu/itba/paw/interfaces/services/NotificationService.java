@@ -16,6 +16,8 @@ public interface NotificationService {
 
     Notification createRequestStatusChangeForUser(User user, JobContact resource);
 
+    int getUnseenNotificationsCount(User user);
+
     Optional<Notification> getNotificationById(Long id);
 
     int deleteNotificationById(Long id);

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {catchError, mergeMap, shareReplay, tap} from 'rxjs/operators';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Session} from '../../models/session.model';
 import jwtDecode from "jwt-decode";
@@ -204,13 +204,29 @@ export class AuthService {
     this.tokenExpirationTimer = null;
   }
 
-  autoLogout(expirationDuration: number) {
+  refreshToken(expirationDuration: number) {
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = setTimeout(() => {
-      this.logout();
-    }, expirationDuration);
+      this.http.post(
+        environment.apiBaseUrl + '/user/refreshSession',
+        {},
+        {
+          observe: "response"
+        }
+      ).pipe(
+        catchError(() => {
+            this.router.navigate(["/login"]);
+            return throwError("");
+          }
+        ),
+        mergeMap((res: HttpResponse<Object>) => {
+          this.handleSession(res);
+          return this.userService.populateUserData()
+        }, expirationDuration)
+      ).subscribe();
+    });
   }
 
   private handleAuthentication(token: string) {
@@ -219,7 +235,7 @@ export class AuthService {
     const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
 
     const expirationDate = new Date(new Date().getTime() + milliExpirationTime);
-    this.autoLogout(milliExpirationTime);
+    this.refreshToken(milliExpirationTime);
 
     const newSession = new Session(token, expirationDate);
     this.session.next(newSession);

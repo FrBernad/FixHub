@@ -729,7 +729,7 @@ public class UserSessionController {
         LOGGER.info("Accessed /user/notifications GET controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
-        final PaginatedSearchResult<Notification> results = searchService.getNotificationsByUser(user,onlyNew,page,pageSize);
+        final PaginatedSearchResult<Notification> results = searchService.getNotificationsByUser(user, onlyNew, page, pageSize);
 
         if (results == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -750,6 +750,20 @@ public class UserSessionController {
         return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<NotificationDto>>(resultsDto) {
         }, uriBuilder);
     }
+
+    @GET
+    @Path("/unseenNotifications")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getUnseenNotificationsByUser(
+    ) {
+        LOGGER.info("Accessed /user/notifications GET controller");
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+
+        final int count = notificationService.getUnseenNotificationsCount(user);
+
+        return Response.ok(count).build();
+    }
+
 
     @PUT
     @Path("/notifications")
