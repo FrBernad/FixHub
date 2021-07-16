@@ -16,9 +16,9 @@ public class ResourcesCacheFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(!request.getRequestURI().contains("index.html")){
+        if (!request.getRequestURI().contains("index.html") && !request.getRequestURI().contains("i18n")) {
             //Add 1 year cache time
-            response.addHeader("Cache-Control", "public, max-age="+MAX_TIME+", immutable");
+            response.addHeader("Cache-Control", "public, max-age=" + MAX_TIME + ", immutable");
         }
 
         filterChain.doFilter(request, response);
