@@ -64,7 +64,7 @@ public class UserController {
                 registerDto.getState(), registerDto.getCity());
         } catch (DuplicateUserException e) {
             LOGGER.warn("Error in registerDto RegisterForm, email is already in used");
-            throw new DuplicateUserException();//FIXME: agregar mensaje
+            throw new DuplicateUserException();
         }
 
         return Response.created(UserDto.getUserUriBuilder(user, uriInfo).build()).build();
@@ -76,7 +76,7 @@ public class UserController {
     public Response getUser(@PathParam("id") final long id) {
         LOGGER.info("Accessed /users/{} GET controller", id);
 
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         if (user.getRoles().contains(Roles.PROVIDER)) {
             LOGGER.info("Return provider with id {}", id);
@@ -93,12 +93,11 @@ public class UserController {
     public Response getUserProfileImage(@PathParam("id") final long id, @Context Request request) {
         LOGGER.info("Accessed /users/{}/profileImage GET controller", id);
 
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final Image img = user.getProfileImage();
 
         if (img == null) {
-//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -123,12 +122,11 @@ public class UserController {
     public Response getUserCoverImage(@PathParam("id") final long id, @Context Request request) {
         LOGGER.info("Accessed /users/{}/coverImage GET controller", id);
 
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new); //FIXME: agregar mensaje
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final Image img = user.getCoverImage();
 
         if (img == null) {
-//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -157,7 +155,7 @@ public class UserController {
     ) {
         LOGGER.info("Accessed /users/{}/followers GET controller page {} with pageSize {}", id, page, pageSize);
 
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<User> results = searchService.getUserFollowers(user, page, pageSize);
 
@@ -192,7 +190,7 @@ public class UserController {
     ) {
         LOGGER.info("Accessed /users/{}/following GET controller page {} with pageSize {}", id, page, pageSize);
 
-        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<User> results = searchService.getUserFollowing(user, page, pageSize);
 

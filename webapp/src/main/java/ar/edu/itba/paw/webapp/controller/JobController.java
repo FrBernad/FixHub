@@ -175,8 +175,8 @@ public class JobController {
         LOGGER.info("Accessed images/{} GET controller", id);
         Image img = imageService.getImageById(id).orElseThrow(ImageNotFoundException::new);
         LOGGER.info("Response image with id {}", id);
-//        Fixme: si no existe
         final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
+
 
         final CacheControl cacheControl = new CacheControl();
         cacheControl.setNoCache(true);
@@ -358,8 +358,8 @@ public class JobController {
         if(reviewDto == null) {
             throw new ContentExpectedException();
         }
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new); //FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
         Review review = reviewService.createReview(reviewDto.getDescription(), job, Integer.parseInt(reviewDto.getRating()), user);
         LOGGER.info("Create review with id {} in the job with id {}", review.getId(), id);
         return Response.created(ReviewDto.getReviewUriBuilder(review, uriInfo).build()).build();

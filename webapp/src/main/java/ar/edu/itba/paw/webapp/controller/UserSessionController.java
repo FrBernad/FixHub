@@ -89,7 +89,7 @@ public class UserSessionController {
                 new UsernamePasswordAuthenticationToken(userAuthDto.getEmail(), userAuthDto.getPassword())
             );
 
-            final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+            final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
 
             final Response.ResponseBuilder responseBuilder = Response.noContent();
 
@@ -114,7 +114,7 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         userService.updateUserInfo(
             new UserInfo(userInfoDto.getName(), userInfoDto.getSurname(),
                 userInfoDto.getCity(), userInfoDto.getState(), userInfoDto.getPhoneNumber()),
@@ -129,7 +129,7 @@ public class UserSessionController {
     public Response getUser() {
         LOGGER.info("Accessed /user/ GET controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         if (user.getRoles().contains(Roles.PROVIDER)) {
             LOGGER.info("Return provider with id {} in /user/ GET controller", user.getId());
 
@@ -203,7 +203,7 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);//FIXME: chequear token
+        final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
 
@@ -223,7 +223,7 @@ public class UserSessionController {
     public Response resendUserVerification() {
         LOGGER.info("Accessed /user/verify POST controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         userService.resendVerificationToken(user);
         return Response.noContent().build();
@@ -241,7 +241,7 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final User user = userService.getUserByEmail(passwordResetDto.getEmail()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(passwordResetDto.getEmail()).orElseThrow(UserNotFoundException::new);
 
         userService.generateNewPassword(user);
 
@@ -259,7 +259,7 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final User user = userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);
 
         return Response.noContent().build();
     }
@@ -270,12 +270,11 @@ public class UserSessionController {
     public Response getUserCoverImage(@Context Request request) {
         LOGGER.info("Accessed /user/coverImage GET controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final Image img = user.getProfileImage();
 
         if (img == null) {
-//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -299,7 +298,7 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response updateUserCoverImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}") @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
         LOGGER.info("Accessed /user/coverImage PUT controller");
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = coverImage.getEntityAs(InputStream.class);
         userService.updateCoverImage(new NewImageDto(StreamUtils.copyToByteArray(in), coverImage.getMediaType().toString()), user);
         return Response.ok().build();
@@ -311,12 +310,11 @@ public class UserSessionController {
     public Response getUserProfileImage(@Context Request request) {
         LOGGER.info("Accessed /user/profileImage GET controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final Image img = user.getProfileImage();
 
         if (img == null) {
-//            FIXME: LANZAR EXCECPION DE AVATAR NOT FOUND
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -356,7 +354,7 @@ public class UserSessionController {
     ) {
         LOGGER.info("Accessed /user/jobs/requests GET controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> results = searchService.getClientsByProvider(user, status, order, page, pageSize);
 
@@ -394,18 +392,18 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         final JobStatus newStatus = status.getStatus();
 
 
         if (newStatus.equals(CANCELED)) {
             //Solo el usuario puede cancelar el request
             if (!user.getId().equals(jobContact.getUser().getId())) {
-                throw new IllegalOperationException(); //FIXME: agregar mensaje
+                throw new IllegalOperationException();
             }
         } else if (!user.getId().equals(jobContact.getProvider().getId())) {
-            throw new IllegalOperationException(); //FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
 
 
@@ -434,11 +432,11 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRequest(@PathParam("id") final long contactId) {
 
-        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         if (!user.getId().equals(jobContact.getProvider().getId()) && !user.getId().equals(jobContact.getUser().getId())) {
-            throw new IllegalOperationException(); //FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
 
         final JobContactDto jobContactDto = new JobContactDto(jobContact, uriInfo, securityContext);
@@ -458,7 +456,7 @@ public class UserSessionController {
 
         LOGGER.info("Accessed /user/jobs/sentRequests GET controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<JobContact> results = searchService.getProvidersByClient(user, status, order, page, pageSize);
 
@@ -497,7 +495,7 @@ public class UserSessionController {
     ) {
         LOGGER.info("Accessed /user/jobs GET controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Job> results = searchService.getJobsByProvider(query, order, user, page, pageSize);
 
@@ -533,13 +531,12 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
         if (user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User with id {} is already a provider", user.getId());
-            throw new IllegalOperationException();//FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
-//        FIXME: si ya es provider lanzar una excepción
 
         List<Long> citiesId = new ArrayList<>();
         for (CityDto city : joinDto.getLocation().getCities()) {
@@ -573,11 +570,10 @@ public class UserSessionController {
 
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
-//        FIXME: si no es provider lanzar una excepcion
 
         if (!user.hasRole(Roles.PROVIDER)) {
             LOGGER.warn("User {} is not a provider", user.getId());
-            throw new IllegalOperationException();//FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
 
         List<Long> citiesId = new ArrayList<>();
@@ -602,9 +598,9 @@ public class UserSessionController {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
 
-        final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
         if (user.getId().equals(toFollow.getId())) {
-            throw new IllegalOperationException();//FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
         userService.followUser(user, toFollow);
 
@@ -618,11 +614,11 @@ public class UserSessionController {
     public Response unfollowUser(@PathParam("id") long id) {
         LOGGER.info("Accessed /user/following/{} DELETE controller", id);
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
-        final User toUnfollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        final User toUnfollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         if (user.getId().equals(toUnfollow.getId())) {
-            throw new IllegalOperationException();//FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
         userService.unfollowUser(user, toUnfollow);
 
@@ -634,7 +630,7 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getContactInfo() {
         LOGGER.info("Accessed /user/contactInfo GET controller");
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
 
         final Collection<ContactInfoDto> contactInfoCollection = ContactInfoDto.mapCollectionInfoToDto(user.getContactInfo());
@@ -704,10 +700,10 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getNotification(@PathParam("id") long id) {
         LOGGER.info("Accessed /user/notification/{} GET controller", id);
-        Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);//FIXME: agregar mensaje
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         if (!notification.getUser().getId().equals(user.getId())) {
-            throw new IllegalOperationException();//FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
 
         return Response.ok(new NotificationDto(notification, uriInfo, securityContext)).build();
@@ -718,10 +714,10 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response markNotificationAsSeen(@PathParam("id") long id) {
         LOGGER.info("Accessed /user/notification/{} PUT controller", id);
-        Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);//FIXME: agregar mensaje
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         if (!notification.getUser().getId().equals(user.getId())) {
-            throw new IllegalOperationException();//FIXME: agregar mensaje
+            throw new IllegalOperationException();
         }
         notificationService.markNotificationAsSeen(notification);
         return Response.ok().build();
@@ -737,7 +733,7 @@ public class UserSessionController {
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
         LOGGER.info("Accessed /user/notifications GET controller");
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final PaginatedSearchResult<Notification> results = searchService.getNotificationsByUser(user, onlyNew, page, pageSize);
 
@@ -767,7 +763,7 @@ public class UserSessionController {
     public Response getUnseenNotificationsByUser(
     ) {
         LOGGER.info("Accessed /user/notifications GET controller");
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final int count = notificationService.getUnseenNotificationsCount(user);
 
@@ -780,7 +776,7 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response markAllNotificationsAsSeen() {
         LOGGER.info("Accessed /user/notifications PUT controller");
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         notificationService.markAllNotificationsAsSeen(user);
         return Response.ok().build();
     }

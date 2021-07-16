@@ -48,7 +48,7 @@ public class LocationsController {
     public Response getStateCities(@PathParam("id") final long id) {
         LOGGER.info("Accessed /locations/state/{}/cities GET controller",id);
 
-        State state = locationService.getStateById(id).orElseThrow(StateNotFoundException::new);//FIXME: agregar mensaje
+        State state = locationService.getStateById(id).orElseThrow(StateNotFoundException::new);
 
         Collection<City> cities = locationService.getCitiesByState(state);
 
