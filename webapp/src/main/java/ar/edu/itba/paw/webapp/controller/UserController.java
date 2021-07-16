@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.exceptions.ContentExpectedException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.services.ImageService;
@@ -52,6 +53,9 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response registerUser(@Valid final RegisterDto registerDto) throws DuplicateUserException {
         LOGGER.info("Accessed /users/ POST controller");
+        if(registerDto == null) {
+            throw new ContentExpectedException();
+        }
         User user;
         try {
             user = userService.createUser(registerDto.getPassword(),

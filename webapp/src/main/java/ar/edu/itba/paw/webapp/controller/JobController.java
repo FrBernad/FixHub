@@ -209,6 +209,10 @@ public class JobController {
 
         LOGGER.info("Accessed /jobs/{}/contact POST controller", id);
 
+        if(contact == null){
+            throw new ContentExpectedException();
+        }
+
         final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
 
@@ -351,6 +355,9 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response jobReviewPost(@PathParam("id") long id, @Valid final NewReviewDto reviewDto) {
         LOGGER.info("Accessed /jobs/{}/reviews POST controller", id);
+        if(reviewDto == null) {
+            throw new ContentExpectedException();
+        }
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new); //FIXME: agregar mensaje
         Review review = reviewService.createReview(reviewDto.getDescription(), job, Integer.parseInt(reviewDto.getRating()), user);

@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
-import ar.edu.itba.paw.interfaces.exceptions.NoContactFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.NotificationNotFoundException;
-import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.exceptions.*;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
@@ -83,6 +80,10 @@ public class UserSessionController {
     public Response loginUser(UserAuthDto userAuthDto) {
         LOGGER.info("Accessed /user POST controller");
 
+        if(userAuthDto == null) {
+            throw new ContentExpectedException();
+        }
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userAuthDto.getEmail(), userAuthDto.getPassword())
@@ -108,6 +109,10 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response updateUser(@Valid UserInfoDto userInfoDto) {
         LOGGER.info("Accessed /user/ PUT controller");
+
+        if(userInfoDto == null) {
+            throw new ContentExpectedException();
+        }
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
         userService.updateUserInfo(
@@ -194,6 +199,10 @@ public class UserSessionController {
     public Response verifyUser(TokenDto tokenDto) {
         LOGGER.info("Accessed /user/verify PUT controller");
 
+        if(tokenDto == null) {
+            throw new ContentExpectedException();
+        }
+
         final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);//FIXME: chequear token
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
@@ -228,6 +237,10 @@ public class UserSessionController {
     public Response sendResetPasswordEmail(@Valid final PasswordResetEmailDto passwordResetDto) {
         LOGGER.info("Accessed /user/resetPassword POST controller");
 
+        if(passwordResetDto == null) {
+            throw new ContentExpectedException();
+        }
+
         final User user = userService.getUserByEmail(passwordResetDto.getEmail()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         userService.generateNewPassword(user);
@@ -241,6 +254,10 @@ public class UserSessionController {
     @Path("/resetPassword")
     public Response resetPassword(@Valid final PasswordResetDto passwordResetDto) {
         LOGGER.info("Accessed /user/resetPassword PUT controller");
+
+        if(passwordResetDto == null) {
+            throw new ContentExpectedException();
+        }
 
         final User user = userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
@@ -368,6 +385,10 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
         LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
+
+        if(status == null) {
+            throw new ContentExpectedException();
+        }
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
@@ -498,6 +519,10 @@ public class UserSessionController {
     public Response join(@Valid final JoinDto joinDto) {
         LOGGER.info("Accessed /user/join POST controller");
 
+        if(joinDto == null) {
+            throw new ContentExpectedException();
+        }
+
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
         if (user.hasRole(Roles.PROVIDER)) {
@@ -531,6 +556,11 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateProviderInfo(final JoinDto joinDto) {
         LOGGER.info("Accessed /user/account/provider PUT controller");
+
+        if(joinDto == null) {
+            throw new ContentExpectedException();
+        }
+
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
 //        FIXME: si no es provider lanzar una excepcion
