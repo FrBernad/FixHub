@@ -96,9 +96,8 @@ public class NotificationDaoImpl implements NotificationDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        final String hqlFilterQuery = getNotificationHqlFilterQuery(onlyNew);
 
-        return em.createQuery("from Notification n where id IN :filteredIds " + hqlFilterQuery + " order by n.seen asc, n.date desc, n.id desc", Notification.class)
+        return em.createQuery("from Notification n where id IN :filteredIds order by n.seen asc, n.date desc, n.id desc", Notification.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
     }
@@ -141,13 +140,6 @@ public class NotificationDaoImpl implements NotificationDao {
         return filterQuery.toString();
     }
 
-    String getNotificationHqlFilterQuery(boolean onlyNew) {
-        final StringBuilder filterQuery = new StringBuilder();
-        if (onlyNew) {
-            filterQuery.append(" AND n.seen == true ");
-        }
-        return filterQuery.toString();
-    }
 
 }
 
