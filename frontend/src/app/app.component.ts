@@ -36,10 +36,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 import {Router} from "@angular/router";
-import {Title} from "@angular/platform-browser";
 import {AuthService} from "./auth/services/auth.service";
-import {PreviousRouteService} from "./auth/services/previous-route.service";
-import {DiscoverService} from "./discover/discover.service";
 import {Subscription} from "rxjs";
 import {UserService} from "./auth/services/user.service";
 

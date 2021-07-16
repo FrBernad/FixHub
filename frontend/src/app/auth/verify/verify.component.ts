@@ -26,7 +26,7 @@ export class VerifyComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.translateService.get("account.password.resetRequest.title")
+    this.translateService.get("account.verify.title")
       .subscribe(
         (routeTitle) => {
           this.titleService.setTitle('Fixhub | ' + routeTitle)

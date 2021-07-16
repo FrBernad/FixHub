@@ -38,7 +38,7 @@ export class ResetPasswordComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    this.translateService.get("account.verify.title")
+    this.translateService.get("account.password.resetRequest.title")
       .subscribe(
         (routeTitle) => {
           this.titleService.setTitle('Fixhub | ' + routeTitle)
@@ -88,6 +88,7 @@ export class ResetPasswordComponent implements OnInit {
     let modal = new bootstrap.Modal(document.getElementById('resultsModal'));
     this.authService.resetPassword(this.token, this.resetPasswordForm.get("password").value).subscribe(() => {
       modal.show();
+      this.success = true;
     }, () => {
       modal.show();
       this.disable = false;
