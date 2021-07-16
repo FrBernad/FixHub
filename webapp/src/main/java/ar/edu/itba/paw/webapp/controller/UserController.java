@@ -3,8 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.exceptions.ContentExpectedException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.interfaces.services.ImageService;
-import ar.edu.itba.paw.interfaces.services.LocationService;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.image.Image;
@@ -34,12 +32,6 @@ public class UserController {
 
     @Autowired
     private SearchService searchService;
-
-    @Autowired
-    private ImageService imageService;
-
-    @Autowired
-    private LocationService locationService;
 
     @Context
     private UriInfo uriInfo;

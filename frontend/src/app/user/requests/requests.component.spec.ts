@@ -1,11 +1,9 @@
-import {ComponentFixture, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RequestsComponent} from './requests.component';
-import {BrowserModule, Title} from "@angular/platform-browser";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {RouterTestingModule} from "@angular/router/testing";
+import {Title} from "@angular/platform-browser";
 import {ContactService} from "../../job/contact/contact.service";
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TranslateService} from "@ngx-translate/core";
 import {of} from "rxjs";
 import {TestingModule} from "../../testing.module";
 

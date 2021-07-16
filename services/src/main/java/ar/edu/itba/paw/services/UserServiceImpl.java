@@ -327,9 +327,8 @@ public class UserServiceImpl implements UserService {
 
         notificationService.createNewRequestNotification(provider,jobContact);
 
-        emailService.sendJobRequestEmail(auxContactDto, LocaleContextHolder.getLocale());
-        emailService.sendJobRequestConfirmationEmail(auxContactDto, LocaleContextHolder.getLocale());
-
+        emailService.sendJobRequestEmail(jobContact, LocaleContextHolder.getLocale());
+        emailService.sendJobRequestConfirmationEmail(jobContact, LocaleContextHolder.getLocale());
     }
 
     @Override

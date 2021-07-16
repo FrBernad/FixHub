@@ -115,6 +115,49 @@ public class JobController {
         }, uriBuilder);
     }
 
+
+    @POST
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response newJob(
+        @NotEmpty(message = "{NotEmpty.newJob.jobProvided}")
+        @Size(max = 50, message = "{Size.newJob.jobProvided}")
+        @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message = "{Pattern.newJob.jobProvided}")
+        @FormDataParam("jobProvided") final String jobProvided,
+        @NotNull(message = "{NotNull.newJob.jobCategory}")
+        @FormDataParam("jobCategory") final JobCategory jobCategory,
+        @NotNull(message = "{NotNull.newJob.price}")
+        @Range(min = 1, max = 999999, message = "{Range.newJob.price}")
+        @FormDataParam("price") final BigDecimal price,
+        @NotEmpty(message = "{NotEmpty.newJob.description}")
+        @Size(max = 300, message = "{Size.newJob.description}")
+        @FormDataParam("description") final String description,
+        @NotNull(message = "{NotNull.newJob.paused}")
+        @DefaultValue("false")
+        @FormDataParam("paused") final Boolean paused,
+        @Size(max = 6, message = "{Size.newJob.images}")
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}")
+        @FormDataParam("images")
+            List<FormDataBodyPart> images
+    ) throws IOException {
+        LOGGER.info("Accessed /jobs/ POST controller");
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new); //FIXME agregar mensaje
+
+        List<NewImageDto> imagesToUpload = new LinkedList<>();
+
+        if (images != null) {
+            for (FormDataBodyPart part : images) {
+                InputStream in = part.getEntityAs(InputStream.class);
+                imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
+            }
+        }
+
+        final Job job = jobService.createJob(jobProvided, jobCategory, description, price, paused, user, imagesToUpload);
+        LOGGER.info("Created job with id {}", job.getId());
+        return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
+
+    }
+
     @GET
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -133,6 +176,66 @@ public class JobController {
         return Response.ok(jobDto).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateJob(
+        @PathParam("id") final long id,
+        @NotEmpty(message = "{NotEmpty.updateJob.jobProvided}")
+        @Size(max = 50, message = "{Size.updateJob.jobProvided}")
+        @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message = "{Pattern.updateJob.jobProvided}")
+        @FormDataParam("jobProvided") final String jobProvided,
+        @NotNull(message = "{NotNull.updateJob.price}")
+        @Range(min = 1, max = 999999, message = "{Size.updateJob.price}")
+        @FormDataParam("price") final BigDecimal price,
+        @NotEmpty(message = "{NotEmpty.updateJob.description}")
+        @Size(max = 300, message = "{Size.updateJob.description}")
+        @FormDataParam("description") final String description,
+        @NotNull(message = "{NotNull.updateJob.paused}")
+        @DefaultValue("false")
+        @FormDataParam("paused") final Boolean paused,
+        @Size(max = 6, message = "{Size.updateJob.images}")
+        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{Size.updateJob.images}")
+        @FormDataParam("images") List<FormDataBodyPart> images,
+        @FormDataParam("imagesIdToDelete") List<Long> imagesIdToDelete
+    ) {
+        LOGGER.info("Accessed /jobs/{}/ PUT controller", id);
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).
+            orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
+        final Job job = jobService.getJobById(id).
+            orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
+
+        if (!job.getProvider().getId().equals(user.getId())) {
+            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",
+                user.getId(), id, job.getProvider().getId());
+            throw new IllegalOperationException();//FIXME agregar mensaje
+        }
+
+        List<NewImageDto> imagesToUpload = new LinkedList<>();
+
+        if (images != null) {
+            for (FormDataBodyPart part : images) {
+                InputStream in = part.getEntityAs(InputStream.class);
+                try {
+                    imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
+                } catch (IOException e) {
+                    LOGGER.error("Error getting bytes from images");
+                    throw new ServerInternalException();//FIXME agregar mensaje
+                }
+            }
+        }
+
+        List<Long> imagesToDelete = imagesIdToDelete == null ? new LinkedList<>() : imagesIdToDelete;
+
+        try {
+            jobService.updateJob(jobProvided, description, price, paused, imagesToUpload, job, imagesToDelete);
+        } catch (MaxImagesPerJobException e) {
+            LOGGER.warn("Error max Images per job reached");
+            throw new MaxImagesPerJobException();//FIXME agregar mensaje;
+        }
+        LOGGER.info("The job with id {} has been updated successfully", id);
+        return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
+    }
 
     @GET
     @Path("/{id}/reviews")
@@ -209,7 +312,7 @@ public class JobController {
 
         LOGGER.info("Accessed /jobs/{}/contact POST controller", id);
 
-        if(contact == null){
+        if (contact == null) {
             throw new ContentExpectedException();
         }
 
@@ -237,125 +340,12 @@ public class JobController {
         return Response.created(JobDto.getContactUriBuilder(job, uriInfo).build()).build();
     }
 
-    @POST
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response newJob(
-        @NotEmpty(message="{NotEmpty.newJob.jobProvided}")
-        @Size(max = 50, message="{Size.newJob.jobProvided}")
-        @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message="{Pattern.newJob.jobProvided}")
-        @FormDataParam("jobProvided")
-        final String jobProvided,
-        @NotNull(message="{NotNull.newJob.jobCategory}")
-        @FormDataParam("jobCategory")
-        final JobCategory jobCategory,
-        @NotNull(message="{NotNull.newJob.price}")
-        @Range(min = 1, max = 999999, message="{Range.newJob.price}")
-        @FormDataParam("price")
-        final BigDecimal price,
-        @NotEmpty(message = "{NotEmpty.newJob.description}")
-        @Size(max = 300, message = "{Size.newJob.description}")
-        @FormDataParam("description") final String description,
-        @NotNull(message = "{NotNull.newJob.paused}")
-        @DefaultValue("false")
-        @FormDataParam("paused")
-        final Boolean paused,
-        @Size(max = 6, message="{Size.newJob.images}")
-        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message="{ContentType.newJob.images}")
-        @FormDataParam("images")
-            List<FormDataBodyPart> images
-    ) throws IOException {
-        LOGGER.info("Accessed /jobs/ POST controller");
-
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new); //FIXME agregar mensaje
-
-        List<NewImageDto> imagesToUpload = new LinkedList<>();
-
-        if (images != null) {
-            for (FormDataBodyPart part : images) {
-                InputStream in = part.getEntityAs(InputStream.class);
-                imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
-            }
-        }
-
-        final Job job = jobService.createJob(jobProvided, jobCategory, description, price, paused, user, imagesToUpload);
-        LOGGER.info("Created job with id {}", job.getId());
-        return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
-
-    }
-
-    @PUT
-    @Path("/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response updateJob(
-        @PathParam("id") final long id,
-        @NotEmpty(message = "{NotEmpty.updateJob.jobProvided}")
-        @Size(max = 50, message = "{Size.updateJob.jobProvided}")
-        @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message = "{Pattern.updateJob.jobProvided}")
-        @FormDataParam("jobProvided") final String jobProvided,
-        @NotNull(message = "{NotNull.updateJob.price}")
-        @Range(min = 1, max = 999999, message = "{Size.updateJob.price}")
-        @FormDataParam("price")
-        final BigDecimal price,
-        @NotEmpty(message = "{NotEmpty.updateJob.description}")
-        @Size(max = 300, message = "{Size.updateJob.description}")
-        @FormDataParam("description") final String description,
-        @NotNull(message = "{NotNull.updateJob.paused}")
-        @DefaultValue("false")
-        @FormDataParam("paused") final Boolean paused,
-        @Size(max = 6, message = "{Size.updateJob.images}")
-        @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{Size.updateJob.images}")
-        @FormDataParam("images")
-            List<FormDataBodyPart> images,
-        @FormDataParam("imagesIdToDelete")
-            List<Long> imagesIdToDelete
-    ) {
-
-
-        LOGGER.info("Accessed /jobs/{}/ PUT controller", id);
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).
-            orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
-        final Job job = jobService.getJobById(id).
-            orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
-
-        if (!job.getProvider().getId().equals(user.getId())) {
-            LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",
-                user.getId(), id, job.getProvider().getId());
-            throw new IllegalOperationException();//FIXME agregar mensaje
-        }
-
-        List<NewImageDto> imagesToUpload = new LinkedList<>();
-
-        if (images != null) {
-            for (FormDataBodyPart part : images) {
-                InputStream in = part.getEntityAs(InputStream.class);
-                try {
-                    imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
-                } catch (IOException e) {
-                    LOGGER.error("Error getting bytes from images");
-                    throw new ServerInternalException();//FIXME agregar mensaje
-                }
-
-            }
-        }
-
-        List<Long> imagesToDelete = imagesIdToDelete == null ? new LinkedList<>() : imagesIdToDelete;
-
-        try {
-            jobService.updateJob(jobProvided, description, price, paused, imagesToUpload, job, imagesToDelete);
-        } catch (MaxImagesPerJobException e) {
-            LOGGER.warn("Error max Images per job reached");
-            throw new MaxImagesPerJobException();//FIXME agregar mensaje;
-        }
-        LOGGER.info("The job with id {} has been updated successfully", id);
-        return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
-    }
-
     @Path("/{id}/reviews")
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response jobReviewPost(@PathParam("id") long id, @Valid final NewReviewDto reviewDto) {
         LOGGER.info("Accessed /jobs/{}/reviews POST controller", id);
-        if(reviewDto == null) {
+        if (reviewDto == null) {
             throw new ContentExpectedException();
         }
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);

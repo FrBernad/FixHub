@@ -5,7 +5,7 @@ import {UserService} from '../services/user.service';
 import {AuthService} from '../services/auth.service';
 import {PreviousRouteService} from '../services/previous-route.service';
 import {Title} from "@angular/platform-browser";
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {TranslateService} from "@ngx-translate/core";
 import {NotificationsService} from "../../user/notifications/notifications.service";
 
 @Component({

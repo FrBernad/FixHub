@@ -17,9 +17,9 @@ public interface EmailService {
 
     void sendProviderNotificationEmail(User user, Locale locale);
 
-    void sendJobRequestConfirmationEmail(AuxContactDto auxContactDto, Locale locale);
+    void sendJobRequestConfirmationEmail(JobContact jobContact, Locale locale);
 
-    void sendJobRequestEmail(AuxContactDto auxContactDto, Locale locale);
+    void sendJobRequestEmail(JobContact jobContact, Locale locale);
 
     void sendUserJobCancellationEmail(JobContact jobContact, Locale locale);
 

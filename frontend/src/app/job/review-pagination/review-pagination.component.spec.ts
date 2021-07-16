@@ -1,8 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ReviewPaginationComponent} from './review-pagination.component';
-import {ProviderDetails, User} from "../../models/user.model";
-import {ContactInfo} from "../../models/contact-info.model";
 import {Job} from "../../models/job.model";
 import {TestingModule} from "../../testing.module";
 

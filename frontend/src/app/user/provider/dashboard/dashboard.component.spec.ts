@@ -1,19 +1,13 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 
 import {DashboardComponent} from './dashboard.component';
-import {BrowserModule, Title} from "@angular/platform-browser";
-import {FontAwesomeTestingModule} from "@fortawesome/angular-fontawesome/testing";
+import {Title} from "@angular/platform-browser";
 import {ContactInfo} from "../../../models/contact-info.model";
 import {ProviderDetails, User} from "../../../models/user.model";
-import {ReactiveFormsModule} from "@angular/forms";
-import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {UserService} from "../../../auth/services/user.service";
-import {JobService} from "../../../job/job.service";
 import {TranslateService} from "@ngx-translate/core";
-import {BehaviorSubject, of} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {DiscoverService} from "../../../discover/discover.service";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {RouterTestingModule} from "@angular/router/testing";
 import {TestingModule} from "../../../testing.module";
 
 const fakeProviderDetails: ProviderDetails = {

@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.exceptions.*;
-import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.interfaces.services.JobService;
+import ar.edu.itba.paw.interfaces.services.NotificationService;
+import ar.edu.itba.paw.interfaces.services.SearchService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
@@ -57,9 +60,6 @@ public class UserSessionController {
 
     @Autowired
     private JwtUtil jwtUtil;
-
-    @Autowired
-    private LocationService locationService;
 
     @Autowired
     private SearchService searchService;
@@ -229,7 +229,6 @@ public class UserSessionController {
         return Response.noContent().build();
     }
 
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -259,7 +258,7 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        final User user = userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);
+        userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);
 
         return Response.noContent().build();
     }
@@ -405,7 +404,6 @@ public class UserSessionController {
         } else if (!user.getId().equals(jobContact.getProvider().getId())) {
             throw new IllegalOperationException();
         }
-
 
         switch (newStatus) {
             case FINISHED:
@@ -590,9 +588,9 @@ public class UserSessionController {
 
     }
 
-    @Produces(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/following/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response followUser(@PathParam("id") long id) {
         LOGGER.info("Accessed /user/following/{} PUT controller", id);
 
@@ -608,9 +606,9 @@ public class UserSessionController {
         return Response.noContent().build();
     }
 
-    @Produces(MediaType.APPLICATION_JSON)
     @DELETE
     @Path("/following/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response unfollowUser(@PathParam("id") long id) {
         LOGGER.info("Accessed /user/following/{} DELETE controller", id);
 
@@ -769,7 +767,6 @@ public class UserSessionController {
 
         return Response.ok(new NotificationsCountDto(count)).build();
     }
-
 
     @PUT
     @Path("/notifications")

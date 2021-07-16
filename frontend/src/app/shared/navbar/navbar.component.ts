@@ -3,8 +3,6 @@ import {AuthService} from "../../auth/services/auth.service";
 import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
-import {Languages} from "../../models/languages-enum.model";
-import {TranslateService} from "@ngx-translate/core";
 import {NotificationsService} from "../../user/notifications/notifications.service";
 
 @Component({

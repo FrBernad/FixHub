@@ -245,8 +245,8 @@
                                                         <span
                                                                 style="color: #666666; font-size: 18px ;line-height: 19.6px;">
                                                             <span
-                                                                style="font-size: 18px; line-height: 25.2px;"
-                                                                th:text="${providerName}">
+                                                                    style="font-size: 18px; line-height: 25.2px;"
+                                                                    th:text="${providerName}">
                                                             </span>
                                                         </span>
                                                     </p>
@@ -259,7 +259,7 @@
                                                                 th:href="${jobURL}"
                                                                 th:text="${providerJob}"
                                                                 style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #000000;"
-                                                                >
+                                                        >
                                                         </a>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
@@ -271,25 +271,30 @@
                                                     <p style="font-size: 14px; line-height: 140%;"> <span
                                                             th:text="#{jobRequest.info.name}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
-                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;" th:text="${name}"></span>
-                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;" th:text="${surname}"></span>
+                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;"
+                                                              th:text="${name}"></span>
+                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;"
+                                                              th:text="${surname}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"> <span
                                                             th:text="#{jobRequest.info.email}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
-                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;" th:text="${email}"></span>
+                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;"
+                                                              th:text="${email}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             th:text="#{jobRequest.info.phone}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;">
                                                     </span>
-                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;" th:text="${phoneNumber}"></span>
+                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;"
+                                                              th:text="${phoneNumber}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             th:text="#{jobRequest.info.address}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;">
                                                    </span>
-                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;" th:text="${address}"></span>
+                                                        <span style="font-size: 16px; line-height: 25.2px; color: #666666;"
+                                                              th:text="${address}"></span>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             th:text="#{jobRequest.info.profile}"
@@ -306,6 +311,12 @@
                                                     <p style="font-size: 14px; line-height: 140%;"><span
                                                             th:text="#{jobRequest.advice}"
                                                             style="font-size: 18px; line-height: 25.2px; color: #666666;"></span>
+                                                        <a
+                                                        th:href="${requestURL}"
+                                                        th:text="#{request.see}"
+                                                        style="font-size: 18px; font-weight: bold; line-height: 25.2px; color: #000000;"
+                                                        >
+                                                        </a>
                                                     </p>
                                                     <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                                 </div>
