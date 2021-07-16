@@ -15,6 +15,7 @@ export class NewJobRequestNotificationCardComponent implements OnInit {
   @Input("notification") notification: Notification;
 
   jobRequest: JobRequest;
+  isLoading=true;
 
   constructor(private contactService: ContactService,
               private notificationService: NotificationsService,
@@ -24,6 +25,7 @@ export class NewJobRequestNotificationCardComponent implements OnInit {
   ngOnInit(): void {
     this.contactService.getProviderJobRequest(this.notification.resource).subscribe((jobRequest) => {
       this.jobRequest = jobRequest;
+      this.isLoading=false;
     });
   }
 

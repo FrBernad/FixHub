@@ -1,19 +1,24 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="sectionTitle">
-        {{ 'account.notifications.jobRequest.new.title' | translate }}
-      </h1>
+  <ng-template [ngIf]="isLoading" [ngIfElse]="alreadyFetched">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-template>
+  <ng-template #alreadyFetched>
+    <div class="row">
+      <div class="col-12">
+        <h1 class="sectionTitle">
+          {{ 'account.notifications.jobRequest.new.title' | translate }}
+        </h1>
+      </div>
+      <div class="col-12">
+        <a [routerLink]="'/user/'+jobRequest.provider.id" class="contactInfo names">
+          {{ jobRequest.provider.name }} {{ jobRequest.provider.surname }}
+        </a>
+        {{'account.notifications.jobRequest.new.body' | translate }}
+        <a class="contactInfo names" (click)="notificationClick()" style="cursor: pointer;">
+          {{'account.notifications.jobRequest.new.body2' | translate }}
+        </a>
+      </div>
     </div>
-    <div class="col-12">
-      <a [routerLink]="'/user/'+jobRequest.provider.id" class="contactInfo names">
-        {{ jobRequest.provider.name }} {{ jobRequest.provider.surname }}
-      </a>
-      {{'account.notifications.jobRequest.new.body' | translate }}
-      <a class="contactInfo names" (click)="notificationClick()" style="cursor: pointer;">
-        {{'account.notifications.jobRequest.new.body2' | translate }}
-      </a>
-      {{ jobRequest.message }}
-    </div>
-  </div>
+  </ng-template>
+
 </div>
