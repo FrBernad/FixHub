@@ -176,7 +176,7 @@
                   <div class="form-group">
                     <input type="hidden" id="paused" value="job.paused"/>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="job.paused" id="pauseCheck"
+                      <input class="form-check-input" formControlName="paused" type="checkbox" value="job.paused" id="pauseCheck"
                              [attr.checked]="job.paused ? 'checked': null">
                       <label class="form-check-label" for="pauseCheck">
                         {{ 'job.editPaused' | translate }}

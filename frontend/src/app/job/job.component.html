@@ -88,16 +88,21 @@
                     <ng-template [ngIf]="!!loggedUser">
                       <div class="col-12 d-flex justify-content-center align-items-center">
                         <ng-template [ngIf]="loggedUser.id==job.provider.id" [ngIfElse]="notProvider">
-                            <button class="contactBtn" style="text-decoration: none" [routerLink]="['/jobs',job.id,'edit']">
-                              {{ 'job.editTitle' | translate }}
-                            </button>
+                          <button class="contactBtn" style="text-decoration: none"
+                                  [routerLink]="['/jobs',job.id,'edit']">
+                            {{ 'job.editTitle' | translate }}
+                          </button>
                         </ng-template>
                       </div>
                       <ng-template #notProvider>
-                        <button type="button" class="contactBtn" data-bs-toggle="modal" data-bs-target="#contactModal">
-                          {{ 'job.contact' | translate }}
-                        </button>
-                        <app-contact [job]="job"></app-contact>
+                        <ng-template [ngIf]="!job.paused">
+                          <button type="button" class="contactBtn" data-bs-toggle="modal"
+                                  data-bs-target="#contactModal">
+                            {{ 'job.contact' | translate }}
+                          </button>
+                          <app-contact [job]="job"></app-contact>
+                        </ng-template>
+
                       </ng-template>
                     </ng-template>
                     <ng-template [ngIf]="job.paused">
