@@ -34,7 +34,7 @@ export class ChooseCityComponent implements OnInit {
     });
 
 
-    if (this.isProvider != null && this.isProvider) {
+    if (this.isProvider != null && this.isProvider && this.chosenState == this.user.providerDetails.location.state) {
       this.user.providerDetails.location.cities.forEach((city) => {
         (<FormArray>this.chooseCityForm.get('cities')).push(
           new FormControl(city)
