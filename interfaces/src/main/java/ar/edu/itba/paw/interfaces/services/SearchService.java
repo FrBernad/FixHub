@@ -11,9 +11,9 @@ public interface SearchService {
 
     PaginatedSearchResult<Job> getJobsByProvider(String searchBy, String orderBy, User provider, int page, int pageSize);
 
-    PaginatedSearchResult<JobContact> getClientsByProvider(User provider, String state, String orderBy, int page, int pageSize);
+    PaginatedSearchResult<JobContact> getClientsByProvider(User provider, String status, String orderBy, int page, int pageSize);
 
-    PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int pageSize);
+    PaginatedSearchResult<JobContact> getProvidersByClient(User client, String status, String orderBy, int page, int pageSize);
 
     PaginatedSearchResult<User> getUserFollowers(User user, Integer page, Integer pageSize);
 

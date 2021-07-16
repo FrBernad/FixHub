@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {Languages} from "../../models/languages-enum.model";
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +9,20 @@ import {Component, OnInit} from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  languages = Object.keys(Languages).filter((item) => {
+    return isNaN(Number(item));
+  });
+
+  constructor(
+    private translateService: TranslateService,
+  ) {
+  }
 
   ngOnInit(): void {
+  }
+
+  changeLang(lang: string) {
+    this.translateService.use(lang);
   }
 
 }

@@ -259,7 +259,29 @@ public class SearchServiceImpl implements SearchService {
 
 
     @Override
-    public PaginatedSearchResult<JobContact> getProvidersByClient(User client, int page, int pageSize) {
+    public PaginatedSearchResult<JobContact> getProvidersByClient(User client, String status, String orderBy, int page, int pageSize) {
+        //ORDER
+        StatusOrderOptions queryOrderOption;
+        if (!StatusOrderOptions.contains(orderBy)) {
+            LOGGER.debug("Order option {} not valid", orderBy);
+            return null;
+        }
+        LOGGER.debug("Order option is valid");
+        queryOrderOption = StatusOrderOptions.valueOf(orderBy);
+
+        //STATUS
+        JobStatus statusOption;
+        if (status != null) {
+            if (!JobStatus.contains(status)) {
+                LOGGER.debug("Status option {} not valid", status);
+                return null;
+            }
+            LOGGER.debug("Status option is valid");
+            statusOption = JobStatus.valueOf(status);
+        } else {
+            statusOption = null;
+        }
+
         if (page < 0) {
             LOGGER.debug("Page number {} is invalid", page);
             return null;
@@ -271,7 +293,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving total providers count");
-        final int totalContacts = userDao.getProvidersCountByClient(client);
+        final int totalContacts = userDao.getProvidersCountByClient(client, statusOption);
         final int totalPages = (int) Math.ceil((float) totalContacts / pageSize);
 
         if (totalPages == 0 || page >= totalPages) {
@@ -280,7 +302,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         LOGGER.debug("Retrieving page {} for providers by client id {}", page, client.getId());
-        final Collection<JobContact> contacts = userDao.getProvidersByClient(client, page, pageSize);
+        final Collection<JobContact> contacts = userDao.getProvidersByClient(client, statusOption, queryOrderOption, page, pageSize);
 
         return new PaginatedSearchResult<>(page, pageSize, totalContacts, contacts);
     }

@@ -35,9 +35,9 @@ public interface UserDao {
 
     int getClientsCountByProvider(User provider, JobStatus status);
 
-    Collection<JobContact> getProvidersByClient(User client, int page, int itemsPerPage);
+    Collection<JobContact> getProvidersByClient(User client, JobStatus status, StatusOrderOptions order, int page, int itemsPerPage);
 
-    int getProvidersCountByClient(User client);
+    int getProvidersCountByClient(User client, JobStatus status);
 
     Collection<User> getUserFollowers(User user, int page, int itemsPerPage);
 

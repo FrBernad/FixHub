@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NewJobRequestNotificationCardComponent } from './new-job-request-notification-card.component';
+import {NewJobRequestNotificationCardComponent} from './new-job-request-notification-card.component';
 
 describe('NewJobRequestNotificationCardComponent', () => {
   let component: NewJobRequestNotificationCardComponent;

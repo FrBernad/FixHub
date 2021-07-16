@@ -6,18 +6,6 @@ import {UserService} from "../../auth/services/user.service";
 import {tap} from "rxjs/operators";
 import {JobRequest} from "../../models/job-request.model";
 
-export interface ContactPaginationResult {
-  page: number;
-  totalPages: number;
-  results: [];
-}
-
-
-export interface ContactPaginationQuery {
-  page: number;
-  pageSize?: number;
-}
-
 export interface RequestPaginationResult {
   page: number;
   totalPages: number;
@@ -46,7 +34,8 @@ export interface ContactData {
 @Injectable({providedIn: 'root'})
 export class ContactService {
 
-  results = new Subject<ContactPaginationResult>();
+  sentRequests = new Subject<RequestPaginationResult>();
+  receivedRequests = new Subject<RequestPaginationResult>();
 
   constructor(private http: HttpClient,
               private userService: UserService) {
@@ -59,7 +48,7 @@ export class ContactService {
   }
 
   getProviderRequests(rq: RequestPaginationQuery) {
-    this.http.get<ContactPaginationResult>(
+    this.http.get<RequestPaginationResult>(
       environment.apiBaseUrl + '/user/jobs/requests',
       {
         observe: "response",
@@ -67,41 +56,39 @@ export class ContactService {
       },
     ).subscribe((res) => {
       if (res.status === HttpStatusCode.NoContent) {
-        this.results.next({
+        this.receivedRequests.next({
           page: 0,
           totalPages: 0,
           results: []
         });
       } else {
-                //FIXME:
-                console.log(res.body)
-        this.results.next(res.body);
+        this.receivedRequests.next(res.body);
       }
     });
   }
 
-  getProviderJobRequest(id: number) {
+  getJobRequest(id: number) {
     return this.http.get<JobRequest>(
       environment.apiBaseUrl + '/user/jobs/requests/' + id,
     )
   }
 
-  getUserSentRequests(cp: ContactPaginationQuery) {
-    this.http.get<ContactPaginationResult>(
+  getUserSentRequests(rp: RequestPaginationQuery) {
+    this.http.get<RequestPaginationResult>(
       environment.apiBaseUrl + '/user/jobs/sentRequests',
       {
         observe: "response",
-        params: new HttpParams({fromObject: {...cp}})
+        params: new HttpParams({fromObject: {...rp}})
       },
     ).subscribe((res) => {
       if (res.status === HttpStatusCode.NoContent) {
-        this.results.next({
+        this.sentRequests.next({
           page: 0,
           totalPages: 0,
           results: []
         });
       } else {
-        this.results.next(res.body);
+        this.sentRequests.next(res.body);
       }
     });
 

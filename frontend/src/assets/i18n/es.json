@@ -100,6 +100,7 @@
   "translations.en": "Inglés",
   "requests.title": "Contactos",
   "requests.sent": "Sent",
+  "requests.manage": "Manejar",
   "requests.received": "Received",
   "contactForm.cityWarning": "Puede que el servicio no este disponible en esta zona.",
   "contactForm.addressNumber": "N\u00DAmero",
@@ -439,7 +440,7 @@
   "editProvider.header": "Edit\u00E1 tu informaci\u00F3n de proveedor",
   "FieldsValueNotMatch.providerInfoFirstForm": "Los horarios no pueden ser iguales",
   "FieldsValueNotMatch.joinForm": "Los horarios no pueden ser iguales",
-  "sentRequest.cancelRequest": "Cancelar solicitud",
+  "sentRequest.cancelRequest": "Cancelar",
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Si",
   "sentRequest.askForConfirmation": "\u00BFEstas seguro?"

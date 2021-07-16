@@ -28,12 +28,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
+  faBell as farBell,
   faCheckCircle as farCheckCircle,
   faEnvelope as farEnvelope,
   faEye as farEye,
   faEyeSlash as farEyeSlash,
-  faStar as farStar,
-  faBell as farBell
+  faStar as farStar
 } from '@fortawesome/free-regular-svg-icons';
 
 import {Router} from "@angular/router";

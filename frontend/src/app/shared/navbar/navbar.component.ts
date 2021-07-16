@@ -17,10 +17,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('backNavbar') backNavbar: ElementRef;
   @ViewChild('navbar') navbar: ElementRef;
 
-  languages = Object.keys(Languages).filter((item) => {
-    return isNaN(Number(item));
-  });
-
   private userSub: Subscription;
   private notSub: Subscription;
   user: User;
@@ -30,7 +26,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private notificationsService: NotificationsService,
     private authService: AuthService,
-    private translateService: TranslateService,
     private renderer: Renderer2
   ) {
   }
@@ -61,9 +56,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeLang(lang: string) {
-    this.translateService.use(lang);
-  }
 
   onLogout() {
     this.authService.logout();

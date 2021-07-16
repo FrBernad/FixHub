@@ -1,32 +1,4 @@
-<div class="container-lg d-flex flex-column recentContacts p-3">
-  <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="sent-tab" data-bs-toggle="tab" data-bs-target="#sent" type="button" role="tab"
-              aria-controls="sent" aria-selected="false">
-        {{ 'requests.sent' | translate }}
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button"
-              role="tab"
-              aria-controls="received" aria-selected="true">
-        {{ 'requests.received' | translate }}
-      </button>
-    </li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane fade show active" id="sent" role="tabpanel" aria-labelledby="profile-tab">
-
-    </div>
-    <div class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="received-tab">...</div>
-  </div>
-  <div class="row py-2">
-    <div class="col-12 mb-2 mt-4">
-      <h1 class="text-left mb-0 ms-2 sectionTitle">
-        {{'profilePage.contacts.recents' | translate}}
-      </h1>
-    </div>
-  </div>
+<div class="container-lg d-flex flex-column recentContacts px-0">
   <ng-template [ngIf]="isFetching" [ngIfElse]="alreadyFetched">
     <div class="container h-100">
       <div class="row h-100 justify-content-center align-items-center">
@@ -38,15 +10,71 @@
   </ng-template>
 
   <ng-template #alreadyFetched>
+    <div class="row my-2 justify-content-start align-items-center">
+      <div class="col-4 ms-1 d-flex align-items-center justify-content-start">
+        <div class="dropdown statusDropdown">
+          <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                  type="button"
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span>
+             {{'discover.filterBy'| translate}}
+          </span>
+            <span class="resultQuery"
+                  *ngIf="!!rpq.status else NoStatus">
+            {{'contact.status.' + rpq.status |translate}}
+          </span>
+            <ng-template #NoStatus>
+              <span class="resultQuery">{{'discover.all'|translate}}</span>
+            </ng-template>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
+            <li class="input-group">
+              <button (click)="onChangeStatus('')" class="dropdown-item">
+                {{'discover.all'|translate}}
+              </button>
+            </li>
+            <li *ngFor="let filter of filterOptions" class="input-group">
+              <button class="dropdown-item"
+                      (click)="onChangeStatus(filter)">
+                {{'contact.status.' + filter | translate}}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-6 d-flex align-items-center justify-content-start">
+        <div class="dropdown statusDropdown">
+          <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
+                  type="button"
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span>
+          {{'discover.orderBy'|translate}}
+        </span>
+            <span class="resultQuery">
+          {{'contact.order.' + rpq.order|translate}}
+        </span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
+            <li *ngFor="let order of orderOptions" class="input-group">
+              <button class="dropdown-item"
+                      (click)="onChangeOrder(order)">
+                {{'contact.order.' + order | translate}}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <div class="row pb-2 align-items-start align-content-between">
       <div class="col-12">
 
         <div class="container-fluid px-0">
           <div class="row">
-            <ng-template [ngIf]="cpr.results.length>0" [ngIfElse]="contactsNotFound">
+            <ng-template [ngIf]="rpr.results.length>0" [ngIfElse]="contactsNotFound">
               <div class="col-12 mt-2">
-                <ng-template [ngFor] let-request [ngForOf]="cpr.results">
-                  <app-user-sent-request-card class="w-100" [request]="request"></app-user-sent-request-card>
+                <ng-template [ngFor] let-request [ngForOf]="rpr.results">
+                  <app-request-card class="w-100" [type]="'USER'" [request]="request"></app-request-card>
                 </ng-template>
               </div>
 
@@ -64,10 +92,10 @@
         </div>
       </div>
       <app-pagination
-        *ngIf="cpr.totalPages>1"
+        *ngIf="rpr.totalPages>1"
         (changePage)="onChangePage($event)"
-        [currentPage]="cpr.page"
-        [totalPages]="cpr.totalPages">
+        [currentPage]="rpr.page"
+        [totalPages]="rpr.totalPages">
       </app-pagination>
     </div>
   </ng-template>

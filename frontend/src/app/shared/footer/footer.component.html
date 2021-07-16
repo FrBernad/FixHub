@@ -2,12 +2,19 @@
      style="background-color: #FAFAFA;height: 70px;font-size: 15px">
   <div class="container h-100">
     <div class="row h-100">
-      <div class="col d-flex justify-content-center align-items-center">
+      <div class="offset-3 col-6 d-flex justify-content-center align-items-center">
         <p class="text-center footer">
           {{ 'footer.description' | translate }}
           {{ 'productName' | translate }}
         </p>
       </div>
+
+      <div class="col-3 d-flex justify-content-around align-items-center">
+        <a *ngFor="let lang of languages" (click)="changeLang(lang)" class="footerLang">
+          {{'translations.' + lang | translate}}
+        </a>
+      </div>
+
     </div>
   </div>
 </div>

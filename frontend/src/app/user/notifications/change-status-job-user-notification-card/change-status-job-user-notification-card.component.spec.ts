@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChangeStatusJobUserNotificationCardComponent } from './change-status-job-user-notification-card.component';
+import {ChangeStatusJobUserNotificationCardComponent} from './change-status-job-user-notification-card.component';
 
 describe('ChangeStatusJobUserNotificationCardComponent', () => {
   let component: ChangeStatusJobUserNotificationCardComponent;

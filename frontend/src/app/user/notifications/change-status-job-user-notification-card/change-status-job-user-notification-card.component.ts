@@ -24,7 +24,7 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contactService.getProviderJobRequest(this.notification.resource).subscribe((jobRequest) => {
+    this.contactService.getJobRequest(this.notification.resource).subscribe((jobRequest) => {
       this.jobRequest = jobRequest;
     });
   }

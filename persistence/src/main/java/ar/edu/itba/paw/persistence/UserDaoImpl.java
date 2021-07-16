@@ -142,7 +142,7 @@ public class UserDaoImpl implements UserDao {
 
         variables.add(provider.getId());
 
-        String statusQuery = getClientsByProviderStatusQuery(status, variables);
+        String statusQuery = getContactStatusQuery(status, variables);
         String orderQuery = getContactOrderQuery(order);
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
@@ -173,7 +173,7 @@ public class UserDaoImpl implements UserDao {
         List<Object> variables = new LinkedList<>();
         variables.add(provider.getId());
 
-        String statusQuery = getClientsByProviderStatusQuery(status, variables);
+        String statusQuery = getContactStatusQuery(status, variables);
 
         final String query = String.format("SELECT count(c_id) total FROM CONTACT WHERE c_provider_id = ? %s", statusQuery);
 
@@ -185,29 +185,22 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    private String getClientsByProviderStatusQuery(JobStatus status, List<Object> variables) {
-        String statusQuery = "";
-        if (status != null) {
-            statusQuery = " AND c_status = ? ";
-            variables.add(status.name());
-        }
-        return statusQuery;
-    }
-
     @Override
-    public Collection<JobContact> getProvidersByClient(User client, int page, int itemsPerPage) {
+    public Collection<JobContact> getProvidersByClient(User client, JobStatus status, StatusOrderOptions order, int page, int itemsPerPage) {
 
         final List<Object> variables = new LinkedList<>();
 
         variables.add(client.getId());
+
+        String statusQuery = getContactStatusQuery(status, variables);
+        String orderQuery = getContactOrderQuery(order);
 
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
 
         final String filteredIdsSelectQuery =
             " SELECT c_id " +
                 " FROM CONTACT " +
-                " WHERE c_user_id = ? " +
-                " ORDER BY c_date DESC " + offsetAndLimitQuery;
+                " WHERE c_user_id = ? " + statusQuery + orderQuery + offsetAndLimitQuery;
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
 
@@ -218,19 +211,25 @@ public class UserDaoImpl implements UserDao {
         if (filteredIds.isEmpty())
             return Collections.emptyList();
 
-        return em.createQuery("from JobContact jb where id IN :filteredIds order by jb.date DESC", JobContact.class)
+        String hqlOrderQuery = getContactHQLOrderQuery(order);
+
+        return em.createQuery("from JobContact jb where id IN :filteredIds" + hqlOrderQuery, JobContact.class)
             .setParameter("filteredIds", filteredIds)
             .getResultList();
-
     }
 
     @Override
-    public int getProvidersCountByClient(User client) {
-        final String query = "SELECT count(c_id) total FROM CONTACT WHERE c_user_id = ?";
+    public int getProvidersCountByClient(User client, JobStatus status) {
+        List<Object> variables = new LinkedList<>();
+        variables.add(client.getId());
+
+        String statusQuery = getContactStatusQuery(status, variables);
+
+        final String query = String.format("SELECT count(c_id) total FROM CONTACT WHERE c_user_id = ? %s", statusQuery);
 
         Query nativeQuery = em.createNativeQuery(query);
 
-        nativeQuery.setParameter(1, client.getId());
+        setQueryVariables(nativeQuery, variables);
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
@@ -353,6 +352,17 @@ public class UserDaoImpl implements UserDao {
     private String getContactHQLOrderQuery(StatusOrderOptions orderOption) {
         return String.format(" ORDER BY %s ", HQL_CONTACT_ORDER_OPTIONS.get(orderOption));
     }
+
+
+    private String getContactStatusQuery(JobStatus status, List<Object> variables) {
+        String statusQuery = "";
+        if (status != null) {
+            statusQuery = " AND c_status = ? ";
+            variables.add(status.name());
+        }
+        return statusQuery;
+    }
+
 
 }
 

@@ -1,0 +1,92 @@
+<div class="accordion" [id]="'accordion'+request.id">
+  <div class="card accordionCard mb-2">
+    <div class="card-header px-0" data-bs-toggle="collapse" #accordion style="cursor: pointer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-11">
+            <a (click)="$event.stopPropagation()" [routerLink]="['/jobs',request.jobId]">
+              {{request.jobProvided}}
+            </a> |
+            <a *ngIf="type==='USER', else client" class="names" (click)="$event.stopPropagation()"
+               [routerLink]="['/user',request.provider.id]">
+              {{request.provider.name}} {{request.provider.surname}}
+            </a>
+            <ng-template #client>
+              <a class="names" (click)="$event.stopPropagation()"
+                 [routerLink]="['/user',request.user.id]">
+                {{request.user.name}} {{request.user.surname}}
+              </a>
+            </ng-template>
+            |
+            <span class="names">
+                  {{request.date|date:'dd-MM-yyy'}}
+            </span>
+          </div>
+          <div class="col-1 d-flex align-items-center justify-content-end">
+            <fa-icon
+              class="ms-2 navbarText dropDownArrow" [icon]="['fas','chevron-down']" id="navBarArrow">
+            </fa-icon>
+          </div>
+          <div class="col-12 d-flex align-items-center justify-content-start">
+            <a class="names" (click)="$event.stopPropagation()"
+               [routerLink]="['/user/requests/',request.id]">
+              {{"requests.manage" | translate }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div [id]="'collapse'+this.request.id" class="collapse" #accordionBody>
+      <div class="card-body px-0">
+        <div class="container-fluid">
+          <div class="row">
+            <ng-template [ngIf]="type==='USER'" [ngIfElse]="clientData">
+              <div class="col-12">
+                <span class="client-label">{{'dashboard.provider' | translate}}:</span>
+                <a class="names" (click)="$event.stopPropagation()" [routerLink]="['/user',request.provider.id]">
+                  {{request.provider.name}} {{request.provider.surname}}
+                </a>
+              </div>
+            </ng-template>
+            <ng-template #clientData>
+              <div class="col-12">
+                <span class="client-label">{{'dashboard.client' | translate}}:</span>
+                <a class="names" (click)="$event.stopPropagation()" [routerLink]="['/user',request.user.id]">
+                  {{request.user.name }} {{ request.user.surname}}
+                </a>
+              </div>
+            </ng-template>
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.clientPhoneNumber'|translate}}:</span>
+              {{request.user.phoneNumber}}
+            </div>
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.clientEmail'|translate}}:</span>
+              {{request.user.email}}
+            </div>
+            <div class="col-12">
+              <span class="client-label">{{'dashboard.clientAddress'|translate}}:</span>
+              {{request.contactInfo.city}},  {{ request.contactInfo.state}},
+              {{ request.contactInfo.street}} {{ request.contactInfo.addressNumber}}
+              {{ request.contactInfo.floor}} {{ request.contactInfo.departmentNumber}}
+            </div>
+            <div class="col-12">
+              <p class="mb-0">
+                <span class="client-label">{{'dashboard.clientMessage' | translate}}:</span>
+                {{request.message}}
+              </p>
+            </div>
+            <div class="col-12">
+              <p class="mb-0">
+                <span class="client-label">{{'clientContactCard.status' | translate}}:</span>
+                {{'contact.status.' + request.status | translate}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

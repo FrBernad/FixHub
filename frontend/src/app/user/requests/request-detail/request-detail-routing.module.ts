@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: RequestComponent,
-    canActivate: [AuthGuard, ProviderGuard],
+    canActivate: [AuthGuard],
   }
 ]
 

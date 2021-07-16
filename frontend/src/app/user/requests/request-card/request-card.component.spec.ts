@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SentRequestCard} from './sent-request-card.component';
+import {RequestCardComponent} from './request-card.component';
 
-describe('UserSentRequestCardComponent', () => {
-  let component: SentRequestCard;
-  let fixture: ComponentFixture<SentRequestCard>;
+describe('ReceivedRequestCardComponent', () => {
+  let component: RequestCardComponent;
+  let fixture: ComponentFixture<RequestCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SentRequestCard ]
+      declarations: [ RequestCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SentRequestCard);
+    fixture = TestBed.createComponent(RequestCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

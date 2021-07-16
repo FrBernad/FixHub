@@ -248,6 +248,7 @@
   "requests.title": "Requests",
   "requests.sent": "Sent",
   "requests.received": "Received",
+  "requests.manage": "Manage",
   "navBar.newJob": "New job",
   "navBar.profile": "Your profile",
   "navBar.logout": "Sign out",
@@ -447,7 +448,7 @@
   "editProvider.header": "Edit your provider information",
   "FieldsValueNotMatch.providerInfoFirstForm": "Times can't be equal",
   "FieldsValueNotMatch.joinForm": "Times can't be equal",
-  "sentRequest.cancelRequest": "Cancel job request",
+  "sentRequest.cancelRequest": "Cancel",
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Yes",
   "sentRequest.askForConfirmation": "Are you sure?"

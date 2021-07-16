@@ -29,16 +29,6 @@
           </span>
         </button>
 
-        <button class="nav-link list-group-item list-group-item-action"
-                [ngClass]="{'active' : activeTab==='contacts', 'inactive':  activeTab!=='contacts'}"
-                (click)="changeTab('contacts')">
-          <fa-icon [icon]="['fas', 'address-book']" class="me-2"></fa-icon>
-          <span class="text">{{'dashboard.Contacts' | translate}}</span>
-          <span class="badge rounded-pill bg-secondary">
-            {{user.providerDetails.contactsCount}}
-          </span>
-        </button>
-
       </div>
 
     </div>
@@ -166,10 +156,6 @@
 
                 <div class="tab-pane fade" role="tabpanel" id="works" [ngClass]="{'show active' : activeTab==='works'}">
                   <app-works></app-works>
-                </div>
-                <div class="tab-pane fade" role="tabpanel" id="contacts"
-                     [ngClass]="{'show active' : activeTab==='contacts'}">
-                  <app-request></app-request>
                 </div>
               </div>
             </div>

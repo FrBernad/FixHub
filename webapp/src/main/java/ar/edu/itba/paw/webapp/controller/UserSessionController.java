@@ -376,6 +376,10 @@ public class UserSessionController {
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
 
+        if (status != null) {
+            uriBuilder.queryParam("status", status);
+        }
+
         return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobContactDto>>(resultsDto) {
         }, uriBuilder);
     }
@@ -433,7 +437,7 @@ public class UserSessionController {
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);//FIXME: agregar mensaje
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
-        if (!user.getId().equals(jobContact.getProvider().getId())) {
+        if (!user.getId().equals(jobContact.getProvider().getId()) && !user.getId().equals(jobContact.getUser().getId())) {
             throw new IllegalOperationException(); //FIXME: agregar mensaje
         }
 
@@ -446,7 +450,9 @@ public class UserSessionController {
     @Path("/jobs/sentRequests")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserSentJobRequests(
+        @QueryParam("status") String status,
         @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("order") @DefaultValue("NEWEST") String order,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
 
@@ -454,7 +460,7 @@ public class UserSessionController {
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME: agregar mensaje
 
-        final PaginatedSearchResult<JobContact> results = searchService.getProvidersByClient(user, page, pageSize);
+        final PaginatedSearchResult<JobContact> results = searchService.getProvidersByClient(user, status, order, page, pageSize);
 
         if (results == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -471,6 +477,10 @@ public class UserSessionController {
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
+
+        if (status != null) {
+            uriBuilder.queryParam("status", status);
+        }
 
         return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobContactDto>>(resultsDto) {
         }, uriBuilder);

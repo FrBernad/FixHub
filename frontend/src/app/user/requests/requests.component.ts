@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
-import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../../job/contact/contact.service";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 

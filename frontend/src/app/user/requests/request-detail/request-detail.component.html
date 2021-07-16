@@ -1,96 +1,97 @@
 <div class="container-lg recentContacts p-4">
   <div *ngIf="!loading" class="row">
-
-    <div class="col-12 col-md-6 d-flex justify-content-center pt-1">
-      <div class="container-lg">
-        <div class="col-12 d-flex justify-content-center align-items-center">
-          <div>
-            <div class="picContainer">
-              <img alt="profile picture"
-                   [src]="request.user.profileImage ? request.user.profileImage : 'assets/images/defaultProfileImage.png'"
-                   class="profilePicture">
+    <ng-template [ngIf]="request.provider.id===user.id" [ngIfElse]="USER">
+      <div class="col-12 col-md-6 d-flex justify-content-center pt-1">
+        <div class="container-lg">
+          <div class="col-12 d-flex justify-content-center align-items-center">
+            <div>
+              <div class="picContainer">
+                <img alt="profile picture"
+                     [src]="request.user.profileImage ? request.user.profileImage : 'assets/images/defaultProfileImage.png'"
+                     class="profilePicture">
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
-          <a [routerLink]="'/user/'+request.user.id">
-                <span class="userSectionTitles names">
-                    {{request.user.name}} {{request.user.surname}}
-                </span>
-          </a>
-        </div>
+          <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
+            <a [routerLink]="'/user/'+request.user.id">
+              <span class="userSectionTitles names">
+                  {{request.user.name}} {{request.user.surname}}
+              </span>
+            </a>
+          </div>
 
-        <div class="col-12 my-2">
-          <hr>
-        </div>
+          <div class="col-12 my-2">
+            <hr>
+          </div>
 
-        <div class="col-12">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-12">
-                <div class="container-fluid px-0">
-                  <div class="row">
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                      <fa-icon [icon]="['fas','map-marker-alt']"></fa-icon>
-                    </div>
-                    <div class="col-10">
+          <div class="col-12">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['fas','map-marker-alt']"></fa-icon>
+                      </div>
+                      <div class="col-10">
                           <span>
                             {{request.user.state}}, {{request.user.city}}.
                           </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-12 mt-2">
-                <div class="container-fluid px-0">
-                  <div class="row">
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                      <fa-icon [icon]="['far','envelope']"></fa-icon>
-                    </div>
-                    <div class="col-10">
-                      <span>{{request.user.email}}.</span>
+                <div class="col-12 mt-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['far','envelope']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                        <span>{{request.user.email}}.</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-12 mt-2">
-                <div class="container-fluid px-0">
-                  <div class="row">
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                      <fa-icon [icon]="['fas','phone-alt']"></fa-icon>
-                    </div>
-                    <div class="col-10">
-                      <span>{{request.user.phoneNumber}}.</span>
+                <div class="col-12 mt-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['fas','phone-alt']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                        <span>{{request.user.phoneNumber}}.</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-12 mt-2 mb-2">
-                <div class="container-fluid px-0">
-                  <div class="row">
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                      <fa-icon [icon]="['fas','user-friends']"></fa-icon>
-                    </div>
-                    <div class="col-10">
-                      <a class="extraInfo"
-                         [routerLink]="'/user/'+request.user.id+'/followers'">
+                <div class="col-12 mt-2 mb-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['fas','user-friends']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                        <a class="extraInfo"
+                           [routerLink]="'/user/'+request.user.id+'/followers'">
                       <span class="detailField">
                           {{request.user.followersCount}}
                       </span>
-                        {{'profilePage.info.followers' | translate}}
-                      </a>
-                      ·
-                      <a class="extraInfo"
-                         [routerLink]="'/user/'+request.user.id+'/following'">
+                          {{'profilePage.info.followers' | translate}}
+                        </a>
+                        ·
+                        <a class="extraInfo"
+                           [routerLink]="'/user/'+request.user.id+'/following'">
                       <span class="detailField">
                           {{request.user.followingCount}}
                       </span>
-                        {{'profilePage.info.following' | translate}}
-                      </a>
+                          {{'profilePage.info.following' | translate}}
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -99,7 +100,108 @@
           </div>
         </div>
       </div>
-    </div>
+    </ng-template>
+    <ng-template #USER>
+      <div class="col-12 col-md-6 d-flex justify-content-center pt-1">
+        <div class="container-lg">
+          <div class="col-12 d-flex justify-content-center align-items-center">
+            <div>
+              <div class="picContainer">
+                <img alt="profile picture"
+                     [src]="request.provider.profileImage ? request.provider.profileImage : 'assets/images/defaultProfileImage.png'"
+                     class="profilePicture">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
+            <a [routerLink]="'/user/'+request.provider.id">
+              <span class="userSectionTitles names">
+                  {{request.provider.name}} {{request.provider.surname}}
+              </span>
+            </a>
+          </div>
+
+          <div class="col-12 my-2">
+            <hr>
+          </div>
+
+          <div class="col-12">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['fas','map-marker-alt']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                          <span>
+                            {{request.provider.state}}, {{request.provider.city}}.
+                          </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['far','envelope']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                        <span>{{request.provider.email}}.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['fas','phone-alt']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                        <span>{{request.provider.phoneNumber}}.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2 mb-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-1 d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="['fas','user-friends']"></fa-icon>
+                      </div>
+                      <div class="col-10">
+                        <a class="extraInfo"
+                           [routerLink]="'/user/'+request.provider.id+'/followers'">
+                      <span class="detailField">
+                          {{request.provider.followersCount}}
+                      </span>
+                          {{'profilePage.info.followers' | translate}}
+                        </a>
+                        ·
+                        <a class="extraInfo"
+                           [routerLink]="'/user/'+request.provider.id+'/following'">
+                      <span class="detailField">
+                          {{request.provider.followingCount}}
+                      </span>
+                          {{'profilePage.info.following' | translate}}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
     <div class="col-12 col-md-6 d-flex justify-content-center pt-1x">
       <div class="container-fluid">
@@ -145,60 +247,105 @@
               <span class="client-label">{{'clientContactCard.statusField'|translate}}: </span>
               {{'contact.status.' + request.status |translate}}
             </div>
-            <ng-template [ngIf]="isWorkPending()" [ngIfElse]="NotPending">
-              <div class="col-12 mt-2">
-                <div class="container-fluid px-0">
+
+            <ng-template [ngIf]="request.provider.id===user.id" [ngIfElse]="USER_DECISION">
+
+              <ng-template [ngIf]="isWorkPending()" [ngIfElse]="NotPending">
+                <div class="col-12 mt-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-12 mb-2 d-flex align-items-center justify-content-md-start">
+                        <p class="fw-bold mb-0">
+                          {{'clientContactCard.jobDecision'|translate}}
+                        </p>
+                      </div>
+                      <div class="col-12 d-flex align-items-center justify-content-start">
+                        <button class="finishBtn me-3"
+                                type="submit" (click)="acceptJob()" [disabled]="acceptJobLoading || rejectJobLoading">
+                          <span class="spinner-border spinner-border-sm ms-2" [hidden]="!acceptJobLoading"></span>
+                          <span *ngIf="!acceptJobLoading">
+                                {{'clientContactCard.acceptJobBtn'|translate}}
+                            <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                            </span>
+                        </button>
+                        <button class="closeBtn me-2" type="submit" (click)="rejectJob()"
+                                [disabled]="acceptJobLoading || rejectJobLoading">
+                          <span class="spinner-border spinner-border-sm ms-2" [hidden]="!rejectJobLoading"></span>
+                          <span *ngIf="!rejectJobLoading">
+                              {{'clientContactCard.rejectJobBtn'|translate}}
+                            <fa-icon [icon]="['fas', 'times']" class="ms-2"></fa-icon>
+                            </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #NotPending>
+                <div *ngIf="isWorkInProgress()" class="col-12 mt-2">
+                  <div class="container-fluid px-0">
+                    <div class="row">
+                      <div class="col-12 mb-2 d-flex align-items-center justify-content-md-start">
+                        <p class="fw-bold mb-0">
+                          {{'clientContactCard.jobCompletedIntro'|translate}}
+                        </p>
+                      </div>
+                      <div class="col-12 d-flex align-items-center justify-content-start">
+                        <button class="finishBtn" type="submit" (click)="jobFinished()"
+                                [disabled]="finishJobLoading">
+                          <span class="spinner-border spinner-border-sm ms-2" [hidden]="!finishJobLoading"></span>
+                          <span *ngIf="!finishJobLoading">
+                              {{'clientContactCard.completedJobBtn'|translate}}
+                            <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
+                            </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+            </ng-template>
+
+            <ng-template #USER_DECISION>
+
+              <ng-template [ngIf]="isWorkNotFinished()">
+                <ng-template [ngIf]="!confirm" [ngIfElse]="confirmCancel">
                   <div class="row">
-                    <div class="col-12 mb-2 d-flex align-items-center justify-content-md-start">
-                      <p class="fw-bold mb-0">
-                        {{'clientContactCard.jobDecision'|translate}}
-                      </p>
+                    <div class="col-11 d-flex mt-2 align-items-center justify-content-start ">
+                      <button class="closeBtn" (click)="confirm=true">
+                        {{'sentRequest.cancelRequest'|translate}}
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #confirmCancel>
+                  <div class="row">
+                    <div class="col-12 d-flex align-items-center justify-content-start me-2 mb-2">
+                    <span>
+                      {{'sentRequest.askForConfirmation'|translate}}
+                    </span>
                     </div>
                     <div class="col-12 d-flex align-items-center justify-content-start">
                       <button class="finishBtn me-3"
-                              type="submit" (click)="acceptJob()" [disabled]="acceptJobLoading || rejectJobLoading">
-                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!acceptJobLoading"></span>
-                        <span *ngIf="!acceptJobLoading">
-                                {{'clientContactCard.acceptJobBtn'|translate}}
-                          <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
-                            </span>
+                              (click)="cancelRequest()" [disabled]="disabled">
+                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!disabled"></span>
+                        <span *ngIf="!disabled">
+                                {{'sentRequest.confirm'|translate}}
+                       </span>
                       </button>
-                      <button class="closeBtn me-2" type="submit" (click)="rejectJob()"
-                              [disabled]="acceptJobLoading || rejectJobLoading">
-                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!rejectJobLoading"></span>
-                        <span *ngIf="!rejectJobLoading">
-                              {{'clientContactCard.rejectJobBtn'|translate}}
-                          <fa-icon [icon]="['fas', 'times']" class="ms-2"></fa-icon>
-                            </span>
+                      <button class="closeBtn me-2" (click)="confirm=false">
+                        <span>
+                          {{'sentRequest.cancel'|translate}}
+                        </span>
                       </button>
                     </div>
                   </div>
-                </div>
-              </div>
+                </ng-template>
+              </ng-template>
+
             </ng-template>
-            <ng-template #NotPending>
-              <div *ngIf="isWorkInProgress()" class="col-12 mt-2">
-                <div class="container-fluid px-0">
-                  <div class="row">
-                    <div class="col-12 mb-2 d-flex align-items-center justify-content-md-start">
-                      <p class="fw-bold mb-0">
-                        {{'clientContactCard.jobCompletedIntro'|translate}}
-                      </p>
-                    </div>
-                    <div class="col-12 d-flex align-items-center justify-content-start">
-                      <button class="finishBtn" type="submit" (click)="jobFinished()"
-                              [disabled]="finishJobLoading">
-                        <span class="spinner-border spinner-border-sm ms-2" [hidden]="!finishJobLoading"></span>
-                        <span *ngIf="!finishJobLoading">
-                              {{'clientContactCard.completedJobBtn'|translate}}
-                          <fa-icon [icon]="['fas', 'check']" class="ms-2"></fa-icon>
-                            </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-template>
+
           </div>
         </div>
       </div>

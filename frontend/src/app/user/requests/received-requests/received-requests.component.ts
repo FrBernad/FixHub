@@ -1,49 +1,74 @@
-import {Component, OnInit} from '@angular/core';
-import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../../../job/contact/contact.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ContactService, RequestPaginationQuery, RequestPaginationResult} from "../../../job/contact/contact.service";
 import {Subscription} from "rxjs";
+import {ContactOrder} from "../../../models/contact-order-enum.model";
+import {FilterStatusRequest} from "../../../models/filter-status-request-enum.model";
 
 @Component({
-  selector: 'app-received-requests-card',
+  selector: 'app-received-requests',
   templateUrl: './received-requests.component.html',
   styleUrls: ['./received-requests.component.scss']
 })
-export class ReceivedRequestsComponent implements OnInit {
+export class ReceivedRequestsComponent implements OnInit, OnDestroy {
 
-  cpr: ContactPaginationResult = {
+  isFetching = false;
+
+  rpq: RequestPaginationQuery = {
+    page: 0,
+    pageSize: 4,
+    order: ContactOrder.NEWEST
+  };
+
+  rpr: RequestPaginationResult = {
     results: [],
     page: 0,
     totalPages: 0,
   }
 
-  cpq: ContactPaginationQuery = {
-    page: 0,
-    pageSize: 4,
-  }
+  filterOptions = Object.keys(FilterStatusRequest).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-  isFetching = true;
+  orderOptions = Object.keys(ContactOrder).filter((item) => {
+    return isNaN(Number(item));
+  });
 
   private contactSub: Subscription;
 
   constructor(
-    private contactService: ContactService,
+    private contactService: ContactService
   ) {
   }
 
   ngOnInit(): void {
-    this.contactService.getUserSentRequests(this.cpq);
-    this.contactSub = this.contactService.results.subscribe((results) => {
-      this.cpr = {
-        ...this.cpr,
+    this.contactService.getProviderRequests(this.rpq);
+    this.contactSub = this.contactService.receivedRequests.subscribe((results) => {
+      this.isFetching = false;
+      this.rpr = {
+        ...this.rpr,
         ...results
       };
-      this.isFetching = false;
     });
-
   }
 
   onChangePage(page: number) {
-    this.cpq.page = page;
-    this.contactService.getUserSentRequests(this.cpq);
+    this.rpq.page = page;
+    this.contactService.getProviderRequests(this.rpq);
+  }
+
+  onChangeStatus(status: string) {
+    this.rpq.status = status;
+    this.rpq.page = 0;
+    if (!status) {
+      delete this.rpq.status;
+    }
+    this.contactService.getProviderRequests(this.rpq);
+  }
+
+  onChangeOrder(order: string) {
+    this.rpq.order = order;
+    this.rpq.page = 0;
+    this.contactService.getProviderRequests(this.rpq);
   }
 
   ngOnDestroy(): void {

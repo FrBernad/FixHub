@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {JobRequest} from "../../../models/job-request.model";
 import {JobStatusEnum} from "../../../models/job-status-enum.model";
 import {Title} from "@angular/platform-browser";
+import {User} from "../../../models/user.model";
+import {UserService} from "../../../auth/services/user.service";
 
 @Component({
   selector: 'app-request',
@@ -19,9 +21,15 @@ export class RequestComponent implements OnInit {
   rejectJobLoading = false;
   finishJobLoading = false;
 
+  confirm = false;
+
+  disabled = false;
+
+  user: User;
 
   constructor(
     private contactService: ContactService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private titleService: Title,
@@ -30,7 +38,12 @@ export class RequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.request.id = this.route.snapshot.params["id"]
-    this.contactService.getProviderJobRequest(this.request.id).subscribe(
+    this.userService.user.subscribe(
+      (res) => {
+        this.user = res;
+      }
+    )
+    this.contactService.getJobRequest(this.request.id).subscribe(
       request => {
         this.request = request;
         this.loading = false;
@@ -89,4 +102,23 @@ export class RequestComponent implements OnInit {
     )
   }
 
+
+  isWorkNotFinished() {
+    return this.request.status == JobStatusEnum.PENDING || this.request.status == JobStatusEnum.IN_PROGRESS;
+  }
+
+
+  cancelRequest() {
+    this.disabled = true;
+    this.contactService.changeContactStatus(this.request.id, JobStatusEnum.CANCELED).subscribe(
+      () => {
+        this.disabled = false;
+        this.request.status = JobStatusEnum.CANCELED;
+      },
+      () => {
+        this.disabled = false;
+      }
+    );
+
+  }
 }
