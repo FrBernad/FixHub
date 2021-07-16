@@ -34,12 +34,14 @@ export class ChooseCityComponent implements OnInit {
     });
 
 
-    if (this.isProvider != null && this.isProvider && this.chosenState == this.user.providerDetails.location.state) {
-      this.user.providerDetails.location.cities.forEach((city) => {
-        (<FormArray>this.chooseCityForm.get('cities')).push(
-          new FormControl(city)
-        );
-      });
+    if (this.isProvider != null && this.isProvider) {
+      if(this.chosenState == this.user.providerDetails.location.state) {
+        this.user.providerDetails.location.cities.forEach((city) => {
+          (<FormArray>this.chooseCityForm.get('cities')).push(
+            new FormControl(city)
+          );
+        });
+      }
     }
 
     this.jobsService.getStateCities(this.chosenState.id.toString()).subscribe(
