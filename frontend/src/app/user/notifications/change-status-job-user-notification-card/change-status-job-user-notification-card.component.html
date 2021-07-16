@@ -1,1 +1,21 @@
-<p>change-status-job-user-notification-card works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="sectionTitle">
+        {{ 'account.notifications.jobRequest.rejected.title' | translate }}
+      </h1>
+    </div>
+    <ng-template>
+      <div class="col-12">
+        {{'account.notifications.jobRequest.rejected.body' | translate }}
+        <a [routerLink]="'/user/'+jobRequest.provider.id" class="contactInfo names">
+          {{jobRequest.jobProvided}}
+        </a>
+        {{'account.notifications.jobRequest.rejected.body2' | translate }}
+        <a [routerLink]="'/user/'+jobRequest.provider.id" class="contactInfo names" (click)="notificationClick()">
+          {{'account.notifications.jobRequest.new.body2' | translate }}
+        </a>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,5 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Notification} from "../../../models/notification.model";
+import {ContactService} from "../../../job/contact/contact.service";
+import {JobRequest} from "../../../models/job-request.model";
+import {NotificationsService} from "../notifications.service";
 
 @Component({
   selector: 'app-change-status-job-user-notification-card',
@@ -10,10 +13,26 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
 
   @Input("notification") notification: Notification;
 
+  jobRequest: JobRequest;
 
-  constructor() { }
+  constructor(private contactService: ContactService,
+              private notificationService: NotificationsService,
+  ) {
+  }
 
   ngOnInit(): void {
+    this.contactService.getProviderJobRequest(this.notification.resource).subscribe((jobRequest) => {
+      this.jobRequest = jobRequest;
+    });
+  }
+
+  notificationClick() {
+    this.notificationService.markAsReadNotification(this.notification.id).subscribe(
+      () => {
+        this.notification.seen = true;
+      }
+    );
+    // this.router.navigate(['/user',this.user.id]);
   }
 
 }
