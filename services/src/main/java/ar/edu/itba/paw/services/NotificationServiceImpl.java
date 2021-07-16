@@ -2,15 +2,17 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistance.NotificationDao;
 import ar.edu.itba.paw.interfaces.services.NotificationService;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.notification.AuxNotificationDto;
 import ar.edu.itba.paw.models.user.notification.Notification;
+import ar.edu.itba.paw.models.user.notification.NotificationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -21,11 +23,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
-    @Transactional
-    @Override
-    public Notification createNotification(User user, AuxNotificationDto notificationDto) {
+    private Notification createNotification(User user,Long resource, NotificationType type, LocalDateTime date){
         LOGGER.debug("Creating notification for user with id {} in service", user.getId());
-        return notificationDao.createNotification(user, notificationDto);
+        return notificationDao.createNotification(user,resource,type,date);
     }
 
     @Transactional
@@ -39,7 +39,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public int deleteNotificationById(Long id) {
         LOGGER.debug("Deleting notification with id {} in service", id);
-
         return notificationDao.deleteNotificationById(id);
     }
 
@@ -57,26 +56,36 @@ public class NotificationServiceImpl implements NotificationService {
         notificationDao.markAllNotificationAsSeen(user);
     }
 
+
     @Transactional
     @Override
-    public void createNewJobNotification(User user) {
+    public Notification createNewFollowerNotification(User user,User resource) {
+        LOGGER.debug("Creating a new follower notification for user with id {} for the resource with id {}", user.getId(),resource.getId());
+        return createNotification(user,resource.getId(),NotificationType.NEW_FOLLOWER,LocalDateTime.now());
 
     }
 
     @Transactional
     @Override
-    public void createNewFollowerNotification(User user) {
-
-    }
-
-    @Transactional
-    @Override
-    public void createNewRequestNotification(User user) {
+    public Notification createNewRequestNotification(User user, JobContact resource) {
+        LOGGER.debug("Creating a new request notification for user with id {} for the job contact with id {}", user.getId(),resource.getId());
+        return createNotification(user,resource.getId(),NotificationType.JOB_REQUEST,LocalDateTime.now());
 
     }
 
     @Override
-    public void createRequestStatusChange(User user) {
+    public Notification createRequestStatusChangeForUser(User user, JobContact resource) {
+        LOGGER.debug("Creating a new request status notification for user with id {} " +
+                "for the job contact with id {}",user.getId(),resource.getId());
+        return createNotification(user,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_USER,LocalDateTime.now());
+    }
 
+
+    @Override
+    public Notification createRequestStatusChangeForProvider(User user, JobContact resource) {
+        LOGGER.debug("Creating a new request status notification for user with id {} for the job contact with id {}",
+            user.getId(),resource.getId());
+        return createNotification(user,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_PROVIDER,LocalDateTime.now());
     }
 }
+

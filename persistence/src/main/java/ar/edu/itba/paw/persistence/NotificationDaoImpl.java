@@ -2,8 +2,8 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistance.NotificationDao;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.notification.AuxNotificationDto;
 import ar.edu.itba.paw.models.user.notification.Notification;
+import ar.edu.itba.paw.models.user.notification.NotificationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,9 +27,9 @@ public class NotificationDaoImpl implements NotificationDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationDaoImpl.class);
 
     @Override
-    public Notification createNotification(User user, AuxNotificationDto notificationDto) {
-        Notification notification = new Notification(notificationDto.getTitle(), notificationDto.getBody(),
-            notificationDto.getResource(), notificationDto.getDate(), notificationDto.getType(), false, user);
+    public Notification createNotification(User user, Long resource, NotificationType type, LocalDateTime date) {
+        Notification notification = new Notification(
+            resource, date, type, false, user);
         em.persist(notification);
         LOGGER.info("Created notification with id {} for user with id {}", notification.getId(), user.getId());
         return null;

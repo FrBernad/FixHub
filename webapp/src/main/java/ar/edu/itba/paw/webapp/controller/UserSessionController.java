@@ -374,11 +374,15 @@ public class UserSessionController {
         final JobStatus newStatus = status.getStatus();
 
 
-        if (!user.getId().equals(jobContact.getProvider().getId())) {
-            if(!user.getId().equals(jobContact.getUser().getId()) || !newStatus.equals(CANCELED)  ){
-                throw new IllegalOperationException(); //FIXME: agregar mensaje
+        if(newStatus.equals(CANCELED)){
+            //Solo el usuario puede cancelar el request
+            if(!user.getId().equals(jobContact.getUser().getId())){
+               throw new IllegalOperationException(); //FIXME: agregar mensaje
             }
+        }else if (!user.getId().equals(jobContact.getProvider().getId())){
+            throw new IllegalOperationException(); //FIXME: agregar mensaje
         }
+
 
         switch (newStatus) {
             case FINISHED:

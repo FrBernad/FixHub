@@ -15,12 +15,6 @@ public class Notification {
     @Column(name="n_id")
     private Long id;
 
-    @Column(name = "n_title",length=50,nullable = false)
-    private String title;
-
-    @Column(name="n_body",length=200,nullable = false)
-    private String body;
-
     @Column(name="n_resource",length=100)
     private Long resource;
 
@@ -42,15 +36,12 @@ public class Notification {
         //Just for Hibernate
     }
 
-    public Notification(String title,
-                        String body,
-                        Long resource,
+    public Notification(Long resource,
                         LocalDateTime date,
                         NotificationType type,
                         boolean seen,
                         User user) {
-        this.title = title;
-        this.body = body;
+
         this.resource = resource;
         this.type=type;
         this.date = date;
@@ -64,22 +55,6 @@ public class Notification {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 
     public Long getResource() {

@@ -16,8 +16,6 @@ public class NotificationDto {
     }
 
     private Long id;
-    private String title;
-    private String body;
     private Long resource;
     private NotificationType type;
     private LocalDateTime date;
@@ -31,8 +29,6 @@ public class NotificationDto {
     public NotificationDto(Notification notification, UriInfo uriInfo, SecurityContext securityContext) {
 
         this.id = notification.getId();
-        this.title = notification.getTitle();
-        this.body = notification.getBody();
         this.resource = notification.getResource();
         this.type = notification.getType();
         this.date = notification.getDate();
@@ -46,22 +42,6 @@ public class NotificationDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 
     public Long getResource() {

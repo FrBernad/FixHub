@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.JobService;
+import ar.edu.itba.paw.interfaces.services.NotificationService;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
@@ -39,6 +40,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobServiceImpl.class);
 
@@ -79,8 +83,9 @@ public class JobServiceImpl implements JobService {
     @Override
     public void acceptJob(JobContact jc) {
         jc.setStatus(JobStatus.IN_PROGRESS);
-
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
+        notificationService.createRequestStatusChangeForUser(jc.getUser(),jc);
+
     }
 
     @Transactional
@@ -88,6 +93,8 @@ public class JobServiceImpl implements JobService {
     public void rejectJob(JobContact jc) {
         jc.setStatus(JobStatus.REJECTED);
         emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
+        notificationService.createRequestStatusChangeForUser(jc.getUser(),jc);
+
     }
 
     @Transactional
@@ -95,6 +102,7 @@ public class JobServiceImpl implements JobService {
     public void finishJob(JobContact jc) {
         jc.setStatus(JobStatus.FINISHED);
         emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
+        notificationService.createRequestStatusChangeForUser(jc.getUser(),jc);
     }
 
     @Transactional
@@ -102,6 +110,8 @@ public class JobServiceImpl implements JobService {
     public void cancelJob(JobContact jc){
         jc.setStatus(JobStatus.CANCELED);
         emailService.sendUserJobCancellationEmail(jc, LocaleContextHolder.getLocale());
+        notificationService.createRequestStatusChangeForProvider(jc.getProvider(),jc);
+
     }
 
     @Transactional

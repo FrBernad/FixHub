@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.interfaces.persistance.*;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
+import ar.edu.itba.paw.interfaces.services.NotificationService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
@@ -62,6 +63,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public final static Set<Roles> DEFAULT_ROLES = new HashSet<>(Arrays.asList(Roles.USER, Roles.NOT_VERIFIED));
 
@@ -321,6 +325,8 @@ public class UserServiceImpl implements UserService {
         final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, auxContactDto.getMessage(), LocalDateTime.now(), auxContactDto.getJob());
         provider.getProviderDetails().getContacts().add(jobContact);
 
+        notificationService.createNewRequestNotification(provider,jobContact);
+
         emailService.sendJobRequestEmail(auxContactDto, LocaleContextHolder.getLocale());
         emailService.sendJobRequestConfirmationEmail(auxContactDto, LocaleContextHolder.getLocale());
 
@@ -337,6 +343,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Adding user {} to user {} followers", follower, user);
         user.getFollowing().add(follower);
         follower.getFollowers().add(user);
+        notificationService.createNewFollowerNotification(follower,user);
     }
 
     @Transactional

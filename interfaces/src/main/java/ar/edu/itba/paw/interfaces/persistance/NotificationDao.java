@@ -1,15 +1,16 @@
 package ar.edu.itba.paw.interfaces.persistance;
 
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.notification.AuxNotificationDto;
 import ar.edu.itba.paw.models.user.notification.Notification;
+import ar.edu.itba.paw.models.user.notification.NotificationType;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
 public interface NotificationDao {
 
-    Notification createNotification(User user, AuxNotificationDto notificationDto);
+    Notification createNotification(User user, Long resource, NotificationType type, LocalDateTime date);
 
     Optional<Notification> getNotificationById(Long id);
 

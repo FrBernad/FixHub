@@ -1,22 +1,20 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.models.user.notification.AuxNotificationDto;
 import ar.edu.itba.paw.models.user.notification.Notification;
 
 import java.util.Optional;
 
 public interface NotificationService {
 
-    Notification createNotification(User user, AuxNotificationDto notificationDto);
+    Notification createNewFollowerNotification(User user, User resource);
 
-    void createNewJobNotification(User user);
+    Notification createNewRequestNotification(User user, JobContact resource);
 
-    void createNewFollowerNotification(User user);
+    Notification createRequestStatusChangeForProvider(User user, JobContact resource);
 
-    void createNewRequestNotification(User user);
-
-    void createRequestStatusChange(User user);
+    Notification createRequestStatusChangeForUser(User user, JobContact resource);
 
     Optional<Notification> getNotificationById(Long id);
 
