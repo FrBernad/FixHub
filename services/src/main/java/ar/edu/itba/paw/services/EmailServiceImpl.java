@@ -161,6 +161,29 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+
+    @Async
+    @Override
+    public void sendUserJobCancellationEmail(JobContact jobContact, Locale locale) {
+        Map<String, Object> mailAttrs = new HashMap<>();
+
+        try {
+            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
+            final String userURL = appBaseUrl.toString() + "/user/" + jobContact.getUser().getId();
+
+            mailAttrs.put("jobURL", jobURL);
+            mailAttrs.put("userURL", userURL);
+            mailAttrs.put("to", jobContact.getUser().getEmail());
+            mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
+            mailAttrs.put("userName", jobContact.getJob().getProvider().getName());
+            mailAttrs.put("name", jobContact.getJob().getProvider().getName());
+
+            sendMail("userJobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, locale), mailAttrs, locale);
+        } catch (MessagingException e) {
+            LOGGER.warn("Error, Job cancellation mail not sent");
+        }
+    }
+
     @Async
     @Override
     public void sendJobConfirmationEmail(JobContact jobContact, Locale locale) {

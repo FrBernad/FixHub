@@ -5,6 +5,7 @@ import {DiscoverService} from "../discover/discover.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-landing-page',
@@ -46,17 +47,21 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   userSub: Subscription;
 
   user: User;
-  isFetching=true;
+  isFetching = true;
   maxSearchInputLength: number = 50;
+
   constructor(
     private jobsService: DiscoverService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
   ) {
   }
 
   ngOnInit(): void {
     this.jobsService.getJobs({page: 0});
+
+    this.titleService.setTitle('Fixhub');
 
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
@@ -69,8 +74,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
     this.jobsSub = this.jobsService.results.subscribe((results) => {
       this.popularJobs = results.results;
-      this.isFetching= false;
-
+      this.isFetching = false;
     });
   }
 

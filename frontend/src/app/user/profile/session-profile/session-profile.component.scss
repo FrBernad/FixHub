@@ -5,8 +5,12 @@
   overflow: hidden;
 }
 
-a{
+a {
   text-decoration: none;
+}
+
+#coverImageBtn {
+  width: 224px;
 }
 
 .editProfileContainer {
@@ -48,9 +52,9 @@ a{
   right: 10%;
 }
 
-#resendBtn{
+#resendBtn {
   background-color: transparent;
-  border:none;
+  border: none;
 }
 
 .picContainer {
@@ -142,6 +146,16 @@ a{
   right: 0;
 }
 
+.coverErrorContainer {
+  position: absolute;
+}
+
+.profileErrorContainer {
+  position: absolute;
+  width: 400px;
+}
+
+
 .profileBackgroundPic button:hover {
   background-color: rgb(228, 230, 235);
 }
@@ -156,10 +170,9 @@ a{
 
 .profileBackgroundPic {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   right: 30px;
 }
-
 
 .editBtn:hover {
   background-color: rgba(0, 0, 0, 0.08);
@@ -221,7 +234,7 @@ a:hover {
 
 .closeBtn {
   color: #FFFeFF;
-  font-size:0.8em;
+  font-size: 0.8em;
   background-color: #6c757d;
   border: none;
   box-shadow: none;
@@ -240,6 +253,6 @@ a:hover {
   background-color: transparent;
 }
 
-.errorMessage{
+.errorMessage {
   color: red;
 }

@@ -23,7 +23,8 @@ import {
   faTrash as fasTrash,
   faUpload as fasUpload,
   faUserFriends as fasUserFriends,
-  faWrench as fasWrench
+  faWrench as fasWrench,
+  faLanguage as fasLanguage,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -59,9 +60,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private userService: UserService,
-    private previousRouteService: PreviousRouteService,
-    private jobsService: DiscoverService,
-    private titleService: Title
   ) {
   }
 
@@ -80,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
       fasChartLine, fasWrench, fasAddressBook, farStar,
       fasPen, fasCompass, fasClock, fasTrash, fasUpload,
       fasInfoCircle, fasExclamationCircle, farCheckCircle,
-      fasComment
+      fasComment, fasLanguage
     );
 
     this.subs = this.userService.loading.subscribe((loading) => {

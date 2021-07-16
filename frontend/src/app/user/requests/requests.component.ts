@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ContactPaginationQuery, ContactPaginationResult, ContactService} from "../../job/contact/contact.service";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-requests',
@@ -20,11 +22,16 @@ export class RequestsComponent implements OnInit {
     pageSize: 4,
   }
 
-  isFetching=true;
+  isFetching = true;
 
-  private contactSub:Subscription;
+  private contactSub: Subscription;
 
-  constructor(private contactService: ContactService) { }
+  constructor(
+    private contactService: ContactService,
+    private titleService: Title,
+    private translateService: TranslateService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.contactService.getUserSentRequests(this.cpq);
@@ -33,8 +40,16 @@ export class RequestsComponent implements OnInit {
         ...this.cpr,
         ...results
       };
-      this.isFetching=false;
+      this.isFetching = false;
     });
+
+    this.translateService.get("requests.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
+
   }
 
   onChangePage(page: number) {

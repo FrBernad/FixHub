@@ -21,12 +21,16 @@
   position: relative;
 }
 
-.navbarTop .navOption:hover a, .userContainer:hover #navBarArrow {
+.navbarTop .navOption:hover .navbarText, #navBarArrow:hover, .navIcon:hover {
   color: rgba(255, 255, 255, 0.7) !important;
   transition: 90ms linear;
 }
 
-.navbarTop .navOption a, #navBarArrow {
+.navbarTop .navOption .navbarText, #navBarArrow {
+  color: white;
+}
+
+.navIcon {
   color: white !important;
 }
 

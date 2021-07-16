@@ -18,7 +18,7 @@ export class EditJobComponent implements OnInit {
   editJobForm: FormGroup;
   selectedIndex = 0;
   allowedImageTypes: string[] = ['image/png', 'image/jpeg'];
-  imagesCounter:number;
+  imagesCounter: number;
 
   isFetching = true;
   disabled = false;
@@ -73,7 +73,7 @@ export class EditJobComponent implements OnInit {
 
     this.jobService.getJob(+this.job.id).subscribe(
       responseData => {
-          this.updateView(responseData);
+        this.updateView(responseData);
       }
     );
 
@@ -108,7 +108,7 @@ export class EditJobComponent implements OnInit {
     }
 
     this.jobService.updateJob(this.job.id, newFormData).subscribe((response) => {
-      this.isFetching= true;
+      this.isFetching = true;
       this.jobService.getJob(+this.job.id).subscribe(
         responseData => {
           this.disabled = false;
@@ -128,11 +128,17 @@ export class EditJobComponent implements OnInit {
 
     if (!this.allowedImageTypes.includes(file.type)) {
       this.allowedImageType = false;
+      setTimeout(() => {
+        this.allowedImageType = true;
+      }, 2000)
       return;
     }
 
     if (file.size > 3000000) {
       this.allowedImageSize = false;
+      setTimeout(() => {
+        this.allowedImageSize = true;
+      }, 2000)
       return
     }
 
@@ -148,7 +154,7 @@ export class EditJobComponent implements OnInit {
     let aux = image.split('/');
     if (index >= 0) {
       (<FormArray>this.editJobForm.get('imagesIdToDelete')).push(new FormControl(aux[aux.length - 1]))
-      this.job.images.splice(index,1);
+      this.job.images.splice(index, 1);
       this.imagesCounter--;
     }
   }
@@ -160,7 +166,7 @@ export class EditJobComponent implements OnInit {
     }
   }
 
-  private updateView(responseData){
+  private updateView(responseData) {
     this.job.jobProvided = responseData.jobProvided;
     this.editJobForm.patchValue({jobProvided: responseData.jobProvided});
     this.job.description = responseData.description;

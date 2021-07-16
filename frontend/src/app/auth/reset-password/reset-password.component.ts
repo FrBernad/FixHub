@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-reset-password',
@@ -24,6 +26,8 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
@@ -33,6 +37,13 @@ export class ResetPasswordComponent implements OnInit {
     if (!this.token) {
       this.router.navigate(['/']);
     }
+
+    this.translateService.get("account.verify.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
 
     this.resetPasswordForm = new FormGroup({
       password: new FormControl("", [

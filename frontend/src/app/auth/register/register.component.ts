@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AuthService} from '../services/auth.service';
 import {PreviousRouteService} from '../services/previous-route.service';
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
@@ -32,11 +34,20 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private previousRouteService: PreviousRouteService,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
   ngOnInit(): void {
+    this.translateService.get("register.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
+
     this.registerForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required,

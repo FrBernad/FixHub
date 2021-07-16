@@ -11,9 +11,10 @@
           <form method="POST" enctype="multipart/form-data">
             <input [formControl]="coverImage" type="file" name="coverImage" hidden accept=".png,.jpg,.jpeg"
                    (change)="onCoverImageChanged($event)" #coverImageInput/>
+
             <button (click)="coverImageInput.click()" [disabled]="disabledCover" type="button"
-                    class="d-flex align-items-center justify-content-center" id="changeCoverImageButton"
-                    style="width: 224px">
+                    class="d-flex align-items-center justify-content-center"
+                    id="coverImageBtn">
               <span class="spinner-border spinner-border-sm" [hidden]="!disabledCover"></span>
 
               <span *ngIf="!disabledCover" id="coverCamaraIcon">
@@ -24,17 +25,19 @@
               </span>
               <span id="coverLoadingSpinner" class="spinner-border spinner-border-sm" hidden></span>
             </button>
-            <span *ngIf="!allowedCoverImageType" class="errorMessage">
-                  {{'ImageTypeConstraint.coverImageForm.coverImage' | translate }}<br>
-                </span>
-            <span *ngIf="!allowedCoverImageSize" class="errorMessage">
-                {{'ImageSizeConstraint.coverImageForm.coverImage' | translate:{size: this.maxCoverImageMBSize} }}
-
-            </span>
+            <div class="coverErrorContainer">
+              <span *ngIf="!allowedCoverImageType" class="errorMessage">
+                    {{'ImageTypeConstraint.coverImageForm.coverImage' | translate }}<br>
+                  </span>
+              <span *ngIf="!allowedCoverImageSize" class="errorMessage">
+                  {{'ImageSizeConstraint.coverImageForm.coverImage' | translate:{size: this.maxCoverImageMBSize} }}
+              </span>
+            </div>
           </form>
         </div>
       </div>
     </div>
+
     <div class="col-12 mt-4">
       <div class="container-fluid px-0">
         <div class="row align-items-center position-relative justify-content-center">
@@ -57,19 +60,17 @@
                     <fa-icon [icon]="['fas', 'camera']"></fa-icon>
                   </span>
                 </button>
-
               </form>
-
-            </div>
-
-            <div>
+              <div class="profileErrorContainer">
               <span *ngIf="!allowedProfileImageType" class="errorMessage">
                   {{'ImageTypeConstraint.profileImageForm.profileImage' | translate }}<br>
                 </span>
-              <span *ngIf="!allowedProfileImageSize" class="errorMessage">
+                <span *ngIf="!allowedProfileImageSize" class="errorMessage">
                   {{'ImageSizeConstraint.profileImageForm.profileImage' | translate:{size: this.maxProfileImageMBSize} }}
                 </span>
+              </div>
             </div>
+
           </div>
           <div class="col-8 mt-5">
             <h1 class="userSectionTitles text-center names">

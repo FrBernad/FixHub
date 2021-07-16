@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../auth/services/user.service";
 import {User} from "../../../models/user.model";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user-profile',
@@ -22,6 +23,7 @@ export class UserProfileComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
   ) {
   }
 
@@ -34,6 +36,7 @@ export class UserProfileComponent implements OnInit {
       (user) => {
         this.user = user;
         this.loading = false;
+        this.titleService.setTitle('Fixhub | ' + user.name + " " + user.surname);
       },
       () => {
         this.router.navigate(['/404'])

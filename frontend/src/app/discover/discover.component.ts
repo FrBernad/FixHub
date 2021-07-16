@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderOption} from "../models/order-option-enum.model";
 import {City, JobPaginationQuery, JobPaginationResult, DiscoverService, State} from "./discover.service";
 import {Subscription} from "rxjs";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-discover',
@@ -29,7 +31,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   selectedState: string = ""
   selectedCity: string = ""
   isFetching = true;
-  maxSearchInputLength:number = 50;
+  maxSearchInputLength: number = 50;
 
   orderOptions = Object.keys(OrderOption).filter((item) => {
     return isNaN(Number(item));
@@ -40,11 +42,20 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   private jobsSub: Subscription;
 
   constructor(
-    private jobsService: DiscoverService
+    private jobsService: DiscoverService,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
   ngOnInit(): void {
+    this.translateService.get("discover.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
+
     const category = window.history.state['category'];
     const query = window.history.state['query'];
     if (category) {

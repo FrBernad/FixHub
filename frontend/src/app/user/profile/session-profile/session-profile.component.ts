@@ -4,6 +4,8 @@ import {FormControl} from "@angular/forms";
 import {User} from "../../../models/user.model";
 import {UserService} from "../../../auth/services/user.service";
 import {AuthService} from "../../../auth/services/auth.service";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-session-profile',
@@ -40,6 +42,8 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
@@ -48,6 +52,13 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
       this.user = user;
     });
 
+    this.translateService.get("profilePage.subtitle.account")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
+
     if (!this.user.roles.includes("VERIFIED")) {
       let modal = new bootstrap.Modal(document.getElementById('notVerifiedModal'));
       modal.show();
@@ -55,6 +66,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
     this.profileImage = new FormControl(null);
     this.coverImage = new FormControl(null);
+
   }
 
 
@@ -65,11 +77,17 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
     if (!this.allowedProfileImageTypes.includes(file.type)) {
       this.allowedProfileImageType = false;
+      setTimeout(() => {
+        this.allowedProfileImageType = true;
+      }, 2000);
       return;
     }
 
     if (file.size > this.getTotalBytes(this.maxProfileImageMBSize)) {
       this.allowedProfileImageSize = false;
+      setTimeout(() => {
+        this.allowedProfileImageSize = true;
+      }, 2000);
       return
     }
 
@@ -97,11 +115,17 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
     if (!this.allowedCoverImageTypes.includes(file.type)) {
       this.allowedCoverImageType = false;
+      setTimeout(() => {
+        this.allowedCoverImageType = true;
+      }, 2000);
       return;
     }
 
     if (file.size > this.getTotalBytes(this.maxCoverImageMBSize)) {
       this.allowedCoverImageSize = false;
+      setTimeout(() => {
+        this.allowedCoverImageSize = true;
+      }, 2000);
       return
     }
 

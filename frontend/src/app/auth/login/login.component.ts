@@ -4,6 +4,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../services/user.service";
 import {AuthService} from "../services/auth.service";
 import {PreviousRouteService} from "../services/previous-route.service";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,9 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private previousRouteService: PreviousRouteService
+    private previousRouteService: PreviousRouteService,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
@@ -30,7 +34,12 @@ export class LoginComponent implements OnInit {
       'email': new FormControl(null, [Validators.required]),
       'password': new FormControl(null, [Validators.required]),
     });
-
+    this.translateService.get("login.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   onSubmitLogin() {

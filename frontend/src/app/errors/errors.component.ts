@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-errors',
@@ -9,9 +11,19 @@ export class ErrorsComponent implements OnInit {
 
   code: number = 404;
 
-  constructor() { }
+  constructor(
+    private titleService: Title,
+    private translateService: TranslateService,
+  ) {
+  }
 
   ngOnInit(): void {
+    this.translateService.get("pageNotFound.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
 }

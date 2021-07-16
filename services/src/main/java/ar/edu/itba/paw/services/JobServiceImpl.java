@@ -101,7 +101,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public void cancelJob(JobContact jc){
         jc.setStatus(JobStatus.CANCELED);
-//        emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
+        emailService.sendUserJobCancellationEmail(jc, LocaleContextHolder.getLocale());
     }
 
     @Transactional

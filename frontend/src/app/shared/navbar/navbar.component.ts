@@ -3,6 +3,8 @@ import {AuthService} from "../../auth/services/auth.service";
 import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
+import {Languages} from "../../models/languages-enum.model";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-navbar',
@@ -14,12 +16,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('backNavbar') backNavbar: ElementRef;
   @ViewChild('navbar') navbar: ElementRef;
 
+  languages = Object.keys(Languages).filter((item) => {
+    return isNaN(Number(item));
+  });
+
   private userSub: Subscription;
   user: User;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private translateService: TranslateService,
     private renderer: Renderer2
   ) {
   }
@@ -45,7 +52,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  onLogout(){
+  changeLang(lang: string) {
+    this.translateService.use(lang);
+  }
+
+  onLogout() {
     this.authService.logout();
   }
 

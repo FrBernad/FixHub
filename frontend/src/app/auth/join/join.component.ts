@@ -5,6 +5,8 @@ import {Subscription} from "rxjs";
 import {City, State} from "../../discover/discover.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 export interface Schedule {
   startTime: string;
@@ -32,10 +34,11 @@ export class JoinComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
-
 
   ngOnInit(): void {
 
@@ -43,6 +46,13 @@ export class JoinComponent implements OnInit {
       this.user = user;
       this.isProvider = this.user.providerDetails !== undefined;
     });
+
+    this.translateService.get("join.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
 

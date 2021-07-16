@@ -1,9 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../auth/services/user.service";
 import {User} from "../../../models/user.model";
 import {FollowPaginationQuery, FollowPaginationResult, FollowService} from "../follow.service";
 import {Subscription} from "rxjs";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-followers',
@@ -14,7 +16,7 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   user: User;
   loading = true;
-  noData="profilePage.noFollowers"
+  noData = "profilePage.noFollowers"
 
   fpr: FollowPaginationResult = {
     results: [],
@@ -31,8 +33,11 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
-    private followService: FollowService
+    private followService: FollowService,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
@@ -49,8 +54,17 @@ export class FollowersComponent implements OnInit, OnDestroy {
             ...results
           };
         });
+      },
+      () => {
+        this.router.navigate(['/404'])
       }
     );
+    this.translateService.get("profilePage.following")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   onChangePage(page: number) {

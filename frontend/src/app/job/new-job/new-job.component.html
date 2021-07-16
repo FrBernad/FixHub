@@ -23,7 +23,7 @@
               <div class="col-12 d-flex align-items-center justify-content-center">
                 <form id="jobForm" class="jobForm" [formGroup]="jobForm" (ngSubmit)="onSubmit()">
                   <div class="form-group">
-                    <label >
+                    <label>
                       {{'jobForm.jobNameTitle' | translate}}
                       <span class="required-field">*</span>
                     </label>
@@ -40,12 +40,11 @@
                       {{'Pattern.jobForm.jobProvided' | translate }}
                     </span>
                   </span>
-                    <!-- <form:errors path="jobProvided" cssClass="formError" element="p" /> -->
                   </div>
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label >
+                        <label>
                           {{'jobForm.jobTypeTitle' | translate}}
                           <span class="required-field">*</span>
                         </label>
@@ -63,7 +62,7 @@
                                   class="category">{{'home.categories.' + jobForm.get('jobCategory').value | translate}}</span>
                           </button>
                           <ul class="dropdown-menu dropdown-size w-100">
-                            <li *ngFor="let category of categories" class="dropdown-item categoryButton " type="button"
+                            <li *ngFor="let category of categories" class="dropdown-item categoryButton" type="button"
                                 (click)="dropdownClick(category)">
                               {{'home.categories.' + category | translate}}
                             </li>
@@ -78,12 +77,12 @@
                     </div>
                     <div class="col-12">
                       <div class="form-group">
-                        <label >
+                        <label>
                           {{'jobForm.jobPriceTitle' | translate}}
                           <span class="required-field">*</span>
                         </label>
                         <input type="number" id="price" class="form-control"
-                              formControlName="price"/>
+                               formControlName="price"/>
                         <span *ngIf="!jobForm.get('price').valid && jobForm.get('price').touched">
                         <span *ngIf="jobForm.get('price').errors['required']" class="errorMessage">
                           {{'NotNull.jobForm.price' | translate }}<br>
@@ -98,16 +97,15 @@
                           {{'Pattern.jobForm.price' | translate }}
                         </span>
                       </span>
-                        <!-- <form:errors path="price" cssClass="formError" element="p" /> -->
                       </div>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label >
+                    <label>
                       {{'jobForm.jobDescriptionTitle' | translate}}
                       <span class="required-field">*</span>
                     </label>
-                    <textarea class="form-control"  id="description"
+                    <textarea class="form-control" id="description"
                               formControlName="description">
                     </textarea>
                     <span *ngIf="!jobForm.get('description').valid && jobForm.get('description').touched">
@@ -124,7 +122,7 @@
                     <div class="container-fluid px-0">
                       <div class="row">
                         <div class="col-12 d-flex align-items-center justify-content-start">
-                          <label class="mb-0" >
+                          <label class="mb-0">
                             {{'jobForm.jobImageTitle' | translate}}
                           </label>
                         </div>
@@ -149,8 +147,6 @@
                         </div>
                       </div>
                     </div>
-
-
                   </div>
 
                   <input type="hidden" value="${user.id}" name="userId">
@@ -159,7 +155,8 @@
                     <div class="row">
                       <div class="col-12">
                         <button type="button" class="imgFile m-2"
-                                *ngFor="let image of jobForm.get('images').value; let i = index" (click)="deleteImage(i)">
+                                *ngFor="let image of jobForm.get('images').value; let i = index"
+                                (click)="deleteImage(i)">
                           {{image.name}}
                           <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
                         </button>

@@ -11,11 +11,11 @@ import {AcceptInterceptorService} from "./auth/services/accept-interceptor.servi
       useClass: AuthInterceptorService,
       multi: true
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AcceptInterceptorService,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AcceptInterceptorService,
+    //   multi: true
+    // },
     {
       provide: APP_BASE_HREF,
       useValue: '/'

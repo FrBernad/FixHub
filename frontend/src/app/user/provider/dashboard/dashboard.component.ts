@@ -3,6 +3,8 @@ import {DiscoverService} from "../../../discover/discover.service";
 import {UserService} from "../../../auth/services/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../../models/user.model";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +21,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private jobsService: DiscoverService,
     private userService: UserService,
+    private titleService: Title,
+    private translateService: TranslateService,
   ) {
   }
 
@@ -26,6 +30,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     })
+
+    this.translateService.get("navBar.dashboard")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
 
   }
 

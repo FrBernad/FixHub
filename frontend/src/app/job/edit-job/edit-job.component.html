@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-10 mt-3 px-0">
                   <div class="form-group d-flex justify-content-between align-items-center">
-                    <label class="mt-2">
+                    <label>
                       {{ 'jobForm.jobImageTitle' | translate }}
                     </label>
                     <div>
@@ -81,7 +81,13 @@
                     <input type="file" id="inputFiles" name="images" accept=".png,.jpg,.jpeg" hidden
                            (change)="onFileChanged($event)" #fileInput/>
                   </div>
-
+                  <div class="col-12">
+                        <span *ngIf="!allowedImageType"
+                              class="errorMessage"><br>
+                          {{'ImageTypeConstraint.jobForm.images' | translate}}</span>
+                    <span *ngIf="!allowedImageSize" class="errorMessage"><br>
+                      {{'errors.MaxUploadSizeException' | translate}}</span>
+                  </div>
                   <div class="container-fluid p-0" id="imagesHolder">
                     <div class="row">
                       <div class="col-12">
@@ -91,11 +97,6 @@
                           {{control.value.name}}
                           <fa-icon [icon]="['fas', 'times']" class="ms-1"></fa-icon>
                         </button>
-                        <span *ngIf="!allowedImageType"
-                              class="errorMessage"><br>{{'ImageTypeConstraint.jobForm.images' |
-                          translate}}</span>
-                        <span *ngIf="!allowedImageSize" class="errorMessage"><br>{{'errors.MaxUploadSizeException' |
-                          translate}}</span>
                       </div>
                     </div>
                   </div>
@@ -160,7 +161,7 @@
                              padding: 12px 20px; box-sizing: border-box;
                            border: 2px solid #ccc; border-radius: 4px;
                             background-color: #f8f8f8; resize: none;" id="textArea" class="form-control"
-                            formControlName="description" [value]="job.description" #description ></textarea>
+                            formControlName="description" [value]="job.description" #description></textarea>
                   <span *ngIf="!editJobForm.get('description').valid && editJobForm.get('description').touched">
                     <span *ngIf="editJobForm.get('description').errors['required']" class="errorMessage">
                           {{'NotEmpty.editJobForm.description' | translate }}<br>
@@ -190,7 +191,7 @@
             <hr class="text-left ml-0 my-3" style="width: 100%;">
           </div>
 
-          <div class="col-10 col-md-6 px-0 d-flex justify-content-around align-items-center">
+          <div class="col-10 mb-3 col-md-6 px-0 d-flex justify-content-around align-items-center">
 
             <button [routerLink]="['/jobs',job.id]"
                     class="closeBtn my-2 d-flex align-items-center justify-content-center"
@@ -202,7 +203,6 @@
             <button type="submit" id="editFormButton" [disabled]="disabled"
                     class="rateBtn my-2 d-flex align-items-center justify-content-center">
               <span class="spinner-border spinner-border-sm" [hidden]="!disabled"></span>
-
               <span *ngIf="!disabled"> {{ 'job.submit' | translate }}</span>
             </button>
 

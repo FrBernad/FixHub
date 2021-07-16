@@ -74,6 +74,10 @@
   "contactForm.state": "Provincia",
   "contactForm.city": "Localidad",
   "contactForm.street": "Calle",
+  "translations": "Traducciones",
+  "translations.es": "Español",
+  "translations.en": "Inglés",
+  "requests.title": "Contactos",
   "contactForm.cityWarning": "Puede que el servicio no este disponible en esta zona.",
   "contactForm.addressNumber": "N\u00DAmero",
   "contactForm.floor": "Piso ",
@@ -148,7 +152,7 @@
   "profilePage.followers": "Seguidores",
   "profilePage.following": "Seguidos",
   "profilePage.subtitle.contact": "Detalles",
-  "profilePage.subtitle.account": "Cuenta",
+  "profilePage.subtitle.account": "Perfil",
   "profilePage.subtitle.state": "Estado:",
   "profilePage.subtitle.provider": "Proveedor:",
   "profilePage.subtitle.active": "Activo",
@@ -415,6 +419,4 @@
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Si",
   "sentRequest.askForConfirmation": "\u00BFEstas seguro?"
-
-
 }

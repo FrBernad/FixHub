@@ -7,6 +7,8 @@ import {Subscription} from "rxjs";
 import {UserService} from "../../../auth/services/user.service";
 import {User} from "../../../models/user.model";
 import {JobStatusEnum} from "../../../models/job-status-enum.model";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-request',
@@ -27,6 +29,7 @@ export class RequestComponent implements OnInit {
     private contactService: ContactService,
     private route: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
   ) {
   }
 
@@ -36,6 +39,7 @@ export class RequestComponent implements OnInit {
       request => {
         this.request = request;
         this.loading = false;
+        this.titleService.setTitle('Fixhub | ' + request.jobProvided)
       },
       () => {
         this.router.navigate(['/404']);

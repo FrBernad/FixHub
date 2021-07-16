@@ -5,6 +5,8 @@ import {JobService, ReviewsPaginationResult} from "./job.service";
 import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";
 import {SingleJob} from "../models/single-job.model";
+import {Title} from "@angular/platform-browser";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-job',
@@ -32,9 +34,10 @@ export class JobComponent implements OnInit {
 
   constructor(
     private jobService: JobService,
-    private userService:UserService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
   ) {
   }
 
@@ -53,8 +56,9 @@ export class JobComponent implements OnInit {
       job => {
         this.job = job;
         this.isFetching = false;
+        this.titleService.setTitle('Fixhub | ' + job.jobProvided)
       },
-      ()=>{
+      () => {
         this.router.navigate(['/404']);
       }
     );
