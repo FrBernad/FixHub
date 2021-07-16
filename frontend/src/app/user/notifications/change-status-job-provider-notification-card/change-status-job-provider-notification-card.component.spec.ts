@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ChangeStatusJobProviderNotificationCard} from "./change-status-job-provider-notification-card.component";
 
-import {ChangeStausJobProviderNotificationCard} from './change-status-job-provider-notification-card.component';
 
-describe('ChangeStausJobProviderNotificationCardComponent', () => {
-  let component: ChangeStausJobProviderNotificationCard;
-  let fixture: ComponentFixture<ChangeStausJobProviderNotificationCard>;
+describe('ChangeStatusJobProviderNotificationCardComponent', () => {
+  let component: ChangeStatusJobProviderNotificationCard;
+  let fixture: ComponentFixture<ChangeStatusJobProviderNotificationCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChangeStausJobProviderNotificationCard ]
+      declarations: [ ChangeStatusJobProviderNotificationCard ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeStausJobProviderNotificationCard);
+    fixture = TestBed.createComponent(ChangeStatusJobProviderNotificationCard);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

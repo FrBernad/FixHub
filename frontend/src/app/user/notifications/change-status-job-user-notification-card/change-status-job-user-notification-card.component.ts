@@ -3,6 +3,7 @@ import {Notification} from "../../../models/notification.model";
 import {ContactService} from "../../../job/contact/contact.service";
 import {JobRequest} from "../../../models/job-request.model";
 import {NotificationsService} from "../notifications.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-change-status-job-user-notification-card',
@@ -14,11 +15,6 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
   @Input("notification") notification: Notification;
 
   jobRequest: JobRequest;
-
-  constructor(private contactService: ContactService,
-              private notificationService: NotificationsService,
-  ) {
-  }
 
   constructor(
     private notificationService: NotificationsService,
