@@ -37,7 +37,7 @@
                 </div>
               </div>
             </div>
-            <span *ngIf="!chooseCityForm.get('cities').valid">
+            <span *ngIf="!chooseCityForm.get('cities').valid && chooseCityForm.get('cities').touched" >
             <span *ngIf="chooseCityForm.get('cities').errors['required']" class="errorMessage">
               {{'NotEmpty.chooseCityForm.city' | translate }}<br>
             </span>
