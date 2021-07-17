@@ -13,6 +13,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   loading = true;
   loadingMore = false;
+  asSeenLoading = false;
   private notificationSub: Subscription;
 
   jobRequest = NotificationType.JOB_REQUEST;
@@ -83,5 +84,19 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
   }
 
+  markAllAsSeen() {
+    this.asSeenLoading = true;
+    this.npq.page = 0;
+    this.notificationsService.markAsReadAllNotifications()
+      .subscribe(
+        () => {
+          this.asSeenLoading = false;
+          this.notificationsService.getNotifications(this.npq);
+        },
+        () => {
+          this.asSeenLoading = false;
+        }
+      );
+  }
 
 }

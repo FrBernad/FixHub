@@ -3,7 +3,9 @@
     <div class="col-12">
       <div class="container-fluid px-0">
         <div class="row">
-          <div class="col-5 d-flex align-items-center justify-content-start">
+
+          <div class="col-8 col-md-5 d-flex align-items-center justify-content-between">
+
             <div class="dropdown">
               <button class="dropdown-custom dropdown-toggle d-flex align-items-center justify-content-between"
                       type="button"
@@ -30,7 +32,20 @@
                 </li>
               </ul>
             </div>
+
+            <div *ngIf="npr.totalPages>0" class="col-5 d-flex align-items-center justify-content-start">
+              <button type="button" class="markAsSeen" (click)="markAllAsSeen()" [disabled]="asSeenLoading">
+                <span class="spinner-border spinner-border-sm" [hidden]="!asSeenLoading"></span>
+                <span *ngIf="!asSeenLoading">
+                <span>
+                  {{'account.notifications.allSeen'|translate}}
+                </span>
+              </span>
+              </button>
+            </div>
+
           </div>
+
         </div>
       </div>
     </div>
@@ -53,7 +68,7 @@
       </div>
       <div *ngIf="canLoadMore()" class="d-flex justify-content-center col-12 mt-4">
         <button class="seeMoreBtn" (click)="loadMore()" [disabled]="loadingMore">
-          <span class="spinner-border spinner-border-sm" [hidden]="loadingMore"></span>
+          <span class="spinner-border spinner-border-sm" [hidden]="!loadingMore"></span>
           <span *ngIf="!loadingMore">
                 {{ "account.notifications.more" | translate}}
           </span>

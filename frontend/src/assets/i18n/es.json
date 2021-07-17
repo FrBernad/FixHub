@@ -25,6 +25,7 @@
   "account.notifications.title": "Notificaciones",
   "account.notifications.empty": "Estás al dia!",
   "account.notifications.more": "Cargar más",
+  "account.notifications.allSeen": "Marcar todas como vistas",
   "account.notifications.filter.UNSEEN": "Sin abrir",
   "account.notifications.newFollower.title": "Nuevo seguidor!",
   "account.notifications.newFollower.body": " ha comenzado a seguirte.",

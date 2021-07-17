@@ -65,6 +65,7 @@
   "account.notifications.title": "Notifications",
   "account.notifications.empty": "All caught up!",
   "account.notifications.more": "Load more",
+  "account.notifications.allSeen": "Mark all as seen",
   "account.notifications.filter.UNSEEN": "Unseen",
   "account.notifications.newFollower.title": "You have a new follower!",
   "account.notifications.newFollower.body": " is now following you.",
