@@ -381,7 +381,7 @@
   "Size.contactForm.phoneNumber": "The phone number must be less than {1} numbers",
   "Pattern.contactForm.phoneNumber": "The phone number you entered is invalid",
   "NotEmpty.contactForm.state": "Please enter the state in which you reside",
-  "Size.contactForm.state": "The name of the state must be less than {1} characters",
+  "Size.contactForm.state": "The name of the state must be less than {{max}} characters",
   "Pattern.contactForm.state": "The name of the state you entered is not valid",
   "Pattern.contactForm.city": "The city you entered is invalid",
   "NotEmpty.contactForm.city": "Please enter the city where you reside",

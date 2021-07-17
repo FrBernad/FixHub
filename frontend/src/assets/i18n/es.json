@@ -376,7 +376,7 @@
   "Size.contactForm.phoneNumber": "El n\u00FAmero de tel\u00E9fono debe tener menos de {1} numeros",
   "registerForm.phoneNumberPlaceholder": "5491123456789",
   "NotEmpty.contactForm.state": "Ingrese la provincia en la que reside",
-  "Size.contactForm.state": "El nombre de la provincia debe tener menos de {1} caracteres",
+  "Size.contactForm.state": "El nombre de la provincia debe tener menos de {{max}} caracteres",
   "Pattern.contactForm.state": "El nombre de la provincia que ingres\u00F3 no es v\u00E1lido",
   "NotEmpty.contactForm.city": "Ingrese la ciudad en la que reside",
   "Size.contactForm.city": "La ciudad debe tener menos de {{max}} caracteres",
