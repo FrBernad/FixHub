@@ -17,10 +17,12 @@ import javax.ws.rs.ext.Provider;
 @Component
 @Provider
 public class ImageNotFoundExceptionMapper implements ExceptionMapper<ImageNotFoundException>{
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageNotFoundExceptionMapper.class);
 
     @Autowired
     private MessageSource messageSource;
+
 
     @Override
     public Response toResponse(ImageNotFoundException exception) {

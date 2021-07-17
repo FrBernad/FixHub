@@ -14,6 +14,8 @@ public class ServerInternalExceptionMapper implements ExceptionMapper<ServerInte
 
     @Override
     public Response toResponse(ServerInternalException exception) {
+        LOGGER.error("Error encountered, server internal exception");
+
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exception.getMessage()).build();
     }
 }
