@@ -83,7 +83,6 @@ describe('DashboardComponent', () => {
     mockJobService = TestBed.inject(DiscoverService);
     mockTranslateService = TestBed.inject(TranslateService);
     mockTitleService = TestBed.inject(Title);
-    component.user = fakeUser;
     fixture.detectChanges();
   });
 

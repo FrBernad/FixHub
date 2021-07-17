@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ReviewPaginationComponent} from './review-pagination.component';
-import {Job} from "../../models/job.model";
 import {TestingModule} from "../../testing.module";
+import {Job} from "../../models/job.model";
 
 describe('ReviewPaginationComponent', () => {
   let component: ReviewPaginationComponent;
@@ -20,8 +20,7 @@ describe('ReviewPaginationComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewPaginationComponent);
-    let fakeJob = new Job();
-    component.job=fakeJob;
+    component.job=new Job();
     fixture.detectChanges();
   });
 

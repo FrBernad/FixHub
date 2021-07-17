@@ -7,6 +7,7 @@ import {UserService} from "../auth/services/user.service";
 import {JobService} from "./job.service";
 import {MockActivatedRoute} from "./edit-job/edit-job.component.spec";
 import {TestingModule} from "../testing.module";
+import {JobModule} from "./job.module";
 
 
 describe('JobComponent', () => {
@@ -24,7 +25,8 @@ describe('JobComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [JobComponent],
       imports: [
-        TestingModule],
+        TestingModule,
+      JobModule],
       providers: [
         {
           provide: ActivatedRoute,

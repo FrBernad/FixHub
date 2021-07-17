@@ -42,7 +42,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   private jobsSub: Subscription;
 
   constructor(
-    private jobsService: DiscoverService,
+    private discoverService: DiscoverService,
     private titleService: Title,
     private translateService: TranslateService,
   ) {
@@ -65,8 +65,8 @@ export class DiscoverComponent implements OnInit, OnDestroy {
       this.jpq.query = query;
     }
 
-    this.jobsService.getJobs(this.jpq);
-    this.jobsSub = this.jobsService.results.subscribe((results) => {
+    this.discoverService.getJobs(this.jpq);
+    this.jobsSub = this.discoverService.results.subscribe((results) => {
       this.jpr = {
         ...this.jpr,
         ...results
@@ -74,11 +74,11 @@ export class DiscoverComponent implements OnInit, OnDestroy {
       this.isFetching = false;
     });
 
-    this.jobsService.getCategories().subscribe((categories) => {
+    this.discoverService.getCategories().subscribe((categories) => {
       this.categories = categories.values;
     });
 
-    this.jobsService.getStates().subscribe((states) => {
+    this.discoverService.getStates().subscribe((states) => {
       this.states = states;
     });
   }
@@ -98,13 +98,13 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!category) {
       delete this.jpq.category;
     }
-    this.jobsService.getJobs(this.jpq)
+    this.discoverService.getJobs(this.jpq)
   }
 
   onChangeOrder(order: string) {
     this.jpq.order = order;
     this.jpq.page = 0;
-    this.jobsService.getJobs(this.jpq)
+    this.discoverService.getJobs(this.jpq)
   }
 
   onChangeState(state: string, id: string) {
@@ -112,7 +112,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     this.jpq.state = id;
     this.jpq.page = 0;
     if (!!state) {
-      this.jobsService.getStateCities(id).subscribe((cities) => {
+      this.discoverService.getStateCities(id).subscribe((cities) => {
         this.cities = cities;
       });
     } else {
@@ -121,7 +121,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     delete this.jpq.city;
     this.selectedCity = "";
     this.cities = [];
-    this.jobsService.getJobs(this.jpq);
+    this.discoverService.getJobs(this.jpq);
   }
 
   onChangeCity(city: string, id: string) {
@@ -131,12 +131,12 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!id) {
       delete this.jpq.city;
     }
-    this.jobsService.getJobs(this.jpq);
+    this.discoverService.getJobs(this.jpq);
   }
 
   onChangePage(page: number) {
     this.jpq.page = page;
-    this.jobsService.getJobs(this.jpq);
+    this.discoverService.getJobs(this.jpq);
   }
 
   onSearchEnter(e: KeyboardEvent, query: string) {
@@ -149,7 +149,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!this.searchError) {
       this.jpq.page = 0;
       this.jpq.query = query;
-      this.jobsService.getJobs(this.jpq)
+      this.discoverService.getJobs(this.jpq)
     }
   }
 

@@ -6,12 +6,10 @@ import {ContactService} from "../../job/contact/contact.service";
 import {TranslateService} from "@ngx-translate/core";
 import {of} from "rxjs";
 import {TestingModule} from "../../testing.module";
-
-export class MockTranslateService {
-    setDefaultLang(lang: string) { }
-    use(lang: string) { }
-    get onLangChange() { return of({lang: 'en'}) }
-}
+import {ProviderDetails, User} from "../../models/user.model";
+import {ContactInfo} from "../../models/contact-info.model";
+import {UserService} from "../../auth/services/user.service";
+import {MockUserService} from "../provider/dashboard/dashboard.component.spec";
 
 
 describe('RequestsComponent', () => {
@@ -25,12 +23,12 @@ describe('RequestsComponent', () => {
       imports: [
         TestingModule
       ],
-      providers:[
+      providers: [
         {
-          provider:TranslateService,
-          useClass:MockTranslateService
+          provide: UserService,
+          useClass:MockUserService
         },
-        ContactService, Title,TranslateService]
+        Title, TranslateService]
     })
       .compileComponents();
   });

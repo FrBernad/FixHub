@@ -3,6 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {JobCardComponent} from './job-card.component';
 import {TestingModule} from "../../testing.module";
 import {Job} from "../../models/job.model";
+import {JobModule} from "../../job/job.module";
 
 describe('JobCardComponent', () => {
   let component: JobCardComponent;
@@ -13,7 +14,7 @@ describe('JobCardComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [JobCardComponent],
       imports: [
-        TestingModule
+        TestingModule,
       ]
     })
       .compileComponents();

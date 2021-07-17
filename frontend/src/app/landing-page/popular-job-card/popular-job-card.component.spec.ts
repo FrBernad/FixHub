@@ -1,12 +1,13 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PopularJobCardComponent} from './popular-job-card.component';
-import {Job} from "../../models/job.model";
 import {TestingModule} from "../../testing.module";
+import {Job} from "../../models/job.model";
 
 describe('PopularJobCardComponent', () => {
   let component: PopularJobCardComponent;
   let fixture: ComponentFixture<PopularJobCardComponent>;
+
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -19,8 +20,7 @@ describe('PopularJobCardComponent', () => {
 
   beforeEach(async () => {
     fixture = TestBed.createComponent(PopularJobCardComponent);
-    let fakeJob = new Job();
-    component.job=fakeJob;
+    component.job=new Job();
     fixture.detectChanges();
   });
 

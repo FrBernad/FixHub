@@ -4,6 +4,8 @@ import {NotificationsService} from "../notifications.service";
 import {ContactService} from "../../../job/contact/contact.service";
 import {Router} from "@angular/router";
 import {TestingModule} from "../../../testing.module";
+import {Notification} from "../../../models/notification.model";
+import {NotificationType} from "../../../models/notification-type-enum.model";
 
 
 describe('ChangeStatusJobProviderNotificationCardComponent', () => {
@@ -12,6 +14,13 @@ describe('ChangeStatusJobProviderNotificationCardComponent', () => {
   let mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
+  let mockNotification = new Notification(
+    2,
+    new Date(),
+     1,
+     false,
+      NotificationType.JOB_REQUEST
+  );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,6 +41,7 @@ describe('ChangeStatusJobProviderNotificationCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeStatusJobProviderNotificationCard);
     component = fixture.componentInstance;
+    component.notification=mockNotification;
     fixture.detectChanges();
   });
 
@@ -39,7 +49,3 @@ describe('ChangeStatusJobProviderNotificationCardComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-let mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };

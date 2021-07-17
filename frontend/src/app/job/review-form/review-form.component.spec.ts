@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ReviewFormComponent} from './review-form.component';
 import {TestingModule} from "../../testing.module";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('ReviewFormComponent', () => {
   let component: ReviewFormComponent;
@@ -11,7 +12,8 @@ describe('ReviewFormComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ReviewFormComponent ],
         imports: [
-        TestingModule]
+        TestingModule],
+      schemas:[NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   });

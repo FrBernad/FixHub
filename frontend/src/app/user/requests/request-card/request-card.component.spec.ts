@@ -4,7 +4,7 @@ import {RequestCardComponent} from './request-card.component';
 import {JobRequest} from "../../../models/job-request.model";
 import {TestingModule} from "../../../testing.module";
 
-describe('ReceivedRequestCardComponent', () => {
+describe('RequestCardComponent', () => {
   let component: RequestCardComponent;
   let fixture: ComponentFixture<RequestCardComponent>;
   let mockType = 'Type';
