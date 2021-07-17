@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import org.junit.Before;
@@ -167,8 +168,8 @@ public class UserDaoTest {
             LocalDateTime.of(2021, 5, 29, 12, 30), job);
 
         String query = String.format("c_id = %s and c_message = '%s' and c_contact_info = %s and c_job_id = %s and c_provider_id = %s and c_user_id = %s ",
-            jobContact.getId(),jobContact.getMessage(),jobContact.getContactInfo().getId()
-            ,jobContact.getJob().getId(),jobContact.getProvider().getId(),jobContact.getUser().getId());
+            jobContact.getId(), jobContact.getMessage(), jobContact.getContactInfo().getId()
+            , jobContact.getJob().getId(), jobContact.getProvider().getId(), jobContact.getUser().getId());
 
         em.flush();
 
@@ -182,63 +183,61 @@ public class UserDaoTest {
         assertEquals(contactInfo.getUser().getId().longValue(), 3L);
     }
 
-    //GET CLIENTS AND PROVIDERS
-//    @Test
-//    public void testGetClientsByProvider() {
-//        Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_PROVIDER, 0, 4);
-//        assertEquals(1, jobContacts.size());
-//        assertTrue(jobContacts.size() <= 4);
-//    }
-//
-//    @Test
-//    public void testGetClientsByProviderNoClients() {
-//        Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_CLIENT, 0, 4);
-//        assertEquals(0, jobContacts.size());
-//    }
-//
-//    @Test
-//    public void testGetProvidersByClient() {
-//        Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_CLIENT, 0, 10);
-//        assertEquals(1, providers.size());
-//        assertTrue(providers.size() <= 10);
-//
-//        providers = userDao.getProvidersByClient(MOCKED_PROVIDER, 0, 10);
-//        assertEquals(0, providers.size());
-//    }
-//
-//    @Test
-//    public void testGetProvidersByClientNoProviders() {
-//        Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_PROVIDER, 0, 10);
-//        assertEquals(0, providers.size());
-//    }
-//
-//    //GET CLIENTS AND PROVIDERS COUNTS
-//    @Test
-//    public void testGetClientsCountByProvider() {
-//        int count = userDao.getClientsCountByProvider(MOCKED_PROVIDER);
-//        assertEquals(1, count);
-//    }
-//
-//    @Test
-//    public void testGetClientsCountByProviderNoClients() {
-//        int count = userDao.getClientsCountByProvider(MOCKED_CLIENT);
-//        assertEquals(0, count);
-//    }
-//
-//    @Test
-//    public void testGetProvidersCountByClient() {
-//        int count = userDao.getProvidersCountByClient(MOCKED_CLIENT);
-//        assertEquals(1, count);
-//
-//        count = userDao.getProvidersCountByClient(MOCKED_PROVIDER);
-//        assertEquals(0, count);
-//    }
-//
-//    @Test
-//    public void testGetProvidersCountByClientNoProviders() {
-//        int count = userDao.getProvidersCountByClient(MOCKED_PROVIDER);
-//        assertEquals(0, count);
-//    }
+//    GET CLIENTS AND PROVIDERS
+
+    @Test
+    public void testGetClientsByProvider() {
+        Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_PROVIDER, null, StatusOrderOptions.NEWEST, 0, 4);
+        assertEquals(1, jobContacts.size());
+        assertTrue(jobContacts.size() <= 4);
+    }
+
+    @Test
+    public void testGetClientsByProviderNoClients() {
+        Collection<JobContact> jobContacts = userDao.getClientsByProvider(MOCKED_CLIENT, null, StatusOrderOptions.NEWEST, 0, 4);
+        assertEquals(0, jobContacts.size());
+    }
+
+    @Test
+    public void testGetProvidersByClient() {
+        Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_CLIENT, null, StatusOrderOptions.NEWEST, 0, 10);
+        assertEquals(1, providers.size());
+        assertTrue(providers.size() <= 10);
+    }
+
+    @Test
+    public void testGetProvidersByClientNoProviders() {
+        Collection<JobContact> providers = userDao.getProvidersByClient(MOCKED_PROVIDER, null, StatusOrderOptions.NEWEST, 0, 10);
+        assertEquals(0, providers.size());
+    }
+
+    //GET CLIENTS AND PROVIDERS COUNTS
+    @Test
+    public void testGetClientsCountByProvider() {
+        int count = userDao.getClientsCountByProvider(MOCKED_PROVIDER, null);
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testGetClientsCountByProviderNoClients() {
+        int count = userDao.getClientsCountByProvider(MOCKED_CLIENT, null);
+        assertEquals(0, count);
+    }
+
+    @Test
+    public void testGetProvidersCountByClient() {
+        int count = userDao.getProvidersCountByClient(MOCKED_CLIENT, null);
+        assertEquals(1, count);
+
+        count = userDao.getProvidersCountByClient(MOCKED_PROVIDER, null);
+        assertEquals(0, count);
+    }
+
+    @Test
+    public void testGetProvidersCountByClientNoProviders() {
+        int count = userDao.getProvidersCountByClient(MOCKED_PROVIDER, null);
+        assertEquals(0, count);
+    }
 
     //GET FOLLOW
     @Test
@@ -302,12 +301,12 @@ public class UserDaoTest {
 
     @Test
     public void testHasContactJobProvided() {
-        assertTrue(userDao.hasContactJobProvided(MOCKED_PROVIDER,MOCKED_CLIENT,MOCKED_JOB));
+        assertTrue(userDao.hasContactJobProvided(MOCKED_PROVIDER, MOCKED_CLIENT, MOCKED_JOB));
     }
 
     @Test
     public void testHasContactJobProvidedFalse() {
-        assertFalse(userDao.hasContactJobProvided(MOCKED_CLIENT_NO_CONTACT,MOCKED_PROVIDER,MOCKED_JOB));
+        assertFalse(userDao.hasContactJobProvided(MOCKED_CLIENT_NO_CONTACT, MOCKED_PROVIDER, MOCKED_JOB));
     }
 
 

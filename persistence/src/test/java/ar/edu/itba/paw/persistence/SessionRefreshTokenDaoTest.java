@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.interfaces.persistance.SessionRefreshTokenDao;
 import ar.edu.itba.paw.interfaces.persistance.VerificationTokenDao;
-import ar.edu.itba.paw.models.token.VerificationToken;
+import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +26,12 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Sql(scripts = "classpath:verification-token-dao-test.sql")
+@Sql(scripts = "classpath:session-refresh-token-dao-test.sql")
 @Transactional
-public class VerificationTokenDaoTest {
+public class SessionRefreshTokenDaoTest {
 
     @Autowired
-    private VerificationTokenDao verificationTokenDao;
+    private SessionRefreshTokenDao sessionRefreshTokenDao;
 
     @Autowired
     private DataSource ds;
@@ -40,9 +41,9 @@ public class VerificationTokenDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    private static final Long PRT_TOKEN_ID = 1L;
+    private static final Long SRT_TOKEN_ID = 1L;
 
-    private static final String PRT_TOKEN_VALUE = "83feb0af-f467-4374-91fb-8f96db3f9a23";
+    private static final String SRT_TOKEN_VALUE = "83feb0af-f467-4374-91fb-8f96db3f9a23";
 
     private static final User USER = Mockito.when(Mockito.mock(User.class).getId()).thenReturn(1L).getMock();
 
@@ -55,49 +56,48 @@ public class VerificationTokenDaoTest {
 
     @Test
     public void testCreateToken() {
-
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "verification_tokens");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "session_refresh_tokens");
 
         User user = em.find(User.class, USER.getId());
 
-        VerificationToken vt = verificationTokenDao.createVerificationToken(user, PRT_TOKEN_VALUE, EXPIRATION_DATE);
+        SessionRefreshToken srt = sessionRefreshTokenDao.createToken(user, SRT_TOKEN_VALUE, EXPIRATION_DATE);
 
         em.flush();
 
         assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate,
-            "verification_tokens", "vt_id = " + PRT_TOKEN_ID + "and vt_user_id = " + USER.getId()));
-        assertEquals(PRT_TOKEN_VALUE, vt.getValue());
-        assertEquals(user, vt.getUser());
+            "session_refresh_tokens", "srt_id = " + SRT_TOKEN_ID + "and srt_user_id = " + USER.getId()));
+        assertEquals(SRT_TOKEN_VALUE, srt.getValue());
+        assertEquals(user, srt.getUser());
     }
 
     @Test
     public void testGetTokenByUser() {
-        final Optional<VerificationToken> vt = verificationTokenDao.getTokenByUser(USER);
-        assertTrue(vt.isPresent());
+        final Optional<SessionRefreshToken> srt = sessionRefreshTokenDao.getTokenByUser(USER);
+        assertTrue(srt.isPresent());
     }
 
     @Test
     public void testGetTokenByValidValue() {
-        final Optional<VerificationToken> vt = verificationTokenDao.getTokenByValue(PRT_TOKEN_VALUE);
-        assertTrue(vt.isPresent());
+        final Optional<SessionRefreshToken> srt = sessionRefreshTokenDao.getTokenByValue(SRT_TOKEN_VALUE);
+        assertTrue(srt.isPresent());
     }
 
 
     @Test
     public void testGetTokenByInvalidValue() {
-        final Optional<VerificationToken> vt = verificationTokenDao.getTokenByValue("invalid");
-        assertFalse(vt.isPresent());
+        final Optional<SessionRefreshToken> srt = sessionRefreshTokenDao.getTokenByValue("invalid");
+        assertFalse(srt.isPresent());
     }
 
     @Test
     public void testRemoveToken() {
-        final VerificationToken vt = em.find(VerificationToken.class, PRT_TOKEN_ID);
+        final SessionRefreshToken srt = em.find(SessionRefreshToken.class, SRT_TOKEN_ID);
 
-        verificationTokenDao.removeToken(vt);
+        sessionRefreshTokenDao.removeToken(srt);
 
         em.flush();
 
-        assertEquals(0, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "verification_tokens", "vt_id = " + PRT_TOKEN_ID));
+        assertEquals(0, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "session_refresh_tokens", "srt_id = " + SRT_TOKEN_ID));
     }
 
 
