@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
 
-import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;

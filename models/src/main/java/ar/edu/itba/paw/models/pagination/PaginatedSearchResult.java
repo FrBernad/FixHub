@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.models.pagination;
 
-import ar.edu.itba.paw.models.location.City;
-
 import java.util.Collection;
 
 public class PaginatedSearchResult<T> {

@@ -4,7 +4,6 @@ import {UpdateProviderInfoComponent} from './update-provider-info.component';
 import {Router} from "@angular/router";
 import {UserService} from "../../../auth/services/user.service";
 import {TestingModule} from "../../../testing.module";
-import {UpdateProviderInfoModule} from "./update-provider-info.module";
 
 describe('UpdateProviderInfoComponent', () => {
   let component: UpdateProviderInfoComponent;

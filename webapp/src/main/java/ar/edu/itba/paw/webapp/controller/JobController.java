@@ -15,7 +15,6 @@ import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewContactDto;
 import ar.edu.itba.paw.webapp.dto.request.NewReviewDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
-import ar.edu.itba.paw.webapp.exceptionsMappers.MaxUploadSizeExceptionMapper;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.validator.constraints.NotEmpty;

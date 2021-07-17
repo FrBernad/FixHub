@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../../auth/services/user.service";
 import {Schedule} from "../../../auth/join/join.component";
 import {City, State} from "../../../discover/discover.service";
@@ -13,9 +13,10 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
   templateUrl: './update-provider-info.component.html',
   styleUrls: ['./update-provider-info.component.scss', '../../../auth/join/join.component.scss']
 })
-export class UpdateProviderInfoComponent implements OnInit {
+export class UpdateProviderInfoComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
+  private transSub: Subscription;
   user: User;
   chooseState = true;
   state: State;
@@ -39,7 +40,7 @@ export class UpdateProviderInfoComponent implements OnInit {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
@@ -85,9 +86,10 @@ export class UpdateProviderInfoComponent implements OnInit {
         this.router.navigate(['user', 'dashboard']);
       }
     );
-
-
   }
 
+  ngOnDestroy(): void {
+    this.transSub.unsubscribe();
+  }
 
 }

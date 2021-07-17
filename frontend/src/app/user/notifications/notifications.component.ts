@@ -17,6 +17,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   loadingMore = false;
   asSeenLoading = false;
   private notificationSub: Subscription;
+  private transSub: Subscription;
 
   jobRequest = NotificationType.JOB_REQUEST;
   newfollower = NotificationType.NEW_FOLLOWER;
@@ -51,7 +52,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
@@ -80,10 +81,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
           this.titleService.setTitle('Fixhub | ' + routeTitle)
         }
       )
-  }
-
-  ngOnDestroy(): void {
-    this.notificationSub.unsubscribe();
   }
 
   canLoadMore(): boolean {
@@ -117,6 +114,11 @@ export class NotificationsComponent implements OnInit, OnDestroy {
           this.asSeenLoading = false;
         }
       );
+  }
+
+  ngOnDestroy(): void {
+    this.notificationSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 
 }

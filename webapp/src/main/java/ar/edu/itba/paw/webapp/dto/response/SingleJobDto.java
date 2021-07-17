@@ -4,18 +4,20 @@ import ar.edu.itba.paw.models.job.Job;
 
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlType;
 
-public class SingleJobDto extends JobDto{
+@XmlType(name = "")
+public class SingleJobDto extends JobDto {
 
     private boolean canReview;
 
     public SingleJobDto() {
-       //used by Jersey
+        //used by Jersey
     }
 
-    public SingleJobDto(Job job, UriInfo uriInfo, SecurityContext securityContext,boolean canReview) {
+    public SingleJobDto(Job job, UriInfo uriInfo, SecurityContext securityContext, boolean canReview) {
         super(job, uriInfo, securityContext);
-        this.canReview=canReview;
+        this.canReview = canReview;
     }
 
     public boolean isCanReview() {

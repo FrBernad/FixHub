@@ -5,10 +5,12 @@ import ar.edu.itba.paw.models.user.notification.NotificationType;
 
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@XmlType(name = "")
 public class NotificationDto {
 
     public static Collection<NotificationDto> MapNotificationToDto(Collection<Notification> notifications, UriInfo uriInfo, SecurityContext securityContext) {
