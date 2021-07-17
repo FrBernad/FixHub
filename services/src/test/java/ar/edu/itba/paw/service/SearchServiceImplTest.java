@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.interfaces.persistance.JobDao;
 import ar.edu.itba.paw.interfaces.persistance.LocationDao;
+import ar.edu.itba.paw.interfaces.persistance.NotificationDao;
 import ar.edu.itba.paw.interfaces.persistance.UserDao;
 import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.models.job.JobStatus;
@@ -14,6 +15,7 @@ import ar.edu.itba.paw.models.pagination.OrderOptions;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.notification.Notification;
 import ar.edu.itba.paw.services.SearchServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +45,9 @@ public class SearchServiceImplTest {
     private UserDao mockUserDao;
 
     @Mock
+    private NotificationDao notificationDao;
+
+    @Mock
     private LocationDao mockLocationDao;
 
     @Mock
@@ -51,6 +56,7 @@ public class SearchServiceImplTest {
     private static final State STATE = new State("STATE");
     private static final City CITY = new City(STATE, "CITY");
     private static final User USER = new User("", "", "", "", "", "", CITY.getName(), Collections.singleton(PROVIDER));
+    private static final Notification NOTIFICATION = new Notification(1L, null, null, true, USER);
 
     private static final Job JOB = new Job("", "", 5, 5L, JobCategory.MECANICO, BigDecimal.valueOf(13), false, USER, null);
     private static final Collection<Job> JOB_COLLECTION = Collections.singletonList(JOB);
@@ -59,6 +65,7 @@ public class SearchServiceImplTest {
     private static final Collection<JobContact> JOB_CONTACT_COLLECTION = Collections.singletonList(JOB_CONTACT);
 
     private static final Collection<User> USER_COLLECTION = Collections.singletonList(USER);
+    private static final Collection<Notification> NOTIFICATIONS_COLLECTION = Collections.singletonList(NOTIFICATION);
 
     private final int DEFAULT_ITEMS_PER_PAGE = 6;
 
@@ -338,6 +345,34 @@ public class SearchServiceImplTest {
             .thenReturn(USER_COLLECTION);
 
         final PaginatedSearchResult<User> result = searchService.getUserFollowing(USER, 0, -10);
+
+        assertNull(result);
+    }
+
+    //GET USER NOTIFICATIONS
+
+    @Test
+    public void testGetUserNotificationsInvalidPage() {
+        lenient().when(notificationDao.getNotificationCountByUser(any(), eq(true))).
+            thenReturn(10);
+
+        lenient().when(notificationDao.getNotificationsByUser(any(), eq(true), eq(0), eq(6)))
+            .thenReturn(NOTIFICATIONS_COLLECTION);
+
+        final PaginatedSearchResult<Notification> result = searchService.getNotificationsByUser(USER, true, -10, 6);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void testGetUserNotificationsInvalidItemsPerPage() {
+        lenient().when(notificationDao.getNotificationCountByUser(any(), eq(true))).
+            thenReturn(10);
+
+        lenient().when(notificationDao.getNotificationsByUser(any(), eq(true), eq(0), eq(6)))
+            .thenReturn(NOTIFICATIONS_COLLECTION);
+
+        final PaginatedSearchResult<Notification> result = searchService.getNotificationsByUser(USER, true, 0, -10);
 
         assertNull(result);
     }
