@@ -3,7 +3,7 @@
     <div class="card-header px-0" data-bs-toggle="collapse" #accordion style="cursor: pointer">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-11">
+          <div class="col-8">
             <a (click)="$event.stopPropagation()" [routerLink]="['/jobs',request.jobId]">
               {{request.jobProvided}}
             </a> |
@@ -17,11 +17,13 @@
                 {{request.user.name}} {{request.user.surname}}
               </a>
             </ng-template>
-            |
+          </div>
+          <div class="col-3 d-flex justify-content-end">
             <span class="names">
                   {{request.date|date:'dd-MM-yyy'}}
             </span>
           </div>
+
           <div class="col-1 d-flex align-items-center justify-content-end">
             <fa-icon
               class="ms-2 navbarText dropDownArrow" [icon]="['fas','chevron-down']" id="navBarArrow">
