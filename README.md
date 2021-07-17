@@ -1,4 +1,4 @@
-![alt fixHub logo](http://pawserver.it.itba.edu.ar/paw-2021a-06/resources/assets/images/navbrand.png)
+![alt fixHub logo](./frontend/src/assets/images/navbrand.png)
 ## Authors
 - [Francisco Bernad](https://github.com/FrBernad)
 - [Nicolás Rampoldi](https://github.com/NicolasRampoldi) 
