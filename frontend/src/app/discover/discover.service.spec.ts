@@ -1,10 +1,9 @@
-import {DiscoverService, JobPaginationQuery} from "./discover.service";
+import {DiscoverService} from "./discover.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
-import {OrderOption} from "../models/order-option-enum.model";
-import {Job} from "../models/job.model";
-import {HttpParams, HttpStatusCode} from "@angular/common/http";
+import {HttpStatusCode} from "@angular/common/http";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('DiscoverService', () => {
   let injector: TestBed;
@@ -14,7 +13,8 @@ describe('DiscoverService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,
+                RouterTestingModule],
       providers: [DiscoverService],
     });
 
@@ -23,11 +23,7 @@ describe('DiscoverService', () => {
     httpMock = injector.inject(HttpTestingController);
   });
 
-  afterEach(() => {
-    httpMock.verify();
-  });
-
-  it('getCategories() should return categories', () => {
+   it('getCategories() should return categories', () => {
     let categories = {
       data: ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA',
         'ENTREGA', 'FOTOGRAFO', 'FUMIGADOR', 'GASISTA',
@@ -83,6 +79,10 @@ describe('DiscoverService', () => {
     const req = httpMock.expectOne(environment.apiBaseUrl + '/locations/state/' + id + '/cities');
     expect(req.request.method).toBe('GET');
     req.flush(cities);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
 });
