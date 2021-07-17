@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from "../../models/user.model";
 import {UserService} from "../services/user.service";
 import {Subscription} from "rxjs";
@@ -18,9 +18,10 @@ export interface Schedule {
   templateUrl: './join.component.html',
   styleUrls: ['./join.component.scss']
 })
-export class JoinComponent implements OnInit {
+export class JoinComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
+  private transSub: Subscription;
   user: User;
   chooseState = true;
   state: State;
@@ -49,7 +50,7 @@ export class JoinComponent implements OnInit {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
   }
@@ -92,6 +93,11 @@ export class JoinComponent implements OnInit {
         this.router.navigate(['/user/profile']);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 
 }

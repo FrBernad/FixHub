@@ -13,6 +13,8 @@ import {User} from "../../models/user.model";
 export class RequestsComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
+  private transSub: Subscription;
+
   user: User;
 
   constructor(
@@ -29,7 +31,7 @@ export class RequestsComponent implements OnInit, OnDestroy {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
   }
@@ -44,7 +46,8 @@ export class RequestsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe()
+    this.userSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 
 }

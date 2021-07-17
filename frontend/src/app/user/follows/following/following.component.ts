@@ -14,9 +14,11 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 })
 export class FollowingComponent implements OnInit, OnDestroy {
 
+  private transSub: Subscription;
+
   user: User;
   loading = true;
-  loadingFollow=true;
+  loadingFollow = true;
 
   noData = "profilePage.noFollowings"
 
@@ -55,7 +57,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
             ...this.fpr,
             ...results
           };
-          this.loadingFollow=false;
+          this.loadingFollow = false;
 
         });
       },
@@ -66,7 +68,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
   }
@@ -88,6 +90,9 @@ export class FollowingComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.followSub) {
       this.followSub.unsubscribe();
+    }
+    if (this.transSub) {
+      this.transSub.unsubscribe();
     }
   }
 

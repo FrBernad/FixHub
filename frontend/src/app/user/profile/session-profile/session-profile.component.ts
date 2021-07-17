@@ -14,6 +14,7 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 })
 export class SessionProfileComponent implements OnInit, OnDestroy {
 
+  private transSub: Subscription;
   private userSub: Subscription;
   user: User;
 
@@ -55,7 +56,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
@@ -170,6 +171,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe()
+    this.userSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 }

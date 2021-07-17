@@ -12,12 +12,13 @@ import {Title} from "@angular/platform-browser";
 })
 export class UserProfileComponent implements OnInit {
 
+  private userSub: Subscription;
+
   user: User;
   loggedUser: User;
   loading = true;
   disable = false;
 
-  userSub: Subscription;
 
   constructor(
     private userService: UserService,

@@ -49,6 +49,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
     });
+
     this.jobsService.getCategories().subscribe(
       (responseData) => {
           responseData.values.forEach( (category) =>{this.categories.push(category);})

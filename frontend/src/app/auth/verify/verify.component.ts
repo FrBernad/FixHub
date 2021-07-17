@@ -1,16 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {UserService} from "../services/user.service";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-verify',
   templateUrl: './verify.component.html',
   styleUrls: ['./verify.component.scss']
 })
-export class VerifyComponent implements OnInit {
+export class VerifyComponent implements OnInit, OnDestroy {
+
+  private transSub: Subscription;
 
   loading = true;
   success = false;
@@ -28,7 +31,7 @@ export class VerifyComponent implements OnInit {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
@@ -51,6 +54,10 @@ export class VerifyComponent implements OnInit {
           this.titleService.setTitle('Fixhub | ' + routeTitle)
         }
       )
+  }
+
+  ngOnDestroy(): void {
+    this.transSub.unsubscribe();
   }
 
 }

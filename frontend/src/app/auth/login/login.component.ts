@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../services/user.service";
@@ -7,14 +7,16 @@ import {PreviousRouteService} from "../services/previous-route.service";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {NotificationsService} from "../../user/notifications/notifications.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
+  private transSub: Subscription;
   showPass = true;
   loginForm: FormGroup;
   error = false;
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
   }
@@ -91,8 +93,12 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  toogleEye() {
+  toggleEye() {
     this.showPass = !this.showPass;
+  }
+
+  ngOnDestroy(): void {
+    this.transSub.unsubscribe();
   }
 
 }

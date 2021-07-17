@@ -1,16 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
+
+  private transSub: Subscription;
 
   showPass1 = true;
   showPass2 = true;
@@ -40,7 +43,7 @@ export class ResetPasswordComponent implements OnInit {
 
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
@@ -106,6 +109,10 @@ export class ResetPasswordComponent implements OnInit {
   onClose() {
     this.router.navigate(['/login']);
     this.resetPasswordForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.transSub.unsubscribe();
   }
 
 }

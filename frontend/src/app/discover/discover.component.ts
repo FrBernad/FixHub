@@ -40,6 +40,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   categories: string[] = [];
 
   private jobsSub: Subscription;
+  private transSub: Subscription;
 
   constructor(
     private discoverService: DiscoverService,
@@ -51,7 +52,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
@@ -159,6 +160,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.jobsSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 
 }

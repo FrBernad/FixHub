@@ -1,5 +1,5 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AuthService} from '../services/auth.service';
@@ -7,13 +7,17 @@ import {PreviousRouteService} from '../services/previous-route.service';
 import {Title} from "@angular/platform-browser";
 import {TranslateService} from "@ngx-translate/core";
 import {NotificationsService} from "../../user/notifications/notifications.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+
+  private transSub: Subscription;
+
   showPass1 = true;
   showPass2 = true;
 
@@ -45,7 +49,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.changeTitle();
 
-    this.translateService.onLangChange.subscribe(() => {
+    this.transSub = this.translateService.onLangChange.subscribe(() => {
       this.changeTitle();
     });
 
@@ -182,4 +186,9 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
+  ngOnDestroy(): void {
+    this.transSub.unsubscribe();
+  }
+
 }
