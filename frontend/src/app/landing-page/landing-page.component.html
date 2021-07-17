@@ -46,7 +46,7 @@
                 *ngFor="let category of categories">
                 <input type="hidden" name="category" value="${category}">
                 <div class="input-group-prepend">
-                  <button (click)="onChangeCategory(category)" class="btn-sm suggestionBtn me-4">
+                  <button (click)="onChangeCategory(category)" type="button" class="btn-sm suggestionBtn me-4">
                     {{ 'home.categories.' + category | translate}}
                   </button>
                 </div>
