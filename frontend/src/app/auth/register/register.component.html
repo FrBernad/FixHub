@@ -83,7 +83,7 @@
                   </label>
                   <div class="input-group d-flex justify-content-start align-items-center">
                     <input autocomplete="on" [type]="showPass1 ? 'password':'text'" class="form-control" name="password"
-                           placeholder="{{'registerForm.passwordPlaceHolder' | translate}}"
+                           placeholder="{{ 'registerForm.passwordPlaceHolder' | translate: {min: minPasswordLength, max:maxPasswordLength} }}"
                            formControlName="password"/>
                     <div class="input-group-append">
                       <button type="button" tabindex="-1" (click)="toogleEye1()"
