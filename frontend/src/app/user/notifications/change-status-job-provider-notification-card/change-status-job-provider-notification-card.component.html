@@ -4,26 +4,35 @@
   </ng-template>
   <ng-template #alreadyFetched>
     <div class="row">
-      <div class="col-12 d-flex justify-content-start">
+      <div class="col-7 d-flex justify-content-start">
         <h1 class="sectionTitle">
           {{ 'account.notifications.jobRequest.cancelled.title'|translate}}
-          | {{this.jobRequest.date}}
         </h1>
       </div>
+      <div class="col-3 d-flex justify-content-end">
+        {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
+      </div>
+    </div>
+    <div class="row">
 
       <div class="col-12">
         <span>
-          {{ 'account.notifications.jobRequest.cancelled.body'| translate:
-          {name:this.jobRequest.user.name, surname:this.jobRequest.user.surname,job:this.jobRequest.jobProvided} }}
+          {{ 'account.notifications.jobRequest.cancelled.body'| translate }}
+          <a [routerLink]="'/user/'+jobRequest.user.id" class="contactInfo names">
+            {{ this.jobRequest.user.name }} {{ this.jobRequest.user.surname }}
+          </a>
+          {{ 'account.notifications.jobRequest.cancelled.body1'| translate }}
+          <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
+            {{ this.jobRequest.jobProvided }}
+          </a>.
 
           <a (click)="onClick()" style="cursor: pointer" class="contactInfo names">
-              <span>{{'account.notifications.jobRequest.cancelled.body1'|translate}}</span>
+              <span>{{'account.notifications.jobRequest.cancelled.body2'|translate}}</span>
           </a>
         </span>
 
       </div>
+
     </div>
   </ng-template>
-
-
 </div>
