@@ -6,18 +6,17 @@
     <ng-container [ngSwitch]="jobRequest.status">
       <ng-container *ngSwitchCase="requestRejected">
         <div class="row">
-
           <div class="col-7 d-flex justify-content-start">
             <h1 class="sectionTitle">
               {{ 'account.notifications.jobRequest.rejected.title' | translate }}
             </h1>
-            <div class="col-3 d-flex justify-content-end">
-              {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
-            </div>
-
           </div>
-          <div class="row">
-
+          <div class="col-3 d-flex justify-content-end">
+            {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
             {{'account.notifications.jobRequest.rejected.body' | translate }}
             <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
               {{jobRequest.jobProvided}}
@@ -29,6 +28,7 @@
           </div>
 
         </div>
+
       </ng-container>
       <ng-container *ngSwitchCase="requestAccepted">
         <div class="row">
