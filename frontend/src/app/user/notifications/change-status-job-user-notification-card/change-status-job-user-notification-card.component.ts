@@ -4,7 +4,6 @@ import {ContactService} from "../../../job/contact/contact.service";
 import {JobRequest} from "../../../models/job-request.model";
 import {NotificationsService} from "../notifications.service";
 import {Router} from "@angular/router";
-import {JobStatus} from "../../../models/job-status-enum.model";
 import {NotificationType} from "../../../models/notification-type-enum.model";
 
 @Component({

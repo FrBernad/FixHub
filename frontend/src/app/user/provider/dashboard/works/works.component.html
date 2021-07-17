@@ -25,7 +25,7 @@
               {{'discover.orderOption.' + jpq.order|translate}}
           </span>
         </button>
-        <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="orderDropdown">
           <li *ngFor="let order of orderOptions" class="input-group">
             <button class="dropdown-item orderButton"
                     (click)="onChangeOrder(order)">

@@ -81,7 +81,19 @@ const routes: Routes = [
       },
       {
         path: '404',
-        loadChildren: () => import("../../errors/errors.module").then(m => m.ErrorsModule)
+        loadChildren: () => import("../../errors/errors.module").then(m => m.ErrorsModule),
+        data: {
+          i18: 'pageNotFound',
+          code: 404,
+        }
+      },
+      {
+        path: '500',
+        loadChildren: () => import("../../errors/errors.module").then(m => m.ErrorsModule),
+        data: {
+          i18: 'serverError',
+          code: 500,
+        }
       },
       {
         path: '**',

@@ -7,10 +7,8 @@ import ar.edu.itba.paw.interfaces.services.SearchService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
-import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.response.PaginatedResultDto;
-import ar.edu.itba.paw.webapp.dto.response.ProviderDto;
 import ar.edu.itba.paw.webapp.dto.response.RegisterDto;
 import ar.edu.itba.paw.webapp.dto.response.UserDto;
 import org.slf4j.Logger;
@@ -69,11 +67,6 @@ public class UserController {
         LOGGER.info("Accessed /users/{} GET controller", id);
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
-
-        if (user.getRoles().contains(Roles.PROVIDER)) {
-            LOGGER.info("Return provider with id {}", id);
-            return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
-        }
 
         LOGGER.info("Return user with id {}", id);
         return Response.ok(new UserDto(user, uriInfo, securityContext)).build();

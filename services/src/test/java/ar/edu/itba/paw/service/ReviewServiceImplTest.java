@@ -3,10 +3,10 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.interfaces.persistance.ReviewDao;
 import ar.edu.itba.paw.interfaces.services.ReviewService;
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.job.JobCategory;
-import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.Review;
+import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.services.ReviewServiceImpl;
 import org.junit.Test;
@@ -23,9 +23,8 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import static ar.edu.itba.paw.services.UserServiceImpl.DEFAULT_ROLES;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReviewServiceImplTest {

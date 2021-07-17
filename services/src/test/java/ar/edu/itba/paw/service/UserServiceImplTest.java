@@ -12,9 +12,9 @@ import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.contact.ContactInfo;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
-import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.location.City;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.Roles;
@@ -40,11 +40,14 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ar.edu.itba.paw.services.UserServiceImpl.*;
+import static ar.edu.itba.paw.services.UserServiceImpl.DEFAULT_ROLES;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

@@ -1,4 +1,7 @@
-package ar.edu.itba.paw.webapp.dto.response;
+package ar.edu.itba.paw.webapp.dto.request;
+
+import ar.edu.itba.paw.webapp.dto.response.LocationDto;
+import ar.edu.itba.paw.webapp.dto.response.ScheduleDto;
 
 public class JoinDto {
 

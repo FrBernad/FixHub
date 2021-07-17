@@ -8,18 +8,18 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "")
-public class ProviderDto extends  UserDto{
+public class ProviderUserDto extends BaseUserDto {
 
     private ProviderDetailsDto providerDetails;
 
-    public ProviderDto(){
+    public ProviderUserDto() {
+        super();
     }
 
-    public ProviderDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
+    public ProviderUserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         super(user, uriInfo, securityContext);
         this.providerDetails = new ProviderDetailsDto(user.getProviderDetails());
     }
-
 
     public ProviderDetailsDto getProviderDetails() {
         return providerDetails;

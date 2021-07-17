@@ -25,7 +25,7 @@ public class JwtUtil {
 
     public final static String SESSION_REFRESH_TOKEN_COOKIE_NAME = "SESSION_REFRESH_TOKEN";
 
-    private String secretKey;
+    private final String secretKey;
 
     private final static int TOKEN_EXPIRATION_MILLIS = 1000 * 20 * 60;  //20 mins duration
 

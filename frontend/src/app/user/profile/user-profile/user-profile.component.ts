@@ -19,7 +19,6 @@ export class UserProfileComponent implements OnInit {
   loading = true;
   disable = false;
 
-
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,

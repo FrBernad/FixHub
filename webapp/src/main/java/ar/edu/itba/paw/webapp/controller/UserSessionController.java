@@ -17,6 +17,7 @@ import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.models.user.notification.Notification;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
+import ar.edu.itba.paw.webapp.dto.request.JoinDto;
 import ar.edu.itba.paw.webapp.dto.request.NewStatusDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -134,15 +135,9 @@ public class UserSessionController {
         LOGGER.info("Accessed /user/ GET controller");
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-        if (user.getRoles().contains(Roles.PROVIDER)) {
-            LOGGER.info("Return provider with id {} in /user/ GET controller", user.getId());
-
-            return Response.ok(new ProviderDto(user, uriInfo, securityContext)).build();
-        }
         LOGGER.info("Return user with id {} in /user/ GET controller", user.getId());
 
-
-        return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
+        return Response.ok(new SessionUserDto(user, uriInfo, securityContext)).build();
 
     }
 
@@ -151,7 +146,6 @@ public class UserSessionController {
     @Path("/refreshSession")
     public Response refreshAccessToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) String sessionRefreshToken) {
         LOGGER.info("Accessed /user/refreshSession POST controller");
-
 
         if (sessionRefreshToken == null) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -433,19 +427,6 @@ public class UserSessionController {
         }
 
         return Response.ok().build();
-    }
-
-    private boolean isValidStatus(JobContact jobContact, User user, JobStatus newStatus) {
-        JobStatus actualStatus = jobContact.getStatus();
-        if (user.getId().equals(jobContact.getUser().getId())) {
-            return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus);
-
-        } else if (user.getId().equals(jobContact.getProvider().getId())) {
-            if(actualStatus.equals(PENDING) && (newStatus.equals(IN_PROGRESS) || newStatus.equals(REJECTED))){
-                return true;
-            }else return actualStatus.equals(IN_PROGRESS) && newStatus.equals(FINISHED);
-        }
-        return false;
     }
 
     @GET
@@ -799,6 +780,19 @@ public class UserSessionController {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         notificationService.markAllNotificationsAsSeen(user);
         return Response.ok().build();
+    }
+
+    private boolean isValidStatus(JobContact jobContact, User user, JobStatus newStatus) {
+        JobStatus actualStatus = jobContact.getStatus();
+        if (user.getId().equals(jobContact.getUser().getId())) {
+            return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus);
+
+        } else if (user.getId().equals(jobContact.getProvider().getId())) {
+            if (actualStatus.equals(PENDING) && (newStatus.equals(IN_PROGRESS) || newStatus.equals(REJECTED))) {
+                return true;
+            } else return actualStatus.equals(IN_PROGRESS) && newStatus.equals(FINISHED);
+        }
+        return false;
     }
 
 

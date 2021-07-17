@@ -27,11 +27,15 @@ public class JobContactDto {
     private UserDto user;
     private UserDto provider;
     private String message;
+
     private JobStatus status;
+
     private LocalDate date;
+
     private String jobUrl;
     private String jobProvided;
     private Long jobId;
+
     private ContactInfoDto contactInfo;
 
     public JobContactDto() {
@@ -114,19 +118,19 @@ public class JobContactDto {
         this.jobProvided = jobProvided;
     }
 
-    public ContactInfoDto getContactInfo() {
-        return contactInfo;
-    }
-
-    public void setContactInfo(ContactInfoDto contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-
     public Long getJobId() {
         return jobId;
     }
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+
+    public ContactInfoDto getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(ContactInfoDto contactInfo) {
+        this.contactInfo = contactInfo;
     }
 }

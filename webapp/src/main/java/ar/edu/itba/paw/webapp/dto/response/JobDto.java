@@ -31,60 +31,40 @@ public class JobDto {
     }
 
     private Long id;
-
-    private String description;
-
-    private JobCategory category;
-
-    private String jobProvided;
-
-    private UserDto provider;
-
-    private LocationDto location;
-
-    private ScheduleDto schedule;
-
     private String url;
-
+    private String description;
+    private JobCategory category;
+    private String jobProvided;
+    private ProviderUserDto provider;
     private BigDecimal price;
-
     private boolean paused;
-
     private Integer averageRating;
-
     private Long totalRatings;
-
     private Set<String> images;
-
     private String thumbnailImage;
-
-    private int maxImagesPerJob;
 
     public JobDto() {
         //use by Jersey
     }
 
     public JobDto(Job job, UriInfo uriInfo, SecurityContext securityContext) {
-
         final UriBuilder uriBuilder = getJobUriBuilder(job, uriInfo);
         this.url = uriBuilder.build().toString();
-
         this.id = job.getId();
         this.description = job.getDescription();
         this.category = job.getCategory();
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = new ProviderDto(job.getProvider(), uriInfo, securityContext);
+        this.provider = new ProviderUserDto(job.getProvider(), uriInfo, securityContext);
         this.images = new HashSet<>();
         for (Image image : job.getImages()) {
             this.images.add(getJobImagesUriBuilder(image, uriInfo).build().toString());
         }
-        Optional<String> maybeThumbailImage = this.images.stream().findFirst();
-        maybeThumbailImage.ifPresent(uri -> this.thumbnailImage = uri);
+        Optional<String> thumbnailImageOpt = this.images.stream().findFirst();
+        thumbnailImageOpt.ifPresent(uri -> this.thumbnailImage = uri);
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
-        this.maxImagesPerJob = Job.MAX_IMAGES_PER_JOB;
     }
 
     public Long getId() {
@@ -93,6 +73,14 @@ public class JobDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getDescription() {
@@ -119,20 +107,12 @@ public class JobDto {
         this.jobProvided = jobProvided;
     }
 
-    public UserDto getProvider() {
+    public ProviderUserDto getProvider() {
         return provider;
     }
 
-    public void setProvider(UserDto provider) {
+    public void setProvider(ProviderUserDto provider) {
         this.provider = provider;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public BigDecimal getPrice() {
@@ -181,29 +161,5 @@ public class JobDto {
 
     public void setThumbnailImage(String thumbnailImage) {
         this.thumbnailImage = thumbnailImage;
-    }
-
-    public int getMaxImagesPerJob() {
-        return maxImagesPerJob;
-    }
-
-    public void setMaxImagesPerJob(int maxImagesPerJob) {
-        this.maxImagesPerJob = maxImagesPerJob;
-    }
-
-    public LocationDto getLocation() {
-        return location;
-    }
-
-    public void setLocation(LocationDto location) {
-        this.location = location;
-    }
-
-    public ScheduleDto getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(ScheduleDto schedule) {
-        this.schedule = schedule;
     }
 }

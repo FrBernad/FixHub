@@ -4,6 +4,7 @@ import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} f
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-discover',
@@ -44,6 +45,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   constructor(
     private discoverService: DiscoverService,
+    private router: Router,
     private titleService: Title,
     private translateService: TranslateService,
   ) {
@@ -67,20 +69,26 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     }
 
     this.discoverService.getJobs(this.jpq);
-    this.jobsSub = this.discoverService.results.subscribe((results) => {
-      this.jpr = {
-        ...this.jpr,
-        ...results
-      };
-      this.isFetching = false;
-    });
+    this.jobsSub = this.discoverService.results.subscribe(
+      (results) => {
+        this.jpr = {
+          ...this.jpr,
+          ...results
+        };
+        this.isFetching = false;
+      });
 
     this.discoverService.getCategories().subscribe((categories) => {
-      this.categories = categories.values;
-    });
+        this.categories = categories.values;
+      },
+      () => {
+        this.router.navigate(["/500"]);
+      });
 
     this.discoverService.getStates().subscribe((states) => {
       this.states = states;
+    }, () => {
+      this.router.navigate(["/500"]);
     });
   }
 

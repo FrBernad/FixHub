@@ -3,6 +3,7 @@ import {HttpClient, HttpParams, HttpStatusCode,} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Job} from "../models/job.model";
+import {Router} from "@angular/router";
 
 export interface JobPaginationQuery {
   query?: string;
@@ -38,6 +39,7 @@ export class DiscoverService {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
   ) {
   }
 
@@ -71,16 +73,21 @@ export class DiscoverService {
           params: new HttpParams({fromObject: {...jp}})
         },
       ).subscribe((res) => {
-      if (res.status === HttpStatusCode.NoContent) {
-        this.results.next({
-          page: 0,
-          totalPages: 0,
-          results: []
-        });
-      } else {
-        this.results.next(res.body);
+        if (res.status === HttpStatusCode.NoContent) {
+          this.results.next({
+            page: 0,
+            totalPages: 0,
+            results: []
+          });
+        } else {
+          this.results.next(res.body);
+        }
+      },
+      () => {
+       this.router.navigate(['500'])
       }
-    });
+    )
+    ;
   }
 
 

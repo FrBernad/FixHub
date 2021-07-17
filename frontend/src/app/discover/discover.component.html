@@ -37,7 +37,7 @@
                   <span class="resultQuery">{{'discover.all'|translate}}</span>
                 </ng-template>
               </button>
-              <ul class="dropdown-menu limitSizeDropdown .dropdown-menu-end" aria-labelledby="categoryDropdown">
+              <ul class="dropdown-menu limitSizeDropdown dropdown-menu-end" aria-labelledby="categoryDropdown">
                 <li class="dropdown-item">
                   <button (click)="onChangeCategory('')" class="dropdown-item">
                     {{'discover.all'|translate}}
@@ -65,7 +65,7 @@
                   <span class="resultQuery">{{'discover.all'|translate}}</span>
                 </ng-template>
               </button>
-              <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="stateDropdown">
+              <ul class="dropdown-menu dropdown-menu-end limitSizeDropdown" aria-labelledby="stateDropdown">
                 <li class="dropdown-item">
                   <button id="emptyStateButton" (click)="onChangeState('','')" class="dropdown-item">
                     {{'discover.all'|translate}}
@@ -91,7 +91,7 @@
                   <span class="resultQuery">{{'discover.all'|translate}}</span>
                 </ng-template>
               </button>
-              <ul class="dropdown-menu limitSizeDropdown" aria-labelledby="cityDropdown">
+              <ul class="dropdown-menu dropdown-menu-end limitSizeDropdown" aria-labelledby="cityDropdown">
                 <li>
                   <button id="emptyCityButton" (click)="onChangeCity('','')" class="dropdown-item">
                     {{'discover.all'|translate}}
@@ -116,7 +116,7 @@
                   {{'discover.orderOption.' + jpq.order|translate}}
                 </span>
               </button>
-              <div class="dropdown-menu" aria-labelledby="orderDropdown">
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orderDropdown">
                 <div *ngFor="let order of orderOptions" class="input-group">
                   <button (click)="onChangeOrder(order)" class="dropdown-item orderButton">
                     {{ 'discover.orderOption.' + order | translate }}
