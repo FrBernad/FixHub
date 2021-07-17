@@ -55,6 +55,21 @@ public class NotificationsDaoTest {
     }
 
     @Test
+    public void TestGetNotificationById() {
+        Optional<Notification> notification = notificationDao.getNotificationById(1L);
+        assertTrue(notification.isPresent());
+        assertEquals(Long.valueOf(1), notification.get().getId());
+        notification = notificationDao.getNotificationById(-1L);
+        assertFalse(notification.isPresent());
+    }
+
+    @Test
+    public void TestGetNotificationCountByUser() {
+        int notificationCount = notificationDao.getNotificationCountByUser(MOCKED_CLIENT, false);
+        assertEquals(2, notificationCount);
+    }
+
+    @Test
     public void TestGetNotificationsByUserNoNotifications() {
         Collection<Notification> notifications = notificationDao.getNotificationsByUser(MOCKED_CLIENT_NO_NOTS, false, 0, 4);
         assertEquals(0, notifications.size());
@@ -64,25 +79,25 @@ public class NotificationsDaoTest {
     public void TestGetNotificationsByUserAllNotifications() {
         final Long[] orderedIds = {2L, 1L};
 
-        Collection<Notification> notfications = notificationDao.getNotificationsByUser(MOCKED_CLIENT, false, 0, 4);
+        Collection<Notification> notifications = notificationDao.getNotificationsByUser(MOCKED_CLIENT, false, 0, 4);
 
         final Collection<Long> resultIds = new LinkedList<>();
-        for (Notification not : notfications) {
+        for (Notification not : notifications) {
             resultIds.add(not.getId());
         }
 
-        assertEquals(2, notfications.size());
-        assertTrue(notfications.size() <= 10);
+        assertEquals(2, notifications.size());
+        assertTrue(notifications.size() <= 10);
 
         Assert.assertArrayEquals(orderedIds, resultIds.toArray());
     }
 
     @Test
     public void TestGetNotificationsByUserNotSeenNotifications() {
-        Collection<Notification> notfications = notificationDao.getNotificationsByUser(MOCKED_CLIENT, true, 0, 4);
+        Collection<Notification> notifications = notificationDao.getNotificationsByUser(MOCKED_CLIENT, true, 0, 4);
 
-        assertEquals(1, notfications.size());
-        assertTrue(notfications.size() <= 10);
+        assertEquals(1, notifications.size());
+        assertTrue(notifications.size() <= 10);
     }
 
 }
