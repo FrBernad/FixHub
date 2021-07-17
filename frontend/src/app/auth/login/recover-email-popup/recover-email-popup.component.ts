@@ -41,6 +41,11 @@ export class RecoverEmailPopupComponent implements OnInit {
       this.success = true;
     }, () => {
       this.error = true;
+      setTimeout(
+        () => {
+          this.error = false
+        }, 2000
+      )
       this.disable = false;
     });
   }

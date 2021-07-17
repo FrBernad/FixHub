@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiBaseUrl: "http://localhost:8080/api"
+  apiBaseUrl: "http://pawserver.it.itba.edu.ar/paw-2021a-06/api",
+  baseHref: '/paw-2021a-06/',
+  i18nBase: '/paw-2021a-06/resources/assets/i18n/',
 };

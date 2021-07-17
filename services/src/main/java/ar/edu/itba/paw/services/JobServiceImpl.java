@@ -61,18 +61,20 @@ public class JobServiceImpl implements JobService {
         return job;
     }
 
-
+    @Transactional
     @Override
     public Optional<Job> getJobById(long id) {
         LOGGER.debug("Retrieving job with id {}", id);
         return jobDao.getJobById(id);
     }
 
+    @Transactional
     @Override
     public Optional<JobContact> getContactById(long id) {
         return jobDao.getContactById(id);
     }
 
+    @Transactional
     @Override
     public Collection<JobCategory> getJobsCategories() {
         LOGGER.debug("Retrieving jobs categories");
@@ -84,8 +86,7 @@ public class JobServiceImpl implements JobService {
     public void acceptJob(JobContact jc) {
         jc.setStatus(JobStatus.IN_PROGRESS);
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForUser(jc.getUser(),jc);
-
+        notificationService.createRequestStatusChangeForUser(jc.getUser(), jc);
     }
 
     @Transactional
@@ -93,8 +94,7 @@ public class JobServiceImpl implements JobService {
     public void rejectJob(JobContact jc) {
         jc.setStatus(JobStatus.REJECTED);
         emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForUser(jc.getUser(),jc);
-
+        notificationService.createRequestStatusChangeForUser(jc.getUser(), jc);
     }
 
     @Transactional
@@ -102,22 +102,23 @@ public class JobServiceImpl implements JobService {
     public void finishJob(JobContact jc) {
         jc.setStatus(JobStatus.FINISHED);
         emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForUser(jc.getUser(),jc);
+        notificationService.createRequestStatusChangeForUser(jc.getUser(), jc);
     }
 
     @Transactional
     @Override
-    public void cancelJob(JobContact jc){
+    public void cancelJob(JobContact jc) {
         jc.setStatus(JobStatus.CANCELED);
         emailService.sendUserJobCancellationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForProvider(jc.getProvider(),jc);
-
+        notificationService.createRequestStatusChangeForProvider(jc.getProvider(), jc);
     }
 
     @Transactional
     @Override
     public void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<NewImageDto> imagesToUpload, Job job, List<Long> imagesIdToDelete) {
+
         LOGGER.debug("Updating job");
+
         job.setJobProvided(jobProvided);
         job.setDescription(description);
         job.setPrice(price);

@@ -3,8 +3,11 @@
     <app-loading-spinner></app-loading-spinner>
   </ng-template>
   <ng-template #alreadyFetched>
+
     <ng-container [ngSwitch]="jobRequest.status">
+
       <ng-container *ngSwitchCase="requestRejected">
+
         <div class="row">
           <div class="col-7 d-flex justify-content-start">
             <h1 class="sectionTitle">
@@ -29,7 +32,9 @@
         </div>
 
       </ng-container>
+
       <ng-container *ngSwitchCase="requestAccepted">
+
         <div class="row">
           <div class="col-7 d-flex justify-content-start">
             <h1 class="sectionTitle">
@@ -40,6 +45,7 @@
             {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
           </div>
         </div>
+
         <div class="row">
           <div class="col-12">
             {{'account.notifications.jobRequest.accepted.body' | translate }}
@@ -53,6 +59,7 @@
           </div>
         </div>
       </ng-container>
+
       <ng-container *ngSwitchCase="requestFinished">
 
         <div class="row">
@@ -77,7 +84,11 @@
             </a>
           </div>
         </div>
+
       </ng-container>
+
     </ng-container>
+
   </ng-template>
+
 </div>

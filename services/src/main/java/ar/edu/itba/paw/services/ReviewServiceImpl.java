@@ -30,6 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReviewService.class);
 
+    @Transactional
     @Override
     public PaginatedSearchResult<Review> getReviewsByJob(Job job, int page, int pageSize) {
 
@@ -71,12 +72,12 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    @Transactional
     @Override
-    public Optional<Review> getReviewById(long reviewId){
+    public Optional<Review> getReviewById(long reviewId) {
         LOGGER.debug("Retrieving review with id {}", reviewId);
         return reviewDao.getReviewById(reviewId);
     }
-
 
 
 }

@@ -93,7 +93,7 @@ export class RequestComponent implements OnInit {
     this.finishJobLoading = true;
     this.contactService.changeContactStatus(this.request.id, JobStatus.FINISHED).subscribe(
       () => {
-        this.rejectJobLoading = false;
+        this.finishJobLoading = false;
         this.request.status = JobStatus.FINISHED;
       },
       () => {
@@ -102,11 +102,9 @@ export class RequestComponent implements OnInit {
     )
   }
 
-
   isWorkNotFinished() {
     return this.request.status == JobStatus.PENDING || this.request.status == JobStatus.IN_PROGRESS;
   }
-
 
   cancelRequest() {
     this.disabled = true;

@@ -71,12 +71,14 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Transactional
     @Override
     public Optional<User> getUserById(long id) {
         LOGGER.debug("Retrieving user with id {}", id);
         return userDao.getUserById(id);
     }
 
+    @Transactional
     @Override
     public Optional<User> getUserByEmail(String email) {
         LOGGER.debug("Retrieving user with email {}", email);
@@ -139,6 +141,7 @@ public class UserServiceImpl implements UserService {
         emailService.sendVerificationEmail(user, token, LocaleContextHolder.getLocale());
     }
 
+    @Transactional
     @Override
     public boolean validatePasswordReset(String token) {
         final Optional<PasswordResetToken> prtokenOpt = passwordResetTokenDao.getTokenByValue(token);
@@ -175,6 +178,7 @@ public class UserServiceImpl implements UserService {
         optToken.ifPresent(sessionRefreshToken -> sessionRefreshTokenDao.removeToken(sessionRefreshToken));
     }
 
+    @Transactional
     @Override
     public Optional<User> getUserByRefreshToken(String token) {
         return sessionRefreshTokenDao.getTokenByValue(token).map(SessionRefreshToken::getUser);
@@ -220,8 +224,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
     @Transactional
+    @Override
     public void updateUserInfo(UserInfo userInfo, User user) {
         LOGGER.debug("Updating user info for user {}", user.getEmail());
         user.setName(userInfo.getName());
@@ -239,16 +243,16 @@ public class UserServiceImpl implements UserService {
         user.setCoverImage(imageService.createImage(newImageDto));
     }
 
-    @Override
     @Transactional
+    @Override
     public void updateProfileImage(NewImageDto newImageDto, User user) {
         Image image = user.getProfileImage();
         LOGGER.debug("Updating user {} profile image", user.getEmail());
         user.setProfileImage(imageService.createImage(newImageDto));
     }
 
-    @Override
     @Transactional
+    @Override
     public void updateProviderInfo(User user, List<Long> citiesId, String startTime, String endTime) {
         final Collection<City> cities = locationDao.getCitiesById(citiesId);
         final State state = cities.stream().findFirst().get().getState();
@@ -325,7 +329,7 @@ public class UserServiceImpl implements UserService {
         final JobContact jobContact = userDao.createJobContact(user, provider, contactInfo, auxContactDto.getMessage(), LocalDateTime.now(), auxContactDto.getJob());
         provider.getProviderDetails().getContacts().add(jobContact);
 
-        notificationService.createNewRequestNotification(provider,jobContact);
+        notificationService.createNewRequestNotification(provider, jobContact);
 
         emailService.sendJobRequestEmail(jobContact, LocaleContextHolder.getLocale());
         emailService.sendJobRequestConfirmationEmail(jobContact, LocaleContextHolder.getLocale());
@@ -333,6 +337,7 @@ public class UserServiceImpl implements UserService {
         return jobContact;
     }
 
+    @Transactional
     @Override
     public boolean hasContactJobProvided(User provider, User user, Job job) {
         return userDao.hasContactJobProvided(provider, user, job);
@@ -344,7 +349,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Adding user {} to user {} followers", follower, user);
         user.getFollowing().add(follower);
         follower.getFollowers().add(user);
-        notificationService.createNewFollowerNotification(follower,user);
+        notificationService.createNewFollowerNotification(follower, user);
     }
 
     @Transactional
@@ -383,7 +388,6 @@ public class UserServiceImpl implements UserService {
 
         return localTime;
     }
-
 
 
 }

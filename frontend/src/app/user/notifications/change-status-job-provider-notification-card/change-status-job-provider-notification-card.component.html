@@ -13,8 +13,8 @@
         {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
       </div>
     </div>
-    <div class="row">
 
+    <div class="row">
       <div class="col-12">
         <span>
           {{ 'account.notifications.jobRequest.cancelled.body'| translate }}
@@ -25,14 +25,14 @@
           <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
             {{ this.jobRequest.jobProvided }}
           </a>.
-
           <a (click)="onClick()" style="cursor: pointer" class="contactInfo names">
               <span>{{'account.notifications.jobRequest.cancelled.body2'|translate}}</span>
           </a>
         </span>
-
       </div>
-
     </div>
+
   </ng-template>
+
 </div>
+

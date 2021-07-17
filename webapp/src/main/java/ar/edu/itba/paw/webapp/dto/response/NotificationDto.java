@@ -23,7 +23,6 @@ public class NotificationDto {
     private LocalDateTime date;
     private boolean seen;
 
-
     public NotificationDto() {
     }
 
