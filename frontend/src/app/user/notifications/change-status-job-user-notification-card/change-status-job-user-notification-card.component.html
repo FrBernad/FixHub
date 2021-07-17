@@ -26,7 +26,6 @@
               {{'account.notifications.jobRequest.rejected.body3' | translate }}
             </a>
           </div>
-
         </div>
 
       </ng-container>
@@ -42,15 +41,16 @@
           </div>
         </div>
         <div class="row">
-
-          {{'account.notifications.jobRequest.accepted.body' | translate }}
-          <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
-            {{jobRequest.jobProvided}}
-          </a>
-          {{'account.notifications.jobRequest.accepted.body2' | translate }}
-          <a class="contactInfo names" (click)="notificationClick()" style="cursor: pointer;">
-            {{'account.notifications.jobRequest.accepted.body3' | translate }}
-          </a>
+          <div class="col-12">
+            {{'account.notifications.jobRequest.accepted.body' | translate }}
+            <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
+              {{jobRequest.jobProvided}}
+            </a>
+            {{'account.notifications.jobRequest.accepted.body2' | translate }}
+            <a class="contactInfo names" (click)="notificationClick()" style="cursor: pointer;">
+              {{'account.notifications.jobRequest.accepted.body3' | translate }}
+            </a>
+          </div>
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="requestFinished">
