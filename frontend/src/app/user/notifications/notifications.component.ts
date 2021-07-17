@@ -3,6 +3,8 @@ import {NotificationPaginationQuery, NotificationPaginationResult, Notifications
 import {Subscription} from "rxjs";
 import {NotificationFilter} from "../../models/notification-filter-enum";
 import {NotificationType} from "../../models/notification-type-enum.model";
+import {Title} from "@angular/platform-browser";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-notifications',
@@ -40,10 +42,19 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private notificationsService: NotificationsService,
+    private titleService: Title,
+    private translateService: TranslateService
   ) {
   }
 
   ngOnInit(): void {
+
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+
     this.notificationsService.getNotifications(this.npq);
     this.notificationSub = this.notificationsService.notifications.subscribe((results) => {
         if (this.npq.page == 0) {
@@ -60,6 +71,15 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         this.loadingMore = false;
       }
     )
+  }
+
+  changeTitle() {
+    this.translateService.get("account.notifications.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   ngOnDestroy(): void {

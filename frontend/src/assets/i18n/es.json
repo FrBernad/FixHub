@@ -236,6 +236,7 @@
   "reviewForm.submitButtonText": "Calificar",
   "reviewForm.cancelButtonText": "Cerrar",
   "newJob.Title": "Crea un servicio",
+  "newJob.title": "Nuevo trabajo",
   "newJob.description.boldText": "Ingres\u00E1 los datos",
   "newJob.description.normalText": "y comienza a brindar tu nuevo servicio",
   "register.title": "Crea tu cuenta",
@@ -447,5 +448,7 @@
   "sentRequest.cancelRequest": "Cancelar",
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Si",
-  "sentRequest.askForConfirmation": "\u00BFEstas seguro?"
+  "sentRequest.askForConfirmation": "\u00BFEstas seguro?",
+  "editJob.title": "Editar trabajo",
+  "updateProviderInfo.title": "Actualizar informaci\u00F3n"
 }

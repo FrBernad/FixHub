@@ -229,6 +229,7 @@
   "reviewForm.submitButtonText": "Rate",
   "reviewForm.cancelButtonText": "Close",
   "newJob.Title": "Create a service",
+  "newJob.title": "New job",
   "newJob.description.boldText": "Fill the form",
   "newJob.description.normalText": "and start providing your new service",
   "register.title": "Create your account",
@@ -454,5 +455,7 @@
   "sentRequest.cancelRequest": "Cancel",
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Yes",
-  "sentRequest.askForConfirmation": "Are you sure?"
+  "sentRequest.askForConfirmation": "Are you sure?",
+  "editJob.title": "Edit job",
+  "updateProviderInfo.title": "Update information"
 }

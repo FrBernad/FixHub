@@ -1,15 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {JobService} from "../job.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {SingleJob} from "../../models/single-job.model";
+import {Title} from "@angular/platform-browser";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-edit-job',
   templateUrl: './edit-job.component.html',
   styleUrls: ['./edit-job.component.scss', '../new-job/new-job.component.scss', '../job.component.scss']
 })
-export class EditJobComponent implements OnInit {
+export class EditJobComponent implements OnInit, OnDestroy {
 
   maxJobProvidedLength: number = 50;
   maxDescriptionLength: number = 300;
@@ -26,13 +29,17 @@ export class EditJobComponent implements OnInit {
   allowedImageType: boolean = true;
   allowedImageSize: boolean = true;
 
+  private transSub: Subscription;
+
   job: SingleJob = new SingleJob();
 
   maxImagesPerJob: number = 6;
 
   constructor(private jobService: JobService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private titleService: Title,
+              private translateService: TranslateService) {
   }
 
 
@@ -54,6 +61,12 @@ export class EditJobComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.changeTitle();
+
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
 
     this.route.params.subscribe(
       (params: Params) => {
@@ -78,6 +91,15 @@ export class EditJobComponent implements OnInit {
     );
 
 
+  }
+
+  changeTitle() {
+    this.translateService.get("editJob.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   onSubmit() {
@@ -191,5 +213,9 @@ export class EditJobComponent implements OnInit {
 
   getImagesToUpload() {
     return (<FormArray>this.editJobForm.get('imagesToUpload')).controls;
+  }
+
+  ngOnDestroy(): void {
+    this.transSub.unsubscribe();
   }
 }

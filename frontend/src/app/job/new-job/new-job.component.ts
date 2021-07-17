@@ -6,6 +6,8 @@ import {Subscription} from 'rxjs';
 import {User} from 'src/app/models/user.model';
 import {UserService} from 'src/app/auth/services/user.service';
 import {DiscoverService} from "../../discover/discover.service";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-new-job',
@@ -26,6 +28,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
 
   imagesCounter: number = 0;
   private userSub: Subscription;
+  private transSub: Subscription;
   user: User;
 
   jobId: number;
@@ -42,10 +45,19 @@ export class NewJobComponent implements OnInit, OnDestroy {
     private jobService: JobService,
     private jobsService: DiscoverService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
+
+    this.changeTitle();
+
+    this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
     });
@@ -78,6 +90,18 @@ export class NewJobComponent implements OnInit, OnDestroy {
       images: new FormArray([]),
       paused: new FormControl(false),
     });
+
+
+
+  }
+
+  changeTitle() {
+    this.translateService.get("newJob.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
   onSubmit() {
@@ -142,6 +166,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 
 }

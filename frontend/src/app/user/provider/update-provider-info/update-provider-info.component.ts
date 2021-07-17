@@ -5,6 +5,8 @@ import {City, State} from "../../../discover/discover.service";
 import {User} from "../../../models/user.model";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-update-provider-info',
@@ -27,15 +29,33 @@ export class UpdateProviderInfoComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
+    private translateService: TranslateService
   ) {
   }
 
   ngOnInit(): void {
+
+    this.changeTitle();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.changeTitle();
+    });
+
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
       this.isProvider = this.user.providerDetails !== undefined;
     });
+  }
+
+  changeTitle() {
+    this.translateService.get("updateProviderInfo.title")
+      .subscribe(
+        (routeTitle) => {
+          this.titleService.setTitle('Fixhub | ' + routeTitle)
+        }
+      )
   }
 
 

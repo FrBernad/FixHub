@@ -88,6 +88,7 @@ export class JobComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.reviewsSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
 }
