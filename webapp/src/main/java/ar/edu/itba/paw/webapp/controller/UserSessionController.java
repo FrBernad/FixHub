@@ -44,7 +44,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static ar.edu.itba.paw.models.job.JobStatus.CANCELED;
+import static ar.edu.itba.paw.models.job.JobStatus.*;
 
 @Path("/user")
 @Component
@@ -345,7 +345,7 @@ public class UserSessionController {
     @PUT
     @Path("/profileImage")
     public Response updateUserProfileImage(@Context final HttpServletRequest request,
-                                           @NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg","image/gif"}, message = "{ContentType.newJob.images}") @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
+                                           @NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg", "image/gif"}, message = "{ContentType.newJob.images}") @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
         LOGGER.info("Accessed /user/profileImage PUT controller");
         if (request.getContentLength() == -1 || request.getContentLength() > maxRequestSize) {
             throw new MaxUploadSizeRequestException();
@@ -410,14 +410,10 @@ public class UserSessionController {
         final JobStatus newStatus = status.getStatus();
 
 
-        if (newStatus.equals(CANCELED)) {
-            //Solo el usuario puede cancelar el request
-            if (!user.getId().equals(jobContact.getUser().getId())) {
-                throw new IllegalOperationException();
-            }
-        } else if (!user.getId().equals(jobContact.getProvider().getId())) {
+        if (!isValidStatus(jobContact, user, newStatus)) {
             throw new IllegalOperationException();
         }
+
 
         switch (newStatus) {
             case FINISHED:
@@ -437,6 +433,19 @@ public class UserSessionController {
         }
 
         return Response.ok().build();
+    }
+
+    private boolean isValidStatus(JobContact jobContact, User user, JobStatus newStatus) {
+        JobStatus actualStatus = jobContact.getStatus();
+        if (user.getId().equals(jobContact.getUser().getId())) {
+            return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus);
+
+        } else if (user.getId().equals(jobContact.getProvider().getId())) {
+            if(actualStatus.equals(PENDING) && (newStatus.equals(IN_PROGRESS) || newStatus.equals(REJECTED))){
+                return true;
+            }else return actualStatus.equals(IN_PROGRESS) && newStatus.equals(FINISHED);
+        }
+        return false;
     }
 
     @GET
