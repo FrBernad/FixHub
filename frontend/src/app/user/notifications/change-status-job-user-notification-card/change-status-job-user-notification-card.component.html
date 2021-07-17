@@ -3,9 +3,7 @@
     <app-loading-spinner></app-loading-spinner>
   </ng-template>
   <ng-template #alreadyFetched>
-
-    <ng-container [ngSwitch]="jobRequest.status">
-
+    <ng-container [ngSwitch]="notification.type">
       <ng-container *ngSwitchCase="requestRejected">
 
         <div class="row">

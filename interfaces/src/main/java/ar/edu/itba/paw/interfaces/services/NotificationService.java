@@ -14,8 +14,6 @@ public interface NotificationService {
 
     Notification createRequestStatusChangeForProvider(User provider, JobContact resource);
 
-    Notification createRequestStatusChangeForUser(User user, JobContact resource);
-
     int getUnseenNotificationsCount(User user);
 
     Optional<Notification> getNotificationById(Long id);
@@ -25,4 +23,10 @@ public interface NotificationService {
     void markNotificationAsSeen(Notification notification);
 
     void markAllNotificationsAsSeen(User user);
+
+    Notification createRequestStatusChangeAcceptForUser(User user, JobContact jc);
+
+    Notification createRequestStatusRejectChangeForUser(User user, JobContact jc);
+
+    Notification createRequestStatusFinishedChangeForUser(User user, JobContact jc);
 }

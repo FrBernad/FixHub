@@ -59,7 +59,7 @@
                                                  [notification]="notification"></app-new-job-request-notification-card>
           <app-change-status-job-provider-notification-card *ngSwitchCase="requestStatusChangeProvider"
                                                             [notification]="notification"></app-change-status-job-provider-notification-card>
-          <app-change-status-job-user-notification-card *ngSwitchCase="requestStatusChangeUser"
+          <app-change-status-job-user-notification-card *ngSwitchDefault
                                                         [notification]="notification"></app-change-status-job-user-notification-card>
         </div>
         <div class="col-10">

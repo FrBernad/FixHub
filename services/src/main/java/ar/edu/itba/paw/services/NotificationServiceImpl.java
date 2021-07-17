@@ -23,9 +23,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
-    private Notification createNotification(User user,Long resource, NotificationType type, LocalDateTime date){
+    private Notification createNotification(User user, Long resource, NotificationType type, LocalDateTime date) {
         LOGGER.debug("Creating notification for user with id {} in service", user.getId());
-        return notificationDao.createNotification(user,resource,type,date);
+        return notificationDao.createNotification(user, resource, type, date);
     }
 
     @Transactional
@@ -59,35 +59,51 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     @Override
-    public Notification createNewFollowerNotification(User user,User resource) {
-        LOGGER.debug("Creating a new follower notification for user with id {} for the resource with id {}", user.getId(),resource.getId());
-        return createNotification(user,resource.getId(),NotificationType.NEW_FOLLOWER,LocalDateTime.now());
+    public Notification createNewFollowerNotification(User user, User resource) {
+        LOGGER.debug("Creating a new follower notification for user with id {} for the resource with id {}", user.getId(), resource.getId());
+        return createNotification(user, resource.getId(), NotificationType.NEW_FOLLOWER, LocalDateTime.now());
 
     }
 
     @Transactional
     @Override
     public Notification createNewRequestNotification(User user, JobContact resource) {
-        LOGGER.debug("Creating a new request notification for user with id {} for the job contact with id {}", user.getId(),resource.getId());
-        return createNotification(user,resource.getId(),NotificationType.JOB_REQUEST,LocalDateTime.now());
+        LOGGER.debug("Creating a new request notification for user with id {} for the job contact with id {}", user.getId(), resource.getId());
+        return createNotification(user, resource.getId(), NotificationType.JOB_REQUEST, LocalDateTime.now());
 
     }
 
     @Transactional
     @Override
-    public Notification createRequestStatusChangeForUser(User user, JobContact resource) {
-        LOGGER.debug("Creating a new request status notification for user with id {} " +
-                "for the job contact with id {}",user.getId(),resource.getId());
-        return createNotification(user,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_USER,LocalDateTime.now());
+    public Notification createRequestStatusChangeAcceptForUser(User user, JobContact jc) {
+        LOGGER.debug("Creating a new request status change to accept notification for user with id {} " +
+            "for the job contact with id {} ", user.getId(), jc.getId());
+        return createNotification(user, jc.getId(), NotificationType.REQUEST_STATUS_CHANGE_USER_ACCEPTED, LocalDateTime.now());
     }
 
+    @Transactional
+    @Override
+    public Notification createRequestStatusRejectChangeForUser(User user, JobContact jc) {
+        LOGGER.debug("Creating a new request status change to reject notification for user with id {} " +
+            "for the job contact with id {}", user.getId(), jc.getId());
+        return createNotification(user, jc.getId(), NotificationType.REQUEST_STATUS_CHANGE_USER_REJECTED, LocalDateTime.now());
+    }
+
+
+    @Transactional
+    @Override
+    public Notification createRequestStatusFinishedChangeForUser(User user, JobContact jc) {
+        LOGGER.debug("Creating a new request status change to finished notification for user with id {} " +
+            "for the job contact with id {}", user.getId(), jc.getId());
+        return createNotification(user, jc.getId(), NotificationType.REQUEST_STATUS_CHANGE_USER_FINISHED, LocalDateTime.now());
+    }
 
     @Transactional
     @Override
     public Notification createRequestStatusChangeForProvider(User provider, JobContact resource) {
         LOGGER.debug("Creating a new request status notification for user with id {} for the job contact with id {}",
-            provider.getId(),resource.getId());
-        return createNotification(provider,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_PROVIDER,LocalDateTime.now());
+            provider.getId(), resource.getId());
+        return createNotification(provider, resource.getId(), NotificationType.REQUEST_STATUS_CHANGE_PROVIDER, LocalDateTime.now());
     }
 
     @Transactional

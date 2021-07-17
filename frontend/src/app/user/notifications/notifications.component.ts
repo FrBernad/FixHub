@@ -22,7 +22,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   jobRequest = NotificationType.JOB_REQUEST;
   newfollower = NotificationType.NEW_FOLLOWER;
   requestStatusChangeProvider = NotificationType.REQUEST_STATUS_CHANGE_PROVIDER;
-  requestStatusChangeUser = NotificationType.REQUEST_STATUS_CHANGE_USER;
 
   npq: NotificationPaginationQuery = {
     page: 0,

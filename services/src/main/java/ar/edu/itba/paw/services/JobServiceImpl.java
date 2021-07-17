@@ -86,7 +86,8 @@ public class JobServiceImpl implements JobService {
     public void acceptJob(JobContact jc) {
         jc.setStatus(JobStatus.IN_PROGRESS);
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForUser(jc.getUser(), jc);
+        notificationService.createRequestStatusChangeAcceptForUser(jc.getUser(),jc);
+
     }
 
     @Transactional
@@ -94,7 +95,8 @@ public class JobServiceImpl implements JobService {
     public void rejectJob(JobContact jc) {
         jc.setStatus(JobStatus.REJECTED);
         emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForUser(jc.getUser(), jc);
+        notificationService.createRequestStatusRejectChangeForUser(jc.getUser(),jc);
+
     }
 
     @Transactional
@@ -102,7 +104,7 @@ public class JobServiceImpl implements JobService {
     public void finishJob(JobContact jc) {
         jc.setStatus(JobStatus.FINISHED);
         emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeForUser(jc.getUser(), jc);
+        notificationService.createRequestStatusFinishedChangeForUser(jc.getUser(),jc);
     }
 
     @Transactional

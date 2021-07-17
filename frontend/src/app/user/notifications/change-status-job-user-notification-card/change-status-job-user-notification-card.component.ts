@@ -5,6 +5,7 @@ import {JobRequest} from "../../../models/job-request.model";
 import {NotificationsService} from "../notifications.service";
 import {Router} from "@angular/router";
 import {JobStatus} from "../../../models/job-status-enum.model";
+import {NotificationType} from "../../../models/notification-type-enum.model";
 
 @Component({
   selector: 'app-change-status-job-user-notification-card',
@@ -16,9 +17,9 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
   @Input("notification") notification: Notification;
 
   jobRequest: JobRequest;
-  requestRejected = JobStatus.REJECTED;
-  requestAccepted = JobStatus.IN_PROGRESS;
-  requestFinished = JobStatus.FINISHED;
+  requestRejected = NotificationType.REQUEST_STATUS_CHANGE_USER_REJECTED;
+  requestAccepted = NotificationType.REQUEST_STATUS_CHANGE_USER_ACCEPTED;
+  requestFinished = NotificationType.REQUEST_STATUS_CHANGE_USER_FINISHED;
 
   isLoading = true;
 

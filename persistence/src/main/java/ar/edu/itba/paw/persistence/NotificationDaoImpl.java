@@ -32,7 +32,7 @@ public class NotificationDaoImpl implements NotificationDao {
             resource, date, type, false, user);
         em.persist(notification);
         LOGGER.info("Created notification with id {} for user with id {}", notification.getId(), user.getId());
-        return null;
+        return notification;
     }
 
     @Override

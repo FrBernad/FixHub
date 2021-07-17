@@ -147,7 +147,7 @@ public class JobController {
     ) throws IOException {
         LOGGER.info("Accessed /jobs/ POST controller");
 
-        if(request.getContentLength() == -1 || request.getContentLength() > maxRequestSize){
+        if (request.getContentLength() == -1 || request.getContentLength() > maxRequestSize) {
             throw new MaxUploadSizeRequestException();
         }
 
@@ -212,7 +212,7 @@ public class JobController {
     ) {
         LOGGER.info("Accessed /jobs/{}/ PUT controller", id);
 
-        if(request.getContentLength() == -1 || request.getContentLength() > maxRequestSize){
+        if (request.getContentLength() == -1 || request.getContentLength() > maxRequestSize) {
             throw new MaxUploadSizeRequestException();
         }
 
@@ -334,6 +334,10 @@ public class JobController {
 
         final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
         final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+
+        if (job.isPaused()) {
+            throw new IllegalOperationException();
+        }
 
         AuxContactDto auxContactDto = new AuxContactDto(
             job,
