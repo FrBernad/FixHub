@@ -11,10 +11,10 @@ export class SessionProfileService {
   }
 
   updateProfileImage(profileImage: FormData){
-    return this.http.put<FormData>(environment.apiBaseUrl + '/user/profileImage', profileImage);
+    return this.http.put<FormData>(environment.apiBaseUrl + '/user/profileImage', profileImage, {observe: 'response'});
   }
 
   updateCoverImage(coverImage: FormData) {
-    return this.http.put<FormData>(environment.apiBaseUrl + '/user/coverImage', coverImage);
+    return this.http.put<FormData>(environment.apiBaseUrl + '/user/coverImage', coverImage, {observe: "response"});
   }
 }
