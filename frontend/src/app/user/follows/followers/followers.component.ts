@@ -16,6 +16,7 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   user: User;
   loading = true;
+  loadingFollow=true;
   noData = "profilePage.noFollowers"
 
   fpr: FollowPaginationResult = {
@@ -53,6 +54,7 @@ export class FollowersComponent implements OnInit, OnDestroy {
             ...this.fpr,
             ...results
           };
+          this.loadingFollow=false;
         });
       },
       () => {

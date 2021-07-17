@@ -16,6 +16,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
 
   user: User;
   loading = true;
+  loadingFollow=true;
 
   noData = "profilePage.noFollowings"
 
@@ -54,6 +55,8 @@ export class FollowingComponent implements OnInit, OnDestroy {
             ...this.fpr,
             ...results
           };
+          this.loadingFollow=false;
+
         });
       },
       () => {

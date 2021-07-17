@@ -100,32 +100,42 @@
         </div>
       </div>
     </div>
-
-    <div *ngIf="fpr.results.length > 0, else noResults" class="col-12 col-md-7 pt-5">
-      <div *ngFor="let follower of fpr.results">
-        <div class="col-12 mt-3">
-          <app-follower-card [follower]="follower"></app-follower-card>
+    <ng-template [ngIf]="loadingFollow" [ngIfElse]="alreadyFetched">
+        <div class="col-12 col-md-7 d-flex align-items-center justify-content-center">
+          <div class="container h-100 mt-2 d-flex align-items-center justify-content-center noFollowsFound">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
         </div>
-        <div class="col-10">
-          <hr>
-        </div>
-      </div>
-      <div *ngIf="fpr.totalPages > 1" class="col-12 mt-4">
-        <app-pagination
-          (changePage)="onChangePage($event)"
-          [currentPage]="fpr.page"
-          [totalPages]="fpr.totalPages">
-        </app-pagination>
-      </div>
-    </div>
-    <ng-template #noResults>
-      <div class="col-12 col-md-7 d-flex align-items-center justify-content-center">
-        <div class="container h-100 mt-2 d-flex align-items-center justify-content-center noFollowsFound">
-          <p class="m-0 text-center p-4" style="font-size: 16px">
-            {{ noData | translate}}
-          </p>
-        </div>
-      </div>
     </ng-template>
+    <ng-template #alreadyFetched>
+
+      <div *ngIf="fpr.results.length > 0; else noResults" class="col-12 col-md-7 pt-5">
+        <div *ngFor="let follower of fpr.results">
+          <div class="col-12 mt-3">
+            <app-follower-card [follower]="follower"></app-follower-card>
+          </div>
+          <div class="col-10">
+            <hr>
+          </div>
+        </div>
+        <div *ngIf="fpr.totalPages > 1" class="col-12 mt-4">
+          <app-pagination
+            (changePage)="onChangePage($event)"
+            [currentPage]="fpr.page"
+            [totalPages]="fpr.totalPages">
+          </app-pagination>
+        </div>
+      </div>
+      <ng-template #noResults>
+        <div class="col-12 col-md-7 d-flex align-items-center justify-content-center">
+          <div class="container h-100 mt-2 d-flex align-items-center justify-content-center noFollowsFound">
+            <p class="m-0 text-center p-4" style="font-size: 16px">
+              {{ noData | translate}}
+            </p>
+          </div>
+        </div>
+      </ng-template>
+    </ng-template>
+
   </div>
 </div>
