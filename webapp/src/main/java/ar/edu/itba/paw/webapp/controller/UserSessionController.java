@@ -32,6 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -60,6 +61,9 @@ public class UserSessionController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private int maxRequestSize;
 
     @Autowired
     private SearchService searchService;
@@ -295,7 +299,13 @@ public class UserSessionController {
     @PUT
     @Path("/coverImage")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUserCoverImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}") @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
+    public Response updateUserCoverImage(@Context final HttpServletRequest request,
+                                         @NotNull(message = "{NotEmpty.coverImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}") @FormDataParam("coverImage") FormDataBodyPart coverImage) throws IOException {
+
+        if (request.getContentLength() == -1 || request.getContentLength() > maxRequestSize) {
+            throw new MaxUploadSizeRequestException();
+        }
+
         LOGGER.info("Accessed /user/coverImage PUT controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = coverImage.getEntityAs(InputStream.class);
@@ -334,9 +344,13 @@ public class UserSessionController {
 
     @PUT
     @Path("/profileImage")
-    public Response updateUserProfileImage(@NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg"}, message = "{ContentType.newJob.images}") @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
+    public Response updateUserProfileImage(@Context final HttpServletRequest request,
+                                           @NotNull(message = "{NotEmpty.profileImage.image}") @ImageTypeConstraint(contentType = {"image/png", "image/jpeg","image/gif"}, message = "{ContentType.newJob.images}") @FormDataParam("profileImage") FormDataBodyPart profileImage) throws IOException {
         LOGGER.info("Accessed /user/profileImage PUT controller");
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
+        if (request.getContentLength() == -1 || request.getContentLength() > maxRequestSize) {
+            throw new MaxUploadSizeRequestException();
+        }
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         InputStream in = profileImage.getEntityAs(InputStream.class);
         userService.updateProfileImage(new NewImageDto(StreamUtils.copyToByteArray(in), profileImage.getMediaType().toString()), user);
         return Response.ok().build();
@@ -594,7 +608,7 @@ public class UserSessionController {
     public Response followUser(@PathParam("id") long id) {
         LOGGER.info("Accessed /user/following/{} PUT controller", id);
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final User toFollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
         if (user.getId().equals(toFollow.getId())) {

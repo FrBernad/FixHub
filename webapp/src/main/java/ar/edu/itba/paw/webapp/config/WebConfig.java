@@ -28,6 +28,8 @@ import java.util.Properties;
 @Configuration
 public class WebConfig {
 
+    private static final Integer MAX_REQUEST_SIZE = 3500000;
+
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -38,6 +40,8 @@ public class WebConfig {
 
         return messageSource;
     }
+
+
 
     @Bean
     public DataSource dataSource() {
@@ -96,4 +100,8 @@ public class WebConfig {
         return new URL(appProtocol, appHost, appPort, appWebContext);
     }
 
+    @Bean(name="maxRequestSize")
+    public Integer maxRequestSize(){
+        return MAX_REQUEST_SIZE;
+    }
 }

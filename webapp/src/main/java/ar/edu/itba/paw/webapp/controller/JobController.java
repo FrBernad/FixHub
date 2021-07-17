@@ -14,6 +14,7 @@ import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewContactDto;
 import ar.edu.itba.paw.webapp.dto.request.NewReviewDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
+import ar.edu.itba.paw.webapp.exceptionsMappers.MaxUploadSizeExceptionMapper;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -25,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -49,6 +51,9 @@ public class JobController {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired
+    private int maxRequestSize;
 
     @Autowired
     private UserService userService;
@@ -119,6 +124,7 @@ public class JobController {
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response newJob(
+        @Context final HttpServletRequest request,
         @NotEmpty(message = "{NotEmpty.newJob.jobProvided}")
         @Size(max = 50, message = "{Size.newJob.jobProvided}")
         @Pattern(regexp = "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$", message = "{Pattern.newJob.jobProvided}")
@@ -141,7 +147,11 @@ public class JobController {
     ) throws IOException {
         LOGGER.info("Accessed /jobs/ POST controller");
 
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new); //FIXME agregar mensaje
+        if(request.getContentLength() == -1 || request.getContentLength() > maxRequestSize){
+            throw new MaxUploadSizeRequestException();
+        }
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         List<NewImageDto> imagesToUpload = new LinkedList<>();
 
@@ -163,7 +173,7 @@ public class JobController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response job(@PathParam("id") final Long id) {
         LOGGER.info("Accessed /jobs/{} GET controller", id);
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
 
         if (securityContext.getUserPrincipal() != null) {
             final Optional<User> user = userService.getUserByEmail(securityContext.getUserPrincipal().getName());
@@ -180,6 +190,7 @@ public class JobController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateJob(
+        @Context final HttpServletRequest request,
         @PathParam("id") final long id,
         @NotEmpty(message = "{NotEmpty.updateJob.jobProvided}")
         @Size(max = 50, message = "{Size.updateJob.jobProvided}")
@@ -200,15 +211,20 @@ public class JobController {
         @FormDataParam("imagesIdToDelete") List<Long> imagesIdToDelete
     ) {
         LOGGER.info("Accessed /jobs/{}/ PUT controller", id);
+
+        if(request.getContentLength() == -1 || request.getContentLength() > maxRequestSize){
+            throw new MaxUploadSizeRequestException();
+        }
+
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).
-            orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
+            orElseThrow(UserNotFoundException::new);
         final Job job = jobService.getJobById(id).
-            orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
+            orElseThrow(JobNotFoundException::new);
 
         if (!job.getProvider().getId().equals(user.getId())) {
             LOGGER.error("Error, user with id {} is trying to update the job with id {} that belongs to user with id {}",
                 user.getId(), id, job.getProvider().getId());
-            throw new IllegalOperationException();//FIXME agregar mensaje
+            throw new IllegalOperationException();
         }
 
         List<NewImageDto> imagesToUpload = new LinkedList<>();
@@ -220,7 +236,7 @@ public class JobController {
                     imagesToUpload.add(new NewImageDto(StreamUtils.copyToByteArray(in), part.getMediaType().toString()));
                 } catch (IOException e) {
                     LOGGER.error("Error getting bytes from images");
-                    throw new ServerInternalException();//FIXME agregar mensaje
+                    throw new ServerInternalException();
                 }
             }
         }
@@ -231,7 +247,7 @@ public class JobController {
             jobService.updateJob(jobProvided, description, price, paused, imagesToUpload, job, imagesToDelete);
         } catch (MaxImagesPerJobException e) {
             LOGGER.warn("Error max Images per job reached");
-            throw new MaxImagesPerJobException();//FIXME agregar mensaje;
+            throw new MaxImagesPerJobException();
         }
         LOGGER.info("The job with id {} has been updated successfully", id);
         return Response.created(JobDto.getJobUriBuilder(job, uriInfo).build()).build();
@@ -247,7 +263,7 @@ public class JobController {
     ) {
         LOGGER.info("Accessed /jobs/{}/reviews GET controller", id);
 
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
 
         final PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, pageSize);
 
@@ -316,8 +332,8 @@ public class JobController {
             throw new ContentExpectedException();
         }
 
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);//FIXME agregar mensaje
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);//FIXME agregar mensaje
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
 
         AuxContactDto auxContactDto = new AuxContactDto(
             job,
@@ -334,7 +350,7 @@ public class JobController {
         try {
             userService.contact(auxContactDto, user, job.getProvider());
         } catch (IllegalContactException e) {
-            throw new IllegalContactException();//FIXME agregar mensaje si se contacta a si mismo
+            throw new IllegalContactException();
         }
 
         return Response.created(JobDto.getContactUriBuilder(job, uriInfo).build()).build();

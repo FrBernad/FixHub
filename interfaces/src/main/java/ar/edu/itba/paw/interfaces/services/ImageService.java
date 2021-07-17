@@ -10,6 +10,7 @@ import java.util.Set;
 
 public interface ImageService {
 
+
     Set<Image> createImages(List<NewImageDto> images);
 
     Image createImage(NewImageDto image);
