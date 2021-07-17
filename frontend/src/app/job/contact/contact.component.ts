@@ -6,6 +6,7 @@ import {User} from '../../models/user.model';
 import {Job} from '../../models/job.model';
 import {Subscription} from 'rxjs';
 import {UserService} from 'src/app/auth/services/user.service';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -39,6 +40,7 @@ export class ContactComponent implements OnInit {
   constructor(
     private contactService: ContactService,
     private userService: UserService,
+    private router: Router,
   ) {
   }
 
@@ -52,7 +54,6 @@ export class ContactComponent implements OnInit {
     this.jobId = this.job.id;
 
     this.initForm();
-
   }
 
   onSubmit() {
@@ -76,7 +77,7 @@ export class ContactComponent implements OnInit {
       userId: '' + this.user.id,
       addressNumber: this.contactForm.get('addressNumber').value,
     }).subscribe(
-      response => {
+      () => {
         this.modal.hide();
         this.onClose();
         this.disabled =false;

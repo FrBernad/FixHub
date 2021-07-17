@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {Notification} from "../../models/notification.model";
 import {Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
+import {tap} from "rxjs/operators";
 
 export interface NotificationPaginationResult {
   page: number;
@@ -86,12 +87,23 @@ export class NotificationsService {
 
   markAsReadNotification(id: number) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/notifications/'+id,{});
+      environment.apiBaseUrl + '/user/notifications/' + id, {})
+      .pipe(
+        tap(() => {
+            this.refreshNotifications();
+          }
+        )
+      );
   }
 
-  markAsReadAllNotifications(){
+  markAsReadAllNotifications() {
     return this.http.put(
-      environment.apiBaseUrl + '/user/notifications',{});
-
+      environment.apiBaseUrl + '/user/notifications', {})
+      .pipe(
+        tap(() => {
+            this.refreshNotifications();
+          }
+        )
+      );
   }
 }

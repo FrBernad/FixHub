@@ -140,7 +140,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-
     @Async
     @Override
     public void sendJobCancellationEmail(JobContact jobContact, Locale locale) {
@@ -166,7 +165,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-
     @Async
     @Override
     public void sendUserJobCancellationEmail(JobContact jobContact, Locale locale) {
@@ -181,9 +179,9 @@ public class EmailServiceImpl implements EmailService {
 
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("userURL", userURL);
-            mailAttrs.put("to", jobContact.getUser().getEmail());
+            mailAttrs.put("to", jobContact.getProvider().getEmail());
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
-            mailAttrs.put("userName", jobContact.getJob().getProvider().getName());
+            mailAttrs.put("userName", jobContact.getUser().getName());
             mailAttrs.put("name", jobContact.getJob().getProvider().getName());
 
             sendMail("userJobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, locale), mailAttrs, locale);

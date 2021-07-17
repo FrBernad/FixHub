@@ -42,9 +42,15 @@ export class ContactService {
   }
 
   newContact(jobId: number, contactData: ContactData) {
-    return this.http.post<ContactData>(environment.apiBaseUrl + '/jobs/' + jobId + '/contact', contactData).pipe(tap(() => {
-      this.userService.populateUserData().subscribe();
-    }));
+    return this.http.post<ContactData>(
+      environment.apiBaseUrl + '/jobs/' + jobId + '/contact',
+      contactData)
+      .pipe(
+        tap(() => {
+            this.userService.populateUserData().subscribe();
+          }
+        )
+      );
   }
 
   getProviderRequests(rq: RequestPaginationQuery) {
