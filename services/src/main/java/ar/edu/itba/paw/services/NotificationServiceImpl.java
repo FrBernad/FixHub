@@ -73,6 +73,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
+    @Transactional
     @Override
     public Notification createRequestStatusChangeForUser(User user, JobContact resource) {
         LOGGER.debug("Creating a new request status notification for user with id {} " +
@@ -81,13 +82,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
 
+    @Transactional
     @Override
-    public Notification createRequestStatusChangeForProvider(User user, JobContact resource) {
+    public Notification createRequestStatusChangeForProvider(User provider, JobContact resource) {
         LOGGER.debug("Creating a new request status notification for user with id {} for the job contact with id {}",
-            user.getId(),resource.getId());
-        return createNotification(user,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_PROVIDER,LocalDateTime.now());
+            provider.getId(),resource.getId());
+        return createNotification(provider,resource.getId(),NotificationType.REQUEST_STATUS_CHANGE_PROVIDER,LocalDateTime.now());
     }
 
+    @Transactional
     @Override
     public int getUnseenNotificationsCount(User user) {
         return notificationDao.getNotificationCountByUser(user, true);

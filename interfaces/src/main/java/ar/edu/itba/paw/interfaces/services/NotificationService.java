@@ -12,7 +12,7 @@ public interface NotificationService {
 
     Notification createNewRequestNotification(User user, JobContact resource);
 
-    Notification createRequestStatusChangeForProvider(User user, JobContact resource);
+    Notification createRequestStatusChangeForProvider(User provider, JobContact resource);
 
     Notification createRequestStatusChangeForUser(User user, JobContact resource);
 
