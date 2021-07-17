@@ -12,12 +12,12 @@
               {{ 'account.notifications.jobRequest.rejected.title' | translate }}
             </h1>
           </div>
-          <div class="col-3 d-flex justify-content-end">
+          <div class="col-5 d-flex justify-content-end">
             {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-10">
             {{'account.notifications.jobRequest.rejected.body' | translate }}
             <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
               {{jobRequest.jobProvided}}
@@ -39,13 +39,13 @@
               {{ 'account.notifications.jobRequest.accepted.title' | translate }}
             </h1>
           </div>
-          <div class="col-3 d-flex justify-content-end">
+          <div class="col-5 d-flex justify-content-end">
             {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
           </div>
         </div>
 
         <div class="row">
-          <div class="col-12">
+          <div class="col-10">
             {{'account.notifications.jobRequest.accepted.body' | translate }}
             <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
               {{jobRequest.jobProvided}}
@@ -66,12 +66,12 @@
               {{ 'account.notifications.jobRequest.finished.title' | translate }}
             </h1>
           </div>
-          <div class="col-3 d-flex justify-content-end">
+          <div class="col-5 d-flex justify-content-end">
             {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-10">
             {{'account.notifications.jobRequest.finished.body' | translate }}
             <a [routerLink]="'/jobs/'+jobRequest.jobId" class="contactInfo names">
               {{jobRequest.jobProvided}}

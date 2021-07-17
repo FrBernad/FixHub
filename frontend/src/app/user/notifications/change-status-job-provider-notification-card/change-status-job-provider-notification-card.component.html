@@ -9,13 +9,13 @@
           {{ 'account.notifications.jobRequest.cancelled.title'|translate}}
         </h1>
       </div>
-      <div class="col-3 d-flex justify-content-end">
+      <div class="col-5 d-flex justify-content-end">
         {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
       </div>
     </div>
 
     <div class="row">
-      <div class="col-12">
+      <div class="col-10">
         <span>
           {{ 'account.notifications.jobRequest.cancelled.body'| translate }}
           <a [routerLink]="'/user/'+jobRequest.user.id" class="contactInfo names">

@@ -62,7 +62,7 @@ public class JobDaoTest {
 
     //GET JOBS
     @Test
-    public void testGetJobsByCategoryIdSeachQuery() {
+    public void testGetJobsByCategoryIdSearchQuery() {
 
         Collection<Job> jobs = jobDao.
             getJobsByCategory("tot", MOST_POPULAR, MECANICO,

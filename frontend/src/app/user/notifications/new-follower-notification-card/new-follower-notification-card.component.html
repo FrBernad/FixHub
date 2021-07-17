@@ -9,12 +9,12 @@
           {{ 'account.notifications.newFollower.title'|translate}}
         </h1>
       </div>
-      <div class="col-3 d-flex justify-content-end">
+      <div class="col-5 d-flex justify-content-end">
         {{this.notification.date | date:'yyyy-MM-dd hh:mm'}}
       </div>
     </div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-10">
         <a (click)="onClick()" style="cursor: pointer" class="contactInfo names">
           <span>{{ user.name + ' ' + user.surname}}</span>
         </a>
