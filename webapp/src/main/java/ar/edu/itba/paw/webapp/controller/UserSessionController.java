@@ -550,7 +550,7 @@ public class UserSessionController {
             joinDto.getSchedule().getStartTime(),
             joinDto.getSchedule().getEndTime());
 
-        LOGGER.info("User with id {} become provider succesfully", user.getId());
+        LOGGER.info("User with id {} become provider successfully", user.getId());
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
         addAuthorizationHeader(responseBuilder, user);

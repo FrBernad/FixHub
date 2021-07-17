@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Notification} from "../../../models/notification.model";
-import {ContactService} from "../../../job/contact/contact.service";
+import {RequestsService} from "../../requests/requests.service";
 import {JobRequest} from "../../../models/job-request.model";
 import {NotificationsService} from "../notifications.service";
 import {Router} from "@angular/router";
@@ -17,7 +17,7 @@ export class NewJobRequestNotificationCardComponent implements OnInit {
   jobRequest: JobRequest;
   isLoading=true;
 
-  constructor(private contactService: ContactService,
+  constructor(private contactService: RequestsService,
               private notificationService: NotificationsService,
               private router: Router) {
   }

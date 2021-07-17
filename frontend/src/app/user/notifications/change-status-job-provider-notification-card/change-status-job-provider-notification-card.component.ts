@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Notification} from "../../../models/notification.model";
 import {JobRequest} from "../../../models/job-request.model";
 import {NotificationsService} from "../notifications.service";
-import {ContactService} from "../../../job/contact/contact.service";
+import {RequestsService} from "../../requests/requests.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -20,7 +20,7 @@ export class ChangeStatusJobProviderNotificationCard implements OnInit {
 
   constructor(
     private notificationService: NotificationsService,
-    private contactService: ContactService,
+    private contactService: RequestsService,
     private router: Router
   ) {
   }

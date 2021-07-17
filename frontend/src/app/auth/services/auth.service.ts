@@ -85,6 +85,9 @@ export class AuthService {
         environment.apiBaseUrl + '/users',
         {
           ...registerData
+        },
+        {
+          observe: "response"
         }
       )
   }
@@ -166,7 +169,6 @@ export class AuthService {
         }
       )
   }
-
 
   sendResetPasswordEmail(email: string) {
     return this.http

@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ContactComponent} from './contact.component';
-import {ContactService} from "./contact.service";
+import {RequestsService} from "../../user/requests/requests.service";
 import {UserService} from "../../auth/services/user.service";
 import {TestingModule} from "../../testing.module";
 
@@ -15,7 +15,7 @@ describe('ContactComponent', () => {
         TestingModule
       ],
       providers:[
-        ContactService,UserService
+        RequestsService,UserService
       ]
     })
       .compileComponents();

@@ -1,5 +1,5 @@
 import {ContactInfo} from '../../models/contact-info.model';
-import {ContactService} from './contact.service';
+import {RequestsService} from '../../user/requests/requests.service';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../models/user.model';
@@ -38,7 +38,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   modal: any;
 
   constructor(
-    private contactService: ContactService,
+    private contactService: RequestsService,
     private userService: UserService,
     private router: Router,
   ) {

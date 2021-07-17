@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ContactService} from "../../../job/contact/contact.service";
+import {RequestsService} from "../requests.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JobRequest} from "../../../models/job-request.model";
 import {JobStatus} from "../../../models/job-status-enum.model";
@@ -28,7 +28,7 @@ export class RequestComponent implements OnInit {
   user: User;
 
   constructor(
-    private contactService: ContactService,
+    private contactService: RequestsService,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,

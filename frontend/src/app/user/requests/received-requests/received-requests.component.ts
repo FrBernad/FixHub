@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ContactService, RequestPaginationQuery, RequestPaginationResult} from "../../../job/contact/contact.service";
+import {RequestsService, RequestPaginationQuery, RequestPaginationResult} from "../requests.service";
 import {Subscription} from "rxjs";
 import {ContactOrder} from "../../../models/contact-order-enum.model";
 import {JobStatus} from "../../../models/job-status-enum.model";
@@ -36,7 +36,7 @@ export class ReceivedRequestsComponent implements OnInit, OnDestroy {
   private contactSub: Subscription;
 
   constructor(
-    private contactService: ContactService
+    private contactService: RequestsService
   ) {
   }
 

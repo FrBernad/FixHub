@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ChangeStatusJobProviderNotificationCard} from "./change-status-job-provider-notification-card.component";
 import {NotificationsService} from "../notifications.service";
-import {ContactService} from "../../../job/contact/contact.service";
+import {RequestsService} from "../../requests/requests.service";
 import {Router} from "@angular/router";
 import {TestingModule} from "../../../testing.module";
 import {Notification} from "../../../models/notification.model";
@@ -33,7 +33,7 @@ describe('ChangeStatusJobProviderNotificationCardComponent', () => {
           provide: Router,
           useValue: mockRouter
         },
-        NotificationsService, ContactService],
+        NotificationsService, RequestsService],
     })
     .compileComponents();
   });
