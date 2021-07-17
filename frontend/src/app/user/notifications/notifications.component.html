@@ -38,18 +38,25 @@
     <div *ngIf="npr.results.length > 0, else noResults" class="col-12 pt-5">
       <div *ngFor="let notification of npr.results">
         <div class="col-12 mt-3" [ngSwitch]="notification.type">
-          <app-new-follower-notification-card *ngSwitchCase="newfollower" [notification]="notification"></app-new-follower-notification-card>
-          <app-new-job-request-notification-card *ngSwitchCase="jobRequest" [notification]="notification"></app-new-job-request-notification-card>
-          <app-change-status-job-provider-notification-card *ngSwitchCase="requestStatusChangeProvider" [notification]="notification"></app-change-status-job-provider-notification-card>
-          <app-change-status-job-user-notification-card *ngSwitchCase="requestStatusChangeUser" [notification]="notification"></app-change-status-job-user-notification-card>
-         </div>
+          <app-new-follower-notification-card *ngSwitchCase="newfollower"
+                                              [notification]="notification"></app-new-follower-notification-card>
+          <app-new-job-request-notification-card *ngSwitchCase="jobRequest"
+                                                 [notification]="notification"></app-new-job-request-notification-card>
+          <app-change-status-job-provider-notification-card *ngSwitchCase="requestStatusChangeProvider"
+                                                            [notification]="notification"></app-change-status-job-provider-notification-card>
+          <app-change-status-job-user-notification-card *ngSwitchCase="requestStatusChangeUser"
+                                                        [notification]="notification"></app-change-status-job-user-notification-card>
+        </div>
         <div class="col-10">
           <hr>
         </div>
       </div>
       <div *ngIf="canLoadMore()" class="d-flex justify-content-center col-12 mt-4">
-        <button class="seeMoreBtn" (click)="loadMore()">
-          {{ "account.notifications.more" | translate}}
+        <button class="seeMoreBtn" (click)="loadMore()" [disabled]="loadingMore">
+          <span class="spinner-border spinner-border-sm" [hidden]="loadingMore"></span>
+          <span *ngIf="!loadingMore">
+                {{ "account.notifications.more" | translate}}
+          </span>
         </button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import {ContactInfo} from '../../models/contact-info.model';
 import {ContactService} from './contact.service';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {Job} from '../../models/job.model';
@@ -14,7 +14,7 @@ import {Router} from "@angular/router";
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, OnDestroy {
   contactForm: FormGroup;
 
   @Input()
@@ -65,7 +65,6 @@ export class ContactComponent implements OnInit {
 
     this.disabled=true
 
-
     this.contactService.newContact(this.jobId, {
       state: this.job.provider.providerDetails.location.state.name,
       city: this.contactForm.get('city').value,
@@ -77,7 +76,8 @@ export class ContactComponent implements OnInit {
       userId: '' + this.user.id,
       addressNumber: this.contactForm.get('addressNumber').value,
     }).subscribe(
-      () => {
+      (contactId) => {
+        this.router.navigate(["/user/requests/"+contactId]);
         this.modal.hide();
         this.onClose();
         this.disabled =false;
@@ -172,4 +172,9 @@ export class ContactComponent implements OnInit {
       contactInfoId: new FormControl(-1, Validators.required),
     });
   }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
+  }
+
 }

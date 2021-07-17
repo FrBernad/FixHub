@@ -26,10 +26,6 @@ public class JobDto {
         return uriInfo.getBaseUriBuilder().path("jobs").path("images").path(String.valueOf(image.getId()));
     }
 
-    public static UriBuilder getContactUriBuilder(Job job, UriInfo uriInfo) {
-        return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId())).path("contact");
-    }
-
     public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo, SecurityContext securityContext) {
         return jobs.stream().map(p -> new JobDto(p, uriInfo, securityContext)).collect(Collectors.toList());
     }

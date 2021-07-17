@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
 import ar.edu.itba.paw.models.contact.AuxContactDto;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
@@ -38,7 +39,7 @@ public interface UserService {
 
     void updateUserInfo(UserInfo userInfo, User user);
 
-    void contact(AuxContactDto auxContactDto, User user, User provider) throws IllegalContactException;
+    JobContact contact(AuxContactDto auxContactDto, User user, User provider) throws IllegalContactException;
 
     void makeProvider(User user, List<Long> citiesId, String startTime, String endTime);
 

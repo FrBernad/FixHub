@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ContactService} from "../../../job/contact/contact.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JobRequest} from "../../../models/job-request.model";
-import {JobStatusEnum} from "../../../models/job-status-enum.model";
+import {JobStatus} from "../../../models/job-status-enum.model";
 import {Title} from "@angular/platform-browser";
 import {User} from "../../../models/user.model";
 import {UserService} from "../../../auth/services/user.service";
@@ -56,19 +56,19 @@ export class RequestComponent implements OnInit {
   }
 
   isWorkInProgress(): boolean {
-    return this.request.status == JobStatusEnum.IN_PROGRESS;
+    return this.request.status == JobStatus.IN_PROGRESS;
   }
 
   isWorkPending(): boolean {
-    return this.request.status == JobStatusEnum.PENDING;
+    return this.request.status == JobStatus.PENDING;
   }
 
   acceptJob(): void {
     this.acceptJobLoading = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatusEnum.IN_PROGRESS).subscribe(
+    this.contactService.changeContactStatus(this.request.id, JobStatus.IN_PROGRESS).subscribe(
       () => {
         this.acceptJobLoading = false;
-        this.request.status = JobStatusEnum.IN_PROGRESS;
+        this.request.status = JobStatus.IN_PROGRESS;
       },
       () => {
         this.acceptJobLoading = false;
@@ -78,10 +78,10 @@ export class RequestComponent implements OnInit {
 
   rejectJob(): void {
     this.rejectJobLoading = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatusEnum.REJECTED).subscribe(
+    this.contactService.changeContactStatus(this.request.id, JobStatus.REJECTED).subscribe(
       () => {
         this.rejectJobLoading = false;
-        this.request.status = JobStatusEnum.REJECTED;
+        this.request.status = JobStatus.REJECTED;
       },
       () => {
         this.rejectJobLoading = false;
@@ -91,10 +91,10 @@ export class RequestComponent implements OnInit {
 
   jobFinished(): void {
     this.finishJobLoading = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatusEnum.FINISHED).subscribe(
+    this.contactService.changeContactStatus(this.request.id, JobStatus.FINISHED).subscribe(
       () => {
         this.rejectJobLoading = false;
-        this.request.status = JobStatusEnum.FINISHED;
+        this.request.status = JobStatus.FINISHED;
       },
       () => {
         this.finishJobLoading = false;
@@ -104,16 +104,16 @@ export class RequestComponent implements OnInit {
 
 
   isWorkNotFinished() {
-    return this.request.status == JobStatusEnum.PENDING || this.request.status == JobStatusEnum.IN_PROGRESS;
+    return this.request.status == JobStatus.PENDING || this.request.status == JobStatus.IN_PROGRESS;
   }
 
 
   cancelRequest() {
     this.disabled = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatusEnum.CANCELED).subscribe(
+    this.contactService.changeContactStatus(this.request.id, JobStatus.CANCELED).subscribe(
       () => {
         this.disabled = false;
-        this.request.status = JobStatusEnum.CANCELED;
+        this.request.status = JobStatus.CANCELED;
       },
       () => {
         this.disabled = false;

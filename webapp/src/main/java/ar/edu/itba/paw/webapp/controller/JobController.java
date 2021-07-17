@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
+import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.Review;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
 import ar.edu.itba.paw.models.user.User;
@@ -346,14 +347,12 @@ public class JobController {
             contact.getFloor(),
             contact.getDepartmentNumber()
         );
-
         try {
-            userService.contact(auxContactDto, user, job.getProvider());
+            final JobContact jobContact = userService.contact(auxContactDto, user, job.getProvider());
+            return Response.created(JobContactDto.getContactUriBuilder(jobContact, uriInfo).build()).build();
         } catch (IllegalContactException e) {
             throw new IllegalContactException();
         }
-
-        return Response.created(JobDto.getContactUriBuilder(job, uriInfo).build()).build();
     }
 
     @Path("/{id}/reviews")

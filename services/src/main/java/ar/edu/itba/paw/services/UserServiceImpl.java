@@ -308,7 +308,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void contact(AuxContactDto auxContactDto, User user, User provider) throws IllegalContactException {
+    public JobContact contact(AuxContactDto auxContactDto, User user, User provider) throws IllegalContactException {
         ContactInfo contactInfo;
 
         if (auxContactDto.getContactInfoId() == -1) {
@@ -329,6 +329,8 @@ public class UserServiceImpl implements UserService {
 
         emailService.sendJobRequestEmail(jobContact, LocaleContextHolder.getLocale());
         emailService.sendJobRequestConfirmationEmail(jobContact, LocaleContextHolder.getLocale());
+
+        return jobContact;
     }
 
     @Override

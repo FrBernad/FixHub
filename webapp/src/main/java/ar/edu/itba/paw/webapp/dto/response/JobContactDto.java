@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
 
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDate;
@@ -13,8 +14,12 @@ import java.util.stream.Collectors;
 @XmlType(name = "")
 public class JobContactDto {
 
+    public static UriBuilder getContactUriBuilder(JobContact contact, UriInfo uriInfo) {
+        return uriInfo.getBaseUriBuilder().path("user").path("jobs").path("requests").path(String.valueOf(contact.getId()));
+    }
+
     public static Collection<JobContactDto> mapContactToDto(Collection<JobContact> jobContacts, UriInfo uriInfo, SecurityContext securityContext) {
-        return jobContacts.stream().map(jc -> new JobContactDto(jc, uriInfo,securityContext)).collect(Collectors.toList());
+        return jobContacts.stream().map(jc -> new JobContactDto(jc, uriInfo, securityContext)).collect(Collectors.toList());
     }
 
     private Long id;

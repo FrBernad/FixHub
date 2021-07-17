@@ -3,7 +3,7 @@ import {HttpClient, HttpParams, HttpStatusCode} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {UserService} from "../../auth/services/user.service";
-import {tap} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {JobRequest} from "../../models/job-request.model";
 
 export interface RequestPaginationResult {
@@ -44,10 +44,19 @@ export class ContactService {
   newContact(jobId: number, contactData: ContactData) {
     return this.http.post<ContactData>(
       environment.apiBaseUrl + '/jobs/' + jobId + '/contact',
-      contactData)
+      contactData,
+      {
+        observe: "response"
+      }
+    )
       .pipe(
         tap(() => {
             this.userService.populateUserData().subscribe();
+          }
+        ),
+        map((res) => {
+            let location = res.headers.get('location').split('/');
+            return location[location.length - 1];
           }
         )
       );

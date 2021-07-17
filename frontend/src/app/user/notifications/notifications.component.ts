@@ -12,13 +12,13 @@ import {NotificationType} from "../../models/notification-type-enum.model";
 export class NotificationsComponent implements OnInit, OnDestroy {
 
   loading = true;
-
+  loadingMore = false;
   private notificationSub: Subscription;
 
   jobRequest = NotificationType.JOB_REQUEST;
   newfollower = NotificationType.NEW_FOLLOWER;
   requestStatusChangeProvider = NotificationType.REQUEST_STATUS_CHANGE_PROVIDER;
-  requestStatusChangeUser= NotificationType.REQUEST_STATUS_CHANGE_USER;
+  requestStatusChangeUser = NotificationType.REQUEST_STATUS_CHANGE_USER;
 
   npq: NotificationPaginationQuery = {
     page: 0,
@@ -43,17 +43,22 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loading = false;
     this.notificationsService.getNotifications(this.npq);
     this.notificationSub = this.notificationsService.notifications.subscribe((results) => {
-      if (this.npq.page == 0) {
-        this.npr = results;
-      } else {
-        this.npr.totalPages = results.totalPages;
-        this.npr.page = results.page;
-        this.npr.results.push(...results.results);
+        if (this.npq.page == 0) {
+          this.npr = results;
+        } else {
+          this.npr.totalPages = results.totalPages;
+          this.npr.page = results.page;
+          this.npr.results.push(...results.results);
+        }
+        this.loading = false;
+        this.loadingMore = false;
+      }, () => {
+        this.loading = false;
+        this.loadingMore = false;
       }
-    })
+    )
   }
 
   ngOnDestroy(): void {
@@ -71,13 +76,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   loadMore() {
+    this.loadingMore = true;
     if (this.canLoadMore()) {
       this.npq.page = this.npq.page + 1;
       this.notificationsService.getNotifications(this.npq);
     }
   }
-
-
 
 
 }

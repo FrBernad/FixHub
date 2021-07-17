@@ -3,8 +3,8 @@ import {Notification} from "../../../models/notification.model";
 import {ContactService} from "../../../job/contact/contact.service";
 import {JobRequest} from "../../../models/job-request.model";
 import {NotificationsService} from "../notifications.service";
-import {FilterStatusRequest} from "../../../models/filter-status-request-enum.model";
 import {Router} from "@angular/router";
+import {JobStatus} from "../../../models/job-status-enum.model";
 
 @Component({
   selector: 'app-change-status-job-user-notification-card',
@@ -16,9 +16,9 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
   @Input("notification") notification: Notification;
 
   jobRequest: JobRequest;
-  requestRejected = FilterStatusRequest.REJECTED;
-  requestAccepted = FilterStatusRequest.IN_PROGRESS;
-  requestFinished = FilterStatusRequest.FINISHED;
+  requestRejected = JobStatus.REJECTED;
+  requestAccepted = JobStatus.IN_PROGRESS;
+  requestFinished = JobStatus.FINISHED;
 
   isLoading = true;
 
@@ -31,7 +31,6 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.contactService.getJobRequest(this.notification.resource).subscribe((jobRequest) => {
-      console.log(jobRequest);
       this.jobRequest = jobRequest;
       this.isLoading = false;
     });
