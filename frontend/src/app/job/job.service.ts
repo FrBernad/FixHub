@@ -92,7 +92,7 @@ export class JobService {
   }
 
   updateJob(id:number, formData: FormData) {
-    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id ,formData);
+    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id ,formData, {observe: 'response'});
   }
 
   getJob(id: number) {
@@ -102,7 +102,7 @@ export class JobService {
   createReview(review: { description: string, rating: string }, id: number) {
     return this.http.post<{
       description: string, rating: string
-    }>(environment.apiBaseUrl + '/jobs/' + id + '/reviews', review);
+    }>(environment.apiBaseUrl + '/jobs/' + id + '/reviews', review, {observe: 'response'});
   }
 
 
