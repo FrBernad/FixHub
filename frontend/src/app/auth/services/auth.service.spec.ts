@@ -5,7 +5,6 @@ import {HttpHeaders, HttpStatusCode} from "@angular/common/http";
 import {ProviderInfo, UserService} from "./user.service";
 import {AuthService, RegisterData} from "./auth.service";
 import {NotificationsService} from "../../user/notifications/notifications.service";
-import {Router} from "@angular/router";
 import {RouterTestingModule} from "@angular/router/testing";
 import {of} from "rxjs";
 
