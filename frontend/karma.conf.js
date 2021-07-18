@@ -39,6 +39,10 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
+    files: [
+      "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+      "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+    ]
   });
 };
