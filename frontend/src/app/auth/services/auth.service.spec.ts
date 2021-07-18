@@ -55,25 +55,6 @@ describe('AuthService', () => {
 
   });
 
-  it('login() should return new jwt', () => {
-    authService.login("email", "password").subscribe(
-      (res) => {
-        expect(res.status).toEqual(HttpStatusCode.NoContent);
-        expect(res.headers.get("Authorization")).toEqual(authHeader);
-      }
-    )
-
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user');
-    expect(req.request.method).toBe('POST');
-
-    req.flush({},
-      {
-        headers: new HttpHeaders({Authorization: authHeader}),
-        status: HttpStatusCode.NoContent,
-        statusText: HttpStatusCode.Created.toString()
-      });
-  });
-
   it('verify() should return new jwt', () => {
     authService.verify("VERIFICATION_TOKEN").subscribe(
       (res) => {
