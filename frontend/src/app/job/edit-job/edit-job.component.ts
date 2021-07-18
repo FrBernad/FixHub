@@ -31,7 +31,7 @@ export class EditJobComponent implements OnInit, OnDestroy {
 
   private transSub: Subscription;
 
-  job: SingleJob = new SingleJob();
+  job: SingleJob = new SingleJob(1, "description", "jobProvided", "category", 3, 3, 4, [], "image", undefined, false, true);
 
   maxImagesPerJob: number = 6;
 

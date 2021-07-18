@@ -17,8 +17,7 @@ import {Router} from "@angular/router";
 export class ContactComponent implements OnInit, OnDestroy {
   contactForm: FormGroup;
 
-  @Input()
-  job: Job;
+  @Input("job") job: Job;
 
   jobId: number;
   isFetching: boolean = true;
@@ -63,7 +62,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.disabled=true
+    this.disabled = true
 
     this.contactService.newContact(this.jobId, {
       state: this.job.provider.providerDetails.location.state.name,
@@ -77,10 +76,10 @@ export class ContactComponent implements OnInit, OnDestroy {
       addressNumber: this.contactForm.get('addressNumber').value,
     }).subscribe(
       (contactId) => {
-        this.router.navigate(["/user/requests/"+contactId]);
+        this.router.navigate(["/user/requests/" + contactId]);
         this.modal.hide();
         this.onClose();
-        this.disabled =false;
+        this.disabled = false;
       }
     );
   }
@@ -126,7 +125,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     );
   }
 
-  getCity(){
+  getCity() {
     return this.contactForm.get('city').value;
   }
 

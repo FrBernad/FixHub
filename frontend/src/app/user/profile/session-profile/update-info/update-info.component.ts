@@ -10,7 +10,7 @@ import {UserService} from "../../../../auth/services/user.service";
 })
 export class UpdateInfoComponent implements OnInit {
 
-  @Input() loggedUser: User;
+  @Input("loggedUser") loggedUser: User;
 
   modal: any;
 

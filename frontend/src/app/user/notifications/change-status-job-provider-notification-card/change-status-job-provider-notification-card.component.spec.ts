@@ -11,37 +11,33 @@ import {NotificationType} from "../../../models/notification-type-enum.model";
 describe('ChangeStatusJobProviderNotificationCardComponent', () => {
   let component: ChangeStatusJobProviderNotificationCard;
   let fixture: ComponentFixture<ChangeStatusJobProviderNotificationCard>;
-  let mockRouter = {
+
+  const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
-  let mockNotification = new Notification(
-    2,
-    new Date(),
-     1,
-     false,
-      NotificationType.JOB_REQUEST
-  );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChangeStatusJobProviderNotificationCard ],
-      imports:[
+      declarations: [ChangeStatusJobProviderNotificationCard],
+      imports: [
         TestingModule
       ],
-      providers:[
+      providers: [
         {
           provide: Router,
           useValue: mockRouter
         },
         NotificationsService, RequestsService],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
+    const mockNotification = new Notification(2, new Date(), 1, false, NotificationType.JOB_REQUEST);
+
     fixture = TestBed.createComponent(ChangeStatusJobProviderNotificationCard);
     component = fixture.componentInstance;
-    component.notification=mockNotification;
+    component.notification = mockNotification;
     fixture.detectChanges();
   });
 

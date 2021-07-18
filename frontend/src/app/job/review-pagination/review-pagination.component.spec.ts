@@ -10,17 +10,18 @@ describe('ReviewPaginationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReviewPaginationComponent ],
-       imports: [
+      declarations: [ReviewPaginationComponent],
+      imports: [
         TestingModule],
-      providers:[]
+      providers: []
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewPaginationComponent);
-    component.job=new Job();
+    component = fixture.componentInstance;
+    component.job = new Job(1, "description", "jobProvided", "category", 3, 3, 4, [], "image", undefined, false);
     fixture.detectChanges();
   });
 

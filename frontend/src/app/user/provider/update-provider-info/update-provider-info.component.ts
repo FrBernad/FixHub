@@ -27,7 +27,6 @@ export class UpdateProviderInfoComponent implements OnInit, OnDestroy {
   isProvider: boolean;
   posting = false;
 
-
   constructor(
     private userService: UserService,
     private router: Router,
@@ -46,7 +45,7 @@ export class UpdateProviderInfoComponent implements OnInit, OnDestroy {
 
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
-      this.isProvider = this.user.providerDetails !== undefined;
+      this.isProvider = this.user?.providerDetails !== undefined;
     });
   }
 

@@ -4,13 +4,14 @@ import {Job} from "../../models/job.model";
 @Component({
   selector: 'app-job-card',
   templateUrl: './job-card.component.html',
-  styleUrls: ['./job-card.component.scss','../../discover/discover.component.scss']
+  styleUrls: ['./job-card.component.scss', '../../discover/discover.component.scss']
 })
 export class JobCardComponent implements OnInit {
 
-  @Input()job:Job;
+  @Input("job") job: Job;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

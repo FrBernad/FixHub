@@ -6,6 +6,7 @@ import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";
 import {SingleJob} from "../models/single-job.model";
 import {Title} from "@angular/platform-browser";
+import {Job} from "../models/job.model";
 
 @Component({
   selector: 'app-job',
@@ -14,7 +15,7 @@ import {Title} from "@angular/platform-browser";
 })
 export class JobComponent implements OnInit {
 
-  job: SingleJob = new SingleJob();
+  job: SingleJob = new SingleJob(1, "description", "jobProvided", "category", 3, 3, 4, [], "image", undefined, false, true);
 
   selectedIndex = 0;
   isFetching = true;

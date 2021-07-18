@@ -8,7 +8,7 @@ import {Job} from "../../models/job.model";
 })
 export class PopularJobCardComponent implements OnInit {
 
-  @Input() job:Job;
+  @Input("job") job:Job;
 
   constructor() { }
 

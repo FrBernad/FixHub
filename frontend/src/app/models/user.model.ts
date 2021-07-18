@@ -30,7 +30,7 @@ export class User {
     public roles: string[],
     public followingCount: number,
     public followersCount: number,
-    public contactInfo: ContactInfo[],
+    public contactInfo?: ContactInfo[],
     public providerDetails?: ProviderDetails,
     public followed?: boolean,
     public following?: boolean

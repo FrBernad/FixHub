@@ -10,66 +10,30 @@ describe('ReviewCardComponent', () => {
   let component: ReviewCardComponent;
   let fixture: ComponentFixture<ReviewCardComponent>;
 
-  const fakeProviderDetails: ProviderDetails = {
-  location: {
-    cities: [{id: 1, name: ''}],
-    state: {id: 1, name: ''}
-  },
-  schedule: {
-    startTime: new Date(),
-    endTime: new Date()
-  },
-  jobsCount: 1,
-  avgRating: 2,
-  reviewCount: 3,
-  contactsCount: 4
-};
-
-let fakeContactInfo = new ContactInfo(
-  1,
-  '',
-  '',
-  '',
-  ''
-);
-
-let fakeUser = new User(
-  1,
-  'name',
-  'surname',
-  'email',
-  'phoneNumber',
-  'state',
-  'city',
-  'profileImage',
-  'converImage',
-  ['', ''],
-  1,
-  2,
-  [fakeContactInfo],
-  fakeProviderDetails,
-  true,
-  false
-);
-
-  let mockReview = new Review(
-    1,
-    ',',
-    2,
-    new Date(),
-    fakeUser
-  )
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReviewCardComponent ],
-        imports: [
+      declarations: [ReviewCardComponent],
+      imports: [
         TestingModule]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
+    const fakeProviderDetails: ProviderDetails = {
+      location: {
+        cities: [{id: 1, name: ''}],
+        state: {id: 1, name: ''}
+      },
+      schedule: {
+        startTime: new Date(),
+        endTime: new Date()
+      },
+      jobsCount: 1, avgRating: 2, reviewCount: 3, contactsCount: 4
+    };
+    const fakeContactInfo = new ContactInfo(1, '', '', '', '');
+    const fakeUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [fakeContactInfo], fakeProviderDetails, true, false);
+    const mockReview = new Review(1, ',', 2, new Date(), fakeUser)
 
     fixture = TestBed.createComponent(ReviewCardComponent);
     component = fixture.componentInstance;
