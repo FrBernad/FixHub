@@ -97,7 +97,11 @@ const routes: Routes = [
       },
       {
         path: '**',
-        loadChildren: () => import("../../errors/errors.module").then(m => m.ErrorsModule)
+        loadChildren: () => import("../../errors/errors.module").then(m => m.ErrorsModule),
+        data: {
+          i18: 'pageNotFound',
+          code: 404,
+        }
       }
     ]
   }

@@ -26,7 +26,8 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 @ComponentScan({"ar.edu.itba.paw.webapp.auth"})
-public class WebAuthConfig extends WebSecurityConfigurerAdapter {
+public class
+WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailService userDetailService;

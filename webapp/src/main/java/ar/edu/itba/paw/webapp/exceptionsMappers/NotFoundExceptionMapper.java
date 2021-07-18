@@ -20,7 +20,6 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotFoundExceptionMapper.class);
 
-
     @Autowired
     private MessageSource messageSource;
 
@@ -28,7 +27,7 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundExceptio
     public Response toResponse(NotFoundException exception) {
         LOGGER.error("Error encountered, not found exception");
 
-        final String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
+        final String message = messageSource.getMessage("exception.notFound", null, LocaleContextHolder.getLocale());
         return Response.status(Response.Status.NOT_FOUND).entity(message).build();
     }
 }
