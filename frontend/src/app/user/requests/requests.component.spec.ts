@@ -5,13 +5,34 @@ import {Title} from "@angular/platform-browser";
 import {TranslateService} from "@ngx-translate/core";
 import {TestingModule} from "../../testing.module";
 import {UserService} from "../../auth/services/user.service";
-import {MockUserService} from "../provider/dashboard/dashboard.component.spec";
+import {ContactInfo} from "../../models/contact-info.model";
+import {ProviderDetails, User} from "../../models/user.model";
+import {BehaviorSubject} from "rxjs";
 
 
 describe('RequestsComponent', () => {
   let component: RequestsComponent;
   let fixture: ComponentFixture<RequestsComponent>;
   let mockTitleService: Title;
+  const mockProviderDetails: ProviderDetails = {
+    location: {
+      cities: [{id: 1, name: ''}],
+      state: {id: 1, name: ''}
+    },
+    schedule: {
+      startTime: new Date(),
+      endTime: new Date()
+    },
+    jobsCount: 1,
+    avgRating: 2,
+    reviewCount: 3,
+    contactsCount: 4
+  };
+  const mockContactInfo = new ContactInfo(1, '', '', '', '')
+  const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mockContactInfo], mockProviderDetails, true, false);
+  const mockUserService = {
+    user: new BehaviorSubject(mockUser)
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,7 +43,7 @@ describe('RequestsComponent', () => {
       providers: [
         {
           provide: UserService,
-          useClass:MockUserService
+          useValue: mockUserService
         },
         Title, TranslateService]
     })
