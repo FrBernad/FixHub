@@ -3,10 +3,8 @@ import {JobService} from "./job.service";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {HttpStatusCode} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {RequestPaginationResult} from "./contact/contact.service";
 import {SingleJob} from "../models/single-job.model";
-import {ProviderDetails, User} from "../models/user.model";
-import {ContactInfo} from "../models/contact-info.model";
+import {RequestPaginationResult} from "../user/requests/requests.service";
 
 describe('JobService', () => {
   let injector: TestBed;
