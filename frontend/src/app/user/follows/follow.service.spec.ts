@@ -18,7 +18,7 @@ describe('FollowService', () => {
     page:2,
     pageSize:4
   }
-  let id;
+  let id = 2;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
