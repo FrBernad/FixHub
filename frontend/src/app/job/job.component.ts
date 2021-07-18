@@ -6,7 +6,6 @@ import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";
 import {SingleJob} from "../models/single-job.model";
 import {Title} from "@angular/platform-browser";
-import {Job} from "../models/job.model";
 
 @Component({
   selector: 'app-job',

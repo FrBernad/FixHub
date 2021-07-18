@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RequestCardComponent} from './request-card.component';
-import {JobRequest} from "../../../models/job-request.model";
 import {TestingModule} from "../../../testing.module";
 import {ProviderDetails, User} from "../../../models/user.model";
 import {ContactInfo} from "../../../models/contact-info.model";

@@ -184,7 +184,7 @@ public class EmailServiceImpl implements EmailService {
             mailAttrs.put("userName", jobContact.getUser().getName());
             mailAttrs.put("name", jobContact.getJob().getProvider().getName());
 
-            sendMail("userJobCancellation", messageSource.getMessage("email.jobCancellation", new Object[]{}, locale), mailAttrs, locale);
+            sendMail("userJobCancellation", messageSource.getMessage("email.jobCancellationUser", new Object[]{}, locale), mailAttrs, locale);
         } catch (MessagingException e) {
             LOGGER.warn("Error, Job cancellation mail not sent");
         }

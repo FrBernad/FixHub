@@ -1,9 +1,6 @@
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {WorksService} from "./works.service";
-import {RouterTestingModule} from "@angular/router/testing";
-import {DiscoverService} from "../../../../discover/discover.service";
-import {NotificationsService} from "../../../notifications/notifications.service";
 import {environment} from "../../../../../environments/environment";
 import {HttpStatusCode} from "@angular/common/http";
 
