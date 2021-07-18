@@ -8,7 +8,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {BehaviorSubject, of} from "rxjs";
 import {Router} from "@angular/router";
 import {TestingModule} from "../../testing.module";
-import {ProviderDetails, User} from "../../models/user.model";
+import {ProviderDetails} from "../../models/user.model";
 import {ContactInfo} from "../../models/contact-info.model";
 
 describe('JoinComponent', () => {
