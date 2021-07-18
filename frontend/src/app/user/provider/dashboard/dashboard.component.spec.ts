@@ -10,7 +10,7 @@ import {BehaviorSubject} from "rxjs";
 import {DiscoverService} from "../../../discover/discover.service";
 import {TestingModule} from "../../../testing.module";
 
-const fakeProviderDetails: ProviderDetails = {
+const mockProviderDetails: ProviderDetails = {
   location: {
     cities: [{id: 1, name: ''}],
     state: {id: 1, name: ''}
@@ -24,37 +24,10 @@ const fakeProviderDetails: ProviderDetails = {
   reviewCount: 3,
   contactsCount: 4
 };
-
-let fakeContactInfo = new ContactInfo(
-  1,
-  '',
-  '',
-  '',
-  ''
-);
-
-let fakeUser = new User(
-  1,
-  'name',
-  'surname',
-  'email',
-  'phoneNumber',
-  'state',
-  'city',
-  'profileImage',
-  'converImage',
-  ['', ''],
-  1,
-  2,
-  [fakeContactInfo],
-  fakeProviderDetails,
-  true,
-  false
-);
-
-
-export class MockUserService extends UserService {
-  user = new BehaviorSubject(fakeUser);
+const mockContactInfo = new ContactInfo(1, '', '', '', '')
+const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mockContactInfo], mockProviderDetails, true, false);
+const mockUserService = {
+  user: new BehaviorSubject(mockUser)
 }
 
 describe('DashboardComponent', () => {
@@ -71,7 +44,7 @@ describe('DashboardComponent', () => {
         TestingModule
       ],
       providers: [
-        {provide: UserService, useClass: MockUserService}
+        {provide: UserService, useValue: mockUserService}
         , DiscoverService, Title, TranslateService]
     })
       .compileComponents();

@@ -20,7 +20,7 @@ describe('ReviewCardComponent', () => {
   });
 
   beforeEach(() => {
-    const fakeProviderDetails: ProviderDetails = {
+    const mockProviderDetails: ProviderDetails = {
       location: {
         cities: [{id: 1, name: ''}],
         state: {id: 1, name: ''}
@@ -31,9 +31,9 @@ describe('ReviewCardComponent', () => {
       },
       jobsCount: 1, avgRating: 2, reviewCount: 3, contactsCount: 4
     };
-    const fakeContactInfo = new ContactInfo(1, '', '', '', '');
-    const fakeUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [fakeContactInfo], fakeProviderDetails, true, false);
-    const mockReview = new Review(1, ',', 2, new Date(), fakeUser)
+    const mockContactInfo = new ContactInfo(1, '', '', '', '');
+    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mockContactInfo], mockProviderDetails, true, false);
+    const mockReview = new Review(1, ',', 2, new Date(), mockUser)
 
     fixture = TestBed.createComponent(ReviewCardComponent);
     component = fixture.componentInstance;

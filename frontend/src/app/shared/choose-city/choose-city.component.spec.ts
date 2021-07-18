@@ -22,57 +22,28 @@ describe('ChooseCityComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChooseCityComponent);
-    const fakeProviderDetails: ProviderDetails={
-      location:{
-        cities:[{id:1,name:''}],
-        state:{id:1,name:''}
+    const mockProviderDetails: ProviderDetails = {
+      location: {
+        cities: [{id: 1, name: ''}],
+        state: {id: 1, name: ''}
       },
-      schedule:{
+      schedule: {
         startTime: new Date(),
         endTime: new Date()
       },
-      jobsCount:1,
-      avgRating:2,
-      reviewCount:3,
-      contactsCount:4
+      jobsCount: 1,
+      avgRating: 2,
+      reviewCount: 3,
+      contactsCount: 4
     };
-
-    let fakeContactInfo = new ContactInfo(
-        1,
-        '',
-        '',
-        '',
-        ''
-    )
-
-    let fakeUser = new User(
-      1,
-      'name',
-      'surname',
-      'email',
-      'phoneNumber',
-      'state',
-      'city',
-      'profileImage',
-      'converImage',
-      ['',''],
-      1,
-      2,
-      [fakeContactInfo],
-      fakeProviderDetails,
-      true,
-      false
-    );
-
-    const fakeState: State={
-      id:1,
-      name:''
-    };
+    const mockContactInfo = new ContactInfo(1, '', '', '', '')
+    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mockContactInfo], mockProviderDetails, true, false);
+    const mockState: State = {id: 1, name: ''};
 
     component = fixture.componentInstance;
-    component.user = fakeUser;
+    component.user = mockUser;
     component.isProvider = true;
-    component.chosenState = fakeState;
+    component.chosenState = mockState;
     fixture.detectChanges();
   });
 

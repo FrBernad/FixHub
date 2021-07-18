@@ -11,59 +11,34 @@ describe('FollowerCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FollowerCardComponent ],
-        imports: [
+      declarations: [FollowerCardComponent],
+      imports: [
         TestingModule]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(async () => {
-    fixture = TestBed.createComponent(FollowerCardComponent);
-    component = fixture.componentInstance;
-
-      const fakeProviderDetails: ProviderDetails={
-      location:{
-        cities:[{id:1,name:''}],
-        state:{id:1,name:''}
+    const mokProviderDetails: ProviderDetails = {
+      location: {
+        cities: [{id: 1, name: ''}],
+        state: {id: 1, name: ''}
       },
-      schedule:{
+      schedule: {
         startTime: new Date(),
         endTime: new Date()
       },
-      jobsCount:1,
-      avgRating:2,
-      reviewCount:3,
-      contactsCount:4
+      jobsCount: 1,
+      avgRating: 2,
+      reviewCount: 3,
+      contactsCount: 4
     };
+    const mokContactInfo = new ContactInfo(1, '', '', '', '')
+    const mokUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mokContactInfo], mokProviderDetails, true, false);
+    fixture = TestBed.createComponent(FollowerCardComponent);
+    component = fixture.componentInstance;
+    component.follower = mokUser;
 
-     let fakeContactInfo = new ContactInfo(
-        1,
-        '',
-        '',
-        '',
-        ''
-    )
-
-    let fakeUser = new User(
-      1,
-      'name',
-      'surname',
-      'email',
-      'phoneNumber',
-      'state',
-      'city',
-      'profileImage',
-      'converImage',
-      ['',''],
-      1,
-      2,
-      [fakeContactInfo],
-      fakeProviderDetails,
-      true,
-      false
-    );
-    component.follower=fakeUser;
     fixture.detectChanges();
   });
 
