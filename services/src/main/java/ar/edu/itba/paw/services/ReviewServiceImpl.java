@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private UserService userService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
     @Transactional
     @Override

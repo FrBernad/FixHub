@@ -3,6 +3,8 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistance.SessionRefreshTokenDao;
 import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,9 +18,11 @@ public class SessionRefreshTokenDaoImpl implements SessionRefreshTokenDao {
     @PersistenceContext
     private EntityManager em;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRefreshTokenDaoImpl.class);
 
     @Override
     public SessionRefreshToken createToken(User user, String token, LocalDateTime expirationDate) {
+        LOGGER.debug("Creating token for user with id {}", user.getId());
         final SessionRefreshToken sessionRefreshToken = new SessionRefreshToken(token, user, expirationDate);
 
         em.persist(sessionRefreshToken);
@@ -28,6 +32,7 @@ public class SessionRefreshTokenDaoImpl implements SessionRefreshTokenDao {
 
     @Override
     public Optional<SessionRefreshToken> getTokenByValue(String token) {
+        LOGGER.debug("Retrieving token with value {}", token);
         return em.
             createQuery("from SessionRefreshToken where value = :token",
                 SessionRefreshToken.class)
@@ -39,12 +44,13 @@ public class SessionRefreshTokenDaoImpl implements SessionRefreshTokenDao {
 
     @Override
     public void removeToken(SessionRefreshToken token) {
+        LOGGER.debug("Removing token with id {}", token.getId());
         em.remove(token);
     }
 
     @Override
     public Optional<SessionRefreshToken> getTokenByUser(User user) {
-
+        LOGGER.debug("Retrieving token for user with id {}", user.getId());
         return em.createQuery(
             "FROM SessionRefreshToken srt where srt.user.id = :userId", SessionRefreshToken.class)
             .setParameter("userId", user.getId())

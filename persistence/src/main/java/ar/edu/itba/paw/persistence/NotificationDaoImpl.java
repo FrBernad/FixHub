@@ -37,6 +37,7 @@ public class NotificationDaoImpl implements NotificationDao {
 
     @Override
     public Optional<Notification> getNotificationById(Long id) {
+        LOGGER.debug("Retrieving notification with id {}", id);
         final TypedQuery<Notification> query = em.createQuery("from Notification as n where n.id = :notificationId", Notification.class);
         query.setParameter("notificationId", id);
         return query.getResultList().stream().findFirst();
@@ -44,7 +45,7 @@ public class NotificationDaoImpl implements NotificationDao {
 
     @Override
     public int deleteNotificationById(Long id) {
-        LOGGER.info("Trying to delete the notification with id {}", id);
+        LOGGER.debug("Trying to delete the notification with id {}", id);
 
         final Query query = em.createQuery("delete from Notification as n where n.id = :notificationId");
         query.setParameter("notificationId", id);
@@ -61,6 +62,8 @@ public class NotificationDaoImpl implements NotificationDao {
     @Override
     public int getNotificationCountByUser(User user, boolean onlyNew) {
         final String filterQuery = getNotificationFilterQuery(onlyNew);
+
+        LOGGER.debug("Retrieving notification count for user with id {}", user.getId());
 
         final String query = "SELECT count(n_id) total FROM NOTIFICATIONS WHERE n_user_id = ? " + filterQuery;
 
@@ -86,6 +89,8 @@ public class NotificationDaoImpl implements NotificationDao {
                 " from NOTIFICATIONS " +
                 " WHERE n_user_id = ? " + filterQuery +
                 " order by n_seen asc, n_date desc, n_id desc " + offsetAndLimitQuery;
+
+        LOGGER.debug("Retrieving notifications for user with id {}", user.getId());
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
 

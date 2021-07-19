@@ -393,7 +393,7 @@ public class UserSessionController {
     @Path("/jobs/requests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
-        LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
+        LOGGER.info("Accessed /user/jobs/requests/{} PUT controller", contactId);
 
         if (status == null) {
             throw new ContentExpectedException();
@@ -433,6 +433,8 @@ public class UserSessionController {
     @Path("/jobs/requests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRequest(@PathParam("id") final long contactId) {
+
+        LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
@@ -527,7 +529,7 @@ public class UserSessionController {
     @Path("/account/provider")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response join(@Valid final JoinDto joinDto) {
-        LOGGER.info("Accessed /user/join POST controller");
+        LOGGER.info("Accessed /user/account/provider POST controller");
 
         if (joinDto == null) {
             throw new ContentExpectedException();
@@ -701,7 +703,7 @@ public class UserSessionController {
     @Path("/notifications/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getNotification(@PathParam("id") long id) {
-        LOGGER.info("Accessed /user/notification/{} GET controller", id);
+        LOGGER.info("Accessed /user/notifications/{} GET controller", id);
         Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         if (!notification.getUser().getId().equals(user.getId())) {
@@ -715,7 +717,7 @@ public class UserSessionController {
     @Path("/notifications/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response markNotificationAsSeen(@PathParam("id") long id) {
-        LOGGER.info("Accessed /user/notification/{} PUT controller", id);
+        LOGGER.info("Accessed /user/notifications/{} PUT controller", id);
         Notification notification = notificationService.getNotificationById(id).orElseThrow(NotificationNotFoundException::new);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         if (!notification.getUser().getId().equals(user.getId())) {
@@ -764,7 +766,7 @@ public class UserSessionController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUnseenNotificationsByUser(
     ) {
-        LOGGER.info("Accessed /user/notifications GET controller");
+        LOGGER.info("Accessed /user/unseenNotiffications GET controller");
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
         final int count = notificationService.getUnseenNotificationsCount(user);

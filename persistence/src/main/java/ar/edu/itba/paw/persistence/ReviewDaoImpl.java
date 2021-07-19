@@ -27,6 +27,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public Review createReview(String description, Job job, int rating, Timestamp creationDate, User user) {
+        LOGGER.debug("Creating review for job with id {}",job.getId());
         final Review review = new Review(description, job, rating, creationDate.toLocalDateTime().toLocalDate(), user);
         em.persist(review);
         return review;
@@ -34,6 +35,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public Collection<Review> getReviewsByJob(Job job, int page, int itemsPerPage) {
+        LOGGER.debug("Retrieving reviews for job with id {}", job.getId());
         final List<Object> variables = new LinkedList<>();
         variables.add(job.getId());
         final String offsetAndLimitQuery = getOffsetAndLimitQuery(page, itemsPerPage, variables);
@@ -62,6 +64,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public int getReviewsCountByJob(Job job) {
+        LOGGER.debug("Retrieving reviews count for job with id {}", job.getId());
         List<Object> variables = new LinkedList<>();
 
         variables.add(job.getId());
@@ -98,6 +101,7 @@ public class ReviewDaoImpl implements ReviewDao {
 
     @Override
     public Optional<Review> getReviewById(long reviewId){
+        LOGGER.debug("Retrieving review with id {}", reviewId);
         final TypedQuery<Review> query = em.createQuery("from Review as r where r.id = :reviewId",Review.class);
         query.setParameter("reviewId",reviewId);
         return query.getResultList().stream().findFirst();

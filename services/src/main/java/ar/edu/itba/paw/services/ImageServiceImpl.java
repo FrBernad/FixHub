@@ -51,12 +51,14 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     @Override
     public int deleteImageById(long imageId) {
+        LOGGER.info("Deleted image with id {}", imageId);
         return imageDao.deleteImageById(imageId);
     }
 
     @Transactional
     @Override
     public int deleteImagesById(List<Long> imagesId) {
+        LOGGER.info("Deleted {} images", imagesId.size());
         return imageDao.deleteImagesById(imagesId);
     }
 

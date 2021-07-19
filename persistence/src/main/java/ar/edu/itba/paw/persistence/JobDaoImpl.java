@@ -52,7 +52,7 @@ public class JobDaoImpl implements JobDao {
         final Long totalRatings = 0L;
         Job job = new Job(description, jobProvided, averageRating, totalRatings, category, price, paused, provider, images);
         em.persist(job);
-        LOGGER.debug("Created job with id {}", job.getId());
+        LOGGER.info("Created job with id {}", job.getId());
         return job;
     }
 
@@ -69,6 +69,8 @@ public class JobDaoImpl implements JobDao {
             .setParameter("id", id)
             .getResultList();
 
+        LOGGER.info("Retrieved job with id {}", id);
+
         return hqlQueryResult
             .stream()
             .map(objArray -> {
@@ -81,10 +83,12 @@ public class JobDaoImpl implements JobDao {
 
     @Override
     public Optional<JobContact> getContactById(long id) {
+        LOGGER.debug("Retrieving contact with id {}", id);
         return Optional.ofNullable(em.find(JobContact.class, id));
     }
 
     public Collection<JobCategory> getJobsCategories() {
+        LOGGER.debug("Retrieving job categories");
         return categories;
     }
 
@@ -136,6 +140,8 @@ public class JobDaoImpl implements JobDao {
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 
+        LOGGER.debug("Retrieved jobs by provider with id {}", provider.getId());
+
         return hqlQueryResult
             .stream()
             .map(objArray -> {
@@ -167,6 +173,8 @@ public class JobDaoImpl implements JobDao {
         Query nativeQuery = em.createNativeQuery(query);
 
         setQueryVariables(nativeQuery, variables);
+
+        LOGGER.debug("Retrieved jobs count by provider with id {}", provider.getId());
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
@@ -219,6 +227,8 @@ public class JobDaoImpl implements JobDao {
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 
+        LOGGER.debug("Retrieved jobs by category {}", category.toString());
+
         return hqlQueryResult
             .stream()
             .map(objArray -> {
@@ -250,6 +260,8 @@ public class JobDaoImpl implements JobDao {
         Query nativeQuery = em.createNativeQuery(query);
 
         setQueryVariables(nativeQuery, variables);
+
+        LOGGER.debug("Retrieved jobs count by category {}", category.toString());
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }

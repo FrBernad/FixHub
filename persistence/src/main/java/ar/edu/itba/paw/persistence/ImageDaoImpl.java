@@ -43,12 +43,14 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public Optional<Image> getImageById(Long imageId) {
+        LOGGER.info("Retrieving image with id {}", imageId);
         final TypedQuery<Image> query = em.createQuery("from Image as i where i.id = :imageId",Image.class);
         query.setParameter("imageId",imageId);
         return query.getResultList().stream().findFirst();
     }
 
     public Collection<Image> getImagesById(Collection<Long> imagesId){
+        LOGGER.info("Retrieving {} images", imagesId.size());
         final Collection<Image> images = new LinkedList<>();
         Optional<Image> image;
         for(Long imageId: imagesId){
@@ -77,6 +79,7 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public int deleteImagesById(List<Long> imagesId) {
+        LOGGER.info("Deleting {} images", imagesId.size());
         int res = 0;
         for(Long imageId: imagesId){
             res+=deleteImageById(imageId);

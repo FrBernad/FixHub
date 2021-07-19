@@ -291,7 +291,7 @@ public class JobController {
     @Path("images/{id}")
     @Produces({"image/*", javax.ws.rs.core.MediaType.APPLICATION_JSON})
     public Response getJobImage(@PathParam("id") long id, @Context Request request) {
-        LOGGER.info("Accessed images/{} GET controller", id);
+        LOGGER.info("Accessed /jobs/images/{} GET controller", id);
         Image img = imageService.getImageById(id).orElseThrow(ImageNotFoundException::new);
         LOGGER.info("Response image with id {}", id);
         final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));

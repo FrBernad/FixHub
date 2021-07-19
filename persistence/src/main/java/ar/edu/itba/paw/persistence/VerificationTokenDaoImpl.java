@@ -22,11 +22,13 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public Optional<VerificationToken> getVerificationToken(long id) {
+        LOGGER.debug("Retrieving verificatio token with id {}", id);
         return Optional.ofNullable(em.find(VerificationToken.class, id));
     }
 
     @Override
     public VerificationToken createVerificationToken(User user, String token, LocalDateTime expirationDate) {
+        LOGGER.debug("Creating verification token for user with id {}", user.getId());
         final VerificationToken verificationToken = new VerificationToken(token, user, expirationDate);
 
         em.persist(verificationToken);
@@ -36,6 +38,7 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public Optional<VerificationToken> getTokenByValue(String token) {
+        LOGGER.debug("Retrieving token with value {}", token);
         return em.
             createQuery("from VerificationToken where value = :token",
                 VerificationToken.class)
@@ -48,11 +51,13 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public void removeToken(VerificationToken verificationToken) {
+        LOGGER.debug("Removing token with id {}", verificationToken.getId());
         em.remove(verificationToken);
     }
 
     @Override
     public Optional<VerificationToken> getTokenByUser(User user) {
+        LOGGER.debug("Retrieving token by user with id {}", user.getId());
         return em.createQuery(
             "FROM VerificationToken vt where vt.user.id = :userId", VerificationToken.class)
             .setParameter("userId", user.getId())
