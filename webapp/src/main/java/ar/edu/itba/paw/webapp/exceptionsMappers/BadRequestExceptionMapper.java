@@ -9,7 +9,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class BadRequestExceptionMapper  implements ExceptionMapper<BadRequestException> {
+public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BadRequestExceptionMapper.class);
 
     @Override
