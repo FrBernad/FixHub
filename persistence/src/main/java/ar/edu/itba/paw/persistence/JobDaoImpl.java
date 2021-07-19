@@ -227,7 +227,7 @@ public class JobDaoImpl implements JobDao {
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 
-        LOGGER.debug("Retrieved jobs by category {}", category.toString());
+        LOGGER.debug("Retrieved jobs by category in jobDao");
 
         return hqlQueryResult
             .stream()
@@ -261,7 +261,7 @@ public class JobDaoImpl implements JobDao {
 
         setQueryVariables(nativeQuery, variables);
 
-        LOGGER.debug("Retrieved jobs count by category {}", category.toString());
+        LOGGER.debug("Retrieved jobs count by category");
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }
