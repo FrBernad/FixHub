@@ -72,7 +72,7 @@ export class FollowersComponent implements OnInit, OnDestroy {
   }
 
   changeTitle() {
-    this.translateService.get("profilePage.following")
+    this.translateService.get("profilePage.followers")
       .subscribe(
         (routeTitle) => {
           this.titleService.setTitle('Fixhub | ' + routeTitle)
