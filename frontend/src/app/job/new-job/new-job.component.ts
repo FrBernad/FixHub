@@ -124,7 +124,6 @@ export class NewJobComponent implements OnInit, OnDestroy {
     }
 
     this.jobService.createJob(newFormData).subscribe((response) =>{
-      console.log(response);
       this.disabled=false;
       let location = response.headers.get('location').split('/');
       this.jobId = +location[location.length-1];
