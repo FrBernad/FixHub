@@ -137,6 +137,10 @@ export class NewJobComponent implements OnInit, OnDestroy {
     this.allowedImageType = true;
     this.allowedImageSize = true;
 
+    if(!file) {
+      return;
+    }
+
     if (!this.allowedImageTypes.includes(file.type)) {
       this.allowedImageType = false;
       return;

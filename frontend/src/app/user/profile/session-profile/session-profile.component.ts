@@ -85,6 +85,10 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.allowedProfileImageType = true;
     this.allowedProfileImageSize = true;
 
+    if(!file) {
+      return;
+    }
+
     if (!this.allowedProfileImageTypes.includes(file.type)) {
       this.allowedProfileImageType = false;
       setTimeout(() => {
@@ -122,6 +126,10 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     const file = event.target.files[0];
     this.allowedCoverImageType = true;
     this.allowedCoverImageSize = true;
+
+    if(!file) {
+      return;
+    }
 
     if (!this.allowedCoverImageTypes.includes(file.type)) {
       this.allowedCoverImageType = false;
