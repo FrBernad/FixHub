@@ -37,7 +37,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional
     public Set<Image> createImages(List<NewImageDto> images) {
-        LOGGER.debug("Creating {} images", images.size());
+        LOGGER.debug("Creating images");
         return imageDao.createImages(images);
     }
 
@@ -58,7 +58,7 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     @Override
     public int deleteImagesById(List<Long> imagesId) {
-        LOGGER.info("Deleted {} images", imagesId.size());
+        LOGGER.info("Deleted images");
         return imageDao.deleteImagesById(imagesId);
     }
 

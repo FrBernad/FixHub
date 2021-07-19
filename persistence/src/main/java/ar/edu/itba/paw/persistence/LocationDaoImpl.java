@@ -45,7 +45,7 @@ public class LocationDaoImpl implements LocationDao {
 
     @Override
     public Collection<City> getCitiesById(Collection<Long> citiesIds) {
-        LOGGER.debug("Retrieving {} cities", citiesIds.size());
+        LOGGER.debug("Retrieving cities");
         return em
             .createQuery("FROM City WHERE id IN :cities",City.class)
             .setParameter("cities",citiesIds)

@@ -22,7 +22,7 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
     @Override
     public PasswordResetToken createToken(User user, String token, LocalDateTime expirationDate) {
-        LOGGER.debug("Creating token for user with id {}", user.getId());
+        LOGGER.debug("Creating token for user");
 
         final PasswordResetToken resetToken = new PasswordResetToken(token, user, expirationDate);
 
@@ -51,13 +51,13 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
     @Override
     public void removeToken(PasswordResetToken token) {
-        LOGGER.debug("Removing token with id {}",token.getId());
+        LOGGER.debug("Removing token");
         em.remove(token);
     }
 
     @Override
     public Optional<PasswordResetToken> getTokenByUser(User user) {
-        LOGGER.debug("Retrieving token for user with id {}",user.getId());
+        LOGGER.debug("Retrieving token");
         return em.createQuery(
             "FROM PasswordResetToken prt where prt.user.id = :userId", PasswordResetToken.class)
             .setParameter("userId", user.getId())

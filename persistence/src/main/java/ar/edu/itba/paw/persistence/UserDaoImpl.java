@@ -104,7 +104,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public ContactInfo addContactInfo(AuxContactDto auxContactDto) {
-        LOGGER.debug("Adding contact info with id {}", auxContactDto.getContactInfoId());
+        LOGGER.debug("Adding contact info");
         final ContactInfo contactInfo = new ContactInfo(auxContactDto.getUser(), auxContactDto.getState(),
             auxContactDto.getCity(), auxContactDto.getStreet(),
             auxContactDto.getAddressNumber(), auxContactDto.getFloor(),
@@ -118,7 +118,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean hasContactJobProvided(User provider, User user, Job job) {
-        LOGGER.debug("Retrieving has contact job provided of job with id {}, user with id {} and provider with id {}", job.getId(), user.getId(), provider.getId());
+        LOGGER.debug("Retrieving has contact job provided");
         final Query query = em.createQuery("FROM JobContact as c where c.provider.id = :providerId and c.user.id = :userId and c.job.id = :jobId");
         query.setParameter("providerId", provider.getId());
         query.setParameter("userId", user.getId());
@@ -129,7 +129,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public JobContact createJobContact(User user, User provider, ContactInfo contactInfo, String message, LocalDateTime creationTime, Job job) {
-        LOGGER.debug("Creating job contact for job with id {}, made by user with id {}", job.getId(), user.getId());
+        LOGGER.debug("Creating job contact for job");
         final JobContact jobContact = new JobContact(user, provider, contactInfo, message, creationTime, job, JobStatus.PENDING);
         em.persist(jobContact);
         return jobContact;
@@ -144,7 +144,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<JobContact> getClientsByProvider(User provider, JobStatus status, StatusOrderOptions order, int page, int itemsPerPage) {
-        LOGGER.debug("Retrieving clients by provider with id {}", provider.getId());
+        LOGGER.debug("Retrieving clients by provider");
         final List<Object> variables = new LinkedList<>();
 
         variables.add(provider.getId());
@@ -177,7 +177,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int getClientsCountByProvider(User provider, JobStatus status) {
-        LOGGER.debug("Retrieving clients count by provider with id {}", provider.getId());
+        LOGGER.debug("Retrieving clients count by provider");
         List<Object> variables = new LinkedList<>();
         variables.add(provider.getId());
 
@@ -195,7 +195,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<JobContact> getProvidersByClient(User client, JobStatus status, StatusOrderOptions order, int page, int itemsPerPage) {
-        LOGGER.debug("Retrieving providers by client with id {}", client.getId());
+        LOGGER.debug("Retrieving providers by client");
         final List<Object> variables = new LinkedList<>();
 
         variables.add(client.getId());
@@ -228,7 +228,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int getProvidersCountByClient(User client, JobStatus status) {
-        LOGGER.debug("Retrieving providers count by client with id {}", client.getId());
+        LOGGER.debug("Retrieving providers count by client");
         List<Object> variables = new LinkedList<>();
         variables.add(client.getId());
 
@@ -245,7 +245,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<User> getUserFollowers(User user, int page, int itemsPerPage) {
-        LOGGER.debug("Retrieving user followers for user with id {}", user.getId());
+        LOGGER.debug("Retrieving user followers");
         final List<Object> variables = new LinkedList<>();
 
         variables.add(user.getId());
@@ -276,7 +276,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Collection<User> getUserFollowings(User user, int page, int itemsPerPage) {
-        LOGGER.debug("Retrieving user followings ffor user with id {}", user.getId());
+        LOGGER.debug("Retrieving user followings for");
         final List<Object> variables = new LinkedList<>();
 
         variables.add(user.getId());
@@ -308,7 +308,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Integer getUserFollowersCount(User user) {
-        LOGGER.debug("Retrieving user followers count by user with id {}", user.getId());
+        LOGGER.debug("Retrieving user followers count");
         final String query = "SELECT count(f_user_id) total FROM FOLLOWS WHERE f_followed_user_id = ?";
 
         Query nativeQuery = em.createNativeQuery(query);
@@ -320,7 +320,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Integer getUserFollowingCount(User user) {
-        LOGGER.debug("Retrieving user following count by user with id {}", user.getId());
+        LOGGER.debug("Retrieving user following count");
         final String query = "SELECT count(f_followed_user_id) total FROM FOLLOWS WHERE f_user_id = ?";
 
         Query nativeQuery = em.createNativeQuery(query);

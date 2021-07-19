@@ -109,7 +109,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     @Override
     public int getUnseenNotificationsCount(User user) {
-        LOGGER.debug("Retrieving unseen notifications count for user with id {}", user.getId());
+        LOGGER.debug("Retrieving unseen notifications count for user");
         return notificationDao.getNotificationCountByUser(user, true);
     }
 }

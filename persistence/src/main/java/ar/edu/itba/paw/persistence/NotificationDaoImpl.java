@@ -31,7 +31,7 @@ public class NotificationDaoImpl implements NotificationDao {
         Notification notification = new Notification(
             resource, date, type, false, user);
         em.persist(notification);
-        LOGGER.info("Created notification with id {} for user with id {}", notification.getId(), user.getId());
+        LOGGER.info("Created notification for user");
         return notification;
     }
 
@@ -63,7 +63,7 @@ public class NotificationDaoImpl implements NotificationDao {
     public int getNotificationCountByUser(User user, boolean onlyNew) {
         final String filterQuery = getNotificationFilterQuery(onlyNew);
 
-        LOGGER.debug("Retrieving notification count for user with id {}", user.getId());
+        LOGGER.debug("Retrieving notification count for user");
 
         final String query = "SELECT count(n_id) total FROM NOTIFICATIONS WHERE n_user_id = ? " + filterQuery;
 
@@ -90,7 +90,7 @@ public class NotificationDaoImpl implements NotificationDao {
                 " WHERE n_user_id = ? " + filterQuery +
                 " order by n_seen asc, n_date desc, n_id desc " + offsetAndLimitQuery;
 
-        LOGGER.debug("Retrieving notifications for user with id {}", user.getId());
+        LOGGER.debug("Retrieving notifications for user");
 
         Query filteredIdsSelectNativeQuery = em.createNativeQuery(filteredIdsSelectQuery);
 

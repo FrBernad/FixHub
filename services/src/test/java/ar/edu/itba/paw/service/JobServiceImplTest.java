@@ -202,21 +202,18 @@ public class JobServiceImplTest {
 
     @Test
     public void testAcceptJob() {
-        when(jobContact.getJob()).thenReturn(job);
         jobService.acceptJob(jobContact);
         Mockito.verify(jobContact).setStatus(JobStatus.IN_PROGRESS);
     }
 
     @Test
     public void testRejectJob() {
-        when(jobContact.getJob()).thenReturn(job);
         jobService.rejectJob(jobContact);
         Mockito.verify(jobContact).setStatus(JobStatus.REJECTED);
     }
 
     @Test
     public void testFinishJob() {
-        when(jobContact.getJob()).thenReturn(job);
         jobService.finishJob(jobContact);
         Mockito.verify(jobContact).setStatus(JobStatus.FINISHED);
     }

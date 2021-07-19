@@ -22,7 +22,7 @@ public class SessionRefreshTokenDaoImpl implements SessionRefreshTokenDao {
 
     @Override
     public SessionRefreshToken createToken(User user, String token, LocalDateTime expirationDate) {
-        LOGGER.debug("Creating token for user with id {}", user.getId());
+        LOGGER.debug("Creating token for user");
         final SessionRefreshToken sessionRefreshToken = new SessionRefreshToken(token, user, expirationDate);
 
         em.persist(sessionRefreshToken);
@@ -44,13 +44,13 @@ public class SessionRefreshTokenDaoImpl implements SessionRefreshTokenDao {
 
     @Override
     public void removeToken(SessionRefreshToken token) {
-        LOGGER.debug("Removing token with id {}", token.getId());
+        LOGGER.debug("Removing token");
         em.remove(token);
     }
 
     @Override
     public Optional<SessionRefreshToken> getTokenByUser(User user) {
-        LOGGER.debug("Retrieving token for user with id {}", user.getId());
+        LOGGER.debug("Retrieving token for user");
         return em.createQuery(
             "FROM SessionRefreshToken srt where srt.user.id = :userId", SessionRefreshToken.class)
             .setParameter("userId", user.getId())

@@ -52,7 +52,7 @@ public class JobDaoImpl implements JobDao {
         final Long totalRatings = 0L;
         Job job = new Job(description, jobProvided, averageRating, totalRatings, category, price, paused, provider, images);
         em.persist(job);
-        LOGGER.info("Created job with id {}", job.getId());
+        LOGGER.info("Created job");
         return job;
     }
 
@@ -140,7 +140,7 @@ public class JobDaoImpl implements JobDao {
             .setParameter("filteredIds", filteredIds)
             .getResultList();
 
-        LOGGER.debug("Retrieved jobs by provider with id {}", provider.getId());
+        LOGGER.debug("Retrieved jobs by provider");
 
         return hqlQueryResult
             .stream()
@@ -174,7 +174,7 @@ public class JobDaoImpl implements JobDao {
 
         setQueryVariables(nativeQuery, variables);
 
-        LOGGER.debug("Retrieved jobs count by provider with id {}", provider.getId());
+        LOGGER.debug("Retrieved jobs count by provider");
 
         return ((BigInteger) nativeQuery.getSingleResult()).intValue();
     }

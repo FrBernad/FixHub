@@ -86,7 +86,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
-            LOGGER.debug("Sending user {} password reset email", user.getId());
+            LOGGER.debug("Sending user password reset email");
             final String url = appBaseUrl.toString() + "/user/resetPassword?token=" + token.getValue();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
@@ -102,7 +102,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendProviderNotificationEmail(User user, Locale locale) {
         try {
-            LOGGER.debug("Sending user {} provider notification email", user.getId());
+            LOGGER.debug("Sending provider notification email");
             final String newJobURL = appBaseUrl.toString() + "jobs/new";
 
             final Map<String, Object> mailAttrs = new HashMap<>();
@@ -123,7 +123,7 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            LOGGER.debug("Sending user {} job request confirmation email", jobContact.getUser().getId());
+            LOGGER.debug("Sending job request confirmation email");
             final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
@@ -149,7 +149,7 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            LOGGER.debug("Sending user {} job cancellation email", jobContact.getUser().getId());
+            LOGGER.debug("Sending job cancellation email");
             final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
@@ -175,7 +175,7 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            LOGGER.debug("Sending user {} job cancellation email", jobContact.getProvider().getId());
+            LOGGER.debug("Sending job cancellation email");
             final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
             final String userURL = appBaseUrl.toString() + "/user/" + jobContact.getUser().getId();
             final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
@@ -201,7 +201,7 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            LOGGER.debug("Sending user {} job confirmation email", jobContact.getUser().getId());
+            LOGGER.debug("Sending job confirmation email");
             final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
@@ -227,7 +227,7 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            LOGGER.debug("Sending user {} job finished email", jobContact.getUser().getId());
+            LOGGER.debug("Sending job finished email");
             final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
@@ -253,7 +253,7 @@ public class EmailServiceImpl implements EmailService {
         final Map<String, Object> mailAttrs = new HashMap<>();
 
         try {
-            LOGGER.debug("Sending user {} job request email", jobContact.getJob().getProvider().getId());
+            LOGGER.debug("Sending job request email");
             final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
             final String userURL = appBaseUrl.toString() + "/user/" + jobContact.getUser().getId();
             final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();

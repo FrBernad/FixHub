@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public SessionRefreshToken getSessionRefreshToken(User user) {
-        LOGGER.debug("Retrieving session refresh token for user with id {}", user.getId());
+        LOGGER.debug("Retrieving session refresh token for user");
         final Optional<SessionRefreshToken> tokenOpt = sessionRefreshTokenDao.getTokenByUser(user);
 
         if (tokenOpt.isPresent()) {
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteSessionRefreshToken(User user) {
-        LOGGER.debug("Deleting session refresh token for user with id {}", user.getId());
+        LOGGER.debug("Deleting session refresh token for user");
         final Optional<SessionRefreshToken> optToken = sessionRefreshTokenDao.getTokenByUser(user);
         optToken.ifPresent(sessionRefreshToken -> sessionRefreshTokenDao.removeToken(sessionRefreshToken));
     }
@@ -286,7 +286,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void makeProvider(User user, List<Long> citiesId, String startTime, String endTime) {
-        LOGGER.debug("Making user with id {} a provider", user.getId());
+        LOGGER.debug("Making user a provider");
         final Collection<City> cities = locationDao.getCitiesById(citiesId);
         final State state = cities.stream().findFirst().get().getState();
         final Location location = new Location(user, new HashSet<>(cities), state);
@@ -343,7 +343,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean hasContactJobProvided(User provider, User user, Job job) {
-        LOGGER.debug("Retrieving if user with id {} has contacted the job with id {} created by provider with id {}", user.getId(), job.getId(), provider.getId());
+        LOGGER.debug("Retrieving user has contact job provided");
         return userDao.hasContactJobProvided(provider, user, job);
     }
 

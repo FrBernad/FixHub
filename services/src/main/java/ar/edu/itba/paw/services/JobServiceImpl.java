@@ -85,7 +85,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void acceptJob(JobContact jc) {
-        LOGGER.debug("Accepting job with id {}", jc.getJob().getId());
+        LOGGER.debug("Accepting job");
         jc.setStatus(JobStatus.IN_PROGRESS);
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
         notificationService.createRequestStatusChangeAcceptForUser(jc.getUser(),jc);
@@ -95,7 +95,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void rejectJob(JobContact jc) {
-        LOGGER.debug("Rejecting job with id {}", jc.getJob().getId());
+        LOGGER.debug("Rejecting job");
         jc.setStatus(JobStatus.REJECTED);
         emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
         notificationService.createRequestStatusRejectChangeForUser(jc.getUser(),jc);
@@ -105,7 +105,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void finishJob(JobContact jc) {
-        LOGGER.debug("Finishing job with id {}", jc.getJob().getId());
+        LOGGER.debug("Finishing job");
         jc.setStatus(JobStatus.FINISHED);
         emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
         notificationService.createRequestStatusFinishedChangeForUser(jc.getUser(),jc);
@@ -114,7 +114,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public void cancelJob(JobContact jc) {
-        LOGGER.debug("Cancelling job with id {}", jc.getJob().getId());
+        LOGGER.debug("Cancelling job");
         jc.setStatus(JobStatus.CANCELED);
         emailService.sendUserJobCancellationEmail(jc, LocaleContextHolder.getLocale());
         notificationService.createRequestStatusChangeForProvider(jc.getProvider(), jc);

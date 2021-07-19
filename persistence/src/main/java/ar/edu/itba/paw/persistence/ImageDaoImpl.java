@@ -50,7 +50,7 @@ public class ImageDaoImpl implements ImageDao {
     }
 
     public Collection<Image> getImagesById(Collection<Long> imagesId){
-        LOGGER.info("Retrieving {} images", imagesId.size());
+        LOGGER.info("Retrieving images");
         final Collection<Image> images = new LinkedList<>();
         Optional<Image> image;
         for(Long imageId: imagesId){
@@ -79,7 +79,7 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public int deleteImagesById(List<Long> imagesId) {
-        LOGGER.info("Deleting {} images", imagesId.size());
+        LOGGER.info("Deleting images");
         int res = 0;
         for(Long imageId: imagesId){
             res+=deleteImageById(imageId);
