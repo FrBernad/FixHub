@@ -8,8 +8,8 @@ export class Job {
   price: number;
   totalRatings: number;
   averageRating: number;
-  images: [];
-  thumbnailImage: string;
+  imagesUrls: [];
+  thumbnailImageUrl: string;
   provider: User;
   paused: boolean;
 
@@ -21,8 +21,8 @@ export class Job {
     this.price = price;
     this.totalRatings = totalRatings;
     this.averageRating = averageRating;
-    this.images = images;
-    this.thumbnailImage = thumbnailImage;
+    this.imagesUrls = images;
+    this.thumbnailImageUrl = thumbnailImage;
     this.provider = provider;
     this.paused = paused;
   }

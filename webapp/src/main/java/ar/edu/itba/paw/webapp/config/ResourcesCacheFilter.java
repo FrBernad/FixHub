@@ -20,7 +20,6 @@ public class ResourcesCacheFilter extends OncePerRequestFilter {
             //Add 1 year cache time
             response.addHeader("Cache-Control", "public, max-age=" + MAX_TIME + ", immutable");
         }
-
         filterChain.doFilter(request, response);
     }
 }

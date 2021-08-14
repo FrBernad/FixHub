@@ -16,7 +16,6 @@ export class ReviewPaginationComponent implements OnInit, OnDestroy {
 
   rpr: ReviewsPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 

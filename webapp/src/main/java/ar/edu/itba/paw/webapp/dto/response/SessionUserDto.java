@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @XmlType(name = "")
 public class SessionUserDto extends BaseUserDto {
@@ -23,10 +24,7 @@ public class SessionUserDto extends BaseUserDto {
 
     public SessionUserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         super(user, uriInfo, securityContext);
-        this.contactInfo = new HashSet<>();
-        for (ContactInfo contactInfo : user.getContactInfo()) {
-            this.contactInfo.add(new ContactInfoDto(contactInfo));
-        }
+        this.contactInfo = user.getContactInfo().stream().map(ContactInfoDto::new).collect(Collectors.toSet());
         if (user.isProvider()) {
             this.providerDetails = new ProviderDetailsDto(user.getProviderDetails());
         }

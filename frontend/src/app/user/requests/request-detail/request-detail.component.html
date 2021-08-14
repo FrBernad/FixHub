@@ -7,7 +7,7 @@
             <div>
               <div class="picContainer">
                 <img alt="profile picture"
-                     [src]="request.user.profileImage ? request.user.profileImage : 'assets/images/defaultProfileImage.png'"
+                     [src]="request.user.profileImageUrl ? request.user.profileImageUrl : 'assets/images/defaultProfileImage.png'"
                      class="profilePicture">
               </div>
             </div>
@@ -77,7 +77,7 @@
                       </div>
                       <div class="col-10">
                         <a class="extraInfo"
-                           [routerLink]="'/user/'+request.user.id+'/followers'">
+                           [routerLink]="'/user/'+request.user.id+'/followers'" [queryParams]="{page:'0',pageSize:'4'}">
                       <span class="detailField">
                           {{request.user.followersCount}}
                       </span>
@@ -85,7 +85,7 @@
                         </a>
                         ·
                         <a class="extraInfo"
-                           [routerLink]="'/user/'+request.user.id+'/following'">
+                           [routerLink]="'/user/'+request.user.id+'/following'" [queryParams]="{page:'0',pageSize:'4'}">
                       <span class="detailField">
                           {{request.user.followingCount}}
                       </span>
@@ -108,7 +108,7 @@
             <div>
               <div class="picContainer">
                 <img alt="profile picture"
-                     [src]="request.provider.profileImage ? request.provider.profileImage : 'assets/images/defaultProfileImage.png'"
+                     [src]="request.provider.profileImageUrl ? request.provider.profileImageUrl : 'assets/images/defaultProfileImage.png'"
                      class="profilePicture">
               </div>
             </div>

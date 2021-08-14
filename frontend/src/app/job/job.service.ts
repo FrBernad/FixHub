@@ -1,20 +1,20 @@
-import {HttpClient, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {Review} from "./review.model";
 import {SingleJob} from "../models/single-job.model";
+import * as Url from "url";
 
 export interface JobData {
-    jobProvided: string,
-    jobCategory: string,
-    price: number,
-    description: string,
-    paused?: boolean
+  jobProvided: string,
+  jobCategory: string,
+  price: number,
+  description: string,
+  paused?: boolean
 }
 
 export interface ReviewsPaginationResult {
-  page: number;
   totalPages: number;
   results: Review[];
 }
@@ -29,7 +29,6 @@ export class JobService {
 
   rpr: ReviewsPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 
@@ -43,7 +42,7 @@ export class JobService {
 
   getReviews(rpq: ReviewsPaginationQuery, id: number) {
     this.http
-      .get<ReviewsPaginationResult>(
+      .get<Review[]>(
         environment.apiBaseUrl + '/jobs/' + id + '/reviews',
         {
           observe: "response",
@@ -52,19 +51,19 @@ export class JobService {
       ).subscribe((res) => {
       if (res.status === HttpStatusCode.NoContent) {
         this.reviews.next({
-          page: 0,
           totalPages: 0,
           results: []
         });
       } else {
-        this.reviews.next(res.body);
+        const rr: ReviewsPaginationResult = this.parsePaginationResult(res);
+        this.reviews.next(rr);
       }
     });
   }
 
   getFirstReviews(id: number) {
     this.http
-      .get<ReviewsPaginationResult>(
+      .get<Review[]>(
         environment.apiBaseUrl + '/jobs/' + id + '/reviews',
         {
           observe: "response",
@@ -73,17 +72,17 @@ export class JobService {
       ).subscribe((res) => {
       if (res.status === HttpStatusCode.NoContent) {
         this.firstReviews.next({
-          page: 0,
           totalPages: 0,
           results: []
         });
       } else {
-        this.firstReviews.next(res.body);
+        const rr: ReviewsPaginationResult = this.parsePaginationResult(res);
+        this.firstReviews.next(rr);
       }
     });
   }
 
-  updateReviews(id:number){
+  updateReviews(id: number) {
     this.getFirstReviews(id);
   }
 
@@ -91,8 +90,8 @@ export class JobService {
     return this.http.post<FormData>(environment.apiBaseUrl + '/jobs', formData, {observe: 'response'});
   }
 
-  updateJob(id:number, formData: FormData) {
-    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id ,formData, {observe: 'response'});
+  updateJob(id: number, formData: FormData) {
+    return this.http.put<FormData>(environment.apiBaseUrl + '/jobs/' + id, formData, {observe: 'response'});
   }
 
   getJob(id: number) {
@@ -105,5 +104,24 @@ export class JobService {
     }>(environment.apiBaseUrl + '/jobs/' + id + '/reviews', review, {observe: 'response'});
   }
 
+
+  private parsePaginationResult(res: HttpResponse<Review[]>): ReviewsPaginationResult {
+
+    const lastLink: string = res.headers
+      .getAll('Link')
+      .pop()
+      .split(',')
+      .filter((link) => (link.includes("last")))
+      .pop()
+      .match(/<(.*)>/)[1];
+
+    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
+      .get("page")[0]) + 1;
+
+    return {
+      totalPages,
+      results: res.body
+    }
+  }
 
 }

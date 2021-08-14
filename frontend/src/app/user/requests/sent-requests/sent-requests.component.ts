@@ -19,7 +19,6 @@ export class SentRequestsComponent implements OnInit, OnDestroy {
 
   rpr: RequestPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 

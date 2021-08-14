@@ -23,7 +23,6 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   fpr: FollowPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 
@@ -46,16 +45,20 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const userId = this.route.snapshot.params['id'];
+
+
     this.userService.getUser(userId).subscribe(
       (user) => {
         this.user = user;
         this.loading = false;
+        this.parseQueryParams();
         this.followService.getFollowers(this.fpq, this.user.id);
         this.followSub = this.followService.follows.subscribe((results) => {
           this.fpr = {
             ...this.fpr,
             ...results
           };
+          this.updateRoute(true);
           this.loadingFollow = false;
         });
       },
@@ -83,6 +86,33 @@ export class FollowersComponent implements OnInit, OnDestroy {
   onChangePage(page: number) {
     this.fpq.page = page;
     this.followService.getFollowers(this.fpq, this.user.id);
+  }
+
+  private parseQueryParams() {
+    const params = this.route.snapshot.queryParams;
+
+    this.fpq = {
+      ...this.fpq,
+      ...params
+    }
+
+    if (params["page"]) {
+      this.fpq.page = Number.parseInt(params["page"])
+    }
+    if (params["pageSize"]) {
+      this.fpq.pageSize = Number.parseInt(params["pageSize"])
+    }
+
+  }
+
+  private updateRoute(replace: boolean) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {...this.fpq},
+        replaceUrl: replace
+      });
   }
 
   ngOnDestroy(): void {

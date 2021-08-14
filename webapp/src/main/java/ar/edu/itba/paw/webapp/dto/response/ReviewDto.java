@@ -16,17 +16,18 @@ public class ReviewDto {
     public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo, SecurityContext securityContext) {
         return reviews.stream().map(r -> new ReviewDto(r, uriInfo, securityContext)).collect(Collectors.toList());
     }
-
+//    FIXME: esto esta mal habria q crear /reviews
     public static UriBuilder getReviewUriBuilder(Review review, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().path("reviews").path(String.valueOf(review.getId()));
     }
 
-    private String url;
     private Long id;
     private String description;
     private int rating;
     private LocalDate creationDate;
     private UserDto reviewer;
+
+    private String url;
 
     public ReviewDto() {
     }

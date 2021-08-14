@@ -12,7 +12,7 @@
           </a>
         </li>
         <li class="nav-item navOption mx-1 d-flex justify-content-center align-items-center">
-          <a routerLink="/discover" class="nav-link navbarText">
+          <a [routerLink]="['/discover']" [queryParams]="{page:'0',pageSize:'6',order:'MOST_POPULAR'}" class="nav-link navbarText">
             {{'navBar.discover'| translate}}
           </a>
         </li>
@@ -54,7 +54,7 @@
           <li class="nav-item mx-1 d-flex justify-content-center align-items-center">
             <div class="userContainer pe-0 nav-link">
               <div class="dropdown" data-bs-toggle="dropdown" data-bs-target="profileDropdown">
-                <img [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
+                <img [src]="user.profileImageUrl ? user.profileImageUrl : 'assets/images/defaultProfileImage.png'"
                      class="avatar"
                      alt="profileImg"/>
                 <fa-icon class="ms-2 navbarText" [icon]="['fas','chevron-down']" id="navBarArrow"></fa-icon>

@@ -4,7 +4,9 @@ import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} f
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
+import {take} from "rxjs/operators";
+import {query} from "@angular/animations";
 
 @Component({
   selector: 'app-discover',
@@ -15,7 +17,6 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   jpr: JobPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 
@@ -46,6 +47,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   constructor(
     private discoverService: DiscoverService,
     private router: Router,
+    private route: ActivatedRoute,
     private titleService: Title,
     private translateService: TranslateService,
   ) {
@@ -58,15 +60,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
       this.changeTitle();
     });
 
-    const category = window.history.state['category'];
-    const query = window.history.state['query'];
-    if (category) {
-      this.jpq.category = category;
-    }
-
-    if (query) {
-      this.jpq.query = query;
-    }
+    this.parseQueryParams();
 
     this.discoverService.getJobs(this.jpq);
     this.jobsSub = this.discoverService.results.subscribe(
@@ -75,6 +69,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
           ...this.jpr,
           ...results
         };
+        this.updateRoute(true);
         this.isFetching = false;
       });
 
@@ -107,7 +102,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!category) {
       delete this.jpq.category;
     }
-    this.discoverService.getJobs(this.jpq)
+    this.discoverService.getJobs(this.jpq);
   }
 
   onChangeOrder(order: string) {
@@ -164,6 +159,33 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   checkLength(query: string) {
     this.searchError = query.length > 50;
+  }
+
+  private updateRoute(replace: boolean) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {...this.jpq},
+        replaceUrl: replace
+      });
+  }
+
+  private parseQueryParams() {
+    const params = this.route.snapshot.queryParams;
+
+    this.jpq = {
+      ...this.jpq,
+      ...params
+    }
+
+    if (params["page"]) {
+      this.jpq.page = Number.parseInt(params["page"])
+    }
+    if (params["pageSize"]) {
+      this.jpq.pageSize = Number.parseInt(params["pageSize"])
+    }
+
   }
 
   ngOnDestroy(): void {

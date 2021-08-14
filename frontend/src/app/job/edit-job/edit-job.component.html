@@ -13,10 +13,10 @@
                 <div class="col-12 px-0 d-flex justify-content-lg-start justify-content-center align-items-start">
                   <div>
                     <div style="height: 400px; width:400px;">
-                      <ng-template [ngIf]="job.images.length >  0" [ngIfElse]="noImages">
+                      <ng-template [ngIf]="job.imagesUrls.length >  0" [ngIfElse]="noImages">
                         <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
                           <div class="carousel-inner">
-                            <div *ngFor="let image of job.images;let i = index" class="carousel-item"
+                            <div *ngFor="let image of job.imagesUrls;let i = index" class="carousel-item"
                                  [ngClass]="{'active': i === selectedIndex}">
                               <img src="{{image}}" class="rounded"
                                    style="object-fit: cover; height: 400px; width: 400px"
@@ -29,7 +29,7 @@
                             </div>
                           </div>
 
-                          <ng-template [ngIf]="job.images.length > 1">
+                          <ng-template [ngIf]="job.imagesUrls.length > 1">
 
                             <button class="carousel-control-prev nextImageBtn" (click)="selectPrevious()" type="button"
                                     data-bs-target="#carouselControl"

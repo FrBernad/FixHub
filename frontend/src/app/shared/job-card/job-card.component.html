@@ -1,7 +1,7 @@
 <div class="card jobCard">
   <div class="jobCardImgContainer" style="position:relative;">
-    <ng-template [ngIf]="job.images.length > 0" [ngIfElse]="noImages">
-      <img src="{{job.thumbnailImage}}"
+    <ng-template [ngIf]="job.imagesUrls.length > 0" [ngIfElse]="noImages">
+      <img src="{{job.thumbnailImageUrl}}"
            alt="{{job.jobProvided}}" class="card-img jobCardImg">-->
     </ng-template>
     <ng-template #noImages>

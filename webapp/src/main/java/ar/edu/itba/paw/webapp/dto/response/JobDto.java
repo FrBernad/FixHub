@@ -15,15 +15,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@XmlType(name="")
+@XmlType(name = "")
 public class JobDto {
 
     public static UriBuilder getJobUriBuilder(Job job, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId()));
-    }
-
-    public static UriBuilder getJobImagesUriBuilder(Image image, UriInfo uriInfo) {
-        return uriInfo.getBaseUriBuilder().path("jobs").path("images").path(String.valueOf(image.getId()));
     }
 
     public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo, SecurityContext securityContext) {
@@ -31,7 +27,6 @@ public class JobDto {
     }
 
     private Long id;
-    private String url;
     private String description;
     private JobCategory category;
     private String jobProvided;
@@ -40,8 +35,13 @@ public class JobDto {
     private boolean paused;
     private Integer averageRating;
     private Long totalRatings;
-    private Set<String> images;
-    private String thumbnailImage;
+
+    private String url;
+
+    private Set<String> imagesUrls;
+    private String thumbnailImageUrl;
+
+    private String reviewsUrls;
 
     public JobDto() {
         //use by Jersey
@@ -57,14 +57,17 @@ public class JobDto {
         this.price = job.getPrice();
         this.paused = job.isPaused();
         this.provider = new ProviderUserDto(job.getProvider(), uriInfo, securityContext);
-        this.images = new HashSet<>();
-        for (Image image : job.getImages()) {
-            this.images.add(getJobImagesUriBuilder(image, uriInfo).build().toString());
-        }
-        Optional<String> thumbnailImageOpt = this.images.stream().findFirst();
-        thumbnailImageOpt.ifPresent(uri -> this.thumbnailImage = uri);
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
+
+        this.imagesUrls = job.getImages().stream()
+            .map(i -> getJobUriBuilder(job, uriInfo).clone().path("/images").path(String.valueOf(i.getId())).build().toString())
+            .collect(Collectors.toSet());
+
+        Optional<String> thumbnailImageOpt = this.imagesUrls.stream().findFirst();
+        thumbnailImageOpt.ifPresent(uri -> this.thumbnailImageUrl = uri);
+
+        this.reviewsUrls = uriBuilder.clone().path("reviews").build().toString();
     }
 
     public Long getId() {
@@ -147,19 +150,27 @@ public class JobDto {
         this.totalRatings = totalRatings;
     }
 
-    public Set<String> getImages() {
-        return images;
+    public Set<String> getImagesUrls() {
+        return imagesUrls;
     }
 
-    public void setImages(Set<String> images) {
-        this.images = images;
+    public void setImagesUrls(Set<String> imagesUrls) {
+        this.imagesUrls = imagesUrls;
     }
 
-    public String getThumbnailImage() {
-        return thumbnailImage;
+    public String getThumbnailImageUrl() {
+        return thumbnailImageUrl;
     }
 
-    public void setThumbnailImage(String thumbnailImage) {
-        this.thumbnailImage = thumbnailImage;
+    public void setThumbnailImageUrl(String thumbnailImageUrl) {
+        this.thumbnailImageUrl = thumbnailImageUrl;
+    }
+
+    public String getReviewsUrls() {
+        return reviewsUrls;
+    }
+
+    public void setReviewsUrls(String reviewsUrls) {
+        this.reviewsUrls = reviewsUrls;
     }
 }

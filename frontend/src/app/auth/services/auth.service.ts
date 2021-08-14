@@ -251,6 +251,7 @@ export class AuthService {
     this.autoRefreshToken(milliExpirationTime);
 
     const newSession = new Session(token, expirationDate);
+    this.userService.setRoles(jwt.roles.split(" "));
     this.session.next(newSession);
   }
 

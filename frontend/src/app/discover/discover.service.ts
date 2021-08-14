@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams, HttpStatusCode,} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse, HttpStatusCode,} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Job} from "../models/job.model";
-import {Router} from "@angular/router";
+import {DefaultUrlSerializer, Router, UrlSerializer} from "@angular/router";
+import * as Url from "url";
 
 export interface JobPaginationQuery {
   query?: string;
@@ -16,7 +17,6 @@ export interface JobPaginationQuery {
 }
 
 export interface JobPaginationResult {
-  page: number;
   totalPages: number;
   results: Job[];
 }
@@ -66,7 +66,7 @@ export class DiscoverService {
 
   getJobs(jp: JobPaginationQuery) {
     this.http
-      .get<JobPaginationResult>(
+      .get<Job[]>(
         environment.apiBaseUrl + '/jobs',
         {
           observe: "response",
@@ -75,19 +75,38 @@ export class DiscoverService {
       ).subscribe((res) => {
         if (res.status === HttpStatusCode.NoContent) {
           this.results.next({
-            page: 0,
             totalPages: 0,
             results: []
           });
         } else {
-          this.results.next(res.body);
+          const jr: JobPaginationResult = this.parsePaginationResult(res);
+          this.results.next(jr);
         }
       },
       () => {
-       this.router.navigate(['500'])
+        this.router.navigate(['500'])
       }
     )
     ;
+  }
+
+  private parsePaginationResult(res: HttpResponse<Job[]>): JobPaginationResult {
+
+    const lastLink: string = res.headers
+      .getAll('Link')
+      .pop()
+      .split(',')
+      .filter((link) => (link.includes("last")))
+      .pop()
+      .match(/<(.*)>/)[1];
+
+    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
+      .get("page")[0]) + 1;
+
+    return {
+      totalPages,
+      results: res.body
+    }
   }
 
 

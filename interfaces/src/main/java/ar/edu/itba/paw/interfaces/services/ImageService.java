@@ -2,6 +2,7 @@ package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
+import ar.edu.itba.paw.models.job.Job;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,9 @@ public interface ImageService {
     Image createImage(NewImageDto image);
 
     Optional<Image> getImageById(Long imageId);
+
+    Optional<Image> getImageByJob(Job job, Long imageId);
+
     Collection<Image> getImagesById(Collection<Long> imagesId);
 
     int deleteImageById(long imageId);

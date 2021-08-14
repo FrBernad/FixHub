@@ -1,28 +1,36 @@
 package ar.edu.itba.paw.webapp.dto.response;
 
-import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import java.util.Collection;
 
 public abstract class BaseUserDto {
 
     private long id;
-    private String url;
     private String name;
     private String surname;
     private String email;
     private String phoneNumber;
     private String state;
     private String city;
-    private String coverImage;
-    private String profileImage;
-    private Collection<Roles> roles;
+
     private Integer followersCount;
     private Integer followingCount;
+
+    private String url;
+
+    private String followersUrl;
+    private String followingUrl;
+
+    private String contactInfoUrl;
+
+    private String receivedRequestsUrl;
+    private String sentRequestsUrl;
+
+    private String coverImageUrl;
+    private String profileImageUrl;
 
     public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
@@ -42,16 +50,28 @@ public abstract class BaseUserDto {
         this.phoneNumber = user.getPhoneNumber();
         this.state = user.getState();
         this.city = user.getCity();
-        this.roles = user.getRoles();
         this.url = uriBuilder.clone().build().toString();
         if (user.getProfileImage() != null) {
-            this.profileImage = uriBuilder.clone().path("profileImage").build().toString();
+            this.profileImageUrl = uriBuilder.clone().path("profileImage").build().toString();
+        } else {
+            this.profileImageUrl = "";
         }
         if (user.getCoverImage() != null) {
-            this.coverImage = uriBuilder.clone().path("coverImage").build().toString();
+            this.coverImageUrl = uriBuilder.clone().path("coverImage").build().toString();
+        } else {
+            this.coverImageUrl = "";
         }
         this.followersCount = user.getFollowers().size();
         this.followingCount = user.getFollowing().size();
+
+        this.followersUrl = uriBuilder.clone().path("followers").build().toString();
+        this.followingUrl = uriBuilder.clone().path("following").build().toString();
+
+        this.sentRequestsUrl = uriBuilder.clone().path("/jobs/sentRequests").build().toString();
+        this.receivedRequestsUrl = uriBuilder.clone().path("/jobs/receivedRequests").build().toString();
+
+        this.contactInfoUrl = uriBuilder.clone().path("contactInfo").build().toString();
+
     }
 
     public long getId() {
@@ -118,28 +138,20 @@ public abstract class BaseUserDto {
         this.city = city;
     }
 
-    public String getCoverImage() {
-        return coverImage;
+    public String getCoverImageUrl() {
+        return coverImageUrl;
     }
 
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
     }
 
-    public String getProfileImage() {
-        return profileImage;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public Collection<Roles> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Roles> roles) {
-        this.roles = roles;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public Integer getFollowersCount() {
@@ -156,5 +168,45 @@ public abstract class BaseUserDto {
 
     public void setFollowingCount(Integer followingCount) {
         this.followingCount = followingCount;
+    }
+
+    public String getFollowersUrl() {
+        return followersUrl;
+    }
+
+    public void setFollowersUrl(String followersUrl) {
+        this.followersUrl = followersUrl;
+    }
+
+    public String getFollowingUrl() {
+        return followingUrl;
+    }
+
+    public void setFollowingUrl(String followingUrl) {
+        this.followingUrl = followingUrl;
+    }
+
+    public String getContactInfoUrl() {
+        return contactInfoUrl;
+    }
+
+    public void setContactInfoUrl(String contactInfoUrl) {
+        this.contactInfoUrl = contactInfoUrl;
+    }
+
+    public String getReceivedRequestsUrl() {
+        return receivedRequestsUrl;
+    }
+
+    public void setReceivedRequestsUrl(String receivedRequestsUrl) {
+        this.receivedRequestsUrl = receivedRequestsUrl;
+    }
+
+    public String getSentRequestsUrl() {
+        return sentRequestsUrl;
+    }
+
+    public void setSentRequestsUrl(String sentRequestsUrl) {
+        this.sentRequestsUrl = sentRequestsUrl;
     }
 }

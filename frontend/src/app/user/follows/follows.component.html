@@ -7,7 +7,7 @@
           <div>
             <div class="picContainer">
               <img alt="profile picture"
-                   [src]="user.profileImage ? user.profileImage : 'assets/images/defaultProfileImage.png'"
+                   [src]="user.profileImageUrl ? user.profileImageUrl : 'assets/images/defaultProfileImage.png'"
                    class="profilePicture">
             </div>
           </div>
@@ -121,7 +121,7 @@
         <div *ngIf="fpr.totalPages > 1" class="col-12 mt-4">
           <app-pagination
             (changePage)="onChangePage($event)"
-            [currentPage]="fpr.page"
+            [currentPage]="fpq.page"
             [totalPages]="fpr.totalPages">
           </app-pagination>
         </div>

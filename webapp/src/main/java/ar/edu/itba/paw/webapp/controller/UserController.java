@@ -150,17 +150,11 @@ public class UserController {
 
         final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<UserDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                userDtos);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<UserDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<UserDto>>(userDtos) {
         }, uriBuilder);
     }
 
@@ -185,22 +179,16 @@ public class UserController {
 
         final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<UserDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                userDtos);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<UserDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<UserDto>>(userDtos) {
         }, uriBuilder);
     }
 
     private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
-                                                     GenericEntity<PaginatedResultDto<K>> resultsDto,
+                                                     GenericEntity<Collection<K>> resultsDto,
                                                      UriBuilder uriBuilder) {
         if (results.getResults().isEmpty()) {
             if (results.getPage() == 0) {

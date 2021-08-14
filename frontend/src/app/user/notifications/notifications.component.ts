@@ -31,7 +31,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   npr: NotificationPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 
@@ -61,7 +60,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
           this.npr = results;
         } else {
           this.npr.totalPages = results.totalPages;
-          this.npr.page = results.page;
           this.npr.results.push(...results.results);
         }
         this.loading = false;

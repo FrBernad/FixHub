@@ -157,17 +157,6 @@ public class Job {
         return images;
     }
 
-    public Long getThumbnailId() {
-        Long id = -1L;
-        for (Image image : images) {
-            if (id == -1 || id < image.getId()) {
-                id = image.getId();
-            }
-        }
-        return id;
-    }
-
-
     public void setImages(Set<Image> images) {
         this.images = images;
     }

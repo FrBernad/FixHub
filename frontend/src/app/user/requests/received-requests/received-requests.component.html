@@ -93,7 +93,7 @@
       <app-pagination
         *ngIf="rpr.totalPages>1"
         (changePage)="onChangePage($event)"
-        [currentPage]="rpr.page"
+        [currentPage]="rpq.page"
         [totalPages]="rpr.totalPages">
       </app-pagination>
     </div>

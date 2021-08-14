@@ -5,7 +5,7 @@
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
         <img alt="profile cover picture"
-             [src]="user.coverImage ? user.coverImage+coverChange : 'assets/images/defaultCoverImage.jpg'"
+             [src]="user.coverImageUrl ? user.coverImageUrl+coverChange : 'assets/images/defaultCoverImage.jpg'"
              class="backgroundImage">
         <div class="profileBackgroundPic">
           <form method="POST" enctype="multipart/form-data">
@@ -43,7 +43,7 @@
           <div class="profilePictureContainer px-0">
             <div class="picContainer">
               <img alt="profile picture"
-                   [src]="user.profileImage ? user.profileImage+profileChange : 'assets/images/defaultProfileImage.png'"
+                   [src]="user.profileImageUrl ? user.profileImageUrl+profileChange : 'assets/images/defaultProfileImage.png'"
                    class="profilePicture">
             </div>
 
@@ -158,14 +158,16 @@
                         <fa-icon [icon]="['fas','user-friends']"></fa-icon>
                       </div>
                       <div class="col-10">
-                        <a class="extraInfo" [routerLink]="'/user/'+user.id+'/followers'">
+                        <a class="extraInfo" [routerLink]="'/user/'+user.id+'/followers'"
+                           [queryParams]="{page:'0',pageSize:'4'}">
                         <span class="detailField">
                           {{user.followersCount}}
                         </span>
                           {{'profilePage.info.followers' | translate}}
                         </a>
                         ·
-                        <a class="extraInfo" [routerLink]="'/user/'+user.id+'/following'">
+                        <a class="extraInfo" [routerLink]="'/user/'+user.id+'/following'"
+                           [queryParams]="{page:'0',pageSize:'4'}">
                         <span class="detailField">
                           {{user.followingCount}}
                         </span>

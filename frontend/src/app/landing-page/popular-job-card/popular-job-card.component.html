@@ -25,9 +25,9 @@
     </div>
   </div>
   <div class="jobCardImgContainer">
-    <ng-template [ngIf]="job.images.length >0" [ngIfElse]="noImages">
+    <ng-template [ngIf]="job.imagesUrls.length >0" [ngIfElse]="noImages">
 
-      <img src="{{job.thumbnailImage}}" alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
+      <img src="{{job.thumbnailImageUrl}}" alt="${{ 'home.categories.' + job.category | translate }}" class="card-img jobCardImg">
     </ng-template>
 
     <ng-template #noImages>

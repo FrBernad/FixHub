@@ -25,10 +25,12 @@ public class UserDto extends BaseUserDto {
 
     public UserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         super(user, uriInfo, securityContext);
+        System.out.println(securityContext.getUserPrincipal());
         if (securityContext.getUserPrincipal() != null) {
             this.following = user.userIsFollowing(securityContext.getUserPrincipal().getName());
             this.followed = user.userIsFollower(securityContext.getUserPrincipal().getName());
         }
+
     }
 
     public boolean isFollowed() {

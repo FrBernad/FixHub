@@ -23,8 +23,6 @@ public class IllegalOperationExceptionMapper implements ExceptionMapper<IllegalO
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IllegalOperationException.class);
 
-
-
     @Override
     public Response toResponse(IllegalOperationException exception) {
         LOGGER.error("Error encountered, illegal operation exception");

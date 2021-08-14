@@ -14,7 +14,7 @@ import {Title} from "@angular/platform-browser";
 })
 export class JobComponent implements OnInit {
 
-  job: SingleJob = new SingleJob(1, "description", "jobProvided", "category", 3, 3, 4, [], "image", undefined, false, true);
+  job: SingleJob;
 
   selectedIndex = 0;
   isFetching = true;
@@ -23,7 +23,6 @@ export class JobComponent implements OnInit {
 
   rpr: ReviewsPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 
@@ -41,21 +40,17 @@ export class JobComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.job.id = params['id'];
-      }
-    );
 
     this.userSub = this.userService.user.subscribe((user) => {
       this.loggedUser = user;
     });
 
-    this.jobService.getJob(this.job.id).subscribe(
+    this.jobService.getJob(this.route.snapshot.params['id']).subscribe(
       job => {
         this.job = job;
         this.isFetching = false;
         this.titleService.setTitle('Fixhub | ' + job.jobProvided)
+        this.jobService.getFirstReviews(+this.job.id);
       },
       () => {
         this.router.navigate(['/404']);
@@ -66,20 +61,18 @@ export class JobComponent implements OnInit {
       this.rpr = results;
     });
 
-    this.jobService.getFirstReviews(+this.job.id);
-
   }
 
   selectPrevious() {
     if (this.selectedIndex == 0) {
-      this.selectedIndex = this.job.images.length - 1;
+      this.selectedIndex = this.job.imagesUrls.length - 1;
     } else {
       this.selectedIndex--;
     }
   }
 
   selectNext() {
-    if (this.selectedIndex == this.job.images.length - 1) {
+    if (this.selectedIndex == this.job.imagesUrls.length - 1) {
       this.selectedIndex = 0;
     } else {
       this.selectedIndex++;

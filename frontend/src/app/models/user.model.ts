@@ -16,6 +16,7 @@ export interface ProviderDetails {
 }
 
 export class User {
+  public roles: string[];
 
   constructor(
     public id: number,
@@ -25,9 +26,8 @@ export class User {
     public phoneNumber: string,
     public state: string,
     public city: string,
-    public profileImage: string,
-    public coverImage: string,
-    public roles: string[],
+    public profileImageUrl: string,
+    public coverImageUrl: string,
     public followingCount: number,
     public followersCount: number,
     public contactInfo?: ContactInfo[],

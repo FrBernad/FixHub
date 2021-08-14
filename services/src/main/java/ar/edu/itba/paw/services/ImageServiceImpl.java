@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.persistance.ImageDao;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.image.NewImageDto;
+import ar.edu.itba.paw.models.job.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class ImageServiceImpl implements ImageService {
     public Collection<Image> getImagesById(Collection<Long> imagesId) {
         LOGGER.debug("Looking for {} image by id", imagesId.size());
         return imageDao.getImagesById(imagesId);
+    }
+
+    @Override
+    public Optional<Image> getImageByJob(Job job, Long imageId) {
+        return job.getImages().stream().filter(image -> image.getId().equals(imageId)).findFirst();
     }
 
     @Transactional

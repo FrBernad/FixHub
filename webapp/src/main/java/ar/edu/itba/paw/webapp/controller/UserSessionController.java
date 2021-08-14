@@ -351,7 +351,7 @@ public class UserSessionController {
     }
 
     @GET
-    @Path("/jobs/requests")
+    @Path("/jobs/receivedRequests")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserJobRequests(
         @QueryParam("status") String status,
@@ -359,7 +359,7 @@ public class UserSessionController {
         @QueryParam("order") @DefaultValue("NEWEST") String order,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
-        LOGGER.info("Accessed /user/jobs/requests GET controller");
+        LOGGER.info("Accessed /user/jobs/receivedRequests GET controller");
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -371,12 +371,6 @@ public class UserSessionController {
 
         final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<JobContactDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                contactsDto);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
@@ -385,15 +379,15 @@ public class UserSessionController {
             uriBuilder.queryParam("status", status);
         }
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobContactDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<JobContactDto>>(contactsDto) {
         }, uriBuilder);
     }
 
     @PUT
-    @Path("/jobs/requests/{id}")
+    @Path("/jobs/receivedRequests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response changeRequestStatus(@PathParam("id") final long contactId, final NewStatusDto status) {
-        LOGGER.info("Accessed /user/jobs/requests/{} PUT controller", contactId);
+        LOGGER.info("Accessed /user/jobs/receivedRequests/{} PUT controller", contactId);
 
         if (status == null) {
             throw new ContentExpectedException();
@@ -430,11 +424,11 @@ public class UserSessionController {
     }
 
     @GET
-    @Path("/jobs/requests/{id}")
+    @Path("/jobs/receivedRequests/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getRequest(@PathParam("id") final long contactId) {
 
-        LOGGER.info("Accessed /user/jobs/requests/{} GET controller", contactId);
+        LOGGER.info("Accessed /user/jobs/receivedRequests/{} GET controller", contactId);
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
@@ -470,12 +464,6 @@ public class UserSessionController {
 
         final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<JobContactDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                contactsDto);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
@@ -484,7 +472,7 @@ public class UserSessionController {
             uriBuilder.queryParam("status", status);
         }
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobContactDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<JobContactDto>>(contactsDto) {
         }, uriBuilder);
     }
 
@@ -509,19 +497,13 @@ public class UserSessionController {
 
         final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<JobDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                jobsDto);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize)
             .queryParam("order", order)
             .queryParam("query", query);
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<JobDto>>(jobsDto) {
         }, uriBuilder);
     }
 
@@ -658,7 +640,7 @@ public class UserSessionController {
     }
 
     private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
-                                                     GenericEntity<PaginatedResultDto<K>> resultsDto,
+                                                     GenericEntity<Collection<K>> resultsDto,
                                                      UriBuilder uriBuilder) {
         if (results.getResults().isEmpty()) {
             if (results.getPage() == 0) {
@@ -747,17 +729,11 @@ public class UserSessionController {
 
         final Collection<NotificationDto> notificationsDtos = NotificationDto.MapNotificationToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<NotificationDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                notificationsDtos);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize);
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<NotificationDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<NotificationDto>>(notificationsDtos) {
         }, uriBuilder);
     }
 

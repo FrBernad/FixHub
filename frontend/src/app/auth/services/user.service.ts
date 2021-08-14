@@ -9,10 +9,10 @@ import {City, State} from "../../discover/discover.service";
 
 export interface ProfileInfo {
   name: string,
-  surname:string,
-  phoneNumber:string,
-  state:string,
-  city:string
+  surname: string,
+  phoneNumber: string,
+  state: string,
+  city: string
 };
 
 export interface ProviderInfo {
@@ -49,9 +49,16 @@ export class UserService {
         environment.apiBaseUrl + '/user'
       ).pipe(tap(
         res => {
-          this.user.next(res);
+          this.user.next({...this.user.getValue(),...res});
         }
       ))
+  }
+
+  setRoles(roles: string[]) {
+    this.user.next({
+      ...this.user.getValue(),
+      roles
+    });
   }
 
   setLoading(value: boolean) {
@@ -62,7 +69,7 @@ export class UserService {
     this.user.next(null);
   }
 
-  updateProfileInfo(profileInfo:ProfileInfo) {
+  updateProfileInfo(profileInfo: ProfileInfo) {
     return this.http.put(
       environment.apiBaseUrl + '/user',
       {

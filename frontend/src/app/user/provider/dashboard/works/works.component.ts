@@ -13,7 +13,6 @@ export class WorksComponent implements OnInit, OnDestroy {
 
   jpr: JobPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 

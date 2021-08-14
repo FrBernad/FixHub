@@ -1,13 +1,14 @@
 import {environment} from '../../../environments/environment';
-import {HttpClient, HttpParams, HttpStatusCode} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {UserService} from "../../auth/services/user.service";
 import {map, tap} from "rxjs/operators";
 import {JobRequest} from "../../models/job-request.model";
+import * as Url from "url";
+import {Router} from "@angular/router";
 
 export interface RequestPaginationResult {
-  page: number;
   totalPages: number;
   results: [];
 }
@@ -38,7 +39,9 @@ export class RequestsService {
   receivedRequests = new Subject<RequestPaginationResult>();
 
   constructor(private http: HttpClient,
-              private userService: UserService) {
+              private userService: UserService,
+              private router: Router
+  ) {
   }
 
   newContact(jobId: number, contactData: ContactData) {
@@ -63,54 +66,62 @@ export class RequestsService {
   }
 
   getProviderRequests(rq: RequestPaginationQuery) {
-    this.http.get<RequestPaginationResult>(
-      environment.apiBaseUrl + '/user/jobs/requests',
+    this.http.get<[]>(
+      environment.apiBaseUrl + '/user/jobs/receivedRequests',
       {
         observe: "response",
         params: new HttpParams({fromObject: {...rq}})
       },
     ).subscribe((res) => {
-      if (res.status === HttpStatusCode.NoContent) {
-        this.receivedRequests.next({
-          page: 0,
-          totalPages: 0,
-          results: []
-        });
-      } else {
-        this.receivedRequests.next(res.body);
+        if (res.status === HttpStatusCode.NoContent) {
+          this.receivedRequests.next({
+            totalPages: 0,
+            results: []
+          });
+        } else {
+          const cr: RequestPaginationResult = this.parsePaginationResult(res);
+          this.receivedRequests.next(cr);
+        }
+      },
+      () => {
+        this.router.navigate(['500'])
       }
-    });
+      );
   }
 
   getJobRequest(id: number) {
     return this.http.get<JobRequest>(
-      environment.apiBaseUrl + '/user/jobs/requests/' + id,
+      environment.apiBaseUrl + '/user/jobs/receivedRequests/' + id,
     )
   }
 
   getUserSentRequests(rp: RequestPaginationQuery) {
-    this.http.get<RequestPaginationResult>(
+    this.http.get<[]>(
       environment.apiBaseUrl + '/user/jobs/sentRequests',
       {
         observe: "response",
         params: new HttpParams({fromObject: {...rp}})
       },
     ).subscribe((res) => {
-      if (res.status === HttpStatusCode.NoContent) {
-        this.sentRequests.next({
-          page: 0,
-          totalPages: 0,
-          results: []
-        });
-      } else {
-        this.sentRequests.next(res.body);
+        if (res.status === HttpStatusCode.NoContent) {
+          this.sentRequests.next({
+            totalPages: 0,
+            results: []
+          });
+        } else {
+          const cr: RequestPaginationResult = this.parsePaginationResult(res);
+          this.sentRequests.next(cr);
+        }
+      },
+      () => {
+        this.router.navigate(['500'])
       }
-    });
+    );
   }
 
   changeContactStatus(contactId: number, status: string) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/jobs/requests/' + contactId,
+      environment.apiBaseUrl + '/user/jobs/receivedRequests/' + contactId,
       {
         status
       },
@@ -118,6 +129,25 @@ export class RequestsService {
         observe: "response"
       }
     );
+  }
+
+  private parsePaginationResult(res: HttpResponse<[]>): RequestPaginationResult {
+
+    const lastLink: string = res.headers
+      .getAll('Link')
+      .pop()
+      .split(',')
+      .filter((link) => (link.includes("last")))
+      .pop()
+      .match(/<(.*)>/)[1];
+
+    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
+      .get("page")[0]) + 1;
+
+    return {
+      totalPages,
+      results: res.body
+    }
   }
 
 }

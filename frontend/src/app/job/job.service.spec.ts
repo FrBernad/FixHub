@@ -103,8 +103,8 @@ describe('JobService', () => {
       price: 3500,
       totalRatings: 3,
       averageRating: 5,
-      images: [],
-      thumbnailImage: "",
+      imagesUrls: [],
+      thumbnailImageUrl: "",
       provider: undefined,
       paused: false,
       canReview: true

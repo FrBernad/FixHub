@@ -70,19 +70,27 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.jobsService.getCategories().subscribe((categories) => {
       this.categories = categories.values.slice(0, 5);
       this.loading = false;
+    }, () => {
+      this.loading = false;
     });
 
     this.jobsSub = this.jobsService.results.subscribe((results) => {
       this.popularJobs = results.results;
       this.isFetching = false;
+    }, () => {
+      this.isFetching = false;
     });
+
   }
 
   onChangeCategory(category: string) {
     this.router.navigate(['/discover'],
       {
-        state: {
-          category
+        queryParams: {
+          category,
+          page: '0',
+          pageSize: '6',
+          order: 'MOST_POPULAR'
         }
       });
   }
@@ -97,8 +105,11 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     if (!this.searchError) {
       this.router.navigate(['/discover'],
         {
-          state: {
-            query
+          queryParams: {
+            query,
+            page: '0',
+            pageSize: '6',
+            order: 'MOST_POPULAR'
           }
         });
     }

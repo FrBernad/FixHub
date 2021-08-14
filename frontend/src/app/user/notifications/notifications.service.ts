@@ -1,12 +1,13 @@
-import {HttpClient, HttpParams, HttpStatusCode} from "@angular/common/http";
+import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Notification} from "../../models/notification.model";
 import {Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {tap} from "rxjs/operators";
+import {Router} from "@angular/router";
+import * as Url from "url";
 
 export interface NotificationPaginationResult {
-  page: number;
   totalPages: number;
   results: Notification[];
 }
@@ -22,7 +23,6 @@ export class NotificationsService {
 
   rpr: NotificationPaginationResult = {
     results: [],
-    page: 0,
     totalPages: 0,
   }
 
@@ -32,7 +32,8 @@ export class NotificationsService {
   private notificationsInterval: any;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router,
   ) {
   }
 
@@ -65,23 +66,27 @@ export class NotificationsService {
 
   getNotifications(npq: NotificationPaginationQuery) {
     this.http
-      .get<NotificationPaginationResult>(
+      .get<Notification[]>(
         environment.apiBaseUrl + '/user/notifications',
         {
           observe: "response",
           params: new HttpParams({fromObject: {...npq}})
         },
       ).subscribe((res) => {
-      if (res.status === HttpStatusCode.NoContent) {
-        this.notifications.next({
-          page: 0,
-          totalPages: 0,
-          results: []
-        });
-      } else {
-        this.notifications.next(res.body);
+        if (res.status === HttpStatusCode.NoContent) {
+          this.notifications.next({
+            totalPages: 0,
+            results: []
+          });
+        } else {
+          const nr: NotificationPaginationResult = this.parsePaginationResult(res);
+          this.notifications.next(nr);
+        }
+      },
+      () => {
+        this.router.navigate(['500'])
       }
-    });
+    );
   }
 
 
@@ -106,4 +111,25 @@ export class NotificationsService {
         )
       );
   }
+
+
+  private parsePaginationResult(res: HttpResponse<Notification[]>): NotificationPaginationResult {
+
+    const lastLink: string = res.headers
+      .getAll('Link')
+      .pop()
+      .split(',')
+      .filter((link) => (link.includes("last")))
+      .pop()
+      .match(/<(.*)>/)[1];
+
+    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
+      .get("page")[0]) + 1;
+
+    return {
+      totalPages,
+      results: res.body
+    }
+  }
+
 }

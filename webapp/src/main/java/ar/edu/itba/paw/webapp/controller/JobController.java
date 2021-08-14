@@ -36,10 +36,7 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("jobs")
@@ -70,6 +67,8 @@ public class JobController {
     @Autowired
     private ImageService imageService;
 
+    private final int MAX_TIME = 31536000;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 
     @GET
@@ -93,12 +92,6 @@ public class JobController {
 
         final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
 
-        final PaginatedResultDto<JobDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                jobsDto);
-
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
             .queryParam("pageSize", pageSize)
@@ -116,7 +109,7 @@ public class JobController {
             }
         }
 
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<JobDto>>(resultsDto) {
+        return createPaginationResponse(results, new GenericEntity<Collection<JobDto>>(jobsDto) {
         }, uriBuilder);
     }
 
@@ -254,70 +247,27 @@ public class JobController {
     }
 
     @GET
-    @Path("/{id}/reviews")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getJobReviews(
-        @PathParam("id") final Long id,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("pageSize") @DefaultValue("6") int pageSize
-    ) {
-        LOGGER.info("Accessed /jobs/{}/reviews GET controller", id);
-
-        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
-
-        final PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, pageSize);
-
-        if (results == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        final Collection<ReviewDto> reviewsDto = ReviewDto.mapReviewToDto(results.getResults(), uriInfo, securityContext);
-
-        final PaginatedResultDto<ReviewDto> resultsDto =
-            new PaginatedResultDto<>(
-                results.getPage(),
-                results.getTotalPages(),
-                reviewsDto);
-
-        final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize);
-
-        return createPaginationResponse(results, new GenericEntity<PaginatedResultDto<ReviewDto>>(resultsDto) {
-        }, uriBuilder);
-    }
-
-    @GET
-    @Path("images/{id}")
+    @Path("/{jobId}/images/{id}")
     @Produces({"image/*", javax.ws.rs.core.MediaType.APPLICATION_JSON})
-    public Response getJobImage(@PathParam("id") long id, @Context Request request) {
+    public Response getJobImage(@PathParam("jobId") long jobId, @PathParam("id") long id, @Context Request request) {
         LOGGER.info("Accessed /jobs/images/{} GET controller", id);
-        Image img = imageService.getImageById(id).orElseThrow(ImageNotFoundException::new);
+
+        final Job job = jobService.getJobById(jobId).orElseThrow(JobNotFoundException::new);
+
+        final Image img = imageService.getImageByJob(job, id).orElseThrow(ImageNotFoundException::new);
         LOGGER.info("Response image with id {}", id);
-        final EntityTag eTag = new EntityTag(String.valueOf(img.getId()));
 
+        final byte[] jobImage = img.getData();
 
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setNoCache(true);
-
-        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
-
-        if (responseBuilder == null) {
-            final byte[] jobImage = img.getData();
-            responseBuilder = Response.ok(jobImage).type(img.getMimeType()).tag(eTag);
-        }
-
-        return responseBuilder.cacheControl(cacheControl).build();
+        return Response.ok(jobImage).type(img.getMimeType()).build();
     }
-
 
     @GET
     @Path("/categories")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getCategories() {
         LOGGER.info("Accessed /jobs/categories GET controller");
-        final Collection<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
-
+        final List<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
         return Response.ok(new StringCollectionResponseDto(categories)).build();
     }
 
@@ -358,6 +308,34 @@ public class JobController {
         }
     }
 
+    @GET
+    @Path("/{id}/reviews")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getJobReviews(
+        @PathParam("id") final Long id,
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+    ) {
+        LOGGER.info("Accessed /jobs/{}/reviews GET controller", id);
+
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
+
+        final PaginatedSearchResult<Review> results = reviewService.getReviewsByJob(job, page, pageSize);
+
+        if (results == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        final Collection<ReviewDto> reviewsDto = ReviewDto.mapReviewToDto(results.getResults(), uriInfo, securityContext);
+
+        final UriBuilder uriBuilder = uriInfo
+            .getAbsolutePathBuilder()
+            .queryParam("pageSize", pageSize);
+
+        return createPaginationResponse(results, new GenericEntity<Collection<ReviewDto>>(reviewsDto) {
+        }, uriBuilder);
+    }
+
     @Path("/{id}/reviews")
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -374,7 +352,7 @@ public class JobController {
     }
 
     private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
-                                                     GenericEntity<PaginatedResultDto<K>> resultsDto,
+                                                     GenericEntity<K> resultsDto,
                                                      UriBuilder uriBuilder) {
         if (results.getResults().isEmpty()) {
             if (results.getPage() == 0) {

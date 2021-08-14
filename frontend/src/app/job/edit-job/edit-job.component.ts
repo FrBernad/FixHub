@@ -45,14 +45,14 @@ export class EditJobComponent implements OnInit, OnDestroy {
 
   selectPrevious() {
     if (this.selectedIndex == 0) {
-      this.selectedIndex = this.job.images.length - 1;
+      this.selectedIndex = this.job.imagesUrls.length - 1;
     } else {
       this.selectedIndex--;
     }
   }
 
   selectNext() {
-    if (this.selectedIndex == this.job.images.length - 1) {
+    if (this.selectedIndex == this.job.imagesUrls.length - 1) {
       this.selectedIndex = 0;
     } else {
       this.selectedIndex++;
@@ -180,7 +180,7 @@ export class EditJobComponent implements OnInit, OnDestroy {
     let aux = image.split('/');
     if (index >= 0) {
       (<FormArray>this.editJobForm.get('imagesIdToDelete')).push(new FormControl(aux[aux.length - 1]))
-      this.job.images.splice(index, 1);
+      this.job.imagesUrls.splice(index, 1);
       this.imagesCounter--;
     }
   }
@@ -204,14 +204,14 @@ export class EditJobComponent implements OnInit, OnDestroy {
     this.job.provider = responseData.provider;
     this.job.totalRatings = responseData.totalRatings;
     this.job.averageRating = responseData.averageRating;
-    this.job.images = responseData.images;
+    this.job.imagesUrls = responseData.images;
     (<FormArray>this.editJobForm.get('imagesToUpload')).clear();
     (<FormArray>this.editJobForm.get('imagesIdToDelete')).clear();
 
     this.job.paused = responseData.paused;
     this.editJobForm.patchValue({paused: responseData.paused});
-    this.job.thumbnailImage = responseData.thumbnailImage;
-    this.imagesCounter = this.job.images.length;
+    this.job.thumbnailImageUrl = responseData.thumbnailImage;
+    this.imagesCounter = this.job.imagesUrls.length;
     this.isFetching = false;
   }
 
