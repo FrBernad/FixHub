@@ -84,9 +84,9 @@ public class UserController {
         User user;
         try {
             user = userService.createUser(registerDto.getPassword(),
-                registerDto.getName(), registerDto.getSurname(),
-                registerDto.getEmail(), registerDto.getPhoneNumber(),
-                registerDto.getState(), registerDto.getCity());
+                    registerDto.getName(), registerDto.getSurname(),
+                    registerDto.getEmail(), registerDto.getPhoneNumber(),
+                    registerDto.getState(), registerDto.getCity());
         } catch (DuplicateUserException e) {
             LOGGER.warn("Error in registerDto RegisterForm, email is already in used");
             throw new DuplicateUserException();
@@ -395,9 +395,9 @@ public class UserController {
     @Path("/{id}/followers")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserFollowers(
-        @PathParam("id") final long id,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("pageSize") @DefaultValue("4") int pageSize
+            @PathParam("id") final long id,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("4") int pageSize
     ) {
         LOGGER.info("Accessed /users/{}/followers GET controller page {} with pageSize {}", id, page, pageSize);
 
@@ -412,8 +412,8 @@ public class UserController {
         final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
 
         final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize);
+                .getAbsolutePathBuilder()
+                .queryParam("pageSize", pageSize);
 
         return createPaginationResponse(results, new GenericEntity<Collection<UserDto>>(userDtos) {
         }, uriBuilder);
@@ -423,9 +423,9 @@ public class UserController {
     @Path("/{id}/following")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserFollowings(
-        @PathParam("id") final long id,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("pageSize") @DefaultValue("4") int pageSize
+            @PathParam("id") final long id,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("4") int pageSize
     ) {
         LOGGER.info("Accessed /users/{}/following GET controller page {} with pageSize {}", id, page, pageSize);
 
@@ -440,8 +440,8 @@ public class UserController {
         final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
 
         final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize);
+                .getAbsolutePathBuilder()
+                .queryParam("pageSize", pageSize);
 
         return createPaginationResponse(results, new GenericEntity<Collection<UserDto>>(userDtos) {
         }, uriBuilder);
@@ -501,11 +501,11 @@ public class UserController {
     @Path("/{id}/receivedRequests")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserJobRequests(
-        @PathParam("id") final long id,
-        @QueryParam("status") String status,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("order") @DefaultValue("NEWEST") String order,
-        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+            @PathParam("id") final long id,
+            @QueryParam("status") String status,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("order") @DefaultValue("NEWEST") String order,
+            @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
         LOGGER.info("Accessed /users/{}/receivedRequests GET controller", id);
 
@@ -522,8 +522,8 @@ public class UserController {
         final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
 
         final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize);
+                .getAbsolutePathBuilder()
+                .queryParam("pageSize", pageSize);
 
         if (status != null) {
             uriBuilder.queryParam("status", status);
@@ -536,11 +536,12 @@ public class UserController {
     @PUT
     @Path("/{id}/receivedRequests/{requestId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response changeRequestStatus(
-        @PathParam("id") final long id,
-        @PathParam("requestId") final long contactId,
-        final NewStatusDto status) {
-        LOGGER.info("Accessed /users/{}/receivedRequests/{} PUT controller", id, contactId);
+    public Response changeReceivedRequestStatus(
+            @PathParam("id") final long id,
+            @PathParam("requestId") final long requestId,
+            @NotNull final NewStatusDto status) {
+
+        LOGGER.info("Accessed /users/{}/receivedRequests/{} PUT controller", id, requestId);
 
         if (status == null) {
             throw new ContentExpectedException();
@@ -549,11 +550,10 @@ public class UserController {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         assureUserResourceCorrelation(user, id);
 
-        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+        final JobContact jobContact = jobService.getContactById(requestId).orElseThrow(NoContactFoundException::new);
         final JobStatus newStatus = status.getStatus();
-//FIXME: METODO NO TIENE SENTIDO, YASE QUE SOY EL PROVIDER ACA, NUNCA SERIA EL USER
-        if (!isValidStatus(jobContact, user, newStatus)) {
-            throw new IllegalOperationException();
+        if (!isValidStatusForProvider(jobContact, newStatus)) {
+            return Response.status(BAD_REQUEST).build();
         }
 
         switch (newStatus) {
@@ -566,15 +566,13 @@ public class UserController {
             case IN_PROGRESS:
                 jobService.acceptJob(jobContact);
                 break;
-            case CANCELED:
-                jobService.cancelJob(jobContact);
-                break;
             default:
                 return Response.status(BAD_REQUEST).build();
         }
 
         return Response.ok().build();
     }
+
 
     @GET
     @Path("/{id}/receivedRequests/{requestId}")
@@ -602,11 +600,11 @@ public class UserController {
     @Path("/{id}/sentRequests")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserSentJobRequests(
-        @PathParam("id") final long id,
-        @QueryParam("status") String status,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("order") @DefaultValue("NEWEST") String order,
-        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+            @PathParam("id") final long id,
+            @QueryParam("status") String status,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("order") @DefaultValue("NEWEST") String order,
+            @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
 
         LOGGER.info("Accessed /users/{}/sentRequests GET controller", id);
@@ -624,8 +622,8 @@ public class UserController {
         final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
 
         final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize);
+                .getAbsolutePathBuilder()
+                .queryParam("pageSize", pageSize);
 
         if (status != null) {
             uriBuilder.queryParam("status", status);
@@ -635,15 +633,44 @@ public class UserController {
         }, uriBuilder);
     }
 
+    @PUT
+    @Path("/{id}/sentRequests/{requestId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response changeUserSentRequestJobRequestsStatus(
+            @PathParam("id") final long id,
+            @PathParam("requestId") final long requestId,
+            final NewStatusDto status) {
+
+        LOGGER.info("Accessed /users/{}/sentRequests/{} PUT controller", id, requestId);
+
+        if (status == null) {
+            throw new ContentExpectedException();
+        }
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        assureUserResourceCorrelation(user, id);
+
+        final JobContact jobContact = jobService.getContactById(requestId).orElseThrow(NoContactFoundException::new);
+        final JobStatus newStatus = status.getStatus();
+
+        if (!isValidStatusForUserRequest(jobContact, newStatus)) {
+            return Response.status(BAD_REQUEST).build();
+        }
+
+        jobService.cancelJob(jobContact);
+
+        return Response.ok().build();
+    }
+
     @GET
     @Path("/{id}/jobs")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getUserJobs(
-        @PathParam("id") final long id,
-        @QueryParam("query") @DefaultValue("") String query,
-        @QueryParam("order") @DefaultValue("MOST_POPULAR") String order,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+            @PathParam("id") final long id,
+            @QueryParam("query") @DefaultValue("") String query,
+            @QueryParam("order") @DefaultValue("MOST_POPULAR") String order,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
         LOGGER.info("Accessed /users/{}/jobs GET controller", id);
 
@@ -660,10 +687,10 @@ public class UserController {
         final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
 
         final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize)
-            .queryParam("order", order)
-            .queryParam("query", query);
+                .getAbsolutePathBuilder()
+                .queryParam("pageSize", pageSize)
+                .queryParam("order", order)
+                .queryParam("query", query);
 
         return createPaginationResponse(results, new GenericEntity<Collection<JobDto>>(jobsDto) {
         }, uriBuilder);
@@ -694,10 +721,10 @@ public class UserController {
     @Path("/{id}/notifications")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getNotificationsByUser(
-        @PathParam("id") final long id,
-        @QueryParam("onlyNew") @DefaultValue("false") boolean onlyNew,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("pageSize") @DefaultValue("6") int pageSize
+            @PathParam("id") final long id,
+            @QueryParam("onlyNew") @DefaultValue("false") boolean onlyNew,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
         LOGGER.info("Accessed /users/{}/notifications GET controller", id);
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
@@ -713,8 +740,8 @@ public class UserController {
         final Collection<NotificationDto> notificationsDtos = NotificationDto.MapNotificationToDto(results.getResults(), uriInfo, securityContext);
 
         final UriBuilder uriBuilder = uriInfo
-            .getAbsolutePathBuilder()
-            .queryParam("pageSize", pageSize);
+                .getAbsolutePathBuilder()
+                .queryParam("pageSize", pageSize);
 
         return createPaginationResponse(results, new GenericEntity<Collection<NotificationDto>>(notificationsDtos) {
         }, uriBuilder);
@@ -827,17 +854,17 @@ public class UserController {
         }
     }
 
-    //    FIXME: RARO, SI OSN SENT REQUESTS YASE Q TENGO Q SER EL USER SINO SOY EL PROVIDER
-    private boolean isValidStatus(JobContact jobContact, User user, JobStatus newStatus) {
+    private boolean isValidStatusForProvider(JobContact jobContact, JobStatus newStatus) {
         JobStatus actualStatus = jobContact.getStatus();
-        if (user.getId().equals(jobContact.getUser().getId())) {
-            return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus);
-        } else if (user.getId().equals(jobContact.getProvider().getId())) {
-            if (actualStatus.equals(PENDING) && (newStatus.equals(IN_PROGRESS) || newStatus.equals(REJECTED))) {
-                return true;
-            } else return actualStatus.equals(IN_PROGRESS) && newStatus.equals(FINISHED);
-        }
-        return false;
+        if (actualStatus.equals(PENDING) && (newStatus.equals(IN_PROGRESS) || newStatus.equals(REJECTED)))
+            return true;
+        else
+            return actualStatus.equals(IN_PROGRESS) && newStatus.equals(FINISHED);
+    }
+
+    private boolean isValidStatusForUserRequest(JobContact jobContact, JobStatus newStatus) {
+        JobStatus actualStatus = jobContact.getStatus();
+        return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus);
     }
 
 }
