@@ -108,7 +108,7 @@
   "requests.manage": "Administrar",
   "requests.received": "Recibidas",
   "contactForm.cityWarning": "Puede que el servicio no este disponible en esta zona.",
-  "contactForm.addressNumber": "N\u00DAmero",
+  "contactForm.addressNumber": "N\u00FAmero",
   "contactForm.floor": "Piso ",
   "contactForm.departmentNumber": "Departamento",
   "contactForm.description": "Describa el trabajo necesitado",
@@ -429,6 +429,8 @@
   "errors.notVerified.title": "Tu cuenta no esta verificada. Por favor revisa tu casilla de correo y verifica tu cuenta.",
   "errors.notVerified.notRecieved": "\u00BFNo has recibido el email?",
   "errors.notVerified.resend": "Reenviar",
+  "modal.notVerified.close": "Cerrar",
+
   "errors.notVerified.sent": "Link de verificaci\u00F3n enviado.",
   "errors.IllegalContentTypeException": "Solo soportamos JPEG, JPG or PNG",
   "errors.IllegalContentTypeExceptionGIF": "Solo soportamos JPEG, JPG, PNG or GIF",
