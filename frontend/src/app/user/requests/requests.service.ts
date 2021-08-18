@@ -66,7 +66,7 @@ export class RequestsService {
 
   getProviderRequests(rq: RequestPaginationQuery) {
     this.http.get<[]>(
-      environment.apiBaseUrl + '/user/jobs/receivedRequests',
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/receivedRequests',
       {
         observe: "response",
         params: new HttpParams({fromObject: {...rq}})
@@ -85,18 +85,18 @@ export class RequestsService {
       () => {
         this.router.navigate(['500'])
       }
-      );
+    );
   }
 
   getJobRequest(id: number) {
     return this.http.get<JobRequest>(
-      environment.apiBaseUrl + '/user/jobs/receivedRequests/' + id,
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/receivedRequests/' + id,
     )
   }
 
   getUserSentRequests(rp: RequestPaginationQuery) {
     this.http.get<[]>(
-      environment.apiBaseUrl + '/user/jobs/sentRequests',
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/sentRequests',
       {
         observe: "response",
         params: new HttpParams({fromObject: {...rp}})
@@ -120,7 +120,7 @@ export class RequestsService {
 
   changeContactStatus(contactId: number, status: string) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/jobs/receivedRequests/' + contactId,
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/receivedRequests/' + contactId,
       {
         status
       },

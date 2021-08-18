@@ -5,6 +5,7 @@ import {Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {tap} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {UserService} from "../../auth/services/user.service";
 
 export interface NotificationPaginationResult {
   totalPages: number;
@@ -33,6 +34,7 @@ export class NotificationsService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private userService: UserService,
   ) {
   }
 
@@ -52,7 +54,7 @@ export class NotificationsService {
   refreshNotifications() {
     this.http
       .get<{ count: number }>(
-        environment.apiBaseUrl + '/user/unseenNotifications'
+        environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/unseenNotifications'
       ).subscribe((res) => {
         if (res.count > 0) {
           this.newNotifications.next(true);
@@ -66,7 +68,7 @@ export class NotificationsService {
   getNotifications(npq: NotificationPaginationQuery) {
     this.http
       .get<Notification[]>(
-        environment.apiBaseUrl + '/user/notifications',
+        environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications',
         {
           observe: "response",
           params: new HttpParams({fromObject: {...npq}})
@@ -91,7 +93,7 @@ export class NotificationsService {
 
   markAsReadNotification(id: number) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/notifications/' + id, {})
+      environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications/' + id, {})
       .pipe(
         tap(() => {
             this.refreshNotifications();
@@ -102,7 +104,7 @@ export class NotificationsService {
 
   markAsReadAllNotifications() {
     return this.http.put(
-      environment.apiBaseUrl + '/user/notifications', {})
+      environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications', {})
       .pipe(
         tap(() => {
             this.refreshNotifications();

@@ -5,6 +5,7 @@ import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/disc
 import {environment} from "../../../../../environments/environment";
 import {Job} from "../../../../models/job.model";
 import {Router} from "@angular/router";
+import {UserService} from "../../../../auth/services/user.service";
 
 
 @Injectable({providedIn: 'root'})
@@ -15,13 +16,14 @@ export class WorksService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private userService: UserService
   ) {
   }
 
   getUserJobs(jp: JobPaginationQuery) {
     this.http
       .get<Job[]>(
-        environment.apiBaseUrl + '/user/jobs',
+        environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/jobs',
         {
           observe: "response",
           params: new HttpParams({fromObject: {...jp}})
