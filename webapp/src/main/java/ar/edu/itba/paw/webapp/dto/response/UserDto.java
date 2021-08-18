@@ -15,9 +15,6 @@ public class UserDto extends BaseUserDto {
         return users.stream().map(u -> new UserDto(u, uriInfo, securityContext)).collect(Collectors.toList());
     }
 
-    private Boolean followed;
-    private Boolean following;
-
     public UserDto() {
         super();
         // Used by Jersey
@@ -25,26 +22,6 @@ public class UserDto extends BaseUserDto {
 
     public UserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         super(user, uriInfo, securityContext);
-        if (securityContext.getUserPrincipal() != null) {
-            this.following = user.userIsFollowing(securityContext.getUserPrincipal().getName());
-            this.followed = user.userIsFollower(securityContext.getUserPrincipal().getName());
-        }
-
     }
 
-    public Boolean getFollowed() {
-        return followed;
-    }
-
-    public void setFollowed(Boolean followed) {
-        this.followed = followed;
-    }
-
-    public Boolean getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(Boolean following) {
-        this.following = following;
-    }
 }

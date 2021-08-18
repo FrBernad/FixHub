@@ -76,45 +76,45 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
 
             .antMatchers(HttpMethod.PUT,
                 // IMAGES
-                "/api/users/{id:[\\\\d]+}/profileImage",
-                "/api/users/{id:[\\\\d]+}/profileImage/",
-                "/api/users/{id:[\\\\d]+}/coverImage",
-                "/api/users/{id:[\\\\d]+}/coverImage/",
+                "/api/users/{id:[\\d]+}/profileImage",
+                "/api/users/{id:[\\d]+}/profileImage/",
+                "/api/users/{id:[\\d]+}/coverImage",
+                "/api/users/{id:[\\d]+}/coverImage/",
                 // FOLLOWING
-                "/api/users/{id:[\\\\d]+}/following/{id:[\\\\d]+}",
-                "/api/users/{id:[\\\\d]+}/following/{id:[\\\\d]+}/"
+                "/api/users/{id:[\\d]+}/following/{id:[\\d]+}",
+                "/api/users/{id:[\\d]+}/following/{id:[\\d]+}/"
             ).authenticated()
             .antMatchers(HttpMethod.DELETE,
                 // FOLLOWING
-                "/api/users/{id:[\\\\d]+}/following/{id:[\\\\d]+}",
-                "/api/users/{id:[\\\\d]+}/following/{id:[\\\\d]+}/"
+                "/api/users/{id:[\\d]+}/following/{id:[\\d]+}",
+                "/api/users/{id:[\\d]+}/following/{id:[\\d]+}/"
             ).authenticated()
             .antMatchers(
                 // NOTIFICATIONS
-                "/api/users/{id:[\\\\d]+}/notifications",
-                "/api/users/{id:[\\\\d]+}/notifications/",
-                "/api/users/{id:[\\\\d]+}/notifications/{id:[\\\\d]+}",
-                "/api/users/{id:[\\\\d]+}/notifications/{id:[\\\\d]+}/",
-                "/api/users/unseenNotifications/",
-                "/api/users/unseenNotifications"
+                "/api/users/{id:[\\d]+}/notifications",
+                "/api/users/{id:[\\d]+}/notifications/",
+                "/api/users/{id:[\\d]+}/notifications/{id:[\\d]+}",
+                "/api/users/{id:[\\d]+}/notifications/{id:[\\d]+}/",
+                "/api/users/{id:[\\d]+}/unseenNotifications/",
+                "/api/users/{id:[\\d]+}/unseenNotifications"
             ).authenticated()
             .antMatchers(
                 // SENT REQUESTS
-                "/api/users/{id:[\\\\d]+}/sentRequests",
-                "/api/users/{id:[\\\\d]+}/sentRequests/",
+                "/api/users/{id:[\\d]+}/sentRequests",
+                "/api/users/{id:[\\d]+}/sentRequests/",
                 // CONTACT INFO
-                "/api/users/{id:[\\\\d]+}/contactInfo",
-                "/api/users/{id:[\\\\d]+}/contactInfo/"
+                "/api/users/{id:[\\d]+}/contactInfo",
+                "/api/users/{id:[\\d]+}/contactInfo/"
             ).hasRole("VERIFIED")
             .antMatchers(
                 // RECEIVED REQUESTS
-                "/api/users/{id:[\\\\d]+}/receivedRequests",
-                "/api/users/{id:[\\\\d]+}/receivedRequests/",
-                "/api/users/{id:[\\\\d]+}/receivedRequests/{id:[\\\\d]+}",
-                "/api/users/{id:[\\\\d]+}/receivedRequests/{id:[\\\\d]+}/",
+                "/api/users/{id:[\\d]+}/receivedRequests",
+                "/api/users/{id:[\\d]+}/receivedRequests/",
+                "/api/users/{id:[\\d]+}/receivedRequests/{id:[\\d]+}",
+                "/api/users/{id:[\\d]+}/receivedRequests/{id:[\\d]+}/",
                 // JOBS
-                "/api/users/{id:[\\\\d]+}/jobs",
-                "/api/users/{id:[\\\\d]+}/jobs/"
+                "/api/users/{id:[\\d]+}/jobs",
+                "/api/users/{id:[\\d]+}/jobs/"
             ).hasRole("PROVIDER")
 
             //-------- /user route ---------
@@ -153,16 +153,16 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/jobs/")
             .hasRole("PROVIDER")
             .antMatchers(HttpMethod.POST,
-                "/api/jobs/{id:[\\\\d]+}/contact",
-                "/api/jobs/{id:[\\\\d]+}/contact/")
+                "/api/jobs/{id:[\\d]+}/contact",
+                "/api/jobs/{id:[\\d]+}/contact/")
             .hasRole("VERIFIED")
             .antMatchers(HttpMethod.PUT,
-                "/api/jobs/{id:[\\\\d]+}",
-                "/api/jobs/{id:[\\\\d]+}/")
+                "/api/jobs/{id:[\\d]+}",
+                "/api/jobs/{id:[\\d]+}/")
             .hasRole("PROVIDER")
             .antMatchers(HttpMethod.POST,
-                "/api/jobs/{id:[\\\\d]+}/reviews",
-                "/api/jobs/{id:[\\\\d]+}/reviews/")
+                "/api/jobs/{id:[\\d]+}/reviews",
+                "/api/jobs/{id:[\\d]+}/reviews/")
             .hasRole("VERIFIED")
 
             //else

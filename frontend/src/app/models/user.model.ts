@@ -32,8 +32,6 @@ export class User {
     public followersCount: number,
     public contactInfo?: ContactInfo[],
     public providerDetails?: ProviderDetails,
-    public followed?: boolean,
-    public following?: boolean
   ) {
   }
 

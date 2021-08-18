@@ -308,7 +308,7 @@ public class UserController {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         assureUserResourceCorrelation(user, id);
 
-        final User toUnfollow = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        final User toUnfollow = userService.getUserById(followId).orElseThrow(UserNotFoundException::new);
         userService.unfollowUser(user, toUnfollow);
 
         return Response.noContent().build();

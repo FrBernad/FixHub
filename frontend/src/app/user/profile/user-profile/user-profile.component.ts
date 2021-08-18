@@ -17,7 +17,9 @@ export class UserProfileComponent implements OnInit {
   user: User;
   loggedUser: User;
   loading = true;
+  loadingLoggedUser = true;
   disable = false;
+  isFollowed: boolean;
 
   constructor(
     private userService: UserService,
@@ -31,7 +33,19 @@ export class UserProfileComponent implements OnInit {
     const userId = this.route.snapshot.params['id'];
     this.userSub = this.userService.user.subscribe((user) => {
       this.loggedUser = user;
+      if (!!user && this.loadingLoggedUser) {
+        this.userService.isFollowed(userId).subscribe(() => {
+            this.isFollowed = true;
+            this.loadingLoggedUser = false;
+          },
+          () => {
+            this.isFollowed = false;
+            this.loadingLoggedUser = false;
+          }
+        )
+      }
     })
+
     this.userService.getUser(userId).subscribe(
       (user) => {
         this.user = user;
@@ -51,6 +65,7 @@ export class UserProfileComponent implements OnInit {
         (user) => {
           this.user = user;
           this.disable = false;
+          this.isFollowed = false;
         }
       );
     });
@@ -63,6 +78,7 @@ export class UserProfileComponent implements OnInit {
         (user) => {
           this.user = user;
           this.disable = false;
+          this.isFollowed = true;
         }
       );
     });

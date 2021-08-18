@@ -49,7 +49,7 @@ export class UserService {
         environment.apiBaseUrl + '/user'
       ).pipe(tap(
         res => {
-          this.user.next({...this.user.getValue(),...res});
+          this.user.next({...this.user.getValue(), ...res});
         }
       ))
   }
@@ -69,6 +69,12 @@ export class UserService {
     this.user.next(null);
   }
 
+  isFollowed(followId: number) {
+    return this.http.get(
+      environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + followId,
+      {observe: "response"})
+  }
+
   updateProfileInfo(profileInfo: ProfileInfo) {
     return this.http.put(
       environment.apiBaseUrl + '/user',
@@ -80,27 +86,27 @@ export class UserService {
 
   follow(id: number) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(() => {
+      environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + id, {}).pipe(tap(() => {
       this.populateUserData().subscribe()
     }));
   }
 
   unfollow(id: number) {
     return this.http.delete(
-      environment.apiBaseUrl + '/user/following/' + id, {}).pipe(tap(() => {
+      environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + id, {}).pipe(tap(() => {
       this.populateUserData().subscribe()
     }));
   }
 
   updateProfileImage(profileImage: FormData) {
-    return this.http.put<FormData>(environment.apiBaseUrl + '/user/profileImage',
+    return this.http.put<FormData>(environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/profileImage',
       profileImage).pipe(tap(() => {
       this.populateUserData().subscribe();
     }));
   }
 
   updateCoverImage(coverImage: FormData) {
-    return this.http.put<FormData>(environment.apiBaseUrl + '/user/coverImage',
+    return this.http.put<FormData>(environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/coverImage',
       coverImage).pipe(tap(() => {
       this.populateUserData().subscribe();
     }));
@@ -108,7 +114,7 @@ export class UserService {
 
   updateProviderInfo(providerInfo: ProviderInfo) {
     return this.http.put(
-      environment.apiBaseUrl + '/user/account/provider',
+      environment.apiBaseUrl + '/users/account/provider',
       providerInfo)
       .pipe(tap(() => {
         this.populateUserData().subscribe();

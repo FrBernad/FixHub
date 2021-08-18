@@ -1,5 +1,5 @@
-<div class="container-lg userContainerProfile pb-4 px-2">
-  <div *ngIf="!loading" class="row justify-content-center">
+<div *ngIf="!loading" class="container-lg userContainerProfile pb-4 px-2">
+  <div class="row justify-content-center">
     <!--  USER PICTURES-->
     <div class="col-12 px-0">
       <div class="container-fluid px-0 position-relative backgroundImageContainer">
@@ -25,8 +25,8 @@
             </h1>
           </div>
           <div class="followBtnContainer">
-            <div *ngIf="!!loggedUser" class="followBtnContainer">
-              <button [disabled]="disable" (click)="unfollow()" *ngIf="user.followed, else notFollowed"
+            <div *ngIf="!!loggedUser && !loadingLoggedUser" class="followBtnContainer">
+              <button [disabled]="disable" (click)="unfollow()" *ngIf="isFollowed, else notFollowed"
                       class="followBtn">
                 <span *ngIf="!disable">{{'profilePage.unfollow' | translate }}</span>
                 <span class="spinner-border spinner-border-sm" [hidden]="!disable"></span>
