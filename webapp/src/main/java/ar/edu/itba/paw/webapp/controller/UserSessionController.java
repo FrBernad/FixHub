@@ -30,7 +30,6 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,15 +43,8 @@ public class UserSessionController {
     @Autowired
     private UserService userService;
 
-
     @Autowired
     private JwtUtil jwtUtil;
-
-    @Autowired
-    private int maxRequestSize;
-
-    @Autowired
-    private SearchService searchService;
 
     @Context
     private UriInfo uriInfo;
@@ -92,25 +84,6 @@ public class UserSessionController {
         } catch (AuthenticationException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-    }
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response updateUser(@Valid UserInfoDto userInfoDto) {
-        LOGGER.info("Accessed /user/ PUT controller");
-
-        if (userInfoDto == null) {
-            throw new ContentExpectedException();
-        }
-
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-        userService.updateUserInfo(
-            new UserInfo(userInfoDto.getName(), userInfoDto.getSurname(),
-                userInfoDto.getCity(), userInfoDto.getState(), userInfoDto.getPhoneNumber()),
-            user);
-
-        return Response.ok().build();
     }
 
 
@@ -175,149 +148,6 @@ public class UserSessionController {
     }
 
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    @Path("/verify")
-    public Response verifyUser(TokenDto tokenDto) {
-        LOGGER.info("Accessed /user/verify PUT controller");
-
-        if (tokenDto == null) {
-            throw new ContentExpectedException();
-        }
-
-        final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);
-
-        final Response.ResponseBuilder responseBuilder = Response.noContent();
-
-        if (user.isVerified()) {
-            addAuthorizationHeader(responseBuilder, user);
-            if (securityContext.getUserPrincipal() == null) {
-                addSessionRefreshTokenCookie(responseBuilder, user);
-            }
-        }
-        return responseBuilder.build();
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    @Path("/verify")
-    public Response resendUserVerification() {
-        LOGGER.info("Accessed /user/verify POST controller");
-
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-
-        userService.resendVerificationToken(user);
-        return Response.noContent().build();
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/resetPassword")
-    public Response sendResetPasswordEmail(@Valid final PasswordResetEmailDto passwordResetDto) {
-        LOGGER.info("Accessed /user/resetPassword POST controller");
-
-        if (passwordResetDto == null) {
-            throw new ContentExpectedException();
-        }
-
-        final User user = userService.getUserByEmail(passwordResetDto.getEmail()).orElseThrow(UserNotFoundException::new);
-
-        userService.generateNewPassword(user);
-
-        return Response.noContent().build();
-    }
-
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @PUT
-    @Path("/resetPassword")
-    public Response resetPassword(@Valid final PasswordResetDto passwordResetDto) {
-        LOGGER.info("Accessed /user/resetPassword PUT controller");
-
-        if (passwordResetDto == null) {
-            throw new ContentExpectedException();
-        }
-
-        userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);
-
-        return Response.noContent().build();
-    }
-
-
-    @POST
-    @Path("/account/provider")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response join(@Valid final JoinDto joinDto) {
-        LOGGER.info("Accessed /user/account/provider POST controller");
-
-        if (joinDto == null) {
-            throw new ContentExpectedException();
-        }
-
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-
-        if (user.hasRole(Roles.PROVIDER)) {
-            LOGGER.warn("User with id {} is already a provider", user.getId());
-            throw new IllegalOperationException();
-        }
-
-        List<Long> citiesId = new ArrayList<>();
-        for (CityDto city : joinDto.getLocation().getCities()) {
-            citiesId.add(city.getId());
-        }
-
-        userService.makeProvider(user,
-            citiesId,
-            joinDto.getSchedule().getStartTime(),
-            joinDto.getSchedule().getEndTime());
-
-        LOGGER.info("User with id {} become provider successfully", user.getId());
-
-        final Response.ResponseBuilder responseBuilder = Response.noContent();
-        addAuthorizationHeader(responseBuilder, user);
-
-        return responseBuilder.build();
-    }
-
-
-    @PUT
-    @Path("/account/provider")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response updateProviderInfo(final JoinDto joinDto) {
-        LOGGER.info("Accessed /user/account/provider PUT controller");
-
-        if (joinDto == null) {
-            throw new ContentExpectedException();
-        }
-
-        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
-
-
-        if (!user.hasRole(Roles.PROVIDER)) {
-            LOGGER.warn("User {} is not a provider", user.getId());
-            throw new IllegalOperationException();
-        }
-
-        List<Long> citiesId = new ArrayList<>();
-        for (CityDto city : joinDto.getLocation().getCities()) {
-            citiesId.add(city.getId());
-        }
-
-        userService.updateProviderInfo(user, citiesId,
-            joinDto.getSchedule().getStartTime(), joinDto.getSchedule().getEndTime());
-
-        LOGGER.info("User with id {} update provider information succesfully", user.getId());
-
-        return Response.ok().build();
-
-    }
-
-
-
     private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
         responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
     }
@@ -325,52 +155,5 @@ public class UserSessionController {
     private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
         responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
     }
-
-    private <T, K> Response createPaginationResponse(PaginatedSearchResult<T> results,
-                                                     GenericEntity<Collection<K>> resultsDto,
-                                                     UriBuilder uriBuilder) {
-        if (results.getResults().isEmpty()) {
-            if (results.getPage() == 0) {
-                return Response.noContent().build();
-            } else {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-        }
-
-        final Response.ResponseBuilder response = Response.ok(resultsDto);
-
-        addPaginationLinks(response, results, uriBuilder);
-
-        return response.build();
-    }
-
-    private <T> void addPaginationLinks(Response.ResponseBuilder responseBuilder,
-                                        PaginatedSearchResult<T> results,
-                                        UriBuilder uriBuilder) {
-
-        final int page = results.getPage();
-
-        final int first = 0;
-        final int last = results.getLastPage();
-        final int prev = page - 1;
-        final int next = page + 1;
-
-        responseBuilder.link(uriBuilder.clone().queryParam("page", first).build(), "first");
-
-        responseBuilder.link(uriBuilder.clone().queryParam("page", last).build(), "last");
-
-        if (page != first) {
-            responseBuilder.link(uriBuilder.clone().queryParam("page", prev).build(), "prev");
-        }
-
-        if (page != last) {
-            responseBuilder.link(uriBuilder.clone().queryParam("page", next).build(), "next");
-        }
-    }
-
-
-
-
-
 
 }

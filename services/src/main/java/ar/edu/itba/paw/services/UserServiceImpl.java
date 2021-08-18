@@ -118,9 +118,9 @@ public class UserServiceImpl implements UserService {
             return Optional.empty();
         }
 
-        LOGGER.debug("Validating user with id {}", vtoken.getUser().getId());
-
         final User user = vtoken.getUser();
+
+        LOGGER.debug("Validating user with id {}", vtoken.getUser().getId());
 
         user.removeRole(Roles.NOT_VERIFIED);
         user.addRole(Roles.VERIFIED);
@@ -213,6 +213,8 @@ public class UserServiceImpl implements UserService {
         }
 
         final PasswordResetToken prtoken = prtokenOpt.get();
+        final User user = prtoken.getUser();
+
         LOGGER.debug("Removing password reset token with id {}", prtoken.getId());
         passwordResetTokenDao.removeToken(prtoken); //remove always, either token is valid or not
         if (!prtoken.isValid()) {
@@ -220,7 +222,6 @@ public class UserServiceImpl implements UserService {
             return Optional.empty();
         }
 
-        final User user = prtoken.getUser();
         LOGGER.debug("Updating user password for user {}", user.getId());
 
         user.setPassword(passwordEncoder.encode(password));

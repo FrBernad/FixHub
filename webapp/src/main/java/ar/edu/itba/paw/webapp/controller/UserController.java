@@ -11,9 +11,13 @@ import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.pagination.PaginatedSearchResult;
+import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.models.user.notification.Notification;
+import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
+import ar.edu.itba.paw.webapp.dto.request.JoinDto;
 import ar.edu.itba.paw.webapp.dto.request.NewStatusDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -32,7 +36,9 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static ar.edu.itba.paw.models.job.JobStatus.*;
 import static javax.ws.rs.core.Response.Status.*;
@@ -62,6 +68,9 @@ public class UserController {
 
     @Context
     private SecurityContext securityContext;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -97,6 +106,180 @@ public class UserController {
         LOGGER.info("Return user with id {}", id);
         return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
     }
+
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response updateUser(@Valid UserInfoDto userInfoDto, @PathParam("id") final long id) {
+        LOGGER.info("Accessed /user/ PUT controller");
+
+        if (userInfoDto == null) {
+            throw new ContentExpectedException();
+        }
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        assureUserResourceCorrelation(user, id);
+
+        userService.updateUserInfo(
+            new UserInfo(userInfoDto.getName(), userInfoDto.getSurname(),
+                userInfoDto.getCity(), userInfoDto.getState(), userInfoDto.getPhoneNumber()),
+            user);
+
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Path("/verificationEmail")
+    public Response verifyUser(TokenDto tokenDto) {
+        LOGGER.info("Accessed /users/emailVerification PUT controller");
+
+        if (tokenDto == null) {
+            throw new ContentExpectedException();
+        }
+
+        final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);
+
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+
+        if (user.isVerified()) {
+            addAuthorizationHeader(responseBuilder, user);
+            if (securityContext.getUserPrincipal() == null) {
+                addSessionRefreshTokenCookie(responseBuilder, user);
+            }
+        }
+        return responseBuilder.build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Path("/verificationEmail")
+    public Response resendUserVerification() {
+        LOGGER.info("Accessed /users/emailVerification POST controller");
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+
+        userService.resendVerificationToken(user);
+
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/passwordReset")
+    public Response sendResetPasswordEmail(@Valid final PasswordResetEmailDto passwordResetDto) {
+        LOGGER.info("Accessed /users/passwordReset POST controller");
+
+        if (passwordResetDto == null) {
+            throw new ContentExpectedException();
+        }
+
+        final User user = userService.getUserByEmail(passwordResetDto.getEmail()).orElseThrow(UserNotFoundException::new);
+
+        userService.generateNewPassword(user);
+
+        return Response.noContent().build();
+    }
+
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @PUT
+    @Path("/passwordReset")
+    public Response resetPassword(@Valid final PasswordResetDto passwordResetDto, @PathParam("id") final long id) {
+        LOGGER.info("Accessed /users/passwordReset PUT controller");
+
+        if (passwordResetDto == null) {
+            throw new ContentExpectedException();
+        }
+
+        userService.updatePassword(passwordResetDto.getToken(), passwordResetDto.getPassword()).orElseThrow(UserNotFoundException::new);
+
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/{id}/provider")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response join(@Valid final JoinDto joinDto, @PathParam("id") final long id) {
+        LOGGER.info("Accessed /users/{}}/provider POST controller", id);
+
+        if (joinDto == null) {
+            throw new ContentExpectedException();
+        }
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        assureUserResourceCorrelation(user, id);
+
+        if (user.hasRole(Roles.PROVIDER)) {
+            LOGGER.warn("User with id {} is already a provider", user.getId());
+            throw new IllegalOperationException();
+        }
+
+        List<Long> citiesId = new ArrayList<>();
+        for (CityDto city : joinDto.getLocation().getCities()) {
+            citiesId.add(city.getId());
+        }
+
+        userService.makeProvider(user,
+            citiesId,
+            joinDto.getSchedule().getStartTime(),
+            joinDto.getSchedule().getEndTime());
+
+        LOGGER.info("User with id {} become provider successfully", user.getId());
+
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
+        addAuthorizationHeader(responseBuilder, user);
+
+        return responseBuilder.build();
+    }
+
+
+    @PUT
+    @Path("/{id}/provider")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateProviderInfo(final JoinDto joinDto, @PathParam("id") final long id) {
+        LOGGER.info("Accessed /users/{}}/provider PUT controller", id);
+
+        if (joinDto == null) {
+            throw new ContentExpectedException();
+        }
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        assureUserResourceCorrelation(user, id);
+
+        if (!user.hasRole(Roles.PROVIDER)) {
+            LOGGER.warn("User {} is not a provider", user.getId());
+            throw new IllegalOperationException();
+        }
+
+        List<Long> citiesId = new ArrayList<>();
+        for (CityDto city : joinDto.getLocation().getCities()) {
+            citiesId.add(city.getId());
+        }
+
+        userService.updateProviderInfo(user, citiesId,
+            joinDto.getSchedule().getStartTime(), joinDto.getSchedule().getEndTime());
+
+        LOGGER.info("User with id {} update provider information succesfully", user.getId());
+
+        return Response.ok().build();
+
+    }
+
+    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
+        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
+    }
+
+    private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
+        responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
+    }
+
 
     @GET
     @Path("/{id}/profileImage")
@@ -145,7 +328,7 @@ public class UserController {
 
         assureUserResourceCorrelation(user, id);
 
-        LOGGER.info("Accessed /user/{}/profileImage PUT controller", id);
+        LOGGER.info("Accessed /users/{}/profileImage PUT controller", id);
 
         InputStream in = profileImage.getEntityAs(InputStream.class);
         userService.updateProfileImage(new NewImageDto(StreamUtils.copyToByteArray(in), profileImage.getMediaType().toString()), user);
@@ -463,7 +646,7 @@ public class UserController {
         @QueryParam("page") @DefaultValue("0") int page,
         @QueryParam("pageSize") @DefaultValue("6") int pageSize
     ) {
-        LOGGER.info("Accessed /user/jobs GET controller");
+        LOGGER.info("Accessed /users/{}/jobs GET controller", id);
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 

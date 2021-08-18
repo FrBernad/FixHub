@@ -77,7 +77,7 @@ export class UserService {
 
   updateProfileInfo(profileInfo: ProfileInfo) {
     return this.http.put(
-      environment.apiBaseUrl + '/user',
+      environment.apiBaseUrl + '/users/' + this.user.getValue().id,
       {
         ...this.user.getValue(),
         ...profileInfo

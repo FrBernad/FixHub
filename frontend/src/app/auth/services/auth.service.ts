@@ -115,7 +115,7 @@ export class AuthService {
   verify(token: string) {
     return this.http
       .put(
-        environment.apiBaseUrl + '/user/verify',
+        environment.apiBaseUrl + '/users/verificationEmail',
         {
           token: token,
         },
@@ -131,10 +131,20 @@ export class AuthService {
       );
   }
 
+  resendVerificationEmail() {
+    return this.http
+      .post(
+        environment.apiBaseUrl + '/users/verificationEmail',
+        {},
+        {
+          observe: "response"
+        }
+      );
+  }
 
   makeProvider(providerInfo: ProviderInfo) {
     return this.http.post(
-      environment.apiBaseUrl + '/user/account/provider',
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/provider',
       providerInfo,
       {
         observe: "response"
@@ -159,7 +169,7 @@ export class AuthService {
   resetPassword(token: string, password: string) {
     return this.http
       .put(
-        environment.apiBaseUrl + '/user/resetPassword',
+        environment.apiBaseUrl + '/users/passwordReset',
         {
           token,
           password
@@ -173,21 +183,10 @@ export class AuthService {
   sendResetPasswordEmail(email: string) {
     return this.http
       .post(
-        environment.apiBaseUrl + '/user/resetPassword',
+        environment.apiBaseUrl + '/users/passwordReset',
         {
           email,
         },
-        {
-          observe: "response"
-        }
-      );
-  }
-
-  resendVerificationEmail() {
-    return this.http
-      .post(
-        environment.apiBaseUrl + '/user/verify',
-        {},
         {
           observe: "response"
         }

@@ -75,6 +75,9 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
             //-------- /users route ---------
 
             .antMatchers(HttpMethod.PUT,
+                // USER
+                "/api/users/{id:[\\d]+}",
+                "/api/users/{id:[\\d]+}/",
                 // IMAGES
                 "/api/users/{id:[\\d]+}/profileImage",
                 "/api/users/{id:[\\d]+}/profileImage/",
@@ -106,6 +109,11 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/users/{id:[\\d]+}/contactInfo",
                 "/api/users/{id:[\\d]+}/contactInfo/"
             ).hasRole("VERIFIED")
+            .antMatchers(HttpMethod.POST,
+                // JOIN PROVIDERS
+                "/api/users/{id:[\\d]+}/provider/",
+                "/api/users/{id:[\\d]+}/provider"
+            ).hasRole("VERIFIED")
             .antMatchers(
                 // RECEIVED REQUESTS
                 "/api/users/{id:[\\d]+}/receivedRequests",
@@ -116,6 +124,16 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/users/{id:[\\d]+}/jobs",
                 "/api/users/{id:[\\d]+}/jobs/"
             ).hasRole("PROVIDER")
+            .antMatchers(HttpMethod.PUT,
+                // PROVIDERS UPDATE
+                "/api/users/{id:[\\d]+}/provider/",
+                "/api/users/{id:[\\d]+}/provider"
+            ).hasRole("PROVIDER")
+            .antMatchers(HttpMethod.POST,
+                // VERIFICATION RESEND
+                "/api/users/verificationEmail",
+                "/api/users/verificationEmail/"
+            ).hasRole("NOT_VERIFIED")
 
             //-------- /user route ---------
             .antMatchers(HttpMethod.POST,
@@ -126,26 +144,10 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/user",
                 "/api/user/"
             ).authenticated()
-            .antMatchers(HttpMethod.PUT,
-                "/api/user",
-                "/api/user/"
-            ).authenticated()
             .antMatchers(HttpMethod.DELETE,
                 "/api/user/refreshSession",
                 "/api/user/refreshSession/"
             ).authenticated()
-            .antMatchers(HttpMethod.POST,
-                "/api/user/verify",
-                "/api/user/verify/"
-            ).hasRole("NOT_VERIFIED")
-            .antMatchers(
-                "/api/user/account/provider/",
-                "/api/user/account/provider"
-            ).hasRole("PROVIDER")
-            .antMatchers(
-                "/api/user/account/provider/",
-                "/api/user/account/provider"
-            ).hasRole("VERIFIED")
 
             // --------- /jobs route ---------
             .antMatchers(HttpMethod.POST,
