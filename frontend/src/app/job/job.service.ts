@@ -4,7 +4,6 @@ import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {Review} from "./review.model";
 import {SingleJob} from "../models/single-job.model";
-import * as Url from "url";
 
 export interface JobData {
   jobProvided: string,
@@ -115,8 +114,7 @@ export class JobService {
       .pop()
       .match(/<(.*)>/)[1];
 
-    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
-      .get("page")[0]) + 1;
+    const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
     return {
       totalPages,

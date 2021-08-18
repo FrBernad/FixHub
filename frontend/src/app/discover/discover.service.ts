@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams, HttpResponse, HttpStatusCode,} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode,} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Job} from "../models/job.model";
-import {DefaultUrlSerializer, Router, UrlSerializer} from "@angular/router";
-import * as Url from "url";
+import {Router} from "@angular/router";
 
 export interface JobPaginationQuery {
   query?: string;
@@ -83,8 +82,12 @@ export class DiscoverService {
           this.results.next(jr);
         }
       },
-      () => {
-        this.router.navigate(['500'])
+      (error: HttpErrorResponse) => {
+        if (error.status === HttpStatusCode.NotFound) {
+          this.router.navigate(['404']);
+        } else {
+          this.router.navigate(['500']);
+        }
       }
     )
     ;
@@ -100,8 +103,7 @@ export class DiscoverService {
       .pop()
       .match(/<(.*)>/)[1];
 
-    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
-      .get("page")[0]) + 1;
+    const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
     return {
       totalPages,

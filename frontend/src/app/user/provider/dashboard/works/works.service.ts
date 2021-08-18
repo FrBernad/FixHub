@@ -4,7 +4,6 @@ import {Subject} from 'rxjs';
 import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/discover.service";
 import {environment} from "../../../../../environments/environment";
 import {Job} from "../../../../models/job.model";
-import * as Url from "url";
 import {Router} from "@angular/router";
 
 
@@ -53,8 +52,7 @@ export class WorksService {
       .pop()
       .match(/<(.*)>/)[1];
 
-    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
-      .get("page")[0]) + 1;
+    const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
     return {
       totalPages,

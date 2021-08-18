@@ -5,7 +5,6 @@ import {Subject} from "rxjs";
 import {UserService} from "../../auth/services/user.service";
 import {map, tap} from "rxjs/operators";
 import {JobRequest} from "../../models/job-request.model";
-import * as Url from "url";
 import {Router} from "@angular/router";
 
 export interface RequestPaginationResult {
@@ -141,8 +140,7 @@ export class RequestsService {
       .pop()
       .match(/<(.*)>/)[1];
 
-    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
-      .get("page")[0]) + 1;
+    const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
     return {
       totalPages,

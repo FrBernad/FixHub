@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../models/user.model";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {JobService, ReviewsPaginationResult} from "./job.service";
 import {Subscription} from "rxjs";
 import {UserService} from "../auth/services/user.service";

@@ -3,7 +3,6 @@ import {environment} from "../../../environments/environment";
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {User} from "../../models/user.model";
-import * as Url from "url";
 import {Router} from "@angular/router";
 
 export interface FollowPaginationResult {
@@ -87,8 +86,7 @@ export class FollowService {
       .pop()
       .match(/<(.*)>/)[1];
 
-    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
-      .get("page")[0]) + 1;
+    const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
     return {
       totalPages,

@@ -15,8 +15,8 @@ public class UserDto extends BaseUserDto {
         return users.stream().map(u -> new UserDto(u, uriInfo, securityContext)).collect(Collectors.toList());
     }
 
-    private boolean followed;
-    private boolean following;
+    private Boolean followed;
+    private Boolean following;
 
     public UserDto() {
         super();
@@ -25,7 +25,6 @@ public class UserDto extends BaseUserDto {
 
     public UserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         super(user, uriInfo, securityContext);
-        System.out.println(securityContext.getUserPrincipal());
         if (securityContext.getUserPrincipal() != null) {
             this.following = user.userIsFollowing(securityContext.getUserPrincipal().getName());
             this.followed = user.userIsFollower(securityContext.getUserPrincipal().getName());
@@ -33,19 +32,19 @@ public class UserDto extends BaseUserDto {
 
     }
 
-    public boolean isFollowed() {
+    public Boolean getFollowed() {
         return followed;
     }
 
-    public void setFollowed(boolean followed) {
+    public void setFollowed(Boolean followed) {
         this.followed = followed;
     }
 
-    public boolean isFollowing() {
+    public Boolean getFollowing() {
         return following;
     }
 
-    public void setFollowing(boolean following) {
+    public void setFollowing(Boolean following) {
         this.following = following;
     }
 }

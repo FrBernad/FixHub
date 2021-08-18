@@ -50,14 +50,17 @@ export class FollowingComponent implements OnInit, OnDestroy {
       (user) => {
         this.user = user;
         this.loading = false;
-        this.parseQueryParams();
-        this.followService.getFollowing(this.fpq, this.user.id);
+
+        this.route.queryParams.subscribe(() => {
+          this.parseQueryParams();
+          this.followService.getFollowers(this.fpq, this.user.id);
+        })
+
         this.followSub = this.followService.follows.subscribe((results) => {
           this.fpr = {
             ...this.fpr,
             ...results
           };
-          this.updateRoute(true);
           this.loadingFollow = false;
         });
       },
@@ -84,7 +87,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
 
   onChangePage(page: number) {
     this.fpq.page = page;
-    this.followService.getFollowing(this.fpq, this.user.id);
+    this.updateRoute(false);
   }
 
   private parseQueryParams() {
@@ -97,11 +100,17 @@ export class FollowingComponent implements OnInit, OnDestroy {
 
     if (params["page"]) {
       this.fpq.page = Number.parseInt(params["page"])
-    }
-    if (params["pageSize"]) {
-      this.fpq.pageSize = Number.parseInt(params["pageSize"])
+      this.fpq.page = isNaN(this.fpq.page) ? 0 : this.fpq.page;
+    } else {
+      this.fpq.page = 0;
     }
 
+    if (params["pageSize"]) {
+      this.fpq.pageSize = Number.parseInt(params["pageSize"])
+      this.fpq.pageSize = isNaN(this.fpq.pageSize) ? 6 : this.fpq.pageSize;
+    } else {
+      this.fpq.pageSize = 6
+    }
   }
 
   private updateRoute(replace: boolean) {

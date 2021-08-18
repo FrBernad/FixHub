@@ -4,9 +4,7 @@ import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} f
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
-import {take} from "rxjs/operators";
-import {query} from "@angular/animations";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-discover',
@@ -54,22 +52,24 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.changeTitle();
 
     this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
     });
 
-    this.parseQueryParams();
+    this.route.queryParams.subscribe((e) => {
+      this.parseQueryParams();
+      this.discoverService.getJobs(this.jpq);
+    })
 
-    this.discoverService.getJobs(this.jpq);
     this.jobsSub = this.discoverService.results.subscribe(
       (results) => {
         this.jpr = {
           ...this.jpr,
           ...results
         };
-        this.updateRoute(true);
         this.isFetching = false;
       });
 
@@ -102,13 +102,13 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!category) {
       delete this.jpq.category;
     }
-    this.discoverService.getJobs(this.jpq);
+    this.updateRoute(false);
   }
 
   onChangeOrder(order: string) {
     this.jpq.order = order;
     this.jpq.page = 0;
-    this.discoverService.getJobs(this.jpq)
+    this.updateRoute(false);
   }
 
   onChangeState(state: string, id: string) {
@@ -125,7 +125,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     delete this.jpq.city;
     this.selectedCity = "";
     this.cities = [];
-    this.discoverService.getJobs(this.jpq);
+    this.updateRoute(false);
   }
 
   onChangeCity(city: string, id: string) {
@@ -135,12 +135,12 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!id) {
       delete this.jpq.city;
     }
-    this.discoverService.getJobs(this.jpq);
+    this.updateRoute(false);
   }
 
   onChangePage(page: number) {
     this.jpq.page = page;
-    this.discoverService.getJobs(this.jpq);
+    this.updateRoute(false);
   }
 
   onSearchEnter(e: KeyboardEvent, query: string) {
@@ -153,7 +153,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     if (!this.searchError) {
       this.jpq.page = 0;
       this.jpq.query = query;
-      this.discoverService.getJobs(this.jpq)
+      this.updateRoute(false);
     }
   }
 
@@ -181,9 +181,28 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
     if (params["page"]) {
       this.jpq.page = Number.parseInt(params["page"])
+      // this.jpq.page = isNaN(this.jpq.page) ? 0 : this.jpq.page;
+    } else {
+      this.jpq.page = 0;
     }
+
     if (params["pageSize"]) {
       this.jpq.pageSize = Number.parseInt(params["pageSize"])
+      this.jpq.pageSize = isNaN(this.jpq.pageSize) ? 6 : this.jpq.pageSize;
+    } else {
+      this.jpq.pageSize = 6
+    }
+
+    if (!params["category"]) {
+      delete this.jpq.category;
+    }
+
+    if (!params["state"]) {
+      delete this.jpq.state;
+    }
+
+    if (!params["city"]) {
+      delete this.jpq.city;
     }
 
   }

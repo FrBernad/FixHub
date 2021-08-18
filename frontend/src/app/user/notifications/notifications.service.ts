@@ -5,7 +5,6 @@ import {Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {tap} from "rxjs/operators";
 import {Router} from "@angular/router";
-import * as Url from "url";
 
 export interface NotificationPaginationResult {
   totalPages: number;
@@ -123,8 +122,7 @@ export class NotificationsService {
       .pop()
       .match(/<(.*)>/)[1];
 
-    const totalPages: number = Number(new HttpParams({fromString: Url.parse(lastLink).query})
-      .get("page")[0]) + 1;
+    const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
     return {
       totalPages,
