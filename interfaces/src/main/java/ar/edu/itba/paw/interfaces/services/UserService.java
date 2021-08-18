@@ -55,4 +55,6 @@ public interface UserService {
 
     void unfollowUser(User user, User follower);
 
+    boolean isUserFollowing(User user, User follower);
+
 }

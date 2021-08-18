@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.exceptions.ContactInfoNotFoundException;
 import ar.edu.itba.paw.interfaces.exceptions.DuplicateUserException;
 import ar.edu.itba.paw.interfaces.exceptions.IllegalContactException;
+import ar.edu.itba.paw.interfaces.exceptions.IllegalOperationException;
 import ar.edu.itba.paw.interfaces.persistance.*;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ImageService;
@@ -350,6 +351,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void followUser(User user, User follower) {
+        if (user.getId().equals(follower.getId())) {
+            throw new IllegalOperationException();
+        }
         LOGGER.debug("Adding user {} to user {} followers", follower, user);
         user.getFollowing().add(follower);
         follower.getFollowers().add(user);
@@ -358,7 +362,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public boolean isUserFollowing(User user, User follower) {
+        return user.userIsFollowing(follower.getEmail());
+    }
+
+    @Transactional
+    @Override
     public void unfollowUser(User user, User follower) {
+        if (user.getId().equals(follower.getId())) {
+            throw new IllegalOperationException();
+        }
+
         LOGGER.debug("Removing user {} to user {} followers", follower, user);
         user.getFollowing().remove(follower);
         follower.getFollowers().remove(user);
