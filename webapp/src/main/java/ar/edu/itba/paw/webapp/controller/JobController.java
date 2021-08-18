@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Path("jobs")
@@ -259,7 +260,16 @@ public class JobController {
 
         final byte[] jobImage = img.getData();
 
-        return Response.ok(jobImage).type(img.getMimeType()).build();
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoTransform(false);
+        cacheControl.getCacheExtension().put("public", null);
+        cacheControl.setMaxAge(MAX_TIME);
+        cacheControl.getCacheExtension().put("immutable", null);
+
+        return Response.ok(jobImage)
+            .type(img.getMimeType())
+            .cacheControl(cacheControl)
+            .build();
     }
 
     @GET

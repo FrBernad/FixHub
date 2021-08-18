@@ -20,6 +20,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.HeaderWriterFilter;
+import org.springframework.security.web.header.writers.CacheControlHeadersWriter;
+import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.io.IOException;
 
@@ -64,12 +72,24 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
 
+        RequestMatcher notResourcesMatcher = new NegatedRequestMatcher(
+            new OrRequestMatcher(
+                new AntPathRequestMatcher("/api/jobs/{id:[\\d]+}/images/{id:[\\d]+}"),
+                new AntPathRequestMatcher("/api/jobs/{id:[\\d]+}/images/{id:[\\d]+}/")
+            )
+        );
+
+        HeaderWriter notResourcesHeaderWriter = new DelegatingRequestMatcherHeaderWriter(notResourcesMatcher, new CacheControlHeadersWriter());
 
         http.sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().exceptionHandling()
             .authenticationEntryPoint(authenticationEntryPoint())
             .accessDeniedHandler(accessDeniedHandler())
+            .and()
+            .headers()
+            .cacheControl().disable()
+            .addHeaderWriter(notResourcesHeaderWriter)
             .and().authorizeRequests()
 
             //-------- /users route ---------

@@ -496,7 +496,6 @@ public class UserController {
         return Response.noContent().build();
     }
 
-
     @GET
     @Path("/{id}/receivedRequests")
     @Produces(value = {MediaType.APPLICATION_JSON})
