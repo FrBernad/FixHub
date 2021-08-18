@@ -111,7 +111,6 @@ export class AuthService {
       );
   }
 
-
   verify(token: string) {
     return this.http
       .put(

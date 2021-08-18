@@ -135,7 +135,7 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     @Path("/verificationEmail")
     public Response verifyUser(TokenDto tokenDto) {
-        LOGGER.info("Accessed /users/emailVerification PUT controller");
+        LOGGER.info("Accessed /users/verificationEmail PUT controller");
 
         if (tokenDto == null) {
             throw new ContentExpectedException();
@@ -159,7 +159,7 @@ public class UserController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     @Path("/verificationEmail")
     public Response resendUserVerification() {
-        LOGGER.info("Accessed /users/emailVerification POST controller");
+        LOGGER.info("Accessed /users/verificationEmail POST controller");
 
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
 
@@ -190,7 +190,7 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/passwordReset")
-    public Response resetPassword(@Valid final PasswordResetDto passwordResetDto, @PathParam("id") final long id) {
+    public Response resetPassword(@Valid final PasswordResetDto passwordResetDto) {
         LOGGER.info("Accessed /users/passwordReset PUT controller");
 
         if (passwordResetDto == null) {
@@ -206,7 +206,7 @@ public class UserController {
     @Path("/{id}/provider")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response join(@Valid final JoinDto joinDto, @PathParam("id") final long id) {
-        LOGGER.info("Accessed /users/{}}/provider POST controller", id);
+        LOGGER.info("Accessed /users/{}/provider POST controller", id);
 
         if (joinDto == null) {
             throw new ContentExpectedException();
@@ -244,7 +244,7 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response updateProviderInfo(final JoinDto joinDto, @PathParam("id") final long id) {
-        LOGGER.info("Accessed /users/{}}/provider PUT controller", id);
+        LOGGER.info("Accessed /users/{}/provider PUT controller", id);
 
         if (joinDto == null) {
             throw new ContentExpectedException();
@@ -390,7 +390,6 @@ public class UserController {
         userService.updateCoverImage(new NewImageDto(StreamUtils.copyToByteArray(in), coverImage.getMediaType().toString()), user);
         return Response.ok().build();
     }
-
 
     @GET
     @Path("/{id}/followers")
