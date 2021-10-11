@@ -273,12 +273,16 @@ public class JobController {
     }
 
     @GET
-    @Path("/categories")
+    @Path("/searchOptions")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getCategories() {
-        LOGGER.info("Accessed /jobs/categories GET controller");
-        final List<String> categories = jobService.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
-        return Response.ok(new StringCollectionResponseDto(categories)).build();
+        LOGGER.info("Accessed /jobs/categories GET searchOptions");
+        final Collection<SearchOptionDto> searchOptions = new ArrayList<>();
+        searchOptions.add(new SearchOptionDto("categories", jobService.getJobsCategories()));
+        searchOptions.add(new SearchOptionDto("order", jobService.getJobsOrder()));
+
+        return Response.ok(new GenericEntity<Collection<SearchOptionDto>>(searchOptions) {
+        }).build();
     }
 
     @POST
