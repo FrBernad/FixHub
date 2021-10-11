@@ -64,6 +64,8 @@ public class JwtUtil {
             .compact();
     }
 
+
+//    FIXME: ELIMINAR LOS METODOSO DE LAS COOKIES
     public NewCookie generateSessionRefreshCookie(SessionRefreshToken sessionRefreshToken) {
         return new NewCookie(SESSION_REFRESH_TOKEN_COOKIE_NAME,
             sessionRefreshToken.getValue(),

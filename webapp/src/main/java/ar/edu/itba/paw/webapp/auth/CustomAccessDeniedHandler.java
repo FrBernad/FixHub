@@ -23,6 +23,7 @@ public class CustomAccessDeniedHandler implements org.springframework.security.w
         LOGGER.warn("User: " + auth.getName()
             + " attempted to access the protected URL: "
             + request.getRequestURI());
+
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 

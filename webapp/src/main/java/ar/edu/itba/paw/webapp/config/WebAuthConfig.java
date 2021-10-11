@@ -41,7 +41,7 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
     private UserDetailService userDetailService;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    private AuthorizationFilter authorizationFilter;
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
@@ -194,7 +194,7 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
 
             .and().csrf().disable()
 
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 
