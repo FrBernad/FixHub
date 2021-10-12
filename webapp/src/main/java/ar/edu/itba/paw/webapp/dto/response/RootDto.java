@@ -21,29 +21,19 @@ public class RootDto {
     }
 
     public RootDto(UriInfo uriInfo) {
-        usersUrl = uriInfo.getBaseUriBuilder().path("users").path("{id}").build().toString();
-        notificationsUrl = uriInfo.getBaseUriBuilder().path("users")
-            .path("{id}").path("notifications")
-            .path("{{?onlyNew,page,pageSize}").build().toString();
-        sentRequestsUrl = uriInfo.getBaseUriBuilder().path("users")
-            .path("{id}").path("requests").path("sent")
-            .path("{{?status,page,order,pageSize}").build().toString();
-        receivedRequestsUrl = uriInfo.getBaseUriBuilder().path("users")
-            .path("{id}").path("requests").path("received")
-            .path("{?status,page,order,pageSize}").build().toString();
-        userJobsUrl = uriInfo.getBaseUriBuilder().path("users")
-            .path("{id}").path("jobs").path("{?query,order,page,pageSize}").build().toString();
-        followersUrl = uriInfo.getBaseUriBuilder().path("users")
-            .path("{id}").path("followers").path("{?page,pageSize}").build().toString();
-        followingUrl = uriInfo.getBaseUriBuilder().path("users")
-            .path("{id}").path("following").path("{?page,pageSize}").build().toString();
-        jobsUrl = uriInfo.getBaseUriBuilder().path("jobs")
-            .path("{?order,category,state,city,page,pageSize}").build().toString();
+        final String baseUrl = uriInfo.getBaseUriBuilder().build().toString();
 
-        statesUrl = uriInfo.getBaseUriBuilder().path("locations")
-            .path("states").path("{stateId}").build().toString();
-        citiesUrl = uriInfo.getBaseUriBuilder().path("locations")
-            .path("states").path("{stateId}").path("cities").build().toString();
+        usersUrl = baseUrl + "users/{id}";
+        notificationsUrl = baseUrl+"users/{id}/notifications/{?onlyNew,page,pageSize}";
+        sentRequestsUrl = baseUrl+"users/{id}/requests/sent/{?status,page,order,pageSize}";
+        receivedRequestsUrl = baseUrl+"users/{id}/requests/received/{?status,page,order,pageSize}";
+        userJobsUrl = baseUrl+"users/{id}/jobs/{?query,order,page,pageSize}";
+        followersUrl = baseUrl+"users/{id}/followers/{?page,pageSize}";
+        followingUrl = baseUrl+"users/{id}/following/{?page,pageSize}";
+        jobsUrl = baseUrl+"jobs/{?order,category,state,city,page,pageSize}";
+
+        statesUrl = baseUrl+"locations/states/{id}";
+        citiesUrl = baseUrl+"locations/states/{id}/cities";
     }
 
     public String getUsersUrl() {
