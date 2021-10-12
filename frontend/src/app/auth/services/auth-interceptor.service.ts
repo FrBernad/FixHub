@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {
+  HttpErrorResponse,
   HttpHandler,
   HttpHeaders,
   HttpInterceptor,
@@ -7,9 +8,10 @@ import {
   HttpResponse,
   HttpStatusCode
 } from '@angular/common/http';
-import {exhaustMap, map, take} from 'rxjs/operators';
+import {catchError, exhaustMap, map, take} from 'rxjs/operators';
 
 import {AuthService} from './auth.service';
+import {throwError} from "rxjs";
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
@@ -28,13 +30,19 @@ export class AuthInterceptorService implements HttpInterceptor {
         });
         return next.handle(modifiedReq)
           .pipe(
+            catchError((err) => {
+                if (err instanceof HttpErrorResponse) {
+                  if (err.status === HttpStatusCode.Unauthorized) {
+                    this.authService.logout();
+                  }
+                  return throwError(err);
+                }
+              }
+            ),
             map(resp => {
               if (resp instanceof HttpResponse) {
-                if(resp.status === HttpStatusCode.Unauthorized){
-                  this.authService.logout();
-                }
-                else if(resp.headers.has("X-JWT")){
-                  this.authService.handleSession(resp);
+                if (resp.headers.has("X-JWT")) {
+                  this.authService.handleJWT(resp);
                 }
                 return resp;
               }

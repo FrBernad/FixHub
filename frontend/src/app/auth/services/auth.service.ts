@@ -38,6 +38,10 @@ export class AuthService {
       .pipe(
         concatMap((_) => {
           this.handleAutoLogin();
+          if (!this.session.getValue()) {
+            this.userService.setLoading(false);
+            return of(true);
+          }
           return this.http
             .post(
               environment.apiBaseUrl + '/user/refreshToken',
@@ -56,7 +60,7 @@ export class AuthService {
                   if (res as unknown as boolean === true) {
                     return of(true);
                   }
-                  this.handleSession(res);
+                  this.handleJWT(res);
                   return this.userService.populateUserData()
                     .pipe(
                       catchError(() => {
@@ -77,8 +81,6 @@ export class AuthService {
         }),
         shareReplay(1)
       );
-
-  // private tokenExpirationTimer: any;
 
   constructor(
     private http: HttpClient,
@@ -113,7 +115,7 @@ export class AuthService {
       )
       .pipe(
         tap(res => {
-          this.handleLogin(res);
+          this.handleNewSession(res);
         })
       );
   }
@@ -131,7 +133,7 @@ export class AuthService {
       )
       .pipe(
         tap(res => {
-            this.handleSession(res);
+            this.handleNewSession(res);
           }
         )
       );
@@ -157,7 +159,7 @@ export class AuthService {
       }
     ).pipe(
       tap((res) => {
-          this.handleSession(res);
+          this.handleJWT(res);
         }
       ),
       mergeMap(() => {
@@ -174,13 +176,13 @@ export class AuthService {
     }
   }
 
-  handleLogin(res: HttpResponse<Object>) {
+  handleNewSession(res: HttpResponse<Object>) {
     const refreshToken = res.headers.get("X-Refresh-Token");
     localStorage.setItem("refresh-token", refreshToken);
-    this.handleSession(res);
+    this.handleJWT(res);
   }
 
-  handleSession(res: HttpResponse<Object>) {
+  handleJWT(res: HttpResponse<Object>) {
     const authHeader = res.headers.get("X-JWT");
     const token = authHeader.split(" ")[1];
     this.handleAuthentication(token);
@@ -230,46 +232,14 @@ export class AuthService {
 
     this.notificationsService.clearNotificationsInterval();
 
-    // if (this.tokenExpirationTimer) {
-    //   clearTimeout(this.tokenExpirationTimer);
-    // }
-    // this.tokenExpirationTimer = null;
   }
-
-  // autoRefreshToken(expirationDuration: number) {
-  //   if (this.tokenExpirationTimer) {
-  //     clearTimeout(this.tokenExpirationTimer);
-  //   }
-  //
-  //   this.tokenExpirationTimer = setTimeout(() => {
-  //     this.http.post(
-  //       environment.apiBaseUrl + '/user/refreshToken',
-  //       {},
-  //       {
-  //         observe: "response"
-  //       }
-  //     ).pipe(
-  //       catchError(() => {
-  //           this.logout();
-  //           return throwError("");
-  //         }
-  //       ),
-  //       mergeMap((res: HttpResponse<Object>) => {
-  //         this.handleSession(res);
-  //         return this.userService.populateUserData()
-  //       })
-  //     ).subscribe();
-  //   }, expirationDuration);
-  //
-  // }
 
   private handleAuthentication(token: string) {
     const jwt = this.decodeToken(token);
 
     const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
     const refreshToken = localStorage.getItem("refresh-token")
-    const expirationDate = new Date(new Date().getTime() + milliExpirationTime);
-    // this.autoRefreshToken(milliExpirationTime);
+    const expirationDate = new Date(new Date().getTime() + milliExpirationTime - 5*1000);
 
     const newSession = new Session(token, expirationDate, refreshToken);
     this.userService.setRoles(jwt.roles.split(" "));
