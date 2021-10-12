@@ -92,7 +92,6 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
             .and().authorizeRequests()
 
             //-------- /users route ---------
-
             .antMatchers(HttpMethod.PUT,
                 // USER
                 "/api/users/{id:[\\d]+}",
@@ -155,24 +154,6 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/users/emailVerification",
                 "/api/users/emailVerification/"
             ).hasRole("NOT_VERIFIED")
-
-            //-------- /user route ---------
-//            .antMatchers(HttpMethod.POST,
-//                "/api/user",
-//                "/api/user/"
-//            ).anonymous()
-            .antMatchers(HttpMethod.GET,
-                "/api/user",
-                "/api/user/"
-            ).authenticated()
-            .antMatchers(HttpMethod.POST,
-                "/api/user/refreshToken",
-                "/api/user/refreshToken/"
-            ).authenticated()
-            .antMatchers(HttpMethod.DELETE,
-                "/api/user/refreshToken",
-                "/api/user/refreshToken/"
-            ).authenticated()
 
             // --------- /jobs route ---------
             .antMatchers(HttpMethod.POST,

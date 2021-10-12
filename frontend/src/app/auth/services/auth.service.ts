@@ -44,7 +44,7 @@ export class AuthService {
           }
           return this.http
             .post(
-              environment.apiBaseUrl + '/user/refreshToken',
+              environment.authBaseUrl + '/refreshToken',
               {},
               {
                 observe: "response"
@@ -106,7 +106,7 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http
       .post(
-        environment.apiBaseUrl + '/user',
+        environment.authBaseUrl + '/login',
         {},
         {
           headers: new HttpHeaders().set('Authorization', "Basic " + btoa(email + ":" + password)),
@@ -216,12 +216,6 @@ export class AuthService {
   }
 
   logout() {
-    // this.http
-    // .delete(
-    //   environment.apiBaseUrl + '/user/refreshToken',
-    //   {observe: "response"},
-    // ).subscribe();
-
     this.session.next(null);
 
     localStorage.removeItem("refresh-token");

@@ -8,12 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,9 +23,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -46,21 +45,34 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private URL appBaseUrl;
 
-    private static final Base64.Decoder base64Decoder = Base64.getDecoder();
+    private static final Base64.Decoder BASE_64_DECODER = Base64.getDecoder();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
+
+    private static final RequestMatcher AUTH_ENDPOINTS_MATCHER = new OrRequestMatcher(
+        new AntPathRequestMatcher("/auth/login"),
+        new AntPathRequestMatcher("/auth/login/"),
+        new AntPathRequestMatcher("/auth/refreshToken"),
+        new AntPathRequestMatcher("/auth/refreshToken/")
+    );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null) {
+            if (checkAuthenticationPath(request, response)) {
+                return;
+            }
             chain.doFilter(request, response);
             return;
         }
 
         final AuthorizationType authType = parseAuthorizationType(authHeader);
         if (authType == null) {
+            if (checkAuthenticationPath(request, response)) {
+                return;
+            }
             chain.doFilter(request, response);
             return;
         }
@@ -82,6 +94,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
             LOGGER.debug("Populated security context with authorization: {}", auth);
         } catch (AuthenticationException e) {
+            if (checkAuthenticationPath(request, response)) {
+                return;
+            }
             LOGGER.debug("{} Setting default unauthorized user", e.getMessage());
         }
 
@@ -117,7 +132,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String[] decodedCredentials;
 
         try {
-            decodedCredentials = new String(base64Decoder.decode(payload), StandardCharsets.UTF_8).split(":");
+            decodedCredentials = new String(BASE_64_DECODER.decode(payload), StandardCharsets.UTF_8).split(":");
             if (decodedCredentials.length != 2) {
                 throw new IllegalArgumentException();
             }
@@ -156,6 +171,15 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
         return null;
+    }
+
+    private boolean checkAuthenticationPath(final HttpServletRequest request, final HttpServletResponse response) {
+        if (AUTH_ENDPOINTS_MATCHER.matches(request)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return true;
+        }
+
+        return false;
     }
 
     private enum AuthorizationType {
