@@ -185,7 +185,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserByRefreshToken(String token) {
         LOGGER.debug("Retrieving user for token with value {}", token);
-        return sessionRefreshTokenDao.getTokenByValue(token).map(SessionRefreshToken::getUser);
+        return sessionRefreshTokenDao.getTokenByValue(token).filter(SessionRefreshToken::isValid).map(SessionRefreshToken::getUser);
     }
 
     @Transactional
