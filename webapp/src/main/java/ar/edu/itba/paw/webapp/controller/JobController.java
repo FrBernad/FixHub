@@ -286,7 +286,7 @@ public class JobController {
     }
 
     @POST
-    @Path("/{id}/contact")
+    @Path("/{id}/requests")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response contactPost(@PathParam("id") final Long id, @Valid final NewContactDto contact) {
 

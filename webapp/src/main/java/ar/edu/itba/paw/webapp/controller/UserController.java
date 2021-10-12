@@ -276,7 +276,7 @@ public class UserController {
 
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
-        if(!user.isProvider()){
+        if (!user.isProvider()) {
             return Response.noContent().status(NOT_FOUND).build();
         }
 
@@ -508,6 +508,21 @@ public class UserController {
         return Response.noContent().build();
     }
 
+     //  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
+    @GET
+    @Path("/requests/searchOptions")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getRequestsSearchOptions(
+    ) {
+        LOGGER.info("Accessed /users/requests/searchOptions GET controller");
+        final Collection<SearchOptionDto> searchOptions = new ArrayList<>();
+        searchOptions.add(new SearchOptionDto("status", jobService.getJobsRequestsStatus()));
+        searchOptions.add(new SearchOptionDto("order", jobService.getJobsRequestsOrder()));
+
+        return Response.ok(new GenericEntity<Collection<SearchOptionDto>>(searchOptions) {
+        }).build();
+    }
+
     @GET
     @Path("/{id}/requests/received")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -584,7 +599,6 @@ public class UserController {
         return Response.ok().build();
     }
 
-
     @GET
     @Path("/{id}/requests/received/{requestId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -605,21 +619,6 @@ public class UserController {
         final JobContactDto jobContactDto = new JobContactDto(jobContact, uriInfo);
 
         return Response.ok(jobContactDto).build();
-    }
-
-    //  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
-    @GET
-    @Path("/requests/searchOptions")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRequestsSearchOptions(
-    ) {
-        LOGGER.info("Accessed /users/requests/searchOptions GET controller");
-        final Collection<SearchOptionDto> searchOptions = new ArrayList<>();
-        searchOptions.add(new SearchOptionDto("status", jobService.getJobsRequestsStatus()));
-        searchOptions.add(new SearchOptionDto("order", jobService.getJobsRequestsOrder()));
-
-        return Response.ok(new GenericEntity<Collection<SearchOptionDto>>(searchOptions) {
-        }).build();
     }
 
     @GET

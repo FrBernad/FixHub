@@ -37,6 +37,7 @@ public class UserDto {
     private String jobsUrl;
 
     private String providerDetailsUrl;
+
     public static Collection<UserDto> mapUserToDto(Collection<User> users, UriInfo uriInfo) {
         return users.stream().map(u -> new UserDto(u, uriInfo)).collect(Collectors.toList());
     }
