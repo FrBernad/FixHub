@@ -62,7 +62,7 @@ export class NotificationsService {
           this.newNotifications.next(false);
         }
       }
-    );
+    ,(_)=>{});
   }
 
   getNotifications(npq: NotificationPaginationQuery) {
