@@ -4,6 +4,9 @@ import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {Review} from "./review.model";
 import {SingleJob} from "../models/single-job.model";
+import {concatMap, map} from "rxjs/operators";
+import {UserService} from "../auth/services/user.service";
+import {Job} from "../models/job.model";
 
 export interface JobData {
   jobProvided: string,
@@ -35,7 +38,8 @@ export class JobService {
   firstReviews = new Subject<ReviewsPaginationResult>();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private userService: UserService,
   ) {
   }
 
@@ -94,7 +98,23 @@ export class JobService {
   }
 
   getJob(id: number) {
-    return this.http.get<SingleJob>(environment.apiBaseUrl + '/jobs/' + id);
+    let currentJob: SingleJob;
+
+    return this.http.get<SingleJob>(environment.apiBaseUrl + '/jobs/' + id)
+      .pipe(
+        concatMap(
+          job => {
+            currentJob = job;
+            return this.userService.getUserProviderDetails(job.provider.id)
+              .pipe(
+                map(info => {
+                  currentJob.provider.providerDetails = info;
+                  return currentJob;
+                })
+              )
+          }
+        )
+      );
   }
 
   createReview(review: { description: string, rating: string }, id: number) {

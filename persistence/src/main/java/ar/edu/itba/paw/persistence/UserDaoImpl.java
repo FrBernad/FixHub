@@ -49,7 +49,32 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> getUserById(long id) {
         LOGGER.debug("Retrieving user with id {}", id);
-        return Optional.ofNullable(em.find(User.class, id));
+                final String hqlQuery =
+            " SELECT u, count(DISTINCT j.id) AS total_jobs, count(r.rating) AS total_reviews, coalesce(avg(r.rating),0) as avg_rating " +
+                " FROM User u " +
+                " LEFT OUTER JOIN " +
+                " u.providerDetails.jobs j" +
+                " LEFT OUTER JOIN " +
+                " j.reviews r " +
+                " WHERE u.id = :id " +
+                " group by u.id";
+
+        final Collection<Object[]> hqlQueryResult = em.createQuery(hqlQuery, Object[].class)
+            .setParameter("id", id)
+            .getResultList();
+
+        return hqlQueryResult
+            .stream()
+            .map(objArray -> {
+                final User user = (User) objArray[0];
+                if (user.hasRole(Roles.PROVIDER)) {
+                    final ProviderDetails providerDetails = user.getProviderDetails();
+                    providerDetails.setJobsCount((Long) objArray[1]);
+                    providerDetails.setReviewCount((Long) objArray[2]);
+                    providerDetails.setAvgRating(Math.round((Double) objArray[3]));
+                }
+                return user;
+            }).findFirst();
     }
 
     @Override

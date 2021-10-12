@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
-import {User} from "../../models/user.model";
+import {ProviderDetails, User} from "../../models/user.model";
 import {environment} from "../../../environments/environment";
 import {concatMap, tap} from "rxjs/operators";
 import {City, State} from "../../discover/discover.service";
@@ -46,14 +46,19 @@ export class UserService {
   populateUserData() {
     return this.http
       .get<User>(
-        environment.apiBaseUrl + '/users/'+ this.user.getValue().id
+        environment.apiBaseUrl + '/users/' + this.user.getValue().id
       ).pipe(tap(
         res => {
           this.user.next({...this.user.getValue(), ...res});
         }
         ),
         concatMap(_ => {
-          return this.getUserContactInfo();
+          return this.getUserContactInfo()
+            .pipe(
+              concatMap(_ =>{
+                return this.getUserProviderDetails(this.user.getValue().id)
+              })
+            );
         })
       )
   }
@@ -65,6 +70,17 @@ export class UserService {
       ).pipe(tap(
         res => {
           this.user.next({...this.user.getValue(), ...{contactInfo: res}});
+        }
+      ))
+  }
+
+  getUserProviderDetails(id:number) {
+    return this.http
+      .get<ProviderDetails>(
+        environment.apiBaseUrl + '/users/' + id + "/provider"
+      ).pipe(tap(
+        res => {
+          this.user.next({...this.user.getValue(), ...{providerDetails: res}});
         }
       ))
   }
@@ -109,28 +125,36 @@ export class UserService {
   follow(id: number) {
     return this.http.put(
       environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + id, {}).pipe(tap(() => {
-      this.populateUserData().subscribe((_)=>{},(_)=>{})
+      this.populateUserData().subscribe((_) => {
+      }, (_) => {
+      })
     }));
   }
 
   unfollow(id: number) {
     return this.http.delete(
       environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + id, {}).pipe(tap(() => {
-      this.populateUserData().subscribe((_)=>{},(_)=>{})
+      this.populateUserData().subscribe((_) => {
+      }, (_) => {
+      })
     }));
   }
 
   updateProfileImage(profileImage: FormData) {
     return this.http.put<FormData>(environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/profileImage',
       profileImage).pipe(tap(() => {
-      this.populateUserData().subscribe((_)=>{},(_)=>{});
+      this.populateUserData().subscribe((_) => {
+      }, (_) => {
+      });
     }));
   }
 
   updateCoverImage(coverImage: FormData) {
     return this.http.put<FormData>(environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/coverImage',
       coverImage).pipe(tap(() => {
-      this.populateUserData().subscribe((_)=>{},(_)=>{});
+      this.populateUserData().subscribe((_) => {
+      }, (_) => {
+      });
     }));
   }
 
@@ -139,7 +163,9 @@ export class UserService {
       environment.apiBaseUrl + '/users/account/provider',
       providerInfo)
       .pipe(tap(() => {
-        this.populateUserData().subscribe((_)=>{},(_)=>{});
+        this.populateUserData().subscribe((_) => {
+        }, (_) => {
+        });
       }));
   }
 

@@ -91,7 +91,7 @@ public class JobController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -171,12 +171,12 @@ public class JobController {
 
         if (securityContext.getUserPrincipal() != null) {
             final Optional<User> user = userService.getUserByEmail(securityContext.getUserPrincipal().getName());
-            SingleJobDto singleJobDto = new SingleJobDto(job, uriInfo, securityContext,
+            SingleJobDto singleJobDto = new SingleJobDto(job, uriInfo,
                 user.isPresent() && userService.hasContactJobProvided(job.getProvider(), user.get(), job));
             return Response.ok(singleJobDto).build();
         }
 
-        JobDto jobDto = new JobDto(job, uriInfo, securityContext);
+        JobDto jobDto = new JobDto(job, uriInfo);
         return Response.ok(jobDto).build();
     }
 
@@ -340,7 +340,7 @@ public class JobController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<ReviewDto> reviewsDto = ReviewDto.mapReviewToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<ReviewDto> reviewsDto = ReviewDto.mapReviewToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()

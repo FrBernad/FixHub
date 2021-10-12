@@ -18,6 +18,7 @@ import ar.edu.itba.paw.models.user.notification.Notification;
 import ar.edu.itba.paw.webapp.auth.AuthorizationFilter;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
+import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
 import ar.edu.itba.paw.webapp.dto.request.*;
 import ar.edu.itba.paw.webapp.dto.response.*;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -104,7 +105,7 @@ public class UserController {
         final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
 
         LOGGER.info("Return user with id {}", id);
-        return Response.ok(new UserDto(user, uriInfo, securityContext)).build();
+        return Response.ok(new UserDto(user, uriInfo)).build();
     }
 
 
@@ -253,11 +254,6 @@ public class UserController {
         final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
         assureUserResourceCorrelation(user, id);
 
-        if (!user.hasRole(Roles.PROVIDER)) {
-            LOGGER.warn("User {} is not a provider", user.getId());
-            throw new IllegalOperationException();
-        }
-
         List<Long> citiesId = new ArrayList<>();
         for (CityDto city : joinDto.getLocation().getCities()) {
             citiesId.add(city.getId());
@@ -269,6 +265,22 @@ public class UserController {
         LOGGER.info("User with id {} update provider information succesfully", user.getId());
 
         return Response.ok().build();
+
+    }
+
+    @GET
+    @Path("/{id}/provider")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response updateProviderInfo(@PathParam("id") final long id) {
+        LOGGER.info("Accessed /users/{}/provider PUT controller", id);
+
+        final User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+
+        if(!user.isProvider()){
+            return Response.noContent().status(NOT_FOUND).build();
+        }
+
+        return Response.ok(new ProviderDetailsDto(user.getProviderDetails(), uriInfo)).build();
 
     }
 
@@ -409,7 +421,7 @@ public class UserController {
             return Response.status(BAD_REQUEST).build();
         }
 
-        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -437,7 +449,7 @@ public class UserController {
             return Response.status(BAD_REQUEST).build();
         }
 
-        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<UserDto> userDtos = UserDto.mapUserToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -518,7 +530,7 @@ public class UserController {
             return Response.status(BAD_REQUEST).build();
         }
 
-        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -590,12 +602,12 @@ public class UserController {
             throw new IllegalOperationException();
         }
 
-        final JobContactDto jobContactDto = new JobContactDto(jobContact, uriInfo, securityContext);
+        final JobContactDto jobContactDto = new JobContactDto(jobContact, uriInfo);
 
         return Response.ok(jobContactDto).build();
     }
 
-//  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
+    //  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
     @GET
     @Path("/requests/searchOptions")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -633,7 +645,7 @@ public class UserController {
             return Response.status(BAD_REQUEST).build();
         }
 
-        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<JobContactDto> contactsDto = JobContactDto.mapContactToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -698,7 +710,7 @@ public class UserController {
             return Response.status(BAD_REQUEST).build();
         }
 
-        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<JobDto> jobsDto = JobDto.mapJobToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -710,7 +722,7 @@ public class UserController {
         }, uriBuilder);
     }
 
-//     FIXME: TENGO Q PEDIR LOS CONTACT INFOD DESDE EL FRONT, ESTA CON USERSESSION TODAVIA ESTO
+    //     FIXME: TENGO Q PEDIR LOS CONTACT INFOD DESDE EL FRONT, ESTA CON USERSESSION TODAVIA ESTO
     @GET
     @Path("/{id}/contactInfo")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -751,7 +763,7 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        final Collection<NotificationDto> notificationsDtos = NotificationDto.MapNotificationToDto(results.getResults(), uriInfo, securityContext);
+        final Collection<NotificationDto> notificationsDtos = NotificationDto.MapNotificationToDto(results.getResults(), uriInfo);
 
         final UriBuilder uriBuilder = uriInfo
             .getAbsolutePathBuilder()
@@ -786,7 +798,7 @@ public class UserController {
         if (!notification.getUser().getId().equals(user.getId())) {
             throw new IllegalOperationException();
         }
-        return Response.ok(new NotificationDto(notification, uriInfo, securityContext)).build();
+        return Response.ok(new NotificationDto(notification, uriInfo)).build();
     }
 
     @PUT
