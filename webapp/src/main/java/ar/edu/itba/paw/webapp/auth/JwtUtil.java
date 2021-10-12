@@ -57,7 +57,7 @@ public class JwtUtil {
         Claims claims = Jwts.claims();
 
         claims.put("roles", serializeRoles(userDetails.getRoles()));
-        claims.put("userUrl", baseUrl + "/users/" + userDetails.getId());
+        claims.put("userUrl", baseUrl + "api/users/" + userDetails.getId());
 
         return "Bearer " + Jwts.builder()
             .setClaims(claims)
