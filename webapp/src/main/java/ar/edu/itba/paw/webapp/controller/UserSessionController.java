@@ -73,13 +73,13 @@ public class UserSessionController {
 //
 //            final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
 //
-            final Response.ResponseBuilder responseBuilder = Response.noContent();
+        final Response.ResponseBuilder responseBuilder = Response.noContent();
 //
 //            addAuthorizationHeader(responseBuilder, user);
 //
 //            addSessionRefreshTokenCookie(responseBuilder, user);
 
-            return responseBuilder.build();
+        return responseBuilder.build();
 
 //        } catch (AuthenticationException e) {
 //            return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -149,7 +149,7 @@ public class UserSessionController {
 
 
     private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user, uriInfo));
+        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user, uriInfo.getBaseUriBuilder().build().toString()));
     }
 
     private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {

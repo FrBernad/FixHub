@@ -21,8 +21,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
@@ -40,6 +43,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private URL appBaseUrl;
+
     private final Base64.Decoder base64Decoder = Base64.getDecoder();
 
     private static final String JWT_HEADER = "X-JWT";
@@ -51,9 +57,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-        final AuthorizationType authType = parseAuthorizationType(authHeader);
+        if (authHeader == null) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-        if (authHeader == null || authType == null) {
+        final AuthorizationType authType = parseAuthorizationType(authHeader);
+        if (authType == null) {
             chain.doFilter(request, response);
             return;
         }
@@ -73,7 +83,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 .getContext()
                 .setAuthentication(auth);
 
-            LOGGER.debug("Populated security context with authorization: {}",auth);
+            LOGGER.debug("Populated security context with authorization: {}", auth);
         } catch (AuthenticationException e) {
             LOGGER.debug("{} Setting default unauthorized user", e.getMessage());
         }
@@ -133,7 +143,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     }
 
     private void addAuthorizationHeader(final HttpServletResponse response, final User user) {
-        response.addHeader(JWT_HEADER, jwtUtil.generateToken(user));
+        response.addHeader(JWT_HEADER, jwtUtil.generateToken(user, appBaseUrl.toString()));
     }
 
     private void addSessionRefreshTokenHeader(final HttpServletResponse response, final User user) {

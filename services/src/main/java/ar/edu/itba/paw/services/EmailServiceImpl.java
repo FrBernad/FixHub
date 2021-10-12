@@ -42,6 +42,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private URL appBaseUrl;
+
     private void sendMail(String template, String subject, Map<String, Object> variables, final Locale locale) throws
         MessagingException {
         // Prepare the evaluation context

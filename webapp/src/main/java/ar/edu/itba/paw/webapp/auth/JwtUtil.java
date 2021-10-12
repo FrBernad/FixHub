@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.auth;
 import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
+import ar.edu.itba.paw.webapp.dto.response.UserDto;
 import io.jsonwebtoken.*;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,8 +13,10 @@ import org.springframework.util.FileCopyUtils;
 
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -50,10 +53,11 @@ public class JwtUtil {
         }
     }
 
-    public String generateToken(User userDetails) {
+    public String generateToken(User userDetails, String baseUrl) {
         Claims claims = Jwts.claims();
 
         claims.put("roles", serializeRoles(userDetails.getRoles()));
+        claims.put("userUrl", baseUrl + "/users/" + userDetails.getId());
 
         return "Bearer " + Jwts.builder()
             .setClaims(claims)
@@ -65,7 +69,7 @@ public class JwtUtil {
     }
 
 
-//    FIXME: ELIMINAR LOS METODOSO DE LAS COOKIES
+    //    FIXME: ELIMINAR LOS METODOSO DE LAS COOKIES
     public NewCookie generateSessionRefreshCookie(SessionRefreshToken sessionRefreshToken) {
         return new NewCookie(SESSION_REFRESH_TOKEN_COOKIE_NAME,
             sessionRefreshToken.getValue(),
