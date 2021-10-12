@@ -169,6 +169,10 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/user/refreshToken",
                 "/api/user/refreshToken/"
             ).authenticated()
+            .antMatchers(HttpMethod.DELETE,
+                "/api/user/refreshToken",
+                "/api/user/refreshToken/"
+            ).authenticated()
 
             // --------- /jobs route ---------
             .antMatchers(HttpMethod.POST,

@@ -15,6 +15,7 @@ import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.models.user.notification.Notification;
+import ar.edu.itba.paw.webapp.auth.AuthorizationFilter;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.*;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -142,13 +144,13 @@ public class UserController {
         final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
-//
-//        if (user.isVerified()) {
-//            addAuthorizationHeader(responseBuilder, user);
-//            if (securityContext.getUserPrincipal() == null) {
-//                addSessionRefreshTokenCookie(responseBuilder, user);
-//            }
-//        }
+
+        if (user.isVerified()) {
+            addAuthorizationHeader(responseBuilder, user);
+            if (securityContext.getUserPrincipal() == null) {
+                addSessionRefreshTokenHeader(responseBuilder, user);
+            }
+        }
         return responseBuilder.build();
     }
 
@@ -231,7 +233,7 @@ public class UserController {
         LOGGER.info("User with id {} become provider successfully", user.getId());
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
-//        addAuthorizationHeader(responseBuilder, user);
+        addAuthorizationHeader(responseBuilder, user);
 
         return responseBuilder.build();
     }
@@ -270,13 +272,13 @@ public class UserController {
 
     }
 
-//    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
-//        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
-//    }
-//
-//    private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
-//        responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
-//    }
+    private void addAuthorizationHeader(final Response.ResponseBuilder response, final User user) {
+        response.header(JwtUtil.JWT_HEADER, jwtUtil.generateToken(user, uriInfo.getBaseUri().toString()));
+    }
+
+    private void addSessionRefreshTokenHeader(final Response.ResponseBuilder response, final User user) {
+        response.header(JwtUtil.REFRESH_TOKEN_HEADER, userService.getSessionRefreshToken(user).getValue());
+    }
 
 
     @GET

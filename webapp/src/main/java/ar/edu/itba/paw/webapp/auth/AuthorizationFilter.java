@@ -46,10 +46,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private URL appBaseUrl;
 
-    private final Base64.Decoder base64Decoder = Base64.getDecoder();
-
-    private static final String JWT_HEADER = "X-JWT";
-    private static final String REFRESH_TOKEN_HEADER = "X-Refresh-Token";
+    private static final Base64.Decoder base64Decoder = Base64.getDecoder();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
 
@@ -108,6 +105,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
         final User user = userOpt.get();
+
         addAuthorizationHeader(response, user);
 
         return new UsernamePasswordAuthenticationToken
@@ -143,11 +141,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     }
 
     private void addAuthorizationHeader(final HttpServletResponse response, final User user) {
-        response.addHeader(JWT_HEADER, jwtUtil.generateToken(user, appBaseUrl.toString()));
+        response.addHeader(JwtUtil.JWT_HEADER, jwtUtil.generateToken(user, appBaseUrl.toString()));
     }
 
     private void addSessionRefreshTokenHeader(final HttpServletResponse response, final User user) {
-        response.addHeader(REFRESH_TOKEN_HEADER, userService.getSessionRefreshToken(user).getValue());
+        response.addHeader(JwtUtil.REFRESH_TOKEN_HEADER, userService.getSessionRefreshToken(user).getValue());
     }
 
     private AuthorizationType parseAuthorizationType(final String authHeader) {

@@ -13,6 +13,7 @@ import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.models.user.notification.Notification;
+import ar.edu.itba.paw.webapp.auth.AuthorizationFilter;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.request.JoinDto;
 import ar.edu.itba.paw.webapp.dto.response.*;
@@ -102,7 +103,7 @@ public class UserSessionController {
     @Produces
     @POST
     @Path("/refreshToken")
-    public Response refreshAccessToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) String sessionRefreshToken) {
+    public Response refreshAccessToken(@HeaderParam(JwtUtil.REFRESH_TOKEN_HEADER) String sessionRefreshToken) {
         LOGGER.info("Accessed /user/refreshToken POST controller");
 
 //        if (sessionRefreshToken == null) {
@@ -127,33 +128,23 @@ public class UserSessionController {
     @Produces
     @DELETE
     @Path("/refreshToken")
-    public Response deleteRefreshToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) Cookie sessionRefreshCookie,
+    public Response deleteRefreshToken(@HeaderParam(JwtUtil.REFRESH_TOKEN_HEADER) String sessionRefreshToken,
                                        @QueryParam("allSessions") @DefaultValue("false") boolean allSessions) {
 
         LOGGER.info("Accessed /user/refreshToken DELETE controller");
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
 
-        if (sessionRefreshCookie != null) {
-            responseBuilder.cookie(jwtUtil.generateDeleteSessionCookie());
+        if (sessionRefreshToken != null) {
 
             if (allSessions) {
                 userService
-                    .getUserByRefreshToken(sessionRefreshCookie.getValue())
+                    .getUserByRefreshToken(sessionRefreshToken)
                     .ifPresent(user -> userService.deleteSessionRefreshToken(user));
             }
         }
 
         return responseBuilder.build();
-    }
-
-
-    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user, uriInfo.getBaseUriBuilder().build().toString()));
-    }
-
-    private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
     }
 
 }

@@ -26,11 +26,13 @@ import java.util.stream.Collectors;
 
 public class JwtUtil {
 
-    public final static String SESSION_REFRESH_TOKEN_COOKIE_NAME = "SESSION_REFRESH_TOKEN";
+    public static final String JWT_HEADER = "X-JWT";
+
+    public static final String REFRESH_TOKEN_HEADER = "X-Refresh-Token";
 
     private final String secretKey;
 
-    private final static int TOKEN_EXPIRATION_MILLIS = 1000 * 20 * 60;  //20 mins duration
+    private final static int TOKEN_EXPIRATION_MILLIS = 1000 * 60 * 20 ;  //20 mins duration
 
     public JwtUtil(Resource secretKeyRes) throws IOException {
         this.secretKey = FileCopyUtils.copyToString(new InputStreamReader(secretKeyRes.getInputStream()));
@@ -66,35 +68,6 @@ public class JwtUtil {
             .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_MILLIS))
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
-    }
-
-
-    //    FIXME: ELIMINAR LOS METODOSO DE LAS COOKIES
-    public NewCookie generateSessionRefreshCookie(SessionRefreshToken sessionRefreshToken) {
-        return new NewCookie(SESSION_REFRESH_TOKEN_COOKIE_NAME,
-            sessionRefreshToken.getValue(),
-            "/",
-            null,
-            Cookie.DEFAULT_VERSION,
-            "Session Refresh Token",
-            (int) ChronoUnit.SECONDS.between(LocalDateTime.now(), sessionRefreshToken.getExpirationDate()),
-            null,
-            false,
-            true);
-    }
-
-
-    public NewCookie generateDeleteSessionCookie() {
-        return new NewCookie(SESSION_REFRESH_TOKEN_COOKIE_NAME,
-            null,
-            "/",
-            null,
-            Cookie.DEFAULT_VERSION,
-            null,
-            0,
-            new Date(0),
-            false,
-            true);
     }
 
 
