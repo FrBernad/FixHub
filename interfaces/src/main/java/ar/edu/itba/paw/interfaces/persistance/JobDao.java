@@ -4,7 +4,9 @@ import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
+import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.User;
 
 import java.math.BigDecimal;
@@ -22,9 +24,17 @@ public interface JobDao {
 
     Collection<JobCategory> getJobsCategories();
 
-    Collection<Job> getJobsByProvider(String searchBy, OrderOptions orderOption, User provider, int page, int itemsPerPage);
+    Collection<OrderOptions> getJobsOrder();
 
-    Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, String state, String city, int page, int itemsPerPage);
+    Collection<StatusOrderOptions> getJobsRequestsOrder();
+
+    Collection<JobStatus> getJobsRequestsStatus();
+
+    Collection<Job> getJobsByProvider(String searchBy, OrderOptions orderOption, User provider, int page,
+                                      int itemsPerPage);
+
+    Collection<Job> getJobsByCategory(String searchBy, OrderOptions orderOption, JobCategory category, String
+        state, String city, int page, int itemsPerPage);
 
     Integer getJobsCountByCategory(String searchBy, JobCategory category, String state, String city);
 

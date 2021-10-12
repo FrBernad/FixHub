@@ -5,10 +5,13 @@ import ar.edu.itba.paw.models.image.Image;
 import ar.edu.itba.paw.models.job.Job;
 import ar.edu.itba.paw.models.job.JobCategory;
 import ar.edu.itba.paw.models.job.JobContact;
+import ar.edu.itba.paw.models.job.JobStatus;
 import ar.edu.itba.paw.models.pagination.OrderOptions;
+import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -26,6 +29,9 @@ public class JobDaoImpl implements JobDao {
     private EntityManager em;
 
     private static final Collection<JobCategory> categories = Collections.unmodifiableList(Arrays.asList(JobCategory.values().clone()));
+    private static final Collection<OrderOptions> order = Collections.unmodifiableList(Arrays.asList(OrderOptions.values().clone()));
+    private static final Collection<StatusOrderOptions> requestOrder = Collections.unmodifiableList(Arrays.asList(StatusOrderOptions.values().clone()));
+    private static final Collection<JobStatus> requestStatus = Collections.unmodifiableList(Arrays.asList(JobStatus.values().clone()));
 
     private static final Map<OrderOptions, String> SQL_ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
     private static final Map<OrderOptions, String> HQL_ORDER_OPTIONS = new EnumMap<>(OrderOptions.class);
@@ -87,9 +93,28 @@ public class JobDaoImpl implements JobDao {
         return Optional.ofNullable(em.find(JobContact.class, id));
     }
 
+    @Override
     public Collection<JobCategory> getJobsCategories() {
         LOGGER.debug("Retrieving job categories");
         return categories;
+    }
+
+    @Override
+    public Collection<OrderOptions> getJobsOrder() {
+        LOGGER.debug("Retrieving job order");
+        return order;
+    }
+
+    @Override
+    public Collection<StatusOrderOptions> getJobsRequestsOrder() {
+        LOGGER.debug("Retrieving job requests order");
+        return requestOrder;
+    }
+
+    @Override
+    public Collection<JobStatus> getJobsRequestsStatus() {
+        LOGGER.debug("Retrieving job requests status");
+        return requestStatus;
     }
 
     @Override

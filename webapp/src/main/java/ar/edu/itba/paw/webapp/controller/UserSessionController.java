@@ -66,24 +66,24 @@ public class UserSessionController {
             throw new ContentExpectedException();
         }
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userAuthDto.getEmail(), userAuthDto.getPassword())
-            );
-
-            final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
-
+//        try {
+//            Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(userAuthDto.getEmail(), userAuthDto.getPassword())
+//            );
+//
+//            final User user = userService.getUserByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
+//
             final Response.ResponseBuilder responseBuilder = Response.noContent();
-
-            addAuthorizationHeader(responseBuilder, user);
-
-            addSessionRefreshTokenCookie(responseBuilder, user);
+//
+//            addAuthorizationHeader(responseBuilder, user);
+//
+//            addSessionRefreshTokenCookie(responseBuilder, user);
 
             return responseBuilder.build();
 
-        } catch (AuthenticationException e) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
+//        } catch (AuthenticationException e) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        }
     }
 
 
@@ -101,36 +101,36 @@ public class UserSessionController {
 
     @Produces
     @POST
-    @Path("/refreshSession")
+    @Path("/refreshToken")
     public Response refreshAccessToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) String sessionRefreshToken) {
-        LOGGER.info("Accessed /user/refreshSession POST controller");
+        LOGGER.info("Accessed /user/refreshToken POST controller");
 
-        if (sessionRefreshToken == null) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-
-        final Optional<User> userOpt = userService.getUserByRefreshToken(sessionRefreshToken);
-
-        if (!userOpt.isPresent()) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-
-        final User user = userOpt.get();
+//        if (sessionRefreshToken == null) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        }
+//
+//        final Optional<User> userOpt = userService.getUserByRefreshToken(sessionRefreshToken);
+//
+//        if (!userOpt.isPresent()) {
+//            return Response.status(Response.Status.UNAUTHORIZED).build();
+//        }
+//
+//        final User user = userOpt.get();
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
 
-        addAuthorizationHeader(responseBuilder, user);
+//        addAuthorizationHeader(responseBuilder, user);
 
         return responseBuilder.build();
     }
 
     @Produces
     @DELETE
-    @Path("/refreshSession")
+    @Path("/refreshToken")
     public Response deleteRefreshToken(@CookieParam(JwtUtil.SESSION_REFRESH_TOKEN_COOKIE_NAME) Cookie sessionRefreshCookie,
                                        @QueryParam("allSessions") @DefaultValue("false") boolean allSessions) {
 
-        LOGGER.info("Accessed /user/refreshSession DELETE controller");
+        LOGGER.info("Accessed /user/refreshToken DELETE controller");
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
 
@@ -149,7 +149,7 @@ public class UserSessionController {
 
 
     private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
+        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user, uriInfo));
     }
 
     private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {

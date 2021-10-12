@@ -18,8 +18,13 @@ public interface JobService {
 
     Job createJob(String jobProvided, JobCategory category, String description, BigDecimal price, boolean paused, User provider, List<NewImageDto> images);
 
+    Collection<String> getJobsCategories();
 
-    Collection<JobCategory> getJobsCategories();
+    Collection<String> getJobsOrder();
+
+    Collection<String> getJobsRequestsOrder();
+
+    Collection<String> getJobsRequestsStatus();
 
     void acceptJob(JobContact jc);
 
@@ -27,7 +32,8 @@ public interface JobService {
 
     void finishJob(JobContact jc);
 
-    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<NewImageDto> images, Job job, List<Long> imagesIdDeleted);
+    void updateJob(String jobProvided, String description, BigDecimal price, boolean paused, List<
+        NewImageDto> images, Job job, List<Long> imagesIdDeleted);
 
     void cancelJob(JobContact jobContact);
 }

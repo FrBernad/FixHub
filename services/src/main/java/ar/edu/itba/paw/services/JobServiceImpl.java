@@ -77,9 +77,28 @@ public class JobServiceImpl implements JobService {
 
     @Transactional
     @Override
-    public Collection<JobCategory> getJobsCategories() {
+    public Collection<String> getJobsCategories() {
         LOGGER.debug("Retrieving jobs categories");
-        return jobDao.getJobsCategories();
+        return jobDao.getJobsCategories().stream().map(Enum::name).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public Collection<String> getJobsOrder() {
+        LOGGER.debug("Retrieving jobs order");
+        return jobDao.getJobsOrder().stream().map(Enum::name).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public Collection<String> getJobsRequestsOrder() {
+        return jobDao.getJobsRequestsOrder().stream().map(Enum::name).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public Collection<String> getJobsRequestsStatus() {
+        return jobDao.getJobsRequestsStatus().stream().map(Enum::name).collect(Collectors.toList());
     }
 
     @Transactional
@@ -88,7 +107,7 @@ public class JobServiceImpl implements JobService {
         LOGGER.debug("Accepting job");
         jc.setStatus(JobStatus.IN_PROGRESS);
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusChangeAcceptForUser(jc.getUser(),jc);
+        notificationService.createRequestStatusChangeAcceptForUser(jc.getUser(), jc);
 
     }
 
@@ -98,7 +117,7 @@ public class JobServiceImpl implements JobService {
         LOGGER.debug("Rejecting job");
         jc.setStatus(JobStatus.REJECTED);
         emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusRejectChangeForUser(jc.getUser(),jc);
+        notificationService.createRequestStatusRejectChangeForUser(jc.getUser(), jc);
 
     }
 
@@ -108,7 +127,7 @@ public class JobServiceImpl implements JobService {
         LOGGER.debug("Finishing job");
         jc.setStatus(JobStatus.FINISHED);
         emailService.sendJobFinishedEmail(jc, LocaleContextHolder.getLocale());
-        notificationService.createRequestStatusFinishedChangeForUser(jc.getUser(),jc);
+        notificationService.createRequestStatusFinishedChangeForUser(jc.getUser(), jc);
     }
 
     @Transactional

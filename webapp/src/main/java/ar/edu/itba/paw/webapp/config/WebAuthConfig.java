@@ -158,17 +158,17 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
             ).hasRole("NOT_VERIFIED")
 
             //-------- /user route ---------
-            .antMatchers(HttpMethod.POST,
-                "/api/user",
-                "/api/user/"
-            ).anonymous()
+//            .antMatchers(HttpMethod.POST,
+//                "/api/user",
+//                "/api/user/"
+//            ).anonymous()
             .antMatchers(HttpMethod.GET,
                 "/api/user",
                 "/api/user/"
             ).authenticated()
-            .antMatchers(HttpMethod.DELETE,
-                "/api/user/refreshSession",
-                "/api/user/refreshSession/"
+            .antMatchers(HttpMethod.POST,
+                "/api/user/refreshToken",
+                "/api/user/refreshToken/"
             ).authenticated()
 
             // --------- /jobs route ---------

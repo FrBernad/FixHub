@@ -147,13 +147,13 @@ public class UserController {
         final User user = userService.verifyAccount(tokenDto.getToken()).orElseThrow(UserNotFoundException::new);
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
-
-        if (user.isVerified()) {
-            addAuthorizationHeader(responseBuilder, user);
-            if (securityContext.getUserPrincipal() == null) {
-                addSessionRefreshTokenCookie(responseBuilder, user);
-            }
-        }
+//
+//        if (user.isVerified()) {
+//            addAuthorizationHeader(responseBuilder, user);
+//            if (securityContext.getUserPrincipal() == null) {
+//                addSessionRefreshTokenCookie(responseBuilder, user);
+//            }
+//        }
         return responseBuilder.build();
     }
 
@@ -236,7 +236,7 @@ public class UserController {
         LOGGER.info("User with id {} become provider successfully", user.getId());
 
         final Response.ResponseBuilder responseBuilder = Response.noContent();
-        addAuthorizationHeader(responseBuilder, user);
+//        addAuthorizationHeader(responseBuilder, user);
 
         return responseBuilder.build();
     }
@@ -275,13 +275,13 @@ public class UserController {
 
     }
 
-    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
-    }
-
-    private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
-        responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
-    }
+//    private void addAuthorizationHeader(Response.ResponseBuilder responseBuilder, User user) {
+//        responseBuilder.header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user));
+//    }
+//
+//    private void addSessionRefreshTokenCookie(Response.ResponseBuilder responseBuilder, User user) {
+//        responseBuilder.cookie(jwtUtil.generateSessionRefreshCookie(userService.getSessionRefreshToken(user)));
+//    }
 
 
     @GET
