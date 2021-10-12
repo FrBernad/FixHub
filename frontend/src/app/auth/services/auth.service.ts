@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {catchError, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {catchError, concatMap, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Session} from '../../models/session.model';
@@ -13,6 +13,7 @@ interface Jwt {
   exp: number,
   iat: number,
   roles: string,
+  id: number,
   sub: string,
 }
 
@@ -31,45 +32,52 @@ export class AuthService {
 
   session = new BehaviorSubject<Session>(null);
 
-  autoLogin: Observable<boolean> = this.http
-    .post(
-      environment.apiBaseUrl + '/user/refreshSession',
-      {},
-      {
-        observe: "response"
-      }
-    )
-    .pipe(
-      catchError(() => {
-          this.userService.setLoading(false);
-          return of(true);
-        }
-      ),
-      mergeMap((res: HttpResponse<Object>) => {
-          if (res as unknown as boolean === true) {
-            return of(true);
-          }
-          this.handleSession(res);
-          return this.userService.populateUserData()
+  autoLogin: Observable<boolean> =
+    of(true)
+      .pipe(
+        concatMap((_) => {
+          this.handleAutoLogin();
+          return this.http
+            .post(
+              environment.apiBaseUrl + '/user/refreshToken',
+              {},
+              {
+                observe: "response"
+              }
+            )
             .pipe(
               catchError(() => {
                   this.userService.setLoading(false);
                   return of(true);
                 }
               ),
-              mergeMap(() => {
-                  this.notificationsService.initNotificationsInterval();
-                  this.userService.setLoading(false);
-                  return of(true);
+              concatMap((res: HttpResponse<Object>) => {
+                  if (res as unknown as boolean === true) {
+                    return of(true);
+                  }
+                  this.handleSession(res);
+                  return this.userService.populateUserData()
+                    .pipe(
+                      catchError(() => {
+                          this.userService.setLoading(false);
+                          return of(true);
+                        }
+                      ),
+                      concatMap(() => {
+                          this.notificationsService.initNotificationsInterval();
+                          this.userService.setLoading(false);
+                          return of(true);
+                        }
+                      )
+                    )
                 }
-              )
+              ),
             )
-        }
-      ),
-      shareReplay(1)
-    );
+        }),
+        shareReplay(1)
+      );
 
-  private tokenExpirationTimer: any;
+  // private tokenExpirationTimer: any;
 
   constructor(
     private http: HttpClient,
@@ -96,17 +104,15 @@ export class AuthService {
     return this.http
       .post(
         environment.apiBaseUrl + '/user',
+        {},
         {
-          email: email,
-          password: password,
-        },
-        {
-          observe: "response"
+          headers: new HttpHeaders().set('Authorization', "Basic " + btoa(email + ":" + password)),
+          observe: "response",
         }
       )
       .pipe(
         tap(res => {
-          this.handleSession(res);
+          this.handleLogin(res);
         })
       );
   }
@@ -114,7 +120,7 @@ export class AuthService {
   verify(token: string) {
     return this.http
       .put(
-        environment.apiBaseUrl + '/users/verificationEmail',
+        environment.apiBaseUrl + '/users/emailVerification',
         {
           token: token,
         },
@@ -133,7 +139,7 @@ export class AuthService {
   resendVerificationEmail() {
     return this.http
       .post(
-        environment.apiBaseUrl + '/users/verificationEmail',
+        environment.apiBaseUrl + '/users/emailVerification',
         {},
         {
           observe: "response"
@@ -159,8 +165,22 @@ export class AuthService {
     );
   }
 
+  handleAutoLogin() {
+    const refreshToken = localStorage.getItem("refresh-token");
+
+    if (refreshToken) {
+      this.session.next(new Session(null, null, refreshToken));
+    }
+  }
+
+  handleLogin(res: HttpResponse<Object>) {
+    const refreshToken = res.headers.get("X-Refresh-Token");
+    localStorage.setItem("refresh-token", refreshToken);
+    this.handleSession(res);
+  }
+
   handleSession(res: HttpResponse<Object>) {
-    const authHeader = res.headers.get("Authorization");
+    const authHeader = res.headers.get("X-JWT");
     const token = authHeader.split(" ")[1];
     this.handleAuthentication(token);
   }
@@ -193,13 +213,15 @@ export class AuthService {
   }
 
   logout() {
-    this.http
-      .delete(
-        environment.apiBaseUrl + '/user/refreshSession',
-        {observe: "response"},
-      ).subscribe();
+    // this.http
+    // .delete(
+    //   environment.apiBaseUrl + '/user/refreshToken',
+    //   {observe: "response"},
+    // ).subscribe();
 
     this.session.next(null);
+
+    localStorage.removeItem("refresh-token");
 
     this.router.navigate(['/login']).then(() => {
       this.userService.clearUser();
@@ -207,48 +229,48 @@ export class AuthService {
 
     this.notificationsService.clearNotificationsInterval();
 
-    if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer);
-    }
-    this.tokenExpirationTimer = null;
+    // if (this.tokenExpirationTimer) {
+    //   clearTimeout(this.tokenExpirationTimer);
+    // }
+    // this.tokenExpirationTimer = null;
   }
 
-  autoRefreshToken(expirationDuration: number) {
-    if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer);
-    }
-
-    this.tokenExpirationTimer = setTimeout(() => {
-      this.http.post(
-        environment.apiBaseUrl + '/user/refreshSession',
-        {},
-        {
-          observe: "response"
-        }
-      ).pipe(
-        catchError(() => {
-            this.logout();
-            return throwError("");
-          }
-        ),
-        mergeMap((res: HttpResponse<Object>) => {
-          this.handleSession(res);
-          return this.userService.populateUserData()
-        })
-      ).subscribe();
-    }, expirationDuration);
-
-  }
+  // autoRefreshToken(expirationDuration: number) {
+  //   if (this.tokenExpirationTimer) {
+  //     clearTimeout(this.tokenExpirationTimer);
+  //   }
+  //
+  //   this.tokenExpirationTimer = setTimeout(() => {
+  //     this.http.post(
+  //       environment.apiBaseUrl + '/user/refreshToken',
+  //       {},
+  //       {
+  //         observe: "response"
+  //       }
+  //     ).pipe(
+  //       catchError(() => {
+  //           this.logout();
+  //           return throwError("");
+  //         }
+  //       ),
+  //       mergeMap((res: HttpResponse<Object>) => {
+  //         this.handleSession(res);
+  //         return this.userService.populateUserData()
+  //       })
+  //     ).subscribe();
+  //   }, expirationDuration);
+  //
+  // }
 
   private handleAuthentication(token: string) {
     const jwt = this.decodeToken(token);
 
     const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
-
+    const refreshToken = localStorage.getItem("refresh-token")
     const expirationDate = new Date(new Date().getTime() + milliExpirationTime);
-    this.autoRefreshToken(milliExpirationTime);
+    // this.autoRefreshToken(milliExpirationTime);
 
-    const newSession = new Session(token, expirationDate);
+    const newSession = new Session(token, expirationDate, refreshToken);
     this.userService.setRoles(jwt.roles.split(" "));
     this.session.next(newSession);
   }

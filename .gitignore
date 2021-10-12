@@ -58,7 +58,6 @@ webapp/target
 *.wmv
 
 
-
 frontend/angular.json
 
 package-lock.json

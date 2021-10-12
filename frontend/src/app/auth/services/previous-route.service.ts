@@ -12,8 +12,7 @@ export class PreviousRouteService {
     private router: Router
   ) {
     this.router.events.pipe(
-      filter(e => e instanceof RoutesRecognized),
-      pairwise())
+      filter(e => e instanceof RoutesRecognized), pairwise())
       .subscribe((event: any[]) => {
         this.previousUrl = event[0].urlAfterRedirects;
       });
@@ -27,7 +26,7 @@ export class PreviousRouteService {
     this.authRedirect = value;
   }
 
-  getAuthRedirect(){
+  getAuthRedirect() {
     return this.authRedirect;
   }
 

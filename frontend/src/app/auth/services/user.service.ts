@@ -6,14 +6,13 @@ import {environment} from "../../../environments/environment";
 import {tap} from "rxjs/operators";
 import {City, State} from "../../discover/discover.service";
 
-
 export interface ProfileInfo {
   name: string,
   surname: string,
   phoneNumber: string,
   state: string,
   city: string
-};
+}
 
 export interface ProviderInfo {
   schedule: {
