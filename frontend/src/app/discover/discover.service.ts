@@ -72,7 +72,7 @@ export class DiscoverService {
   getStateCities(id: string) {
     return this.http
       .get<City[]>(
-        environment.apiBaseUrl + '/locations/state/' + id + '/cities'
+        environment.apiBaseUrl + '/locations/states/' + id + '/cities'
       )
   }
 

@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.dto.response;
 
+import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
+@XmlType(name = "")
 public class PaginatedResultDto<T> {
 
     private int page;

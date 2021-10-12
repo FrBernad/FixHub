@@ -76,7 +76,7 @@ describe('DiscoverService', () => {
       expect(res).toEqual(cities);
     });
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/locations/state/' + id + '/cities');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/locations/states/' + id + '/cities');
     expect(req.request.method).toBe('GET');
     req.flush(cities);
   });

@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.dto.response;
+package ar.edu.itba.paw.webapp.dto.request;
 
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageSizeConstraint;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;

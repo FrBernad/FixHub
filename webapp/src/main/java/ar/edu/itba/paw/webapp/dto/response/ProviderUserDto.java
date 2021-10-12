@@ -18,7 +18,7 @@ public class ProviderUserDto extends BaseUserDto {
 
     public ProviderUserDto(User user, UriInfo uriInfo, SecurityContext securityContext) {
         super(user, uriInfo, securityContext);
-        this.providerDetails = new ProviderDetailsDto(user.getProviderDetails());
+        this.providerDetails = new ProviderDetailsDto(user.getProviderDetails(), uriInfo);
     }
 
     public ProviderDetailsDto getProviderDetails() {

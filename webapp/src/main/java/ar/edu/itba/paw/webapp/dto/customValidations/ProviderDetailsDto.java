@@ -4,6 +4,8 @@ import ar.edu.itba.paw.models.user.provider.ProviderDetails;
 import ar.edu.itba.paw.webapp.dto.response.LocationDto;
 import ar.edu.itba.paw.webapp.dto.response.ScheduleDto;
 
+import javax.ws.rs.core.UriInfo;
+
 public class ProviderDetailsDto {
 
     private LocationDto location;
@@ -17,8 +19,8 @@ public class ProviderDetailsDto {
     public ProviderDetailsDto() {
     }
 
-    public ProviderDetailsDto(ProviderDetails providerDetails) {
-        this.location = new LocationDto(providerDetails.getLocation());
+    public ProviderDetailsDto(ProviderDetails providerDetails, UriInfo uriInfo) {
+        this.location = new LocationDto(providerDetails.getLocation(), uriInfo);
         this.schedule = new ScheduleDto(providerDetails.getSchedule());
         if (providerDetails.getJobsCount() != null) {
             this.jobsCount = providerDetails.getJobsCount();

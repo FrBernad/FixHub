@@ -32,6 +32,8 @@ public abstract class BaseUserDto {
     private String coverImageUrl;
     private String profileImageUrl;
 
+    private String jobsUrl;
+
     public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
     }
@@ -67,11 +69,21 @@ public abstract class BaseUserDto {
         this.followersUrl = uriBuilder.clone().path("followers").build().toString();
         this.followingUrl = uriBuilder.clone().path("following").build().toString();
 
-        this.sentRequestsUrl = uriBuilder.clone().path("/jobs/sentRequests").build().toString();
-        this.receivedRequestsUrl = uriBuilder.clone().path("/jobs/receivedRequests").build().toString();
+        this.sentRequestsUrl = uriBuilder.clone().path("requests").path("sent").build().toString();
+        this.receivedRequestsUrl = uriBuilder.clone().path("requests").path("received").build().toString();
 
         this.contactInfoUrl = uriBuilder.clone().path("contactInfo").build().toString();
 
+        this.jobsUrl = uriBuilder.clone().path("jobs").build().toString();
+
+    }
+
+    public String getJobsUrl() {
+        return jobsUrl;
+    }
+
+    public void setJobsUrl(String jobsUrl) {
+        this.jobsUrl = jobsUrl;
     }
 
     public long getId() {

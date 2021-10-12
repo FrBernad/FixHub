@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dto.response;
 
 import ar.edu.itba.paw.models.location.State;
 
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -9,20 +10,26 @@ import java.util.stream.Collectors;
 @XmlType(name = "")
 public class StateDto {
 
-    public static Collection<StateDto> mapStateToDto(Collection<State> states) {
-        return states.stream().map(StateDto::new).collect(Collectors.toList());
+    public static Collection<StateDto> mapStateToDto(Collection<State> states, UriInfo uriInfo) {
+        return states.stream().map(state -> new StateDto(state,uriInfo)).collect(Collectors.toList());
     }
 
     private long id;
+    private String citiesUrl;
 
     private String name;
 
     public StateDto() {
     }
 
-    public StateDto(State state) {
+    public StateDto(State state, UriInfo uriInfo) {
         this.id = state.getId();
         this.name = state.getName();
+        this.citiesUrl = uriInfo.getBaseUriBuilder()
+            .path("locations")
+            .path(String.valueOf(state.getId()))
+            .path("cities")
+            .build().toString();
     }
 
     public long getId() {
@@ -39,5 +46,13 @@ public class StateDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCitiesUrl() {
+        return citiesUrl;
+    }
+
+    public void setCitiesUrl(String citiesUrl) {
+        this.citiesUrl = citiesUrl;
     }
 }

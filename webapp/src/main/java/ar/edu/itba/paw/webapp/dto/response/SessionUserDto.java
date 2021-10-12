@@ -24,7 +24,7 @@ public class SessionUserDto extends BaseUserDto {
         super(user, uriInfo, securityContext);
         this.contactInfo = user.getContactInfo().stream().map(ContactInfoDto::new).collect(Collectors.toSet());
         if (user.isProvider()) {
-            this.providerDetails = new ProviderDetailsDto(user.getProviderDetails());
+            this.providerDetails = new ProviderDetailsDto(user.getProviderDetails(), uriInfo);
         }
     }
 

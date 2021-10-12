@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.dto.response;
+package ar.edu.itba.paw.webapp.dto.request;
 
 public class PasswordResetEmailDto {
     String email;
