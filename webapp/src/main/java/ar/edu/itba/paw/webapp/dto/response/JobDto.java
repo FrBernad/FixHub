@@ -22,15 +22,15 @@ public class JobDto {
         return uriInfo.getBaseUriBuilder().path("jobs").path(String.valueOf(job.getId()));
     }
 
-    public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo, SecurityContext securityContext) {
-        return jobs.stream().map(p -> new JobDto(p, uriInfo, securityContext)).collect(Collectors.toList());
+    public static Collection<JobDto> mapJobToDto(Collection<Job> jobs, UriInfo uriInfo) {
+        return jobs.stream().map(p -> new JobDto(p, uriInfo)).collect(Collectors.toList());
     }
 
     private Long id;
     private String description;
     private JobCategory category;
     private String jobProvided;
-    private ProviderUserDto provider;
+    private UserDto provider;
     private BigDecimal price;
     private boolean paused;
     private Integer averageRating;
@@ -47,7 +47,7 @@ public class JobDto {
         //use by Jersey
     }
 
-    public JobDto(Job job, UriInfo uriInfo, SecurityContext securityContext) {
+    public JobDto(Job job, UriInfo uriInfo) {
         final UriBuilder uriBuilder = getJobUriBuilder(job, uriInfo);
         this.url = uriBuilder.build().toString();
         this.id = job.getId();
@@ -56,7 +56,7 @@ public class JobDto {
         this.jobProvided = job.getJobProvided();
         this.price = job.getPrice();
         this.paused = job.isPaused();
-        this.provider = new ProviderUserDto(job.getProvider(), uriInfo, securityContext);
+        this.provider = new UserDto(job.getProvider(), uriInfo);
         this.averageRating = job.getAverageRating();
         this.totalRatings = job.getTotalRatings();
 
@@ -110,11 +110,11 @@ public class JobDto {
         this.jobProvided = jobProvided;
     }
 
-    public ProviderUserDto getProvider() {
+    public UserDto getProvider() {
         return provider;
     }
 
-    public void setProvider(ProviderUserDto provider) {
+    public void setProvider(UserDto provider) {
         this.provider = provider;
     }
 

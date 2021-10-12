@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @XmlType(name = "")
 public class NotificationDto {
 
-    public static Collection<NotificationDto> MapNotificationToDto(Collection<Notification> notifications, UriInfo uriInfo, SecurityContext securityContext) {
-        return notifications.stream().map(n -> new NotificationDto(n, uriInfo, securityContext)).collect(Collectors.toList());
+    public static Collection<NotificationDto> MapNotificationToDto(Collection<Notification> notifications, UriInfo uriInfo) {
+        return notifications.stream().map(n -> new NotificationDto(n, uriInfo)).collect(Collectors.toList());
     }
 
     private Long id;
@@ -26,7 +26,7 @@ public class NotificationDto {
     public NotificationDto() {
     }
 
-    public NotificationDto(Notification notification, UriInfo uriInfo, SecurityContext securityContext) {
+    public NotificationDto(Notification notification, UriInfo uriInfo) {
 
         this.id = notification.getId();
         this.resource = notification.getResource();

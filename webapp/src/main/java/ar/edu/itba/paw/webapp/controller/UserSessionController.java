@@ -87,19 +87,6 @@ public class UserSessionController {
 //        }
     }
 
-
-    @GET
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getUser() {
-        LOGGER.info("Accessed /user/ GET controller");
-
-        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
-        LOGGER.info("Return user with id {} in /user/ GET controller", user.getId());
-
-        return Response.ok(new SessionUserDto(user, uriInfo, securityContext)).build();
-
-    }
-
     @Produces
     @POST
     @Path("/refreshToken")

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @XmlType(name = "")
 public class ReviewDto {
 
-    public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo, SecurityContext securityContext) {
-        return reviews.stream().map(r -> new ReviewDto(r, uriInfo, securityContext)).collect(Collectors.toList());
+    public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo) {
+        return reviews.stream().map(r -> new ReviewDto(r, uriInfo)).collect(Collectors.toList());
     }
 //    FIXME: esto esta mal habria q crear /reviews
     public static UriBuilder getReviewUriBuilder(Review review, UriInfo uriInfo) {
@@ -32,12 +32,12 @@ public class ReviewDto {
     public ReviewDto() {
     }
 
-    public ReviewDto(Review review, UriInfo uriInfo, SecurityContext securityContext) {
+    public ReviewDto(Review review, UriInfo uriInfo) {
         this.id = review.getId();
         this.description = review.getDescription();
         this.rating = review.getRating();
         this.creationDate = review.getCreationDate();
-        this.reviewer = new UserDto(review.getReviewer(), uriInfo, securityContext);
+        this.reviewer = new UserDto(review.getReviewer(), uriInfo);
         final UriBuilder uriBuilder = getReviewUriBuilder(review, uriInfo);
         this.url = uriBuilder.build().toString();
     }

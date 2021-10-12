@@ -18,8 +18,8 @@ public class JobContactDto {
         return uriInfo.getBaseUriBuilder().path("user").path("jobs").path("requests").path(String.valueOf(contact.getId()));
     }
 
-    public static Collection<JobContactDto> mapContactToDto(Collection<JobContact> jobContacts, UriInfo uriInfo, SecurityContext securityContext) {
-        return jobContacts.stream().map(jc -> new JobContactDto(jc, uriInfo, securityContext)).collect(Collectors.toList());
+    public static Collection<JobContactDto> mapContactToDto(Collection<JobContact> jobContacts, UriInfo uriInfo) {
+        return jobContacts.stream().map(jc -> new JobContactDto(jc, uriInfo)).collect(Collectors.toList());
     }
 
     private Long id;
@@ -41,10 +41,10 @@ public class JobContactDto {
     public JobContactDto() {
     }
 
-    public JobContactDto(JobContact jobContact, UriInfo uriInfo, SecurityContext securityContext) {
+    public JobContactDto(JobContact jobContact, UriInfo uriInfo) {
         this.id = jobContact.getId();
-        this.user = new UserDto(jobContact.getUser(), uriInfo, securityContext);
-        this.provider = new UserDto(jobContact.getProvider(), uriInfo, securityContext);
+        this.user = new UserDto(jobContact.getUser(), uriInfo);
+        this.provider = new UserDto(jobContact.getProvider(), uriInfo);
         this.message = jobContact.getMessage();
         this.status = jobContact.getStatus();
         this.date = jobContact.getDate();

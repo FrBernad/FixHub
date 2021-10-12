@@ -15,8 +15,8 @@ public class SingleJobDto extends JobDto {
         //used by Jersey
     }
 
-    public SingleJobDto(Job job, UriInfo uriInfo, SecurityContext securityContext, boolean canReview) {
-        super(job, uriInfo, securityContext);
+    public SingleJobDto(Job job, UriInfo uriInfo, boolean canReview) {
+        super(job, uriInfo);
         this.canReview = canReview;
     }
 
