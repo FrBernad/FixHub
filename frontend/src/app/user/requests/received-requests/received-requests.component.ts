@@ -1,8 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RequestPaginationQuery, RequestPaginationResult, RequestsService} from "../requests.service";
 import {Subscription} from "rxjs";
 import {ContactOrder} from "../../../models/contact-order-enum.model";
-import {JobStatus} from "../../../models/job-status-enum.model";
 
 @Component({
   selector: 'app-received-requests',
@@ -24,13 +23,9 @@ export class ReceivedRequestsComponent implements OnInit, OnDestroy {
     totalPages: 0,
   }
 
-  filterOptions = Object.keys(JobStatus).filter((item) => {
-    return isNaN(Number(item));
-  });
+  @Input("status") filterOptions: string[] = [];
 
-  orderOptions = Object.keys(ContactOrder).filter((item) => {
-    return isNaN(Number(item));
-  });
+  @Input("orderOptions") orderOptions: string[] = [];
 
   private contactSub: Subscription;
 

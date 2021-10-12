@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {JobPaginationQuery, JobPaginationResult} from "../../../../discover/discover.service";
+import {DiscoverService, JobPaginationQuery, JobPaginationResult} from "../../../../discover/discover.service";
 import {OrderOption} from "../../../../models/order-option-enum.model";
 import {Subscription} from "rxjs";
 import {WorksService} from "./works.service";
@@ -25,14 +25,15 @@ export class WorksComponent implements OnInit, OnDestroy {
   searchError = false;
 
   private jobsSub: Subscription;
+  private searchOptionsSub: Subscription;
+
   maxSearchInputLength: number = 50;
 
-  orderOptions = Object.keys(OrderOption).filter((item) => {
-    return isNaN(Number(item));
-  });
+  orderOptions: string[] = [];
 
   constructor(
     private worksService: WorksService,
+    private jobsService: DiscoverService,
   ) {
   }
 
@@ -43,6 +44,16 @@ export class WorksComponent implements OnInit, OnDestroy {
         ...this.jpr,
         ...results
       };
+    });
+
+    this.jobsService.getSearchOptions();
+
+    this.searchOptionsSub = this.jobsService.searchOptions.subscribe((searchOptions) => {
+      if (!!searchOptions) {
+        this.orderOptions = searchOptions.find((option) => {
+          return option.key === "order"
+        }).values
+      }
     });
   }
 
@@ -77,6 +88,7 @@ export class WorksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.jobsSub.unsubscribe();
+    this.searchOptionsSub.unsubscribe();
   }
 
 }

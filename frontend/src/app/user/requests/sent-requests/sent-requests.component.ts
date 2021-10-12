@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RequestPaginationQuery, RequestPaginationResult, RequestsService} from "../requests.service";
 import {Subscription} from "rxjs";
 import {ContactOrder} from "../../../models/contact-order-enum.model";
@@ -24,14 +24,9 @@ export class SentRequestsComponent implements OnInit, OnDestroy {
 
   isFetching = true;
 
-  filterOptions = Object.keys(JobStatus).filter((item) => {
-    return isNaN(Number(item));
-  });
+  @Input("status") filterOptions: string[] = [];
 
-  orderOptions = Object.keys(ContactOrder).filter((item) => {
-    return isNaN(Number(item));
-  });
-
+  @Input("orderOptions") orderOptions: string[] = [];
 
   private contactSub: Subscription;
 
@@ -51,12 +46,10 @@ export class SentRequestsComponent implements OnInit, OnDestroy {
     });
 
   }
-
   onChangePage(page: number) {
     this.rpq.page = page;
     this.contactService.getUserSentRequests(this.rpq);
   }
-
 
   onChangeStatus(status: string) {
     this.rpq.status = status;

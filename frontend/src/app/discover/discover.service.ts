@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams, HttpResponse, HttpStatusCode,} from '@angular/common/http';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Job} from "../models/job.model";
 import {Router} from "@angular/router";
@@ -20,6 +20,11 @@ export interface JobPaginationResult {
   results: Job[];
 }
 
+export interface SearchOption {
+  key: string;
+  values: string[];
+}
+
 export interface State {
   id: number;
   name: string;
@@ -35,6 +40,7 @@ export interface City {
 export class DiscoverService {
 
   results = new Subject<JobPaginationResult>();
+  searchOptions = new BehaviorSubject<SearchOption[]>(null);
 
   constructor(
     private http: HttpClient,
@@ -42,11 +48,18 @@ export class DiscoverService {
   ) {
   }
 
-  getCategories() {
-    return this.http
-      .get<{ values: string[] }>(
-        environment.apiBaseUrl + '/jobs/categories',
-      )
+  getSearchOptions() {
+    if (!this.searchOptions.getValue()) {
+      this.http
+        .get<SearchOption[]>(
+          environment.apiBaseUrl + '/jobs/searchOptions',
+        ).subscribe(
+        (options) => {
+          this.searchOptions.next(options);
+        }, () => {
+          this.router.navigate(["/500"]);
+        });
+    }
   }
 
   getStates() {

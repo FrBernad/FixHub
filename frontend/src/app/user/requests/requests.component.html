@@ -16,10 +16,10 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane fade show active" id="sent" role="tabpanel" aria-labelledby="profile-tab">
-      <app-sent-requests></app-sent-requests>
+      <app-sent-requests [orderOptions]="orderOptions" [status]="status"></app-sent-requests>
     </div>
     <div *ngIf="user.roles.includes('PROVIDER')" class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="received-tab">
-      <app-received-requests></app-received-requests>
+      <app-received-requests [orderOptions]="orderOptions" [status]="status"></app-received-requests>
     </div>
   </div>
 </div>

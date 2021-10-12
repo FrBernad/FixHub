@@ -54,7 +54,7 @@ export class NotificationsService {
   refreshNotifications() {
     this.http
       .get<{ count: number }>(
-        environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/unseenNotifications'
+        environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications/unseen'
       ).subscribe((res) => {
         if (res.count > 0) {
           this.newNotifications.next(true);

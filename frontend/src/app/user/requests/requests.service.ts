@@ -1,11 +1,12 @@
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {UserService} from "../../auth/services/user.service";
 import {map, tap} from "rxjs/operators";
 import {JobRequest} from "../../models/job-request.model";
 import {Router} from "@angular/router";
+import {SearchOption} from "../../discover/discover.service";
 
 export interface RequestPaginationResult {
   totalPages: number;
@@ -36,11 +37,26 @@ export class RequestsService {
 
   sentRequests = new Subject<RequestPaginationResult>();
   receivedRequests = new Subject<RequestPaginationResult>();
+  searchOptions = new BehaviorSubject<SearchOption[]>(null);
 
   constructor(private http: HttpClient,
               private userService: UserService,
               private router: Router
   ) {
+  }
+
+  getSearchOptions() {
+    if (!this.searchOptions.getValue()) {
+      this.http
+        .get<SearchOption[]>(
+          environment.apiBaseUrl + '/users/requests/searchOptions',
+        ).subscribe(
+        (options) => {
+          this.searchOptions.next(options);
+        }, () => {
+          this.router.navigate(["/500"]);
+        });
+    }
   }
 
   newContact(jobId: number, contactData: ContactData) {
@@ -66,7 +82,7 @@ export class RequestsService {
 
   getProviderRequests(rq: RequestPaginationQuery) {
     this.http.get<[]>(
-      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/receivedRequests',
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/received',
       {
         observe: "response",
         params: new HttpParams({fromObject: {...rq}})
@@ -90,13 +106,13 @@ export class RequestsService {
 
   getJobRequest(id: number) {
     return this.http.get<JobRequest>(
-      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/receivedRequests/' + id,
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/received/' + id,
     )
   }
 
   getUserSentRequests(rp: RequestPaginationQuery) {
     this.http.get<[]>(
-      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/sentRequests',
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/sent',
       {
         observe: "response",
         params: new HttpParams({fromObject: {...rp}})
@@ -118,9 +134,11 @@ export class RequestsService {
     );
   }
 
+
+  //FIXME: HAY Q HACER LOS DOS SENT Y RECEIVED
   changeContactStatus(contactId: number, status: string) {
     return this.http.put(
-      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/receivedRequests/' + contactId,
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/received/' + contactId,
       {
         status
       },

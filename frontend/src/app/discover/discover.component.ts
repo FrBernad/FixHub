@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {OrderOption} from "../models/order-option-enum.model";
 import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} from "./discover.service";
 import {Subscription} from "rxjs";
@@ -33,14 +33,13 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   isFetching = true;
   maxSearchInputLength: number = 50;
 
-  orderOptions = Object.keys(OrderOption).filter((item) => {
-    return isNaN(Number(item));
-  });
+  orderOptions: string[] = [];
 
   categories: string[] = [];
 
   private jobsSub: Subscription;
   private transSub: Subscription;
+  private searchOptionsSub: Subscription;
 
   constructor(
     private discoverService: DiscoverService,
@@ -73,12 +72,18 @@ export class DiscoverComponent implements OnInit, OnDestroy {
         this.isFetching = false;
       });
 
-    this.discoverService.getCategories().subscribe((categories) => {
-        this.categories = categories.values;
-      },
-      () => {
-        this.router.navigate(["/500"]);
-      });
+    this.discoverService.getSearchOptions();
+
+    this.searchOptionsSub = this.discoverService.searchOptions.subscribe((searchOptions) => {
+      if (!!searchOptions) {
+        this.categories = searchOptions.find((option) => {
+          return option.key === "categories"
+        }).values;
+        this.orderOptions = searchOptions.find((option) => {
+          return option.key === "order"
+        }).values
+      }
+    });
 
     this.discoverService.getStates().subscribe((states) => {
       this.states = states;
@@ -210,6 +215,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.jobsSub.unsubscribe();
     this.transSub.unsubscribe();
+    this.searchOptionsSub.unsubscribe();
   }
 
 }

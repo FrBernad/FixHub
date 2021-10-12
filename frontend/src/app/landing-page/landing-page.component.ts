@@ -45,6 +45,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   jobsSub: Subscription;
   userSub: Subscription;
+  searchOptionsSub: Subscription;
 
   user: User;
   isFetching = true;
@@ -67,11 +68,15 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.user = user;
     });
 
-    this.jobsService.getCategories().subscribe((categories) => {
-      this.categories = categories.values.slice(0, 5);
-      this.loading = false;
-    }, () => {
-      this.loading = false;
+    this.jobsService.getSearchOptions();
+
+    this.searchOptionsSub = this.jobsService.searchOptions.subscribe((searchOptions) => {
+      if (!!searchOptions) {
+        this.categories = searchOptions.find((option) => {
+          return option.key === "categories"
+        }).values.slice(0, 5);
+        this.loading = false;
+      }
     });
 
     this.jobsSub = this.jobsService.results.subscribe((results) => {
@@ -122,6 +127,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.jobsSub.unsubscribe();
     this.userSub.unsubscribe();
+    this.searchOptionsSub.unsubscribe();
   }
 
 }

@@ -20,7 +20,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   private transSub: Subscription;
 
   jobRequest = NotificationType.JOB_REQUEST;
-  newfollower = NotificationType.NEW_FOLLOWER;
+  newFollower = NotificationType.NEW_FOLLOWER;
   requestStatusChangeProvider = NotificationType.REQUEST_STATUS_CHANGE_PROVIDER;
 
   npq: NotificationPaginationQuery = {
@@ -37,7 +37,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   filterOptions = Object.keys(NotificationFilter).filter((item) => {
     return isNaN(Number(item));
   });
-
 
   constructor(
     private notificationsService: NotificationsService,

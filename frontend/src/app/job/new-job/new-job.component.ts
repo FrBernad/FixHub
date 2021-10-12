@@ -12,7 +12,7 @@ import {Title} from "@angular/platform-browser";
 @Component({
   selector: 'app-new-job',
   templateUrl: './new-job.component.html',
-  styleUrls: ['./new-job.component.scss','../../shared/choose-state/choose-state.component.scss'],
+  styleUrls: ['./new-job.component.scss', '../../shared/choose-state/choose-state.component.scss'],
 })
 export class NewJobComponent implements OnInit, OnDestroy {
   categories: string[] = [];
@@ -24,11 +24,12 @@ export class NewJobComponent implements OnInit, OnDestroy {
   maxDescriptionLength: number = 300;
   minPrice: number = 1;
   maxPrice: number = 999999;
-  disabled=false;
+  disabled = false;
 
   imagesCounter: number = 0;
   private userSub: Subscription;
   private transSub: Subscription;
+  private searchOptionsSub: Subscription;
   user: User;
 
   jobId: number;
@@ -48,7 +49,8 @@ export class NewJobComponent implements OnInit, OnDestroy {
     private router: Router,
     private titleService: Title,
     private translateService: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
 
@@ -62,12 +64,16 @@ export class NewJobComponent implements OnInit, OnDestroy {
       this.user = user;
     });
 
-    this.jobsService.getCategories().subscribe(
-      (responseData) => {
-          responseData.values.forEach( (category) =>{this.categories.push(category);})
-          this.isFetching = false;
+    this.jobsService.getSearchOptions();
+
+    this.searchOptionsSub = this.jobsService.searchOptions.subscribe((searchOptions) => {
+      if (!!searchOptions) {
+        this.categories = searchOptions.find((option) => {
+          return option.key === "categories"
+        }).values;
+        this.isFetching = false;
       }
-    )
+    });
 
     this.jobForm = new FormGroup({
       jobProvided: new FormControl(null, [
@@ -77,7 +83,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
           "^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽ∂ð ,.'-]*$"
         ),
       ]),
-      jobCategory:  new FormControl(null, [Validators.required]),
+      jobCategory: new FormControl(null, [Validators.required]),
       price: new FormControl(null, [
         Validators.required,
         Validators.min(this.minPrice),
@@ -90,7 +96,6 @@ export class NewJobComponent implements OnInit, OnDestroy {
       images: new FormArray([]),
       paused: new FormControl(false),
     });
-
 
 
   }
@@ -109,24 +114,24 @@ export class NewJobComponent implements OnInit, OnDestroy {
       this.jobForm.markAllAsTouched();
       return;
     }
-    this.disabled=true;
+    this.disabled = true;
     let newFormData = new FormData();
-    newFormData.append('jobProvided',this.jobForm.get('jobProvided').value);
+    newFormData.append('jobProvided', this.jobForm.get('jobProvided').value);
     newFormData.append('jobCategory', this.jobForm.get('jobCategory').value);
     newFormData.append('price', this.jobForm.get('price').value);
     newFormData.append('description', this.jobForm.get('description').value);
     newFormData.append('paused', this.jobForm.get('paused').value);
 
-    if(this.jobForm.get('images').value.length > 0) {
+    if (this.jobForm.get('images').value.length > 0) {
       this.jobForm.get('images').value.forEach(image => {
         newFormData.append('images', image);
       });
     }
 
-    this.jobService.createJob(newFormData).subscribe((response) =>{
-      this.disabled=false;
+    this.jobService.createJob(newFormData).subscribe((response) => {
+      this.disabled = false;
       let location = response.headers.get('location').split('/');
-      this.jobId = +location[location.length-1];
+      this.jobId = +location[location.length - 1];
       this.router.navigate(['/jobs', this.jobId]);
     });
 
@@ -137,7 +142,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
     this.allowedImageType = true;
     this.allowedImageSize = true;
 
-    if(!file) {
+    if (!file) {
       return;
     }
 
@@ -171,6 +176,7 @@ export class NewJobComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.transSub.unsubscribe();
+    this.searchOptionsSub.unsubscribe();
   }
 
 }

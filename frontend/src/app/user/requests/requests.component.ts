@@ -4,6 +4,7 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {UserService} from "../../auth/services/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
+import {RequestsService} from "./requests.service";
 
 @Component({
   selector: 'app-requests',
@@ -14,6 +15,10 @@ export class RequestsComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription;
   private transSub: Subscription;
+  private contactServiceSub: Subscription;
+
+  orderOptions: string[] = [];
+  status: string[] = [];
 
   user: User;
 
@@ -21,6 +26,7 @@ export class RequestsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private titleService: Title,
     private translateService: TranslateService,
+    private contactService: RequestsService,
   ) {
   }
 
@@ -30,6 +36,19 @@ export class RequestsComponent implements OnInit, OnDestroy {
     });
 
     this.changeTitle();
+
+    this.contactService.getSearchOptions();
+
+    this.contactServiceSub = this.contactService.searchOptions.subscribe((searchOptions) => {
+      if (!!searchOptions) {
+        this.status = searchOptions.find((option) => {
+          return option.key === "status"
+        }).values;
+        this.orderOptions = searchOptions.find((option) => {
+          return option.key === "order"
+        }).values
+      }
+    });
 
     this.transSub = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.changeTitle();
@@ -48,6 +67,7 @@ export class RequestsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.transSub.unsubscribe();
+    this.contactServiceSub.unsubscribe();
   }
 
 }

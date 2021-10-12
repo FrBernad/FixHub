@@ -22,9 +22,7 @@ export class RequestComponent implements OnInit {
   finishJobLoading = false;
 
   confirm = false;
-
   disabled = false;
-
   user: User;
 
   constructor(
@@ -117,6 +115,6 @@ export class RequestComponent implements OnInit {
         this.disabled = false;
       }
     );
-
   }
+
 }

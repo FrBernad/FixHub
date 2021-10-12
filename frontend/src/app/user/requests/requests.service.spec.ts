@@ -61,7 +61,7 @@ describe('RequestsService', () => {
 
   it('getProviderRequests() should return requests', () => {
     let requests: RequestPaginationResult = {
-      page: 0,
+      // page: 0,
       totalPages: 1,
       results: []
     }
@@ -100,7 +100,7 @@ describe('RequestsService', () => {
 
   it('getUserSentRequests() should return request', () => {
     let requests: RequestPaginationResult = {
-      page: 0,
+      // page: 0,
       totalPages: 1,
       results: []
     }
