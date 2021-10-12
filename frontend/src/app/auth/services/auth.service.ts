@@ -13,6 +13,7 @@ interface Jwt {
   exp: number,
   iat: number,
   roles: string,
+  userUrl: string;
   id: number,
   sub: string,
 }
@@ -272,6 +273,7 @@ export class AuthService {
 
     const newSession = new Session(token, expirationDate, refreshToken);
     this.userService.setRoles(jwt.roles.split(" "));
+    this.userService.setId(parseInt(jwt.userUrl.match(/users\/\d/)[0].split("/")[1]));
     this.session.next(newSession);
   }
 
