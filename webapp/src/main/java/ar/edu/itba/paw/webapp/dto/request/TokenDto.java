@@ -1,7 +1,10 @@
-package ar.edu.itba.paw.webapp.dto.response;
+package ar.edu.itba.paw.webapp.dto.request;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class TokenDto {
 
+    @NotEmpty
     String token;
 
     public TokenDto() {

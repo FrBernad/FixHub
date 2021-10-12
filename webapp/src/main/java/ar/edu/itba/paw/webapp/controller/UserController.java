@@ -15,7 +15,6 @@ import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.models.user.UserInfo;
 import ar.edu.itba.paw.models.user.notification.Notification;
-import ar.edu.itba.paw.webapp.auth.AuthorizationFilter;
 import ar.edu.itba.paw.webapp.auth.JwtUtil;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.customValidations.ProviderDetailsDto;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -135,7 +133,7 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON,})
     @Path("/emailVerification")
-    public Response verifyUser(TokenDto tokenDto) {
+    public Response verifyUser(@Valid TokenDto tokenDto) {
         LOGGER.info("Accessed /users/emailVerification PUT controller");
 
         if (tokenDto == null) {
