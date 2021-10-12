@@ -69,7 +69,7 @@ export class RequestsService {
     )
       .pipe(
         tap(() => {
-            this.userService.populateUserData().subscribe();
+            this.userService.getUserContactInfo().subscribe();
           }
         ),
         map((res) => {

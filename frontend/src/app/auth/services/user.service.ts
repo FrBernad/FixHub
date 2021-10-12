@@ -3,8 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 import {User} from "../../models/user.model";
 import {environment} from "../../../environments/environment";
-import {tap} from "rxjs/operators";
+import {concatMap, tap} from "rxjs/operators";
 import {City, State} from "../../discover/discover.service";
+import {ContactInfo} from "../../models/contact-info.model";
 
 export interface ProfileInfo {
   name: string,
@@ -45,10 +46,25 @@ export class UserService {
   populateUserData() {
     return this.http
       .get<User>(
-        environment.apiBaseUrl + '/user'
+        environment.apiBaseUrl + '/users/'+ this.user.getValue().id
       ).pipe(tap(
         res => {
           this.user.next({...this.user.getValue(), ...res});
+        }
+        ),
+        concatMap(_ => {
+          return this.getUserContactInfo();
+        })
+      )
+  }
+
+  getUserContactInfo() {
+    return this.http
+      .get<ContactInfo[]>(
+        environment.apiBaseUrl + '/users/' + this.user.getValue().id + "/contactInfo"
+      ).pipe(tap(
+        res => {
+          this.user.next({...this.user.getValue(), ...{contactInfo: res}});
         }
       ))
   }
@@ -57,6 +73,13 @@ export class UserService {
     this.user.next({
       ...this.user.getValue(),
       roles
+    });
+  }
+
+  setId(id: number) {
+    this.user.next({
+      ...this.user.getValue(),
+      id
     });
   }
 

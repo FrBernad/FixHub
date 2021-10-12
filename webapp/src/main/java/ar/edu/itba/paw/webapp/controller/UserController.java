@@ -708,7 +708,7 @@ public class UserController {
         }, uriBuilder);
     }
 
-
+//     FIXME: TENGO Q PEDIR LOS CONTACT INFOD DESDE EL FRONT, ESTA CON USERSESSION TODAVIA ESTO
     @GET
     @Path("/{id}/contactInfo")
     @Produces(value = {MediaType.APPLICATION_JSON})
