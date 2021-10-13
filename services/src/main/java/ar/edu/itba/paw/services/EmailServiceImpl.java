@@ -71,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
-            final String url = appBaseUrl.toString() + "/user/verify?token=" + token.getValue();
+            final String url = appBaseUrl.toString() + "user/verify?token=" + token.getValue();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -87,7 +87,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user password reset email");
-            final String url = appBaseUrl.toString() + "/user/resetPassword?token=" + token.getValue();
+            final String url = appBaseUrl.toString() + "user/resetPassword?token=" + token.getValue();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
             mailAttrs.put("to", user.getEmail());
@@ -124,9 +124,9 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job request confirmation email");
-            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
             mailAttrs.put("requestURL", requestURL);
 
             mailAttrs.put("jobURL", jobURL);
@@ -150,9 +150,9 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job cancellation email");
-            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
 
             mailAttrs.put("requestURL", requestURL);
 
@@ -176,9 +176,9 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job cancellation email");
-            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
-            final String userURL = appBaseUrl.toString() + "/user/" + jobContact.getUser().getId();
-            final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String userURL = appBaseUrl.toString() + "user/" + jobContact.getUser().getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
 
             mailAttrs.put("requestURL", requestURL);
 
@@ -202,9 +202,9 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job confirmation email");
-            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
 
             mailAttrs.put("requestURL", requestURL);
 
@@ -228,9 +228,9 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job finished email");
-            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
-            final String providerURL = appBaseUrl.toString() + "/user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
 
             mailAttrs.put("requestURL", requestURL);
 
@@ -254,9 +254,9 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job request email");
-            final String jobURL = appBaseUrl.toString() + "/jobs/" + jobContact.getJob().getId();
-            final String userURL = appBaseUrl.toString() + "/user/" + jobContact.getUser().getId();
-            final String requestURL = appBaseUrl.toString() + "/user/requests/" + jobContact.getId();
+            final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
+            final String userURL = appBaseUrl.toString() + "user/" + jobContact.getUser().getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
 
             mailAttrs.put("requestURL", requestURL);
 
