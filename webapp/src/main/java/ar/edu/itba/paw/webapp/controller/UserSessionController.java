@@ -106,7 +106,7 @@
 ////        final User user = userOpt.get();
 //
 //        final Response.ResponseBuilder responseBuilder = Response.noContent();
-//
+//FIXME: BORRAR!!
 //        return responseBuilder.build();
 //    }
 //

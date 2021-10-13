@@ -27,6 +27,7 @@ public class StateDto {
         this.name = state.getName();
         this.citiesUrl = uriInfo.getBaseUriBuilder()
             .path("locations")
+            .path("states")
             .path(String.valueOf(state.getId()))
             .path("cities")
             .build().toString();
