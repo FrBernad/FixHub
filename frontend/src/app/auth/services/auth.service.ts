@@ -163,7 +163,14 @@ export class AuthService {
         }
       ),
       mergeMap(() => {
-        return this.userService.populateUserData();
+        return this.userService.getUserProviderDetails(this.userService.user.getValue().id)
+          .pipe(
+            tap(
+              res => {
+                this.userService.user.next({...this.userService.user.getValue(), ...{providerDetails: res}});
+              }
+            )
+          );
       })
     );
   }
@@ -233,7 +240,7 @@ export class AuthService {
 
     const milliExpirationTime = (jwt.exp - jwt.iat) * 1000;
     const refreshToken = localStorage.getItem("refresh-token")
-    const expirationDate = new Date(new Date().getTime() + milliExpirationTime - 5*1000);
+    const expirationDate = new Date(new Date().getTime() + milliExpirationTime - 5 * 1000);
 
     const newSession = new Session(token, expirationDate, refreshToken);
     this.userService.setRoles(jwt.roles.split(" "));

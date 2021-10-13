@@ -64,10 +64,30 @@ export class UserService {
                   return of(res)
                 }
                 return this.getUserProviderDetails(this.user.getValue().id)
+                  .pipe(
+                    tap(
+                      res => {
+                        this.user.next({...this.user.getValue(), ...{providerDetails: res}});
+                      }
+                    )
+                  )
               })
             );
         })
       )
+  }
+
+  repopulateUserData() {
+    return this.http
+      .get<User>(
+        environment.apiBaseUrl + '/users/' + this.user.getValue().id
+      ).pipe(
+        tap(
+          res => {
+            this.user.next({...this.user.getValue(), ...res});
+          }
+        )
+      );
   }
 
   getUserContactInfo() {
@@ -85,11 +105,7 @@ export class UserService {
     return this.http
       .get<ProviderDetails>(
         environment.apiBaseUrl + '/users/' + id + "/provider"
-      ).pipe(tap(
-        res => {
-          this.user.next({...this.user.getValue(), ...{providerDetails: res}});
-        }
-      ))
+      )
   }
 
   setRoles(roles: string[]) {
@@ -132,7 +148,7 @@ export class UserService {
   follow(id: number) {
     return this.http.put(
       environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + id, {}).pipe(tap(() => {
-      this.populateUserData().subscribe((_) => {
+      this.repopulateUserData().subscribe((_) => {
       }, (_) => {
       })
     }));
@@ -141,7 +157,7 @@ export class UserService {
   unfollow(id: number) {
     return this.http.delete(
       environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/following/' + id, {}).pipe(tap(() => {
-      this.populateUserData().subscribe((_) => {
+      this.repopulateUserData().subscribe((_) => {
       }, (_) => {
       })
     }));
@@ -150,7 +166,7 @@ export class UserService {
   updateProfileImage(profileImage: FormData) {
     return this.http.put<FormData>(environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/profileImage',
       profileImage).pipe(tap(() => {
-      this.populateUserData().subscribe((_) => {
+      this.repopulateUserData().subscribe((_) => {
       }, (_) => {
       });
     }));
@@ -159,7 +175,7 @@ export class UserService {
   updateCoverImage(coverImage: FormData) {
     return this.http.put<FormData>(environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/coverImage',
       coverImage).pipe(tap(() => {
-      this.populateUserData().subscribe((_) => {
+      this.repopulateUserData().subscribe((_) => {
       }, (_) => {
       });
     }));
@@ -167,13 +183,20 @@ export class UserService {
 
   updateProviderInfo(providerInfo: ProviderInfo) {
     return this.http.put(
-      environment.apiBaseUrl + '/users/account/provider',
+      environment.apiBaseUrl + '/users/' + this.user.getValue().id + '/provider',
       providerInfo)
-      .pipe(tap(() => {
-        this.populateUserData().subscribe((_) => {
-        }, (_) => {
-        });
-      }));
+      .pipe(
+        concatMap(
+          (_) => this.getUserProviderDetails(this.user.getValue().id)
+            .pipe(
+              tap(
+                res => {
+                  this.user.next({...this.user.getValue(), ...{providerDetails: res}});
+                }
+              )
+            )
+        )
+      );
   }
 
 
