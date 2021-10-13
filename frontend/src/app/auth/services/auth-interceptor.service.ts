@@ -12,23 +12,34 @@ import {catchError, exhaustMap, map, take} from 'rxjs/operators';
 
 import {AuthService} from './auth.service';
 import {throwError} from "rxjs";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private translateService: TranslateService,
+  ) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return this.authService.session.pipe(
       take(1),
       exhaustMap(token => {
-        if (!token) {
-          return next.handle(req);
-        }
-        const modifiedReq = req.clone({
-          headers: new HttpHeaders().set('Authorization', "Bearer " + token.token)
+
+        const langReq = req.clone({
+          headers: req.headers.set('Accept-Language', this.translateService.currentLang)
         });
-        return next.handle(modifiedReq)
+
+        if (!token) {
+          return next.handle(langReq);
+        }
+
+        const authRequest = langReq.clone({
+          headers: langReq.headers.set('Authorization', "Bearer " + token.token)
+        });
+
+        return next.handle(authRequest)
           .pipe(
             catchError((err) => {
                 if (err instanceof HttpErrorResponse) {

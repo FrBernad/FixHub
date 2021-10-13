@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Router, RoutesRecognized} from "@angular/router";
+import {NavigationCancel, Router, RoutesRecognized} from "@angular/router";
 import {filter, pairwise} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
@@ -12,9 +12,11 @@ export class PreviousRouteService {
     private router: Router
   ) {
     this.router.events.pipe(
-      filter(e => e instanceof RoutesRecognized), pairwise())
+      filter(e => e instanceof RoutesRecognized || e instanceof NavigationCancel)
+      , pairwise()
+    )
       .subscribe((event: any[]) => {
-        this.previousUrl = event[0].urlAfterRedirects;
+        this.previousUrl = event[0].url;
       });
   }
 

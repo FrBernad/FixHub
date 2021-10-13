@@ -46,7 +46,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.modal = new bootstrap.Modal(document.getElementById("contactModal"));
 
-
     this.userSub = this.userService.user.subscribe((user) => {
       this.user = user;
     });
