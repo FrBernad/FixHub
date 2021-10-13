@@ -49,11 +49,19 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
 
-    private static final RequestMatcher AUTH_ENDPOINTS_MATCHER = new OrRequestMatcher(
+    private static final RequestMatcher LOGIN_ENDPOINT_MATCHER = new OrRequestMatcher(
         new AntPathRequestMatcher("/auth/login"),
-        new AntPathRequestMatcher("/auth/login/"),
+        new AntPathRequestMatcher("/auth/login/")
+    );
+
+    private static final RequestMatcher REFRESH_ENDPOINT_MATCHER = new OrRequestMatcher(
         new AntPathRequestMatcher("/auth/refreshToken"),
         new AntPathRequestMatcher("/auth/refreshToken/")
+    );
+
+    private static final RequestMatcher AUTH_ENDPOINTS_MATCHER = new OrRequestMatcher(
+        REFRESH_ENDPOINT_MATCHER,
+        LOGIN_ENDPOINT_MATCHER
     );
 
     @Override
@@ -83,8 +91,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
         try {
             if (authType == AuthorizationType.BASIC) {
+                if (checkRefreshPath(request, response)) {
+                    return;
+                }
                 auth = tryBasicAuthentication(payload, response);
             } else {
+                if (checkLoginPath(request, response)) {
+                    return;
+                }
                 auth = tryBearerAuthentication(payload, response);
             }
 
@@ -189,6 +203,25 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private boolean checkAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response) {
         if (AUTH_ENDPOINTS_MATCHER.matches(request)) {
             response.setStatus(HttpServletResponse.SC_OK);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkRefreshPath(final HttpServletRequest request, final HttpServletResponse response) {
+        if (REFRESH_ENDPOINT_MATCHER.matches(request)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private boolean checkLoginPath(final HttpServletRequest request, final HttpServletResponse response) {
+        if (LOGIN_ENDPOINT_MATCHER.matches(request)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return true;
         }
 
