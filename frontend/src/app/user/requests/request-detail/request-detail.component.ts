@@ -63,7 +63,7 @@ export class RequestComponent implements OnInit {
 
   acceptJob(): void {
     this.acceptJobLoading = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatus.IN_PROGRESS).subscribe(
+    this.contactService.changeReceivedRequestStatus(this.request.id, JobStatus.IN_PROGRESS).subscribe(
       () => {
         this.acceptJobLoading = false;
         this.request.status = JobStatus.IN_PROGRESS;
@@ -76,7 +76,7 @@ export class RequestComponent implements OnInit {
 
   rejectJob(): void {
     this.rejectJobLoading = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatus.REJECTED).subscribe(
+    this.contactService.changeReceivedRequestStatus(this.request.id, JobStatus.REJECTED).subscribe(
       () => {
         this.rejectJobLoading = false;
         this.request.status = JobStatus.REJECTED;
@@ -89,7 +89,7 @@ export class RequestComponent implements OnInit {
 
   jobFinished(): void {
     this.finishJobLoading = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatus.FINISHED).subscribe(
+    this.contactService.changeReceivedRequestStatus(this.request.id, JobStatus.FINISHED).subscribe(
       () => {
         this.finishJobLoading = false;
         this.request.status = JobStatus.FINISHED;
@@ -104,9 +104,9 @@ export class RequestComponent implements OnInit {
     return this.request.status == JobStatus.PENDING || this.request.status == JobStatus.IN_PROGRESS;
   }
 
-  cancelRequest() {
+  cancelSentRequest() {
     this.disabled = true;
-    this.contactService.changeContactStatus(this.request.id, JobStatus.CANCELED).subscribe(
+    this.contactService.changeSentRequestStatus(this.request.id, JobStatus.CANCELED).subscribe(
       () => {
         this.disabled = false;
         this.request.status = JobStatus.CANCELED;

@@ -113,7 +113,7 @@ describe('RequestsService', () => {
 
 
   it('changeContactStatus() should return created', () => {
-    requestsService.changeContactStatus(1, "FINISHED")
+    requestsService.changeReceivedRequestStatus(1, "FINISHED")
       .subscribe((res) => {
         expect(res.status).toEqual(HttpStatusCode.Created);
       });

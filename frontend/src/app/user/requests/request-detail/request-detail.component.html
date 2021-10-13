@@ -328,7 +328,7 @@
                     </div>
                     <div class="col-12 d-flex align-items-center justify-content-start">
                       <button class="finishBtn me-3"
-                              (click)="cancelRequest()" [disabled]="disabled">
+                              (click)="cancelSentRequest()" [disabled]="disabled">
                         <span class="spinner-border spinner-border-sm ms-2" [hidden]="!disabled"></span>
                         <span *ngIf="!disabled">
                                 {{'sentRequest.confirm'|translate}}

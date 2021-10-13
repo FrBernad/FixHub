@@ -135,10 +135,21 @@ export class RequestsService {
   }
 
 
-  //FIXME: HAY Q HACER LOS DOS SENT Y RECEIVED
-  changeContactStatus(contactId: number, status: string) {
+  changeReceivedRequestStatus(contactId: number, status: string) {
     return this.http.put(
       environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/received/' + contactId,
+      {
+        status
+      },
+      {
+        observe: "response"
+      }
+    );
+  }
+
+  changeSentRequestStatus(contactId: number, status: string) {
+    return this.http.put(
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/sent/' + contactId,
       {
         status
       },
