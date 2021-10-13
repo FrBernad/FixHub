@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 import {ProviderDetails, User} from "../../models/user.model";
 import {environment} from "../../../environments/environment";
 import {concatMap, tap} from "rxjs/operators";
@@ -47,15 +47,22 @@ export class UserService {
     return this.http
       .get<User>(
         environment.apiBaseUrl + '/users/' + this.user.getValue().id
-      ).pipe(tap(
-        res => {
-          this.user.next({...this.user.getValue(), ...res});
-        }
+      ).pipe(
+        tap(
+          res => {
+            this.user.next({...this.user.getValue(), ...res});
+          }
         ),
-        concatMap(_ => {
+        concatMap(res => {
+          if (!this.user.getValue().roles.includes('VERIFIED')) {
+            return of(res)
+          }
           return this.getUserContactInfo()
             .pipe(
-              concatMap(_ =>{
+              concatMap(res => {
+                if (!this.user.getValue().roles.includes('PROVIDER')) {
+                  return of(res)
+                }
                 return this.getUserProviderDetails(this.user.getValue().id)
               })
             );
@@ -69,12 +76,12 @@ export class UserService {
         environment.apiBaseUrl + '/users/' + this.user.getValue().id + "/contactInfo"
       ).pipe(tap(
         res => {
-          this.user.next({...this.user.getValue(), ...{contactInfo: res}});
+          this.user.next({...this.user.getValue(), ...{contactInfo: !!res ? res : []}});
         }
       ))
   }
 
-  getUserProviderDetails(id:number) {
+  getUserProviderDetails(id: number) {
     return this.http
       .get<ProviderDetails>(
         environment.apiBaseUrl + '/users/' + id + "/provider"
