@@ -7,7 +7,7 @@ import {PreviousRouteService} from "../services/previous-route.service";
 import {UserService} from "../services/user.service";
 
 @Injectable({providedIn: 'root'})
-export class NotVerifiedGuard implements CanActivate {
+export class NotVerifiedOrUnauthGuard implements CanActivate {
 
   constructor(
     private userService: UserService,
@@ -25,9 +25,10 @@ export class NotVerifiedGuard implements CanActivate {
     return this.userService.user.pipe(
       take(1),
       map(user => {
-        if (!!user && !user.roles.includes("VERIFIED")) {
+        if (!user || !user.roles.includes("VERIFIED")) {
           return true;
         }
+
         return this.router.createUrlTree(["/user/profile"]);
       })
     );

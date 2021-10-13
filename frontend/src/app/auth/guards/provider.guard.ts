@@ -30,7 +30,7 @@ export class ProviderGuard implements CanActivate {
           return true;
         }
         let previousRoute = this.previousRouteService.getPreviousUrl();
-        previousRoute = !!previousRoute ? previousRoute : "/user/profile"
+        previousRoute = !!previousRoute && previousRoute!=="/login" ? previousRoute : "/user/profile"
         return this.router.createUrlTree([previousRoute]);
       })
     );

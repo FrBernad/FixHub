@@ -11,8 +11,7 @@ export class ProfileGuard implements CanActivate {
 
   constructor(
     private userService: UserService,
-    private router: Router,
-    private previousRouteService: PreviousRouteService
+    private router: Router
   ) {
   }
 
