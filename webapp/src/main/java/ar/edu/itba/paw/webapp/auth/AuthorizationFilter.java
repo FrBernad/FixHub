@@ -61,7 +61,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null) {
-            if (checkAuthenticationPath(request, response)) {
+            if (checkAuthenticationError(request, response)) {
                 return;
             }
             chain.doFilter(request, response);
@@ -70,7 +70,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
         final AuthorizationType authType = parseAuthorizationType(authHeader);
         if (authType == null) {
-            if (checkAuthenticationPath(request, response)) {
+            if (checkAuthenticationError(request, response)) {
                 return;
             }
             chain.doFilter(request, response);
@@ -88,13 +88,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 auth = tryBearerAuthentication(payload, response);
             }
 
+            if (checkAuthenticationSuccess(request, response)) {
+                return;
+            }
+
             SecurityContextHolder
                 .getContext()
                 .setAuthentication(auth);
 
             LOGGER.debug("Populated security context with authorization: {}", auth);
         } catch (AuthenticationException e) {
-            if (checkAuthenticationPath(request, response)) {
+            if (checkAuthenticationError(request, response)) {
                 return;
             }
             LOGGER.debug("{} Setting default unauthorized user", e.getMessage());
@@ -173,9 +177,18 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private boolean checkAuthenticationPath(final HttpServletRequest request, final HttpServletResponse response) {
+    private boolean checkAuthenticationError(final HttpServletRequest request, final HttpServletResponse response) {
         if (AUTH_ENDPOINTS_MATCHER.matches(request)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response) {
+        if (AUTH_ENDPOINTS_MATCHER.matches(request)) {
+            response.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
 
