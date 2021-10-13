@@ -38,9 +38,12 @@ public class UserDto {
 
     private String providerDetailsUrl;
 
+    private String notificationsUrl;
+
     public static Collection<UserDto> mapUserToDto(Collection<User> users, UriInfo uriInfo) {
         return users.stream().map(u -> new UserDto(u, uriInfo)).collect(Collectors.toList());
     }
+
     public static UriBuilder getUserUriBuilder(User user, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().clone().path("users").path(String.valueOf(user.getId()));
     }
@@ -85,6 +88,16 @@ public class UserDto {
 
         this.providerDetailsUrl = user.isProvider() ? uriBuilder.clone().path("provider").build().toString() : "";
 
+        this.notificationsUrl = uriBuilder.clone().path("notifications").build().toString();
+
+    }
+
+    public String getNotificationsUrl() {
+        return notificationsUrl;
+    }
+
+    public void setNotificationsUrl(String notificationsUrl) {
+        this.notificationsUrl = notificationsUrl;
     }
 
     public String getProviderDetailsUrl() {
