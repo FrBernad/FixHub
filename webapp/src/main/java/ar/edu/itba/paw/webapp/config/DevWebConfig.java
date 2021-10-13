@@ -20,7 +20,7 @@ public class DevWebConfig {
 
     @Bean(name = "appWebContext")
     public String appWebContext() {
-        return "";
+        return "/";
     }
 
     @Bean(name = "appPort")
