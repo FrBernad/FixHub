@@ -23,7 +23,7 @@ export class NewJobRequestNotificationCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contactService.getJobRequest(this.notification.resource).subscribe((jobRequest) => {
+    this.contactService.getReceivedJobRequest(this.notification.resource).subscribe((jobRequest) => {
       this.jobRequest = jobRequest;
       this.isLoading=false;
     });
@@ -35,7 +35,7 @@ export class NewJobRequestNotificationCardComponent implements OnInit {
         this.notification.seen = true;
       }
     );
-    this.router.navigate(['/user', 'requests', this.jobRequest.id]);
+    this.router.navigate(['/user/requests/received', this.jobRequest.id]);
   }
 
 }

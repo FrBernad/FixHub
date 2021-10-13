@@ -77,7 +77,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       addressNumber: this.contactForm.get('addressNumber').value,
     }).subscribe(
       (contactId) => {
-        this.router.navigate(["/user/requests/" + contactId]);
+        this.router.navigate(["/user/requests/sent/" + contactId]);
         this.modal.hide();
         this.onClose();
         this.disabled = false;

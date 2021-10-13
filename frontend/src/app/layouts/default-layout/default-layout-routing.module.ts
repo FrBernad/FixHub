@@ -29,7 +29,14 @@ const routes: Routes = [
           .then(m => m.NotificationsModule)
       },
       {
-        path: 'user/requests/:id',
+        path: 'user/requests/sent/:id',
+        data: {type: "sent"},
+        loadChildren: () => import("../../user/requests/request-detail/request-detail.module")
+          .then(m => m.RequestDetailModule)
+      },
+      {
+        path: 'user/requests/received/:id',
+        data: {type: "received"},
         loadChildren: () => import("../../user/requests/request-detail/request-detail.module")
           .then(m => m.RequestDetailModule)
       },

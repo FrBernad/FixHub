@@ -31,7 +31,7 @@
           </div>
           <div class="col-12 d-flex align-items-center justify-content-start">
             <a class="names manage" (click)="$event.stopPropagation()"
-               [routerLink]="['/user/requests/',request.id]">
+               [routerLink]="['/user/requests/'+requestType,request.id]">
               {{"requests.manage" | translate }}
             </a>
           </div>

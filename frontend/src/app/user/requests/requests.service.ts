@@ -104,7 +104,13 @@ export class RequestsService {
     );
   }
 
-  getJobRequest(id: number) {
+  getSentJobRequest(id: number) {
+    return this.http.get<JobRequest>(
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/sent/' + id,
+    )
+  }
+
+  getReceivedJobRequest(id: number) {
     return this.http.get<JobRequest>(
       environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/requests/received/' + id,
     )

@@ -6,6 +6,7 @@ import {JobStatus} from "../../../models/job-status-enum.model";
 import {Title} from "@angular/platform-browser";
 import {User} from "../../../models/user.model";
 import {UserService} from "../../../auth/services/user.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-request',
@@ -36,12 +37,20 @@ export class RequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.request.id = this.route.snapshot.params["id"]
+    let requestType = this.route.snapshot.data["type"];
     this.userService.user.subscribe(
       (res) => {
         this.user = res;
       }
     )
-    this.contactService.getJobRequest(this.request.id).subscribe(
+    let requestObs: Observable<JobRequest>;
+    if (requestType === "sent") {
+      requestObs = this.contactService.getSentJobRequest(this.request.id);
+    } else {
+      requestObs = this.contactService.getReceivedJobRequest(this.request.id);
+    }
+
+    requestObs.subscribe(
       request => {
         this.request = request;
         this.loading = false;

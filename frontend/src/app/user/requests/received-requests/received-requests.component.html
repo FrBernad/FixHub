@@ -73,7 +73,7 @@
             <ng-template [ngIf]="rpr.results.length>0" [ngIfElse]="contactsNotFound">
               <div class="col-12 mt-2">
                 <ng-template [ngFor] let-request [ngForOf]="rpr.results">
-                  <app-request-card class="w-100" [type]="'PROVIDER'" [request]="request"></app-request-card>
+                  <app-request-card class="w-100" [type]="'PROVIDER'" [request]="request" [requestType]="'received'"></app-request-card>
                 </ng-template>
               </div>
 

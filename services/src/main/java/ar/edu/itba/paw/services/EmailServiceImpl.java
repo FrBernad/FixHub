@@ -126,13 +126,13 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.debug("Sending job request confirmation email");
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
-            mailAttrs.put("requestURL", requestURL);
-
-            mailAttrs.put("jobURL", jobURL);
-            mailAttrs.put("providerURL", providerURL);
+            final String requestURL = appBaseUrl.toString() + "user/requests/sent/" + jobContact.getId();
 
             mailAttrs.put("to", jobContact.getUser().getEmail());
+
+            mailAttrs.put("requestURL", requestURL);
+            mailAttrs.put("jobURL", jobURL);
+            mailAttrs.put("providerURL", providerURL);
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
@@ -152,13 +152,13 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.debug("Sending job cancellation email");
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/sent" + jobContact.getId();
+
+            mailAttrs.put("to", jobContact.getUser().getEmail());
 
             mailAttrs.put("requestURL", requestURL);
-
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
-            mailAttrs.put("to", jobContact.getUser().getEmail());
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
@@ -178,13 +178,13 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.debug("Sending job cancellation email");
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String userURL = appBaseUrl.toString() + "user/" + jobContact.getUser().getId();
-            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/received/" + jobContact.getId();
+
+            mailAttrs.put("to", jobContact.getProvider().getEmail());
 
             mailAttrs.put("requestURL", requestURL);
-
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("userURL", userURL);
-            mailAttrs.put("to", jobContact.getProvider().getEmail());
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
             mailAttrs.put("userName", jobContact.getUser().getName());
             mailAttrs.put("name", jobContact.getJob().getProvider().getName());
@@ -204,13 +204,13 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.debug("Sending job confirmation email");
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/sent/" + jobContact.getId();
+
+            mailAttrs.put("to", jobContact.getUser().getEmail());
 
             mailAttrs.put("requestURL", requestURL);
-
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
-            mailAttrs.put("to", jobContact.getUser().getEmail());
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
@@ -230,13 +230,13 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.debug("Sending job finished email");
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
-            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/sent/" + jobContact.getId();
+
+            mailAttrs.put("to", jobContact.getUser().getEmail());
 
             mailAttrs.put("requestURL", requestURL);
-
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("providerURL", providerURL);
-            mailAttrs.put("to", jobContact.getUser().getEmail());
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());
@@ -256,7 +256,7 @@ public class EmailServiceImpl implements EmailService {
             LOGGER.debug("Sending job request email");
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String userURL = appBaseUrl.toString() + "user/" + jobContact.getUser().getId();
-            final String requestURL = appBaseUrl.toString() + "user/requests/" + jobContact.getId();
+            final String requestURL = appBaseUrl.toString() + "user/requests/received/" + jobContact.getId();
 
             mailAttrs.put("requestURL", requestURL);
 
@@ -267,9 +267,9 @@ public class EmailServiceImpl implements EmailService {
                 contactInfo.getStreet(), contactInfo.getAddressNumber(),
                 contactInfo.getFloor(), contactInfo.getDepartmentNumber());
 
+            mailAttrs.put("to", jobContact.getJob().getProvider().getEmail());
             mailAttrs.put("jobURL", jobURL);
             mailAttrs.put("userURL", userURL);
-            mailAttrs.put("to", jobContact.getJob().getProvider().getEmail());
             mailAttrs.put("providerJob", jobContact.getJob().getJobProvided());
             mailAttrs.put("providerName", jobContact.getJob().getProvider().getName());
             mailAttrs.put("name", jobContact.getUser().getName());

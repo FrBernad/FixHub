@@ -30,7 +30,7 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contactService.getJobRequest(this.notification.resource).subscribe((jobRequest) => {
+    this.contactService.getSentJobRequest(this.notification.resource).subscribe((jobRequest) => {
       this.jobRequest = jobRequest;
       this.isLoading = false;
     });
@@ -42,7 +42,7 @@ export class ChangeStatusJobUserNotificationCardComponent implements OnInit {
         this.notification.seen = true;
       }
     );
-    this.router.navigate(['/user','requests', this.jobRequest.id]);
+    this.router.navigate(['/user/requests/sent', this.jobRequest.id]);
   }
 
 }

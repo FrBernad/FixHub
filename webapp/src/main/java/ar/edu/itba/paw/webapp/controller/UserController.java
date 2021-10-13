@@ -506,7 +506,7 @@ public class UserController {
         return Response.noContent().build();
     }
 
-     //  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
+    //  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
     @GET
     @Path("/requests/searchOptions")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -600,8 +600,8 @@ public class UserController {
     @GET
     @Path("/{id}/requests/received/{requestId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRequest(@PathParam("id") final long id,
-                               @PathParam("requestId") final long contactId) {
+    public Response getReceivedRequest(@PathParam("id") final long id,
+                                       @PathParam("requestId") final long contactId) {
 
         LOGGER.info("Accessed /users/{}/requests/received/{} GET controller", id, contactId);
 
@@ -610,7 +610,7 @@ public class UserController {
 
         final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
 
-        if (!user.getId().equals(jobContact.getProvider().getId()) && !user.getId().equals(jobContact.getUser().getId())) {
+        if (!user.getId().equals(jobContact.getProvider().getId())) {
             throw new IllegalOperationException();
         }
 
@@ -654,6 +654,28 @@ public class UserController {
 
         return createPaginationResponse(results, new GenericEntity<Collection<JobContactDto>>(contactsDto) {
         }, uriBuilder);
+    }
+
+    @GET
+    @Path("/{id}/requests/sent/{requestId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getSentRequest(@PathParam("id") final long id,
+                                   @PathParam("requestId") final long contactId) {
+
+        LOGGER.info("Accessed /users/{}/requests/sent/{} GET controller", id, contactId);
+
+        final User user = userService.getUserByEmail(securityContext.getUserPrincipal().getName()).orElseThrow(UserNotFoundException::new);
+        assureUserResourceCorrelation(user, id);
+
+        final JobContact jobContact = jobService.getContactById(contactId).orElseThrow(NoContactFoundException::new);
+
+        if (!user.getId().equals(jobContact.getUser().getId())) {
+            throw new IllegalOperationException();
+        }
+
+        final JobContactDto jobContactDto = new JobContactDto(jobContact, uriInfo);
+
+        return Response.ok(jobContactDto).build();
     }
 
     @PUT

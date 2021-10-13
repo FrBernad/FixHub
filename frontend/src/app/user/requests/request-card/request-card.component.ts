@@ -16,6 +16,8 @@ export class RequestCardComponent implements OnInit {
 
   @Input() type: String;
 
+  @Input() requestType: String;
+
   disabled = false;
   confirm = false;
 
