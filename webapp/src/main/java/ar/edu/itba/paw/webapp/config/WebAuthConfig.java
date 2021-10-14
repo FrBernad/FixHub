@@ -167,8 +167,12 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/jobs/")
             .hasRole("PROVIDER")
             .antMatchers(HttpMethod.POST,
-                "/api/jobs/{id:[\\d]+}/requests",
-                "/api/jobs/{id:[\\d]+}/requests/")
+                "/api/jobs/{id:[\\d]+}/contact",
+                "/api/jobs/{id:[\\d]+}/contact/")
+            .hasRole("VERIFIED")
+            .antMatchers(HttpMethod.GET,
+                "/api/jobs/{id:[\\d]+}/contact",
+                "/api/jobs/{id:[\\d]+}/contact/")
             .hasRole("VERIFIED")
             .antMatchers(HttpMethod.PUT,
                 "/api/jobs/{id:[\\d]+}",

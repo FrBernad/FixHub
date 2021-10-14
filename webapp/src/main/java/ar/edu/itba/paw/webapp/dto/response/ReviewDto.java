@@ -15,7 +15,7 @@ public class ReviewDto {
     public static Collection<ReviewDto> mapReviewToDto(Collection<Review> reviews, UriInfo uriInfo) {
         return reviews.stream().map(r -> new ReviewDto(r, uriInfo)).collect(Collectors.toList());
     }
-//    FIXME: esto esta mal habria q crear /reviews
+
     public static UriBuilder getReviewUriBuilder(Review review, UriInfo uriInfo) {
         return uriInfo.getBaseUriBuilder().path("reviews").path(String.valueOf(review.getId()));
     }

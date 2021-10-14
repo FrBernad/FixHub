@@ -38,6 +38,8 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+
 @Path("jobs")
 @Component
 public class JobController {
@@ -167,13 +169,6 @@ public class JobController {
         LOGGER.info("Accessed /jobs/{} GET controller", id);
         final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
 
-        if (securityContext.getUserPrincipal() != null) {
-            final Optional<User> user = userService.getUserByEmail(securityContext.getUserPrincipal().getName());
-            SingleJobDto singleJobDto = new SingleJobDto(job, uriInfo,
-                user.isPresent() && userService.hasContactJobProvided(job.getProvider(), user.get(), job));
-            return Response.ok(singleJobDto).build();
-        }
-
         JobDto jobDto = new JobDto(job, uriInfo);
         return Response.ok(jobDto).build();
     }
@@ -284,7 +279,7 @@ public class JobController {
     }
 
     @POST
-    @Path("/{id}/requests")
+    @Path("/{id}/contact")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response contactPost(@PathParam("id") final Long id, @Valid final NewContactDto contact) {
 
@@ -319,6 +314,26 @@ public class JobController {
             throw new IllegalContactException();
         }
     }
+
+    @GET
+    @Path("/{id}/contact")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response hasContactPost(@PathParam("id") final Long id) {
+
+        LOGGER.info("Accessed /jobs/{}/contact GET controller", id);
+
+        final Job job = jobService.getJobById(id).orElseThrow(JobNotFoundException::new);
+        final User user = userService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(UserNotFoundException::new);
+
+        final boolean hasContacted = userService.hasContactJobProvided(job.getProvider(), user, job);
+
+        if (!hasContacted) {
+            return Response.status(NOT_FOUND).build();
+        }
+
+        return Response.noContent().build();
+    }
+
 
     @GET
     @Path("/{id}/reviews")
@@ -370,7 +385,7 @@ public class JobController {
             if (results.getPage() == 0) {
                 return Response.noContent().build();
             } else {
-                return Response.status(Response.Status.NOT_FOUND).build();
+                return Response.status(NOT_FOUND).build();
             }
         }
 

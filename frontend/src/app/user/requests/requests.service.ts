@@ -61,7 +61,7 @@ export class RequestsService {
 
   newContact(jobId: number, contactData: ContactData) {
     return this.http.post<ContactData>(
-      environment.apiBaseUrl + '/jobs/' + jobId + '/requests',
+      environment.apiBaseUrl + '/jobs/' + jobId + '/contact',
       contactData,
       {
         observe: "response"

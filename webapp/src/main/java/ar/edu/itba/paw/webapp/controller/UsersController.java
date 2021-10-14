@@ -342,7 +342,7 @@ public class UsersController {
 
         InputStream in = profileImage.getEntityAs(InputStream.class);
         userService.updateProfileImage(new NewImageDto(StreamUtils.copyToByteArray(in), profileImage.getMediaType().toString()), user);
-//       FIXME: DEVOLVER LOCATION DEL RESOURCE VAMBIADO ACA Y DONDE HAGA FALTA
+
         return Response.ok().build();
     }
 
@@ -726,7 +726,6 @@ public class UsersController {
         }, uriBuilder);
     }
 
-    //     FIXME: TENGO Q PEDIR LOS CONTACT INFOD DESDE EL FRONT, ESTA CON USERSESSION TODAVIA ESTO
     @GET
     @Path("/{id}/contactInfo")
     @Produces(value = {MediaType.APPLICATION_JSON})

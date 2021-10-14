@@ -1,10 +1,10 @@
 import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Injectable} from "@angular/core";
-import {Subject} from "rxjs";
+import {of, Subject} from "rxjs";
 import {Review} from "./review.model";
 import {SingleJob} from "../models/single-job.model";
-import {concatMap, map} from "rxjs/operators";
+import {catchError, concatMap, map, tap} from "rxjs/operators";
 import {UserService} from "../auth/services/user.service";
 
 export interface JobData {
@@ -98,6 +98,7 @@ export class JobService {
 
   getJob(id: number) {
     let currentJob: SingleJob;
+    let canReview = true;
 
     return this.http.get<SingleJob>(environment.apiBaseUrl + '/jobs/' + id)
       .pipe(
@@ -106,14 +107,40 @@ export class JobService {
             currentJob = job;
             return this.userService.getUserProviderDetails(job.provider.id)
               .pipe(
-                map(info => {
+                tap(info => {
                   currentJob.provider.providerDetails = info;
-                  return currentJob;
                 })
+                , concatMap(
+                  (_) => {
+                    const loggedUser = this.userService.user.getValue();
+                    if (!!loggedUser && loggedUser.roles.includes("VERIFIED")) {
+                      return this.hasContactedJob(id)
+                        .pipe(
+                          catchError((_) => {
+                            canReview = false;
+                            currentJob.canReview = false;
+                            return of(currentJob);
+                          })
+                          , map(_ => {
+                            if(canReview){
+                            currentJob.canReview = true;
+                            }
+                            return currentJob;
+                          })
+                        )
+                    }
+                    currentJob.canReview = false;
+                    return of(currentJob);
+                  }
+                )
               )
           }
         )
       );
+  }
+
+  hasContactedJob(id: number) {
+    return this.http.get(environment.apiBaseUrl + '/jobs/' + id + "/contact", {observe: "response"});
   }
 
   createReview(review: { description: string, rating: string }, id: number) {
