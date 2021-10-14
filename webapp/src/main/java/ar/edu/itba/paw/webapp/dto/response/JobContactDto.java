@@ -36,6 +36,8 @@ public class JobContactDto {
     private String jobProvided;
     private Long jobId;
 
+    private String url;
+
     private ContactInfoDto contactInfo;
 
     public JobContactDto() {
@@ -52,6 +54,17 @@ public class JobContactDto {
         this.jobProvided = jobContact.getJob().getJobProvided();
         this.jobId = jobContact.getJob().getId();
         this.contactInfo = new ContactInfoDto(jobContact.getContactInfo());
+        this.url = uriInfo.getBaseUriBuilder().path("requests")
+            .path(jobContact.getId().toString())
+            .build().toString();
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Long getId() {

@@ -120,6 +120,12 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/users/{id:[\\d]+}/notifications/unseen"
             ).authenticated()
             .antMatchers(
+                //REQUESTS
+                "/api/requests/{id:[\\d]+}",
+                "/api/requests/{id:[\\d]+}/"
+            )
+            .hasRole("VERIFIED")
+            .antMatchers(
                 // SENT REQUESTS
                 "/api/users/{id:[\\d]+}/requests/sent",
                 "/api/users/{id:[\\d]+}/requests/sent/",

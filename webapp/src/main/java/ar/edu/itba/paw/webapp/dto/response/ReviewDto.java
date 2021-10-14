@@ -28,6 +28,7 @@ public class ReviewDto {
     private UserDto reviewer;
 
     private String url;
+    private String jobUrl;
 
     public ReviewDto() {
     }
@@ -38,8 +39,18 @@ public class ReviewDto {
         this.rating = review.getRating();
         this.creationDate = review.getCreationDate();
         this.reviewer = new UserDto(review.getReviewer(), uriInfo);
-        final UriBuilder uriBuilder = getReviewUriBuilder(review, uriInfo);
-        this.url = uriBuilder.build().toString();
+        this.url = getReviewUriBuilder(review, uriInfo).build().toString();
+        this.jobUrl = uriInfo.getBaseUriBuilder().path("jobs")
+            .path(review.getJob().getId().toString())
+            .build().toString();
+    }
+
+    public String getJobUrl() {
+        return jobUrl;
+    }
+
+    public void setJobUrl(String jobUrl) {
+        this.jobUrl = jobUrl;
     }
 
     public Long getId() {

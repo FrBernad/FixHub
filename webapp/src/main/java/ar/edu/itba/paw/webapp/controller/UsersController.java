@@ -45,7 +45,7 @@ import static javax.ws.rs.core.Response.Status.*;
 
 @Path("/users")
 @Component
-public class UserController {
+public class UsersController {
 
     @Autowired
     private UserService userService;
@@ -56,9 +56,6 @@ public class UserController {
     @Autowired
     private NotificationService notificationService;
 
-    @Context
-    private UriInfo uriInfo;
-
     @Autowired
     private int maxRequestSize;
 
@@ -68,10 +65,13 @@ public class UserController {
     @Context
     private SecurityContext securityContext;
 
+    @Context
+    private UriInfo uriInfo;
+
     @Autowired
     private JwtUtil jwtUtil;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
 
     @POST
     @Produces(value = {MediaType.APPLICATION_JSON,})
@@ -504,21 +504,6 @@ public class UserController {
         userService.unfollowUser(user, toUnfollow);
 
         return Response.noContent().build();
-    }
-
-    //  FIXME: YA EXISTE /users/id/requests como corresponde ponerlo? otro /requests?
-    @GET
-    @Path("/requests/searchOptions")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getRequestsSearchOptions(
-    ) {
-        LOGGER.info("Accessed /users/requests/searchOptions GET controller");
-        final Collection<SearchOptionDto> searchOptions = new ArrayList<>();
-        searchOptions.add(new SearchOptionDto("status", jobService.getJobsRequestsStatus()));
-        searchOptions.add(new SearchOptionDto("order", jobService.getJobsRequestsOrder()));
-
-        return Response.ok(new GenericEntity<Collection<SearchOptionDto>>(searchOptions) {
-        }).build();
     }
 
     @GET

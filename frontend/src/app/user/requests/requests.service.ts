@@ -49,7 +49,7 @@ export class RequestsService {
     if (!this.searchOptions.getValue()) {
       this.http
         .get<SearchOption[]>(
-          environment.apiBaseUrl + '/users/requests/searchOptions',
+          environment.apiBaseUrl + '/requests/searchOptions',
         ).subscribe(
         (options) => {
           this.searchOptions.next(options);

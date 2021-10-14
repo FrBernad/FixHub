@@ -275,8 +275,8 @@ public class JobController {
     @GET
     @Path("/searchOptions")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getCategories() {
-        LOGGER.info("Accessed /jobs/categories GET searchOptions");
+    public Response getSearchOptions() {
+        LOGGER.info("Accessed /jobs/searchOptions GET searchOptions");
         final Collection<SearchOptionDto> searchOptions = new ArrayList<>();
         searchOptions.add(new SearchOptionDto("categories", jobService.getJobsCategories()));
         searchOptions.add(new SearchOptionDto("order", jobService.getJobsOrder()));
