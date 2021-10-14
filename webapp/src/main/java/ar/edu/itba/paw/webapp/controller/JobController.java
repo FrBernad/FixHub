@@ -14,7 +14,10 @@ import ar.edu.itba.paw.models.user.User;
 import ar.edu.itba.paw.webapp.dto.customValidations.ImageTypeConstraint;
 import ar.edu.itba.paw.webapp.dto.request.NewContactDto;
 import ar.edu.itba.paw.webapp.dto.request.NewReviewDto;
-import ar.edu.itba.paw.webapp.dto.response.*;
+import ar.edu.itba.paw.webapp.dto.response.JobContactDto;
+import ar.edu.itba.paw.webapp.dto.response.JobDto;
+import ar.edu.itba.paw.webapp.dto.response.ReviewDto;
+import ar.edu.itba.paw.webapp.dto.response.SearchOptionDto;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -36,7 +39,10 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
