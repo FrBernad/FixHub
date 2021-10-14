@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.dto.response;
 import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.job.JobStatus;
 
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;

@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.dto.response;
 
 import ar.edu.itba.paw.models.job.Job;
 
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;
 

@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.dto.response;
 
 import ar.edu.itba.paw.models.user.User;
 
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;

@@ -6,7 +6,6 @@ import {Review} from "./review.model";
 import {SingleJob} from "../models/single-job.model";
 import {concatMap, map} from "rxjs/operators";
 import {UserService} from "../auth/services/user.service";
-import {Job} from "../models/job.model";
 
 export interface JobData {
   jobProvided: string,

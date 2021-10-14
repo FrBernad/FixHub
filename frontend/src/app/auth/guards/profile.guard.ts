@@ -2,8 +2,6 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
-
-import {PreviousRouteService} from "../services/previous-route.service";
 import {UserService} from "../services/user.service";
 
 @Injectable({providedIn: 'root'})

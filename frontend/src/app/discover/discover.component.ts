@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrderOption} from "../models/order-option-enum.model";
 import {City, DiscoverService, JobPaginationQuery, JobPaginationResult, State} from "./discover.service";
 import {Subscription} from "rxjs";

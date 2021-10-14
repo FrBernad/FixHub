@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {catchError, concatMap, mergeMap, shareReplay, tap} from 'rxjs/operators';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Session} from '../../models/session.model';
 import jwtDecode from "jwt-decode";

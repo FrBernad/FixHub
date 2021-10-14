@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.dto.response;
 import ar.edu.itba.paw.models.user.notification.Notification;
 import ar.edu.itba.paw.models.user.notification.NotificationType;
 
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDateTime;

@@ -11,7 +11,6 @@ import ar.edu.itba.paw.models.pagination.StatusOrderOptions;
 import ar.edu.itba.paw.models.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

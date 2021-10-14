@@ -2,7 +2,6 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RequestPaginationQuery, RequestPaginationResult, RequestsService} from "../requests.service";
 import {Subscription} from "rxjs";
 import {ContactOrder} from "../../../models/contact-order-enum.model";
-import {JobStatus} from "../../../models/job-status-enum.model";
 
 @Component({
   selector: 'app-sent-requests',

@@ -1,9 +1,7 @@
 package ar.edu.itba.paw.webapp.auth;
 
-import ar.edu.itba.paw.models.token.SessionRefreshToken;
 import ar.edu.itba.paw.models.user.Roles;
 import ar.edu.itba.paw.models.user.User;
-import ar.edu.itba.paw.webapp.dto.response.UserDto;
 import io.jsonwebtoken.*;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,14 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.FileCopyUtils;
 
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
