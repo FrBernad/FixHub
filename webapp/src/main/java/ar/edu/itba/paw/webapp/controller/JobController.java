@@ -74,7 +74,7 @@ public class JobController {
     @Autowired
     private ImageService imageService;
 
-    private final int MAX_TIME = 31536000;
+    private static final int MAX_TIME = 31536000;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
 

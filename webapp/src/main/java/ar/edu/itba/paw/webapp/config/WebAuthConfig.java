@@ -120,12 +120,6 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
                 "/api/users/{id:[\\d]+}/notifications/unseen"
             ).authenticated()
             .antMatchers(
-                //REQUESTS
-                "/api/requests/{id:[\\d]+}",
-                "/api/requests/{id:[\\d]+}/"
-            )
-            .hasRole("VERIFIED")
-            .antMatchers(
                 // SENT REQUESTS
                 "/api/users/{id:[\\d]+}/requests/sent",
                 "/api/users/{id:[\\d]+}/requests/sent/",
@@ -163,24 +157,32 @@ WebAuthConfig extends WebSecurityConfigurerAdapter {
 
             // --------- /jobs route ---------
             .antMatchers(HttpMethod.POST,
+                // JOBS
                 "/api/jobs",
                 "/api/jobs/")
             .hasRole("PROVIDER")
-            .antMatchers(HttpMethod.POST,
-                "/api/jobs/{id:[\\d]+}/contact",
-                "/api/jobs/{id:[\\d]+}/contact/")
-            .hasRole("VERIFIED")
-            .antMatchers(HttpMethod.GET,
+            .antMatchers(
+                // CONTACT
                 "/api/jobs/{id:[\\d]+}/contact",
                 "/api/jobs/{id:[\\d]+}/contact/")
             .hasRole("VERIFIED")
             .antMatchers(HttpMethod.PUT,
+                // JOB
                 "/api/jobs/{id:[\\d]+}",
                 "/api/jobs/{id:[\\d]+}/")
             .hasRole("PROVIDER")
             .antMatchers(HttpMethod.POST,
+                // JOB REVIEWS
                 "/api/jobs/{id:[\\d]+}/reviews",
                 "/api/jobs/{id:[\\d]+}/reviews/")
+            .hasRole("VERIFIED")
+
+            // --------- /requests route ---------
+            .antMatchers(
+                // REQUESTS
+                "/api/requests/{id:[\\d]+}",
+                "/api/requests/{id:[\\d]+}/"
+            )
             .hasRole("VERIFIED")
 
             //else
