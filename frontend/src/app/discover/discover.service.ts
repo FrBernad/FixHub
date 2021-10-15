@@ -41,6 +41,7 @@ export class DiscoverService {
 
   results = new Subject<JobPaginationResult>();
   searchOptions = new BehaviorSubject<SearchOption[]>(null);
+  states = new BehaviorSubject<State[]>(null);
 
   constructor(
     private http: HttpClient,
@@ -63,10 +64,17 @@ export class DiscoverService {
   }
 
   getStates() {
-    return this.http
-      .get<State[]>(
-        environment.apiBaseUrl + '/locations/states'
-      )
+    if (!this.states.getValue()) {
+      this.http
+        .get<State[]>(
+          environment.apiBaseUrl + '/locations/states'
+        ).subscribe(
+        (states) => {
+          this.states.next(states);
+        }, () => {
+          this.router.navigate(["/500"]);
+        });
+    }
   }
 
   getStateCities(id: string) {

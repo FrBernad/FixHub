@@ -40,6 +40,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   private jobsSub: Subscription;
   private transSub: Subscription;
   private searchOptionsSub: Subscription;
+  private statesSub: Subscription;
 
   constructor(
     private discoverService: DiscoverService,
@@ -85,11 +86,14 @@ export class DiscoverComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.discoverService.getStates().subscribe((states) => {
-      this.states = states;
-    }, () => {
-      this.router.navigate(["/500"]);
+    this.discoverService.getStates();
+
+    this.statesSub = this.discoverService.states.subscribe((states) => {
+      if (!!states) {
+        this.states = states;
+      }
     });
+
   }
 
   changeTitle() {
@@ -216,6 +220,7 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     this.jobsSub.unsubscribe();
     this.transSub.unsubscribe();
     this.searchOptionsSub.unsubscribe();
+    this.statesSub.unsubscribe();
   }
 
 }

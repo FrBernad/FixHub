@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DiscoverService, State} from "../../discover/discover.service";
 import {User} from "../../models/user.model";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-choose-state',
   templateUrl: './choose-state.component.html',
   styleUrls: ['./choose-state.component.scss']
 })
-export class ChooseStateComponent implements OnInit {
+export class ChooseStateComponent implements OnInit, OnDestroy {
 
   chooseStateForm: FormGroup;
   stateSelected = '';
@@ -17,6 +18,8 @@ export class ChooseStateComponent implements OnInit {
   @Output() stateChosen = new EventEmitter<State>();
 
   @Input() public isProvider: boolean;
+
+  private statesSub: Subscription;
 
   constructor(
     private jobsService: DiscoverService
@@ -42,12 +45,15 @@ export class ChooseStateComponent implements OnInit {
       });
     }
 
-    this.jobsService.getStates().subscribe(
-      (states) => {
-        this.states = states
+    this.jobsService.getStates();
+
+    this.statesSub = this.jobsService.states.subscribe((states) => {
+      if (!!states) {
+        this.states = states;
         this.isFetching = false;
       }
-    );
+    });
+
   }
 
   onSubmit() {
@@ -62,4 +68,9 @@ export class ChooseStateComponent implements OnInit {
     this.stateSelected = state.name;
     this.chooseStateForm.patchValue({'state': state});
   }
+
+  ngOnDestroy() {
+    this.statesSub.unsubscribe();
+  }
+
 }
