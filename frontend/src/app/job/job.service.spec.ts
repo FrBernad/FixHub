@@ -5,6 +5,7 @@ import {HttpStatusCode} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {SingleJob} from "../models/single-job.model";
 import {RequestPaginationResult} from "../user/requests/requests.service";
+import {User} from "../models/user.model";
 
 describe('JobService', () => {
   let injector: TestBed;
@@ -93,6 +94,9 @@ describe('JobService', () => {
 
   it('getJob() should GET and return a single job', () => {
     let id = 1;
+    let mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber',
+      'state', 'city', 'profileImage', 'coverImage', 2,
+      1, null, null);
     let singleJob: SingleJob = {
       id: 1,
       description: "description",
@@ -103,16 +107,18 @@ describe('JobService', () => {
       averageRating: 5,
       imagesUrls: [],
       thumbnailImageUrl: "",
-      provider: undefined,
+      provider: mockUser,
       paused: false,
       canReview: true
     }
     service.getJob(id).subscribe((res) => {
       expect(res).toEqual(singleJob);
     });
+
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/' + id);
     expect(req.request.method).toBe('GET');
-    req.flush(singleJob, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
+    req.flush(singleJob, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString(),
+    headers:{'Link':'first,...,last'}});
   });
 
 
