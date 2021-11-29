@@ -3,6 +3,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {FollowPaginationResult, FollowService} from "./follow.service";
 import {environment} from "../../../environments/environment";
 import {HttpStatusCode} from "@angular/common/http";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('FollowService', () => {
 
@@ -21,7 +22,7 @@ describe('FollowService', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,RouterTestingModule],
       providers: [
         FollowService
       ],

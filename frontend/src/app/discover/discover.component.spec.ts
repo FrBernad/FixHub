@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DiscoverComponent} from './discover.component';
+import {LoadingSpinnerComponent} from "../shared/loading-spinner/loading-spinner.component";
 import {TestingModule} from "../testing.module";
 
 describe('DiscoverComponent', () => {
@@ -9,7 +10,7 @@ describe('DiscoverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DiscoverComponent ],
+      declarations: [ DiscoverComponent,LoadingSpinnerComponent],
         imports: [
         TestingModule]
     })

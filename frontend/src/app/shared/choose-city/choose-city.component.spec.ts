@@ -5,6 +5,8 @@ import {ProviderDetails, User} from "../../models/user.model";
 import {ContactInfo} from "../../models/contact-info.model";
 import {State} from "../../discover/discover.service";
 import {TestingModule} from "../../testing.module";
+import {LoadingSpinnerComponent} from "../loading-spinner/loading-spinner.component" ;
+
 
 describe('ChooseCityComponent', () => {
   let component: ChooseCityComponent;
@@ -12,7 +14,7 @@ describe('ChooseCityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChooseCityComponent],
+      declarations: [ChooseCityComponent, LoadingSpinnerComponent],
       imports: [
         TestingModule
       ],
@@ -37,7 +39,7 @@ describe('ChooseCityComponent', () => {
       contactsCount: 4
     };
     const mockContactInfo = new ContactInfo(1, '', '', '', '')
-    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo]);
+    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo], mockProviderDetails);
     const mockState: State = {id: 1, name: ''};
 
     component = fixture.componentInstance;
