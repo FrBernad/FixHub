@@ -12,7 +12,7 @@ describe('FollowService', () => {
   let injector: TestBed;
   let service: UserService;
   let httpMock: HttpTestingController;
-  let mockUser = new User(
+  let mockUser: User = new User(
     1,
     'name',
     'surname',
@@ -27,6 +27,7 @@ describe('FollowService', () => {
     [null],
     null,
   );
+  mockUser.roles = ['VERIFIED', 'PROVIDER']
 
   const mockProviderInfo: ProviderInfo = {
     schedule: {
@@ -52,44 +53,65 @@ describe('FollowService', () => {
     injector = getTestBed();
     service = injector.inject(UserService);
     httpMock = injector.inject(HttpTestingController);
+    service.user.next({...service.user.getValue(), id: 1, roles: ['VERIFIED', 'PROVIDER']})
   });
 
   it('getUser() should return user', () => {
     service.getUser(mockUser.id).subscribe((res) => {
       expect(res).toEqual(mockUser);
     });
+
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + mockUser.id);
+
     expect(req.request.method).toBe('GET');
+
     req.flush(mockUser, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
   });
 
   it('populateUserData() should return user', () => {
-    service.populateUserData().subscribe((res) => {
-      expect(res).toEqual(mockUser);
-    });
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user');
+    service.populateUserData().subscribe();
+
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + service.user.getValue().id);
+
+    spyOn(service, 'getUserContactInfo').and.returnValue(of(mockUser.contactInfo));
+    spyOn(service, 'getUserProviderDetails').and.returnValue(of(mockUser.providerDetails));
+
     expect(req.request.method).toBe('GET');
+
     req.flush(mockUser, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
+
+    console.log(service.user.getValue());
+    console.log(mockUser)
+    expect(service.user.value).toEqual({...mockUser});
   });
 
   it('follow() should return no content', () => {
     service.follow(mockUser.id).subscribe();
-    spyOn(service, 'populateUserData').and.returnValue(of(undefined));
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/following/' + mockUser.id,);
+
+    spyOn(service, 'repopulateUserData').and.returnValue(of(undefined));
+
+    const req = httpMock.expectOne(
+      environment.apiBaseUrl + '/users/' + service.user.getValue().id + '/following/' + mockUser.id
+    );
+
     expect(req.request.method).toBe('PUT');
+
     req.flush({}, {status: HttpStatusCode.NoContent, statusText: HttpStatusCode.NoContent.toString()})
   });
 
-  it('unfollow should return no content', () => {
+  it('unfollow() should return no content', () => {
     service.unfollow(mockUser.id).subscribe();
-    spyOn(service, 'populateUserData').and.returnValue(of(undefined));
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/following/' + mockUser.id);
+
+    spyOn(service, 'repopulateUserData').and.returnValue(of(undefined));
+
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + service.user.getValue().id + '/following/' + mockUser.id);
     expect(req.request.method).toBe('DELETE');
+
     req.flush({}, {status: HttpStatusCode.NoContent, statusText: HttpStatusCode.NoContent.toString()})
   });
 
 
-  it('updateProfileInfo should return OK', () => {
+  it('updateProfileInfo() should return OK', () => {
     let mockProfileInfo: ProfileInfo = {
       name: '',
       surname: '',
@@ -99,8 +121,11 @@ describe('FollowService', () => {
     }
 
     service.updateProfileInfo(mockProfileInfo).subscribe();
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user');
+
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + service.user.getValue().id);
+
     expect(req.request.method).toBe('PUT');
+
     req.flush({}, {
       status: HttpStatusCode.Ok,
       statusText: HttpStatusCode.Created.toString()
@@ -111,18 +136,25 @@ describe('FollowService', () => {
     service.updateCoverImage(mockImage).subscribe((res) => {
       expect(res).toEqual(mockImage);
     });
-    spyOn(service, 'populateUserData').and.returnValue(of(undefined));
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/coverImage');
+
+    spyOn(service, 'repopulateUserData').and.returnValue(of(undefined));
+
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + service.user.getValue().id + '/coverImage');
+
     expect(req.request.method).toBe('PUT');
+
     req.flush(mockImage, {status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
 
   });
 
   it('updateProviderInfo should return OK', () => {
     service.updateProviderInfo(mockProviderInfo).subscribe();
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/account/provider');
-    spyOn(service, 'populateUserData').and.returnValue(of(undefined));
+
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + service.user.getValue().id + '/provider');
+    spyOn(service, 'getUserProviderDetails').and.returnValue(of(undefined));
+
     expect(req.request.method).toBe('PUT');
+
     req.flush({}, {status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()})
   });
 
@@ -130,8 +162,11 @@ describe('FollowService', () => {
     service.updateProfileImage(mockImage).subscribe((res) => {
       expect(res).toEqual(mockImage);
     });
-    spyOn(service, 'populateUserData').and.returnValue(of(undefined));
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/profileImage');
+
+    spyOn(service, 'repopulateUserData').and.returnValue(of(undefined));
+    const req = httpMock.expectOne(
+      environment.apiBaseUrl + '/users/' + service.user.getValue().id + '/profileImage');
+
     expect(req.request.method).toBe('PUT');
     req.flush(mockImage, {status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
   });

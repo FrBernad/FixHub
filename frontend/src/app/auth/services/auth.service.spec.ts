@@ -13,17 +13,25 @@ describe('AuthService', () => {
   let authService: AuthService;
   let userService: UserService;
   let httpMock: HttpTestingController;
-  let authHeader = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlZFUklGSUVEIFBST1ZJREVSIFVTRVIiLCJzdWIiOiJjb2NvQHlvcG1haWwuY29tIiwiaWF0IjoxNjI2NDk3MjAyLCJleHAiOjE2MjY0OTg0MDJ9.vCyFCn2H9yTlAd_1NEeQWKO1-6oyf635E0feRWb-SLw";
+  const jwtHeader = "Bearer JWT";
+  const refreshTokenHeader = "Bearer REFRESH_TOKEN";
+  const jwt = "X-JWT";
+  const refreshToken = "X-Refresh-Token";
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [HttpClientTestingModule,
+        RouterTestingModule.withRoutes(
+          [{path: 'login', redirectTo: ''}]
+        )
+      ],
       providers: [AuthService, UserService, NotificationsService]
     });
     injector = getTestBed();
     authService = injector.inject(AuthService);
     userService = injector.inject(UserService);
     httpMock = injector.inject(HttpTestingController);
+    userService.user.next({...userService.user.getValue(), roles: ['VERIFIED'], id: 1})
   });
 
 
@@ -59,16 +67,20 @@ describe('AuthService', () => {
     authService.verify("VERIFICATION_TOKEN").subscribe(
       (res) => {
         expect(res.status).toEqual(HttpStatusCode.NoContent);
-        expect(res.headers.get("Authorization")).toEqual(authHeader);
+        expect(res.headers.get(refreshTokenHeader)).toEqual(refreshToken);
+        expect(res.headers.get(jwtHeader)).toEqual(jwt);
       }
     )
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/verify');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/emailVerification');
     expect(req.request.method).toBe('PUT');
 
     req.flush({},
       {
-        headers: new HttpHeaders({Authorization: authHeader}),
+        headers: new HttpHeaders({
+          "X-JWT": jwt,
+          "X-Refresh-Token": refreshToken
+        }),
         status: HttpStatusCode.NoContent,
         statusText: HttpStatusCode.Created.toString()
       });
@@ -81,14 +93,17 @@ describe('AuthService', () => {
     }
 
     authService.makeProvider(providerInfo).subscribe();
-    spyOn(userService, 'populateUserData').and.returnValue(of(undefined));
+    spyOn(userService, 'getUserProviderDetails').and.returnValue(of(undefined));
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/account/provider');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/provider');
     expect(req.request.method).toBe('POST');
 
     req.flush({},
       {
-        headers: new HttpHeaders({Authorization: authHeader}),
+        headers: new HttpHeaders({
+          "X-JWT": jwt,
+          "X-Refresh-Token": refreshToken
+        }),
       });
   });
 
@@ -100,7 +115,7 @@ describe('AuthService', () => {
         }
       );
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/resetPassword');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/passwordReset');
     expect(req.request.method).toBe('PUT');
 
     req.flush({},
@@ -120,7 +135,7 @@ describe('AuthService', () => {
         }
       );
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/verify');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/emailVerification');
     expect(req.request.method).toBe('POST');
 
     req.flush({},
@@ -131,14 +146,11 @@ describe('AuthService', () => {
   });
 
 
-  it('logout() should return no content', () => {
+  it('logout() should clear session', () => {
 
     authService.logout();
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/refreshSession');
-    expect(req.request.method).toBe('DELETE');
-
-    req.flush({});
+    expect(authService.session.getValue()).toBe(null);
   });
 
   afterEach(() => {

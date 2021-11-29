@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, of} from 'rxjs';
 import {ProviderDetails, User} from "../../models/user.model";
 import {environment} from "../../../environments/environment";
-import {concatMap, tap} from "rxjs/operators";
+import {concatMap, map, tap} from "rxjs/operators";
 import {City, State} from "../../discover/discover.service";
 import {ContactInfo} from "../../models/contact-info.model";
 
@@ -59,16 +59,21 @@ export class UserService {
           }
           return this.getUserContactInfo()
             .pipe(
-              concatMap(res => {
+              concatMap(_ => {
                 if (!this.user.getValue().roles.includes('PROVIDER')) {
-                  return of(res)
+                  return of(this.user.getValue())
                 }
                 return this.getUserProviderDetails(this.user.getValue().id)
                   .pipe(
                     tap(
                       res => {
                         this.user.next({...this.user.getValue(), ...{providerDetails: res}});
-                      }
+                      },
+                      map(
+                        _ => {
+                          return of(this.user.getValue())
+                        }
+                      )
                     )
                   )
               })
