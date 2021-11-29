@@ -54,7 +54,7 @@ export class NotificationsService {
   refreshNotifications() {
     this.http
       .get<{ count: number }>(
-        environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications/unseen'
+        environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/notifications/unseen'
       ).subscribe((res) => {
         if (res.count > 0) {
           this.newNotifications.next(true);
@@ -62,13 +62,14 @@ export class NotificationsService {
           this.newNotifications.next(false);
         }
       }
-    ,(_)=>{});
+      , (_) => {
+      });
   }
 
   getNotifications(npq: NotificationPaginationQuery) {
     this.http
       .get<Notification[]>(
-        environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications',
+        environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/notifications',
         {
           observe: "response",
           params: new HttpParams({fromObject: {...npq}})
@@ -93,7 +94,7 @@ export class NotificationsService {
 
   markAsReadNotification(id: number) {
     return this.http.put(
-      environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications/' + id, {})
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/notifications/' + id, {})
       .pipe(
         tap(() => {
             this.refreshNotifications();
@@ -104,7 +105,7 @@ export class NotificationsService {
 
   markAsReadAllNotifications() {
     return this.http.put(
-      environment.apiBaseUrl + '/users/'+this.userService.user.getValue().id+'/notifications', {})
+      environment.apiBaseUrl + '/users/' + this.userService.user.getValue().id + '/notifications', {})
       .pipe(
         tap(() => {
             this.refreshNotifications();

@@ -29,14 +29,14 @@ describe('NotificationsService', () => {
 
   it('refreshNotifications() should get number of unseen notifications', () => {
     service.refreshNotifications();
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/'+userService.user.getValue().id+'/notifications/unseen');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/notifications/unseen');
     expect(req.request.method).toBe('GET');
   });
 
 
   it('getNotifications() should get notifications', () => {
-    service.getNotifications({page:0});
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/'+userService.user.getValue().id +'/notifications?page=0');
+    service.getNotifications({page: 0});
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/notifications?page=0');
     expect(req.request.method).toBe('GET');
   });
 
@@ -44,18 +44,22 @@ describe('NotificationsService', () => {
   it('markAsReadNotification() should mark as read the notification', () => {
     let id = 1;
     service.markAsReadNotification(id).subscribe();
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/'+userService.user.getValue().id+'/notifications/' + id );
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/notifications/' + id);
+    spyOn(service, 'refreshNotifications').and.callFake(() => (id));
+
     expect(req.request.method).toBe('PUT');
-    req.flush({},{status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
+    req.flush({}, {status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
 
   });
 
 
   it('markAsReadAllNotification() should mark as read all notification', () => {
     service.markAsReadAllNotifications().subscribe();
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/'+userService.user.getValue().id+'/notifications');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/notifications');
     expect(req.request.method).toBe('PUT');
-    req.flush({},{status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
+    spyOn(service, 'refreshNotifications').and.callFake(() => (req));
+
+    req.flush({}, {status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
 
   });
 

@@ -80,8 +80,6 @@ describe('FollowService', () => {
 
     req.flush(mockUser, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
 
-    console.log(service.user.getValue());
-    console.log(mockUser)
     expect(service.user.value).toEqual({...mockUser});
   });
 

@@ -5,7 +5,7 @@ import {ProviderDetails, User} from "../../models/user.model";
 import {ContactInfo} from "../../models/contact-info.model";
 import {State} from "../../discover/discover.service";
 import {TestingModule} from "../../testing.module";
-import {LoadingSpinnerComponent} from "../loading-spinner/loading-spinner.component" ;
+import {LoadingSpinnerComponent} from "../loading-spinner/loading-spinner.component";
 
 
 describe('ChooseCityComponent', () => {

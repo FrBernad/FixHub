@@ -49,7 +49,7 @@ describe('RequestsService', () => {
     });
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/' + jobId + '/contact');
-    spyOn(userService, 'populateUserData').and.returnValue(of(undefined));
+    spyOn(userService, 'getUserContactInfo').and.returnValue(of(undefined));
     expect(req.request.method).toBe('POST');
 
     req.flush(contactData,

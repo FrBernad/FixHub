@@ -6,25 +6,25 @@ import {environment} from "../../environments/environment";
 import {SingleJob} from "../models/single-job.model";
 import {RequestPaginationResult} from "../user/requests/requests.service";
 import {User} from "../models/user.model";
+import {of} from "rxjs";
+import {UserService} from "../auth/services/user.service";
 
 describe('JobService', () => {
   let injector: TestBed;
   let service: JobService;
+  let userService: UserService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [JobService]
+      providers: [JobService, UserService]
     });
 
     injector = getTestBed();
     service = injector.inject(JobService);
+    userService = injector.inject(UserService);
     httpMock = injector.inject(HttpTestingController);
-  });
-
-  afterEach(() => {
-    httpMock.verify();
   });
 
   it('getReviews() should GET and return reviews', () => {
@@ -37,7 +37,11 @@ describe('JobService', () => {
     service.getReviews({page: 0}, id);
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/' + id + '/reviews?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush(requests, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
+    req.flush(requests, {
+      status: HttpStatusCode.Created,
+      statusText: HttpStatusCode.Created.toString(),
+      headers: {'Link': 'first,...,last'}
+    });
   });
 
   it('createJob() should POST and return created', () => {
@@ -115,10 +119,15 @@ describe('JobService', () => {
       expect(res).toEqual(singleJob);
     });
 
+    spyOn(userService, 'getUserProviderDetails')
+      .and
+      .returnValue(of(singleJob.provider.providerDetails));
+
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/' + id);
     expect(req.request.method).toBe('GET');
-    req.flush(singleJob, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString(),
-    headers:{'Link':'first,...,last'}});
+    req.flush(singleJob, {
+      status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString(),
+    });
   });
 
 
@@ -136,5 +145,9 @@ describe('JobService', () => {
     expect(req.request.method).toBe('POST');
     req.flush(review, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
   })
+
+  afterEach(() => {
+    httpMock.verify();
+  });
 
 });

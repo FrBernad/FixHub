@@ -122,8 +122,8 @@ export class JobService {
                             return of(currentJob);
                           })
                           , map(_ => {
-                            if(canReview){
-                            currentJob.canReview = true;
+                            if (canReview) {
+                              currentJob.canReview = true;
                             }
                             return currentJob;
                           })
@@ -159,6 +159,7 @@ export class JobService {
       .filter((link) => (link.includes("last")))
       .pop()
       .match(/<(.*)>/)[1];
+
 
     const totalPages: number = Number(new URL(lastLink).searchParams.get("page")) + 1;
 
