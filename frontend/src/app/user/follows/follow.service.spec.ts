@@ -39,8 +39,8 @@ describe('FollowService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(result, {
       status: HttpStatusCode.Created,
-      statusText: HttpStatusCode.Created.toString()
-    })
+      statusText: HttpStatusCode.Created.toString(),
+      headers:{'Link':'first,...,last'}});
   });
 
   it('getFollowing() should return data',()=>{
@@ -49,8 +49,12 @@ describe('FollowService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(result, {
       status: HttpStatusCode.Created,
-      statusText: HttpStatusCode.Created.toString()
-    })
+      statusText: HttpStatusCode.Created.toString(),
+      headers:{
+        Link: ['<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="first"','<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="last"']
+      }
+    });
+
   });
 
 });

@@ -53,7 +53,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
 
         this.route.queryParams.subscribe(() => {
           this.parseQueryParams();
-          this.followService.getFollowers(this.fpq, this.user.id);
+          this.followService.getFollowing(this.fpq, this.user.id);
         })
 
         this.followSub = this.followService.follows.subscribe((results) => {
