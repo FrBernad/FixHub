@@ -30,7 +30,7 @@ describe('JobComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: mockRoute
+          useValue: {snapshot: {params:{'id': 1}}}
         },
         {
           provide: Router,
