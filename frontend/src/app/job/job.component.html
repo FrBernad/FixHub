@@ -80,11 +80,14 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-5 p-0 d-flex justify-content-start align-items-center">
                 <div class="container-fluid px-0">
                   <div class="row">
+                    <!--LOGGED USER-->
                     <ng-template [ngIf]="!!loggedUser">
                       <div class="col-12 d-flex justify-content-center align-items-center">
+                        <!--IS USER'S JOB SHOW EDIT-->
                         <ng-template [ngIf]="loggedUser.id==job.provider.id" [ngIfElse]="notProvider">
                           <button class="contactBtn" style="text-decoration: none"
                                   [routerLink]="['/jobs',job.id,'edit']">
@@ -92,17 +95,19 @@
                           </button>
                         </ng-template>
                       </div>
+                      <!--IS NOT USER'S JOB-->
                       <ng-template #notProvider>
-                        <ng-template [ngIf]="!job.paused">
+                        <ng-template [ngIf]="!job.paused && loggedUser.roles.includes('VERIFIED')">
                           <button type="button" class="contactBtn" data-bs-toggle="modal"
                                   data-bs-target="#contactModal">
                             {{ 'job.contact' | translate }}
                           </button>
                           <app-contact [job]="job"></app-contact>
                         </ng-template>
-
                       </ng-template>
+
                     </ng-template>
+
                     <ng-template [ngIf]="job.paused">
                       <div class="col-12 mt-2 d-flex justify-content-center align-items-center">
                         <fa-icon [icon]="['fas', 'info-circle']" class="ms-1" style="color:#ffc107"></fa-icon>
