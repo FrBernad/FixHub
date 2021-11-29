@@ -6,6 +6,7 @@ import {JobRequest} from "../../models/job-request.model";
 import {UserService} from "../../auth/services/user.service";
 import {ContactData, RequestPaginationResult, RequestsService} from "./requests.service";
 import {of} from "rxjs";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('RequestsService', () => {
   let injector: TestBed;
@@ -15,7 +16,7 @@ describe('RequestsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,RouterTestingModule],
       providers: [RequestsService, UserService],
     });
 
@@ -23,6 +24,7 @@ describe('RequestsService', () => {
     requestsService = injector.inject(RequestsService);
     userService = injector.inject(UserService);
     httpMock = injector.inject(HttpTestingController);
+    userService.user.next({...userService.user.getValue(), roles: ['VERIFIED'], id: 1});
   });
 
 
@@ -68,7 +70,7 @@ describe('RequestsService', () => {
 
     requestsService.getProviderRequests({page: 0});
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/jobs/requests?page=0');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/received?page=0');
     expect(req.request.method).toBe('GET');
     req.flush(requests, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
   });
@@ -92,7 +94,7 @@ describe('RequestsService', () => {
       expect(res).toEqual(request);
     });
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/jobs/requests/' + requestId);
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/sent/' + request.id);
     expect(req.request.method).toBe('GET');
     req.flush(request);
   });
@@ -105,7 +107,7 @@ describe('RequestsService', () => {
     }
     requestsService.getUserSentRequests({page: 0});
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/jobs/sentRequests?page=0');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/sent?page=0');
     expect(req.request.method).toBe('GET');
     req.flush(requests);
   });
@@ -117,7 +119,7 @@ describe('RequestsService', () => {
         expect(res.status).toEqual(HttpStatusCode.Created);
       });
 
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/user/jobs/requests/' + 1);
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/received/' + 1);
     expect(req.request.method).toBe('PUT');
     req.flush({}, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
   });
