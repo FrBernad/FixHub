@@ -41,15 +41,11 @@ describe('DiscoverService', () => {
 
     service.getSearchOptions();
 
-    service.searchOptions.subscribe((res) => {
-      if (res) {
-        return expect(res).toEqual(searchOptions);
-      }
-    })
-
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/categories');
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/searchOptions');
     expect(req.request.method).toBe('GET');
     req.flush(searchOptions);
+
+    expect(service.searchOptions.getValue()).toEqual(searchOptions);
   });
 
 
