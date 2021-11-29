@@ -28,7 +28,6 @@ describe('JobService', () => {
 
   it('getReviews() should GET and return reviews', () => {
     let requests: RequestPaginationResult = {
-      page: 0,
       totalPages: 1,
       results: []
     }
@@ -60,7 +59,6 @@ describe('JobService', () => {
 
   it('getFirstReviews() should GET and return reviews', () => {
     let requests: RequestPaginationResult = {
-      page: 0,
       totalPages: 1,
       results: []
     }

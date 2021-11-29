@@ -19,7 +19,7 @@ describe('FollowerCardComponent', () => {
   });
 
   beforeEach(async () => {
-    const mokProviderDetails: ProviderDetails = {
+    const mockProviderDetails: ProviderDetails = {
       location: {
         cities: [{id: 1, name: ''}],
         state: {id: 1, name: ''}
@@ -33,11 +33,11 @@ describe('FollowerCardComponent', () => {
       reviewCount: 3,
       contactsCount: 4
     };
-    const mokContactInfo = new ContactInfo(1, '', '', '', '')
-    const mokUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mokContactInfo], mokProviderDetails, true, false);
+    const mockContactInfo = new ContactInfo(1, '', '', '', '')
+    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo]);
     fixture = TestBed.createComponent(FollowerCardComponent);
     component = fixture.componentInstance;
-    component.follower = mokUser;
+    component.follower = mockUser;
 
     fixture.detectChanges();
   });

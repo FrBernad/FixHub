@@ -88,10 +88,9 @@ describe('RequestsService', () => {
 
     let requestId = 1;
 
-    requestsService.getJobRequest(requestId).subscribe((res) => {
+    requestsService.getSentJobRequest(requestId).subscribe((res) => {
       expect(res).toEqual(request);
     });
-
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/user/jobs/requests/' + requestId);
     expect(req.request.method).toBe('GET');

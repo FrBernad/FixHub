@@ -22,14 +22,12 @@ describe('FollowService', () => {
     'city',
     'profileImage',
     'converImage',
-    ['', ''],
-    1,
     2,
+    1,
     [null],
     null,
-    true,
-    false
   );
+
   const mockProviderInfo: ProviderInfo = {
     schedule: {
       startTime: null,

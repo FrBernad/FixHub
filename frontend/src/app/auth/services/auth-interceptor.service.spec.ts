@@ -16,6 +16,7 @@ describe('AuthService', () => {
   let authService: AuthService;
   let jobService: JobService;
   let jwt = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlZFUklGSUVEIFBST1ZJREVSIFVTRVIiLCJzdWIiOiJjb2NvQHlvcG1haWwuY29tIiwiaWF0IjoxNjI2NDk3MjAyLCJleHAiOjE2MjY0OTg0MDJ9.vCyFCn2H9yTlAd_1NEeQWKO1-6oyf635E0feRWb-SLw";
+  let refreshToken = "refresh_token";
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,7 +42,7 @@ describe('AuthService', () => {
   });
 
   it('intercept() should add auth header', () => {
-    authService.session = new BehaviorSubject<Session>(new Session(jwt, new Date(Date.now() + 1000000)));
+    authService.session = new BehaviorSubject<Session>(new Session(jwt, new Date(Date.now() + 1000000), refreshToken));
     jobService.createJob(new FormData()).subscribe();
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs');
     expect(req.request.headers.has('Authorization')).toEqual(true);

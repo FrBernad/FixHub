@@ -10,7 +10,6 @@ describe('FollowService', () => {
   let service: FollowService;
   let httpMock: HttpTestingController;
   let result: FollowPaginationResult = {
-    page: 3,
     totalPages: 4,
     results: [null]
   };

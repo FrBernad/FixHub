@@ -1,4 +1,4 @@
-import {DiscoverService} from "./discover.service";
+import {DiscoverService, SearchOption} from "./discover.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {environment} from "../../environments/environment";
@@ -14,7 +14,7 @@ describe('DiscoverService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule,
-                RouterTestingModule],
+        RouterTestingModule],
       providers: [DiscoverService],
     });
 
@@ -23,30 +23,41 @@ describe('DiscoverService', () => {
     httpMock = injector.inject(HttpTestingController);
   });
 
-   it('getCategories() should return categories', () => {
-    let categories = {
-      data: ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA',
+  it('getCategories() should return categories', () => {
+
+    let searchOptions: SearchOption[] = [{
+      key: 'categories', values: ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA',
         'ENTREGA', 'FOTOGRAFO', 'FUMIGADOR', 'GASISTA',
         'HERRERO', 'JARDINERO', 'LIMPIEZA', 'CUIDADOR_DE_ANCIANO',
         'MANTENIMIENTO', 'MECANICO', 'MUDANZA', 'NINERA',
-        'PASEADOR_DE_PERRO', 'PLOMERO', 'PINTOR', 'TECHISTA', 'VIDRIERO'],
-    };
+        'PASEADOR_DE_PERRO', 'PLOMERO', 'PINTOR', 'TECHISTA', 'VIDRIERO']
+    },
+      {
+        key: 'order', values: ['MOST_POPULAR',
+          'LESS_POPULAR',
+          'HIGHER_PRICE',
+          'LOWER_PRICE'],
+      }];
 
-    service.getCategories().subscribe((res: {}) => {
-      return expect(res).toEqual(categories);
-    });
+    service.getSearchOptions();
+
+    service.searchOptions.subscribe((res) => {
+      if (res) {
+        return expect(res).toEqual(searchOptions);
+      }
+    })
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/categories');
     expect(req.request.method).toBe('GET');
-    req.flush(categories);
+    req.flush(searchOptions);
   });
 
 
   it('getJobs(jp: JobPaginationQuery) should return jobs', () => {
     let results = {
-      page : 0,
-      totalPages : 1,
-      results : []
+      page: 0,
+      totalPages: 1,
+      results: []
     };
 
     service.getJobs({page: 0});
@@ -60,8 +71,12 @@ describe('DiscoverService', () => {
   it('getStates() should return states', () => {
     let states = [{name: 'Buenos Aires', id: 1}, {name: 'CABA', id: 2}, {name: 'Misiones', id: 3}];
 
-    service.getStates().subscribe((res) => {
-      expect(res).toEqual(states);
+    service.getStates();
+
+    service.states.subscribe((res) => {
+      if (res) {
+        expect(res).toEqual(states);
+      }
     });
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/locations/states');

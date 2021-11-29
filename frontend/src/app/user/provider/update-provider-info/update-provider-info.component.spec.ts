@@ -7,6 +7,7 @@ import {TestingModule} from "../../../testing.module";
 import {BehaviorSubject} from "rxjs";
 import {User} from "../../../models/user.model";
 import {TranslateService} from "@ngx-translate/core";
+import {ContactInfo} from "../../../models/contact-info.model";
 
 describe('UpdateProviderInfoComponent', () => {
   let component: UpdateProviderInfoComponent;
@@ -19,13 +20,15 @@ describe('UpdateProviderInfoComponent', () => {
       navigate: jasmine.createSpy('navigate')
     };
 
+    const mockContactInfo = new ContactInfo(1, '', '', '', '');
+
     const mockUserService = jasmine.createSpyObj('UserService',
       [],
       {
         user: new BehaviorSubject<User>(new User(
           1, "name", "surname", "email",
           "phoneNumber", "state", "city", "profileImage",
-          "coverImage", [], 3, 4))
+          "coverImage", 2, 3, [mockContactInfo]))
       }
     );
 

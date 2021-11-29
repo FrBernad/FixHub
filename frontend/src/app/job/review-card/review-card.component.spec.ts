@@ -32,7 +32,7 @@ describe('ReviewCardComponent', () => {
       jobsCount: 1, avgRating: 2, reviewCount: 3, contactsCount: 4
     };
     const mockContactInfo = new ContactInfo(1, '', '', '', '');
-    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mockContactInfo], mockProviderDetails, true, false);
+    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo]);
     const mockReview = new Review(1, ',', 2, new Date(), mockUser)
 
     fixture = TestBed.createComponent(ReviewCardComponent);

@@ -33,8 +33,8 @@ describe('RequestCardComponent', () => {
       },
       jobsCount: 1, avgRating: 2, reviewCount: 3, contactsCount: 4
     };
-    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [mockContactInfo], undefined, true, false);
-    const mockProvider = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', ['', ''], 1, 2, [], mockProviderDetails, true, false);
+    const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo]);
+    const mockProvider = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo], mockProviderDetails);
 
     const mockType = 'Type';
     const mockJobRequest = {
