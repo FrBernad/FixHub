@@ -25,7 +25,7 @@ const mockProviderDetails: ProviderDetails = {
   contactsCount: 4
 };
 const mockContactInfo = new ContactInfo(1, '', '', '', '')
-const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo]);
+const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo], mockProviderDetails);
 const mockUserService = {
   user: new BehaviorSubject(mockUser)
 }
