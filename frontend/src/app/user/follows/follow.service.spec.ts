@@ -15,14 +15,14 @@ describe('FollowService', () => {
     results: [null]
   };
   let fpq = {
-    page:2,
-    pageSize:4
+    page: 2,
+    pageSize: 4
   }
   let id = 2;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         FollowService
       ],
@@ -35,23 +35,26 @@ describe('FollowService', () => {
 
   it('getFollowers() should return data', () => {
     service.getFollowers(fpq, id);
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/'+id+'/followers?page='+fpq.page+'&pageSize='+fpq.pageSize);
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + id + '/followers?page=' + fpq.page + '&pageSize=' + fpq.pageSize);
     expect(req.request.method).toBe('GET');
     req.flush(result, {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
-      headers:{'Link':'first,...,last'}});
+      headers: {
+        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+      }
+    });
   });
 
-  it('getFollowing() should return data',()=>{
+  it('getFollowing() should return data', () => {
     service.getFollowing(fpq, id);
-    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/'+id+'/following?page='+fpq.page+'&pageSize='+fpq.pageSize);
+    const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + id + '/following?page=' + fpq.page + '&pageSize=' + fpq.pageSize);
     expect(req.request.method).toBe('GET');
     req.flush(result, {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
-      headers:{
-        Link: ['<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="first"','<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="last"']
+      headers: {
+        Link: ['<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="first"', '<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="last"']
       }
     });
 

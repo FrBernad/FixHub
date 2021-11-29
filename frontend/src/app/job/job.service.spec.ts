@@ -40,7 +40,9 @@ describe('JobService', () => {
     req.flush(requests, {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
-      headers: {'Link': 'first,...,last'}
+      headers: {
+        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+      }
     });
   });
 

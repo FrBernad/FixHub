@@ -16,7 +16,7 @@ describe('RequestsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [RequestsService, UserService],
     });
 
@@ -72,7 +72,13 @@ describe('RequestsService', () => {
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/received?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush(requests, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
+    req.flush(requests, {
+      status: HttpStatusCode.Created,
+      statusText: HttpStatusCode.Created.toString(),
+      headers: {
+        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+      }
+    });
   });
 
   it(' getJobRequest() should return request', () => {
@@ -109,7 +115,11 @@ describe('RequestsService', () => {
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/sent?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush(requests);
+    req.flush(requests, {
+      headers: {
+        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+      }
+    });
   });
 
 
