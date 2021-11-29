@@ -60,7 +60,15 @@ describe('DiscoverService', () => {
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush(results, {status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
+    req.flush(results, {
+      status: HttpStatusCode.Ok,
+      statusText: HttpStatusCode.Ok.toString(),
+      headers:{
+        Link: ['<http://localhost:8080/api/jobs?pageSize=6&order=MOST_POPULAR&query=&page=0>; rel="first"','<http://localhost:8080/api/jobs?pageSize=6&order=MOST_POPULAR&query=&page=0>; rel="last"']
+      }
+
+
+    });
   });
 
 

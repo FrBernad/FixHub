@@ -9,7 +9,6 @@ import {AuthInterceptorService} from "./auth-interceptor.service";
 import {JobService} from "../../job/job.service";
 import {Session} from "../../models/session.model";
 import {TranslateService} from "@ngx-translate/core";
-import {TranslateTestingModule} from "ngx-translate-testing";
 
 describe('AuthService', () => {
   let injector: TestBed;
