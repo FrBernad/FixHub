@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
 
 import {RequestsComponent} from './requests.component';
 import {Title} from "@angular/platform-browser";
@@ -14,6 +14,9 @@ describe('RequestsComponent', () => {
   let component: RequestsComponent;
   let fixture: ComponentFixture<RequestsComponent>;
   let mockTitleService: Title;
+  let injector: TestBed;
+  let userService: UserService;
+
   const mockProviderDetails: ProviderDetails = {
     location: {
       cities: [{id: 1, name: ''}],
@@ -51,9 +54,16 @@ describe('RequestsComponent', () => {
   });
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers:[ UserService ]
+    });
+
+    injector = getTestBed();
+    userService = injector.inject(UserService);
     fixture = TestBed.createComponent(RequestsComponent);
     component = fixture.componentInstance;
     mockTitleService = TestBed.inject(Title);
+    userService.user.next({...userService.user.getValue(), roles: ['VERIFIED'], id: 1});
     fixture.detectChanges();
   });
 
