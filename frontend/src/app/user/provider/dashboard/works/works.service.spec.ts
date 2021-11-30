@@ -26,12 +26,18 @@ describe('WorksService', () => {
     userService.user.next({...userService.user.getValue(), roles: ['VERIFIED'], id: 1});
   });
 
-  it('getUserJobs(jp: JobPaginationQuery) should return user jobs', () => {
-    service.getUserJobs({page:0});
+  it('getUserJobs() should return user jobs', () => {
+    service.getUserJobs({page: 0});
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/jobs?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush({},{status: HttpStatusCode.Ok, statusText: HttpStatusCode.Ok.toString()});
+    req.flush({}, {
+      status: HttpStatusCode.Ok,
+      statusText: HttpStatusCode.Ok.toString(),
+      headers: {
+        'Link': "<http://test?page=6>; rel='last', <http://test?page=0>; rel='first'"
+      }
+    });
   });
 
 

@@ -10,21 +10,22 @@ describe('DiscoverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DiscoverComponent,LoadingSpinnerComponent],
-        imports: [
+      declarations: [DiscoverComponent, LoadingSpinnerComponent],
+      imports: [
         TestingModule]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DiscoverComponent);
     component = fixture.componentInstance;
-    window.history.pushState({},'category');
+    window.history.pushState({}, 'category');
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

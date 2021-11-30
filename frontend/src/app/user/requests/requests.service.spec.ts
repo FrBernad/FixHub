@@ -62,21 +62,15 @@ describe('RequestsService', () => {
   });
 
   it('getProviderRequests() should return requests', () => {
-    let requests: RequestPaginationResult = {
-      // page: 0,
-      totalPages: 1,
-      results: []
-    }
-
     requestsService.getProviderRequests({page: 0});
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/received?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush(requests, {
+    req.flush({results: []}, {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
       headers: {
-        'Link': ["<http://test?page=6>; rel='last'", "<http://test?page=0>; rel='first'"]
+        'Link': "<http://test?page=6>; rel='last', <http://test?page=0>; rel='first'"
       }
     });
   });
@@ -106,18 +100,13 @@ describe('RequestsService', () => {
   });
 
   it('getUserSentRequests() should return request', () => {
-    let requests: RequestPaginationResult = {
-      // page: 0,
-      totalPages: 1,
-      results: []
-    }
     requestsService.getUserSentRequests({page: 0});
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/requests/sent?page=0');
     expect(req.request.method).toBe('GET');
-    req.flush(requests, {
+    req.flush({results: []}, {
       headers: {
-        'Link': ["<http://test?page=6>; rel='last'", "<http://test?page=0>; rel='first'"]
+        'Link': "<http://test?page=6>; rel='last', <http://test?page=0>; rel='first'"
       }
     });
   });

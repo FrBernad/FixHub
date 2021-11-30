@@ -20,7 +20,7 @@ describe('FollowService', () => {
   }
   let id = 2;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
@@ -41,7 +41,7 @@ describe('FollowService', () => {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
       headers: {
-        'Link': ["<http://test?page=6>; rel='last'", "<http://test?page=0>; rel='first'"]
+        'Link': "<http://test?page=6>; rel='last', <http://test?page=0>; rel='first'"
       }
     });
   });

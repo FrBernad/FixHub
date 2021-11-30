@@ -13,7 +13,6 @@ describe('NotificationsComponent', () => {
   let userService: UserService;
 
 
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ NotificationsComponent ],

@@ -23,7 +23,7 @@ describe('DiscoverService', () => {
     httpMock = injector.inject(HttpTestingController);
   });
 
-  it('getCategories() should return categories', () => {
+  it('getSearchOptions() should return getSearchOptions', () => {
 
     let searchOptions: SearchOption[] = [{
       key: 'categories', values: ['CARPINTERO', 'CATERING', 'CHEF', 'ELECTRICISTA',
@@ -49,7 +49,7 @@ describe('DiscoverService', () => {
   });
 
 
-  it('getJobs(jp: JobPaginationQuery) should return jobs', () => {
+  it('getJobs() should return jobs', () => {
     let results = {
       page: 0,
       totalPages: 1,
@@ -63,11 +63,9 @@ describe('DiscoverService', () => {
     req.flush(results, {
       status: HttpStatusCode.Ok,
       statusText: HttpStatusCode.Ok.toString(),
-      headers:{
-        Link: ['<http://localhost:8080/api/jobs?pageSize=6&order=MOST_POPULAR&query=&page=0>; rel="first"','<http://localhost:8080/api/jobs?pageSize=6&order=MOST_POPULAR&query=&page=0>; rel="last"']
+      headers: {
+        'Link': "<http://test?page=6>; rel='last', <http://test?page=0>; rel='first'"
       }
-
-
     });
   });
 
@@ -88,7 +86,7 @@ describe('DiscoverService', () => {
     req.flush(states);
   });
 
-  it('getStateCities(id: string) should return cities', () => {
+  it('getStateCities() should return cities', () => {
     let id = '1';
     let cities = [{name: 'Adrogue', id: 1}, {name: 'Burzaco', id: 2}, {name: 'Lomas de Zamora', id: 3}];
     service.getStateCities(id).subscribe((res) => {
