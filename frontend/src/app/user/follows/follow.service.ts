@@ -19,6 +19,7 @@ export interface FollowPaginationQuery {
 export class FollowService {
 
   follows = new Subject<FollowPaginationResult>();
+  followers = new Subject<FollowPaginationResult>();
 
   constructor(
     private http: HttpClient,
@@ -36,13 +37,13 @@ export class FollowService {
         },
       ).subscribe((res) => {
         if (res.status === HttpStatusCode.NoContent) {
-          this.follows.next({
+          this.followers.next({
             totalPages: 0,
             results: []
           });
         } else {
           const fr: FollowPaginationResult = this.parsePaginationResult(res);
-          this.follows.next(fr);
+          this.followers.next(fr);
         }
       },
       () => {

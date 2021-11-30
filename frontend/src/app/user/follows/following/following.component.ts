@@ -32,7 +32,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
     pageSize: 4,
   }
 
-  followSub: Subscription;
+  followingSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +56,7 @@ export class FollowingComponent implements OnInit, OnDestroy {
           this.followService.getFollowing(this.fpq, this.user.id);
         })
 
-        this.followSub = this.followService.follows.subscribe((results) => {
+        this.followingSub = this.followService.follows.subscribe((results) => {
           this.fpr = {
             ...this.fpr,
             ...results
@@ -107,9 +107,9 @@ export class FollowingComponent implements OnInit, OnDestroy {
 
     if (params["pageSize"]) {
       this.fpq.pageSize = Number.parseInt(params["pageSize"])
-      this.fpq.pageSize = isNaN(this.fpq.pageSize) ? 6 : this.fpq.pageSize;
+      this.fpq.pageSize = isNaN(this.fpq.pageSize) ? 4 : this.fpq.pageSize;
     } else {
-      this.fpq.pageSize = 6
+      this.fpq.pageSize = 4
     }
   }
 
@@ -124,8 +124,8 @@ export class FollowingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.followSub) {
-      this.followSub.unsubscribe();
+    if (this.followingSub) {
+      this.followingSub.unsubscribe();
     }
     if (this.transSub) {
       this.transSub.unsubscribe();

@@ -31,7 +31,7 @@ export class FollowersComponent implements OnInit, OnDestroy {
     pageSize: 4,
   }
 
-  followSub: Subscription;
+  followersSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,7 +46,6 @@ export class FollowersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const userId = this.route.snapshot.params['id'];
 
-
     this.userService.getUser(userId).subscribe(
       (user) => {
         this.user = user;
@@ -57,7 +56,7 @@ export class FollowersComponent implements OnInit, OnDestroy {
           this.followService.getFollowers(this.fpq, this.user.id);
         })
 
-        this.followSub = this.followService.follows.subscribe((results) => {
+        this.followersSub = this.followService.followers.subscribe((results) => {
           this.fpr = {
             ...this.fpr,
             ...results
@@ -108,9 +107,9 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
     if (params["pageSize"]) {
       this.fpq.pageSize = Number.parseInt(params["pageSize"])
-      this.fpq.pageSize = isNaN(this.fpq.pageSize) ? 6 : this.fpq.pageSize;
+      this.fpq.pageSize = isNaN(this.fpq.pageSize) ? 4 : this.fpq.pageSize;
     } else {
-      this.fpq.pageSize = 6
+      this.fpq.pageSize = 4
     }
 
 
@@ -127,8 +126,8 @@ export class FollowersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.followSub) {
-      this.followSub.unsubscribe();
+    if (this.followersSub) {
+      this.followersSub.unsubscribe();
     }
 
     if (this.transSub) {
