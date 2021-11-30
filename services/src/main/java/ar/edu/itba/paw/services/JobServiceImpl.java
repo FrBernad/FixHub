@@ -108,7 +108,6 @@ public class JobServiceImpl implements JobService {
         jc.setStatus(JobStatus.IN_PROGRESS);
         emailService.sendJobConfirmationEmail(jc, LocaleContextHolder.getLocale());
         notificationService.createRequestStatusChangeAcceptForUser(jc.getUser(), jc);
-
     }
 
     @Transactional
@@ -118,7 +117,6 @@ public class JobServiceImpl implements JobService {
         jc.setStatus(JobStatus.REJECTED);
         emailService.sendJobCancellationEmail(jc, LocaleContextHolder.getLocale());
         notificationService.createRequestStatusRejectChangeForUser(jc.getUser(), jc);
-
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
 import {NotificationsService} from "../../user/notifications/notifications.service";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-navbar',
@@ -32,6 +33,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     });
+
+
+    this.newNotifications = this.notificationsService.newNotifications.getValue();
+
     this.notSub = this.notificationsService.newNotifications.subscribe(
       (res) => {
         this.newNotifications = res;
@@ -54,13 +59,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-
   onLogout() {
     this.authService.logout();
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe()
+    this.userSub.unsubscribe();
+    this.notSub.unsubscribe();
   }
 
 }

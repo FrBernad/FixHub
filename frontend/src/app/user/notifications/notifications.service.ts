@@ -1,7 +1,7 @@
 import {HttpClient, HttpParams, HttpResponse, HttpStatusCode} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Notification} from "../../models/notification.model";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {tap} from "rxjs/operators";
 import {Router} from "@angular/router";
@@ -27,7 +27,7 @@ export class NotificationsService {
   }
 
   notifications = new Subject<NotificationPaginationResult>();
-  newNotifications = new Subject<boolean>();
+  newNotifications = new BehaviorSubject<boolean>(false);
 
   private notificationsInterval: any;
 
