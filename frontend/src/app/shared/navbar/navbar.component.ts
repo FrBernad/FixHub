@@ -4,7 +4,6 @@ import {Subscription} from "rxjs";
 import {User} from "../../models/user.model";
 import {UserService} from "../../auth/services/user.service";
 import {NotificationsService} from "../../user/notifications/notifications.service";
-import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-navbar',
