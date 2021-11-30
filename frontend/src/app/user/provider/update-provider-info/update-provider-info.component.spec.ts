@@ -8,6 +8,7 @@ import {BehaviorSubject} from "rxjs";
 import {User} from "../../../models/user.model";
 import {TranslateService} from "@ngx-translate/core";
 import {ContactInfo} from "../../../models/contact-info.model";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('UpdateProviderInfoComponent', () => {
   let component: UpdateProviderInfoComponent;
@@ -34,6 +35,7 @@ describe('UpdateProviderInfoComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [UpdateProviderInfoComponent],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule,
       ],

@@ -5,6 +5,7 @@ import {TestingModule} from "../../../testing.module";
 import {Notification} from "../../../models/notification.model";
 import {NotificationType} from "../../../models/notification-type-enum.model";
 import {UserService} from "../../../auth/services/user.service";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('ChangeStatusJobUserNotificationCardComponent', () => {
   let component: ChangeStatusJobUserNotificationCardComponent;
@@ -15,6 +16,7 @@ describe('ChangeStatusJobUserNotificationCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ChangeStatusJobUserNotificationCardComponent],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule
       ]

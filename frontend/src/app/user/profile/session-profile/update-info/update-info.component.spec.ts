@@ -4,6 +4,7 @@ import {UpdateInfoComponent} from './update-info.component';
 import {TestingModule} from "../../../../testing.module";
 import {ProviderDetails, User} from "../../../../models/user.model";
 import {ContactInfo} from "../../../../models/contact-info.model";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('UpdateInfoComponent', () => {
   let component: UpdateInfoComponent;
@@ -13,7 +14,7 @@ describe('UpdateInfoComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UpdateInfoComponent],
       imports: [
-        TestingModule
+        TestingModule,ReactiveFormsModule
       ],
     })
       .compileComponents();

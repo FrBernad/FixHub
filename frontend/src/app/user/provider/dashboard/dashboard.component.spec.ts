@@ -9,6 +9,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {BehaviorSubject} from "rxjs";
 import {DiscoverService} from "../../../discover/discover.service";
 import {TestingModule} from "../../../testing.module";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 const mockProviderDetails: ProviderDetails = {
   location: {
@@ -40,6 +41,7 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DashboardComponent],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule
       ],

@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DefaultLayoutComponent} from './default-layout.component';
 import {TestingModule} from "../../testing.module";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('DefaultLayoutComponent', () => {
   let component: DefaultLayoutComponent;
@@ -10,6 +11,7 @@ describe('DefaultLayoutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ DefaultLayoutComponent ],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
         imports: [
         TestingModule,]
     })

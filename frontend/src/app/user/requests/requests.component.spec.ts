@@ -8,6 +8,7 @@ import {UserService} from "../../auth/services/user.service";
 import {ContactInfo} from "../../models/contact-info.model";
 import {ProviderDetails, User} from "../../models/user.model";
 import {BehaviorSubject} from "rxjs";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 
 describe('RequestsComponent', () => {
@@ -40,6 +41,7 @@ describe('RequestsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RequestsComponent],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule
       ],
