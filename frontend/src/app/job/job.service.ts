@@ -113,7 +113,7 @@ export class JobService {
                 , concatMap(
                   (_) => {
                     const loggedUser = this.userService.user.getValue();
-                    if (!!loggedUser && loggedUser.roles.includes("VERIFIED")) {
+                    if (!!loggedUser && loggedUser.roles.includes("VERIFIED") && loggedUser.id != currentJob.provider.id) {
                       return this.hasContactedJob(id)
                         .pipe(
                           catchError((_) => {
