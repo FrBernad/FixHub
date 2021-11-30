@@ -66,7 +66,7 @@ public class PaginatedSearchResult<T> {
     }
 
     public int getLastPage() {
-        return (int) Math.floor((float) totalItems / itemsPerPage);
+        return totalPages-1;
     }
 
     public void setResults(Collection<T> results) {
