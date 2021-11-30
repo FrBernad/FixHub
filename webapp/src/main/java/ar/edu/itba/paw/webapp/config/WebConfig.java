@@ -30,6 +30,15 @@ public class WebConfig {
 
     private static final Integer MAX_REQUEST_SIZE = 3500000;
 
+    @Autowired
+    private String DBUrl;
+
+    @Autowired
+    private String DBUser;
+
+    @Autowired
+    private String DBPass;
+
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -45,12 +54,10 @@ public class WebConfig {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 
         ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl("jdbc:postgresql://localhost/paw");
-        ds.setUsername("root");
-        ds.setPassword("root");
-//        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2021a-06");
-//        ds.setUsername("paw-2021a-06");
-//        ds.setPassword("QroE40tsz");
+        ds.setUrl(DBUrl);
+        ds.setUsername(DBUser);
+        ds.setPassword(DBPass);
+
         return ds;
     }
 
@@ -94,8 +101,8 @@ public class WebConfig {
         return new URL(appProtocol, appHost, appPort, appWebContext);
     }
 
-    @Bean(name="maxRequestSize")
-    public Integer maxRequestSize(){
+    @Bean(name = "maxRequestSize")
+    public Integer maxRequestSize() {
         return MAX_REQUEST_SIZE;
     }
 }

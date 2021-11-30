@@ -28,4 +28,19 @@ public class ProdWebConfig {
         return 80;
     }
 
+    @Bean(name = "DBUrl")
+    public String DBUrl() {
+        return "jdbc:postgresql://10.16.1.110/paw-2021a-06";
+    }
+
+    @Bean(name = "DBUser")
+    public String DBUser() {
+        return "paw-2021a-06";
+    }
+
+    @Bean(name = "DBPass")
+    public String DBPass() {
+        return "QroE40tsz";
+    }
+
 }

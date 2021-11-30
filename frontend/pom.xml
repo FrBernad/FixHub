@@ -56,15 +56,15 @@
             </goals>
           </execution>
 
-<!--      FIXME:    <execution>-->
-<!--            <id>npm test</id>-->
-<!--            <goals>-->
-<!--              <goal>npm</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <arguments>test</arguments>-->
-<!--            </configuration>-->
-<!--          </execution>-->
+          <execution>
+            <id>npm test</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>test</arguments>
+            </configuration>
+          </execution>
 
           <execution>
             <id>npm run build</id>

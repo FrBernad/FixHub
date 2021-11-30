@@ -28,4 +28,19 @@ public class DevWebConfig {
         return 4200;
     }
 
+    @Bean(name = "DBUrl")
+    public String DBUrl() {
+        return "jdbc:postgresql://localhost/paw";
+    }
+
+    @Bean(name = "DBUser")
+    public String DBUser() {
+        return "root";
+    }
+
+    @Bean(name = "DBPass")
+    public String DBPass() {
+        return "root";
+    }
+
 }
