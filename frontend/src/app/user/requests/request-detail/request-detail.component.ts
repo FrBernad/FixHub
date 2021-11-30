@@ -122,6 +122,7 @@ export class RequestComponent implements OnInit {
       },
       () => {
         this.disabled = false;
+        this.contactService.getSentJobRequest(this.request.id);
       }
     );
   }
