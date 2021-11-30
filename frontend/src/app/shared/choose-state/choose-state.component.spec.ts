@@ -5,6 +5,7 @@ import {DiscoverService} from "../../discover/discover.service";
 import {ContactInfo} from "../../models/contact-info.model";
 import {ProviderDetails, User} from "../../models/user.model";
 import {TestingModule} from "../../testing.module";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('ChooseStateComponent', () => {
   let component: ChooseStateComponent;
@@ -13,6 +14,7 @@ describe('ChooseStateComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ChooseStateComponent],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule
       ],
