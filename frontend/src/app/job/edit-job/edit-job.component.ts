@@ -193,6 +193,7 @@ export class EditJobComponent implements OnInit, OnDestroy {
   }
 
   private updateView(responseData) {
+
     this.job.jobProvided = responseData.jobProvided;
     this.editJobForm.patchValue({jobProvided: responseData.jobProvided});
     this.job.description = responseData.description;
@@ -204,13 +205,14 @@ export class EditJobComponent implements OnInit, OnDestroy {
     this.job.provider = responseData.provider;
     this.job.totalRatings = responseData.totalRatings;
     this.job.averageRating = responseData.averageRating;
-    this.job.imagesUrls = responseData.images;
+    this.job.imagesUrls = responseData.imagesUrls;
     (<FormArray>this.editJobForm.get('imagesToUpload')).clear();
     (<FormArray>this.editJobForm.get('imagesIdToDelete')).clear();
 
     this.job.paused = responseData.paused;
     this.editJobForm.patchValue({paused: responseData.paused});
     this.job.thumbnailImageUrl = responseData.thumbnailImage;
+
     this.imagesCounter = this.job.imagesUrls.length;
     this.isFetching = false;
   }
