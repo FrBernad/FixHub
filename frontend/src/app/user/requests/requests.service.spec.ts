@@ -4,7 +4,7 @@ import {environment} from "../../../environments/environment";
 import {HttpHeaders, HttpStatusCode} from "@angular/common/http";
 import {JobRequest} from "../../models/job-request.model";
 import {UserService} from "../../auth/services/user.service";
-import {ContactData, RequestPaginationResult, RequestsService} from "./requests.service";
+import {ContactData, RequestsService} from "./requests.service";
 import {of} from "rxjs";
 import {RouterTestingModule} from "@angular/router/testing";
 
