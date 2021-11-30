@@ -14,7 +14,6 @@ interface Jwt {
   iat: number,
   roles: string,
   userUrl: string;
-  id: number,
   sub: string,
 }
 

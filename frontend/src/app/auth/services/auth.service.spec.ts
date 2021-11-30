@@ -13,10 +13,17 @@ describe('AuthService', () => {
   let authService: AuthService;
   let userService: UserService;
   let httpMock: HttpTestingController;
-  const jwtHeader = "Bearer JWT";
-  const refreshTokenHeader = "Bearer REFRESH_TOKEN";
-  const jwt = "X-JWT";
-  const refreshToken = "X-Refresh-Token";
+  const jwtHeaderVal = "Bearer JWT";
+  const refreshTokenHeaderVal = "Bearer REFRESH_TOKEN";
+  const jwtHeader = "X-JWT";
+  const refreshTokenHeader = "X-Refresh-Token";
+  const jwt = {
+    exp: 10000,
+    iat: 10000,
+    roles: 'VERIFIED',
+    userUrl: 'http://host/users/1',
+    sub: 'USER'
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -67,19 +74,21 @@ describe('AuthService', () => {
     authService.verify("VERIFICATION_TOKEN").subscribe(
       (res) => {
         expect(res.status).toEqual(HttpStatusCode.NoContent);
-        expect(res.headers.get(refreshTokenHeader)).toEqual(refreshToken);
-        expect(res.headers.get(jwtHeader)).toEqual(jwt);
+        expect(res.headers.get(refreshTokenHeader)).toEqual(refreshTokenHeaderVal);
+        expect(res.headers.get(jwtHeader)).toEqual(jwtHeaderVal);
       }
     )
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/emailVerification');
     expect(req.request.method).toBe('PUT');
 
+    spyOn<any>(authService, 'decodeToken').and.returnValue(jwt)
+
     req.flush({},
       {
         headers: new HttpHeaders({
-          "X-JWT": jwt,
-          "X-Refresh-Token": refreshToken
+          "X-JWT": jwtHeaderVal,
+          "X-Refresh-Token": refreshTokenHeaderVal
         }),
         status: HttpStatusCode.NoContent,
         statusText: HttpStatusCode.Created.toString()
@@ -94,15 +103,15 @@ describe('AuthService', () => {
 
     authService.makeProvider(providerInfo).subscribe();
     spyOn(userService, 'getUserProviderDetails').and.returnValue(of(undefined));
-
+    spyOn<any>(authService, 'decodeToken').and.returnValue(jwt)
     const req = httpMock.expectOne(environment.apiBaseUrl + '/users/' + userService.user.getValue().id + '/provider');
     expect(req.request.method).toBe('POST');
 
     req.flush({},
       {
         headers: new HttpHeaders({
-          "X-JWT": jwt,
-          "X-Refresh-Token": refreshToken
+          "X-JWT": jwtHeaderVal,
+          "X-Refresh-Token": refreshTokenHeaderVal
         }),
       });
   });

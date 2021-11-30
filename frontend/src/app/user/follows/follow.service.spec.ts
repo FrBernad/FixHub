@@ -41,7 +41,7 @@ describe('FollowService', () => {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
       headers: {
-        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+        'Link': ["<http://test?page=6>; rel='last'", "<http://test?page=0>; rel='first'"]
       }
     });
   });
@@ -54,10 +54,14 @@ describe('FollowService', () => {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
       headers: {
-        Link: ['<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="first"', '<http://localhost:4200/api/users/1/followers?pageSize=4&page=0>; rel="last"']
+        Link: ['<http://test?page=0>; rel="first"', '<http://test?page=0>; rel="last"']
       }
     });
 
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
 });

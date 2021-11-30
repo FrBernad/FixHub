@@ -76,7 +76,7 @@ describe('RequestsService', () => {
       status: HttpStatusCode.Created,
       statusText: HttpStatusCode.Created.toString(),
       headers: {
-        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+        'Link': ["<http://test?page=6>; rel='last'", "<http://test?page=0>; rel='first'"]
       }
     });
   });
@@ -117,7 +117,7 @@ describe('RequestsService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(requests, {
       headers: {
-        'Link': ["<http://test?page=6>; rel=last", "<http://test?page=0>; rel=first"]
+        'Link': ["<http://test?page=6>; rel='last'", "<http://test?page=0>; rel='first'"]
       }
     });
   });
