@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 import {TestingModule} from "../../testing.module";
 import {ProviderDetails, User} from "../../models/user.model";
 import {ContactInfo} from "../../models/contact-info.model";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('JoinComponent', () => {
   let component: JoinComponent;
@@ -45,6 +46,7 @@ describe('JoinComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [JoinComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule
       ],

@@ -7,6 +7,7 @@ import {TestingModule} from "../../testing.module";
 import {ProviderDetails, User} from "../../models/user.model";
 import {ContactInfo} from "../../models/contact-info.model";
 import {Job} from "../../models/job.model";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('ContactComponent', () => {
   let component: ContactComponent;
@@ -15,10 +16,10 @@ describe('ContactComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ContactComponent],
       imports: [
-        TestingModule
+        TestingModule, ReactiveFormsModule
       ],
-      providers:[
-        RequestsService,UserService
+      providers: [
+        RequestsService, UserService
       ]
     })
       .compileComponents();

@@ -76,7 +76,13 @@ describe('JobService', () => {
 
     const req = httpMock.expectOne(environment.apiBaseUrl + '/jobs/' + id + '/reviews?page=0&pageSize=4');
     expect(req.request.method).toBe('GET');
-    req.flush(requests, {status: HttpStatusCode.Created, statusText: HttpStatusCode.Created.toString()});
+    req.flush(requests, {
+      status: HttpStatusCode.Created,
+      statusText: HttpStatusCode.Created.toString(),
+      headers: {
+        'Link': ['<http://test?page=0>; rel="first"','<http://test?page=6>; rel="last"']
+      }
+    });
 
   });
 

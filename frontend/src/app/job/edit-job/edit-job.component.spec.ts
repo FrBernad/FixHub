@@ -5,6 +5,7 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {JobService} from "../job.service";
 import {Observable, of} from "rxjs";
 import {TestingModule} from "../../testing.module";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 
 export class MockActivatedRoute extends ActivatedRoute {
@@ -30,6 +31,7 @@ describe('EditJobComponent', () => {
       declarations: [EditJobComponent],
       imports: [
         TestingModule],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
           provide: ActivatedRoute,

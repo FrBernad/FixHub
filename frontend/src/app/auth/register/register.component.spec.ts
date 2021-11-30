@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RegisterComponent} from './register.component';
 import {TestingModule} from "../../testing.module";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -11,7 +12,7 @@ describe('RegisterComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
       imports: [
-        TestingModule
+        TestingModule, ReactiveFormsModule
       ]
     })
       .compileComponents();

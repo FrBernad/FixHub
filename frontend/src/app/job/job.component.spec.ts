@@ -8,35 +8,37 @@ import {JobService} from "./job.service";
 import {MockActivatedRoute} from "./edit-job/edit-job.component.spec";
 import {TestingModule} from "../testing.module";
 import {JobModule} from "./job.module";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 
 describe('JobComponent', () => {
   let component: JobComponent;
   let fixture: ComponentFixture<JobComponent>;
   let mockJobService: JobService;
-  let mockUserService : UserService;
+  let mockUserService: UserService;
   let mockRoute = new MockActivatedRoute({'id': 1});
-   let mockRouter = {
+  let mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
-  let mockTitleService : Title;
+  let mockTitleService: Title;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [JobComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule,
-      JobModule],
+        JobModule],
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: {snapshot: {params:{'id': 1}}}
+          useValue: {snapshot: {params: {'id': 1}}}
         },
         {
           provide: Router,
           useValue: mockRouter
         },
-        JobService,UserService,Title]
+        JobService, UserService, Title]
     })
       .compileComponents();
   });

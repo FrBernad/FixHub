@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NewJobComponent} from './new-job.component';
 import {TestingModule} from "../../testing.module";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('NewJobComponent', () => {
   let component: NewJobComponent;
@@ -10,6 +11,7 @@ describe('NewJobComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ NewJobComponent ],
+      schemas:[CUSTOM_ELEMENTS_SCHEMA],
         imports: [
         TestingModule]
     })
