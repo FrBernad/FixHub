@@ -78,12 +78,20 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.IN_PROGRESS;
       },
       () => {
-        this.acceptJobLoading = false;
-        this.error = true;
-        setTimeout(() => {
-          this.error = false;
-        }, 4000);
-        this.contactService.getReceivedJobRequest(this.request.id).subscribe(req => this.request = req)
+        this.contactService.getReceivedJobRequest(this.request.id).subscribe(
+          (req) => {
+            this.acceptJobLoading = false;
+            this.request = req;
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 4000);
+          },
+          () => {
+            this.acceptJobLoading = false;
+          }
+        );
+
       }
     );
   }
@@ -96,12 +104,19 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.REJECTED;
       },
       () => {
-        this.rejectJobLoading = false;
-        this.error = true;
-        setTimeout(() => {
-          this.error = false;
-        }, 4000);
-        this.contactService.getReceivedJobRequest(this.request.id).subscribe(req => this.request = req)
+        this.contactService.getReceivedJobRequest(this.request.id).subscribe(
+          (req) => {
+            this.rejectJobLoading = false;
+            this.request = req;
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 4000);
+          },
+          () => {
+            this.rejectJobLoading = false;
+          }
+        );
       }
     );
   }
@@ -114,13 +129,18 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.FINISHED;
       },
       () => {
-        this.contactService.getReceivedJobRequest(this.request.id);
-        this.finishJobLoading = false;
-        this.error = true;
-        setTimeout(() => {
-          this.error = false;
-        }, 4000);
-        this.contactService.getReceivedJobRequest(this.request.id).subscribe(req => this.request = req)
+        this.contactService.getReceivedJobRequest(this.request.id).subscribe(
+          (req) => {
+            this.finishJobLoading = false;
+            this.request = req;
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 4000);
+          },
+          () => {
+            this.finishJobLoading = false;
+          })
       }
     )
   }
@@ -137,13 +157,20 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.CANCELED;
       },
       () => {
-        this.disabled = false;
         this.error = true;
-        setTimeout(() => {
-          this.error = false;
-        }, 4000);
-        this.contactService.getSentJobRequest(this.request.id).subscribe(req => this.request = req)
-        ;
+
+        this.contactService.getSentJobRequest(this.request.id).subscribe(
+          (req) => {
+            this.disabled = false;
+            this.request = req;
+            setTimeout(() => {
+              this.error = false;
+            }, 4000);
+          },
+          () => {
+            this.error = false;
+            this.disabled = false;
+          })
       }
     );
   }
