@@ -305,11 +305,19 @@
                 </div>
               </ng-template>
 
+              <ng-template [ngIf]="error">
+                <div class="pt-2">
+                  <span class="errorMessage">
+                    {{'changeReceivedRequestStatusCancelled.error' | translate}}
+                  </span>
+                </div>
+              </ng-template>
+
             </ng-template>
 
             <ng-template #USER_DECISION>
 
-              <ng-template [ngIf]="isWorkNotFinished()">
+              <ng-template [ngIf]="isWorkPendingOrInProgress()">
                 <ng-template [ngIf]="!confirm" [ngIfElse]="confirmCancel">
                   <div class="row">
                     <div class="col-11 d-flex mt-2 align-items-center justify-content-start ">
@@ -344,23 +352,25 @@
                 </ng-template>
               </ng-template>
 
-            </ng-template>
-            <ng-template [ngIf]="error">
-              <ng-template *ngIf="requestType === 'sent';else RECEIVED">
-                <div class="pt-2">
+              <ng-template [ngIf]="error">
+                <ng-template [ngIf]="isWorkFinished()" [ngIfElse]="REJECTED">
+                  <div class="pt-2">
                   <span class="errorMessage">
-                    {{'changeSentRequestStatus.error' | translate}}
+                    {{'changeSentRequestStatusFinished.error' | translate}}
                   </span>
-                </div>
-              </ng-template>
-              <ng-template #RECEIVED>
-                <div class="pt-2">
+                  </div>
+                </ng-template>
+                <ng-template #REJECTED>
+                  <div class="pt-2">
                   <span class="errorMessage">
-                    {{'changeReceivedRequestStatus.error' | translate}}
+                    {{'changeSentRequestStatusRejected.error' | translate}}
                   </span>
-                </div>
+                  </div>
+                </ng-template>
               </ng-template>
+
             </ng-template>
+
           </div>
         </div>
       </div>

@@ -70,6 +70,18 @@ export class RequestComponent implements OnInit {
     return this.request.status == JobStatus.PENDING;
   }
 
+  isWorkPendingOrInProgress() {
+    return this.request.status == JobStatus.PENDING || this.request.status == JobStatus.IN_PROGRESS;
+  }
+
+  isWorkFinished() {
+    return this.request.status == JobStatus.FINISHED;
+  }
+
+  isWorkRejected() {
+    return this.request.status == JobStatus.REJECTED;
+  }
+
   acceptJob(): void {
     this.acceptJobLoading = true;
     this.contactService.changeReceivedRequestStatus(this.request.id, JobStatus.IN_PROGRESS).subscribe(
@@ -78,17 +90,18 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.IN_PROGRESS;
       },
       () => {
+        this.error = true;
         this.contactService.getReceivedJobRequest(this.request.id).subscribe(
           (req) => {
             this.acceptJobLoading = false;
             this.request = req;
-            this.error = true;
             setTimeout(() => {
               this.error = false;
             }, 4000);
           },
           () => {
             this.acceptJobLoading = false;
+            this.error = false;
           }
         );
 
@@ -104,16 +117,17 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.REJECTED;
       },
       () => {
+        this.error = true;
         this.contactService.getReceivedJobRequest(this.request.id).subscribe(
           (req) => {
             this.rejectJobLoading = false;
             this.request = req;
-            this.error = true;
             setTimeout(() => {
               this.error = false;
             }, 4000);
           },
           () => {
+            this.error = false;
             this.rejectJobLoading = false;
           }
         );
@@ -129,24 +143,21 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.FINISHED;
       },
       () => {
+        this.error = true;
         this.contactService.getReceivedJobRequest(this.request.id).subscribe(
           (req) => {
             this.finishJobLoading = false;
             this.request = req;
-            this.error = true;
             setTimeout(() => {
               this.error = false;
             }, 4000);
           },
           () => {
+            this.error = false;
             this.finishJobLoading = false;
           })
       }
     )
-  }
-
-  isWorkNotFinished() {
-    return this.request.status == JobStatus.PENDING || this.request.status == JobStatus.IN_PROGRESS;
   }
 
   cancelSentRequest() {
@@ -158,7 +169,6 @@ export class RequestComponent implements OnInit {
       },
       () => {
         this.error = true;
-
         this.contactService.getSentJobRequest(this.request.id).subscribe(
           (req) => {
             this.disabled = false;

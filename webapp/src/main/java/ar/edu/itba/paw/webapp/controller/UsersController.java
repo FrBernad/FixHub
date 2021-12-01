@@ -893,7 +893,7 @@ public class UsersController {
 
     private boolean isValidStatusForUserRequest(JobContact jobContact, JobStatus newStatus) {
         JobStatus actualStatus = jobContact.getStatus();
-        return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus) && !actualStatus.equals(FINISHED) && !actualStatus.equals(REJECTED) ;
+        return newStatus.equals(CANCELED) && !newStatus.equals(actualStatus) && !actualStatus.equals(FINISHED) && !actualStatus.equals(REJECTED);
     }
 
 }

@@ -451,8 +451,9 @@
   "sentRequest.cancelRequest": "Cancelar",
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Si",
-  "changeSentRequestStatus.error": "La solicitud fue denegada por el proveedor",
-  "changeReceivedRequestStatus.error": "La solicitud fue cancelada por el usuario",
+  "changeSentRequestStatusFinished.error": "La solicitud ya fue completada por el proveedor",
+  "changeSentRequestStatusRejected.error": "La solicitud ya fue rechazada por el proveedor",
+  "changeReceivedRequestStatusCancelled.error": "La solicitud ya fue cancelada por el usuario",
   "sentRequest.askForConfirmation": "\u00BFEstas seguro?",
   "editJob.title": "Editar trabajo",
   "updateProviderInfo.title": "Actualizar informaci\u00F3n"
