@@ -345,7 +345,22 @@
               </ng-template>
 
             </ng-template>
-
+            <ng-template [ngIf]="error">
+              <ng-template *ngIf="requestType === 'sent';else RECEIVED">
+                <div class="pt-2">
+                  <span class="errorMessage">
+                    {{'changeSentRequestStatus.error' | translate}}
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template #RECEIVED>
+                <div class="pt-2">
+                  <span class="errorMessage">
+                    {{'changeReceivedRequestStatus.error' | translate}}
+                  </span>
+                </div>
+              </ng-template>
+            </ng-template>
           </div>
         </div>
       </div>

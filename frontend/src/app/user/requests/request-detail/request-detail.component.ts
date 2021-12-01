@@ -17,14 +17,14 @@ export class RequestComponent implements OnInit {
 
   loading = true;
   request: JobRequest = new JobRequest;
-
   acceptJobLoading = false;
   rejectJobLoading = false;
   finishJobLoading = false;
-
+  error = false;
   confirm = false;
   disabled = false;
   user: User;
+  requestType:string;
 
   constructor(
     private contactService: RequestsService,
@@ -37,14 +37,14 @@ export class RequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.request.id = this.route.snapshot.params["id"]
-    let requestType = this.route.snapshot.data["type"];
+    this.requestType = this.route.snapshot.data["type"];
     this.userService.user.subscribe(
       (res) => {
         this.user = res;
       }
     )
     let requestObs: Observable<JobRequest>;
-    if (requestType === "sent") {
+    if (this.requestType === "sent") {
       requestObs = this.contactService.getSentJobRequest(this.request.id);
     } else {
       requestObs = this.contactService.getReceivedJobRequest(this.request.id);
@@ -79,6 +79,10 @@ export class RequestComponent implements OnInit {
       },
       () => {
         this.acceptJobLoading = false;
+        this.error = true;
+        setTimeout( () => {
+          this.error = false;
+        },4000);
       }
     );
   }
@@ -92,6 +96,10 @@ export class RequestComponent implements OnInit {
       },
       () => {
         this.rejectJobLoading = false;
+        this.error = true;
+        setTimeout( () => {
+          this.error = false;
+        },4000);
       }
     );
   }
@@ -105,6 +113,10 @@ export class RequestComponent implements OnInit {
       },
       () => {
         this.finishJobLoading = false;
+        this.error = true;
+        setTimeout( () => {
+          this.error = false;
+        },4000);
       }
     )
   }
@@ -122,6 +134,10 @@ export class RequestComponent implements OnInit {
       },
       () => {
         this.disabled = false;
+        this.error = true;
+        setTimeout( () => {
+          this.error = false;
+        },4000);
         this.contactService.getSentJobRequest(this.request.id);
       }
     );

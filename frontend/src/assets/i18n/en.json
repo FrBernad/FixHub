@@ -456,6 +456,8 @@
   "sentRequest.cancelRequest": "Cancel",
   "sentRequest.cancel": "No",
   "sentRequest.confirm": "Yes",
+  "changeSentRequestStatus.error": "The request was rejected by the provider",
+  "changeReceivedRequestStatus.error": "The request was canceled by the user",
   "sentRequest.askForConfirmation": "Are you sure?",
   "editJob.title": "Edit job",
   "updateProviderInfo.title": "Update information"
