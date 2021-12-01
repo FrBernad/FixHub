@@ -6,7 +6,7 @@ import {ContactInfo} from "../../../models/contact-info.model";
 import {ProviderDetails, User} from "../../../models/user.model";
 import {UserService} from "../../../auth/services/user.service";
 import {TranslateService} from "@ngx-translate/core";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, of} from "rxjs";
 import {DiscoverService} from "../../../discover/discover.service";
 import {TestingModule} from "../../../testing.module";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
@@ -28,7 +28,8 @@ const mockProviderDetails: ProviderDetails = {
 const mockContactInfo = new ContactInfo(1, '', '', '', '')
 const mockUser = new User(1, 'name', 'surname', 'email', 'phoneNumber', 'state', 'city', 'profileImage', 'converImage', 2, 1, [mockContactInfo], mockProviderDetails);
 const mockUserService = {
-  user: new BehaviorSubject(mockUser)
+  user: new BehaviorSubject(mockUser),
+  repopulateProviderDetails: () => of({})
 }
 
 describe('DashboardComponent', () => {
@@ -41,7 +42,7 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DashboardComponent],
-      schemas:[CUSTOM_ELEMENTS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         TestingModule
       ],

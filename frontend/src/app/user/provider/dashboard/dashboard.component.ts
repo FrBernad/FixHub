@@ -27,6 +27,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.userService.repopulateProviderDetails().subscribe();
+
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     })
@@ -53,8 +56,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-    this.transSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.transSub) {
+      this.transSub.unsubscribe();
+
+    }
   }
 
 }

@@ -139,6 +139,10 @@ export class JobService {
       );
   }
 
+  repopulateJob(id: number) {
+    return this.http.get<SingleJob>(environment.apiBaseUrl + '/jobs/' + id)
+  }
+
   hasContactedJob(id: number) {
     return this.http.get(environment.apiBaseUrl + '/jobs/' + id + "/contact", {observe: "response"});
   }

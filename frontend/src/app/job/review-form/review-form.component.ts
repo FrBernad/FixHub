@@ -49,18 +49,18 @@ export class ReviewFormComponent implements OnInit {
       rating: this.reviewForm.get('rating').value
     }, this.jobId).subscribe(() => {
       this.jobService.updateReviews(this.jobId);
-      this.disabled=false;
+      this.disabled = false;
     });
 
     this.modal.hide();
     this.cleanReviewForm()
   }
 
-  onClose(){
+  onClose() {
     this.cleanReviewForm();
   }
 
-  private cleanReviewForm(){
+  private cleanReviewForm() {
     this.reviewForm.markAsUntouched();
     this.reviewForm.get('description').patchValue('');
     this.reviewForm.get('rating').patchValue('1');

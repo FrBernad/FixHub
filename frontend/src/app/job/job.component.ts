@@ -26,6 +26,8 @@ export class JobComponent implements OnInit {
     totalPages: 0,
   }
 
+  firstRev: boolean = true;
+
   userSub: Subscription;
   loggedUser: User;
   user: User;
@@ -58,6 +60,10 @@ export class JobComponent implements OnInit {
     );
 
     this.reviewsSub = this.jobService.firstReviews.subscribe((results) => {
+      if (!this.firstRev) {
+        this.jobService.repopulateJob(this.job.id).subscribe(job => this.job = {...this.job, ...job});
+      }
+      this.firstRev = false;
       this.rpr = results;
     });
 

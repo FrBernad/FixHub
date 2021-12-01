@@ -50,6 +50,8 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.userService.repopulateUserData().subscribe();
+
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
     });
@@ -85,7 +87,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.allowedProfileImageType = true;
     this.allowedProfileImageSize = true;
 
-    if(!file) {
+    if (!file) {
       return;
     }
 
@@ -127,7 +129,7 @@ export class SessionProfileComponent implements OnInit, OnDestroy {
     this.allowedCoverImageType = true;
     this.allowedCoverImageSize = true;
 
-    if(!file) {
+    if (!file) {
       return;
     }
 

@@ -113,6 +113,13 @@ export class UserService {
       )
   }
 
+  repopulateProviderDetails() {
+    return this.getUserProviderDetails(this.user.getValue().id).pipe(
+      tap(res => this.user.next({...this.user.getValue(), ...{providerDetails: res}})
+      )
+    )
+  }
+
   setRoles(roles: string[]) {
     this.user.next({
       ...this.user.getValue(),
