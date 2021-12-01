@@ -59,6 +59,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         new AntPathRequestMatcher("/auth/refreshToken/")
     );
 
+    private static final RequestMatcher AUTH_NAMESPACE_MATCHER = new AntPathRequestMatcher("/auth/**");
+
     private static final RequestMatcher AUTH_ENDPOINTS_MATCHER = new OrRequestMatcher(
         REFRESH_ENDPOINT_MATCHER,
         LOGIN_ENDPOINT_MATCHER
@@ -66,6 +68,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+
 
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null) {
@@ -82,6 +85,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
             chain.doFilter(request, response);
+            return;
+        }
+
+        if (!checkValidAuthEndpoint(request)) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
@@ -226,6 +234,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
         return false;
+    }
+
+    private boolean checkValidAuthEndpoint(final HttpServletRequest request) {
+        return AUTH_ENDPOINTS_MATCHER.matches(request) || !AUTH_NAMESPACE_MATCHER.matches(request);
     }
 
     private enum AuthorizationType {
