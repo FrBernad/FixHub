@@ -21,7 +21,6 @@
             <artifactId>spring-security-core</artifactId>
         </dependency>
 
-        <!--   Spring MVC  -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>

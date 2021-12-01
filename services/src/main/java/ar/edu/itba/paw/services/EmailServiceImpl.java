@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.job.JobContact;
 import ar.edu.itba.paw.models.token.PasswordResetToken;
 import ar.edu.itba.paw.models.token.VerificationToken;
 import ar.edu.itba.paw.models.user.User;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendVerificationEmail(User user, VerificationToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user {} verification token", user.getId());
+
             final String url = appBaseUrl.toString() + "user/verify?token=" + token.getValue();
             final Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
@@ -87,6 +89,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendPasswordResetEmail(User user, PasswordResetToken token, Locale locale) {
         try {
             LOGGER.debug("Sending user password reset email");
+
             final String url = appBaseUrl.toString() + "user/resetPassword?token=" + token.getValue();
             Map<String, Object> mailAttrs = new HashMap<>();
             mailAttrs.put("confirmationURL", url);
@@ -103,6 +106,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendProviderNotificationEmail(User user, Locale locale) {
         try {
             LOGGER.debug("Sending provider notification email");
+
             final String newJobURL = appBaseUrl.toString() + "jobs/new";
 
             final Map<String, Object> mailAttrs = new HashMap<>();
@@ -124,6 +128,11 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job request confirmation email");
+
+            //Init lazy loaded object outside transaction (@Async + @Transactional annotations dont work together on current spring version)
+            Hibernate.initialize(jobContact.getUser());
+            Hibernate.initialize(jobContact.getJob());
+
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "user/requests/sent/" + jobContact.getId();
@@ -150,6 +159,11 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job cancellation email");
+
+            //Init lazy loaded object outside transaction (@Async + @Transactional annotations dont work together on current spring version)
+            Hibernate.initialize(jobContact.getUser());
+            Hibernate.initialize(jobContact.getJob());
+
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "user/requests/sent" + jobContact.getId();
@@ -176,6 +190,11 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job cancellation email");
+
+            //Init lazy loaded object outside transaction (@Async + @Transactional annotations dont work together on current spring version)
+            Hibernate.initialize(jobContact.getUser());
+            Hibernate.initialize(jobContact.getJob());
+
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String userURL = appBaseUrl.toString() + "user/" + jobContact.getUser().getId();
             final String requestURL = appBaseUrl.toString() + "user/requests/received/" + jobContact.getId();
@@ -202,6 +221,11 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job confirmation email");
+
+            //Init lazy loaded object outside transaction (@Async + @Transactional annotations dont work together on current spring version)
+            Hibernate.initialize(jobContact.getUser());
+            Hibernate.initialize(jobContact.getJob());
+
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "user/requests/sent/" + jobContact.getId();
@@ -228,6 +252,11 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job finished email");
+
+            //Init lazy loaded object outside transaction (@Async + @Transactional annotations dont work together on current spring version)
+            Hibernate.initialize(jobContact.getUser());
+            Hibernate.initialize(jobContact.getJob());
+
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String providerURL = appBaseUrl.toString() + "user/" + jobContact.getJob().getProvider().getId();
             final String requestURL = appBaseUrl.toString() + "user/requests/sent/" + jobContact.getId();
@@ -254,6 +283,11 @@ public class EmailServiceImpl implements EmailService {
 
         try {
             LOGGER.debug("Sending job request email");
+
+            //Init lazy loaded object outside transaction (@Async + @Transactional annotations dont work together on current spring version)
+            Hibernate.initialize(jobContact.getUser());
+            Hibernate.initialize(jobContact.getJob());
+
             final String jobURL = appBaseUrl.toString() + "jobs/" + jobContact.getJob().getId();
             final String userURL = appBaseUrl.toString() + "user/" + jobContact.getUser().getId();
             final String requestURL = appBaseUrl.toString() + "user/requests/received/" + jobContact.getId();

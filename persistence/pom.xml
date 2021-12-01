@@ -15,7 +15,6 @@
 
     <dependencies>
 
-        <!--   Web MVC  -->
         <dependency>
             <groupId>ar.edu.itba.paw</groupId>
             <artifactId>interfaces</artifactId>
