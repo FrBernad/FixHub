@@ -24,7 +24,7 @@ export class RequestComponent implements OnInit {
   confirm = false;
   disabled = false;
   user: User;
-  requestType:string;
+  requestType: string;
 
   constructor(
     private contactService: RequestsService,
@@ -80,9 +80,10 @@ export class RequestComponent implements OnInit {
       () => {
         this.acceptJobLoading = false;
         this.error = true;
-        setTimeout( () => {
+        setTimeout(() => {
           this.error = false;
-        },4000);
+        }, 4000);
+        this.contactService.getReceivedJobRequest(this.request.id).subscribe(req => this.request = req)
       }
     );
   }
@@ -97,9 +98,10 @@ export class RequestComponent implements OnInit {
       () => {
         this.rejectJobLoading = false;
         this.error = true;
-        setTimeout( () => {
+        setTimeout(() => {
           this.error = false;
-        },4000);
+        }, 4000);
+        this.contactService.getReceivedJobRequest(this.request.id).subscribe(req => this.request = req)
       }
     );
   }
@@ -112,11 +114,13 @@ export class RequestComponent implements OnInit {
         this.request.status = JobStatus.FINISHED;
       },
       () => {
+        this.contactService.getReceivedJobRequest(this.request.id);
         this.finishJobLoading = false;
         this.error = true;
-        setTimeout( () => {
+        setTimeout(() => {
           this.error = false;
-        },4000);
+        }, 4000);
+        this.contactService.getReceivedJobRequest(this.request.id).subscribe(req => this.request = req)
       }
     )
   }
@@ -135,10 +139,11 @@ export class RequestComponent implements OnInit {
       () => {
         this.disabled = false;
         this.error = true;
-        setTimeout( () => {
+        setTimeout(() => {
           this.error = false;
-        },4000);
-        this.contactService.getSentJobRequest(this.request.id);
+        }, 4000);
+        this.contactService.getSentJobRequest(this.request.id).subscribe(req => this.request = req)
+        ;
       }
     );
   }
