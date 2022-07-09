@@ -3,7 +3,7 @@
 - [Francisco Bernad](https://github.com/FrBernad)
 - [Nicolás Rampoldi](https://github.com/NicolasRampoldi) 
 - [Agustín Manfredi](https://github.com/imanfredi)
-- [Joaquín Legammare](https://github.com/JoacoLega)
+- [Joaquín Legammare](https://github.com/JLegammare)
 
 ## What is Fixhub?
 **Fixhub** is a site that offers a **huge selection of services** of all different types.
